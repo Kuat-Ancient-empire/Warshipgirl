@@ -1,0 +1,213 @@
+particle={
+	name="uf_nemesis_system_effect_1_file"
+	subsystem={
+		name="BigGlow"
+		max_amount=10
+		slave_particles=0
+		sort="depth"
+		emitter_type="point"
+		invert=no
+		trail=no
+		local_space=yes
+		billboard=no
+		hide=no
+		texture={
+			file="gfx/particles/sun_flare.dds"
+			x=1
+			y=1
+			shader="ParticleAdditive"
+		}
+		color={
+			x={ 210 10 }
+			y={ 230 20 }
+			z={ 255 20 }
+			alpha={ 200,fade_in_out 50 }
+		}
+		position={
+			x=0
+			y=0
+			z=0
+		}
+		start=0
+		duration=-1
+		emitter_yaw={ 0 0 }
+		emitter_pitch={ 0 0 }
+		velocity_pitch={ 0 180 }
+		velocity_yaw={ 0 180 }
+		velocity={ 0 0 }
+		life={ 2 0.5 }
+		emission=3
+		size={ 800,size_grow_flairs 50 }
+		particle_yaw={ 0 180 }
+		particle_pitch={ 0 60 }
+		rotation={ 0 180 }
+		rotation_speed={ 0 0 }
+	}
+	subsystem={
+		name="Glow_flare"
+		max_amount=10
+		slave_particles=0
+		sort="depth"
+		emitter_type="point"
+		invert=no
+		trail=no
+		local_space=yes
+		billboard=no
+		hide=yes
+		texture={
+			file="gfx/particles/starswirl.dds"
+			x=1
+			y=1
+			shader="ParticleAdditive"
+		}
+		color={
+			x={ 150 15 }
+			y={ 150 15 }
+			z={ 160 10 }
+			alpha={ 40,fade_in_out_flairs 5 }
+		}
+		position={
+			x=0
+			y=0
+			z=0
+		}
+		start=0
+		duration=-1
+		emitter_yaw={ 0 0 }
+		emitter_pitch={ 0 0 }
+		velocity_pitch=-90
+		velocity_yaw=0
+		velocity={ 10 0 }
+		life={ 6 1 }
+		emission=0.25
+		size={ 1200,size_grow_flairs 60 }
+		particle_yaw={ 0 180 }
+		particle_pitch={ 90 2 }
+		rotation={ 0 180 }
+		rotation_speed=-10
+	}
+	subsystem={
+		name="Sparks"
+		max_amount=10
+		slave_particles=0
+		sort="depth"
+		emitter_type="sphere"
+		sphere_emitter_radius={ 200 100 }
+		sphere_emitter_yaw={ 0 180 }
+		sphere_emitter_pitch={ 0 4 }
+		invert=no
+		trail=no
+		local_space=yes
+		billboard=no
+		hide=no
+		texture={
+			file="gfx/particles/lightning_1.dds"
+			x=2
+			y=2
+			shader="ParticleAdditive"
+		}
+		color={
+			x={ 255 10 }
+			y={ 180 30 }
+			z={ 100 30 }
+			alpha={ 220,lightning_alpha 50 }
+		}
+		position={
+			x=0
+			y=0
+			z=0
+		}
+		start=0
+		duration=-1
+		emitter_yaw={ 0 0 }
+		emitter_pitch={ 0 0 }
+		velocity_pitch={ 0 180 }
+		velocity_yaw={ 0 180 }
+		velocity={ 0 0 }
+		life={ 1 0.2 }
+		emission=4
+		size={ 30,lightning_size 4 }
+		particle_yaw={ 0 180 }
+		particle_pitch={ 0 180 }
+		rotation={ 0 180 }
+	}
+	animation={
+		name="fade_in_out"
+		start=0
+		duration=1
+		repeat=yes
+		minValue=0
+		maxValue=1
+		curve={
+			0 0 0.30588 0.49219 0.64706 0.46875 1 0 
+		}
+		op="MUL"
+		time="life"
+	}
+	animation={
+		name="fade_in_out_flairs"
+		start=0
+		duration=1
+		repeat=yes
+		minValue=0
+		maxValue=1
+		curve={
+			0 0 0.25588 0.57813 0.67941 0.3125 1 0 
+		}
+		op="MUL"
+		time="life"
+	}
+	animation={
+		name="size_grow_flairs"
+		start=0
+		duration=1
+		repeat=no
+		minValue=0.1
+		maxValue=1
+		curve={
+			0 0.71875 0.46176 0.80469 1 1 
+		}
+		op="MUL"
+		time="life"
+	}
+	animation={
+		name="lightning_alpha"
+		start=0
+		duration=1
+		repeat=no
+		minValue=0
+		maxValue=1
+		curve={
+			0 1 0.22353 0 0.41471 0.01563 0.54412 1 0.84706 1 1 0 
+		}
+		op="MUL"
+		time="life"
+	}
+	animation={
+		name="lightning_size"
+		start=0
+		duration=1
+		repeat=no
+		minValue=0
+		maxValue=1
+		curve={
+			0 0.58594 0.37353 0.98438 1 1 
+		}
+		op="MUL"
+		time="life"
+	}
+	force={
+		type="planar"
+		name="force0"
+		position={
+			0 0 0 
+		}
+		direction={
+			0 1 0 
+		}
+		local_force=yes
+		yaw=0
+		division=16
+		amount=5
+	}
+}

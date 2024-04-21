@@ -1,0 +1,743 @@
+# 我大明天下第一呀
+Great_ming_sol_system = {
+	name = "NAME_Sol_ming_system"
+	class = "sc_g"
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 145
+	}
+	asteroid_belt = {
+		type = icy_asteroid_belt
+		radius = 290
+	}
+
+	flags = { Great_ming_sol wg_event_system cannot_be_hit_by_aow_starfall_spear }
+	
+	planet = {
+		name = "NAME_Sol_ming_sun"
+		class = "pc_g_star"
+		orbit_distance = 0
+		orbit_angle = 1
+		size = 30
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_molten"
+		orbit_distance = 40
+		orbit_angle = 15
+		size = 10
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_toxic"
+		orbit_distance = 25
+		orbit_angle = 125
+		size = 20
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = pc_ocean
+		name = "NAME_Sol_ming"
+		orbit_distance = 25
+		orbit_angle = 120
+		size = 20
+		has_ring = no
+		entity = "ocean_planet_earth_entity"
+		deposit_blockers = none
+		modifiers = none
+		
+		init_effect = {
+			prevent_anomaly = yes
+			set_planet_flag = great_ming_sol_III
+			create_species = {
+				name = "NAME_great_ming_wsg_species"
+				class = "Warship_Girls"
+				portrait = "Warship_girls"
+				traits = {
+					trait = wsg_trait_warshipgirls2
+					trait = wsg_trait_mass_assembly
+					trait = wsg_trait_extreme_efficient
+					trait = wsg_trait_mind_control
+				}			
+				immortal = yes
+				effect = { 
+					save_global_event_target_as = great_ming_wsg_species
+					change_species_characteristics = {
+						immortal = yes
+						gender = female
+					}
+				}
+			}
+            create_country = {
+                name = "NAME_great_ming_wsg_country"
+                authority = auth_great_ming
+				day_zero_contact = no
+                civics = {
+                    civic = civic_increasing_urbanization
+                    civic = civic_atmospheric_pollution
+                }
+				origin = origin_wg_great_ming
+                species = event_target:great_ming_wsg_species
+                ethos = {
+                    ethic = "ethic_authoritarian"
+                    ethic = "ethic_fanatic_xenophobe"			
+                }
+                flag = {
+                    icon = {
+                        category = "wg_event_flags"
+                        file = "wge_flags_11.dds"
+                    }
+                    background= {
+                        category = "backgrounds"
+                        file = "circle.dds"
+                    }
+                    colors={
+                        "yellow"
+                        "white"
+                        "null"
+                        "null"
+                    }
+                }
+				name_list = "WSG2"
+                type = primitive
+				effect = {
+					create_leader = {
+						class = official
+						species = event_target:great_ming_wsg_species
+						name = "NAME_great_ming_emperor"
+						effect = {
+							save_event_target_as = great_ming_wsg_emperor
+							change_leader_portrait = wsg9978
+						}
+					}
+					set_leader = event_target:great_ming_wsg_emperor
+					save_global_event_target_as = great_ming_country
+					create_ship_design = { design = "NAME_WG_GREAT_MING_SPACESTATION" }
+					add_ship_design = last_created_design
+				}
+            }
+            last_created_country = {
+                set_graphical_culture = china_01
+				set_pre_ftl_age = wg_great_ming_age
+				set_country_flag = wg_great_ming_age
+				set_country_flag = great_ming_country
+				set_country_flag = reached_full_awareness_once
+				set_male_ruler_title = "great_ming_wsg_emperor_title"
+				set_female_ruler_title = "great_ming_wsg_emperor_title"
+				set_awareness = 200
+				add_modifier = {
+					modifier = khan_buff_after_50_years
+					days = -1
+				}
+            }
+            set_owner = event_target:great_ming_country
+
+            clear_deposits = yes
+			add_deposit = d_great_ming_great_wall
+			add_deposit = d_great_ming_old_tree
+			add_deposit = d_great_ming_zhenghe
+			add_deposit = d_great_ming_tumubao
+			add_deposit = d_rich_mountain
+			add_deposit = d_rich_mountain
+			add_deposit = d_ore_rich_caverns
+			add_deposit = d_black_soil
+			add_deposit = d_black_soil
+			add_deposit = d_fungal_caves
+			add_deposit = d_underwater_vent
+			add_deposit = d_geothermal_vent
+			add_deposit = d_rushing_waterfalls
+			add_deposit = d_hot_springs
+            
+
+			while = {
+				count = 35
+				create_pop = {
+					species = event_target:great_ming_wsg_species
+				}					
+			}
+            add_building = building_wg_great_ming_imperial_palace
+			add_building = building_wg_great_ming_tax_office
+			add_building = building_wg_great_ming_tax_office
+			add_building = building_wg_great_ming_tax_office
+			add_building = building_wg_great_ming_tax_office
+			add_building = building_wg_great_ming_shenji_camp
+			add_building = building_wg_great_ming_jinyiwei
+			add_building = building_wg_great_ming_residential
+			add_building = building_wg_great_ming_residential
+			add_building = building_wg_great_ming_residential
+			add_building = building_wg_great_ming_residential
+			add_building = building_wg_great_ming_residential
+			
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET"
+				effect = {
+					set_owner = event_target:great_ming_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 30
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+			while = {
+				count = 25
+				create_army = {
+					name = "great_ming_defense_army"
+					owner = event_target:great_ming_country
+					species = event_target:great_ming_wsg_species
+					type = "great_ming_defense_army"
+					#land_army = yes
+				}
+			}
+		}
+
+		moon = {
+			class = pc_ocean
+			name = "NAME_Luna"
+			size = 8
+			orbit_distance = 12
+			orbit_angle = 40
+			has_ring = no
+			init_effect = {
+				prevent_anomaly = yes
+				set_planet_flag = great_ming_sol_III_moon
+				create_species = {
+					name = "NAME_great_ming_sh_species"
+					class = "ShenHai"
+ 					portrait = "shenhai"
+					traits = {
+						trait = sh_trait_shenhai3
+						trait = sh_trait_ocean
+						trait = sh_trait_worker
+						trait = sh_trait_fool40k
+						trait = sh_trait_migrate
+					}			
+					immortal = yes
+					effect = { 
+						save_global_event_target_as = great_ming_sh_species
+						change_species_characteristics = {
+							immortal = yes
+							gender = female
+						}
+					}
+				}
+				while = {
+					count = 12
+					create_pop = {
+						species = event_target:great_ming_sh_species
+					}					
+				}
+				set_owner = event_target:great_ming_country
+				create_pre_ftl_blockers = yes
+				add_building = building_wg_great_ming_house
+				add_building = building_wg_great_ming_house
+				add_building = building_wg_great_ming_house
+				add_building = building_primitive_capital
+				while = {
+					count = 8
+					create_army = {
+						name = "great_ming_defense_army2"
+						owner = event_target:great_ming_country
+						species = event_target:great_ming_sh_species
+						type = "great_ming_defense_army2"
+						#land_army = yes
+					}
+				}
+			}
+		}
+	}
+	
+	planet = {
+		class = "pc_barren"
+		orbit_distance = 25
+		orbit_angle = 60
+		size = 13
+		has_ring = no
+		entity = "barren_planet_mars_entity"
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_asteroid"
+		orbit_distance = 30
+		orbit_angle = -210
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET"
+				effect = {
+					set_owner = event_target:great_ming_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 20
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+		}
+	}
+	
+	planet = {
+		class = "pc_asteroid"
+		orbit_distance = 0
+		orbit_angle = -95
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_asteroid"
+		orbit_distance = 0
+		orbit_angle = 285
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_asteroid"
+		orbit_distance = 0
+		orbit_angle = -80
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_gas_giant"
+		orbit_distance = 40
+		orbit_angle = -160
+		size = 35
+		has_ring = no
+		entity = "gas_giant_jupiter_entity"
+		change_orbit = 6
+		init_effect = {
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET"
+				effect = {
+					set_owner = event_target:great_ming_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 20
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+		}
+		moon = {
+			class = "pc_molten"
+			size = 6
+			orbit_distance = 10
+			orbit_angle = 110
+			has_ring = no
+		}
+		moon = {
+			class = "pc_frozen"
+			size = 6
+			orbit_distance = 2.5
+			orbit_angle = 10
+			has_ring = no
+		}
+		moon = {
+			class = "pc_frozen"
+			size = 9
+			orbit_distance = 2.5
+			orbit_angle = 80
+			has_ring = no
+		}
+		moon = {
+			class = "pc_frozen"
+			size = 7
+			orbit_distance = 2.5
+			orbit_angle = -155
+			has_ring = no
+		}
+	}
+	
+	planet = {
+		class = "pc_gas_giant"
+		orbit_distance = 25
+		orbit_angle = 170
+		size = 30
+		has_ring = yes
+		entity = "gas_giant_05_entity"
+		change_orbit = 7
+		
+		moon = {
+			class = "pc_frozen"
+			size = 8
+			orbit_distance = 12
+			orbit_angle = 320
+			has_ring = no
+		}
+		init_effect = {
+			prevent_anomaly = yes
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET"
+				effect = {
+					set_owner = event_target:great_ming_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 20
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+		}
+	}
+	
+	planet = {
+		class = "pc_gas_giant"
+		orbit_distance = 25
+		orbit_angle = 125
+		size = 20
+		has_ring = no
+		entity = "gas_giant_03_entity"
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_gas_giant"
+		orbit_distance = 25
+		orbit_angle = -195
+		size = 20
+		has_ring = no
+		entity = "gas_giant_02_entity"
+		change_orbit = 4
+		
+		moon = {
+			class = "pc_frozen"
+			size = 6
+			orbit_distance = 7
+			orbit_angle = 115
+			has_ring = no
+		}
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+
+	planet = {
+		class = "pc_asteroid"
+		orbit_distance = 30
+		orbit_angle = -210
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET"
+				effect = {
+					set_owner = event_target:great_ming_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 20
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+		}
+	}
+	
+	planet = {
+		class = "pc_ice_asteroid"
+		orbit_distance = 0
+		orbit_angle = -95
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_ice_asteroid"
+		orbit_distance = 0
+		orbit_angle = 285
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET"
+				effect = {
+					set_owner = event_target:great_ming_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 20
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+		}
+	}
+	
+	planet = {
+		class = "pc_ice_asteroid"
+		orbit_distance = 0
+		orbit_angle = -80
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+
+	init_effect = {
+		random_system_planet = {
+			limit = { is_star = yes }
+			create_starbase = {
+				size = "wg_great_ming_spacestation"
+				owner = event_target:great_ming_country
+			}
+		}
+		save_global_event_target_as = great_ming_system
+	}
+}
+
+wg_great_ming_abandoned_system = {
+	name = "NAME_great_ming_abandoned_world"
+	class = "sc_g"
+	usage = misc_system_init
+	
+	usage_odds = 0
+	
+
+	prevent_anomalies = yes
+
+	planet = {
+		count = 1
+		class = "pc_g_star"
+		orbit_distance = 0
+		orbit_angle = 1
+		size = { min = 20 max = 30 }
+		has_ring = no
+		init_effect = {
+		}			
+	}
+	
+	change_orbit = 45
+	
+	planet = {
+		count = { min = 1 max = 2 }
+		class = rl_unhabitable_planets
+		orbit_distance = 30
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 1 }
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+
+	planet = {
+		class = pc_ocean
+		name = "NAME_great_ming_abandoned_world"
+		orbit_distance = 30
+		modifiers = none
+		size = { min = 20 max = 25 }		
+		init_effect = {
+			clear_deposits = yes
+			set_planet_flag = wg_great_ming_abandoned_world
+			save_global_event_target_as = wg_great_ming_abandoned_world_target
+			add_building = building_wg_great_ming_residential2
+			add_deposit = d_rich_mountain
+			add_deposit = d_rich_mountain
+			add_deposit = d_submerged_ore_veins
+			add_deposit = d_submerged_ore_veins
+			add_deposit = d_submerged_ore_veins
+			add_deposit = d_ore_rich_caverns
+			add_deposit = d_veiny_cliffs
+			add_deposit = d_black_soil
+			add_deposit = d_geothermal_vent
+			add_deposit = d_rushing_waterfalls
+			add_deposit = d_hot_springs		
+			add_deposit = d_failing_infrastructure
+			add_deposit = d_failing_infrastructure
+			add_deposit = d_failing_infrastructure
+			add_deposit = d_failing_infrastructure
+			add_deposit = d_failing_infrastructure
+			prevent_anomaly = yes			
+        }
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 2 max = 4 }
+			orbit_angle = { min = 40 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	planet = {
+		count = { min = 1 max = 2 }
+		class = rl_unhabitable_planets
+		orbit_distance = 30
+		orbit_angle = { min = 90 max = 270 }
+		
+	}
+	planet = {
+		count = { min = 1 max = 2 }
+		class = rl_unhabitable_planets
+		orbit_distance = 30
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 3 }
+			orbit_angle = { min = 20 max = 270 }
+			orbit_distance = 5
+		}
+	}
+}

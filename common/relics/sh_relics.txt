@@ -1,0 +1,46 @@
+r_sh_book = {
+	activation_duration = @triumph_duration
+	portrait = "GFX_relic_sh_book"
+	sound = "relic_activation_ether_drake_trophy"
+
+	resources = {
+		category = relics
+		# Activation cost
+		cost = {
+			influence = 100
+		}
+	}
+	
+	ai_weight = {
+		weight = 100
+	}
+	
+	triggered_country_modifier = {
+		potential = {
+			always = yes
+		}
+		country_unity_produces_mult = 0.10
+	}
+
+	score = 1000
+
+	active_effect = {
+		add_modifier = {
+			modifier = "sh_modifier_book" 
+			days = 3600
+		}
+		custom_tooltip = relic_triumph_cooldown
+		hidden_effect = {
+			add_modifier = {
+				modifier = "relic_activation_cooldown" 
+				days = 3600
+			}		
+		}
+	}
+	possible = {
+		inline_script = {
+			script = relics/activation_checks
+			RELIC = r_sh_book
+		}
+	}
+}

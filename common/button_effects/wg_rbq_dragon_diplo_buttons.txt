@@ -1,0 +1,129 @@
+wg_yukikaze_portrait = {
+	potential = { 
+		exists = from
+		from = {
+			# check_variable = { which = wg_yukikaze_cloth value = 0 }
+			has_country_flag = get_wg_yukikaze
+			NOT = { has_modifier = wg_yukikaze_recover_cd }
+		}
+	}
+	allow = { always = yes }
+	effect = { } #no need
+}
+
+wg_yukikaze_portrait_broken = {
+	potential = { 
+		exists = from
+		from = {
+			# check_variable = { which = wg_yukikaze_cloth value = 0 }
+			has_country_flag = get_wg_yukikaze
+			has_modifier = wg_yukikaze_recover_cd
+		}
+	}
+	allow = { always = yes }
+	effect = { } #no need
+}
+
+# wg_yukikaze_cloth_button_prev = {
+# 	potential = { always = yes }
+# 	allow = { always = yes }
+# 	effect = {
+# 		from = {
+# 			hidden_effect = {
+# 				change_variable = { which = wg_yukikaze_cloth value = -1 }
+# 				if = {
+# 					limit = { check_variable = { which = wg_yukikaze_cloth value < 0 }}
+# 					set_variable = { which = wg_yukikaze_cloth value = 1 }
+# 				}
+# 			}
+# 		}
+# 		custom_tooltip = change_cloth
+# 	}
+# }
+# wg_yukikaze_cloth_button_next = {
+# 	potential = { always = yes }
+# 	allow = { always = yes }
+# 	effect = {
+# 		from = {
+# 			hidden_effect = {
+# 				change_variable = { which = wg_yukikaze_cloth value = 1 }
+# 				if = {
+# 					limit = { check_variable = { which = wg_yukikaze_cloth value > 1 }}
+# 					set_variable = { which = wg_yukikaze_cloth value = 0 }
+# 				}
+# 			}
+# 		}
+# 		custom_tooltip = change_cloth
+# 	}
+# }
+
+wg_yukikaze_link_button_effect = {
+	potential = { 
+		exists = from
+		FROM = { 
+			is_same_value = from
+			check_variable = { which = link_button_current_page value = 1 }
+			has_country_flag = get_wg_yukikaze
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = already_has_wg_yukikaze_diplo
+			NOT = { has_country_flag = wg_yukikaze_diplo_active }
+		}
+	}}
+	effect = { FROM = {
+		hidden_effect = { country_event = { id = wg_old_leader_diplo.6000 }}
+	}}
+}
+
+wg_yukikaze_affection1_show_effect = {
+	potential = { 
+		exists = from
+		from = {
+			special_leader_affection_lv1_trigger = { LEADER = wg_yukikaze }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_yukikaze_affection_show_lv2 }
+}
+wg_yukikaze_affection2_show_effect = {
+	potential = { 
+		exists = from
+		from = {
+			special_leader_affection_lv2_trigger = { LEADER = wg_yukikaze }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_yukikaze_affection_show_lv3 }
+}
+wg_yukikaze_affection3_show_effect = {
+	potential = { 
+		exists = from
+		from = {
+			special_leader_affection_lv3_trigger = { LEADER = wg_yukikaze }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_yukikaze_affection_show_lv4 }
+}
+wg_yukikaze_affection4_show_effect = {
+	potential = { 
+		exists = from
+		from = {
+			special_leader_affection_lv4_trigger = { LEADER = wg_yukikaze MARRIED_FLAG = married_wg_yukikaze }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_yukikaze_affection_show_lv5 }
+}
+wg_yukikaze_affection5_show_effect = {
+	potential = { 
+		exists = from
+		from = {
+			special_leader_affection_lv5_trigger = { LEADER = wg_yukikaze MARRIED_FLAG = married_wg_yukikaze }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_yukikaze_affection_show_lv5 }
+}

@@ -1,0 +1,416 @@
+origin_sh_chaser_promise = {
+	picture = GFX_evt_space_station
+	category = positive
+	complete_icon_frame = GFX_situation_outcome_frame_green
+	complete_icon = GFX_situation_outcome_meh
+	start_value = 0
+
+	on_start = {
+	}
+
+	on_progress_complete = {
+		custom_tooltip = situation_origin_sh_chaser_promise_outcome
+		set_situation_locked = yes
+		hidden_effect = {
+			owner = {
+				remove_modifier = council_in_tatter
+			}
+			situation_event = { id = wg_origin_sh_chaser.7 }
+			destroy_situation = this
+		}
+	}
+
+	abort_trigger = {
+		owner = {
+			exists = ruler
+			ruler = {
+				NOT = { has_trait = leader_trait_origin_sh_chaser }
+			}
+		}
+	}
+
+	on_abort = {
+		hidden_effect = {
+			owner = {
+				remove_modifier = council_in_tatter
+			}
+		}
+	}
+	
+	stages = {
+		stage_1 = {
+			icon = GFX_situation_stage_1
+			icon_background = GFX_situation_stage_frame_green
+			end = 360
+			on_first_enter = {
+			}
+			custom_tooltip = situation_origin_sh_chaser_insight_stages
+		}
+	}
+
+	approach = {
+		name = situation_origin_sh_chaser_promise_expansion
+		icon = GFX_situation_approach_balance_sheet
+		icon_background = GFX_situation_approach_bg_green
+		on_select = {
+			custom_tooltip = approach_situation_origin_sh_chaser_promise_expansion_tt
+		}
+		allow = {
+		}
+		default = yes
+		modifier = {
+			planet_stability_add = 5
+			country_base_influence_produces_add = -0.25
+		}
+	}
+	approach = {
+		name = situation_origin_sh_chaser_promise_prospecting
+		icon = GFX_situation_approach_energy_credits
+		icon_background = GFX_situation_approach_bg_green
+		on_select = {
+			custom_tooltip = approach_situation_origin_sh_chaser_promise_prospecting_tt
+		}
+		allow = {
+		}
+		modifier = {
+			station_gatherers_produces_mult = 0.2
+			science_ship_survey_speed = -0.5
+		}
+	}
+	approach = {
+		name = situation_origin_sh_chaser_promise_construction
+		icon = GFX_situation_approach_fleet
+		icon_background = GFX_situation_approach_bg_green
+		on_select = {
+			custom_tooltip = approach_situation_origin_sh_chaser_promise_construction_tt
+		}
+		allow = {
+		}
+		modifier = {
+			planet_building_build_speed_mult = 0.35
+			starbase_shipyard_build_speed_mult = 0.35
+			planet_metallurgists_alloys_produces_add = -0.15
+		}
+	}
+	approach = {
+		name = situation_origin_sh_chaser_promise_engineering
+		icon = GFX_situation_approach_research
+		icon_background = GFX_situation_approach_bg_green
+		on_select = {
+			custom_tooltip = approach_situation_origin_sh_chaser_promise_engineering_tt
+		}
+		allow = {
+		}
+		modifier = {
+			planet_researchers_produces_mult = 0.1
+			planet_researchers_upkeep_mult = 0.35
+		}
+	}
+
+	on_monthly = {
+	}
+
+	monthly_progress = {
+		base = 1
+	}
+}
+
+origin_sh_chaser_forgotten = {
+	picture = GFX_evt_conclave
+	category = neutral
+	complete_icon_frame = GFX_situation_outcome_frame_blue
+	complete_icon = GFX_situation_outcome_unknown
+	start_value = 0
+
+	on_start = {
+	}
+
+	on_progress_complete = {
+		custom_tooltip = situation_unknown_outcome_approach
+		set_situation_locked = yes
+		situation_event = { id = paragon.5057 }
+		hidden_effect = {
+			owner = {
+				clear_variable = clampdown_costs_mult
+			}
+		}
+	}
+
+	abort_trigger = {
+		owner = {
+			exists = ruler
+			ruler = {
+				NOT = { has_leader_flag = origin_sh_chaser_legendary_leader }
+			}
+		}
+	}
+	
+	stages = {
+		stage_1 = {
+			icon = GFX_situation_stage_1
+			icon_background = GFX_situation_stage_frame_red
+			end = 45
+			on_first_enter = {
+			}
+			modifier = {
+			}
+		}
+		stage_2 = {
+			icon = GFX_situation_stage_2
+			icon_background = GFX_situation_stage_frame_red
+			end = 90
+			on_first_enter = {
+				situation_event = { id = paragon.5054 }
+			}
+			modifier = {
+			}
+		}
+		stage_3 = {
+			icon = GFX_situation_stage_3
+			icon_background = GFX_situation_stage_frame_red
+			end = 135
+			on_first_enter = {
+				situation_event = { id = paragon.5055 }
+			}
+			modifier = {
+			}
+		}
+		stage_4 = {
+			icon = GFX_situation_stage_4
+			icon_background = GFX_situation_stage_frame_red
+			end = 180
+			on_first_enter = {
+				situation_event = { id = paragon.5056 }
+			}
+			modifier = {
+			}
+		}
+	}
+
+	approach = {
+		name = situation_origin_forgotten_propaganda
+		icon = GFX_situation_approach_shrug
+		icon_background = GFX_situation_approach_bg_green
+		on_select = {
+			custom_tooltip = approach_situation_origin_forgotten_propaganda_tt
+		}
+		modifier = {
+			planet_jobs_produces_mult = -0.10
+		}
+	}
+	approach = {
+		name = situation_origin_forgotten_balanced
+		icon = GFX_situation_approach_this_is_fine
+		icon_background = GFX_situation_approach_bg_yellow
+		on_select = {
+			custom_tooltip = approach_situation_origin_forgotten_balanced_tt
+		}
+		default = yes
+		modifier = {
+			planet_stability_add = -5
+			planet_jobs_produces_mult = -0.05
+		}
+	}
+	approach = {
+		name = situation_origin_forgotten_crackdown
+		icon = GFX_situation_approach_fist
+		icon_background = GFX_situation_approach_bg_red
+		on_select = {
+			custom_tooltip = approach_situation_origin_forgotten_crackdown_tt
+		}
+		modifier = {
+			planet_stability_add = -10
+		}
+	}
+
+	on_monthly = {
+		random_events = {
+		}
+	}
+
+	monthly_progress = {
+		base = 1
+	}
+}
+
+origin_sh_chaser_reformists_struggle = {
+	picture = GFX_evt_crisis_declared
+	category = negative
+	complete_icon_frame = GFX_situation_outcome_frame_red
+	complete_icon = GFX_situation_outcome_revolt
+	start_value = 0
+
+	on_start = {
+		set_timed_situation_flag = {
+			flag = origin_recent_random_event
+			days = 360
+		}
+		owner = {
+			set_variable = {
+				which = origin_sh_chaser_reformists_negotiation_value
+				value = 0
+			}
+		}
+	}
+
+	on_progress_complete = {
+		custom_tooltip = situation_origin_sh_chaser_reformists_struggle_complete
+		owner = {
+			country_event = { id = paragon.5200 days = 15 random = 30 }
+			hidden_effect = {
+				set_country_flag = reformists_situation_finished
+				clear_variable = origin_sh_chaser_reformists_negotiation_value
+			}
+		}
+		destroy_situation = this
+	}
+
+	abort_trigger = {
+		owner = {
+			exists = ruler
+			ruler = {
+				NOT = { has_leader_flag = origin_sh_chaser_legendary_leader }
+			}
+		}
+	}
+
+	on_abort = {
+		owner = {
+			country_event = { id = paragon.5063 days = 5 }
+			clear_variable = origin_sh_chaser_reformists_negotiation_value
+		}
+	}
+	
+	stages = {
+		stage_1 = {
+			icon = GFX_situation_stage_1
+			icon_background = GFX_situation_stage_frame_red
+			end = 60
+			on_first_enter = {
+			}
+			custom_tooltip = situation_reformists_struggle_3
+			modifier = {
+				planet_stability_add = -2.5
+				pop_ethic_egalitarian_attraction_mult = 0.1
+			}
+		}
+		stage_2 = {
+			icon = GFX_situation_stage_2
+			icon_background = GFX_situation_stage_frame_red
+			end = 120
+			on_first_enter = {
+			}
+			custom_tooltip = situation_reformists_struggle_2
+			modifier = {
+				planet_stability_add = -5
+				pop_ethic_egalitarian_attraction_mult = 0.2
+			}
+		}
+		stage_3 = {
+			icon = GFX_situation_stage_3
+			icon_background = GFX_situation_stage_frame_red
+			end = 180
+			on_first_enter = {
+			}
+			custom_tooltip = situation_reformists_struggle_1
+			modifier = {
+				planet_stability_add = -10
+				pop_ethic_egalitarian_attraction_mult = 0.4
+			}
+		}
+	}
+	
+	approach = {
+		name = situation_origin_sh_chaser_reformists_struggle_harsh
+		icon = GFX_situation_approach_fist
+		icon_background = GFX_situation_approach_bg_red
+		on_select = {
+			owner = {
+				hidden_effect = {
+					if = {
+						limit = { has_country_flag = took_reformists_side }
+						remove_country_flag = took_reformists_side
+					}
+				}
+				if = {
+					limit = { is_variable_set = origin_sh_chaser_reformists_negotiation_value }
+					prev = { add_situation_progress = owner.origin_sh_chaser_reformists_negotiation_value }
+					hidden_effect = {
+						set_variable = {
+							which = origin_sh_chaser_reformists_negotiation_value
+							value = 0
+						}
+					}
+				}
+			}
+			custom_tooltip = approach_situation_origin_sh_chaser_reformists_struggle_harsh_tt
+		}
+		default = yes
+	}
+	approach = {
+		name = situation_origin_sh_chaser_reformists_struggle_accept
+		icon = GFX_situation_approach_handshake 
+		icon_background = GFX_situation_approach_bg_green
+		allow = {
+			custom_tooltip = approach_allow_tooltip_reformists_struggle_accept
+			hidden_trigger = {
+				owner = {
+					ruler = {
+						check_variable = {
+							which = origin_sh_chaser_delusion_tier
+							value < 6
+						}
+					}
+				}
+			}
+		}
+		on_select = {
+			owner = {
+				hidden_effect = { set_country_flag = took_reformists_side }
+			}
+			custom_tooltip = approach_situation_origin_sh_chaser_reformists_struggle_accept_tt
+		}
+	}
+
+	on_monthly = {
+		events = {
+			paragon.5945 #Check if there are still reformists planets
+			#paragon.5946 #Failsafe to prevent players taking "good" approach and then changing it to skip the situation quickly
+		}
+		random_events = {
+			2 = paragon.5072 #Neutralization
+			2 = paragon.5073 #Escape
+			2 = paragon.5074 #Firefight
+			3 = paragon.5064 #Delusion
+			3 = paragon.5065 #Tyranny
+			1 = paragon.5071 #Aid
+			1 = paragon.5070 #Pirates
+			1 = paragon.5075 #Loyalists
+			2 = paragon.5090 #Reformists
+		}
+	}
+
+	monthly_progress = {
+		base = 0
+		modifier = {
+			add = 1
+			desc = origin_sh_chaser_hunt
+			current_situation_approach = situation_origin_sh_chaser_reformists_struggle_harsh
+		}
+		modifier = {
+			add = -0.1
+			desc = origin_sh_chaser_reformists_killed
+			owner = { has_country_flag = forgotten_destroyed }
+		}
+		modifier = {
+			add = 0.1
+			desc = origin_sh_chaser_reformists_alive
+			owner = { has_country_flag = forgotten_negotiated }
+		}
+		modifier = {
+			add = 15
+			desc = origin_sh_chaser_hunt
+			current_situation_approach = situation_origin_sh_chaser_reformists_struggle_accept
+		}
+	}
+}

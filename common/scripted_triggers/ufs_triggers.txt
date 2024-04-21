@@ -1,0 +1,344 @@
+is_default_and_fallen_empire_country = {
+	OR = {
+		is_country_type = default
+		is_country_type = fallen_empire
+		is_country_type = awakened_fallen_empire
+	}
+}
+# root = country
+default_vaild_country = {
+	custom_tooltip = {
+		fail_text = "not_vaild_country_or_no_communications"
+		NOT = { is_same_empire = root }
+		ufs_banned_country = no
+		OR = {
+			is_default_and_fallen_empire_country = no
+			AND = {
+				NOT = { is_same_empire = root }
+				has_communications = root
+				count_system_within_border = { count > 0 }
+			}
+		}
+	}
+}
+ufs_banned_country = {
+	OR = {
+		is_country_type = monolith_crisis_country
+	}
+}
+default_ufs_system_allow = {
+	hidden_trigger = { is_scope_type = galactic_object }
+	if = {
+		limit = { 
+			exists = space_owner 
+			space_owner = { NOT = { is_same_empire = root }}
+		}
+		hidden:space_owner = {
+			custom_tooltip = {
+				fail_text = "not_vaild_country_or_no_communications"
+				OR = {
+					is_crisis_faction = yes
+					is_default_and_fallen_empire_country = no
+					AND = {
+						has_communications = root
+						count_system_within_border = { count > 0 }
+					}
+				}
+			}
+			custom_tooltip = {
+				fail_text = "not_vaild_country_or_no_communications"
+				OR = {
+					NOT = { root = { has_country_flag = ufs_fire_mode_all }}
+					is_ufs_crisis_faction = no
+				}
+			}
+			custom_tooltip = {
+				fail_text = "is_at_war_with_target_country"
+				OR = {
+					is_default_and_fallen_empire_country = no
+					AND = {
+						has_communications = root
+						is_at_war_with = root
+					}
+				}
+			}
+		}
+	} else = {
+		custom_tooltip = {
+			fail_text = "not_owned_system_or_not_owned_colony"
+			OR = {
+				NOT = { exists = space_owner }
+				space_owner = {
+					NOT = { is_same_empire = root }
+				}
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = "kuat_requires_a_star_star_killer" 
+		NOR = { 
+			is_star_class = sc_kuat 
+			has_star_flag = kuat_military_base_system_home
+		}
+	}
+	custom_tooltip = {
+		fail_text = "too_cunning_icantbreathe_system" 
+		NOR = {
+			has_star_flag = Kuat_system
+			has_star_flag = Kuat_system_1
+			has_star_flag = Kuat_system_2
+			has_star_flag = Kuat_system_3
+			has_star_flag = kuat_initial_system
+			has_star_flag = eternal_starbase_megastructure_in_system
+		}
+		NOT = { any_ship_in_system = { OR = {
+			is_ship_size = eternal_flagship
+			is_ship_size = eternal_battleship
+		}}}
+	}
+	custom_tooltip = {
+		fail_text = "kuat_requires_no_ancient_system" 
+		NOR = {
+			has_star_flag = ag_ancient_system
+			has_star_flag = ag_gamma_station_small_in_system
+		}
+		NOT = { any_ship_in_system = { OR = {
+			is_ship_size = ag_gamma_station_hostile
+			is_ship_size = ag_gamma_station_small_hostile
+			is_ship_size = ag_gamma_station_small_moving_hostile
+		}}}
+	}
+	custom_tooltip = {
+		fail_text = "kuat_requires_no_zeta_crisis_system" 
+		NOT = { any_ship_in_system = { OR = {
+			is_ship_size = ag_zeta_crisis_portal
+			is_ship_size = ag_zeta_crisis_psionic_storm
+			is_ship_size = ag_zeta_crisis_psionic_singularity
+		}}}
+	}
+	custom_tooltip = {
+		fail_text = "ufs_banned_system"
+		ufs_banned_system = no
+	}
+}
+
+default_ufs_target_country_allow = {
+	hidden_trigger = { is_scope_type = country }
+	default_vaild_country = yes
+	custom_tooltip = {
+		fail_text = "is_at_war_with_target_country"
+		OR = {
+			is_default_and_fallen_empire_country = no
+			AND = {
+				has_communications = root
+				is_at_war_with = root
+			}
+		}
+	}
+}
+is_vanilla_star_class = {
+	OR = {
+		is_star_class = sc_b
+		is_star_class = sc_a
+		is_star_class = sc_f
+		is_star_class = sc_g
+		is_star_class = sc_k
+		is_star_class = sc_m
+		is_star_class = sc_m_giant
+		is_star_class = sc_t
+		is_star_class = sc_black_hole
+		is_star_class = sc_neutron_star
+		is_star_class = sc_pulsar
+		is_star_class = sc_binary_1
+		is_star_class = sc_binary_2
+		is_star_class = sc_binary_3
+		is_star_class = sc_binary_4
+		is_star_class = sc_binary_5
+		is_star_class = sc_binary_6
+		is_star_class = sc_binary_7
+		is_star_class = sc_binary_8
+		is_star_class = sc_binary_9
+		is_star_class = sc_binary_10
+		is_star_class = sc_trinary_1
+		is_star_class = sc_trinary_2
+		is_star_class = sc_trinary_3
+		is_star_class = sc_trinary_4
+	}
+}
+
+is_ufs_crisis_faction = {
+	OR = {
+		is_country_type = mercenary_fleet				#_teif
+		is_country_type = ev_leviathans_crisis			#_ev
+		is_country_type = wg_crisis_country				#_wsg
+		is_country_type = afk_crisis_country			#_swg
+		is_invisable_faction = yes
+		is_country_type = ag_ancient_primitive_crisis	#_ag
+		is_country_type = ag_ancient_gamma_guardian		#_ag
+		is_country_type = ag_zeta_crisis_country		#_ag
+		is_country_type = ag_ancient_psi_guardian
+		is_country_type = mem_ancestor_guardian			#_bwm
+		is_country_type = original_empire				#_sofe
+		is_country_type = compound_empire				#_giga/ehof
+		is_country_type = void_lifeforms_1				#_giga/acot
+		is_country_type = void_lifeforms_2				#_giga/acot
+		is_country_type = acot_crazed_stellarite		#_giga/acot
+		is_country_type = katzenartig_imperium			#_giga/acot
+		is_country_type = mem_surveyor_country_red		#_[mem]瓦祖兰
+		is_country_type = mem_vazurans
+	}
+}
+
+# 筛选条件：国家+星系类型
+# this = system
+# prev = country
+ufs_system_fliter_country_sc = {
+	if = {
+		limit = { PREV = { 
+			has_country_flag = selected_ufs_country_target 
+			is_variable_set = ufs_fliter_starclass
+		}}
+		if = {
+			limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 1 }}}
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_b }
+		} else_if = {
+			limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 2 }}}
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_a }
+		} else_if = {
+			limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 3 }}}
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_f }
+		} else_if = {
+			limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 4 }}}
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_g }
+		} else_if = {
+			limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 5 }}}
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_k }
+		} else_if = {
+			limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 6 }}}
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_m }
+		} else_if = {
+			limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 7 }}}
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_m_giant }
+		} else_if = {
+			limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 8 }}}
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_t }
+		} else_if = {
+			limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 9 }}}
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_black_hole }
+		} else_if = {
+			limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 10 }}}
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_neutron_star }
+		} else_if = {
+			limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 11 }}}
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_pulsar }
+		} else_if = {
+			limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 12 }}}
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_binary }
+		} else_if = {
+			limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 13 }}}
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_trinary }
+		} else = {
+			ufs_system_fliter_country_sc_trigger = { STAR_CLASS = sc_others }
+		}
+	} else_if = {
+		limit = { PREV = { has_country_flag = selected_ufs_country_target }}
+		exists = space_owner 
+		space_owner = { is_same_value = event_target:ufs_target_country }
+	} else_if = {
+		limit = { PREV = { is_variable_set = ufs_fliter_starclass }}
+		ufs_system_fliter_starclass = yes
+	}
+}
+ufs_system_fliter_country_sc_trigger = {
+	has_star_flag = ufs_$STAR_CLASS$@event_target:ufs_target_country
+}
+
+# 筛选条件：星系类型
+# this = system
+# prev = country
+ufs_system_fliter_starclass = {
+	if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 1 }}}
+		is_star_class = sc_b
+	} else_if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 2 }}}
+		is_star_class = sc_a
+	} else_if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 3 }}}
+		is_star_class = sc_f
+	} else_if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 4 }}}
+		is_star_class = sc_g
+	} else_if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 5 }}}
+		is_star_class = sc_k
+	} else_if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 6 }}}
+		is_star_class = sc_m
+	} else_if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 7 }}}
+		is_star_class = sc_m_giant
+	} else_if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 8 }}}
+		is_star_class = sc_t
+	} else_if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 9 }}}
+		is_star_class = sc_black_hole
+	} else_if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 10 }}}
+		is_star_class = sc_neutron_star
+	} else_if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 11 }}}
+		is_star_class = sc_pulsar
+	} else_if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 12 }}}
+		is_binary_star = yes
+	} else_if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 13 }}}
+		is_trinary_star = yes
+	} else_if = {
+		limit = { PREV = { check_variable = { which = ufs_fliter_starclass value = 14 }}}
+		is_vanilla_star_class = no
+	}
+}
+ufs_system_fliter_others = {
+	if = {
+		limit = { PREV = { has_country_flag = ufs_fliter_colony_system }}
+		has_star_flag = ufs_system_has_colony
+	}
+	if = {
+		limit = { PREV = { has_country_flag = ufs_fliter_megastructure }}
+		has_star_flag = ufs_system_has_megastructure
+	}
+	if = {
+		limit = { PREV = { has_country_flag = crisis_fliter_enabled }}
+		has_star_flag = ufs_crisis_system
+	} else_if = {
+		limit = { PREV = { has_country_flag = ufs_fire_mode_all }}
+		NOT = { has_star_flag = ufs_crisis_system }
+	}
+	is_ufs_banned_system = no
+}
+ufs_selected_systems = {
+	OR = {
+		has_star_flag = first_selected_ufs_system
+		has_star_flag = second_selected_ufs_system
+		has_star_flag = third_selected_ufs_system
+	}
+}
+
+# 禁止瞄准的星系，符合条件则会被完全过滤不显示
+is_ufs_banned_system = {
+	OR = {
+		has_star_flag = uf_galaxy_gun_system
+		has_star_flag = monolith_crisis_systems
+		has_star_flag = monolith_crisis_shield_system
+	}
+}
+
+ufs_banned_system = {
+	OR = {
+		has_star_flag = fgosw_rule_system_protected
+		has_star_flag = uf_galaxy_gun_system
+	}
+}

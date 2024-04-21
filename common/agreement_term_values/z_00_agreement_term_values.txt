@@ -1,0 +1,376 @@
+
+#########################
+# RESOURCE CONTRIBUTION #
+#########################
+
+@subsidy_multiplier_basic = 0.5
+@subsidy_multiplier_advanced = 0.5
+@subsidy_multiplier_research = 1
+@subsidy_multiplier_strategic = 1.5
+
+@subsidy_monthly_multiplier_basic = 5
+@subsidy_monthly_multiplier_advanced = 5
+@subsidy_monthly_multiplier_research = 5
+@subsidy_monthly_multiplier_strategic = 5
+
+# When changing the maximum and minimum values here the following should also be updated:
+# In agreement_negotiation_view.gui
+#	maxValue =
+#	minValue =
+#	stepSize =
+# In 00_defines.txt:
+#	AGREEMENT_RESOURCE_SUBSIDIES_MIN
+#	AGREEMENT_RESOURCE_SUBSIDIES_MAX
+@subsidy_minimum = -0.75
+@subsidy_maximum = 0.75
+
+@set_factor_0 = 0.15
+@set_factor_0_neg = -0.15
+@set_factor_1 = 0.30
+@set_factor_1_neg = -0.30
+@set_factor_2 = 0.45
+@set_factor_2_neg = -0.45
+@set_factor_3 = 0.60
+@set_factor_3_neg = -0.60
+
+resource_subsidies_basic = {
+	term = resource_subsidies
+	resources = {
+		energy
+		minerals
+		food
+	}
+
+	subsidy_multiplier = @subsidy_multiplier_basic
+	subsidy_monthly_multiplier = @subsidy_monthly_multiplier_basic
+
+	resource_min = {
+		base = @subsidy_minimum
+
+		modifier = {
+			set = @set_factor_1
+			OR = {
+				agreement_preset = preset_prospectorium
+				agreement_preset = preset_tributary
+				agreement_preset = preset_subsidiary
+			}
+		}
+
+		modifier = {
+			set = @set_factor_2_neg
+			OR = {
+				agreement_preset = preset_vassal
+				agreement_preset = preset_scholarium
+			}
+		}
+		modifier = {
+			set = 0.45
+			OR = {
+				agreement_preset = preset_wg_ptc_subject
+			}
+		}
+	}
+
+	resource_max = {
+		base = @subsidy_maximum
+
+		modifier = {
+			set = @set_factor_1_neg
+			agreement_preset = preset_bulwark
+		}
+
+		modifier = {
+			set = @set_factor_2_neg
+			agreement_preset = preset_bulwark
+			has_active_specialization = specialist_bulwark
+			specialist_tier = 2
+		}
+
+		modifier = {
+			set = @set_factor_3_neg
+			agreement_preset = preset_bulwark
+			has_active_specialization = specialist_bulwark
+			specialist_tier = 3
+		}
+
+		modifier = {
+			set = @set_factor_2
+			OR = {
+				agreement_preset = preset_vassal
+				agreement_preset = preset_scholarium
+				agreement_preset = preset_protectorate
+			}
+		}
+        modifier = {
+			set = 0.75
+			OR = {
+				agreement_preset = preset_wg_ptc_subject
+			}
+		}
+		modifier = {
+			set = 0.15
+			OR = {
+				agreement_preset = preset_uf_subject
+			}
+		}
+	}
+}
+
+resource_subsidies_advanced = {
+	term = resource_subsidies
+
+	resources = {
+		alloys
+		consumer_goods
+	}
+
+	subsidy_multiplier = @subsidy_multiplier_advanced
+	subsidy_monthly_multiplier = @subsidy_monthly_multiplier_advanced
+
+	resource_min = {
+		base = @subsidy_minimum
+
+		modifier = {
+			set = @set_factor_0
+			agreement_preset = preset_prospectorium
+		}
+
+		modifier = {
+			set = 0.0
+			OR = {
+				agreement_preset = preset_subsidiary
+				agreement_preset = preset_tributary
+			}
+		}
+
+		modifier = {
+			set = @set_factor_2_neg
+			OR = {
+				agreement_preset = preset_vassal
+				agreement_preset = preset_scholarium
+			}
+		}
+		modifier = {
+			set = 0.45
+			OR = {
+				agreement_preset = preset_wg_ptc_subject
+			}
+		}
+	}
+
+	resource_max = {
+		base = @subsidy_maximum
+
+		modifier = {
+			set = 0.0
+			OR = {
+				agreement_preset = preset_protectorate
+				agreement_preset = preset_bulwark
+			}
+		}
+
+		modifier = {
+			set = @set_factor_2
+			OR = {
+				agreement_preset = preset_vassal
+				agreement_preset = preset_scholarium
+			}
+		}
+		modifier = {
+			set = 0.75
+			OR = {
+				agreement_preset = preset_wg_ptc_subject
+			}
+		}
+		modifier = {
+			set = 0.15
+			OR = {
+				agreement_preset = preset_uf_subject
+			}
+		}
+	}
+}
+
+resource_subsidies_research = {
+	term = resource_subsidies
+
+	resources = {
+		physics_research
+		society_research
+		engineering_research
+	}
+
+	subsidy_multiplier = @subsidy_multiplier_research
+	subsidy_monthly_multiplier = @subsidy_monthly_multiplier_research
+
+	resource_min = {
+		base = @subsidy_minimum
+
+		modifier = {
+			set = 0.0
+			OR = {
+				agreement_preset = preset_subsidiary
+				agreement_preset = preset_tributary
+			}
+		}
+
+		modifier = {
+			set = @set_factor_1
+			agreement_preset = preset_scholarium
+		}
+
+		modifier = {
+			set = @set_factor_2_neg
+			OR = {
+				agreement_preset = preset_vassal
+				agreement_preset = preset_bulwark
+			}
+		}
+		modifier = {
+			set = 0.45
+			OR = {
+				agreement_preset = preset_wg_ptc_subject
+			}
+		}
+		modifier = {
+			set = 0.45
+			OR = {
+				agreement_preset = preset_wsg_jurisdiction_subject
+			}
+		}
+	}
+
+	resource_max = {
+		base = @subsidy_maximum
+
+		modifier = {
+			set = 0.0
+			agreement_preset = preset_protectorate
+		}
+
+		modifier = {
+			set = @set_factor_1_neg
+			agreement_preset = preset_prospectorium
+		}
+
+		modifier = {
+			set = @set_factor_2_neg
+			agreement_preset = preset_prospectorium
+			has_active_specialization = specialist_prospectorium
+			specialist_tier = 2
+		}
+
+		modifier = {
+			set = @set_factor_3_neg
+			agreement_preset = preset_prospectorium
+			has_active_specialization = specialist_prospectorium
+			specialist_tier = 3
+		}
+
+		modifier = {
+			set = @set_factor_2
+			OR = {
+				agreement_preset = preset_vassal
+				agreement_preset = preset_bulwark
+			}
+		}
+		modifier = {
+			set = 0.75
+			OR = {
+				agreement_preset = preset_wg_ptc_subject
+			}
+		}
+		modifier = {
+			set = 0.15
+			OR = {
+				agreement_preset = preset_uf_subject
+			}
+		}
+		modifier = {
+			set = 0.75
+			OR = {
+				agreement_preset = preset_wsg_jurisdiction_subject
+			}
+		}
+	}
+}
+
+resource_subsidies_strategic = {
+	term = resource_subsidies
+	resources = {
+		volatile_motes
+		exotic_gases
+		rare_crystals
+	}
+	subsidy_multiplier = @subsidy_multiplier_strategic
+	subsidy_monthly_multiplier = @subsidy_monthly_multiplier_strategic
+
+	resource_min = {
+		base = @subsidy_minimum
+
+		modifier = {
+			set = 0.0
+			OR = {
+				agreement_preset = preset_subsidiary
+				agreement_preset = preset_tributary
+				agreement_preset = preset_prospectorium
+			}
+		}
+
+		modifier = {
+			set = @set_factor_1
+			agreement_preset = preset_prospectorium
+			has_active_specialization = specialist_prospectorium
+			OR = {
+				specialist_tier = 2
+				specialist_tier = 3
+			}
+
+		}
+
+		modifier = {
+			set = @set_factor_2_neg
+			OR = {
+				agreement_preset = preset_vassal
+				agreement_preset = preset_scholarium
+				agreement_preset = preset_bulwark
+			}
+		}
+		modifier = {
+			set = 0.45
+			OR = {
+				agreement_preset = preset_wg_ptc_subject
+			}
+		}
+	}
+	resource_max = {
+		base = @subsidy_maximum
+
+		modifier = {
+			set = 0.0
+			agreement_preset = preset_protectorate
+		}
+
+		modifier = {
+			set = @set_factor_2
+			OR = {
+				agreement_preset = preset_vassal
+				agreement_preset = preset_scholarium
+				agreement_preset = preset_bulwark
+			}
+		}
+		modifier = {
+			set = 0.75
+			OR = {
+				agreement_preset = preset_wg_ptc_subject
+			}
+		}
+		modifier = {
+			set = 0.15
+			OR = {
+				agreement_preset = preset_uf_subject
+			}
+		}
+	}
+}
+

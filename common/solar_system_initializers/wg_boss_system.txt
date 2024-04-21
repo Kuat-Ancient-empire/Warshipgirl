@@ -1,0 +1,2865 @@
+wg_boss_think_tank_system = {
+	class = "sc_g"
+	usage = misc_system_init
+	name = "NAME_wg_boss_think_tank_system"
+	
+	max_instances = 1
+	spawn_chance = 9999
+	
+	flags = { wg_boss_think_tank_system_home wg_event_system cannot_be_hit_by_aow_starfall_spear }
+
+
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 140
+	}
+	planet = {
+		class = "pc_g_star"
+		size = { min = 15 max = 20 }
+		orbit_distance = 0
+		
+		init_effect = {
+			create_ambient_object = {
+				type = "derelict_ship_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 80
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "derelict_ship_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 60
+					angle = random
+				}
+			}			
+			
+			create_ambient_object = {
+				type = "ancient_battlefield_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 90
+					angle = random
+				}
+			}
+
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 180
+					angle = random
+				}
+			}			
+		}
+
+	}
+	planet = {
+		count = 1
+		orbit_distance = 60
+	}	
+	change_orbit = 60
+	
+
+	planet = {
+		class = pc_gas_giant
+		orbit_distance = 130
+		size = { min = 30 max = 35 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 1 max = 2 }
+			orbit_distance = 5
+		}
+	}	
+	planet = {
+		class = pc_barren_cold
+		orbit_distance = 140
+		size = { min = 20 max = 25 }
+		flags = {
+			eddy_crash_ship
+		}
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 2 }
+			orbit_distance = 5
+		}
+	}	
+	planet = {
+		class = pc_barren_cold
+		orbit_distance = 150
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 1 }
+			orbit_distance = 5
+		}
+	}
+	init_effect = {
+		random_system_planet = {
+			limit = {
+				is_star = yes
+			}
+			clear_deposits = yes
+			create_country = {
+				name = "NAME_wg_think_tank"
+				type = guardian_wg_think_tank
+				flag = {
+					icon = {
+						category = "zoological"
+						file = "flag_zoological_5.dds"
+					}
+					background = {
+						category = "backgrounds"
+						file = "00_solid.dds"
+					}
+					colors={
+						"blue"
+						"blue"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					set_country_flag = wg_boss_country
+					set_country_flag = guardian_wsg_think_tank_country_flag
+				}				
+			}
+			last_created_country = {
+				save_global_event_target_as = guardian_wsg_think_tank_country
+				if = {
+					limit = {
+						NOT = {
+							has_modifier = wsg_think_tank_power
+						}
+					}
+					add_modifier = {
+						modifier = wsg_think_tank_power
+						days = -1
+					}
+				}			
+				create_fleet = {
+					name = "NAME_WG_THINK_TANK2"
+					settings = {
+						spawn_debris = no
+						is_boss = yes
+					}
+					effect = {
+						set_owner = event_target:guardian_wsg_think_tank_country
+						create_ship = {
+							name = "NAME_WG_THINK_TANK2"
+							design = "NAME_WG_THINK_TANK"
+						}
+						set_fleet_flag = wsg_think_tank_fleet
+						set_location = {
+							target = prevprev
+							distance = 15
+							angle = 0
+						}
+						set_fleet_stance = passive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 100
+						save_global_event_target_as = wsg_think_tank_ship
+				 	}
+				}
+			}
+		}
+	}	
+}
+
+
+wg_boss_uav_system = {
+	class = "sc_b"
+	usage = misc_system_init
+	name = "NAME_wg_boss_uav_system_system"
+	
+	max_instances = 1
+	spawn_chance = 9999
+	
+	flags = { wg_boss_uav_system_home wg_event_system }
+
+
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 160
+	}
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 80
+	}	
+	planet = {
+		class = "pc_b_star"
+		orbit_distance = 0
+		
+		init_effect = {
+			create_ambient_object = {
+				type = "derelict_ship_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_ambient_object_flag = hidden_uav_boss
+				save_event_target_as = hidden_uav_boss_location	
+				set_location = {
+					target = prev
+					distance = 80
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "derelict_ship_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_ambient_object_flag = hidden_uav_1
+				save_event_target_as = hidden_uav_1_location			
+				set_location = {
+					target = prev
+					distance = 140
+					angle = random
+				}
+			}			
+			create_ambient_object = {
+				type = "derelict_ship_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_ambient_object_flag = hidden_uav_2
+				save_event_target_as = hidden_uav_2_location
+				set_location = {
+					target = prev
+					distance = 100
+					angle = random
+				}
+			}			
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 120
+					angle = random
+				}
+			}			
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 140
+					angle = random
+				}
+			}			
+		}
+
+	}	
+	change_orbit = 60
+		
+	planet = {
+		class = pc_barren_cold
+		orbit_distance = 130
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 1 max = 2 }
+			orbit_distance = 5
+		}
+	}	
+	planet = {
+		class = pc_barren_cold
+		orbit_distance = 170
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 2 }
+			orbit_distance = 5
+		}
+	}	
+}
+
+wg_machine_system = {
+	name = "NAME_wg_machine_system"
+	usage = misc_system_init
+	flags = { wg_machine_system wg_event_system cannot_be_hit_by_aow_starfall_spear }
+	class = "sc_g"
+	
+	planet = {
+		class = star
+		name = "NAME_WG_NO_NAME"
+		size = { min = 0 max = 0 }
+		orbit_distance = 0
+		deposit_blockers = none
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+
+		}			
+	}
+	planet = {
+		class = pc_ai
+		name = "NAME_machine_prison"
+		size = { min = 70 max = 70 }
+		orbit_distance = 0.1
+		orbit_angle = 0	
+		init_effect = {
+			set_planet_flag = wg_machine_prision_flag
+			create_country = {
+				name = "NAME_WG_Defensive"
+				type = faction
+				effect = {
+					set_country_flag = wg_boss_country
+					set_country_flag = gars_defensive_country_flag
+					save_event_target_as = gars_location
+				}				
+			}
+			last_created_country = {
+				save_global_event_target_as = WG_Defensive
+				create_fleet = {
+					name = "NAME_SH_Sanctuary_Core"
+					settings = { spawn_debris = no }
+					effect = {
+						set_owner = event_target:WG_Defensive
+						create_ship = {
+							name = "NAME_Administrator_wsg"
+							design = "NAME_Sanctuary_Core"
+							graphical_culture = "fallen_empire_03"
+						}
+						set_location = {
+							target = PREVPREV
+							distance = 25
+							angle = random 
+						}
+						add_modifier = {
+							modifier = sanctuary_power
+							days = -1
+						}						
+						save_event_target_as = WG_Defensive_core
+						set_fleet_flag = WG_Defensive_core_flag
+					}
+				}
+				create_fleet = {
+					settings = { spawn_debris = no }
+					effect = {
+						set_owner = event_target:WG_Defensive
+						create_ship = {
+							name = random
+							design = "NAME_Defensive_A_2"
+							graphical_culture = "fallen_empire_03"
+						}
+						set_location = {
+							target = event_target:WG_Defensive_core
+							distance = 8
+							angle = 90
+						}
+					}
+				}
+				create_fleet = {
+					settings = { spawn_debris = no }
+					effect = {
+						set_owner = event_target:WG_Defensive
+						create_ship = {
+							name = random
+							design = "NAME_Defensive_A_2"
+							graphical_culture = "fallen_empire_03"
+						}
+						set_location = {
+							target = event_target:WG_Defensive_core
+							distance = 8
+							angle = 180
+						}
+					}
+				}
+				create_fleet = {
+					settings = { spawn_debris = no }
+					effect = {
+						set_owner = event_target:WG_Defensive
+						create_ship = {
+							name = random
+							design = "NAME_Defensive_A_2"
+							graphical_culture = "fallen_empire_03"
+						}
+						set_location = {
+							target = event_target:WG_Defensive_core
+							distance = 8
+							angle = 270
+						}
+					}
+				}
+				create_fleet = {
+					settings = { spawn_debris = no }
+					effect = {
+						set_owner = event_target:WG_Defensive
+						create_ship = {
+							name = random
+							design = "NAME_Defensive_A_2"
+							graphical_culture = "fallen_empire_03"
+						}
+						set_location = {
+							target = event_target:WG_Defensive_core
+							distance = 8
+							angle = 0
+						}
+					}
+				}
+			}
+		}
+	}			
+
+	change_orbit = 45
+	
+	planet = {
+		class = "pc_ringworld_tech"
+		orbit_angle = 30
+		orbit_distance = 0
+		deposit_blockers = none
+		home_planet = yes
+		modifiers = none
+		size = 5
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag = wg_ringworld_tech_flag
+		}						
+	}
+	planet = {
+		class = "pc_ringworld_tech"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag = wg_ringworld_tech_flag
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_seam"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag = wg_ringworld_seam_flag
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_seam"
+		orbit_angle = 30
+		orbit_distance = 0
+		size = 5
+		modifiers = none
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag = wg_ringworld_seam_flag
+		}		
+	}				
+	planet = {
+		class = "pc_ringworld_tech"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag = wg_ringworld_tech_flag
+			prevent_anomaly = yes
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_seam"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag = wg_ringworld_seam_flag
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_tech"
+		orbit_angle = 30
+		orbit_distance = 0
+		size = 5
+		deposit_blockers = none
+		modifiers = none
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag = wg_ringworld_tech_flag
+		}		
+	}
+	planet = {
+		class = "pc_ringworld_tech"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag = wg_ringworld_tech_flag
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_seam"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag = wg_ringworld_seam_flag
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_seam"
+		orbit_angle = 30
+		orbit_distance = 0
+		size = 5
+		deposit_blockers = none
+		modifiers = none
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag = wg_ringworld_seam_flag
+		}		
+	}				
+	planet = {
+		class = "pc_ringworld_tech"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			set_planet_flag = wg_ringworld_tech_flag
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_seam"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag = wg_ringworld_seam_flag
+		}	
+	}
+}
+
+wg_boss_water_system = {
+	class = "sc_b"
+	usage = misc_system_init
+	name = "NAME_wg_boss_water_system"
+	
+	max_instances = 1
+	spawn_chance = 9999
+	
+	flags = { wg_boss_water_system_home wg_event_system }
+
+
+	planet = {
+		class = "pc_b_star"
+		size = { min = 15 max = 20 }
+		orbit_distance = 0
+		
+		init_effect = {			
+		}
+
+	}	
+	change_orbit = 50
+	
+
+	planet = {
+		class = pc_wg_water
+		name = "NAME_wg_water1"
+		orbit_distance = 10
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_wg_water
+			size = { min = 5 max = 10 }
+			name = "NAME_wg_water3m"		
+			orbit_distance = 5
+			angle = 30
+		}	
+		moon = {	
+			class = pc_wg_water
+			size = { min = 5 max = 10 }
+			name = "NAME_wg_water4m"		
+			orbit_distance = 5
+			angle = 60
+		}		
+	}	
+	planet = {
+		class = pc_gaia
+		name = "NAME_wg_water2"
+		orbit_distance = 20
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold
+			name = "NAME_wg_water2m"		
+			count = { min = 1 max = 1 }
+			orbit_distance = 5
+		}		
+		init_effect = {	
+			set_planet_flag	= wg_waterB_1
+			prevent_anomaly = yes			
+		}		
+	}	
+	planet = {
+		class = pc_gaia
+		name = "NAME_wg_water3"
+		orbit_distance = 30
+		size = { min = 20 max = 25 }
+				
+		init_effect = {	
+			set_planet_flag	= wg_waterB_2	
+			prevent_anomaly = yes			
+		}		
+	}
+	planet = {
+		class = pc_gaia
+		name = "NAME_wg_water4"
+		orbit_distance = 40
+		size = { min = 25 max = 30 }
+		init_effect = {	
+			set_planet_flag	= wg_waterB_3
+			prevent_anomaly = yes			
+		}		
+	}
+	planet = {
+		class = pc_wg_water
+		name = "NAME_wg_water5"
+		orbit_distance = 50
+		size = { min = 15 max = 25 }	
+	}
+	planet = {
+		class = pc_wg_water
+		name = "NAME_wg_water6"
+		orbit_distance = 60
+		size = { min = 20 max = 30 }
+
+	}	
+	planet = {
+		class = pc_wg_water
+		name = "NAME_wg_water7"
+		orbit_distance = 70
+		size = { min = 10 max = 25 }
+		
+	}
+	init_effect = {
+		random_system_planet = {
+			limit = {
+				is_star = yes
+			}
+			clear_deposits = yes
+			create_country = {
+				name = "NAME_wg_rbq_dragon_country"
+				type = faction
+				flag = {
+					icon = {
+						category = "domination"
+						file = "domination_16.dds"
+					}
+					background = {
+						category = "backgrounds"
+						file = "00_solid.dds"
+					}
+					colors={
+						"blue"
+						"blue"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					set_country_flag = wg_boss_country
+					set_country_flag = wg_rbq_dragon_country_flag
+				}				
+			}
+			last_created_country = {
+				save_global_event_target_as = wg_rbq_dragon_country
+				if = {
+					limit = {
+						NOT = {
+							has_modifier = wg_rbq_dragon_power
+						}
+					}
+					add_modifier = {
+						modifier = wg_rbq_dragon_power
+						days = -1
+					}
+				}			
+				create_fleet = {
+					name = "NAME_wg_rbq_dragon1"
+					settings = {
+						spawn_debris = no
+						is_boss = yes
+					}
+					effect = {
+						set_owner = event_target:wg_rbq_dragon_country
+						create_ship = {
+							name = "NAME_wg_rbq_dragon"
+							design = "NAME_wg_rbq_dragon"
+						}
+						set_fleet_flag = wg_rbq_dragon_fleet
+						set_location = {
+							target = prevprev
+							distance = 15
+							angle = 0
+						}
+						set_fleet_stance = passive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 100
+				 	}
+				}
+			}
+		}
+	}	
+}
+
+
+wg_boss_bugvv_system = {
+	class = "sc_b"
+	usage = misc_system_init
+	name = "NAME_wg_boss_bugvv_system"
+	
+	max_instances = 1
+	spawn_chance = 9999
+	
+	flags = { wg_boss_bugvv_system_home wg_sealed_system wg_event_system cannot_be_hit_by_aow_starfall_spear }
+	
+	planet = {
+		class = "pc_b_star"
+		orbit_distance = 0
+		
+		init_effect = {
+			set_planet_flag = bugv_location_planet	
+			create_ambient_object = {
+				type = "tannhauser_gate_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 80
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "fusion_drive_trail_object"
+				location = this
+			}
+			last_created_ambient_object = {		
+				set_location = {
+					target = prev
+					distance = 140
+					angle = random
+				}
+			}			
+			create_ambient_object = {
+				type = "fusion_drive_trail_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 100
+					angle = random
+				}
+			}			
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 120
+					angle = random
+				}
+			}			
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 140
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 140
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 120
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 140
+					angle = random
+				}
+			}			
+			create_ambient_object = {
+				type = "bug_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_ambient_object_flag = bug_object_flag
+				set_location = {
+					target = prev
+					distance = 180
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "bug2_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_ambient_object_flag = bug_object_flag
+				set_location = {
+					target = prev
+					distance = 40
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "bug_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_ambient_object_flag = bug_object_flag
+				save_event_target_as = wg_bug_location	
+				set_location = {
+					target = prev
+					distance = 150
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "bug2_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_ambient_object_flag = bug_object_flag
+				set_location = {
+					target = prev
+					distance = 170
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "bug_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_ambient_object_flag = bug_object_flag
+				set_location = {
+					target = prev
+					distance = 70
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "bug_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_ambient_object_flag = bug_object_flag
+				set_location = {
+					target = prev
+					distance = 80
+					angle = random
+				}
+			}			
+		}
+
+	}	
+	change_orbit = 50
+
+	planet = {
+		class = pc_wg_poke
+		orbit_distance = 20
+		size = { min = 25 max = 30 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_wsg_mt	
+			size = { min = 5 max = 15 }
+			orbit_distance = 5
+		}		
+	}		
+	planet = {
+		class = pc_shrouded
+		orbit_distance = 20
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_b_star	
+			count = { min = 2 max = 3 }
+			size = { min = 2 max = 5 }
+			orbit_distance = 5
+		}
+	}	
+	planet = {
+		class = pc_wsg_mt
+		orbit_distance = 20
+		size = { min = 20 max = 25 }
+		
+	}
+	planet = {
+		class = pc_b_star
+		orbit_distance = 20
+		size = { min = 5 max = 10 }
+		
+	}
+	planet = {
+		class = pc_black_hole
+		orbit_distance = 20
+		size = { min = 15 max = 25 }
+		
+	}	
+	planet = {
+		class = pc_broken
+		orbit_distance = 20
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_shattered	
+			size = { min = 5 max = 15 }
+			orbit_distance = 5
+		}		
+	}
+	planet = {
+		class = pc_pulsar
+		orbit_distance = 20
+		size = { min = 20 max = 30 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_neutron_star	
+			size = { min = 5 max = 5 }
+			orbit_distance = 5
+		}		
+	}
+	init_effect = {
+		random_system_planet = {
+			limit = {
+				is_star = yes
+			}
+			clear_deposits = yes
+			create_country = {
+				name = "NAME_WG_BUGV"
+				type = guardian_wg_bugv
+				flag = {
+					icon = {
+						category = "wg_event_flags"
+						file = "wge_flags_02.dds"
+					}
+					background = {
+						category = "backgrounds"
+						file = "00_solid.dds"
+					}
+					colors={
+						"blue"
+						"blue"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					set_country_flag = wg_boss_country
+					establish_communications_no_message = root.owner
+					set_country_flag = guardian_wg_bugv_country_flag
+				}				
+			}
+			last_created_country = {
+				save_global_event_target_as = guardian_wg_bugv_country
+				if = {
+					limit = {
+						NOT = {
+							has_modifier = guardian_wg_bugv_power
+						}
+					}
+					add_modifier = {
+						modifier = guardian_wg_bugv_power
+						days = -1
+					}
+				}			
+				create_fleet = {
+					name = "NAME_WG_BUGV3"
+					settings = {
+						spawn_debris = no
+						is_boss = yes
+					}
+					effect = {
+						set_owner = event_target:guardian_wg_bugv_country
+						create_ship = {
+							name = "NAME_WG_BUGV3"
+							design = "NAME_BUG_VV"
+						}
+						set_location = {
+							target = prevprev
+							distance = 50
+							angle = 60
+						}
+						set_fleet_flag = wg_bugv_fleet
+						set_fleet_stance = passive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 100
+						save_global_event_target_as = wg_bugv_fleet_ship
+				 	}
+				}
+			}
+		}
+	}	
+}
+
+#云玩家
+wg_blue_cloud_system = {
+	class = "sc_b"
+	usage = misc_system_init
+	name = "NAME_wg_blue_cloud_system"
+	
+	max_instances = 1
+	spawn_chance = 9999
+	
+	flags = { wg_blue_cloud_system_home wg_event_system }
+	
+	planet = {
+		class = "pc_b_star"
+		orbit_distance = 0
+		
+		init_effect = {			
+		}
+	}	
+	change_orbit = 40
+	planet = {
+		class = pc_barren	
+		orbit_distance = 20
+		size = { min = 30 max = 35 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren	
+			count = { min = 1 max = 2 }
+			orbit_distance = 5
+		}
+	}
+	planet = {
+		class = pc_gas_giant
+		orbit_distance = 30
+		size = { min = 30 max = 35 }
+
+		init_effect = {	
+			clear_deposits = yes
+			prevent_anomaly = yes
+		}		
+	}
+	planet = {
+		class = pc_wg_cloud
+		name = "NAME_WG_BC"
+		orbit_distance = 30
+		size = { min = 30 max = 35 }
+		
+		init_effect = {	
+			clear_deposits = yes
+			prevent_anomaly = yes
+			add_deposit = d_blue_coward
+			set_planet_flag = cloud_player_planet_flag
+			save_global_event_target_as = cloud_player_location_target
+		}
+	}	
+	planet = {
+		class = pc_barren_cold
+		orbit_distance = 50
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 1 max = 2 }
+			orbit_distance = 5
+		}
+	}	
+	planet = {
+		class = pc_frozen
+		orbit_distance = 60
+		size = { min = 15 max = 20 }
+	}	
+}
+
+wg_boss_sunflower_system = {
+	class = "sc_m"
+	usage = misc_system_init
+	name = "NAME_wg_boss_sunflower_system"
+	
+	max_instances = 1
+	spawn_chance = 9999
+	
+	flags = { wg_boss_sunflower_system_home wg_event_system }
+
+
+	planet = {
+		class = "pc_m_star"
+		size = { min = 25 max = 25 }
+		orbit_distance = 0
+		
+		init_effect = {			
+		}
+	}
+	planet = {
+		count = 1
+		orbit_distance = 60
+	}	
+	change_orbit = 60
+	
+
+	planet = {
+		class = pc_molten
+		orbit_distance = 20
+		size = { min = 10 max = 20 }
+	}	
+	planet = {
+		class = pc_barren
+		orbit_distance = 20
+		size = { min = 20 max = 25 }
+	}	
+	planet = {
+		class = pc_gas_giant
+		orbit_distance = 20
+		size = { min = 20 max = 30 }
+		init_effect = {
+			save_global_event_target_as = livestar_loaction		
+		}		
+	}	
+	planet = {
+		class = pc_barren_cold
+		orbit_distance = 30
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 1 }
+			orbit_distance = 5
+		}
+	}
+	planet = {
+		class = pc_frozen
+		orbit_distance = 30
+		size = { min = 15 max = 25 }
+
+	}
+	planet = {
+		class = pc_frozen
+		orbit_distance = 30
+		size = { min = 10 max = 25 }
+
+	}
+	planet = {
+		class = pc_frozen
+		orbit_distance = 30
+		size = { min = 20 max = 30 }
+	}
+	planet = {
+		class = pc_frozen
+		orbit_distance = 30
+		size = { min = 10 max = 25 }
+
+	}
+	planet = {
+		class = pc_barren_cold
+		orbit_distance = 30
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 2 }
+			orbit_distance = 5
+		}
+	}	
+	init_effect = {
+		every_neighbor_system = {
+			set_star_flag = sunflower_waring
+			set_star_flag = wg_event_system
+		}	
+		random_system_planet = {
+			limit = {
+				is_planet_class = pc_gas_giant
+			}
+			clear_deposits = yes
+			create_country = {
+				name = "NAME_wg_sunflower_country"
+				type = faction
+				flag = {
+					icon = {
+						category = "wg_event_flags"
+						file = "wge_flags_03.dds"
+					}
+					background = {
+						category = "backgrounds"
+						file = "00_solid.dds"
+					}
+					colors={
+						"green"
+						"green"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					set_country_flag = wg_boss_country
+					establish_communications_no_message = root.owner
+					set_country_flag = sunflower_country_flag
+				}				
+			}
+			last_created_country = {
+				save_global_event_target_as = sunflower_country			
+				create_fleet = {
+					name = "NAME_WG_SUNFLOWER"
+					settings = {
+						spawn_debris = no
+						is_boss = yes
+					}
+					effect = {
+						set_owner = event_target:sunflower_country
+						create_ship = {
+							name = "NAME_WG_SUNFLOWER2"
+							design = "NAME_WG_LIVE_STAR"
+							effect = {
+								set_ship_flag = sunflower_ship
+								set_disable_at_health = 0.05
+								save_global_event_target_as = sunflower_ship
+							}
+						}
+						set_fleet_flag = wsg_sunflower_fleet
+						set_location = {
+							target = prevprev
+							distance = 0
+							angle = 0
+						}
+						add_modifier = {
+							modifier = wsg_livestar
+							days = -1
+						}						
+						set_fleet_stance = passive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 100
+						save_global_event_target_as = sunflower_ship
+				 	}
+				}
+			}
+		}
+	}	
+}
+
+wg_ring_water_world_system = {
+	class = "sc_g"
+	usage = misc_system_init
+	name = "NAME_wg_boss_water_system"
+	
+	flags = { wg_boss_ring_water_system_home wg_event_system }
+
+	planet = {
+		class = star
+		orbit_distance = 0
+		orbit_angle = 0
+		init_effect = {		
+		}	
+	}
+
+	change_orbit = 45
+	
+	planet = {
+		class = pc_ringworld_habitable
+		name = "NAME_wg_water2"
+		orbit_angle = 30
+		orbit_distance = 0
+		deposit_blockers = none
+		modifiers = none
+		size = 10
+			
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			prevent_anomaly = yes		
+		}			
+	}
+	planet = {
+		class = "pc_ringworld_tech"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_seam"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_habitable"
+		name = "NAME_wg_water1"
+		orbit_angle = 30
+		orbit_distance = 0
+		size = 10
+		modifiers = none
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag	= wg_waterB_ring
+			prevent_anomaly = yes
+		}				
+	}				
+	planet = {
+		class = "pc_ringworld_tech"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			prevent_anomaly = yes
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_seam"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_habitable"
+		name = "NAME_wg_water4m"
+		orbit_angle = 30
+		orbit_distance = 0
+		size = 10
+		deposit_blockers = none
+		modifiers = none
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag	= wg_waterB_ring
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_tech"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_seam"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_habitable"
+		name = "NAME_wg_water3m"
+		orbit_angle = 30
+		orbit_distance = 0
+		size = 10
+		deposit_blockers = none
+		modifiers = none
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag	= wg_waterB_ring
+			prevent_anomaly = yes
+		}	
+	}				
+	planet = {
+		class = "pc_ringworld_tech"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+		}	
+	}
+	planet = {
+		class = "pc_ringworld_seam"
+		orbit_angle = 30
+		orbit_distance = 0
+		init_effect = {
+
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+		}	
+	}
+	init_effect = {
+		random_system_planet = {
+			limit = {
+				is_star = yes
+			}
+			clear_deposits = yes
+			create_country = {
+				name = "NAME_wg_rbq_dragon_country"
+				type = faction
+				flag = {
+					icon = {
+						category = "domination"
+						file = "domination_16.dds"
+					}
+					background = {
+						category = "backgrounds"
+						file = "00_solid.dds"
+					}
+					colors={
+						"blue"
+						"blue"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					set_country_flag = wg_boss_country
+					establish_communications_no_message = root.owner
+					set_country_flag = wg_rbq_dragon_country_flag
+				}				
+			}
+			last_created_country = {
+				save_global_event_target_as = wg_rbq_dragon_country
+				if = {
+					limit = {
+						NOT = {
+							has_modifier = wg_rbq_dragon_power2
+						}
+					}
+					add_modifier = {
+						modifier = wg_rbq_dragon_power2
+						days = -1
+					}
+				}			
+				create_fleet = {
+					name = "NAME_wg_rbq_dragon1"
+					settings = {
+						spawn_debris = no
+						is_boss = yes
+					}
+					effect = {
+						set_owner = event_target:wg_rbq_dragon_country
+						create_ship = {
+							name = "NAME_wg_rbq_dragon"
+							design = "NAME_wg_rbq_dragon"
+						}
+						set_fleet_flag = wg_rbq_dragon_fleet2
+						set_location = {
+							target = prevprev
+							distance = 15
+							angle = 0
+						}
+						set_fleet_stance = passive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 100
+				 	}
+				}
+			}
+		}
+	}	
+}
+
+#阿喵
+wg_one_cat_system = {
+	class = "rl_standard_stars"
+	name = "NAME_ONE_CAT_HANGAR"
+	
+	usage = misc_system_init
+	usage_odds = 90000
+	max_instances = 1
+
+	flags = { wg_one_cat_system_flag wg_event_system }
+	
+	planet = {
+		count = 1
+		class = star
+		orbit_distance = 0
+		orbit_angle = 1
+		size = { min = 10 max = 15 }
+		has_ring = no
+
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+			create_country = {
+				name = "NAME_ONE_CAT_HANGAR"
+				type = faction
+				flag = {
+					icon = {
+						category = "zoological"
+						file = "flag_zoological_1.dds"
+					}
+					background= {
+						category = "backgrounds"
+						file = "00_solid.dds"
+					}
+					colors={
+						"green"
+						"black"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					set_country_flag = wg_boss_country
+					save_global_event_target_as = wg_one_cat_country
+				}
+			}
+			last_created_country = {
+				create_fleet = {
+					name = "NAME_ONE_CAT_HANGAR"
+					settings = {
+						spawn_debris = no
+						is_boss = yes
+					}
+					effect = {
+						set_owner = event_target:wg_one_cat_country
+						create_ship = {
+							name = "NAME_ONE_CAT_HANGAR"
+							design = "NAME_ONE_CAT_HANGAR"
+							graphical_culture = "pirate_01"
+						}
+						set_fleet_flag = wg_one_cat_fleet
+						set_location = {
+							target = prevprev
+							distance = 0
+							angle = 0
+						}
+						set_fleet_stance = passive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 100
+				 	}
+				}
+			}
+			create_ambient_object = {
+				type = "space_storm_2"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 0
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "derelict_ship_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 120
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "derelict_ship_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 150
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "derelict_ship_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 250
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "derelict_ship_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 100
+					angle = random
+				}
+			}			
+		    create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 120
+					angle = random
+				}
+			}
+		    create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 220
+					angle = random
+				}
+			}
+		    create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 200
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 205
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 180
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 220
+					angle = random
+				}
+			}
+		    create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 200
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 230
+					angle = random
+				}
+			}
+		    create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 190
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 180
+					angle = random
+				}
+			}			
+		}
+	}
+	change_orbit = 300
+	
+	planet = {
+		class = pc_barren_cold
+		orbit_distance = 30
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 2 }
+			orbit_distance = 5
+		}
+	}
+	init_effect = {
+		save_global_event_target_as = wg_one_cat_system
+	}
+}
+
+wg_boss_water_star_system = {
+	class = "sc_b"
+	usage = misc_system_init
+	name = "NAME_wg_boss_water_system"
+	
+	max_instances = 1
+	spawn_chance = 9999
+	
+	flags = { wg_boss_water_star_system_home wg_event_system }
+
+
+	planet = {
+		class = "pc_b_star"
+		size = { min = 30 max = 40 }
+		orbit_distance = 0
+		
+		init_effect = {	
+			set_planet_flag = water_star	
+		}
+
+	}	
+	change_orbit = 150
+	
+
+	init_effect = {
+		random_system_planet = {
+			limit = {
+				is_star = yes
+			}
+			create_country = {
+				name = "NAME_wg_rbq_dragon_country"
+				type = faction
+				flag = {
+					icon = {
+						category = "domination"
+						file = "domination_16.dds"
+					}
+					background = {
+						category = "backgrounds"
+						file = "00_solid.dds"
+					}
+					colors={
+						"blue"
+						"blue"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					set_country_flag = wg_boss_country
+					set_country_flag = wg_rbq_dragon_country_flag
+				}				
+			}
+			last_created_country = {
+				save_global_event_target_as = wg_rbq_dragon_country
+				if = {
+					limit = {
+						NOT = {
+							has_modifier = wg_rbq_dragon_power
+						}
+					}
+					add_modifier = {
+						modifier = wg_rbq_dragon_power
+						days = -1
+					}
+				}			
+				create_fleet = {
+					name = "NAME_wg_rbq_dragon1"
+					settings = {
+						spawn_debris = no
+						is_boss = yes
+					}
+					effect = {
+						set_owner = event_target:wg_rbq_dragon_country
+						create_ship = {
+							name = "NAME_wg_rbq_dragon"
+							design = "NAME_wg_rbq_dragon"
+						}
+						set_fleet_flag = wg_rbq_dragon_fleet3
+						set_location = {
+							target = prevprev
+							distance = 15
+							angle = 0
+						}
+						set_fleet_stance = passive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 100
+				 	}
+				}
+			}
+		}
+	}	
+}
+
+wg_boss_water_city_system = {
+	class = "sc_b"
+	usage = wg_boss_water_system_init
+	name = "NAME_wg_boss_water_system"
+	
+	max_instances = 1
+	spawn_chance = 9999
+	
+	flags = { wg_boss_water_city_system_home wg_event_system }
+
+
+	planet = {
+		class = "pc_b_star"
+		size = { min = 15 max = 20 }
+		orbit_distance = 0
+		
+		init_effect = {			
+		}
+
+	}	
+	change_orbit = 50
+	
+
+	planet = {
+		class = pc_wg_water
+		name = "NAME_wg_water_city3"
+		orbit_distance = 30
+		size = { min = 15 max = 25 }
+		change_orbit = @base_moon_distance
+					
+	}	
+	planet = {
+		class = pc_city
+		name = "NAME_wg_water_city"
+
+		orbit_distance = 30
+		size = 35
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_wg_water
+			name = "NAME_wg_water_city2"		
+			count = { min = 1 max = 1 }
+			orbit_distance = 5
+		}		
+		init_effect = {	
+			set_planet_flag	= wg_water_city
+			prevent_anomaly = yes			
+		}		
+	}	
+
+	planet = {
+		class = pc_wg_water
+		name = "NAME_wg_water_city4"
+		orbit_distance = 30
+		size = { min = 15 max = 20 }	
+	}	
+	
+	change_orbit = 80
+
+	init_effect = {
+		random_system_planet = {
+			limit = {
+				has_planet_flag	= wg_water_city
+			}
+			clear_deposits = yes
+			create_country = {
+				name = "NAME_wg_rbq_dragon_country"
+				type = faction
+				flag = {
+					icon = {
+						category = "domination"
+						file = "domination_16.dds"
+					}
+					background = {
+						category = "backgrounds"
+						file = "00_solid.dds"
+					}
+					colors={
+						"blue"
+						"blue"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					set_country_flag = wg_boss_country
+					establish_communications_no_message = root.owner
+					set_country_flag = wg_rbq_dragon_country_flag
+				}				
+			}
+			last_created_country = {
+				save_global_event_target_as = wg_rbq_dragon_country
+				if = {
+					limit = {
+						NOT = {
+							has_modifier = wg_rbq_dragon_power2
+						}
+					}
+					add_modifier = {
+						modifier = wg_rbq_dragon_power2
+						days = -1
+					}
+				}			
+				create_fleet = {
+					name = "NAME_wg_rbq_dragon1"
+					settings = {
+						spawn_debris = no
+						is_boss = yes
+					}
+					effect = {
+						set_owner = event_target:wg_rbq_dragon_country
+						create_ship = {
+							name = "NAME_wg_rbq_dragon"
+							design = "NAME_wg_rbq_dragon"
+						}
+						set_fleet_flag = wg_rbq_dragon_city_fleet
+						set_location = {
+							target = prevprev
+							distance = 15
+							angle = 0
+						}
+						set_fleet_stance = passive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 100
+				 	}
+				}
+			}
+		}
+	}	
+}
+
+
+#善良拥有未来
+wg_eddy_fish_system = {
+	class = "sc_b"
+	usage = misc_system_init
+	name = "NAME_wg_eddy_fish_system"
+	
+	max_instances = 1
+	
+	flags = { wg_eddy_fish_system wg_event_system }
+
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 60
+	}
+	asteroid_belt = {
+		type = icy_asteroid_belt
+		radius = 150
+	}
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 240
+	}
+	
+	planet = {
+		class = "pc_b_star"
+		orbit_distance = 0
+		name = "NAME_wg_eddy_fish_star"
+		init_effect = {
+			create_ambient_object = {
+				type = "space_storm_1"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 0
+					angle = random
+				}
+			}
+			while = {
+				count = 15
+				create_ambient_object = {
+					type = "large_debris_object"
+					entity_offset_height = { min = -0 max = -25 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 100
+						angle = random
+					}
+				}
+			}
+			while = {
+				count = 30
+				create_ambient_object = {
+					type = "medium_debris_01_object"
+					entity_offset_height = { min = -0 max = -25 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 100
+						angle = random
+					}
+				}
+			}
+			while = {
+				count = 35
+				create_ambient_object = {
+					type = "medium_debris_02_object"
+					entity_offset_height = { min = -0 max = -25 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 100
+						angle = random
+					}
+				}
+			}
+			create_ambient_object = {
+				type = "Natasha_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 80
+					angle = random
+				}
+			}			
+			create_ambient_object = {
+				type = "Natasha_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 80
+					angle = random
+				}
+			}			
+			
+			create_ambient_object = {
+				type = "Natasha_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 40
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "Natasha_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 120
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "Natasha_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 110
+					angle = random
+				}
+			}
+
+			create_ambient_object = {
+				type = "ancient_battlefield_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 150
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 180
+					angle = random
+				}
+			}
+		
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 160
+					angle = random
+				}
+			}
+		}
+
+	}
+	
+	planet = {
+		class = pc_molten
+		orbit_distance = 60
+		size = { min = 10 max = 15 }
+		orbit_angle = { min = 60 max = 359 }
+		
+		init_effect = {
+			set_planet_flag = eddy_fish_ally_point
+			set_planet_flag = eddy_fish_ally_point_0
+		}
+	}
+	change_orbit = 180
+	planet = {
+		count = 1
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = 0	
+		init_effect = {
+			set_planet_flag = eddy_fish_ally_point_1
+		}
+	}
+	planet = {
+		count = 1
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = 60
+		init_effect = {
+			set_planet_flag = eddy_fish_ally_point_2
+		}
+	}
+	planet = {
+		count = 1
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = 60
+		init_effect = {
+			set_planet_flag = eddy_fish_ally_point_3
+		}
+	}
+	planet = {
+		count = 1
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = 60
+		init_effect = {
+			set_planet_flag = eddy_fish_ally_point_4
+		}
+	}
+	planet = {
+		count = 1
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = 60
+		init_effect = {
+			set_planet_flag = eddy_fish_ally_point_5
+		}
+	}
+	planet = {
+		count = 1
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = 60
+		init_effect = {
+			set_planet_flag = eddy_fish_ally_point_6
+		}
+	}
+	planet = {
+		class = pc_barren_cold
+		orbit_distance = 80
+		size = { min = 20 max = 25 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 1 }
+			orbit_distance = 5
+		}
+	}
+	init_effect = {
+		random_system_planet = {
+			limit = {
+				is_star = yes
+			}
+			clear_deposits = yes
+			create_country = {
+				name = "NAME_WG_EDDY_FISH_country"
+				type = faction
+				flag = {
+					icon = {
+						category = "blocky"
+						file = "flag_blocky_11.dds"
+					}
+					background = {
+						category = "backgrounds"
+						file = "00_solid.dds"
+					}
+					colors={
+						"red"
+						"yellow"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					set_country_flag = wg_boss_country
+					set_country_flag = eddy_fish_country_flag
+				}				
+			}
+			last_created_country = {
+				save_global_event_target_as = eddy_fish_country
+				if = {
+					limit = {
+						NOT = {
+							has_modifier = wsg_boss_eddy_fish
+						}
+					}
+					add_modifier = {
+						modifier = wsg_boss_eddy_fish
+						days = -1
+					}
+				}
+				
+			}
+		}
+		random_system_planet = {
+			limit = { has_planet_flag = eddy_fish_ally_point_0 }
+			create_fleet = {
+				name = "NAME_EDDY_FISH_FLEET"
+				settings = {
+					spawn_debris = no
+					is_boss = yes
+				}
+				effect = {
+					set_owner = event_target:eddy_fish_country
+					create_ship = {
+						name = "NAME_eddy_fish2"
+						design = "NAME_eddy_fish2"
+					}
+					set_fleet_flag = eddy_fish_fleet_main
+					set_location = {
+						target = prev
+						distance = 5
+						angle = 0
+					}
+					set_fleet_stance = passive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 100
+					queue_actions = {
+						repeat = {
+							while = {
+								id = eddy_fish_e1
+								is_in_combat = no
+							}
+							find_closest_planet = {
+								trigger = {
+									id = eddy_fish_t1
+									has_planet_flag = eddy_fish_ally_point_0
+								}
+								found_planet = { 
+									orbit_planet = this
+								}
+							}
+							wait = 30
+						}
+					}
+				}
+			}
+		}
+		random_system_planet = {
+			limit = { has_planet_flag = eddy_fish_ally_point_1 }
+			create_fleet = {
+				name = "NAME_EDDY_FISH_FLEET2"
+				settings = {
+					spawn_debris = no
+				}				
+				effect = {
+					set_owner = event_target:eddy_fish_country
+					while = {
+						count = 15
+						create_ship = {
+							name = random
+							design = "NAME_eddy_fish"
+						}
+					}				
+					set_location = {
+						target = prev
+						distance = 5
+						angle = 0
+					}	
+					queue_actions = {
+						repeat = {
+							while = {
+								id = eddy_fish1_e1
+								is_in_combat = no
+							}
+							find_closest_planet = {
+								trigger = {
+									id = eddy_fish1_t1
+									has_planet_flag = eddy_fish_ally_point_1
+								}
+								found_planet = { 
+									orbit_planet = this
+								}
+							}
+							wait = 30
+						}
+					}			
+				}
+			}
+		}
+		random_system_planet = {
+			limit = { has_planet_flag = eddy_fish_ally_point_2 }
+			create_fleet = {
+				name = "NAME_EDDY_FISH_FLEET2"
+				settings = {
+					spawn_debris = no
+				}				
+				effect = {
+					set_owner = event_target:eddy_fish_country
+					while = {
+						count = 15
+						create_ship = {
+							name = random
+							design = "NAME_eddy_fish"
+						}
+					}				
+					set_location = {
+						target = prev
+						distance = 5
+						angle = 60
+					}		
+					queue_actions = {
+						repeat = {
+							while = {
+								id = eddy_fish2_e1
+								is_in_combat = no
+							}
+							find_closest_planet = {
+								trigger = {
+									id = eddy_fish2_t1
+									has_planet_flag = eddy_fish_ally_point_2
+								}
+								found_planet = { 
+									orbit_planet = this
+								}
+							}
+							wait = 30
+						}
+					}		
+				}
+			}
+		}
+		random_system_planet = {
+			limit = { has_planet_flag = eddy_fish_ally_point_3 }
+			create_fleet = {
+				name = "NAME_EDDY_FISH_FLEET2"
+				settings = {
+					spawn_debris = no
+				}				
+				effect = {
+					set_owner = event_target:eddy_fish_country
+					while = {
+						count = 15
+						create_ship = {
+							name = random
+							design = "NAME_eddy_fish"
+						}
+					}				
+					set_location = {
+						target = prev
+						distance = 5
+						angle = 120
+					}
+					queue_actions = {
+						repeat = {
+							while = {
+								id = eddy_fish3_e1
+								is_in_combat = no
+							}
+							find_closest_planet = {
+								trigger = {
+									id = eddy_fish3_t1
+									has_planet_flag = eddy_fish_ally_point_3
+								}
+								found_planet = { 
+									orbit_planet = this
+								}
+							}
+							wait = 30
+						}
+					}
+				}
+			}
+		}
+		random_system_planet = {
+			limit = { has_planet_flag = eddy_fish_ally_point_4 }
+			set_planet_flag = eddy_fish_ally_point
+			set_planet_flag = eddy_fish_ally_point_4
+			create_fleet = {
+				name = "NAME_EDDY_FISH_FLEET2"
+				settings = {
+					spawn_debris = no
+				}				
+				effect = {
+					set_owner = event_target:eddy_fish_country
+					while = {
+						count = 15
+						create_ship = {
+							name = random
+							design = "NAME_eddy_fish"
+						}
+					}				
+					set_location = {
+						target = prev
+						distance = 5
+						angle = 180
+					}	
+					queue_actions = {
+						repeat = {
+							while = {
+								id = eddy_fish4_e1
+								is_in_combat = no
+							}
+							find_closest_planet = {
+								trigger = {
+									id = eddy_fish4_t1
+									has_planet_flag = eddy_fish_ally_point_4
+								}
+								found_planet = { 
+									orbit_planet = this
+								}
+							}
+							wait = 30
+						}
+					}			
+				}
+			}
+		}
+		random_system_planet = {
+			limit = { has_planet_flag = eddy_fish_ally_point_5 }
+			set_planet_flag = eddy_fish_ally_point
+			set_planet_flag = eddy_fish_ally_point_5
+			create_fleet = {
+				name = "NAME_EDDY_FISH_FLEET2"
+				settings = {
+					spawn_debris = no
+				}				
+				effect = {
+					set_owner = event_target:eddy_fish_country
+					while = {
+						count = 15
+						create_ship = {
+							name = random
+							design = "NAME_eddy_fish"
+						}
+					}				
+					set_location = {
+						target = prev
+						distance = 5
+						angle = 240
+					}
+					queue_actions = {
+						repeat = {
+							while = {
+								id = eddy_fish5_e1
+								is_in_combat = no
+							}
+							find_closest_planet = {
+								trigger = {
+									id = eddy_fish5_t1
+									has_planet_flag = eddy_fish_ally_point_5
+								}
+								found_planet = { 
+									orbit_planet = this
+								}
+							}
+							wait = 30
+						}
+					}			
+				}
+			}
+		}
+		random_system_planet = {
+			limit = { has_planet_flag = eddy_fish_ally_point_6 }
+			set_planet_flag = eddy_fish_ally_point
+			set_planet_flag = eddy_fish_ally_point_6
+			create_fleet = {
+				name = "NAME_EDDY_FISH_FLEET2"
+				settings = {
+					spawn_debris = no
+				}				
+				effect = {
+					set_owner = event_target:eddy_fish_country
+					while = {
+						count = 15
+						create_ship = {
+							name = random
+							design = "NAME_eddy_fish"
+						}
+					}				
+					set_location = {
+						target = prev
+						distance = 5
+						angle = 300
+					}
+					queue_actions = {
+						repeat = {
+							while = {
+								id = eddy_fish6_e1
+								is_in_combat = no
+							}
+							find_closest_planet = {
+								trigger = {
+									id = eddy_fish6_t1
+									has_planet_flag = eddy_fish_ally_point_6
+								}
+								found_planet = { 
+									orbit_planet = this
+								}
+							}
+							wait = 30
+						}
+					}			
+				}
+			}
+		}
+	}	
+}
+
+wg_boss_59_system = {
+	class = "sc_m"
+	usage = misc_system_init
+	name = "NAME_wg_boss_59_system"
+	
+	max_instances = 1
+	spawn_chance = 9999
+	
+	flags = { wg_boss_59_system_home wg_event_system cannot_be_hit_by_aow_starfall_spear }
+
+
+	planet = {
+		class = "pc_m_star"
+		size = { min = 25 max = 25 }
+		orbit_distance = 0
+		
+		init_effect = {			
+		}
+	}
+	
+	change_orbit = 40
+	
+
+	planet = {
+		class = pc_molten
+		orbit_distance = 20
+		size = { min = 10 max = 20 }
+	}	
+	planet = {
+		class = pc_barren
+		orbit_distance = 20
+		size = { min = 20 max = 25 }
+	}	
+	planet = {
+		class = pc_ocean
+		orbit_distance = 20
+		size = { min = 20 max = 30 }
+		init_effect = {
+			save_global_event_target_as = 59_loaction		
+		}		
+	}	
+	planet = {
+		class = pc_barren_cold
+		orbit_distance = 30
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 2 }
+			orbit_distance = 5
+		}
+	}
+	planet = {
+		class = pc_frozen
+		orbit_distance = 30
+		size = { min = 10 max = 25 }
+
+	}
+	planet = {
+		class = pc_barren_cold
+		orbit_distance = 30
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 2 }
+			orbit_distance = 5
+		}
+	}	
+	init_effect = {	
+		random_system_planet = {
+			limit = {
+				is_planet_class = pc_ocean
+			}
+			clear_deposits = yes
+			create_country = {
+				name = "NAME_59"
+				type = faction
+				flag = {
+					icon = {
+						category = "paradox"
+						file = "paradox_logo.dds"
+					}
+					background= {
+						category = "backgrounds"
+						file = "circle.dds"
+					}
+					colors={
+						"black"
+						"black"
+						"null"
+						"null"
+					}
+				}			
+				effect = {
+					establish_communications_no_message = root.owner
+					save_global_event_target_as = 59_country
+					set_country_flag = 59_country
+				}
+			}	
+			create_fleet = {
+				name = "NAME_59"
+				effect = {
+					set_owner = event_target:59_country
+					set_location = prev
+					create_ship = {
+						name = "NAME_59"
+						design = "NAME_type59"
+					}
+					save_global_event_target_as = 59_fleet
+					set_fleet_stance = passive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 100
+				}
+				settings = {
+					is_boss = yes
+					spawn_debris = no
+				}
+			}
+		}
+	}	
+}
+
+
+wg_old_god_system = {
+	name = "NAME_wg_old_god_system"
+	class = "sc_g"
+	usage = misc_system_init
+	
+	usage_odds = 0
+	flags = { wg_old_god_system_flag wg_event_system }
+
+	prevent_anomalies = yes
+
+	planet = {
+		count = 1
+		class = "pc_g_star"
+		orbit_distance = 0
+		orbit_angle = 1
+		size = { min = 20 max = 30 }
+		has_ring = no
+		init_effect = {
+		    create_ambient_object = {
+				type = "psi_storm_1"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_ambient_object_flag = wg_old_god_psi_storm_flag
+				set_location = {
+					target = prev
+					distance = 0
+					angle = random
+				}
+			}
+		}			
+	}
+	
+	change_orbit = 45
+	
+	planet = {
+		count = { min = 1 max = 2 }
+		class = rl_unhabitable_planets
+		orbit_distance = 40
+		orbit_angle = { min = 20 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+	}
+
+	planet = {
+		class = pc_gaia
+		name = "NAME_wg_old_god_planet"
+		orbit_distance = 40
+		modifiers = none
+		size = { min = 22 max = 28 }		
+		init_effect = {
+			clear_deposits = yes
+			add_deposit = d_rich_mountain
+			add_deposit = d_rich_mountain
+			add_deposit = d_rich_mountain
+			add_deposit = d_ore_rich_caverns
+			add_deposit = d_black_soil
+			add_deposit = d_black_soil
+			add_deposit = d_fungal_caves
+			add_deposit = d_fungal_caves
+			add_deposit = d_geothermal_vent
+			add_deposit = d_rushing_waterfalls
+			add_deposit = d_hot_springs
+			add_deposit = d_hot_springs
+			add_deposit = d_hot_springs
+			add_deposit = d_underwater_vent
+			add_deposit = d_bubbling_swamp
+			add_deposit = d_dust_desert
+			add_deposit = d_betharian_deposit			
+			prevent_anomaly = yes
+			set_planet_flag	= wg_old_god_planet_flag
+			save_global_event_target_as = wg_old_god_planet_target
+        }
+	}
+	planet = {
+		count = { min = 2 max = 4 }
+		class = rl_unhabitable_planets
+		orbit_distance = 40
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 3 }
+			orbit_angle = { min = 20 max = 270 }
+			orbit_distance = 5
+		}
+	}
+}

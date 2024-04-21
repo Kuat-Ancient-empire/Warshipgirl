@@ -1,0 +1,72 @@
+#星极
+create_wg_astesia_scientist = {
+	remove_wg_astesia_leader_type = yes
+	set_country_flag = wg_astesia_scientist_active
+	create_leader = {
+		class = scientist
+		species = event_target:wg_astesia_species
+		name = "Name_leader_wg_astesia"
+		event_leader = yes
+		gender = female
+		immortal = yes
+		skill = 1
+		set_age = 17
+		skip_background_generation = yes
+		custom_description = wg_astesia_backstory
+		background_ethic = ethic_spiritualist
+		traits = {
+			trait = leader_trait_scientist_astesia
+			trait = leader_trait_scientist_eddy
+			trait = leader_trait_psionic
+		}
+		effect = {
+			change_wg_astesia_portrait = yes
+			set_leader_flag = not_has_wg_affection_normal
+			set_leader_flag = immune_to_negative_traits
+			set_leader_flag = wg_astesia_leader
+			set_leader_flag = wsg_event_leader
+			set_leader_flag = wg_special_affection_leader
+			set_leader_flag = wg_astesia_scientist
+			set_leader_flag = has_gained_level_trait
+			set_leader_flag = has_gained_trait
+			set_leader_flag = legendary_leader
+			save_global_event_target_as = wg_astesia_scientist
+		}
+	}
+	remove_country_flag = wg_astesia_official_active
+	remove_country_flag = wg_astesia_admiral_active
+	remove_country_flag = wg_astesia_general_active
+	event_target:wg_astesia_scientist = {
+		add_skill_without_trait_selection = 10
+		leader_event = {
+			id = wg_affection.8 days = 1
+		}
+	}
+}
+
+remove_wg_astesia_leader_type = {
+	every_owned_leader = {
+		limit = { has_leader_flag = wg_astesia_leader }
+		kill_leader = { show_notification = no }
+	}
+}
+
+# scope = leader
+change_wg_astesia_portrait = {
+	if = {
+		limit = { owner = { check_variable = { which = wg_astesia_cloth value = 1 }}}
+		change_leader_portrait = wg_astesia_1
+	}
+	else_if = {
+		limit = { owner = { check_variable = { which = wg_astesia_cloth value = 2 }}}
+		change_leader_portrait = wg_astesia_2
+	}
+	else_if = {
+		limit = { owner = { check_variable = { which = wg_astesia_cloth value = 3 }}}
+		change_leader_portrait = wg_astesia_3
+	}
+	else = {
+		change_leader_portrait = wg_astesia_0
+	}
+}
+

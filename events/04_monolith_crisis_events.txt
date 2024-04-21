@@ -1,0 +1,5321 @@
+namespace = monolith_crisis
+
+# 主触发，判断舰队里的船是否有某部件
+country_event = {
+	id = monolith_crisis.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+	    #黑石碑来到
+		has_global_flag = monolith_crisis_invaded
+		NOT = { has_global_flag = monolith_crisis_end }
+		FROMFROM = { 
+            NOT = { has_fleet_flag = monolith_drones }
+        }
+	}
+
+	immediate = {
+		fromfrom = {
+			if = {
+				limit = { any_owned_ship = {
+					has_component = Monolith_aura
+				}}
+				every_combatant_fleet = {
+					limit = { 
+						exists = owner
+						owner = { NOT = { is_country_type = monolith_crisis_country }}
+						NOT = { has_fleet_flag = monolith_crisis_combat_fleet }
+					}
+					if = {
+						limit = { 
+							exists = owner
+							owner = { is_ai = no }
+						}
+						owner = {
+							country_event = { id = monolith_crisis.5 }
+							set_country_flag = triggered_monolith_crisis_explain
+						}
+					}
+					if = {
+						limit = { any_owned_ship = {
+							is_ship_size = uf_buffer_o
+						}}
+						fleet_event = { id = monolith_crisis.4 days = 20 } # 电子战20天
+						set_timed_fleet_flag = { flag = monolith_aura_debuff days = 20 }
+					} else_if = {
+						limit = { any_owned_ship = { OR = {
+							is_ship_size = uf_star_fortress
+							is_ship_size = uf_star_fortress_2
+							is_ship_size = uf_glory_o
+						}}}
+						fleet_event = { id = monolith_crisis.4 days = 15 } # 黑曜石，联合荣耀15天
+						set_timed_fleet_flag = { flag = monolith_aura_debuff days = 15 }
+					} else = {
+						fleet_event = { id = monolith_crisis.4 days = 30 }#无电子战，黑曜石，联合荣耀30天保护
+						set_timed_fleet_flag = { flag = monolith_aura_debuff days = 30 }
+					}
+					set_timed_fleet_flag = { flag = monolith_crisis_combat_fleet days = 40 }
+				}
+			}
+		}
+	}
+}
+
+# 触发移除debuff的事件
+country_event = {
+    id = monolith_crisis.2
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = { 
+        FROMFROM = { 
+			NOT = { has_fleet_flag = monolith_drones }
+		}
+    }
+
+    immediate = {
+        FROMFROMFROM = { 
+            every_combatant_fleet = {
+                fleet_event = { id = monolith_crisis.3 days = 1 }
+                set_fleet_flag = fleet1
+                set_variable = { which = "monolith_not_in_combat_days" value = 1 }
+            }
+        }
+    }
+}
+
+# 移除buff的事件
+# 带判断舰队是否仍然交战状态
+fleet_event = {
+    id = monolith_crisis.3
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = { 
+        exists = this
+        check_variable = { which = "monolith_not_in_combat_days" value < 5 }
+    }
+
+	immediate = {
+		if = {
+            limit = { is_in_combat = no }
+			if = {
+				limit = { has_fleet_flag = monolith_crisis_combat_fleet }
+				remove_fleet_flag = monolith_crisis_combat_fleet
+			}
+		}
+		else = {
+			fleet_event = { id = monolith_crisis.3 days = 1 }
+            change_variable = { which = "monolith_not_in_combat_days" value = 1 }
+		}
+	}
+}
+
+# 特殊情况，需要对舰队进行一些操作
+fleet_event = {
+	id = monolith_crisis.4
+    hide_window = yes
+    is_triggered_only = yes
+
+	trigger = {
+        is_in_combat = yes
+		NOT = { has_global_flag = monolith_crisis_end }
+    }
+
+	immediate = {
+		#解除压制
+		remove_fleet_flag = monolith_aura_debuff
+		random_list = {#添加随机debuff
+			1 = { add_modifier = { modifier = monolith_crisis_combat_fleet_random_debuff_1 days = 10 } }
+			1 = { add_modifier = { modifier = monolith_crisis_combat_fleet_random_debuff_2 days = 10 } }
+			1 = { add_modifier = { modifier = monolith_crisis_combat_fleet_random_debuff_3 days = 10 } }
+			1 = { add_modifier = { modifier = monolith_crisis_combat_fleet_random_debuff_4 days = 10 } }
+			1 = { add_modifier = { modifier = monolith_crisis_combat_fleet_random_debuff_5 days = 10 } }
+			1 = { add_modifier = { modifier = monolith_crisis_combat_fleet_random_debuff_6 days = 10 } }
+			1 = { }
+		}
+	}
+}
+
+# 狡猾天灾的机制解释
+country_event = {
+	id = monolith_crisis.5
+	title = monolith_crisis.5.name
+	desc = monolith_crisis.5.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_1
+
+	trigger = {
+		NOT = { has_country_flag = triggered_monolith_crisis_explain }
+	}
+	
+	immediate = {
+		set_country_flag = triggered_monolith_crisis_explain
+	}
+
+	option = {
+		name = OK
+	}
+}
+##########天灾刷新
+country_event = {
+	id = monolith_crisis.100
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = { NOT = { has_global_flag = monolith_crisis_triggered2 }}
+
+	immediate = {
+		set_global_flag = monolith_crisis_triggered2
+		begin_event_chain = {
+			event_chain = "coming_monolith_crisis_chain"
+			target = ROOT
+		}
+		random_rim_system = {
+			set_star_flag = monolith_invade_system
+			save_global_event_target_as = monolith_invasion_system
+		}
+		event_target:monolith_invasion_system = {
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_star_flag = monolith_invade_system
+				save_global_event_target_as = monolith_invasion_system_2
+			}
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_star_flag = monolith_invade_system
+				save_global_event_target_as = monolith_invasion_system_3
+			}
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_star_flag = monolith_invade_system
+				save_global_event_target_as = monolith_invasion_system_4
+			}
+		}
+		create_point_of_interest = {
+			id = coming_monolith_crisis_poi.1
+			name = "coming_monolith_crisis_poi_1_poi"
+			desc = "coming_monolith_crisis_poi_1_poi_desc"
+			event_chain = "coming_monolith_crisis_chain"
+			location = event_target:monolith_invasion_system
+		}
+		create_point_of_interest = {
+			id = coming_monolith_crisis_poi.2
+			name = "coming_monolith_crisis_poi_2_poi"
+			desc = "coming_monolith_crisis_poi_2_poi_desc"
+			event_chain = "coming_monolith_crisis_chain"
+			location = event_target:monolith_invasion_system_2
+		}
+		create_point_of_interest = {
+			id = coming_monolith_crisis_poi.3
+			name = "coming_monolith_crisis_poi_3_poi"
+			desc = "coming_monolith_crisis_poi_3_poi_desc"
+			event_chain = "coming_monolith_crisis_chain"
+			location = event_target:monolith_invasion_system_3
+		}
+		create_point_of_interest = {
+			id = coming_monolith_crisis_poi.4
+			name = "coming_monolith_crisis_poi_4_poi"
+			desc = "coming_monolith_crisis_poi_4_poi_desc"
+			event_chain = "coming_monolith_crisis_chain"
+			location = event_target:monolith_invasion_system_4
+		}
+		every_playable_country = {
+			limit = { 
+				has_authority = auth_united_fleet
+			}
+			country_event = { id = monolith_crisis.101 }
+		}
+		every_playable_country = {
+			limit = { 
+				NOT = {has_authority = auth_united_fleet }
+			}
+			country_event = { id = monolith_crisis.102 days = 1 }
+		}
+		country_event = { id = monolith_crisis.103 days = 180 random = 180 }#测试时间
+	}
+}
+#联合收到的消息
+country_event = {
+	id = monolith_crisis.101
+	title = "monolith_crisis.101.name"
+	desc = "monolith_crisis.101.desc"
+	picture = GFX_evt_monolith_crisis_1
+	location = root
+
+	is_triggered_only = yes
+
+	immediate  = {
+		country_event = { id = monolith_crisis.356 days = 20 }#禁用跃迁
+	}
+
+	option = {
+		name = monolith_crisis.101.a
+		custom_tooltip = monolith_crisis.101.tooltip
+	}
+}
+#非联合
+country_event = {
+	id = monolith_crisis.102
+	title = "monolith_crisis.102.name"
+	desc = "monolith_crisis.102.desc"
+	picture = GFX_evt_monolith_crisis_1
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = monolith_crisis.102.a
+		custom_tooltip = monolith_crisis.101.tooltip
+	}
+	option = {
+		name = monolith_crisis.102.b
+		custom_tooltip = monolith_crisis.101.tooltip
+	}
+	option = {
+		name = monolith_crisis.102.c
+		custom_tooltip = monolith_crisis.101.tooltip
+	}
+}
+
+country_event = {
+	id = monolith_crisis.103
+	hide_window = yes
+	fire_only_once = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOR = { 
+			has_global_flag = monolith_crisis_invaded
+		}
+	}
+	immediate = {
+		set_update_modifiers_batch = begin
+		set_global_flag = monolith_crisis_invaded
+		create_species = {
+			name = "NAME_monolith_crisis_country"
+			class = kdc_cat
+			namelist = HUM2
+			portrait = random
+			traits = random
+			immortal = yes
+			effect = { save_event_target_as = monolith_crisis_species }
+		}
+		create_country = {
+			name = "NAME_monolith_crisis_country"
+			type = "monolith_crisis_country"
+			name_list = "HUM2"
+			species = event_target:monolith_crisis_species
+			auto_delete = yes
+			flag = {
+				icon= {
+					category = "wg_event_flags"
+					file = "wge_flags_07.dds"
+				}
+				background= {
+					category = "backgrounds"
+					file = "diagonal_stripe.dds"
+				}
+				colors={
+					"blue"
+					"black"
+					"null"
+					"null"
+				}
+			}
+			effect = {
+				save_global_event_target_as = monolith_crisis_country
+				create_ship_design = { design = "NAME_monolith_crisis_starbase" }
+				add_ship_design = last_created_design
+				add_modifier = { modifier = add_fleet_speed_50_perc days = 360 }
+			}
+		}
+		random_system = {
+			save_global_event_target_as = monolith_crisis_data_store
+			set_variable = { which = num_monolith_crisis_system value = 0 }
+			set_variable = { which = destroyed_monolith_crisis_system value = 0 }
+			set_variable = { which = event_chain_starbase_count value = 4 }
+			set_variable = { which = event_chain_fleet_count value = 20 }
+		}
+		every_playable_country = {
+			establish_communications_no_message = event_target:monolith_crisis_country
+			begin_event_chain = {
+				event_chain = monolith_crisis_invasion_chain
+				target = this
+			}
+			add_event_chain_counter = {
+				event_chain = monolith_crisis_invasion_chain
+				counter = monolith_crisis_fleet
+				amount = 20
+			}
+			add_event_chain_counter = {
+				event_chain = monolith_crisis_invasion_chain
+				counter = monolith_crisis_owned_system
+				amount = 4
+			}
+		}
+		event_target:monolith_invasion_system = {
+			star = {
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_huge_fleet = yes
+			}
+			if = {
+				limit = { exists = starbase }
+				starbase = { fleet = { destroy_fleet = this } }
+			}
+			create_monolith_crisis_starbase = yes
+		}
+		event_target:monolith_invasion_system_2 = {
+			star = {
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_huge_fleet = yes
+			}
+			if = {
+				limit = { exists = starbase }
+				starbase = { fleet = { destroy_fleet = this } }
+			}
+			create_monolith_crisis_starbase = yes
+			set_star_flag = monolith_crisis_bypass_systems_1
+			set_star_flag = monolith_crisis_init_bypass_systems
+		}
+		event_target:monolith_invasion_system_3 = {
+			star = {
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_huge_fleet = yes
+			}
+			if = {
+				limit = { exists = starbase }
+				starbase = { fleet = { destroy_fleet = this } }
+			}
+			create_monolith_crisis_starbase = yes
+			set_star_flag = monolith_crisis_bypass_systems_2
+			set_star_flag = monolith_crisis_init_bypass_systems
+		}
+				
+		event_target:monolith_invasion_system_4 = {
+			star = {
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_huge_fleet = yes
+			}
+			if = {
+				limit = { exists = starbase }
+				starbase = { fleet = { destroy_fleet = this } }
+			}
+			create_monolith_crisis_starbase = yes
+			set_star_flag = monolith_crisis_bypass_systems_3
+			set_star_flag = monolith_crisis_init_bypass_systems
+		}
+		every_playable_country = {
+			limit = { 
+				has_authority = auth_united_fleet
+			}
+			country_event = { id = monolith_crisis.104 }
+		}
+		every_playable_country = {
+			limit = { 
+				NOT = { has_authority = auth_united_fleet }
+			}
+			country_event = { id = monolith_crisis.105 }
+		}
+		clear_global_event_target = monolith_invasion_system
+		clear_global_event_target = monolith_invasion_system_2
+		clear_global_event_target = monolith_invasion_system_3
+		clear_global_event_target = monolith_invasion_system_4
+		country_event = { id = monolith_crisis.109 days = 50 }# 第二波，测试时间
+		country_event = { id = monolith_crisis.112 days = 80 }# 第一节点，测试时间
+		country_event = { id = monolith_crisis.113 days = 260 }# 第二节点，测试时间
+		country_event = { id = monolith_crisis.114 days = 440 }# 第三节点，测试时间
+		country_event = { id = monolith_crisis.215 days = 900 }# 循环外围刷兵，测试时间
+		set_update_modifiers_batch = end
+	}
+}
+
+#联合收到的消息
+country_event = {
+	id = monolith_crisis.104
+	title = "monolith_crisis.104.name"
+	desc = "monolith_crisis.104.desc"
+	picture = GFX_evt_monolith_crisis_1
+	location = root
+
+	is_triggered_only = yes
+	immediate = {
+		end_event_chain = coming_monolith_crisis_chain
+        remove_point_of_interest = coming_monolith_crisis_poi.1
+		remove_point_of_interest = coming_monolith_crisis_poi.2
+		remove_point_of_interest = coming_monolith_crisis_poi.3
+		remove_point_of_interest = coming_monolith_crisis_poi.4
+	}
+	option = {
+		name = monolith_crisis.104.a
+		tooltip = { begin_event_chain = {
+			event_chain = monolith_crisis_invasion_chain
+			target = root
+		}}
+		hidden_effect = {
+			country_event = { id = monolith_crisis.106 }
+		}
+	}
+}
+#非联合
+country_event = {
+	id = monolith_crisis.105
+	title = "monolith_crisis.105.name"
+	desc = "monolith_crisis.105.desc"
+	picture = GFX_evt_monolith_crisis_1
+	location = root
+	show_sound = event_ex_started
+
+	is_triggered_only = yes
+    immediate = {
+		end_event_chain = coming_monolith_crisis_chain
+        remove_point_of_interest = coming_monolith_crisis_poi.1
+		remove_point_of_interest = coming_monolith_crisis_poi.2
+		remove_point_of_interest = coming_monolith_crisis_poi.3
+		remove_point_of_interest = coming_monolith_crisis_poi.4
+	}
+	option = {
+		name = monolith_crisis.105.a
+		tooltip = { begin_event_chain = {
+			event_chain = monolith_crisis_invasion_chain
+			target = root
+		}}
+		hidden_effect = {
+			country_event = { id = monolith_crisis.106 }
+		}
+	}
+}
+#
+country_event = {
+	id = monolith_crisis.106
+	title = "monolith_crisis.106.name"
+	show_sound = event_administrative_work
+	location = from.from.from
+
+	picture_event_data = {
+		room = monolith_room
+	}
+	diplomatic = yes
+	force_open = yes
+
+	is_triggered_only = yes
+	desc = "monolith_crisis.106.desc"
+
+
+	option = {
+		name = monolith_crisis.106.a
+		hidden_effect = {
+			country_event = { id = monolith_crisis.107 }
+		}
+	}
+	option = {
+		name = monolith_crisis.106.b
+	}
+}
+
+country_event = {
+	id = monolith_crisis.107
+	title = "monolith_crisis.107.name"
+	show_sound = event_administrative_work
+	location = from.from.from
+
+	picture_event_data = {
+		room = monolith_room
+	}
+	diplomatic = yes
+	force_open = yes
+
+	is_triggered_only = yes
+	desc = "monolith_crisis.106.desc"
+	
+	trigger = {
+		NOT = {
+			has_country_flag = opened_monolith_custom_diplomacy
+		}
+	}
+	
+    immediate = {
+		set_country_flag = opened_monolith_custom_diplomacy #防止多开
+	}
+	option = {
+		name = monolith_crisis.107.a
+		response_text = monolith_crisis.107.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = monolith_crisis.107.b
+		response_text = monolith_crisis.107.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = monolith_crisis.107.c
+		response_text = monolith_crisis.107.c.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = monolith_crisis.107.d
+		response_text = monolith_crisis.107.d.response
+		trigger = { 
+			has_country_flag = we_know_monolith
+		}
+		is_dialog_only = yes
+	}
+	option = {
+		name = monolith_crisis.107.e
+		response_text = monolith_crisis.107.e.response
+		remove_country_flag = opened_monolith_custom_diplomacy
+	}
+}
+
+country_event = {
+	id = monolith_crisis.108
+	hide_window = yes
+
+	is_triggered_only = yes
+    trigger = {
+		FROM = {
+			is_country_type = monolith_crisis_country
+		}
+		NOT = {
+			has_country_flag = opened_monolith_custom_diplomacy
+		}
+	}
+	immediate = {
+		country_event = { id = monolith_crisis.107 }
+		set_country_flag = opened_monolith_custom_diplomacy
+	}
+}
+#第二登陆点
+country_event = {
+	id = monolith_crisis.109
+	hide_window = yes
+	fire_only_once = yes
+	is_triggered_only = yes
+    show_sound = event_ex_started
+	trigger = {
+		has_global_flag = monolith_crisis_invaded
+		NOT = { has_global_flag = monolith_crisis_second_wave_invaded }
+	}
+	immediate = {
+		set_update_modifiers_batch = begin
+		set_global_flag = monolith_crisis_second_wave_invaded
+		random_rim_system = {
+			limit = { NOT = { has_star_flag = monolith_invade_system }}
+			set_star_flag = monolith_invade_system
+			save_global_event_target_as = monolith_invasion_system
+		}
+		event_target:monolith_invasion_system = {
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_star_flag = monolith_invade_system
+				save_global_event_target_as = monolith_invasion_system_2
+			}
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_star_flag = monolith_invade_system
+				save_global_event_target_as = monolith_invasion_system_3
+			}
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_star_flag = monolith_invade_system
+				save_global_event_target_as = monolith_invasion_system_4
+			}
+		}
+		event_target:monolith_invasion_system = {
+			star = {
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_huge_fleet = yes
+			}
+			if = {
+				limit = { exists = starbase }
+				starbase = { fleet = { destroy_fleet = this } }
+			}
+			create_monolith_crisis_starbase = yes
+			set_star_flag = monolith_crisis_bypass_systems_1
+			set_star_flag = monolith_crisis_init_bypass_systems
+		}
+		event_target:monolith_invasion_system_2 = {
+			star = {
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_huge_fleet = yes
+			}
+			if = {
+				limit = { exists = starbase }
+				starbase = { fleet = { destroy_fleet = this }}
+			}
+			create_monolith_crisis_starbase = yes
+			set_star_flag = monolith_crisis_bypass_systems_2
+			set_star_flag = monolith_crisis_init_bypass_systems
+		}
+		event_target:monolith_invasion_system_3 = {
+			star = {
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_huge_fleet = yes
+			}
+			if = {
+				limit = { exists = starbase }
+				starbase = { fleet = { destroy_fleet = this } }
+			}
+			create_monolith_crisis_starbase = yes
+			set_star_flag = monolith_crisis_bypass_systems_3
+			set_star_flag = monolith_crisis_init_bypass_systems
+		}
+				
+		event_target:monolith_invasion_system_4 = {
+			star = {
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_large_fleet = yes
+				create_monolith_crisis_huge_fleet = yes
+			}
+			if = {
+				limit = { exists = starbase }
+				starbase = { fleet = { destroy_fleet = this } }
+			}
+			create_monolith_crisis_starbase = yes
+		}
+		event_target:monolith_crisis_data_store = {
+			change_variable = { which = event_chain_starbase_count value = 4 }
+			change_variable = { which = event_chain_fleet_count value = 20 }
+		}
+		every_playable_country = {
+			country_event = { id = monolith_crisis.110 }
+			add_event_chain_counter = {
+				event_chain = monolith_crisis_invasion_chain
+				counter = monolith_crisis_fleet
+				amount = 20
+			}
+			add_event_chain_counter = {
+				event_chain = monolith_crisis_invasion_chain
+				counter = monolith_crisis_owned_system
+				amount = 4
+			}
+		}
+		clear_global_event_target = monolith_invasion_system
+		clear_global_event_target = monolith_invasion_system_2
+		clear_global_event_target = monolith_invasion_system_3
+		clear_global_event_target = monolith_invasion_system_4
+		set_update_modifiers_batch = end
+	}
+}
+
+country_event = {
+	id = monolith_crisis.110
+	title = "monolith_crisis.110.name"
+	desc = "monolith_crisis.110.desc"
+	picture = GFX_evt_monolith_crisis_1
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = monolith_crisis.110.a
+	}
+}
+
+# 天灾被打爆了
+country_event = {
+	id = monolith_crisis.111
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		is_country_type = monolith_crisis_country
+		NOT = { has_global_flag = monolith_crisis_end }
+	}
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		# 如果第二波没到，重新刷一个国家并立即刷第二波
+		create_species = {
+			name = "NAME_monolith_crisis_country"
+			class = kdc_cat
+			namelist = HUM2
+			portrait = random
+			traits = random
+			immortal = yes
+			effect = { save_event_target_as = monolith_crisis_species }
+		}
+		create_country = {
+			name = "NAME_monolith_crisis_country"
+			type = "monolith_crisis_country"
+			name_list = "HUM2"
+			species = event_target:monolith_crisis_species
+			auto_delete = yes
+			flag = {
+				icon= {
+					category = "wg_event_flags"
+					file = "wge_flags_07.dds"
+				}
+				background= {
+					category = "backgrounds"
+					file = "diagonal_stripe.dds"
+				}
+				colors={
+					"blue"
+					"black"
+					"null"
+					"null"
+				}
+			}
+			effect = {
+				save_global_event_target_as = monolith_crisis_country
+				create_ship_design = { design = "NAME_monolith_crisis_starbase" }
+				add_ship_design = last_created_design
+			}
+		}
+		every_playable_country = {
+			establish_communications_no_message = event_target:monolith_crisis_country
+		}
+		if = {
+			limit = { NOT = { has_global_flag = monolith_crisis_second_wave_invaded }}
+			# 第二波未触发则触发第二波
+			country_event = { id = monolith_crisis.109 }
+		} else_if = {
+			limit = { NOT = { has_global_flag = first_monolith_node_spawned }}
+			# 第一节点未刷则刷第一节点
+			country_event = { id = monolith_crisis.112 }
+		} else_if = {
+			limit = { NOT = { has_global_flag = second_monolith_node_spawned }}
+			# 第二节点未刷则刷第二节点
+			country_event = { id = monolith_crisis.113 }
+		} else_if = {
+			limit = { NOT = { has_global_flag = third_monolith_node_spawned }}
+			# 第三节点未刷则刷第三节点
+			country_event = { id = monolith_crisis.114 }
+		} else_if = {
+			limit = { NOT = { has_global_flag = monolith_core_spawned }}
+			# 核心节点未刷则刷核心节点
+			country_event = { id = monolith_crisis.115 }
+		} else = {
+			country_event = { id = monolith_crisis.198 }
+		}
+		set_update_modifiers_batch = end
+	}
+}
+
+# 第一节点
+country_event = {
+	id = monolith_crisis.112
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		NOT = { has_global_flag = first_monolith_node_spawned }
+	}
+
+	immediate = {
+		set_global_flag = first_monolith_node_spawned
+		set_spawn_system_batch = begin
+		no_scope = {
+			spawn_system = {
+				min_distance >= 720
+				max_distance <= 720
+				min_orientation_angle = 141
+				max_orientation_angle = 141
+				initializer = "monolith_crisis_shield_1_system"
+				hyperlane = no
+				is_discovered = yes
+			}
+			spawn_system = {
+				min_distance >= 722
+				max_distance <= 722	
+				min_orientation_angle = 143.1
+				max_orientation_angle = 143.1
+				initializer = "monolith_crisis_1_system"
+				hyperlane = no
+				is_discovered = yes
+			}
+		}
+		add_hyperlane = {
+			from = event_target:monolith_crisis_1_system
+			to = event_target:monolith_crisis_1_shield_system
+		}
+		every_playable_country = {
+			country_event = { id = monolith_crisis.116 }
+			event_target:monolith_crisis_1_system = {
+				set_surveyed = { surveyed = yes surveyor = prev }
+			}
+			event_target:monolith_crisis_1_shield_system = {
+				set_surveyed = { surveyed = yes surveyor = prev }
+			}
+		}
+		country_event = { id = monolith_crisis.218 days = 360 random = 180 }
+		# 刷门
+		every_system = {
+			limit = { has_star_flag = monolith_crisis_bypass_systems_1 }
+			if = {
+				limit = { 
+					exists = space_owner
+					OR = {
+						has_star_flag = monolith_crisis_init_bypass_systems
+						space_owner = { is_same_value = event_target:monolith_crisis_country }
+					}
+				}
+				spawn_megastructure = {
+					type = monolith_crisis_gate_1
+					planet = star
+					orbit_distance = 50
+					orbit_angle = random
+				}
+			} else = {
+				remove_star_flag = monolith_crisis_bypass_systems_1
+			}
+		}
+		event_target:monolith_crisis_data_store = {
+			change_variable = { which = num_monolith_crisis_system value = 1 }
+			change_variable = { which = num_monolith_crisis_node value = 1 }
+			change_variable = { which = event_chain_starbase_count value = 2 }
+			change_variable = { which = event_chain_fleet_count value = 1 }
+		}
+	}
+}
+
+# 第二节点
+country_event = {
+	id = monolith_crisis.113
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		NOT = { has_global_flag = second_monolith_node_spawned }
+	}
+
+	immediate = {
+		set_global_flag = second_monolith_node_spawned
+		set_spawn_system_batch = begin
+		no_scope = {
+			spawn_system = {
+				min_distance >= 688
+				max_distance <= 688
+				min_orientation_angle = 149
+				max_orientation_angle = 149
+				initializer = "monolith_crisis_shield_2_system"
+				hyperlane = no
+				is_discovered = yes
+			}
+			spawn_system = {
+				min_distance >= 709
+				max_distance <= 709
+				min_orientation_angle = 146.4
+				max_orientation_angle = 146.4
+				initializer = "monolith_crisis_2_system"
+				hyperlane = no
+				is_discovered = yes
+			}
+		}
+		add_hyperlane = {
+			from = event_target:monolith_crisis_2_system
+			to = event_target:monolith_crisis_2_shield_system
+		}
+		add_hyperlane = {
+			from = event_target:monolith_crisis_1_system
+			to = event_target:monolith_crisis_2_system
+		}
+		set_spawn_system_batch = end
+		every_playable_country = {
+			country_event = { id = monolith_crisis.117 }
+			event_target:monolith_crisis_2_system = {
+				set_surveyed = { surveyed = yes surveyor = prev }
+			}
+			event_target:monolith_crisis_2_shield_system = {
+				set_surveyed = { surveyed = yes surveyor = prev }
+			}
+		}
+		# 测试时间，刷兵
+		country_event = { id = monolith_crisis.219 days = 360 random = 180 }
+		# 刷门
+		every_system = {
+			limit = { has_star_flag = monolith_crisis_bypass_systems_2 }
+			if = {
+				limit = { 
+					exists = space_owner
+					OR = {
+						has_star_flag = monolith_crisis_init_bypass_systems
+						space_owner = { is_same_value = event_target:monolith_crisis_country }
+					}
+				}
+				spawn_megastructure = {
+					type = monolith_crisis_gate_2
+					planet = star
+					orbit_distance = 50
+					orbit_angle = random
+				}
+			} else = {
+				remove_star_flag = monolith_crisis_bypass_systems_2
+			}
+		}
+		event_target:monolith_crisis_data_store = {
+			change_variable = { which = num_monolith_crisis_system value = 1 }
+			change_variable = { which = num_monolith_crisis_node value = 1 }
+			change_variable = { which = event_chain_starbase_count value = 2 }
+			change_variable = { which = event_chain_fleet_count value = 1 }
+		}
+	}
+}
+
+# 第三节点
+country_event = {
+	id = monolith_crisis.114
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		NOT = { has_global_flag = third_monolith_node_spawned }
+	}
+
+	immediate = {
+		set_global_flag = third_monolith_node_spawned
+		set_spawn_system_batch = begin
+		no_scope = {
+			spawn_system = {
+				min_distance >= 780
+				max_distance <= 780
+				min_orientation_angle = 143
+				max_orientation_angle = 143
+				initializer = "monolith_crisis_shield_3_system"
+				hyperlane = no
+				is_discovered = yes
+			}
+			spawn_system = {
+				min_distance >= 748
+				max_distance <= 748
+				min_orientation_angle = 144
+				max_orientation_angle = 144
+				initializer = "monolith_crisis_3_system"
+				hyperlane = no
+				is_discovered = yes
+			}
+		}
+		set_spawn_system_batch = end
+		add_hyperlane = {
+			from = event_target:monolith_crisis_3_system
+			to = event_target:monolith_crisis_3_shield_system
+		}
+		add_hyperlane = {
+			from = event_target:monolith_crisis_1_system
+			to = event_target:monolith_crisis_3_system
+		}
+		add_hyperlane = {
+			from = event_target:monolith_crisis_2_system
+			to = event_target:monolith_crisis_3_system
+		}
+		every_playable_country = {
+			country_event = { id = monolith_crisis.118 }
+			event_target:monolith_crisis_3_system = {
+				set_surveyed = { surveyed = yes surveyor = prev }
+			}
+			event_target:monolith_crisis_3_shield_system = {
+				set_surveyed = { surveyed = yes surveyor = prev }
+			}
+		}
+		# 测试时间，刷兵
+		country_event = { id = monolith_crisis.220 days = 360 random = 180 }
+		# 刷门
+		every_system = {
+			limit = { has_star_flag = monolith_crisis_bypass_systems_3 }
+			if = {
+				limit = { 
+					exists = space_owner
+					OR = {
+						has_star_flag = monolith_crisis_init_bypass_systems
+						space_owner = { is_same_value = event_target:monolith_crisis_country }
+					}
+				}
+				spawn_megastructure = {
+					type = monolith_crisis_gate_3
+					planet = star
+					orbit_distance = 50
+					orbit_angle = random
+				}
+			} else = {
+				remove_star_flag = monolith_crisis_bypass_systems_3
+			}
+		}
+		event_target:monolith_crisis_data_store = {
+			change_variable = { which = num_monolith_crisis_system value = 1 }
+			change_variable = { which = num_monolith_crisis_node value = 1 }
+			change_variable = { which = event_chain_starbase_count value = 2 }
+			change_variable = { which = event_chain_fleet_count value = 1 }
+		}
+	}
+}
+
+# 最后的核心
+country_event = {
+	id = monolith_crisis.115
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_core_spawned }
+	}
+
+	immediate = {
+		set_global_flag = monolith_core_spawned
+		set_spawn_system_batch = begin
+		no_scope = {
+			spawn_system = {
+				min_distance >= 725
+				max_distance <= 725
+				min_orientation_angle = 144.58
+				max_orientation_angle = 144.58  
+				initializer = "monolith_crisis_4_system"
+				hyperlane = no
+				is_discovered = yes
+			}
+		}
+		set_spawn_system_batch = end
+		every_playable_country = {
+			country_event = { id = monolith_crisis.119 days = 5 }
+		}
+		event_target:monolith_crisis_data_store = {
+			change_variable = { which = event_chain_starbase_count value = 1 }
+		}
+	}
+}
+# 第一节点出现通知
+country_event = {
+	id = monolith_crisis.116
+	title = monolith_crisis.116.name
+	desc = monolith_crisis.116.desc
+	picture = GFX_evt_monolith_crisis_2
+	location = event_target:monolith_crisis_1_system
+	is_triggered_only = yes
+
+	immediate = {
+		add_event_chain_counter = {
+			event_chain = monolith_crisis_invasion_chain
+			counter = monolith_crisis_fleet
+			amount = 1
+		}
+		add_event_chain_counter = {
+			event_chain = monolith_crisis_invasion_chain
+			counter = monolith_crisis_owned_system
+			amount = 2
+		}
+	}
+
+	after = {
+		create_point_of_interest = {
+			id = monolith_crisis_node_poi.1
+			name = "monolith_crisis_node_poi_1_name"
+			desc = "monolith_crisis_node_poi_1_desc"
+			event_chain = "monolith_crisis_invasion_chain"
+			location = event_target:monolith_crisis_1_system
+		}
+		create_point_of_interest = {
+			id = monolith_crisis_shield_node_poi.1
+			name = "monolith_crisis_shield_node_poi_1_name"
+			desc = "monolith_crisis_shield_node_poi_1_desc"
+			event_chain = "monolith_crisis_invasion_chain"
+			location = event_target:monolith_crisis_1_shield_system
+		}
+	}
+
+	option = {
+		name = monolith_crisis.116.a
+	}
+}
+# 第二节点出现通知
+country_event = {
+	id = monolith_crisis.117
+	title = monolith_crisis.117.name
+	desc = monolith_crisis.117.desc
+	picture = GFX_evt_monolith_crisis_2
+	location = event_target:monolith_crisis_2_system
+	is_triggered_only = yes
+
+	immediate = {
+		add_event_chain_counter = {
+			event_chain = monolith_crisis_invasion_chain
+			counter = monolith_crisis_fleet
+			amount = 1
+		}
+		add_event_chain_counter = {
+			event_chain = monolith_crisis_invasion_chain
+			counter = monolith_crisis_owned_system
+			amount = 2
+		}
+	}
+
+	after = {
+		create_point_of_interest = {
+			id = monolith_crisis_node_poi.2
+			name = "monolith_crisis_node_poi_2_name"
+			desc = "monolith_crisis_node_poi_2_desc"
+			event_chain = "monolith_crisis_invasion_chain"
+			location = event_target:monolith_crisis_2_system
+		}
+		create_point_of_interest = {
+			id = monolith_crisis_shield_node_poi.2
+			name = "monolith_crisis_shield_node_poi_2_name"
+			desc = "monolith_crisis_shield_node_poi_2_desc"
+			event_chain = "monolith_crisis_invasion_chain"
+			location = event_target:monolith_crisis_2_shield_system
+		}
+	}
+
+	option = {
+		name = monolith_crisis.117.a
+	}
+}
+# 第三节点出现通知
+country_event = {
+	id = monolith_crisis.118
+	title = monolith_crisis.118.name
+	desc = monolith_crisis.118.desc
+	picture = GFX_evt_monolith_crisis_2
+	location = event_target:monolith_crisis_3_system
+	is_triggered_only = yes
+
+	immediate = {
+		add_event_chain_counter = {
+			event_chain = monolith_crisis_invasion_chain
+			counter = monolith_crisis_fleet
+			amount = 1
+		}
+		add_event_chain_counter = {
+			event_chain = monolith_crisis_invasion_chain
+			counter = monolith_crisis_owned_system
+			amount = 2
+		}
+	}
+
+	after = {
+		create_point_of_interest = {
+			id = monolith_crisis_node_poi.3
+			name = "monolith_crisis_node_poi_3_name"
+			desc = "monolith_crisis_node_poi_3_desc"
+			event_chain = "monolith_crisis_invasion_chain"
+			location = event_target:monolith_crisis_3_system
+		}
+		create_point_of_interest = {
+			id = monolith_crisis_shield_node_poi.3
+			name = "monolith_crisis_shield_node_poi_3_name"
+			desc = "monolith_crisis_shield_node_poi_3_desc"
+			event_chain = "monolith_crisis_invasion_chain"
+			location = event_target:monolith_crisis_3_shield_system
+		}
+	}
+
+	option = {
+		name = monolith_crisis.118.a
+	}
+}
+# 核心节点出现通知
+country_event = {
+	id = monolith_crisis.119
+	title = monolith_crisis.119.name
+	desc = monolith_crisis.119.desc
+	picture = GFX_evt_monolith_crisis_12
+	location = event_target:monolith_crisis_core_system
+	is_triggered_only = yes
+
+	immediate = {
+		add_event_chain_counter = {
+			event_chain = monolith_crisis_invasion_chain
+			counter = monolith_crisis_owned_system
+			amount = 1
+		}
+		every_playable_country = {
+			event_target:monolith_crisis_core_system = {
+				set_surveyed = { surveyed = yes surveyor = prev }
+			}
+		}
+	}
+
+	after = {
+		create_point_of_interest = {
+			id = monolith_crisis_node_poi.4
+			name = "monolith_crisis_node_poi_4_name"
+			desc = "monolith_crisis_node_poi_4_desc"
+			event_chain = "monolith_crisis_invasion_chain"
+			location = event_target:monolith_crisis_core_system
+		}
+	}
+
+	option = {
+		name = monolith_crisis.119.a
+	}
+}
+
+country_event = {
+    id = monolith_crisis.120
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = { 
+        
+    }
+
+	immediate = {
+		
+	}
+
+}
+
+fleet_event = {
+	id = monolith_crisis.121
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = monolith_crisis_invaded
+		NOT = { has_global_flag = monolith_crisis_end }
+		is_fleet_idle = yes
+        owner = { is_country_type = monolith_crisis_country }
+        any_system = {
+			monolith_target_system_trigger = yes	
+		}
+	}
+
+	immediate = {
+		clear_fleet_actions = this
+		queue_actions = {
+			repeat = {
+				while = {
+					id = monolith_crisis.121.w0
+					NOT = { has_global_flag = monolith_crisis_end }
+				}
+				effect = {
+					id = monolith_crisis.121.e0
+					if = {
+						limit = { NOT = { any_system = { check_variable = { which = MonoC_fleet_id value < 1 }}}}
+						root.solar_system = { clear_variable = MonoC_fleet_id }
+					}
+					# 等候一段时间后仍然找不到可通行路径，就跑去随机星系霍霍
+					if = {
+						limit = {
+							has_fleet_flag = cannot_find_path
+							NOT = {
+								any_system = {
+									ROOT = { can_access_system = PREV }
+									monolith_target_system_trigger = yes
+								}
+							}
+						}
+						queue_actions = {
+							find_random_system = {
+								trigger = {
+									id = monolith_crisis.121.t01
+									closest_system = {
+										min_steps = 1
+										limit = { monolith_target_system_trigger = yes }
+									}
+								}
+								found_system = { 
+									move_to = this
+									effect = {
+										id = monolith_crisis.121.e01
+										root = { remove_fleet_flag = cannot_find_path }
+									}
+								}
+								failed = {
+									# 完全找不到路，折跃
+									effect = {
+										id = monolith_crisis.121.e02
+										random_system = {
+											limit = { monolith_target_system_trigger = yes }
+										}
+									}
+									wait = 100
+								}
+							}
+						}
+					}
+				}
+				find_closest_system = {
+					trigger = {
+						id = monolith_crisis.121.t1
+						monolith_target_system_trigger = yes
+						ROOT = { can_access_system = prev }
+						check_variable = { which = MonoC_fleet_id value < 1 }
+					}
+					found_system = {
+						effect = {
+							id = monolith_crisis.121.e1
+							set_variable = { which = MonoC_fleet_id value = root.MonoC_fleet_id }
+						}
+						move_to = this
+						repeat = {
+							while = {
+								id = monolith_crisis.121.t2
+								# 找球炸
+								any_system_planet = { monolith_target_planet_trigger = yes }
+							}
+							find_closest_planet = {
+								trigger = {
+									id = monolith_crisis.121.t3
+									solar_system = { is_same_value = prevprev }
+									monolith_target_planet_trigger = yes
+								}
+								found_planet = {
+									orbit_planet = this
+									effect = {
+										id = monolith_crisis.121.e2
+										ROOT = { set_fleet_flag = bombarding_planet }
+										set_planet_flag = target_planet
+										set_planet_flag = planet_bombarding
+										root = { set_timed_fleet_flag = { flag = blowing_up_planet days = 90 }}
+									}
+									repeat = {
+										while = {
+											id = monolith_crisis.121.e2w
+											OR = {
+												AND = {
+													root = { has_fleet_flag = bombarding_planet }
+													monolith_target_planet_trigger = yes
+												}
+												AND = {
+													root = { has_fleet_flag = blowing_up_planet }
+													is_colony = no is_colonizable = no
+												}
+											}
+										}
+										orbit_planet = this
+										effect = {
+											id = monolith_crisis.121.e3
+											if = {
+												# 结束战斗后重新开始倒计时
+												limit = { root = { 
+													has_fleet_flag = in_combat 
+													is_in_combat = no
+												}}
+												root = { 
+													remove_fleet_flag = in_combat
+													set_timed_fleet_flag = { flag = blowing_up_planet days = 84 }
+												}
+											}
+											else_if = {
+												# 如果战斗中，就暂停轰炸计时
+												limit = { root = { is_in_combat = yes }}
+												root = { 
+													remove_fleet_flag = blowing_up_planet
+													set_fleet_flag = in_combat
+												}
+											} else_if = {
+												limit = { is_colony = no }
+												# 星球被炸到没人，移除flag并跑路
+												remove_planet_flag = planet_bombarding
+												root = { 
+													remove_fleet_flag = bombarding_planet 
+													remove_fleet_flag = blowing_up_planet
+												}
+											} else_if = {
+												limit = {
+													root = { 
+														has_fleet_flag = bombarding_planet
+														NOT = { has_fleet_flag = blowing_up_planet }
+													}
+												}
+												# 执行炸球事件
+												planet_event = { id = monolith_crisis.201 scopes = { from = root }}
+												remove_planet_flag = planet_bombarding
+											}
+										}
+										wait = 5
+									}
+								}
+							}
+							move_to = this							# move away from the planet
+							wait = 5
+						} 
+						effect = {
+							id = monolith_crisis.121.e4
+							# 尝试建立恒星基地
+							system_event = { id = monolith_crisis.200 }
+						}
+						wait = 30
+					}					
+					failed = {
+						# 找不到路，先去附近有舰队的星系帮忙炸球
+						find_closest_system = {
+							trigger = {
+								id = monolith_crisis.121.t9
+								ROOT = { can_access_system = prev }
+								check_variable = { which = MonoC_fleet_id value < 1 }
+							}
+							found_system = {
+								effect = {
+									id = monolith_crisis.121.t91
+									set_variable = { which = MonoC_fleet_id value = root.MonoC_fleet_id }
+								}
+								move_to = this
+								repeat = {
+									while = {
+										id = monolith_crisis.121.t92
+										# 找球炸
+										any_system_planet = { monolith_target_planet_trigger = yes }
+									}
+									find_closest_planet = {
+										trigger = {
+											id = monolith_crisis.121.t93
+											solar_system = { is_same_value = prevprev }
+											monolith_target_planet_trigger = yes
+										}
+										found_planet = {
+											orbit_planet = this
+											effect = {
+												id = monolith_crisis.121.e92
+												ROOT = { set_fleet_flag = bombarding_planet }
+												set_planet_flag = target_planet
+												set_planet_flag = planet_bombarding
+												root = { set_timed_fleet_flag = { flag = blowing_up_planet days = 89 }}
+											}
+											repeat = {
+												while = {
+													id = monolith_crisis.121.e92w
+													OR = {
+														AND = {
+															root = { has_fleet_flag = bombarding_planet }
+															monolith_target_planet_trigger = yes
+														}
+														AND = {
+															root = { has_fleet_flag = blowing_up_planet }
+															is_colony = no is_colonizable = no
+														}
+													}
+												}
+												orbit_planet = this
+												effect = {
+													id = monolith_crisis.121.e93
+													if = {
+														# 结束战斗后重新开始倒计时
+														limit = { root = { 
+															has_fleet_flag = in_combat 
+															is_in_combat = no
+														}}
+														root = { 
+															remove_fleet_flag = in_combat
+															set_timed_fleet_flag = { flag = blowing_up_planet days = 84 }
+														}
+													}
+													else_if = {
+														# 如果战斗中，就暂停轰炸计时
+														limit = { root = { is_in_combat = yes }}
+														root = { 
+															remove_fleet_flag = blowing_up_planet
+															set_fleet_flag = in_combat
+														}
+													} else_if = {
+														limit = { is_colony = no }
+														# 星球被炸到没人，移除flag并跑路
+														remove_planet_flag = planet_bombarding
+														root = { 
+															remove_fleet_flag = bombarding_planet 
+															remove_fleet_flag = blowing_up_planet
+														}
+													} else_if = {
+														limit = {
+															root = { 
+																has_fleet_flag = bombarding_planet
+																NOT = { has_fleet_flag = blowing_up_planet }
+															}
+														}
+														# 执行炸球事件
+														planet_event = { id = monolith_crisis.201 scopes = { from = root }}
+														remove_planet_flag = planet_bombarding
+													}
+												}
+												wait = 5
+											}
+										}
+									}
+									move_to = this							# move away from the planet
+									wait = 5
+								} 
+								effect = {
+									# 尝试建立恒星基地
+									id = monolith_crisis.121.e94
+									system_event = { id = monolith_crisis.200 }
+								}
+								wait = 30
+							}
+							failed = {
+								# 完全找不到路，等候一会
+								effect = {
+									id = monolith_crisis.121.e13
+									ROOT = { 
+										set_fleet_flag = cannot_find_path
+										set_timed_fleet_flag = {
+											flag = orders_cooldown days = 200
+										}
+									}
+								}
+								wait = 200
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+# 舰队进入到护盾星系，将其遣送回家
+fleet_event = {
+	id = monolith_crisis.150
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = monolith_crisis_invaded
+		NOT = { has_global_flag = monolith_crisis_end }
+		from = { has_star_flag = monolith_crisis_systems }
+		owner = {
+			NOT = { is_country_type = monolith_crisis_country }
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = { owner = { is_default_and_fallen_country = yes }}
+			set_mia = mia_return_home
+		} else = {
+			# 不是玩家的，遣送到随机星系
+			random_system = {
+				limit = { 
+					NOR = { 
+						has_star_flag = monolith_crisis_systems 
+						has_star_flag = monolith_crisis_shield_system
+						# 狡夸特
+						ag_is_kuat_system = yes
+					}
+				}
+				random_system_planet = {
+					root = { set_location = prev }
+				}
+			}
+		}
+	}
+}
+# 第一次进入到护盾星系被遣返的提示
+ship_event = {
+	id = monolith_crisis.151
+	title = monolith_crisis.151.name
+	desc = monolith_crisis.151.desc
+	picture = GFX_evt_monolith_crisis_2
+	is_triggered_only = yes
+
+	trigger = {
+		from = { has_star_flag = monolith_crisis_systems }
+		owner = {
+			NOT = { is_country_type = monolith_crisis_country }
+		}
+	}
+
+	option = {
+		name = monolith_crisis.151.a
+	}
+}
+
+event = {
+	id = monolith_crisis.199
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = monolith_crisis_invaded
+		NOT = { has_global_flag = monolith_crisis_end }
+		exists = event_target:monolith_crisis_country
+	}
+
+	immediate = {
+		event_target:monolith_crisis_country = {
+			country_event = { id = monolith_crisis.198 }
+		}
+	}
+}
+
+# 数据矫正
+country_event = {
+	id = monolith_crisis.198
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = monolith_crisis_invaded
+		NOT = { has_global_flag = monolith_crisis_end }
+		exists = event_target:monolith_crisis_country
+	}
+
+	immediate = {
+		# 检测舰船和哨站数量
+		every_playable_country = {
+			limit = { has_event_chain = monolith_crisis_invasion_chain }
+			while = {
+				count = event_target:monolith_crisis_data_store.event_chain_fleet_count
+				add_event_chain_counter = {
+					event_chain = monolith_crisis_invasion_chain
+					counter = monolith_crisis_fleet
+					amount = -1
+				}
+			}
+			while = {
+				count = event_target:monolith_crisis_data_store.event_chain_starbase_count
+				add_event_chain_counter = {
+					event_chain = monolith_crisis_invasion_chain
+					counter = monolith_crisis_owned_system
+					amount = -1
+				}
+			}
+		}
+		event_target:monolith_crisis_country = { 
+			set_variable = { which = num_fleet value = trigger:num_fleets }
+			set_variable = { which = num_starbases value = trigger:num_starbases }
+			subtract_variable = { which = num_fleet value = num_starbases }
+			event_target:monolith_crisis_data_store = { set_variable = { which = event_chain_fleet_count value = prev.num_fleet }}
+			event_target:monolith_crisis_data_store = { set_variable = { which = event_chain_starbase_count value = prev.num_starbases }}
+		}
+		every_playable_country = {
+			limit = { has_event_chain = monolith_crisis_invasion_chain }
+			while = {
+				count = event_target:monolith_crisis_data_store.event_chain_fleet_count
+				add_event_chain_counter = {
+					event_chain = monolith_crisis_invasion_chain
+					counter = monolith_crisis_fleet
+					amount = 1
+				}
+			}
+			while = {
+				count = event_target:monolith_crisis_data_store.event_chain_starbase_count
+				add_event_chain_counter = {
+					event_chain = monolith_crisis_invasion_chain
+					counter = monolith_crisis_owned_system
+					amount = 1
+				}
+			}
+		}
+		# 检测门的数量和是否存在门
+		event_target:monolith_crisis_data_store = {
+			clear_variable = num_monolith_crisis_bypass_1
+			clear_variable = num_monolith_crisis_bypass_2
+			clear_variable = num_monolith_crisis_bypass_3
+			every_system = {
+				limit = { has_star_flag = monolith_crisis_bypass_systems_1 }
+				prev = { change_variable = { which = num_monolith_crisis_bypass_1 value = 1 }}
+				if = {
+					limit = { 
+						NOT = { any_system_megastructure = { is_megastructure_type = monolith_crisis_gate_1 }}
+						has_global_flag = first_monolith_node_spawned
+					}
+					spawn_megastructure = {
+						type = monolith_crisis_gate_1
+						planet = star
+						orbit_distance = 50
+						orbit_angle = random
+					}
+				}
+			}
+			every_system = {
+				limit = { has_star_flag = monolith_crisis_bypass_systems_2 }
+				prev = { change_variable = { which = num_monolith_crisis_bypass_2 value = 1 }}
+				if = {
+					limit = { 
+						NOT = { any_system_megastructure = { is_megastructure_type = monolith_crisis_gate_2 }}
+						has_global_flag = second_monolith_node_spawned
+					}
+					spawn_megastructure = {
+						type = monolith_crisis_gate_2
+						planet = star
+						orbit_distance = 50
+						orbit_angle = random
+					}
+				}
+			}
+			every_system = {
+				limit = { has_star_flag = monolith_crisis_bypass_systems_3 }
+				prev = { change_variable = { which = num_monolith_crisis_bypass_3 value = 1 }}
+				if = {
+					limit = { 
+						NOT = { any_system_megastructure = { is_megastructure_type = monolith_crisis_gate_3 }}
+						has_global_flag = third_monolith_node_spawned
+					}
+					spawn_megastructure = {
+						type = monolith_crisis_gate_3
+						planet = star
+						orbit_distance = 50
+						orbit_angle = random
+					}
+				}
+			}
+		}
+		# 检查结界星系的恒星基地是否莫名消失
+		every_system = {
+			limit = { OR = {
+				has_star_flag = monolith_crisis_systems 
+				has_star_flag = monolith_crisis_shield_system
+			}}
+			if = {
+				limit = { 
+					NOT = { has_star_flag = comfirm_destroyed }
+					NOR = {
+						exists = space_owner
+						space_owner = { is_country_type = monolith_crisis_country }
+					}
+				}
+				every_fleet_in_system = { destroy_fleet = this }
+				create_monolith_crisis_starbase = yes
+				if = {
+					limit = { has_star_flag = monolith_crisis_shield_system }
+					star = {
+						create_monolith_crisis_defence_fleet = yes
+						create_monolith_crisis_defence_fleet = yes
+					}
+					if = {
+						limit = {
+							NOT = { any_system_ambient_object = {
+								has_ambient_object_flag = shield_ring_effect
+							}}
+						}
+						create_ambient_object = {
+							type = "uf_monolith_shield_ring_effect"
+						}
+						last_created_ambient_object = {
+							set_ambient_object_flag = shield_ring_effect
+							set_location = {
+								target = prev.star
+								distance = 0
+								angle = 0
+							}
+						}
+					}
+					switch = {
+						trigger = has_star_flag
+						monolith_crisis_shield_1_system_flag = {
+							star = { change_pc = pc_m_star set_planet_size = 20 }
+							set_star_class = sc_m
+						}
+						monolith_crisis_shield_1_system_flag = {
+							star = { change_pc = pc_b_star set_planet_size = 20 }
+							set_star_class = sc_b
+						}
+						monolith_crisis_shield_3_system_flag = {
+							star = { change_pc = pc_g_star set_planet_size = 20 }
+							set_star_class = sc_g
+						}
+					}
+				} else = {
+					if = {
+						limit = {
+							NOT = { any_system_ambient_object = {
+								has_ambient_object_flag = shield_effect
+							}}
+						}
+						create_ambient_object = {
+							type = "uf_monolith_shield_effect"
+						}
+						last_created_ambient_object = {
+							set_location = {
+								target = prev.star
+								distance =0
+								angle = 0
+							}
+							set_ambient_object_flag = shield_effect
+						}
+					}
+					star = { change_pc = pc_monolith_crisis_star }
+					set_star_class = sc_monolith_crisis_star
+				}
+			}
+		}
+	}
+}
+
+# 创造黑石碑外围恒星基地
+system_event = {
+	id = monolith_crisis.200
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = monolith_crisis_invaded
+		NOT = { has_global_flag = monolith_crisis_end }
+		NOR = {
+			# 不存在恒星基地
+			exists = starbase
+			# 不存在任何非天灾舰队
+			any_fleet_in_system = {
+				exists = owner
+				owner = {
+					NOT = { is_country_type = monolith_crisis_country }
+					is_hostile = event_target:monolith_crisis_country
+				}
+			}
+			# 不存在任何非土著球
+			any_system_planet = {
+				monolith_target_planet_trigger = yes
+			}
+		}
+	}
+
+	immediate = {
+		create_monolith_crisis_starbase = yes
+		event_target:monolith_crisis_data_store = {
+			change_variable = { which = event_chain_starbase_count value = 1 }
+		}
+		every_playable_country = { 
+			add_event_chain_counter = {
+				event_chain = monolith_crisis_invasion_chain
+				counter = monolith_crisis_owned_system
+				amount = 1
+			}
+		}
+		# 概率刷传送门
+		random_list = {
+			1 = {
+				modifier = {
+					factor = 0
+					has_global_flag = destroy_all_monolith_nodes
+				}
+				event_target:monolith_crisis_country = {
+					set_variable = { which = counter_not_create_gate value = 0 }
+				}
+				random_list = {
+					4 = { 
+						modifier = {
+							factor = 0
+							OR = {
+								event_target:monolith_crisis_country = {
+									has_country_flag = created_monolith_crisis_bypass_1
+									NAND = {
+										has_global_flag = second_monolith_node_destroyed
+										has_global_flag = first_monolith_node_destroyed
+									}
+								}
+								has_global_flag = first_monolith_node_destroyed
+							}
+						}
+						modifier = {
+							add = -2
+							event_target:monolith_crisis_country = {
+								OR = {
+									AND = {
+										OR = {
+											has_global_flag = second_monolith_node_destroyed
+											has_country_flag = created_monolith_crisis_bypass_2
+										}
+										event_target:monolith_crisis_data_store = {
+											check_variable_arithmetic = {
+												which = num_monolith_crisis_bypass_1
+												subtract = num_monolith_crisis_bypass_3
+												value >= 2
+											}
+										}
+									}
+									AND = {
+										OR = {
+											has_global_flag = third_monolith_node_destroyed
+											has_country_flag = created_monolith_crisis_bypass_3
+										}
+										event_target:monolith_crisis_data_store = {
+											check_variable_arithmetic = {
+												which = num_monolith_crisis_bypass_1
+												subtract = num_monolith_crisis_bypass_2
+												value >= 2
+											}
+										}
+									}
+								}
+							}
+						}
+						modifier = {
+							add = -1
+							event_target:monolith_crisis_country = {
+								OR = {
+									AND = {
+										OR = {
+											has_global_flag = second_monolith_node_destroyed
+											has_country_flag = created_monolith_crisis_bypass_2
+										}
+										event_target:monolith_crisis_data_store = {
+											check_variable_arithmetic = {
+												which = num_monolith_crisis_bypass_1
+												subtract = num_monolith_crisis_bypass_3
+												value >= 3
+											}
+										}
+									}
+									AND = {
+										OR = {
+											has_global_flag = third_monolith_node_destroyed
+											has_country_flag = created_monolith_crisis_bypass_3
+										}
+										event_target:monolith_crisis_data_store = {
+											check_variable_arithmetic = {
+												which = num_monolith_crisis_bypass_1
+												subtract = num_monolith_crisis_bypass_2
+												value >= 3
+											}
+										}
+									}
+								}
+							}
+						}
+						set_star_flag = monolith_crisis_bypass_systems_1
+						event_target:monolith_crisis_country = {
+							# 刷完一个连接到节点的门之后，让下一个节点不会再刷连接到同样节点的门
+							set_country_flag = created_monolith_crisis_bypass_1
+							remove_country_flag = created_monolith_crisis_bypass_2
+							remove_country_flag = created_monolith_crisis_bypass_3
+						}
+						event_target:monolith_crisis_data_store = {
+							change_variable = { which = num_monolith_crisis_bypass_1 value = 1 }
+						}
+						if = {
+							limit = { has_global_flag = first_monolith_node_spawned }
+							spawn_megastructure = {
+								type = monolith_crisis_gate_1
+								planet = star
+								orbit_distance = 50
+								orbit_angle = random
+							}
+						}
+					}
+					4 = { 
+						modifier = {
+							factor = 0
+							OR = {
+								event_target:monolith_crisis_country = {
+									has_country_flag = created_monolith_crisis_bypass_2
+									NAND = {
+										has_global_flag = second_monolith_node_destroyed
+										has_global_flag = first_monolith_node_destroyed
+									}
+								}
+								has_global_flag = second_monolith_node_destroyed
+							}
+						}
+						modifier = {
+							add = -2
+							event_target:monolith_crisis_country = {
+								OR = {
+									AND = {
+										OR = {
+											has_global_flag = first_monolith_node_destroyed
+											has_country_flag = created_monolith_crisis_bypass_1
+										}
+										event_target:monolith_crisis_data_store = {
+											check_variable_arithmetic = {
+												which = num_monolith_crisis_bypass_2
+												subtract = num_monolith_crisis_bypass_3
+												value >= 2
+											}
+										}
+									}
+									AND = {
+										OR = {
+											has_global_flag = third_monolith_node_destroyed
+											has_country_flag = created_monolith_crisis_bypass_3
+										}
+										event_target:monolith_crisis_data_store = {
+											check_variable_arithmetic = {
+												which = num_monolith_crisis_bypass_2
+												subtract = num_monolith_crisis_bypass_1
+												value >= 2
+											}
+										}
+									}
+								}
+							}
+						}
+						modifier = {
+							add = -1
+							event_target:monolith_crisis_country = {
+								OR = {
+									AND = {
+										OR = {
+											has_global_flag = first_monolith_node_destroyed
+											has_country_flag = created_monolith_crisis_bypass_1
+										}
+										event_target:monolith_crisis_data_store = {
+											check_variable_arithmetic = {
+												which = num_monolith_crisis_bypass_2
+												subtract = num_monolith_crisis_bypass_3
+												value >= 3
+											}
+										}
+									}
+									AND = {
+										OR = {
+											has_global_flag = third_monolith_node_destroyed
+											has_country_flag = created_monolith_crisis_bypass_3
+										}
+										event_target:monolith_crisis_data_store = {
+											check_variable_arithmetic = {
+												which = num_monolith_crisis_bypass_2
+												subtract = num_monolith_crisis_bypass_1
+												value >= 3
+											}
+										}
+									}
+								}
+							}
+						}
+						set_star_flag = monolith_crisis_bypass_systems_2
+						event_target:monolith_crisis_country = {
+							# 刷完一个连接到节点的门之后，让下一个节点不会再刷连接到同样节点的门
+							set_country_flag = created_monolith_crisis_bypass_2
+							remove_country_flag = created_monolith_crisis_bypass_1
+							remove_country_flag = created_monolith_crisis_bypass_3
+						}
+						event_target:monolith_crisis_data_store = {
+							change_variable = { which = num_monolith_crisis_bypass_2 value = 1 }
+						}
+						if = {
+							limit = { has_global_flag = second_monolith_node_spawned }
+							spawn_megastructure = {
+								type = monolith_crisis_gate_2
+								planet = star
+								orbit_distance = 50
+								orbit_angle = random
+							}
+						}
+					}
+					4 = { 
+						modifier = {
+							factor = 0
+							OR = {
+								event_target:monolith_crisis_country = {
+									has_country_flag = created_monolith_crisis_bypass_3
+									NAND = {
+										has_global_flag = second_monolith_node_destroyed
+										has_global_flag = first_monolith_node_destroyed
+									}
+								}
+								has_global_flag = third_monolith_node_destroyed
+							}
+						}
+						modifier = {
+							add = -2
+							event_target:monolith_crisis_country = {
+								OR = {
+									AND = {
+										OR = {
+											has_global_flag = first_monolith_node_destroyed
+											has_country_flag = created_monolith_crisis_bypass_1
+										}
+										event_target:monolith_crisis_data_store = {
+											check_variable_arithmetic = {
+												which = num_monolith_crisis_bypass_3
+												subtract = num_monolith_crisis_bypass_2
+												value >= 2
+											}
+										}
+									}
+									AND = {
+										OR = {
+											has_global_flag = second_monolith_node_destroyed
+											has_country_flag = created_monolith_crisis_bypass_2
+										}
+										event_target:monolith_crisis_data_store = {
+											check_variable_arithmetic = {
+												which = num_monolith_crisis_bypass_3
+												subtract = num_monolith_crisis_bypass_1
+												value >= 2
+											}
+										}
+									}
+								}
+							}
+						}
+						modifier = {
+							add = -1
+							event_target:monolith_crisis_country = {
+								OR = {
+									AND = {
+										OR = {
+											has_global_flag = first_monolith_node_destroyed
+											has_country_flag = created_monolith_crisis_bypass_1
+										}
+										event_target:monolith_crisis_data_store = {
+											check_variable_arithmetic = {
+												which = num_monolith_crisis_bypass_3
+												subtract = num_monolith_crisis_bypass_2
+												value >= 3
+											}
+										}
+									}
+									AND = {
+										OR = {
+											has_global_flag = second_monolith_node_destroyed
+											has_country_flag = created_monolith_crisis_bypass_2
+										}
+										event_target:monolith_crisis_data_store = {
+											check_variable_arithmetic = {
+												which = num_monolith_crisis_bypass_3
+												subtract = num_monolith_crisis_bypass_1
+												value >= 3
+											}
+										}
+									}
+								}
+							}
+						}
+						set_star_flag = monolith_crisis_bypass_systems_3
+						event_target:monolith_crisis_country = {
+							# 刷完一个连接到节点的门之后，让下一个节点不会再刷连接到同样节点的门
+							set_country_flag = created_monolith_crisis_bypass_3
+							remove_country_flag = created_monolith_crisis_bypass_2
+							remove_country_flag = created_monolith_crisis_bypass_1
+						}
+						event_target:monolith_crisis_data_store = {
+							change_variable = { which = num_monolith_crisis_bypass_3 value = 1 }
+						}
+						if = {
+							limit = { has_global_flag = third_monolith_node_spawned }
+							spawn_megastructure = {
+								type = monolith_crisis_gate_3
+								planet = star
+								orbit_distance = 50
+								orbit_angle = random
+							}
+						}
+					}
+				}
+			}
+			5 = {
+				modifier = {
+					add = 999
+					has_global_flag = destroy_all_monolith_nodes
+				}
+				modifier = {
+					add = -1
+					event_target:monolith_crisis_country = {
+						check_variable = { which = counter_not_create_gate value > 3 }}
+				}
+				modifier = {
+					add = -1
+					event_target:monolith_crisis_country = {
+						check_variable = { which = counter_not_create_gate value > 5 }}
+				}
+				modifier = {
+					add = -1
+					event_target:monolith_crisis_country = {
+						check_variable = { which = counter_not_create_gate value > 7 }}
+				}
+				modifier = {
+					add = -1
+					event_target:monolith_crisis_country = {
+						check_variable = { which = counter_not_create_gate value > 10 }}
+				}
+				modifier = {
+					add = -1
+					event_target:monolith_crisis_country = {
+						check_variable = { which = counter_not_create_gate value > 12 }}
+				}
+				event_target:monolith_crisis_country = {
+					change_variable = { which = counter_not_create_gate value = 1 }
+				}
+			}
+		}
+		clear_variable = num_monolith_crisis_bypass_1
+		clear_variable = num_monolith_crisis_bypass_2
+		clear_variable = num_monolith_crisis_bypass_3
+	}
+}
+# 炸球触发与舰队触发
+# from = 炸球的舰队
+planet_event = {
+	id = monolith_crisis.201
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+	}
+
+	immediate = {
+		# 相位星球
+		if = {
+			limit = { has_planet_flag = phaseshifting_active }
+			remove_planet_flag = phaseshifting_active
+			remove_modifier = phaseshifted
+		}
+		# 50%概率炸球，50%变土著
+		random_list = {
+			1 = { planet_event = { id = monolith_crisis.202 }}
+			1 = { 
+				modifier = {
+					factor = 0
+					NOT = { any_owned_pop = { is_organic_species = yes }}
+				}
+				planet_event = { id = monolith_crisis.203 }
+			}
+		}
+		# 刷舰队
+		planet_event = { id = monolith_crisis.217 }
+		every_playable_country = {
+			add_event_chain_counter = {
+				event_chain = monolith_crisis_invasion_chain
+				counter = monolith_crisis_destroyed_planet
+				amount = 1
+			}
+		}
+	}
+}
+
+# 炸球
+# 删除所有区划建筑人口，球直接还原成原版非废土宜居球
+planet_event = {
+	id = monolith_crisis.202
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+		exists = owner
+		is_colony = yes
+	}
+
+	immediate = {
+		owner = {
+			country_event = { id = monolith_crisis.204 scopes = { from = root }}
+		}
+		every_owned_pop = {
+			kill_pop = yes
+		}
+		monolith_crisis_reset_planet_effect = yes
+	}
+}
+
+# 炸球
+# 变成土著，球直接还原成原版非废土宜居球
+planet_event = {
+	id = monolith_crisis.203
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+		exists = owner
+		is_colony = yes
+		any_owned_pop = {
+			is_organic_species = yes
+		}
+	}
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		owner = {
+			country_event = { id = monolith_crisis.205 scopes = { from = root }}
+		}
+		# 先以其中一个人口为模版创土著人口，再清除星球
+		random_owned_pop = {
+			create_species = {
+				name = random
+				class = this
+				homeworld = root
+				immortal = no
+				clear_parent_species_link = yes
+				traits = {
+					trait = trait_presapient_proles
+				}
+				effect = {
+					change_species_characteristics = {
+						portrait = prev.species
+					}
+					save_event_target_as = new_presapient_species
+				}
+			}
+		}
+		if = {
+			limit = {
+				is_habitat_wg = no
+				is_ringworld_wg = no
+			}
+			random_list = {
+				1 = { change_pc = pc_alpine }
+				1 = { change_pc = pc_arctic }
+				1 = { change_pc = pc_arid }
+				1 = { change_pc = pc_continental }
+				1 = { change_pc = pc_desert }
+				1 = { change_pc = pc_ocean }
+				1 = { change_pc = pc_savannah }
+				1 = { change_pc = pc_tropical }
+				1 = { change_pc = pc_tundra }
+				1 = { change_pc = pc_gaia }
+			}
+		}
+		# 清除星球
+		remove_all_armies = yes
+		remove_all_districts = yes
+		remove_all_buildings = yes
+		clear_deposits = yes
+		clear_planet_modifiers = yes
+		reroll_planet = yes
+		every_owned_pop = { kill_pop = yes }
+		# 创造土著
+		create_country = {
+			name = random
+			authority = random
+			day_zero_contact = no
+			civics = {
+				civic = civic_secret_of_fire
+				civic = civic_the_wheel
+			}
+			species = event_target:new_presapient_species
+			ethos = random
+			origin = "origin_enlightened" # Should only be visible if they become spacefaring
+			type = primitive
+			effect = {
+				set_pre_ftl_age = stone_age
+				set_country_flag = stone_age
+				set_graphical_culture = preindustrial_01
+				save_event_target_as = new_presapient_country
+			}
+		}
+		set_owner = last_created_country
+		set_capital = yes
+		every_deposit = {
+			limit = { is_deposit_type = d_dangerous_wildlife_blocker }
+			clear_blocker = yes
+		}
+		while = {
+			count = 2
+			create_pop = { species = event_target:new_presapient_species }
+		}
+		add_building = building_crude_huts
+		add_building = building_crude_huts
+		set_update_modifiers_batch = end
+	}
+}
+# 通知事件（球完全被炸回原型）
+country_event = {
+	id = monolith_crisis.204
+	title = monolith_crisis.204.name
+	desc = monolith_crisis.204.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_3
+	location = from
+
+	option = {
+		name = monolith_crisis.204.a
+	}
+}
+# 通知事件（球被炸成土著）
+country_event = {
+	id = monolith_crisis.205
+	title = monolith_crisis.205.name
+	desc = monolith_crisis.205.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_3
+	location = from
+
+	option = {
+		name = monolith_crisis.205.a
+	}
+}
+# 摧毁天灾基地计数
+# Fired from on_action 'on_starbase_destroyed'
+starbase_event = {
+	id = monolith_crisis.210
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+		owner = { is_country_type = monolith_crisis_country }
+	}
+
+	# This = Starbase
+	# From = fleet that destroyed it
+	immediate = {
+		event_target:monolith_crisis_data_store = {
+			change_variable = { which = event_chain_starbase_count value = -1 }
+		}
+		every_playable_country = {
+			add_event_chain_counter = {
+				event_chain = monolith_crisis_invasion_chain
+				counter = monolith_crisis_owned_system
+				amount = -1
+			}
+		}
+		solar_system = {
+			clear_variable = MonoC_fleet_id
+			if = {
+				limit = { has_star_flag = monolith_crisis_shield_system }
+				set_star_flag = comfirm_destroyed
+				from.owner = { set_country_flag = monolith_shield_system_destroyer }
+				every_system_ambient_object = {
+					limit = { has_ambient_object_flag = shield_ring_effect }
+					destroy_ambient_object = this
+				}
+				if = {
+					limit = { has_star_flag = monolith_crisis_shield_1_system_flag }
+					system_event = { id = monolith_crisis.221 days = 720 }
+					event_target:monolith_crisis_1_system = {
+						every_system_ambient_object = {
+							limit = { has_ambient_object_flag = shield_effect }
+							destroy_ambient_object = this
+						}
+						set_star_flag = ufs_can_fire
+					}
+					every_playable_country = { country_event = { id = monolith_crisis.315 }}
+				} else_if = {
+					limit = { has_star_flag = monolith_crisis_shield_2_system_flag }
+					system_event = { id = monolith_crisis.221 days = 720 }
+					event_target:monolith_crisis_2_system = {
+						every_system_ambient_object = {
+							limit = { has_ambient_object_flag = shield_effect }
+							destroy_ambient_object = this
+						}
+						set_star_flag = ufs_can_fire
+					}
+					every_playable_country = { country_event = { id = monolith_crisis.316 }}
+				} else_if = {
+					limit = { has_star_flag = monolith_crisis_shield_3_system_flag }
+					system_event = { id = monolith_crisis.221 days = 720 }
+					event_target:monolith_crisis_3_system = {
+						every_system_ambient_object = {
+							limit = { has_ambient_object_flag = shield_effect }
+							destroy_ambient_object = this
+						}
+						set_star_flag = ufs_can_fire
+					}
+					every_playable_country = { country_event = { id = monolith_crisis.317 }}
+				}
+			}
+		}
+	}
+}
+# 过一段时间后，如果失去对节点星系的控制则重刷哨站
+system_event = {
+	id = monolith_crisis.221
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+		OR = {
+			AND = { 
+				has_star_flag = monolith_crisis_shield_1_system_flag
+				NOT = { has_global_flag = first_monolith_node_destroyed }
+			}
+			AND = { 
+				has_star_flag = monolith_crisis_shield_2_system_flag
+				NOT = { has_global_flag = second_monolith_node_destroyed }
+			}
+			AND = { 
+				has_star_flag = monolith_crisis_shield_3_system_flag
+				NOT = { has_global_flag = third_monolith_node_destroyed }
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				NOT = { any_fleet_in_system = {
+					NOR = {
+						any_owned_ship = { is_disabled = yes }
+						has_fleet_flag = uf_portal_entity_fleet # 棱镜核心不算
+					}
+					owner = { 
+						NOT = { is_same_value = event_target:monolith_crisis_country }
+						OR = {
+							is_default_and_fallen_country = yes
+							is_hostile = event_target:monolith_crisis_country 
+						}
+					}
+				}}
+			}
+			remove_star_flag = comfirm_destroyed
+			create_monolith_crisis_starbase = yes
+			event_target:monolith_crisis_data_store = {
+				change_variable = { which = event_chain_starbase_count value = 1 }
+			}
+			every_playable_country = { 
+				add_event_chain_counter = {
+					event_chain = monolith_crisis_invasion_chain
+					counter = monolith_crisis_owned_system
+					amount = 1
+				}
+			}
+			star = {
+				create_monolith_crisis_defence_fleet = yes
+				create_ambient_object = {
+					type = "uf_monolith_shield_ring_effect"
+				}
+				last_created_ambient_object = {
+					set_ambient_object_flag = shield_ring_effect
+					set_location = {
+						target = prev
+						distance = 0
+						angle = 0
+					}
+				}
+			}
+			if = {
+				limit = { has_star_flag = monolith_crisis_shield_1_system_flag }
+				set_star_class = sc_m
+				star = { change_pc = pc_m_star }
+				event_target:monolith_crisis_1_system = {
+					remove_star_flag = ufs_can_fire
+					save_event_target_as = target_system
+				}
+				every_playable_country = {
+					country_event = { id = monolith_crisis.318 }
+				}
+			} else_if = {
+				limit = { has_star_flag = monolith_crisis_shield_2_system_flag }
+				set_star_class = sc_g
+				star = { change_pc = pc_g_star }
+				event_target:monolith_crisis_2_system = {
+					remove_star_flag = ufs_can_fire
+					save_event_target_as = target_system
+				}
+				every_playable_country = {
+					country_event = { id = monolith_crisis.319 }
+				}
+			} else_if = {
+				limit = { has_star_flag = monolith_crisis_shield_3_system_flag }
+				set_star_class = sc_b
+				star = { change_pc = pc_b_star }
+				event_target:monolith_crisis_3_system = {
+					remove_star_flag = ufs_can_fire
+					save_event_target_as = target_system
+				}
+				every_playable_country = {
+					country_event = { id = monolith_crisis.320 }
+				}
+			}
+			event_target:target_system = { star = {
+				create_ambient_object = {
+					type = "uf_monolith_shield_effect"
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance =0
+						angle = 0
+					}
+					set_ambient_object_flag = shield_effect
+				}
+			}}
+		} else = { 
+			system_event = { id = monolith_crisis.221 days = 10 }
+		}
+	}
+}
+
+# 摧毁天灾舰队计数
+country_event = {
+	id = monolith_crisis.211
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+		is_country_type = monolith_crisis_country
+		fromfrom = { NOT = { exists = starbase }}
+	}
+
+	immediate = {
+		event_target:monolith_crisis_data_store = {
+			change_variable = { which = event_chain_fleet_count value = -1 }
+		}
+		every_playable_country = {
+			limit = { has_event_chain = monolith_crisis_invasion_chain }
+			add_event_chain_counter = {
+				event_chain = monolith_crisis_invasion_chain
+				counter = monolith_crisis_fleet
+				amount = -1
+			}
+		}
+	}
+}
+
+# 摧毁天灾舰队计数
+country_event = {
+	id = monolith_crisis.212
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+		OR = {
+			is_country_type = monolith_crisis_country
+			from = { is_country_type = monolith_crisis_country }
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = { is_country_type = monolith_crisis_country }
+			from = { 
+				add_event_chain_counter = {
+					event_chain = monolith_crisis_invasion_chain
+					counter = destroyed_monolith_crisis_ships
+					amount = 1
+				}
+				# 黑石碑装备逆向工程
+				if = {
+					limit = { 
+						NOT = { has_country_flag = triggered_monolith_crisis_weapon_event }
+						has_authority = auth_united_fleet is_ai = no 
+					}
+					if = {
+						limit = { check_variable = { which = destroyed_monolith_crisis_ships value <= 100 }}
+						change_variable = {
+							which = destroyed_monolith_crisis_ships
+							value = 1
+						}
+					} else = {
+						country_event = { id = monolith_crisis.300 }
+					}
+				}
+			}
+		} else = {
+			every_playable_country = {
+				limit = { has_event_chain = monolith_crisis_invasion_chain }
+				add_event_chain_counter = {
+					event_chain = monolith_crisis_invasion_chain
+					counter = monolith_crisis_destroyed_ships
+					amount = 1
+				}
+			}
+		}
+	}
+}
+# 循环事件：外围增援舰队
+country_event = {
+	id = monolith_crisis.215
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+		exists = event_target:monolith_crisis_country
+	}
+
+	immediate = {
+		if = {
+			limit = { has_global_flag = destroy_all_monolith_nodes }
+			country_event = { id = monolith_crisis.215 days = 720 }
+		} else_if = {
+			limit = { event_target:monolith_crisis_data_store = { 
+				check_variable = { which = num_monolith_crisis_node value = 3 }
+			}}
+			country_event = { id = monolith_crisis.215 days = 2400 }
+		} else_if = {
+			limit = { event_target:monolith_crisis_data_store = { 
+				check_variable = { which = num_monolith_crisis_node value = 2 }
+			}}
+			country_event = { id = monolith_crisis.215 days = 2100 }
+		} else_if = {
+			limit = { event_target:monolith_crisis_data_store = { 
+				check_variable = { which = num_monolith_crisis_node value = 1 }
+			}}
+			country_event = { id = monolith_crisis.215 days = 1800 }
+		} else_if = {
+			limit = { event_target:monolith_crisis_data_store = { 
+				check_variable = { which = num_monolith_crisis_node value <= 0 }
+			}}
+			country_event = { id = monolith_crisis.215 days = 1500 }
+		}
+		set_global_flag = monolith_crisis_second_wave_invaded
+		random_rim_system = {
+			limit = { NOT = { has_star_flag = monolith_invade_system }}
+			set_timed_star_flag = { flag = monolith_invade_system days = 1 }
+			save_event_target_as = monolith_invasion_system
+			system_event = { id = monolith_crisis.216 days = 360 } # 测试时间，刷兵事件
+		}
+		event_target:monolith_invasion_system = {
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_timed_star_flag = { flag = monolith_invade_system days = 1 }
+				save_event_target_as = monolith_invasion_system_2
+				system_event = { id = monolith_crisis.216 days = 360 } # 测试时间，刷兵事件
+			}
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_timed_star_flag = { flag = monolith_invade_system days = 1 }
+				save_event_target_as = monolith_invasion_system_3
+				system_event = { id = monolith_crisis.216 days = 360 } # 测试时间，刷兵事件
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_global_flag = destroy_all_monolith_nodes }
+				OR = {
+					event_target:monolith_invasion_system = { has_any_monolith_bypass_flag = no }
+					event_target:monolith_invasion_system_2 = { has_any_monolith_bypass_flag = no }
+					event_target:monolith_invasion_system_3 = { has_any_monolith_bypass_flag = no }
+				}
+			}
+			random_list = {
+				1 = { 
+					modifier = { factor = 0 
+						event_target:monolith_invasion_system = { has_any_monolith_bypass_flag = yes }
+					}
+					event_target:monolith_invasion_system = { set_star_flag = create_monolith_gate }
+				}
+				1 = { 
+					modifier = { factor = 0 
+						event_target:monolith_invasion_system_2 = { has_any_monolith_bypass_flag = yes }
+					}
+					event_target:monolith_invasion_system_2 = { set_star_flag = create_monolith_gate }
+				}
+				1 = { 
+					modifier = { factor = 0 
+						event_target:monolith_invasion_system_3 = { has_any_monolith_bypass_flag = yes }
+					}
+					event_target:monolith_invasion_system_3 = { set_star_flag = create_monolith_gate }
+				}
+			}
+		}
+		every_playable_country = {
+			country_event = { id = monolith_crisis.213 } # 提早通知的事件
+			country_event = { id = monolith_crisis.214 days = 350 } # 测试时间，天灾增援通知事件
+			create_point_of_interest = {
+				id = reinforce_monolith_crisis_poi.1
+				name = "coming_monolith_crisis_poi_1_poi"
+				desc = "coming_monolith_crisis_poi_1_poi_desc"
+				event_chain = "monolith_crisis_invasion_chain"
+				location = event_target:monolith_invasion_system
+			}
+			create_point_of_interest = {
+				id = reinforce_monolith_crisis_poi.2
+				name = "coming_monolith_crisis_poi_2_poi"
+				desc = "coming_monolith_crisis_poi_2_poi_desc"
+				event_chain = "monolith_crisis_invasion_chain"
+				location = event_target:monolith_invasion_system_2
+			}
+			create_point_of_interest = {
+				id = reinforce_monolith_crisis_poi.3
+				name = "coming_monolith_crisis_poi_3_poi"
+				desc = "coming_monolith_crisis_poi_3_poi_desc"
+				event_chain = "monolith_crisis_invasion_chain"
+				location = event_target:monolith_invasion_system_3
+			}
+		}
+	}
+}
+
+
+# 大的增援舰队（在剩下核心星系后触发一次）
+country_event = {
+	id = monolith_crisis.222
+	is_triggered_only = yes
+	hide_window = yes
+	fire_only_once = yes
+
+	trigger = {
+		exists = event_target:monolith_crisis_country
+		NOT = { has_global_flag = monolith_crisis_last_wave_invaded }
+	}
+
+	immediate = {
+		set_global_flag = monolith_crisis_last_wave_invaded
+		random_rim_system = {
+			limit = { NOT = { has_star_flag = monolith_invade_system }}
+			set_timed_star_flag = { flag = monolith_invade_system days = 1 }
+			save_event_target_as = monolith_invasion_system
+			system_event = { id = monolith_crisis.216 days = 180 }
+		}
+		event_target:monolith_invasion_system = {
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_timed_star_flag = { flag = monolith_invade_system days = 1 }
+				save_event_target_as = monolith_invasion_system_2
+				system_event = { id = monolith_crisis.216 days = 180 }
+			}
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_timed_star_flag = { flag = monolith_invade_system days = 1 }
+				save_event_target_as = monolith_invasion_system_3
+				system_event = { id = monolith_crisis.216 days = 180 }
+			}
+		}
+		random_rim_system = {
+			limit = { NOT = { has_star_flag = monolith_invade_system }}
+			set_timed_star_flag = { flag = monolith_invade_system days = 1 }
+			save_event_target_as = monolith_invasion_system_4
+			system_event = { id = monolith_crisis.216 days = 180 }
+		}
+		event_target:monolith_invasion_system_4 = {
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_timed_star_flag = { flag = monolith_invade_system days = 1 }
+				save_event_target_as = monolith_invasion_system_5
+				system_event = { id = monolith_crisis.216 days = 180 }
+			}
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_timed_star_flag = { flag = monolith_invade_system days = 1 }
+				save_event_target_as = monolith_invasion_system_6
+				system_event = { id = monolith_crisis.216 days = 180 }
+			}
+		}
+		random_rim_system = {
+			limit = { NOT = { has_star_flag = monolith_invade_system }}
+			set_timed_star_flag = { flag = monolith_invade_system days = 1 }
+			save_event_target_as = monolith_invasion_system_7
+			system_event = { id = monolith_crisis.216 days = 180 } 
+		}
+		event_target:monolith_invasion_system_7 = {
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_timed_star_flag = { flag = monolith_invade_system days = 1 }
+				save_event_target_as = monolith_invasion_system_8
+				system_event = { id = monolith_crisis.216 days = 180 }
+			}
+			closest_system = {
+				limit = { NOT = { has_star_flag = monolith_invade_system }}
+				set_timed_star_flag = { flag = monolith_invade_system days = 1 }
+				save_event_target_as = monolith_invasion_system_9
+				system_event = { id = monolith_crisis.216 days = 180 } 
+			}
+		}
+		every_playable_country = {
+			country_event = { id = monolith_crisis.334 days = 5 }
+			country_event = { id = monolith_crisis.335 days = 170 } 
+			create_point_of_interest = {
+				id = last_wave_monolith_crisis_poi.1
+				name = "coming_monolith_crisis_poi_1_poi"
+				desc = "coming_monolith_crisis_poi_1_poi_desc"
+				event_chain = "monolith_crisis_invasion_chain"
+				location = event_target:monolith_invasion_system
+			}
+			create_point_of_interest = {
+				id = last_wave_monolith_crisis_poi.2
+				name = "coming_monolith_crisis_poi_1_poi"
+				desc = "coming_monolith_crisis_poi_1_poi_desc"
+				event_chain = "monolith_crisis_invasion_chain"
+				location = event_target:monolith_invasion_system_2
+			}
+			create_point_of_interest = {
+				id = last_wave_monolith_crisis_poi.3
+				name = "coming_monolith_crisis_poi_1_poi"
+				desc = "coming_monolith_crisis_poi_1_poi_desc"
+				event_chain = "monolith_crisis_invasion_chain"
+				location = event_target:monolith_invasion_system_3
+			}
+			create_point_of_interest = {
+				id = last_wave_monolith_crisis_poi.4
+				name = "coming_monolith_crisis_poi_1_poi"
+				desc = "coming_monolith_crisis_poi_1_poi_desc"
+				event_chain = "monolith_crisis_invasion_chain"
+				location = event_target:monolith_invasion_system_4
+			}
+			create_point_of_interest = {
+				id = last_wave_monolith_crisis_poi.5
+				name = "coming_monolith_crisis_poi_1_poi"
+				desc = "coming_monolith_crisis_poi_1_poi_desc"
+				event_chain = "monolith_crisis_invasion_chain"
+				location = event_target:monolith_invasion_system_5
+			}
+			create_point_of_interest = {
+				id = last_wave_monolith_crisis_poi.6
+				name = "coming_monolith_crisis_poi_1_poi"
+				desc = "coming_monolith_crisis_poi_1_poi_desc"
+				event_chain = "monolith_crisis_invasion_chain"
+				location = event_target:monolith_invasion_system_6
+			}
+			create_point_of_interest = {
+				id = last_wave_monolith_crisis_poi.7
+				name = "coming_monolith_crisis_poi_1_poi"
+				desc = "coming_monolith_crisis_poi_1_poi_desc"
+				event_chain = "monolith_crisis_invasion_chain"
+				location = event_target:monolith_invasion_system_7
+			}
+			create_point_of_interest = {
+				id = last_wave_monolith_crisis_poi.8
+				name = "coming_monolith_crisis_poi_1_poi"
+				desc = "coming_monolith_crisis_poi_1_poi_desc"
+				event_chain = "monolith_crisis_invasion_chain"
+				location = event_target:monolith_invasion_system_8
+			}
+			create_point_of_interest = {
+				id = last_wave_monolith_crisis_poi.9
+				name = "coming_monolith_crisis_poi_1_poi"
+				desc = "coming_monolith_crisis_poi_1_poi_desc"
+				event_chain = "monolith_crisis_invasion_chain"
+				location = event_target:monolith_invasion_system_9
+			}
+		}
+	}
+}
+# 每个星系刷两舰队
+system_event = {
+	id = monolith_crisis.216
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+	}
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		system_event = { id = monolith_crisis.200 }
+		star = {
+			planet_event = { id = monolith_crisis.217 }
+			planet_event = { id = monolith_crisis.217 }
+		}
+		if = {
+			limit = { has_star_flag = create_monolith_gate }
+			remove_star_flag = create_monolith_gate
+			if = {
+				limit = { NOT = { has_global_flag = destroy_all_monolith_nodes }}
+				random_list = {
+					1 = {
+						modifier = { factor = 0
+							OR = {
+								has_star_flag = monolith_crisis_bypass_systems_1
+								has_global_flag = first_monolith_node_destroyed
+							}
+						}
+						set_star_flag = monolith_crisis_bypass_systems_1
+						if = {
+							limit = { has_global_flag = first_monolith_node_spawned }
+							spawn_megastructure = {
+								type = monolith_crisis_gate_1
+								planet = star
+								orbit_distance = 50
+								orbit_angle = random
+							}
+						}
+					}
+					1 = {
+						modifier = { factor = 0
+							OR = {
+								has_star_flag = monolith_crisis_bypass_systems_2
+								has_global_flag = second_monolith_node_destroyed
+							}
+						}
+						set_star_flag = monolith_crisis_bypass_systems_2
+						if = {
+							limit = { has_global_flag = second_monolith_node_spawned }
+							spawn_megastructure = {
+								type = monolith_crisis_gate_2
+								planet = star
+								orbit_distance = 50
+								orbit_angle = random
+							}
+						}
+					}
+					1 = {
+						modifier = { factor = 0
+							OR = {
+								has_star_flag = monolith_crisis_bypass_systems_3
+								has_global_flag = third_monolith_node_destroyed
+							}
+						}
+						set_star_flag = monolith_crisis_bypass_systems_3
+						if = {
+							limit = { has_global_flag = third_monolith_node_spawned }
+							spawn_megastructure = {
+								type = monolith_crisis_gate_3
+								planet = star
+								orbit_distance = 50
+								orbit_angle = random
+							}
+						}
+					}
+				}
+			}
+		}
+		set_update_modifiers_batch = end
+	}
+}
+# 增援到达前1年的通知事件
+country_event = {
+	id = monolith_crisis.213
+	title = monolith_crisis.213.name
+	desc = monolith_crisis.213.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_1
+	location = from
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+	}
+
+	option = {
+		name = monolith_crisis.213.a
+	}
+}
+# 增援到达前30天通知事件
+country_event = {
+	id = monolith_crisis.214
+	title = monolith_crisis.214.name
+	desc = monolith_crisis.214.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_1
+	location = from
+	show_sound = event_air_raid_siren
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+	}
+
+	immediate = {
+		remove_point_of_interest = reinforce_monolith_crisis_poi.1
+		remove_point_of_interest = reinforce_monolith_crisis_poi.2
+		remove_point_of_interest = reinforce_monolith_crisis_poi.3
+	}
+
+	option = {
+		name = monolith_crisis.214.a
+	}
+}
+# 在星球上刷一支舰队
+planet_event = {
+	id = monolith_crisis.217
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+	}
+
+	immediate = {
+		random_list = {
+			30 = { create_monolith_crisis_fleet = yes }
+			10 = { create_monolith_crisis_large_fleet = yes }
+			1 = { create_monolith_crisis_huge_fleet = yes }
+		}
+		event_target:monolith_crisis_data_store = {
+			change_variable = { which = event_chain_fleet_count value = 1 }
+		}
+		every_playable_country = {
+			add_event_chain_counter = {
+				event_chain = monolith_crisis_invasion_chain
+				counter = monolith_crisis_fleet
+				amount = 1
+			}
+		}
+	}
+}
+# 循环在传送门刷舰队（节点1）
+country_event = {
+	id = monolith_crisis.218
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+		exists = event_target:monolith_crisis_country
+		NOT = { has_global_flag = first_monolith_node_destroyed }
+		has_global_flag = first_monolith_node_spawned
+	}
+
+	immediate = {
+		event_target:monolith_crisis_1_shield_system = {
+			star = { planet_event = { id = monolith_crisis.217 }}
+		}
+		if = {
+			limit = { event_target:monolith_crisis_data_store = { 
+				check_variable = { which = num_monolith_crisis_node value = 3 }
+			}}
+			country_event = { id = monolith_crisis.218 days = 600 random = 300 }
+		} else_if = {
+			limit = { event_target:monolith_crisis_data_store = { 
+				check_variable = { which = num_monolith_crisis_node value = 2 }
+			}}
+			country_event = { id = monolith_crisis.218 days = 450 random = 300 }
+		} else_if = {
+			limit = { event_target:monolith_crisis_data_store = { 
+				check_variable = { which = num_monolith_crisis_node value = 1 }
+			}}
+			country_event = { id = monolith_crisis.218 days = 300 random = 300 }
+		}
+	}
+}
+# 循环在传送门刷舰队（节点2）
+country_event = {
+	id = monolith_crisis.219
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+		exists = event_target:monolith_crisis_country
+		NOT = { has_global_flag = second_monolith_node_destroyed }
+		has_global_flag = second_monolith_node_spawned
+	}
+
+	immediate = {
+		event_target:monolith_crisis_2_shield_system = {
+			star = { planet_event = { id = monolith_crisis.217 }}
+		}
+		if = {
+			limit = { event_target:monolith_crisis_data_store = { 
+				check_variable = { which = num_monolith_crisis_node value = 3 }
+			}}
+			country_event = { id = monolith_crisis.219 days = 600 random = 300 }
+		} else_if = {
+			limit = { event_target:monolith_crisis_data_store = { 
+				check_variable = { which = num_monolith_crisis_node value = 2 }
+			}}
+			country_event = { id = monolith_crisis.219 days = 450 random = 300 }
+		} else_if = {
+			limit = { event_target:monolith_crisis_data_store = { 
+				check_variable = { which = num_monolith_crisis_node value = 1 }
+			}}
+			country_event = { id = monolith_crisis.219 days = 300 random = 300 }
+		}
+	}
+}
+# 循环在传送门刷舰队（节点3）
+country_event = {
+	id = monolith_crisis.220
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+		exists = event_target:monolith_crisis_country
+		NOT = { has_global_flag = third_monolith_node_destroyed }
+		has_global_flag = third_monolith_node_spawned
+	}
+
+	immediate = {
+		event_target:monolith_crisis_3_shield_system = {
+			star = { planet_event = { id = monolith_crisis.217 }}
+		}
+		if = {
+			limit = { event_target:monolith_crisis_data_store = { 
+				check_variable = { which = num_monolith_crisis_node value = 3 }
+			}}
+			country_event = { id = monolith_crisis.220 days = 600 random = 300 }
+		} else_if = {
+			limit = { event_target:monolith_crisis_data_store = { 
+				check_variable = { which = num_monolith_crisis_node value = 2 }
+			}}
+			country_event = { id = monolith_crisis.220 days = 450 random = 300 }
+		} else_if = {
+			limit = { event_target:monolith_crisis_data_store = { 
+				check_variable = { which = num_monolith_crisis_node value = 1 }
+			}}
+			country_event = { id = monolith_crisis.220 days = 300 random = 300 }
+		}
+	}
+}
+# 黑石碑装备逆向工程
+country_event = {
+	id = monolith_crisis.300
+	title = monolith_crisis.300.name
+	desc = monolith_crisis.300.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_4
+
+	trigger = {
+		NOR = {
+			has_country_flag = triggered_monolith_crisis_weapon_event
+			has_special_project = reverse_engineering_monolith_weapon
+		}
+	}
+
+	immediate = {
+		set_country_flag = triggered_monolith_crisis_weapon_event
+	}
+
+	option = {
+		name = monolith_crisis.300.a
+		enable_special_project = {
+			name = reverse_engineering_monolith_weapon
+			owner = root
+		}
+	}
+}
+# 完成
+country_event = {
+	id = monolith_crisis.301
+	title = monolith_crisis.301.name
+	desc = monolith_crisis.301.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_4
+
+	option = {
+		name = monolith_crisis.301.a
+		add_research_option = tech_uf_ia3
+		add_tech_progress = { tech = tech_uf_ia3 progress = 0.1 }
+		add_research_option = tech_uf_weapon_monolith_large
+		add_tech_progress = { tech = tech_uf_weapon_monolith_large progress = 0.1 }
+		add_research_option = tech_uf_weapon_extra_large2
+		add_tech_progress = { tech = tech_uf_weapon_extra_large2 progress = 0.1 }
+		add_research_option = tech_uf_weapon_titanic2
+		add_tech_progress = { tech = tech_uf_weapon_titanic2 progress = 0.1 }
+	}
+}
+# 嘲讽狡天灾
+country_event = {
+	id = monolith_crisis.321
+	title = monolith_crisis.321.name
+	desc = monolith_crisis.321.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+	picture_event_data = {
+		room = monolith_room
+	}
+	force_open = yes
+
+	trigger = {
+		has_global_flag = monolith_crisis_invaded
+		NOT = { has_global_flag = monolith_crisis_end }
+		OR = {
+			last_increased_tech = tech_uf_ia3
+			last_increased_tech = tech_uf_weapon_monolith_large
+			last_increased_tech = tech_uf_weapon_extra_large2
+			last_increased_tech = tech_uf_weapon_titanic2
+		}
+		NOT = { has_country_flag = trigger_monolith_crisis_tech_event }
+	}
+
+	immediate = {
+		set_country_flag = trigger_monolith_crisis_tech_event
+	}
+
+	option = {
+		name = monolith_crisis.321.a
+	}
+}
+# 遇到红色传送门，选择破解它还是破坏它
+fleet_event = {
+	id = monolith_crisis.302
+	title = monolith_crisis.302.name
+	desc = {
+		exclusive_trigger = { owner = { NOT = { has_country_flag = encounter_monolith_gate }}}
+		text = monolith_crisis.302.desc.a
+	}
+	desc = {
+		exclusive_trigger = { owner = { 
+			has_country_flag = encounter_monolith_gate
+			NOT = { has_country_flag = encounter_red_monolith_gate }
+		}}
+		text = monolith_crisis.302.desc.b
+	}
+	desc = monolith_crisis.302.desc.c
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_8
+	location = from
+
+	trigger = {
+		has_global_flag = monolith_crisis_invaded
+		has_global_flag = first_monolith_node_spawned
+		NOT = { has_global_flag = first_monolith_node_destroyed }
+		NOT = { has_global_flag = monolith_crisis_end }
+		owner = { is_ai = no }
+		from = { 
+			has_star_flag = monolith_crisis_bypass_systems_1
+			NOT = { has_star_flag = triggered_monolith_gate_event@root.owner }
+		}
+	}
+
+	after = {
+		hidden_effect = { owner = {
+			set_country_flag = encounter_monolith_gate
+			set_country_flag = encounter_red_monolith_gate
+		}}
+	}
+	immediate = {
+		from = { set_star_flag = triggered_monolith_gate_event@root.owner }
+	}
+
+	option = {
+		name = monolith_crisis.302.a
+		trigger = {
+			owner = { NOR = {
+				has_global_flag = reverse_engineering_monolith_bypass_1
+				has_special_project = hack_monolith_gate_red 
+			}}
+		}
+		from = { random_system_megastructure = {
+			limit = { is_megastructure_type = monolith_crisis_gate_1 }
+			enable_special_project = { 
+				name = "hack_monolith_gate_red"
+				owner = root.owner
+				location = this
+			}
+		}}
+	}
+	option = {
+		name = monolith_crisis.302.c
+		trigger = { 
+			owner = { OR = {
+				has_global_flag = reverse_engineering_monolith_bypass_1
+				has_special_project = hack_monolith_gate_red 
+			}}
+		}
+	}
+	option = {
+		name = monolith_crisis.302.b
+		trigger = { 
+			owner = { OR = {
+				has_global_flag = reverse_engineering_monolith_bypass_1
+				has_special_project = hack_monolith_gate_red 
+			}}
+		}
+		# allow = {
+		# 	custom_tooltip = {
+		# 		fail_text = "last_monolith_crisis_gate_1"
+		# 		NOT = { any_system = {
+		# 			NOR = { 
+		# 				is_same_value = from 
+		# 				has_star_flag = destroy_monolith_gate_project_on_progress
+		# 			}
+		# 			has_star_flag = monolith_crisis_bypass_systems_1
+		# 		}}
+		# 	}
+		# }
+		from = { 
+			set_star_flag = destroy_monolith_gate_project_on_progress
+			random_system_megastructure = {
+				limit = { is_megastructure_type = monolith_crisis_gate_1 }
+				enable_special_project = { 
+					name = destroy_monolith_gate 
+					owner = root.owner
+					location = this
+				}
+			}
+		}
+	}
+}
+# 遇到蓝色传送门，选择破解它还是破坏它
+fleet_event = {
+	id = monolith_crisis.303
+	title = monolith_crisis.303.name
+	desc = {
+		exclusive_trigger = { owner = { NOT = { has_country_flag = encounter_monolith_gate }}}
+		text = monolith_crisis.302.desc.a
+	}
+	desc = {
+		exclusive_trigger = { owner = { 
+			has_country_flag = encounter_monolith_gate
+			NOT = { has_country_flag = encounter_blue_monolith_gate }
+		}}
+		text = monolith_crisis.303.desc
+	}
+	desc = monolith_crisis.303.desc.b
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_9
+	location = from
+
+	trigger = {
+		has_global_flag = monolith_crisis_invaded
+		has_global_flag = second_monolith_node_spawned
+		NOT = { has_global_flag = second_monolith_node_destroyed }
+		NOT = { has_global_flag = monolith_crisis_end }
+		owner = { is_ai = no }
+		from = {
+			has_star_flag = monolith_crisis_bypass_systems_2
+			NOT = { has_star_flag = triggered_monolith_gate_event@root.owner }
+		}
+	}
+
+	after = {
+		hidden_effect = { owner = {
+			set_country_flag = encounter_monolith_gate
+			set_country_flag = encounter_blue_monolith_gate
+		}}
+	}
+
+	immediate = {
+		from = { set_star_flag = triggered_monolith_gate_event@root.owner }
+	}
+
+	option = {
+		name = monolith_crisis.302.a
+		trigger = {
+			owner = { NOR = {
+				has_global_flag = reverse_engineering_monolith_bypass_2
+				has_special_project = hack_monolith_gate_blue 
+			}}
+		}
+		from = { random_system_megastructure = {
+			limit = { is_megastructure_type = monolith_crisis_gate_2 }
+			enable_special_project = { 
+				name = "hack_monolith_gate_blue"
+				owner = root.owner
+				location = this
+			}
+		}}
+	}
+	option = {
+		name = monolith_crisis.302.c
+		trigger = { 
+			owner = { OR = {
+				has_global_flag = reverse_engineering_monolith_bypass_2
+				has_special_project = hack_monolith_gate_blue 
+			}}
+		}
+	}
+	option = {
+		name = monolith_crisis.302.b
+		trigger = { 
+			owner = { OR = {
+				has_global_flag = reverse_engineering_monolith_bypass_1
+				has_special_project = hack_monolith_gate_red 
+			}}
+		}
+		# allow = {
+		# 	custom_tooltip = {
+		# 		fail_text = "last_monolith_crisis_gate_1"
+		# 		NOT = { any_system = {
+		# 			NOR = { 
+		# 				is_same_value = from 
+		# 				has_star_flag = destroy_monolith_gate_project_on_progress
+		# 			}
+		# 			has_star_flag = monolith_crisis_bypass_systems_2
+		# 		}}
+		# 	}
+		# }
+		from = { 
+			set_star_flag = destroy_monolith_gate_project_on_progress
+			random_system_megastructure = {
+				limit = { is_megastructure_type = monolith_crisis_gate_2 }
+				enable_special_project = { 
+					name = "destroy_monolith_gate"
+					owner = root.owner
+					location = this
+				}
+			}
+		}
+	}
+}
+# 遇到黄色传送门，选择破解它还是破坏它
+fleet_event = {
+	id = monolith_crisis.304
+	title = monolith_crisis.304.name
+	desc = {
+		exclusive_trigger = { owner = { NOT = { has_country_flag = encounter_monolith_gate }}}
+		text = monolith_crisis.302.desc.a
+	}
+	desc = {
+		exclusive_trigger = { owner = { 
+			has_country_flag = encounter_monolith_gate
+			NOT = { has_country_flag = encounter_yellow_monolith_gate }
+		}}
+		text = monolith_crisis.304.desc
+	}
+	desc = monolith_crisis.304.desc.b
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_10
+	location = from
+
+	trigger = {
+		has_global_flag = monolith_crisis_invaded
+		has_global_flag = third_monolith_node_spawned
+		NOT = { has_global_flag = third_monolith_node_destroyed }
+		NOT = { has_global_flag = monolith_crisis_end }
+		owner = { is_ai = no }
+		from = {
+			has_star_flag = monolith_crisis_bypass_systems_3
+			NOT = { has_star_flag = triggered_monolith_gate_event@root.owner }
+		}
+	}
+
+	after = {
+		hidden_effect = { owner = {
+			set_country_flag = encounter_monolith_gate
+			set_country_flag = encounter_yellow_monolith_gate
+		}}
+	}
+	immediate = {
+		from = { set_star_flag = triggered_monolith_gate_event@root.owner }
+	}
+
+	option = {
+		name = monolith_crisis.302.a
+		trigger = {
+			owner = { NOR = { 
+				has_global_flag = reverse_engineering_monolith_bypass_3 
+				has_special_project = hack_monolith_gate_yellow
+			}}
+		}
+		from = { random_system_megastructure = {
+			limit = { is_megastructure_type = monolith_crisis_gate_3 }
+			enable_special_project = { 
+				name = "hack_monolith_gate_yellow"
+				owner = root.owner
+				location = this
+			}
+		}}
+	}
+	option = {
+		name = monolith_crisis.302.c
+		trigger = { 
+			owner = { OR = {
+				has_global_flag = reverse_engineering_monolith_bypass_3
+				has_special_project = hack_monolith_gate_yellow 
+			}}
+		}
+	}
+	option = {
+		name = monolith_crisis.302.b
+		trigger = { 
+			owner = { OR = {
+				has_global_flag = reverse_engineering_monolith_bypass_1
+				has_special_project = hack_monolith_gate_red 
+			}}
+		}
+		# allow = {
+		# 	custom_tooltip = {
+		# 		fail_text = "last_monolith_crisis_gate_1"
+		# 		NOT = { any_system = {
+		# 			NOR = { 
+		# 				is_same_value = from 
+		# 				has_star_flag = destroy_monolith_gate_project_on_progress
+		# 			}
+		# 			has_star_flag = monolith_crisis_bypass_systems_1
+		# 		}}
+		# 	}
+		# }
+		from = { 
+			set_star_flag = destroy_monolith_gate_project_on_progress
+			random_system_megastructure = {
+				limit = { is_megastructure_type = monolith_crisis_gate_3 }
+				enable_special_project = { 
+					name = "destroy_monolith_gate"
+					owner = root.owner
+					location = this
+				}
+			}
+		}
+	}
+}
+# 破解红色传送门
+ship_event = {
+	id = monolith_crisis.305
+	title = monolith_crisis.305.name
+	desc = monolith_crisis.305.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_8
+	location = root
+
+	immediate = {
+		owner = { set_global_flag = reverse_engineering_monolith_bypass_1 }
+		every_playable_country = {
+			limit = { NOT = { is_same_value = root.owner }}
+			country_event = { id = monolith_crisis.312 }
+		}
+	}
+
+	option = {
+		name = monolith_crisis.305.a
+	}
+}
+# 破解蓝色传送门
+ship_event = {
+	id = monolith_crisis.306
+	title = monolith_crisis.306.name
+	desc = monolith_crisis.306.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_9
+	location = root
+
+	immediate = {
+		owner = { set_global_flag = reverse_engineering_monolith_bypass_2 }
+		every_playable_country = {
+			limit = { NOT = { is_same_value = root.owner }}
+			country_event = { id = monolith_crisis.313 }
+		}
+	}
+
+	option = {
+		name = monolith_crisis.306.a
+	}
+}
+# 破解黄色传送门
+ship_event = {
+	id = monolith_crisis.307
+	title = monolith_crisis.307.name
+	desc = monolith_crisis.307.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_10
+	location = root
+
+	immediate = {
+		owner = { set_global_flag = reverse_engineering_monolith_bypass_3 }
+		every_playable_country = {
+			limit = { NOT = { is_same_value = root.owner }}
+			country_event = { id = monolith_crisis.314 }
+		}
+	}
+
+	option = {
+		name = monolith_crisis.307.a
+	}
+}
+# 拆除传送门
+country_event = {
+	id = monolith_crisis.308
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		abort_special_project = {
+			type = destroy_monolith_gate
+			location = from
+		}
+		from.solar_system = { 
+			remove_star_flag = destroy_monolith_gate_project_on_progress
+			remove_star_flag = triggered_monolith_gate_event@root.owner
+			if = {
+				limit = { has_star_flag = monolith_crisis_bypass_systems_1 }
+				remove_star_flag = monolith_crisis_bypass_systems_1
+				every_system_megastructure = {
+					limit = { is_megastructure_type = monolith_crisis_gate_1 }
+					delete_megastructure = this
+				}
+				event_target:monolith_crisis_data_store = {
+					change_variable = { which = num_monolith_crisis_bypass_1 value = -1 }
+				}
+			} 
+			else_if = {
+				limit = { has_star_flag = monolith_crisis_bypass_systems_2 }
+				remove_star_flag = monolith_crisis_bypass_systems_2
+				every_system_megastructure = {
+					limit = { is_megastructure_type = monolith_crisis_gate_2 }
+					delete_megastructure = this
+				}
+				event_target:monolith_crisis_data_store = {
+					change_variable = { which = num_monolith_crisis_bypass_2 value = -1 }
+				}
+			}
+			else_if = {
+				limit = { has_star_flag = monolith_crisis_bypass_systems_3 }
+				remove_star_flag = monolith_crisis_bypass_systems_3
+				every_system_megastructure = {
+					limit = { is_megastructure_type = monolith_crisis_gate_3 }
+					delete_megastructure = this
+				}
+				event_target:monolith_crisis_data_store = {
+					change_variable = { which = num_monolith_crisis_bypass_3 value = -1 }
+				}
+			}
+		}
+	}
+}
+
+# 拆除传送门通知事件
+ship_event = {
+	id = monolith_crisis.308
+	title = monolith_crisis.308.name
+	desc = monolith_crisis.308.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_11
+	location = root
+
+	immediate = {
+		owner = { country_event = { id = monolith_crisis.308 scopes = { from = from }}}
+	}
+
+	option = {
+		name = monolith_crisis.308.a
+	}
+}
+# 进入第一节点星系
+ship_event = {
+	id = monolith_crisis.309
+	title = monolith_crisis.309.name
+	desc = monolith_crisis.309.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_5
+	location = from
+
+	trigger = {
+		from = { has_star_flag = monolith_crisis_shield_1_system_flag }
+	}
+
+	option = {
+		name = monolith_crisis.309.a
+	}
+}
+# 进入第二节点星系
+ship_event = {
+	id = monolith_crisis.310
+	title = monolith_crisis.310.name
+	desc = monolith_crisis.310.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_6
+	location = from
+
+	trigger = {
+		from = { has_star_flag = monolith_crisis_shield_2_system_flag }
+	}
+
+	option = {
+		name = monolith_crisis.310.a
+	}
+}
+# 进入第三节点星系
+ship_event = {
+	id = monolith_crisis.311
+	title = monolith_crisis.311.name
+	desc = monolith_crisis.311.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_7
+	location = from
+
+	trigger = {
+		from = { has_star_flag = monolith_crisis_shield_3_system_flag }
+	}
+
+	option = {
+		name = monolith_crisis.311.a
+	}
+}
+# 狡猾广播（红门）
+country_event = {
+	id = monolith_crisis.312
+	title = monolith_crisis.312.name
+	desc = monolith_crisis.312.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_8
+
+	option = {
+		name = monolith_crisis.312.a
+	}
+}
+# 狡猾广播（蓝门）
+country_event = {
+	id = monolith_crisis.313
+	title = monolith_crisis.312.name
+	desc = monolith_crisis.313.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_9
+
+	option = {
+		name = monolith_crisis.312.a
+	}
+}
+# 狡猾广播（黄门）
+country_event = {
+	id = monolith_crisis.314
+	title = monolith_crisis.312.name
+	desc = monolith_crisis.314.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_10
+
+	option = {
+		name = monolith_crisis.312.a
+	}
+}
+# 第一节点被干爆
+country_event = {
+	id = monolith_crisis.315
+	title = monolith_crisis.315.name
+	desc = monolith_crisis.315.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_15
+	location = event_target:monolith_crisis_1_shield_system
+
+	immediate = {
+		remove_point_of_interest = monolith_crisis_shield_node_poi.1
+	}
+
+	after = { hidden_effect = {
+		if = {
+			limit = { has_country_flag = destroy_shield_system_by_ufs }
+			remove_country_flag = destroy_shield_system_by_ufs
+		}
+		if = {
+			limit = { has_country_flag = monolith_shield_system_destroyer }
+			country_event = { id = monolith_crisis.322 }
+		}
+	}}
+
+	option = {
+		name = monolith_crisis.315.a
+	}
+	# 立即瞄准护盾星系并打开联合之剑界面
+	option = {
+		name = monolith_crisis.315.b
+		trigger = {
+			NOT = { has_country_flag = destroy_shield_system_by_ufs }
+			any_owned_megastructure = {
+				is_megastructure_type = uf_galaxy_gun_4
+			}
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = "ufs_window_on_screen"
+				NOT = { has_country_flag = ufs_window_active }
+			}
+			NOT = { has_modifier = ufs_recover_cd }
+		}
+		hidden_effect = {
+			set_variable = { which = ufs_fliter_mod value = 3 }
+			set_variable = { which = ufs_interface_page value = 0 }
+			set_variable = { which = selected_ufs_system value = 0 }
+			set_country_flag = ufs_window_active
+			event_target:monolith_crisis_1_system = {
+				save_global_event_target_as = first_selected_ufs_system
+			}
+			set_country_flag = select_first_ufs_system
+			country_event = { id = uf_sword.3 }
+		}
+	}
+}
+# 第二节点被干爆
+country_event = {
+	id = monolith_crisis.316
+	title = monolith_crisis.316.name
+	desc = monolith_crisis.316.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_15
+	location = event_target:monolith_crisis_2_shield_system
+
+	immediate = {
+		remove_point_of_interest = monolith_crisis_shield_node_poi.2
+	}
+
+	after = { hidden_effect = {
+		if = {
+			limit = { has_country_flag = destroy_shield_system_by_ufs }
+			remove_country_flag = destroy_shield_system_by_ufs
+		}
+		if = {
+			limit = { has_country_flag = monolith_shield_system_destroyer }
+			country_event = { id = monolith_crisis.322 }
+		}
+	}}
+
+	option = {
+		name = monolith_crisis.316.a
+	}
+	# 立即瞄准护盾星系并打开联合之剑界面
+	option = {
+		name = monolith_crisis.316.b
+		trigger = {
+			NOT = { has_country_flag = destroy_shield_system_by_ufs }
+			any_owned_megastructure = {
+				is_megastructure_type = uf_galaxy_gun_4
+			}
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = "ufs_window_on_screen"
+				NOT = { has_country_flag = ufs_window_active }
+			}
+			NOT = { has_modifier = ufs_recover_cd }
+		}
+		hidden_effect = {
+			set_variable = { which = ufs_fliter_mod value = 3 }
+			set_variable = { which = ufs_interface_page value = 0 }
+			set_variable = { which = selected_ufs_system value = 0 }
+			set_country_flag = ufs_window_active
+			event_target:monolith_crisis_2_system = {
+				save_global_event_target_as = first_selected_ufs_system
+			}
+			set_country_flag = select_first_ufs_system
+			country_event = { id = uf_sword.3 }
+		}
+	}
+}
+# 第三节点被干爆
+country_event = {
+	id = monolith_crisis.317
+	title = monolith_crisis.317.name
+	desc = monolith_crisis.317.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_15
+	location = event_target:monolith_crisis_3_shield_system
+
+	immediate = {
+		remove_point_of_interest = monolith_crisis_shield_node_poi.3
+	}
+
+	after = { hidden_effect = {
+		if = {
+			limit = { has_country_flag = destroy_shield_system_by_ufs }
+			remove_country_flag = destroy_shield_system_by_ufs
+		}
+		if = {
+			limit = { has_country_flag = monolith_shield_system_destroyer }
+			country_event = { id = monolith_crisis.322 }
+		}
+	}}
+
+	option = {
+		name = monolith_crisis.317.a
+	}
+	# 立即瞄准护盾星系并打开联合之剑界面
+	option = {
+		name = monolith_crisis.317.b
+		trigger = {
+			NOT = { has_country_flag = destroy_shield_system_by_ufs }
+			any_owned_megastructure = {
+				is_megastructure_type = uf_galaxy_gun_4
+			}
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = "ufs_window_on_screen"
+				NOT = { has_country_flag = ufs_window_active }
+			}
+			NOT = { has_modifier = ufs_recover_cd }
+		}
+		hidden_effect = {
+			set_variable = { which = ufs_fliter_mod value = 3 }
+			set_variable = { which = ufs_interface_page value = 0 }
+			set_variable = { which = selected_ufs_system value = 0 }
+			set_country_flag = ufs_window_active
+			event_target:monolith_crisis_3_system = {
+				save_global_event_target_as = first_selected_ufs_system
+			}
+			set_country_flag = select_first_ufs_system
+			country_event = { id = uf_sword.3 }
+		}
+	}
+}
+# 第一节点恢复
+country_event = {
+	id = monolith_crisis.318
+	title = monolith_crisis.318.name
+	desc = monolith_crisis.318.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_5
+	location = event_target:monolith_crisis_1_shield_system
+
+	immediate = {
+		create_point_of_interest = {
+			id = monolith_crisis_shield_node_poi.1
+			name = "monolith_crisis_shield_node_poi_1_name"
+			desc = "monolith_crisis_shield_node_poi_1_desc"
+			event_chain = "monolith_crisis_invasion_chain"
+			location = event_target:monolith_crisis_1_shield_system
+		}
+	}
+
+	option = {
+		name = monolith_crisis.318.a
+	}
+}
+# 第二节点恢复
+country_event = {
+	id = monolith_crisis.319
+	title = monolith_crisis.319.name
+	desc = monolith_crisis.319.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_6
+	location = event_target:monolith_crisis_2_shield_system
+
+	immediate = {
+		create_point_of_interest = {
+			id = monolith_crisis_shield_node_poi.2
+			name = "monolith_crisis_shield_node_poi_2_name"
+			desc = "monolith_crisis_shield_node_poi_2_desc"
+			event_chain = "monolith_crisis_invasion_chain"
+			location = event_target:monolith_crisis_2_shield_system
+		}
+	}
+
+	option = {
+		name = monolith_crisis.319.a
+	}
+}
+# 第三节点恢复
+country_event = {
+	id = monolith_crisis.320
+	title = monolith_crisis.320.name
+	desc = monolith_crisis.320.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_7
+	location = event_target:monolith_crisis_3_shield_system
+
+	immediate = {
+		create_point_of_interest = {
+			id = monolith_crisis_shield_node_poi.3
+			name = "monolith_crisis_shield_node_poi_3_name"
+			desc = "monolith_crisis_shield_node_poi_3_desc"
+			event_chain = "monolith_crisis_invasion_chain"
+			location = event_target:monolith_crisis_3_shield_system
+		}
+	}
+
+	option = {
+		name = monolith_crisis.320.a
+	}
+}
+# 跟你嘴炮的狡天灾
+country_event = {
+	id = monolith_crisis.322
+	title = monolith_crisis.322.name
+	desc = monolith_crisis.322.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+	picture_event_data = {
+		room = monolith_room
+	}
+	force_open = yes
+	trigger = {
+		NOT = { has_country_flag = triggered_monolith_crisis_322 }
+	}
+
+	immediate = {
+		set_country_flag = triggered_monolith_crisis_322
+	}
+
+	option = {
+		name = monolith_crisis.322.a
+	}
+}
+# 第一护盾被干爆
+country_event = {
+	id = monolith_crisis.323
+	title = monolith_crisis.323.name
+	desc = monolith_crisis.323.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_14
+	location = event_target:monolith_crisis_1_system
+
+	immediate = {
+		remove_point_of_interest = monolith_crisis_node_poi.1
+	}
+
+	after = { hidden_effect = {
+		if = {
+			limit = { has_country_flag = monolith_system_destroyer }
+			remove_country_flag = monolith_system_destroyer
+			if = {
+				limit = { event_target:monolith_crisis_data_store = {
+					check_variable = { which = destroyed_monolith_crisis_system value = 1 }
+				}}
+				country_event = { id = monolith_crisis.326 }
+			} else_if = {
+				limit = { event_target:monolith_crisis_data_store = {
+					check_variable = { which = destroyed_monolith_crisis_system value = 2 }
+				}}
+				country_event = { id = monolith_crisis.327 }
+			} else_if = {
+				limit = { event_target:monolith_crisis_data_store = {
+					check_variable = { which = destroyed_monolith_crisis_system value = 3 }
+				}}
+				country_event = { id = monolith_crisis.328 }
+			}
+		}
+	}}
+
+	option = {
+		name = monolith_crisis.323.a
+		hidden_effect  = {
+			country_event = { id = monolith_crisis.357 days = 5 }
+		}
+	}
+}
+# 第二护盾被干爆
+country_event = {
+	id = monolith_crisis.324
+	title = monolith_crisis.324.name
+	desc = monolith_crisis.324.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_14
+	location = event_target:monolith_crisis_2_system
+
+	immediate = {
+		remove_point_of_interest = monolith_crisis_node_poi.2
+	}
+
+	after = { hidden_effect = {
+		if = {
+			limit = { has_country_flag = monolith_system_destroyer }
+			remove_country_flag = monolith_system_destroyer
+			if = {
+				limit = { event_target:monolith_crisis_data_store = {
+					check_variable = { which = destroyed_monolith_crisis_system value = 1 }
+				}}
+				country_event = { id = monolith_crisis.326 }
+			} else_if = {
+				limit = { event_target:monolith_crisis_data_store = {
+					check_variable = { which = destroyed_monolith_crisis_system value = 2 }
+				}}
+				country_event = { id = monolith_crisis.327 }
+			} else_if = {
+				limit = { event_target:monolith_crisis_data_store = {
+					check_variable = { which = destroyed_monolith_crisis_system value = 3 }
+				}}
+				country_event = { id = monolith_crisis.328 }
+			}
+		}
+	}}
+
+	option = {
+		name = monolith_crisis.324.a
+		hidden_effect  = {
+			country_event = { id = monolith_crisis.357 days = 5 }
+		}
+	}
+}
+# 第三护盾被干爆
+country_event = {
+	id = monolith_crisis.325
+	title = monolith_crisis.325.name
+	desc = monolith_crisis.325.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_14
+	location = event_target:monolith_crisis_3_system
+
+	immediate = {
+		remove_point_of_interest = monolith_crisis_node_poi.3
+	}
+
+	after = { hidden_effect = {
+		if = {
+			limit = { has_country_flag = monolith_system_destroyer }
+			remove_country_flag = monolith_system_destroyer
+			if = {
+				limit = { event_target:monolith_crisis_data_store = {
+					check_variable = { which = destroyed_monolith_crisis_system value = 1 }
+				}}
+				country_event = { id = monolith_crisis.326 }
+			} else_if = {
+				limit = { event_target:monolith_crisis_data_store = {
+					check_variable = { which = destroyed_monolith_crisis_system value = 2 }
+				}}
+				country_event = { id = monolith_crisis.327 }
+			} else_if = {
+				limit = { event_target:monolith_crisis_data_store = {
+					check_variable = { which = destroyed_monolith_crisis_system value = 3 }
+				}}
+				country_event = { id = monolith_crisis.328 }
+			}
+		}
+	}}
+
+	option = {
+		name = monolith_crisis.325.a
+		hidden_effect  = {
+			country_event = { id = monolith_crisis.357 days = 5 }
+		}
+	}
+}
+# 跟你嘴炮的狡天灾
+country_event = {
+	id = monolith_crisis.326
+	title = monolith_crisis.326.name
+	desc = monolith_crisis.326.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+	picture_event_data = {
+		room = monolith_room
+	}
+	force_open = yes
+
+	option = {
+		name = monolith_crisis.326.a
+		is_dialog_only = yes
+		response_text = monolith_crisis.326.a.response
+	}
+	option = {
+		name = monolith_crisis.326.b
+		response_text = monolith_crisis.326.b.response
+	}
+}
+country_event = {
+	id = monolith_crisis.327
+	title = monolith_crisis.326.name
+	desc = monolith_crisis.327.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+	picture_event_data = {
+		room = monolith_room
+	}
+	force_open = yes
+
+	option = {
+		name = monolith_crisis.327.a
+		response_text = monolith_crisis.327.a.response
+	}
+}
+country_event = {
+	id = monolith_crisis.328
+	title = monolith_crisis.326.name
+	desc = monolith_crisis.328.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+	picture_event_data = {
+		room = monolith_room
+	}
+	force_open = yes
+
+	option = {
+		name = monolith_crisis.328.a
+		response_text = monolith_crisis.328.a.response
+	}
+}
+# 狡天灾炸啦，芜湖
+country_event = {
+	id = monolith_crisis.329
+	title = monolith_crisis.329.name
+	desc = monolith_crisis.329.desc
+	is_triggered_only = yes
+	picture = GFX_evt_metropolis
+	show_sound = event_celebration
+
+	option = {
+		name = monolith_crisis.329.a
+		end_event_chain = monolith_crisis_invasion_chain
+	}
+}
+# 当事人视角
+country_event = {
+	id = monolith_crisis.330
+	title = monolith_crisis.330.name
+	desc = monolith_crisis.330.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_13
+	show_sound = event_super_explosion
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		event_target:monolith_crisis_country = {
+			every_owned_fleet = {
+				delete_fleet = this
+			}
+			destroy_country = yes
+		}
+		every_playable_country = {
+			limit = { is_default_and_fallen_country = yes }
+			add_opinion_modifier = {
+				who = root
+				modifier = opinion_after_monolith_crisis
+			}
+		}
+		set_update_modifiers_batch = end
+	}
+
+	option = {
+		name = monolith_crisis.330.a
+		end_event_chain = monolith_crisis_invasion_chain
+		hidden_effect = { 
+			country_event = { id = monolith_crisis.333 }
+			country_event = { id = monolith_crisis.331 days = 60 }
+		}
+	}
+}
+country_event = {
+	id = monolith_crisis.331
+	title = monolith_crisis.331.name
+	desc = monolith_crisis.331.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_17
+	show_sound = event_celebration
+
+	option = {
+		name = monolith_crisis.331.a
+		begin_event_chain = {
+			event_chain = "uf_end_story_chain"
+			target = ROOT
+		}
+		enable_special_project = {
+			name = uf_end_story_1
+			owner = root
+		}
+	}
+}
+country_event = {
+	id = monolith_crisis.333
+	title = monolith_crisis.326.name
+	desc = monolith_crisis.333.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+	picture_event_data = {
+		room = monolith_room
+	}
+	force_open = yes
+
+	option = {
+		name = monolith_crisis.333.a
+	}
+}
+
+# 搞屏蔽器 TODO:屏蔽器的进度搞一个suitation
+country_event = {
+	id = monolith_crisis.332
+	title = monolith_crisis.332.name
+	desc = monolith_crisis.332.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_16
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		start_situation = {
+			type = hm_jammer_build_situation
+			target = root
+		}
+		random_situation = {
+			limit = { is_situation_type = hm_jammer_build_situation }
+			save_global_event_target_as = hm_jammer_build_situation
+		}
+		every_owned_planet = {
+			set_variable = { which = hm_jammer_progress_perc value = 0 }
+			set_variable = { which = hm_jammer_progress value = 0 }
+			add_modifier = { modifier = hm_jammer_planet_buff_0 }
+		}
+		set_update_modifiers_batch = end
+	}
+
+	option = {
+		name = monolith_crisis.332.a
+		tooltip = { start_situation = {
+			type = hm_jammer_build_situation
+			target = root
+		}}
+	}
+}
+# 最后一波大的
+country_event = {
+	id = monolith_crisis.334
+	title = monolith_crisis.334.name
+	desc = monolith_crisis.334.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_1
+	show_sound = event_air_raid_siren
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+	}
+
+	option = {
+		name = monolith_crisis.214.a
+	}
+}
+# 最后一波大的到达通知
+country_event = {
+	id = monolith_crisis.335
+	title = monolith_crisis.335.name
+	desc = monolith_crisis.335.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_1
+	location = from
+	show_sound = event_air_raid_siren
+
+	trigger = {
+		NOT = { has_global_flag = monolith_crisis_end }
+	}
+
+	immediate = {
+		remove_point_of_interest = last_wave_monolith_crisis_poi.1
+		remove_point_of_interest = last_wave_monolith_crisis_poi.2
+		remove_point_of_interest = last_wave_monolith_crisis_poi.3
+		remove_point_of_interest = last_wave_monolith_crisis_poi.4
+		remove_point_of_interest = last_wave_monolith_crisis_poi.5
+		remove_point_of_interest = last_wave_monolith_crisis_poi.6
+		remove_point_of_interest = last_wave_monolith_crisis_poi.7
+		remove_point_of_interest = last_wave_monolith_crisis_poi.8
+		remove_point_of_interest = last_wave_monolith_crisis_poi.9
+	}
+
+	option = {
+		name = monolith_crisis.214.a
+	}
+}
+
+situation_event = {
+	id = monolith_crisis.336
+	title = monolith_crisis.336.name
+	desc = monolith_crisis.336.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_16
+
+	immediate = {
+		owner = {
+			every_owned_planet = {
+				limit = { NOR = {
+					has_modifier = hm_jammer_planet_buff_50
+					has_modifier = hm_jammer_planet_buff
+				}}
+				remove_modifier = hm_jammer_planet_buff_0
+				add_modifier = { modifier = hm_jammer_planet_buff_50 }
+			}
+		}
+	}
+
+	option = {
+		name = monolith_crisis.336.a
+	}
+}
+
+situation_event = {
+	id = monolith_crisis.337
+	title = monolith_crisis.337.name
+	desc = monolith_crisis.337.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_16
+
+	immediate = {
+		owner = {
+			every_owned_planet = {
+				limit = { NOT = { has_modifier = hm_jammer_planet_buff }}
+				remove_modifier = hm_jammer_planet_buff_0
+				remove_modifier = hm_jammer_planet_buff_50
+				add_modifier = { modifier = hm_jammer_planet_buff }
+			}
+		}
+	}
+
+	option = {
+		name = monolith_crisis.337.a
+	}
+	# 立即瞄准核心星系并打开联合之剑界面
+	option = {
+		name = monolith_crisis.337.b
+		trigger = {
+			owner = {
+				NOT = { has_country_flag = destroy_shield_system_by_ufs }
+				any_owned_megastructure = {
+					is_megastructure_type = uf_galaxy_gun_4
+				}
+			}
+		}
+		allow = { owner = {
+			custom_tooltip = {
+				fail_text = "ufs_window_on_screen"
+				NOT = { has_country_flag = ufs_window_active }
+			}
+			NOT = { has_modifier = ufs_recover_cd }
+		}}
+		hidden_effect = { owner = {
+			set_variable = { which = ufs_fliter_mod value = 3 }
+			set_variable = { which = ufs_interface_page value = 0 }
+			set_variable = { which = selected_ufs_system value = 0 }
+			set_country_flag = ufs_window_active
+			event_target:monolith_crisis_core_system = {
+				save_global_event_target_as = first_selected_ufs_system
+			}
+			set_country_flag = select_first_ufs_system
+			country_event = { id = uf_sword.3 }
+		}}
+	}
+}
+
+# 打击最后的核心节点，造成所有殖民地不同的伤害
+country_event = {
+	id = monolith_crisis.338
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		every_owned_planet = {
+			remove_modifier = decision_build_hm_jammer_debuff
+			remove_modifier = decision_build_hm_jammer_debuff_2
+			set_variable = { which = destruction_value value = 100 }
+			set_variable = { which = kill_pop_num_min value = 20 }
+			set_variable = { which = kill_pop_num_random value = 30 }
+			set_variable = { which = damage_percentage value = 1 }
+			if = {
+				limit = { has_modifier = hm_jammer_planet_buff }
+				multiply_variable = {
+					which = damage_percentage
+					value = 0.4
+				}
+				remove_modifier = hm_jammer_planet_buff
+			} else_if = {
+				limit = { has_modifier = hm_jammer_planet_buff_50 }
+				multiply_variable = {
+					which = damage_percentage
+					value = 0.8
+				}
+				remove_modifier = hm_jammer_planet_buff_50
+			}
+			# 第三档星球
+			if = {
+				limit = { monolith_last_destruction_planet_normal = yes }
+				multiply_variable = {
+					which = damage_percentage
+					value = 0.4
+				}
+			} else_if = {
+				# 第二档星球（除了荣耀世界和三档星球外的所有球
+				limit = { NOT = { is_planet_class = pc_uf_glory }}
+				multiply_variable = {
+					which = damage_percentage
+					value = 0.7
+				}
+			}
+			multiply_variable = { which = destruction_value value = damage_percentage }
+			floor_variable = destruction_value
+			multiply_variable = { which = kill_pop_num_min value = damage_percentage }
+			floor_variable = kill_pop_num_min
+			multiply_variable = { which = kill_pop_num_random value = damage_percentage }
+			floor_variable = kill_pop_num_random
+			add_planet_devastation = destruction_value
+			while = {
+				count = kill_pop_num_min
+				if = {
+					# 杀到最后三个不杀
+					limit = { count_owned_pop = { count > 3 }}
+					random_owned_pop = { kill_pop = yes }
+				}
+			}
+			while = {
+				count = kill_pop_num_random
+				if = {
+					# 杀到最后三个不杀
+					limit = { count_owned_pop = { count > 3 }}
+					# 50%杀
+					random_list = {
+						1 = { random_owned_pop = { kill_pop = yes }}
+						1 = { }
+					}
+				}
+			}
+		}
+		set_update_modifiers_batch = end
+	}
+}
+
+# 每个月算进度
+situation_event = {
+	id = monolith_crisis.339
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		owner = {
+			change_variable = { which = hm_jammer_pass_month value = 1 }
+			if = {
+				limit = { root = { current_situation_approach = situation_hm_jammer_speed_up }}
+				change_variable = { which = hm_jammer_pass_month value = 0.2 }
+			}
+			every_owned_planet = {
+				change_variable = { which = hm_jammer_progress value = 1 }
+				if = {
+					limit = { root = { current_situation_approach = situation_hm_jammer_speed_up }}
+					change_variable = { which = hm_jammer_progress value = 0.2 }
+				}
+				if = {
+					limit = { check_variable = { which = hm_jammer_progress value >= 120 }}
+					if = {
+						limit = { NOT = { has_modifier = hm_jammer_planet_buff }}
+						planet_event = { id = monolith_crisis.340 }
+					}
+				} else_if = {
+					limit = { 
+						check_variable = { which = hm_jammer_progress value >= 60 }
+						NOT = { has_modifier = hm_jammer_planet_buff_50 }
+					}
+					remove_modifier = hm_jammer_planet_buff_0
+					add_modifier = { modifier = hm_jammer_planet_buff_50 }
+				}
+				set_variable = { which = hm_jammer_progress_perc value = hm_jammer_progress }
+				divide_variable = { which = hm_jammer_progress_perc value = 1.2 }
+			}
+			if = {
+				limit = { NOT = { any_owned_planet = { NOT = { has_modifier = hm_jammer_planet_buff }}}}
+				root = { add_situation_progress = 100 }
+			}
+		}
+	}
+}
+
+# 某星球提前完成建造超维屏蔽器
+planet_event = {
+	id = monolith_crisis.340
+	title = monolith_crisis.340.name
+	desc = monolith_crisis.340.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_16
+	location = this
+
+	immediate = {
+		remove_modifier = hm_jammer_planet_buff_0
+		remove_modifier = hm_jammer_planet_buff_50
+		add_modifier = { modifier = hm_jammer_planet_buff }
+	}
+
+	option = {
+		name = EXCELLENT
+		tooltip = { add_modifier = { modifier = hm_jammer_planet_buff }}
+	}
+}
+#离去
+country_event = {
+	id = monolith_crisis.341
+	title = monolith_crisis.341.name
+	desc = monolith_crisis.341.desc
+	is_triggered_only = yes
+	picture = GFX_evt_monolith_crisis_18
+    immediate = {
+		country_event = { id = monolith_crisis.348 days = 30 }
+		country_event = { id = monolith_crisis.354 days = 50 }
+		country_event = { id = monolith_crisis.358 days = 90 }
+	}
+	option = {
+		name = monolith_crisis.341.a
+		set_country_flag = time_to_leave_this_galaxy
+		create_point_of_interest = {
+			id = uf_end_story_poi.1
+			name = "uf_end_story_1_poi"
+			desc = "uf_end_story_1_poi_desc"
+			event_chain = "uf_end_story_chain"
+			location = this
+		}
+		create_point_of_interest = {
+			id = uf_end_story_poi.2
+			name = "uf_end_story_2_poi"
+			desc = "uf_end_story_2_poi_desc"
+			event_chain = "uf_end_story_chain"
+			location = this
+		}
+	}
+}
+
+country_event = {
+	id = monolith_crisis.342
+	title = monolith_crisis.342.name
+	desc = monolith_crisis.342.desc
+	is_triggered_only = yes
+	picture = GFX_evt_megastructure_construction
+	
+	location = from
+    immediate = {
+		from = { save_event_target_as = uf_gate_system }
+	}
+
+	option = {
+		name = monolith_crisis.342.a
+	}
+}
+
+country_event = {
+	id = monolith_crisis.343
+	title = monolith_crisis.343.name
+	desc = monolith_crisis.343.desc
+	picture = GFX_evt_monolith_crisis_18
+
+	is_triggered_only = yes
+    immediate = {
+		remove_point_of_interest = uf_end_story_poi.1
+		random_country = {
+			limit = {
+				has_authority = auth_united_fleet
+				has_country_flag = uf_gate_builder
+				is_ai = no
+			}
+			save_event_target_as = uf_owner
+		}
+		event_target:uf_gate_system_target = {
+			create_starbase = {
+				size = starbase_outpost
+				effect = {
+					set_owner = event_target:uf_owner
+				}
+			}
+		}
+		clear_global_event_target = uf_gate_system_target
+	}
+	option = {
+		name = monolith_crisis.343.a
+		create_point_of_interest = {
+			id = uf_end_story_poi.3
+			name = "uf_end_story_3_poi"
+			desc = "uf_end_story_3_poi_desc"
+			event_chain = "uf_end_story_chain"
+			location = this
+		}
+	}
+}
+
+country_event = {
+	id = monolith_crisis.344
+	title = monolith_crisis.344.name
+	desc = monolith_crisis.344.desc
+	is_triggered_only = yes
+	picture = GFX_evt_megastructure_construction
+	
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_rectangular_system }
+	}
+
+	option = {
+		name = monolith_crisis.344.a
+	}
+}
+
+country_event = {
+	id = monolith_crisis.345
+	title = monolith_crisis.345.name
+	desc = monolith_crisis.345.desc
+	picture = GFX_evt_monolith_crisis_19
+
+	is_triggered_only = yes
+
+    immediate = {
+	    remove_point_of_interest = uf_end_story_poi.2
+		random_country = {
+			limit = {
+				has_authority = auth_united_fleet
+				has_country_flag = uf_rectangular_builder
+				is_ai = no
+			}
+			save_event_target_as = uf_owner
+		}
+		event_target:uf_rectangular_system_target = {
+			create_starbase = {
+				size = starbase_outpost
+				effect = {
+					set_owner = event_target:uf_owner
+				}
+			}
+		}
+		clear_global_event_target = uf_rectangular_system_target
+	}
+	option = {
+		name = monolith_crisis.345.a
+	}
+}
+
+country_event = {
+	id = monolith_crisis.346
+	title = "monolith_crisis.346.name"
+	desc = "monolith_crisis.346.desc"
+	picture = GFX_evt_monolith_crisis_18
+	is_triggered_only = yes
+	
+	immediate = {
+		country_event = { id = monolith_crisis.347 }
+	}
+	option = {
+		name = monolith_crisis.346.a
+		win = yes
+	}
+}
+
+country_event = {
+	id = monolith_crisis.347
+	title = "monolith_crisis.347.name"
+	location = from.from.from
+
+	picture_event_data = {
+		room = UF3_room
+	}
+	diplomatic = yes
+	force_open = yes
+
+	is_triggered_only = yes
+	desc = "monolith_crisis.347.desc"
+	after = {
+		hidden_effect = {
+			destroy_country = yes
+		}
+	}
+	option = {
+		name = monolith_crisis.347.a
+		response_text = monolith_crisis.347.a.response
+	}
+}
+
+country_event = {
+	id = monolith_crisis.348
+	hide_window = yes
+	is_triggered_only = yes
+    immediate = {
+		if = {
+			limit = { 
+				any_country = {
+					is_country_type = default
+					is_homicidal = no
+					has_communications = prev
+					NOR = {
+						is_at_war_with = prev
+						is_same_value = prev
+						has_civic = civic_criminal_heritage
+						is_gestalt = yes
+					}
+				}
+			}
+			random_country = {
+				limit = {
+					is_country_type = default
+					is_homicidal = no
+					has_communications = prev
+					NOR = {
+						is_at_war_with = prev
+						is_same_value = prev
+						has_civic = civic_criminal_heritage
+						is_gestalt = yes
+					}
+				}
+				save_event_target_as = uf_end_story_thank_country_1
+				set_country_flag = uf_end_story_thank_country_flag_1
+			}
+			country_event = { id = monolith_crisis.349 }
+		}
+	}
+}
+country_event = {
+	id = monolith_crisis.349
+	title = "monolith_crisis.349.name"
+	desc = {
+		text = "monolith_crisis.349.desc"
+	}
+
+	location = event_target:uf_end_story_thank_country_1
+
+	diplomatic = yes
+
+	is_triggered_only = yes
+
+	picture_event_data = {
+		portrait = event_target:uf_end_story_thank_country_1
+		planet_background = event_target:uf_end_story_thank_country_1
+		graphical_culture = event_target:uf_end_story_thank_country_1
+		city_level = event_target:uf_end_story_thank_country_1
+		room = event_target:uf_end_story_thank_country_1.ruler
+	}
+
+	option = {
+		name = monolith_crisis.349.a
+		hidden_effect = {
+			country_event = { id = monolith_crisis.350 days = 5 }
+		}
+	}
+}
+
+country_event = {
+	id = monolith_crisis.350
+	hide_window = yes
+	is_triggered_only = yes
+    immediate = {
+		if = {
+			limit = { 
+				any_country = {
+					is_country_type = default
+					is_homicidal = no
+					has_communications = prev
+					NOR = {
+						is_at_war_with = prev
+						is_same_value = prev
+						has_civic = civic_criminal_heritage
+						is_gestalt = yes
+					}
+				}
+			}
+			random_country = {
+				limit = {
+					is_country_type = default
+					is_homicidal = no
+					has_communications = prev
+					NOR = {
+						is_at_war_with = prev
+						is_same_value = prev
+						has_civic = civic_criminal_heritage
+						is_gestalt = yes
+						has_country_flag = uf_end_story_thank_country_flag_1
+					}
+				}
+				save_event_target_as = uf_end_story_thank_country_2
+				set_country_flag = uf_end_story_thank_country_flag_2
+			}
+			country_event = { id = monolith_crisis.351 }
+		}
+	}
+}
+country_event = {
+	id = monolith_crisis.351
+	title = "monolith_crisis.351.name"
+	desc = {
+		text = "monolith_crisis.351.desc"
+	}
+
+	location = event_target:uf_end_story_thank_country_2
+
+	diplomatic = yes
+
+	is_triggered_only = yes
+
+	picture_event_data = {
+		portrait = event_target:uf_end_story_thank_country_2
+		planet_background = event_target:uf_end_story_thank_country_2
+		graphical_culture = event_target:uf_end_story_thank_country_2
+		city_level = event_target:uf_end_story_thank_country_2
+		room = event_target:uf_end_story_thank_country_2.ruler
+	}
+
+	option = {
+		name = monolith_crisis.351.a
+		hidden_effect = {
+			country_event = { id = monolith_crisis.352 days = 5 }
+		}
+	}
+}
+
+country_event = {
+	id = monolith_crisis.352
+	hide_window = yes
+	is_triggered_only = yes
+    immediate = {
+		if = {
+			limit = { 
+				any_country = {
+					is_country_type = default
+					is_homicidal = no
+					has_communications = prev
+					NOR = {
+						is_at_war_with = prev
+						is_same_value = prev
+						has_civic = civic_criminal_heritage
+						is_gestalt = yes
+					}
+				}
+			}
+			random_country = {
+				limit = {
+					is_country_type = default
+					is_homicidal = no
+					has_communications = prev
+					NOR = {
+						is_at_war_with = prev
+						is_same_value = prev
+						has_civic = civic_criminal_heritage
+						is_gestalt = yes
+						has_country_flag = uf_end_story_thank_country_flag_1
+						has_country_flag = uf_end_story_thank_country_flag_2
+					}
+				}
+				save_event_target_as = uf_end_story_thank_country_3
+				set_country_flag = uf_end_story_thank_country_flag_3
+			}
+			country_event = { id = monolith_crisis.353 }
+		}
+	}
+}
+country_event = {
+	id = monolith_crisis.353
+	title = "monolith_crisis.353.name"
+	desc = {
+		text = "monolith_crisis.353.desc"
+	}
+
+	location = event_target:uf_end_story_thank_country_3
+
+	diplomatic = yes
+
+	is_triggered_only = yes
+
+	picture_event_data = {
+		portrait = event_target:uf_end_story_thank_country_3
+		planet_background = event_target:uf_end_story_thank_country_3
+		graphical_culture = event_target:uf_end_story_thank_country_3
+		city_level = event_target:uf_end_story_thank_country_3
+		room = event_target:uf_end_story_thank_country_3.ruler
+	}
+
+	option = {
+		name = monolith_crisis.353.a
+	}
+}
+#堕落的
+country_event = {
+	id = monolith_crisis.354
+	hide_window = yes
+	is_triggered_only = yes
+    immediate = {
+		if = {
+			limit = { 
+				any_country = {
+					is_country_type = fallen_empire
+					has_communications = prev
+					NOR = {
+						is_at_war_with = prev
+						is_same_value = prev
+						has_authority = auth_machine_intelligence
+					}
+				}
+			}
+			random_country = {
+				limit = {
+					is_country_type = fallen_empire
+					is_homicidal = no
+					has_communications = prev
+					NOR = {
+						is_at_war_with = prev
+						is_same_value = prev
+						has_authority = auth_machine_intelligence
+					}
+				}
+				save_event_target_as = uf_end_story_thank_fallen_country
+			}
+			country_event = { id = monolith_crisis.355 }
+		}
+	}
+}
+country_event = {
+	id = monolith_crisis.355
+	title = "monolith_crisis.355.name"
+	desc = {
+		text = "monolith_crisis.355.desc"
+	}
+
+	location = event_target:uf_end_story_thank_fallen_country
+
+	diplomatic = yes
+
+	is_triggered_only = yes
+
+	picture_event_data = {
+		portrait = event_target:uf_end_story_thank_fallen_country
+		planet_background = event_target:uf_end_story_thank_fallen_country
+		graphical_culture = event_target:uf_end_story_thank_fallen_country
+		city_level = event_target:uf_end_story_thank_fallen_country
+		room = event_target:uf_end_story_thank_fallen_country.ruler
+	}
+
+	option = {
+		name = monolith_crisis.355.a
+	}
+}
+#跃迁禁用事件
+country_event = {
+	id = monolith_crisis.356
+	title = monolith_crisis.356.name
+	desc = monolith_crisis.356.desc
+	is_triggered_only = yes
+	picture = GFX_evt_uf_archaeological_7
+	
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		every_country = {
+			add_modifier = { modifier = monolith_crisis_jump_drivers_ban days = -1 }
+			remove_country_flag = z_fw_r_celestial_orrey_activited
+			remove_country_flag = z_fw_r_cheat_quantum_beacon_activited
+		}
+		every_system = {
+			limit = {
+				NOT = { has_star_flag = wg_sealed_system }
+			}
+			set_star_flag = wg_sealed_system
+			set_star_flag = monolith_crisis_jump_drivers_ban_system
+		}
+	}
+
+	option = {
+		name = monolith_crisis.356.a
+		trigger = {
+			NOT = { has_country_flag =  has_built_uf_ews }
+		}
+		custom_tooltip = monolith_crisis.356.tooltip
+	}
+	option = {
+		name = monolith_crisis.356.b
+		allow = {
+			custom_tooltip = {
+				fail_text = "we_need_ews"
+				has_country_flag =  has_built_uf_ews
+			}
+		}
+		custom_tooltip = monolith_crisis.356.tooltip
+		enable_special_project = {
+			name = uf_ews_jump_drivers_ban_stop_project
+			owner = root
+		}
+	}
+}
+#跃迁重新上线
+country_event = {
+	id = monolith_crisis.357
+	title = monolith_crisis.357.name
+	desc = monolith_crisis.357.desc
+	is_triggered_only = yes
+	picture = GFX_evt_uf_hyperlane
+	
+	location = from
+
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = {
+			has_global_flag = monolith_crisis_jump_drivers_ban_stop
+		}
+	}
+    immediate = {
+		every_country = {
+			remove_modifier = monolith_crisis_jump_drivers_ban
+		}
+		every_system = {
+			limit = {
+				has_star_flag = monolith_crisis_jump_drivers_ban_system
+			}
+			remove_star_flag = wg_sealed_system
+			remove_star_flag = monolith_crisis_jump_drivers_ban_system
+		}
+		set_global_flag = monolith_crisis_jump_drivers_ban_stop
+	}
+
+	option = {
+		name = monolith_crisis.357.a
+		custom_tooltip = monolith_crisis.357.tooltip
+	}
+}
+#战利品商店成立
+country_event = {
+	id = monolith_crisis.358
+	title = monolith_crisis.358.name
+	desc = monolith_crisis.358.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_ella
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = monolith_crisis.358.a
+	}
+}
+
+#跃迁重新上线
+country_event = {
+	id = monolith_crisis.359
+	title = monolith_crisis.359.name
+	desc = monolith_crisis.359.desc
+	is_triggered_only = yes
+	picture = GFX_evt_uf_hyperlane
+	
+	location = from
+
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = {
+			has_global_flag = monolith_crisis_jump_drivers_ban_stop
+		}
+	}
+    immediate = {
+		every_country = {
+			remove_modifier = monolith_crisis_jump_drivers_ban
+		}
+		every_system = {
+			limit = {
+				has_star_flag = monolith_crisis_jump_drivers_ban_system
+			}
+			remove_star_flag = wg_sealed_system
+			remove_star_flag = monolith_crisis_jump_drivers_ban_system
+		}
+		set_global_flag = monolith_crisis_jump_drivers_ban_stop
+	}
+
+	option = {
+		name = monolith_crisis.359.a
+		custom_tooltip = monolith_crisis.359.tooltip
+	}
+}
+
+country_event = {
+	id = monolith_crisis.360
+	title = monolith_crisis.360.name
+	desc = monolith_crisis.360.desc
+	is_triggered_only = yes
+	picture = GFX_evt_uf_ews
+	
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = monolith_crisis.360.a
+		custom_tooltip = monolith_crisis.360.tooltip
+		set_country_flag = uf_ews_upgrade
+	}
+}
+
+# 难度设定
+country_event = {
+	id = monolith_crisis.10000
+	title = monolith_crisis.10000.name
+	desc = monolith_crisis.10000.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = "uf_crisis_diff_menu"
+
+	trigger = {
+		has_authority = auth_united_fleet
+		is_ai = no
+	}
+
+	immediate = {
+		set_country_flag = uf_crisis_menu_opened
+	}
+
+	# 返回主界面
+	option = {
+		name = ""
+		custom_gui = "wg_hiding_button"
+		default_hide_option = yes
+		hidden_effect = { 
+			remove_country_flag = uf_crisis_menu_opened
+		}
+	}
+	
+}
+
+country_event = {
+	id = monolith_crisis.10001
+	title = monolith_crisis.10001.name
+	desc = monolith_crisis.10001.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = "wg_comfirmation_window"
+
+	trigger = {
+		OR = {
+			has_global_flag = built_uf_sword
+			any_owned_megastructure = {
+				is_megastructure_type = uf_galaxy_gun_4
+			}
+		}
+	}
+
+	option = {
+		name = OK
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_global_flag = monolith_crisis_triggered
+			country_event = { id = monolith_crisis.100 }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+

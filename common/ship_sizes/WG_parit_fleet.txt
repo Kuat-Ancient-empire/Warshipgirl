@@ -1,0 +1,209 @@
+parit_battlecrusier = {
+	formation_priority = @battleship_formation_priority
+	entity = "wsg_01_wg_Battlecruiser_entity"
+	max_speed = 110
+	acceleration = 0.2
+	rotation_speed = 0.15
+	collision_radius = @battleship_collision_radius
+	max_hitpoints = 2300
+	modifier = {
+		ship_evasion_add = 8
+		ship_piracy_suppression_add = 4
+	}
+	size_multiplier = 6
+	fleet_slot_size = 4
+	section_slots = { "bow" = { locator = "part1" } "mid" = { locator = "part2" } "stern" = { locator = "part3" } }
+	num_target_locators = 4
+	is_space_station = no
+	icon = ship_size_uf_4
+	base_buildtime = 360
+	can_have_federation_design = yes
+	enable_default_design = yes	#if yes, countries will have an auto-generated design at start
+
+	default_behavior = line
+
+	prerequisites = { "tech_parit_battlecrusier" }
+
+	combat_disengage_chance = 1.25
+
+	class = shipclass_military
+	construction_type = starbase_shipyard
+	required_component_set = "power_core"
+	required_component_set = "ftl_components"
+	required_component_set = "thruster_components"
+	required_component_set = "sensor_components"
+	required_component_set = "combat_computers"
+
+	resources = {
+		category = ships
+		upkeep = {
+			energy = 2
+			alloys = 0.5
+		}
+	}
+
+	min_upgrade_cost = {
+		alloys = 6
+	}
+}
+
+parit_dreadnought = {
+	formation_priority = @titan_formation_priority
+	max_speed = 90
+	acceleration = 0.2
+	rotation_speed = 0.15
+	collision_radius = @titan_collision_radius
+	max_hitpoints = 180000
+	modifier = {
+		ship_evasion_add = 1
+	}
+	size_multiplier = 24
+	fleet_slot_size = 8
+	section_slots = { "bow" = { locator = "part1" } "mid" = { locator = "part2" } "stern" = { locator = "part3" } }
+	num_target_locators = 4
+	is_space_station = no
+	icon = ship_size_uf_8
+	base_buildtime = 2400
+	can_have_federation_design = yes
+	enable_default_design = yes	#if yes, countries will have an auto-generated design at start
+
+	default_behavior = artillery
+
+	prerequisites = { "tech_parit_dreadnought" }
+	entity = "wsg_01_wg_Dreadnought_entity"
+
+	combat_disengage_chance = 1.25
+
+	class = shipclass_military
+	construction_type = starbase_shipyard
+	required_component_set = "power_core"
+	required_component_set = "ftl_components"
+	required_component_set = "thruster_components"
+	required_component_set = "sensor_components"
+	required_component_set = "combat_computers"
+	required_component_set = "ship_aura_components"
+
+	potential_construction = {
+		OR = {
+			is_scope_type = starbase
+			AND = {
+				is_scope_type = megastructure
+				OR = {
+					is_megastructure_type = mega_shipyard_3
+					is_megastructure_type = mega_shipyard_restored
+					is_megastructure_type = wsg_station
+					is_megastructure_type = wg_khan_garbage_shipyard_1
+					is_megastructure_type = wg_khan_garbage_shipyard_2
+					is_megastructure_type = wg_fe_shipyard
+				}
+			}
+		}
+	}
+
+	possible_construction = {
+		custom_tooltip = {
+			fail_text = starbase_citadel_trigger
+			OR = {
+				AND = {
+					is_scope_type = megastructure
+					OR = {
+						is_megastructure_type = mega_shipyard_3
+						is_megastructure_type = mega_shipyard_restored
+						is_megastructure_type = wsg_station
+						is_megastructure_type = wg_khan_garbage_shipyard_1
+						is_megastructure_type = wg_khan_garbage_shipyard_2
+						is_megastructure_type = wg_fe_shipyard
+					}
+				}
+				AND = {
+					is_scope_type = starbase
+					has_starbase_size >= starbase_citadel
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = starbase_titan_yards_trigger
+			OR = {
+				AND = {
+					is_scope_type = megastructure
+					OR = {
+						is_megastructure_type = mega_shipyard_3
+						is_megastructure_type = mega_shipyard_restored
+						is_megastructure_type = wsg_station
+						is_megastructure_type = wg_khan_garbage_shipyard_1
+						is_megastructure_type = wg_khan_garbage_shipyard_2
+						is_megastructure_type = wg_fe_shipyard
+					}
+				}
+				AND = {
+					is_scope_type = starbase
+					has_starbase_building = titan_yards
+				}
+			}
+		}
+	}
+
+	resources = {
+		category = ships
+		upkeep = {
+			energy = 8
+			alloys = 3
+		}
+	}
+
+	min_upgrade_cost = {
+		alloys = 32
+	}
+}
+
+parit_carrier = {
+	formation_priority = @battleship_formation_priority
+	max_speed = 110
+	acceleration = 0.2
+	rotation_speed = 0.15
+	collision_radius = @battleship_collision_radius
+	max_hitpoints = 1500
+	modifier = {
+		ship_evasion_add = 3
+		ship_piracy_suppression_add = 10
+	}
+	size_multiplier = 4
+	fleet_slot_size = 4
+	section_slots = { "bow" = { locator = "part1" } "stern" = { locator = "part2" } }
+	entity = "wsg_01_wg_carrier_entity"
+	num_target_locators = 4
+	is_space_station = no
+	icon = ship_size_uf_6
+	base_buildtime = 360
+	can_have_federation_design = yes
+	enable_default_design = yes	#if yes, countries will have an auto-generated design at start
+
+	default_behavior = line
+
+	prerequisites = { "tech_parit_carrier" }
+
+	combat_disengage_chance = 1.25
+
+	class = shipclass_military
+	construction_type = starbase_shipyard
+	required_component_set = "power_core"
+	required_component_set = "ftl_components"
+	required_component_set = "thruster_components"
+	required_component_set = "sensor_components"
+	required_component_set = "combat_computers"
+	required_component_set = "pod_components"
+
+	resources = {
+		category = ships
+		upkeep = {
+			energy = 1.5
+			alloys = 0.2
+		}
+	}
+
+	min_upgrade_cost = {
+		alloys = 4
+	}
+}
+
+

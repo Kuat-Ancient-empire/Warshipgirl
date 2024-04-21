@@ -1,0 +1,363 @@
+###################################################
+#地砖重置版好感度effect合集
+###################################################
+###################################################
+# 添加自定义特殊好感特质领袖的注意事项：
+###################################################
+# 0. 没有用舰娘/星舰政体的国家需要加一个
+# can_have_wg_affection_country_flag 的国家标识
+# 否则事件会自动移除好感度特质
+
+# 1. 需要写好该领袖特殊好感度特质
+# 格式为leader_trait_(你的随便啥表明是谁的特质的key)_affection
+# 比如通用的leader_trait_wg_normal_affection
+# 或者参考岛风和大小姐特质名
+
+# 2. 需要写该领袖好感度初始化系统wg_affection_(你的随便啥表明是谁的特质的key)_system_launch
+# 结构参考wg_affection_normal_system_launch
+# set_leader_flag = has_wg_affection表明你是有好感度的人
+# set_leader_flag = has_wg_affection_(你的随便啥表明是谁的特质的key)表明你使用的好感度系统类型
+# set_variable = { which = affection value = 0 }设置好感度基础为0，或者开幕满好感也随便你
+# wg_leader_affection_to_lv2~5，这是好感度等级划分
+# 以及wg_leader_affection_increase，这是你的领袖每次增长多少好感度
+# 剩下的还有什么wg_leader_affection_reduce，这是你的领袖每次降低多少好感度（有人玩这种东西吗）
+# 爱引用常量就引用吧
+# 有需求的话，判断是否为ruler，并分别给ruler的内阁特质和其他类型的常规特质
+
+# 3. （按需要）在on_action中增加好感的事件填写自定义领袖增减好感的事件，或者直接跟着我们的增长走
+# 不喜欢我们的增长的加个set_leader_flag = wg_affection_auto_change_no
+# 增减好感度事件可以新开一个leader event，然后随便塞进啥on action里面
+# 或者跟我们一起on_wg_affection_system_increase和on_wg_affection_system_reduce
+# （在自己的mod加就可以）
+# 说真的我觉得都应该像我一样写成先进的循环事件三四年一次给所有纸片人随机加好感，毕竟玩家哪里关心好感度哪来的
+
+# 4. 需要写该领袖好感度校验系统wg_affection_(你的随便啥表明是谁的特质的key)_system_check
+# 条件里写has_leader_flag = has_wg_affection_(你的随便啥表明是谁的特质的key)
+# 初始化完成后只需要你看看好感度特质还在不在，然后补
+# 有需求的话，判断是否为ruler，并分别给ruler的内阁特质和其他类型的常规特质，然后把不需要的特质先毙了
+# on_action是on_wg_affection_system_check，可以跟我们一起检查，直接在自己的mod加就行
+
+# 5. 你并不是非得写scripted_effects，直接在事件里面塞代码也不是不行，反正不是我维护（笑）
+
+# 6. 如果有心碎需求之类的东西，可以写wg_affection_(你的随便啥表明是谁的特质的key)_system_end毙了特质
+# on_action是on_wg_affection_system_end ，可以跟我们一起检查，直接在自己的mod加就行
+
+#######################################################################
+# 请确保自定义领袖名大小写拼写正确（不建议有大写字母，以免拼写错误）
+# 确认以上事项皆已填写完毕，自定义领袖即可使用
+# 注意事项完结
+############################################
+# scope: leader
+#常规好感度系统启动，你对自己的领袖没有特殊好感度需求就自动上常规，有意见的自己补set_leader_flag = not_has_wg_affection_normal
+# set_leader_flag = immune_to_negative_traits
+wg_affection_normal_system_launch = {
+	if = {
+		limit = {
+			NOR = {
+				has_leader_flag = has_wg_affection
+				has_leader_flag = not_has_wg_affection_normal
+			}
+		}
+		set_leader_flag = has_wg_affection
+		set_leader_flag = has_wg_affection_normal
+		set_variable = { which = affection value = 0 }
+		set_variable = { which = wg_leader_affection_to_lv2 value = @wg_normal_affection_to_lv2 }
+		set_variable = { which = wg_leader_affection_to_lv3 value = @wg_normal_affection_to_lv3 }
+		set_variable = { which = wg_leader_affection_to_lv4 value = @wg_normal_affection_to_lv4 }
+		set_variable = { which = wg_leader_affection_to_lv5 value = @wg_normal_affection_to_lv5 }
+		set_variable = { which = wg_leader_affection_reduce value = @wg_normal_affection_reduce }
+		random_list = {
+			60 = { set_variable = { which = wg_leader_affection_increase value = @wg_normal_affection_increase_1 } }
+			20 = { set_variable = { which = wg_leader_affection_increase value = @wg_normal_affection_increase_2 } }
+			20 = { set_variable = { which = wg_leader_affection_increase value = @wg_normal_affection_increase_3 } }
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_trait = leader_trait_wg_normal_affection
+				}
+			}
+			add_trait_no_notify = leader_trait_wg_normal_affection
+		}
+	}
+}
+#常规好感度系统校验（特质丢了补特质，领袖上领导人位改特质）
+wg_affection_normal_system_check = {
+	if = {
+		limit = {
+			has_leader_flag = has_wg_affection_normal
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_trait = leader_trait_wg_normal_affection
+				}
+			}
+			add_trait_no_notify = leader_trait_wg_normal_affection
+		}
+	}
+	if = {
+		limit = { has_leader_flag = not_has_wg_affection_normal }
+		wg_affection_normal_system_end = yes
+	}
+}
+#好感度增长
+wg_affection_system_increase = {
+	if = {
+		limit = {
+			has_leader_flag = has_wg_affection
+		}
+		if = {
+			limit = {
+				check_variable = { which = affection value < wg_leader_affection_to_lv5 }
+			}
+			change_variable = { which = affection value = wg_leader_affection_increase }
+		}
+		if = {
+			limit = {
+				check_variable = { which = affection value > wg_leader_affection_to_lv5 }
+			}
+			set_variable = { which = affection value = wg_leader_affection_to_lv5 }
+		}
+	}
+}
+#好感度减少
+wg_affection_system_reduce = {
+	if = {
+		limit = {
+			has_leader_flag = has_wg_affection
+		}
+		change_variable = { which = affection value = wg_leader_affection_reduce }
+	}
+}
+#常规好感度系统关闭（没啥卵用）
+wg_affection_normal_system_end = {
+	if = {
+		limit = { has_leader_flag = has_wg_affection_normal }
+		set_variable = { which = affection value = 0 }
+		remove_trait = leader_trait_wg_normal_affection
+	}
+}
+
+
+#######################################
+##特殊领袖##
+#######################################
+#星极
+wg_affection_wg_astesia_system_launch = {
+	if = {
+		limit = { has_leader_flag = wg_astesia_leader }
+	set_leader_flag = has_wg_affection
+	set_leader_flag = has_wg_affection_wg_astesia
+	set_leader_flag = wg_affection_auto_change_no
+	add_trait_no_notify = leader_trait_wg_astesia_affection
+	set_variable = { which = affection value = owner.wg_astesia_affection }
+	set_variable = { which = wg_leader_affection_to_lv2 value = @wg_astesia_affection_to_lv2 }
+	set_variable = { which = wg_leader_affection_to_lv3 value = @wg_astesia_affection_to_lv3 }
+	set_variable = { which = wg_leader_affection_to_lv4 value = @wg_astesia_affection_to_lv4 }
+	set_variable = { which = wg_leader_affection_to_lv5 value = @wg_astesia_affection_to_lv5 }
+	set_variable = { which = wg_leader_affection_reduce value = @wg_astesia_affection_reduce }
+	set_variable = { which = wg_leader_affection_increase value = @wg_astesia_affection_increase }
+	}
+}
+wg_affection_wg_astesia_system_check = {
+	if = {
+		limit = {
+			has_leader_flag = has_wg_affection_wg_astesia
+		}
+		if = {
+			limit = {
+				owner = { has_country_flag = married_wg_astesia }
+			}
+			set_leader_flag = married
+		}
+		set_variable = { which = affection value = owner.wg_astesia_affection }
+	}
+}
+#泡泡
+wg_affection_wg_bubbles_system_launch = {
+	if = {
+		limit = { has_leader_flag = bubbles_leader }
+	set_leader_flag = has_wg_affection
+	set_leader_flag = has_wg_affection_wg_bubbles
+	set_leader_flag = wg_affection_auto_change_no
+	add_trait_no_notify = leader_trait_wg_bubbles_affection
+	set_variable = { which = affection value = owner.wg_bubbles_affection }
+	set_variable = { which = wg_leader_affection_to_lv2 value = @wg_bubbles_affection_to_lv2 }
+	set_variable = { which = wg_leader_affection_to_lv3 value = @wg_bubbles_affection_to_lv3 }
+	set_variable = { which = wg_leader_affection_to_lv4 value = @wg_bubbles_affection_to_lv4 }
+	set_variable = { which = wg_leader_affection_to_lv5 value = @wg_bubbles_affection_to_lv5 }
+	set_variable = { which = wg_leader_affection_reduce value = @wg_bubbles_affection_reduce }
+	set_variable = { which = wg_leader_affection_increase value = @wg_bubbles_affection_increase }
+	}
+}
+wg_affection_wg_bubbles_system_check = {
+	if = {
+		limit = {
+			has_leader_flag = has_wg_affection_wg_bubbles
+		}
+		if = {
+			limit = {
+				owner = { has_country_flag = married_bubbles }
+			}
+			set_leader_flag = married
+		}
+		set_variable = { which = affection value = owner.wg_bubbles_affection }
+	}
+}
+#以太龙
+wg_affection_wg_dragon_system_launch = {
+	if = {
+		limit = { has_leader_flag = wg_dragon_leader }
+	set_leader_flag = has_wg_affection
+	set_leader_flag = has_wg_affection_wg_dragon
+	set_leader_flag = wg_affection_auto_change_no
+	add_trait_no_notify = leader_trait_wg_dragon_affection
+	set_variable = { which = affection value = owner.wg_dragon_affection }
+	set_variable = { which = wg_leader_affection_to_lv2 value = @wg_dragon_affection_to_lv2 }
+	set_variable = { which = wg_leader_affection_to_lv3 value = @wg_dragon_affection_to_lv3 }
+	set_variable = { which = wg_leader_affection_to_lv4 value = @wg_dragon_affection_to_lv4 }
+	set_variable = { which = wg_leader_affection_to_lv5 value = @wg_dragon_affection_to_lv5 }
+	set_variable = { which = wg_leader_affection_reduce value = @wg_dragon_affection_reduce }
+	set_variable = { which = wg_leader_affection_increase value = @wg_dragon_affection_increase }
+	}
+}
+wg_affection_wg_dragon_system_check = {
+	if = {
+		limit = {
+			has_leader_flag = has_wg_affection_wg_dragon
+		}
+		if = {
+			limit = {
+				owner = { has_country_flag = married_wg_dragon }
+			}
+			set_leader_flag = married
+		}
+		set_variable = { which = affection value = owner.wg_dragon_affection }
+	}
+}
+#灰风
+wg_affection_wg_gray_system_launch = {
+	if = {
+		limit = { has_leader_flag = gray_leader }
+	set_leader_flag = has_wg_affection
+	set_leader_flag = has_wg_affection_wg_gray
+	set_leader_flag = wg_affection_auto_change_no
+	add_trait_no_notify = leader_trait_wg_gray_affection
+	set_variable = { which = affection value = owner.wg_gray_affection }
+	set_variable = { which = wg_leader_affection_to_lv2 value = @wg_gray_affection_to_lv2 }
+	set_variable = { which = wg_leader_affection_to_lv3 value = @wg_gray_affection_to_lv3 }
+	set_variable = { which = wg_leader_affection_to_lv4 value = @wg_gray_affection_to_lv4 }
+	set_variable = { which = wg_leader_affection_to_lv5 value = @wg_gray_affection_to_lv5 }
+	set_variable = { which = wg_leader_affection_reduce value = @wg_gray_affection_reduce }
+	set_variable = { which = wg_leader_affection_increase value = @wg_gray_affection_increase }
+	}
+
+}
+wg_affection_wg_gray_system_check = {
+	if = {
+		limit = {
+			has_leader_flag = has_wg_affection_wg_gray
+		}
+		if = {
+			limit = {
+				owner = { has_country_flag = married_gray }
+			}
+			set_leader_flag = married
+		}
+		set_variable = { which = affection value = owner.wg_gray_affection }
+	}
+}
+#大小姐
+wg_affection_wg_lady_system_launch = {
+	if = {
+		limit = { has_leader_flag = wsg_lady_leader }
+	set_leader_flag = has_wg_affection
+	set_leader_flag = has_wg_affection_wg_lady
+	set_leader_flag = wg_affection_auto_change_no
+	add_trait_no_notify = leader_trait_wg_lady_affection
+	set_variable = { which = affection value = owner.wg_lady_affection }
+	set_variable = { which = wg_leader_affection_to_lv2 value = @wg_lady_affection_to_lv2 }
+	set_variable = { which = wg_leader_affection_to_lv3 value = @wg_lady_affection_to_lv3 }
+	set_variable = { which = wg_leader_affection_to_lv4 value = @wg_lady_affection_to_lv4 }
+	set_variable = { which = wg_leader_affection_to_lv5 value = @wg_lady_affection_to_lv5 }
+	set_variable = { which = wg_leader_affection_reduce value = @wg_lady_affection_reduce }
+	set_variable = { which = wg_leader_affection_increase value = @wg_lady_affection_increase }
+	}
+}
+wg_affection_wg_lady_system_check = {
+	if = {
+		limit = {
+			has_leader_flag = has_wg_affection_wg_lady
+		}
+		if = {
+			limit = {
+				owner = { has_country_flag = married_wsg_lady }
+			}
+			set_leader_flag = married
+		}
+		set_variable = { which = affection value = owner.wg_lady_affection }
+	}
+}
+#雪风
+wg_affection_wg_rbq_dragon_system_launch = {
+	if = {
+		limit = { has_leader_flag = wg_yukikaze_leader }
+		set_leader_flag = has_wg_affection
+		set_leader_flag = has_wg_affection_wg_rbq_dragon
+		set_leader_flag = wg_affection_auto_change_no
+		add_trait_no_notify = leader_trait_wg_yukikaze_affection
+		set_variable = { which = affection value = owner.wg_yukikaze_affection }
+		set_variable = { which = wg_leader_affection_to_lv2 value = @wg_yukikaze_affection_to_lv2 }
+		set_variable = { which = wg_leader_affection_to_lv3 value = @wg_yukikaze_affection_to_lv3 }
+		set_variable = { which = wg_leader_affection_to_lv4 value = @wg_yukikaze_affection_to_lv4 }
+		set_variable = { which = wg_leader_affection_to_lv5 value = @wg_yukikaze_affection_to_lv5 }
+		set_variable = { which = wg_leader_affection_reduce value = @wg_yukikaze_affection_reduce }
+		set_variable = { which = wg_leader_affection_increase value = @wg_yukikaze_affection_increase }
+	}
+}
+wg_affection_wg_rbq_dragon_system_check = {
+	if = {
+		limit = {
+			has_leader_flag = has_wg_affection_wg_rbq_dragon
+		}
+		if = {
+			limit = {
+				owner = { has_country_flag = married_wg_yukikaze }
+			}
+			set_leader_flag = married
+		}
+		set_variable = { which = affection value = owner.wg_yukikaze_affection }
+	}
+}
+#岛风
+wg_affection_wg_shimakaze_system_launch = {
+	if = {
+		limit = { has_leader_flag = wg_shimakaze_leader }
+		set_leader_flag = has_wg_affection
+		set_leader_flag = has_wg_affection_wg_shimakaze
+		set_leader_flag = wg_affection_auto_change_no
+		add_trait_no_notify = leader_trait_wg_shimakaze_affection
+		set_variable = { which = affection value = owner.wg_shimakaze_affection }
+		set_variable = { which = wg_leader_affection_to_lv2 value = @wg_shimakaze_affection_to_lv2 }
+		set_variable = { which = wg_leader_affection_to_lv3 value = @wg_shimakaze_affection_to_lv3 }
+		set_variable = { which = wg_leader_affection_to_lv4 value = @wg_shimakaze_affection_to_lv4 }
+		set_variable = { which = wg_leader_affection_to_lv5 value = @wg_shimakaze_affection_to_lv5 }
+		set_variable = { which = wg_leader_affection_reduce value = @wg_shimakaze_affection_reduce }
+		set_variable = { which = wg_leader_affection_increase value = @wg_shimakaze_affection_increase }
+	}
+}
+wg_affection_wg_shimakaze_system_check = {
+	if = {
+		limit = {
+			has_leader_flag = has_wg_affection_wg_shimakaze
+		}
+		if = {
+			limit = {
+				owner = { has_country_flag = married_wg_shimakaze }
+			}
+			set_leader_flag = married
+		}
+		set_variable = { which = affection value = owner.wg_shimakaze_affection }
+	}
+}

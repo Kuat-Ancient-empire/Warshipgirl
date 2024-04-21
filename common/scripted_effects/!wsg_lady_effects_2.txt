@@ -1,0 +1,537 @@
+
+
+reset_wg_lady_affection_variables = {
+	set_variable = { which = "planets_no_affection_lady" value = 0 }
+	set_variable = { which = "systems_no_affection_lady" value = 0 }
+	set_variable = { which = "systems_no_affection_lady" value = 0 }
+}
+
+# 使用完成后一定要clear_global_event_target = wsg_player_nickname !!!
+# scope: country
+# output: event_target:wsg_player_nickname
+# 使用方法：在任何处于国家类型的作用域下调用此函数以输出玩家昵称（大小姐对玩家的称呼，不是真的玩家昵称）
+# 调用函数后可在本地化文件中引用wsg_player_nickname的event target
+# 即直接加上[wsg_player_nickname.GetName]
+# 为避免bug，event target使用的是全局变量
+get_player_nickname = {
+	if = {
+		limit = { has_country_flag = has_nickname }
+		event_target:wsg_lady_country = {
+			random_controlled_fleet = {
+				limit = { has_fleet_flag = lady_naming_fleet }
+				save_global_event_target_as = wsg_player_nickname
+			}
+		}
+		if = { #找不到储存命名的船，调用预设名字的船作为昵称
+			limit = { NOT = { exists = event_target:wsg_player_nickname }}
+			random_system = {
+				limit = { has_star_flag = wg_naming_ship_system }
+				random_fleet_in_system = {
+					limit = { has_fleet_flag = wsg_player_default_nickname }
+					save_global_event_target_as = wsg_player_nickname
+				}
+			}
+		}
+	}
+	else_if = { #该国家并没有设定大小姐用的昵称，调用预设名字作为昵称
+		limit = { NOT = { has_country_flag = has_nickname }}
+		random_system = {
+			limit = { has_star_flag = wg_naming_ship_system }
+			random_fleet_in_system = {
+				limit = { has_fleet_flag = wsg_player_default_nickname }
+				save_global_event_target_as = wsg_player_nickname
+			}
+		}
+	}
+}
+# scope: country
+check_dragonslayer_wsg_lady = {
+	if = {
+		limit = { has_country_flag = dragonslayer_wsg_lady }
+		break = yes
+	}
+	if = { 
+		limit = { OR = {
+			has_trait = leader_trait_dragonslayer 
+			has_trait = leader_trait_dragonbane
+		}}
+		set_country_flag = dragonslayer_wsg_lady
+	}
+}
+
+# scope: fleet
+create_wsg_lady_army_transport = {
+	random_country = {
+		limit = { has_country_flag = gain_wsg_lady }
+		save_event_target_as = wsg_lady_own_country
+	}
+	if = {
+		limit = { 
+			event_target:wsg_lady_own_country = { 
+				check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv5 }
+				has_country_flag = married_wsg_lady
+			}
+		}
+		if = {
+			limit = { event_target:wsg_lady_own_country = { has_country_flag = dragonslayer_wsg_lady }}
+			create_army_transport = {
+				ship_name = "NAME_WG_LADY"
+				army_name = "NAME_WG_LADY"
+				army_type = "lady_army_affection_5_dragonslayer"
+				species = event_target:wsg_lady_own_country
+			}
+		} else = {
+			create_army_transport = {
+				ship_name = "NAME_WG_LADY"
+				army_name = "NAME_WG_LADY"
+				army_type = "lady_army_affection_5"
+				species = event_target:wsg_lady_own_country
+			}
+		}
+		remove_lady_army = yes
+		break = yes
+	}
+	if = {
+		limit = { event_target:wsg_lady_own_country = { check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv3 }}}
+		if = {
+			limit = { event_target:wsg_lady_own_country = { has_country_flag = dragonslayer_wsg_lady }}
+			create_army_transport = {
+				ship_name = "NAME_WG_LADY"
+				army_name = "NAME_WG_LADY"
+				army_type = "lady_army_affection_3_dragonslayer"
+				species = event_target:wsg_lady_own_country
+			}
+		} else = {
+			create_army_transport = {
+				ship_name = "NAME_WG_LADY"
+				army_name = "NAME_WG_LADY"
+				army_type = "lady_army_affection_3"
+				species = event_target:wsg_lady_own_country
+			}
+		}
+		remove_lady_army = yes
+		break = yes
+	} 
+	if = { 
+		limit = { event_target:wsg_lady_own_country = { check_variable = { which = wg_lady_affection value < @wg_lady_affection_to_lv3 }}}
+		if = {
+			limit = { event_target:wsg_lady_own_country = { has_country_flag = dragonslayer_wsg_lady }}
+			create_army_transport = {
+				ship_name = "NAME_WG_LADY"
+				army_name = "NAME_WG_LADY"
+				army_type = "lady_army_dragonslayer"
+				species = event_target:wsg_lady_own_country
+			}
+		} else = {
+			create_army_transport = {
+				ship_name = "NAME_WG_LADY"
+				army_name = "NAME_WG_LADY"
+				army_type = "lady_army"
+				species = event_target:wsg_lady_own_country
+			}
+		}
+		remove_lady_army = yes
+	}
+}
+
+# scope: planet
+create_wsg_lady_army_troop = {
+	random_country = {
+		limit = { has_country_flag = gain_wsg_lady }
+		save_event_target_as = wsg_lady_own_country
+	}
+	if = {
+		limit = { 
+			event_target:wsg_lady_own_country = { 
+				check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv5 }
+				has_country_flag = married_wsg_lady
+			}
+		}
+		if = {
+			limit = { event_target:wsg_lady_own_country = { has_country_flag = dragonslayer_wsg_lady }}
+			create_army = {
+				owner = event_target:wsg_lady_own_country
+				type = lady_army_affection_5_dragonslayer
+				species = event_target:wsg_lady_own_country
+			}
+		} else = {
+			create_army = {
+				owner = event_target:wsg_lady_own_country
+				type = lady_army_affection_5
+				species = event_target:wsg_lady_own_country
+			}
+		}
+		remove_lady_army = yes
+		break = yes
+	}
+	if = {
+		limit = { event_target:wsg_lady_own_country = { check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv3 }}}
+		if = {
+			limit = { event_target:wsg_lady_own_country = { has_country_flag = dragonslayer_wsg_lady }}
+			create_army = {
+				owner = event_target:wsg_lady_own_country
+				type = lady_army_affection_3_dragonslayer
+				species = event_target:wsg_lady_own_country
+			}
+		} else = {
+			create_army = {
+				owner = event_target:wsg_lady_own_country
+				type = lady_army_affection_3
+				species = event_target:wsg_lady_own_country
+			}
+		}
+		remove_lady_army = yes
+		break = yes
+	} 
+	if = { 
+		limit = { event_target:wsg_lady_own_country = { check_variable = { which = wg_lady_affection value < @wg_lady_affection_to_lv3 }}}
+		if = {
+			limit = { event_target:wsg_lady_own_country = { has_country_flag = dragonslayer_wsg_lady }}
+			create_army = {
+				owner = event_target:wsg_lady_own_country
+				type = lady_army_dragonslayer
+				species = event_target:wsg_lady_own_country
+			}
+		} else = {
+			create_army = {
+				owner = event_target:wsg_lady_own_country
+				type = lady_army
+				species = event_target:wsg_lady_own_country
+			}
+		}
+		remove_lady_army = yes
+	}
+}
+
+remove_lady_army = {
+	last_created_army = { save_event_target_as = new_lady_army }
+	event_target:wsg_lady_own_country = {
+		every_owned_army = {
+			limit = { 
+				NOT = { is_same_value = event_target:new_lady_army }
+				is_lady_army = yes
+			}
+			remove_army = yes
+		}
+	}
+}
+
+# scope: leader
+set_lady_portrait = {
+	if = {
+		limit = { has_global_flag = april_fool }
+		change_leader_portrait = wsglady_april_fool
+	}
+	else_if = {
+		limit = { owner = { 
+			OR = {
+				has_country_flag = wsg_lady_cloth_01_unlock
+				has_global_flag = wg_cheat_all_clothes
+			}
+			check_variable = { which = wsg_lady_cloth value = 1 }
+		}}
+		change_leader_portrait = wsglady01
+	} else_if = {
+		limit = { owner = { 
+			OR = {
+				has_country_flag = wsg_lady_cloth_02_unlock
+				has_global_flag = wg_cheat_all_clothes
+			}
+			check_variable = { which = wsg_lady_cloth value = 2 }
+		}}
+		change_leader_portrait = wsglady02
+	} else_if = {
+		limit = { owner = { 
+			OR = {
+				has_country_flag = married_wsg_lady
+				has_global_flag = wg_cheat_all_clothes
+			}
+			check_variable = { which = wsg_lady_cloth value = 3 }
+		}}
+		change_leader_portrait = wsglady03
+	} else_if = {
+		limit = { owner = { 
+			check_variable = { which = wsg_lady_cloth value = 4 }
+		}}
+		change_leader_portrait = wsglady04
+	} else_if = {
+		limit = { owner = { 
+			check_variable = { which = wsg_lady_cloth value = 5 }
+		}}
+		change_leader_portrait = wsglady_april_fool
+	} else_if = {
+		limit = { owner = { check_variable = { which = wsg_lady_cloth value = 0 }}}
+		if = { 
+			limit = { owner = { check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv5 }}}
+			change_leader_portrait = wsg_lady_affection3
+		} else_if = {
+			limit = { owner = { check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv3 }}}
+			change_leader_portrait = wsg_lady_affection2
+		} else_if = {
+			limit = { owner = { check_variable = { which = wg_lady_affection value < @wg_lady_affection_to_lv3 }}}
+			change_leader_portrait = wsg_lady_affection1
+		}
+	} else = {
+		change_leader_portrait = wsglady04
+	}
+}
+
+quit_lady_commu_effects = {
+	hidden_effect = {
+		set_country_flag = finish_lady_talking
+		reset_lady_cloth = yes
+	}
+}
+talk_to_lady_option_effects = {
+	hidden_effect = {
+		set_country_flag = talked_to_wsg_lady
+		reset_lady_cloth = yes
+		set_lady_reply = yes
+		country_event = { id = wg_lady.998 }
+	}
+}
+set_lady_reply = {
+	if = {
+		limit = { check_variable = { which = wsg_lady_talking value = 11 }}
+		set_variable = { which = talk_to_wsg_lady_option value = 101 }
+	} else_if = {
+		limit = { check_variable = { which = wsg_lady_talking value = 12 }}
+		set_variable = { which = talk_to_wsg_lady_option value = 102 }
+	} else_if = {
+		limit = { check_variable = { which = wsg_lady_talking value = 13 }}
+		set_variable = { which = talk_to_wsg_lady_option value = 103 }
+	} else_if = {
+		limit = { check_variable = { which = wsg_lady_talking value = 21 }}
+		set_variable = { which = talk_to_wsg_lady_option value = 201 }
+	} else_if = {
+		limit = { check_variable = { which = wsg_lady_talking value = 22 }}
+		set_variable = { which = talk_to_wsg_lady_option value = 202 }
+	} else_if = {
+		limit = { check_variable = { which = wsg_lady_talking value = 23 }}
+		set_variable = { which = talk_to_wsg_lady_option value = 203 }
+	} else_if = {
+		limit = { has_country_flag = wsg_lady_official_active }
+		if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 1 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 11 }
+		} else_if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 2 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 12 }
+		} else_if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 3 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 13 }
+		}
+	} else_if = {
+		limit = { has_country_flag = wsg_lady_warship_active }
+		if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 1 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 21 }
+		} else_if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 2 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 22 }
+		} else_if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 3 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 23 }
+		}
+	} else_if = {
+		limit = { has_country_flag = wsg_lady_army_active }
+		if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 1 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 31 }
+		} else_if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 2 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 32 }
+		} else_if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 3 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 33 }
+		}
+	} else_if = {
+		limit = { has_country_flag = wsg_lady_armed_science_active }
+		if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 1 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 41 }
+		} else_if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 2 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 42 }
+		} else_if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 3 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 43 }
+		}
+	} else_if = {
+		limit = { wsg_lady_available = yes }
+		if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 1 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 1 }
+		} else_if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 2 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 2 }
+		} else_if = {
+			limit = { check_variable = { which = wsg_lady_talking value = 3 }}
+			set_variable = { which = talk_to_wsg_lady_option value = 3 }
+		}
+	}
+}
+lady_changing_effects = {
+	hidden_effect = {
+		set_country_flag = wsg_lady_changing
+		remove_country_flag = talking_to_wsg_lady
+		remove_country_flag = talked_to_wsg_lady
+		reset_lady_cloth = yes
+	}
+}
+lady_diplo_immediate_effects = {
+	# get_player_nickname = yes
+	random_list = {
+		1 = { set_variable = { which = wsg_lady_talking value = 1 }}
+		1 = { set_variable = { which = wsg_lady_talking value = 2 }}
+		1 = { set_variable = { which = wsg_lady_talking value = 3 }}
+		1 = { 
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { check_variable = { which = wsg_lady_cloth value = 1 }}
+					NOR = { 
+						has_country_flag = wsg_lady_cloth_01_unlock 
+						has_global_flag = wg_cheat_all_clothes
+					}
+				}
+			}
+			set_variable = { which = wsg_lady_talking value = 11 }
+		}
+		1 = { 
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { check_variable = { which = wsg_lady_cloth value = 1 }}
+					NOR = { 
+						has_country_flag = wsg_lady_cloth_01_unlock 
+						has_global_flag = wg_cheat_all_clothes
+					}
+				}
+			}
+			set_variable = { which = wsg_lady_talking value = 12 }
+		}
+		1 = { 
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { check_variable = { which = wsg_lady_cloth value = 1 }}
+					NOR = { 
+						has_country_flag = wsg_lady_cloth_01_unlock 
+						has_global_flag = wg_cheat_all_clothes
+					}
+				}
+			}
+			set_variable = { which = wsg_lady_talking value = 13 }
+		}
+		1 = { 
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { check_variable = { which = wsg_lady_cloth value = 2 }}
+					NOR = { 
+						has_country_flag = wsg_lady_cloth_02_unlock 
+						has_global_flag = wg_cheat_all_clothes
+					}
+				}
+			}
+			set_variable = { which = wsg_lady_talking value = 21 }
+		}
+		1 = { 
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { check_variable = { which = wsg_lady_cloth value = 2 }}
+					NOR = { 
+						has_country_flag = wsg_lady_cloth_02_unlock 
+						has_global_flag = wg_cheat_all_clothes
+					}
+				}
+			}
+			set_variable = { which = wsg_lady_talking value = 22 }
+		}
+		1 = { 
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { check_variable = { which = wsg_lady_cloth value = 2 }}
+					NOR = { 
+						has_country_flag = wsg_lady_cloth_02_unlock 
+						has_global_flag = wg_cheat_all_clothes
+					}
+				}
+			}
+			set_variable = { which = wsg_lady_talking value = 23 }
+		}
+	}
+	set_country_flag = talking_to_wsg_lady
+}
+lady_diplo_after_effects = {
+	hidden_effect = {
+		if = {
+			limit = { NOT = { has_country_flag = talked_to_wsg_lady }}
+			set_variable = { which = wsg_lady_talking value = 0 }
+		}
+		if = {
+			limit = { has_country_flag = finish_lady_talking }
+			remove_country_flag = talking_to_wsg_lady
+			remove_country_flag = talked_to_wsg_lady
+			remove_country_flag = wsg_lady_changed
+			remove_country_flag = finish_lady_talking
+			break = yes
+		}
+		if = {
+			limit = { has_country_flag = wsg_lady_changing }
+			remove_country_flag = wsg_lady_changing
+		}
+		if = {
+			limit = { has_country_flag = talking_to_wsg_lady }
+			remove_country_flag = talking_to_wsg_lady
+		}
+	}
+}
+
+reset_lady_cloth = {
+	if = {
+		limit = { 
+			NOR = { 
+				has_country_flag = wsg_lady_cloth_01_unlock 
+				has_global_flag = wg_cheat_all_clothes
+			}
+			check_variable = { which = wsg_lady_cloth value = 1 }
+		}
+		set_variable = { which = wsg_lady_cloth value = 0 }
+	} else_if = {
+		limit = {
+			NOR = { 
+				has_country_flag = wsg_lady_cloth_02_unlock 
+				has_global_flag = wg_cheat_all_clothes
+			}
+			check_variable = { which = wsg_lady_cloth value = 2 }
+		}
+		set_variable = { which = wsg_lady_cloth value = 0 }
+	} else_if = {
+		limit = {
+			NOR = { 
+				has_country_flag = married_wsg_lady
+				has_global_flag = wg_cheat_all_clothes
+			}
+			check_variable = { which = wsg_lady_cloth value = 3 }
+		}
+		set_variable = { which = wsg_lady_cloth value = 0 }
+	}
+}
+
+# scope: country
+remove_lady_colossus_weapon_flags = {
+	remove_country_flag = lady_warship_cracker
+	remove_country_flag = lady_warship_shielder
+	remove_country_flag = lady_warship_neutron
+	remove_country_flag = lady_warship_godray
+	remove_country_flag = lady_warship_nanobots
+	remove_country_flag = lady_warship_ovo
+	remove_country_flag = lady_warship_psh
+	remove_country_flag = lady_warship_sun_killer
+	remove_country_flag = lady_warship_waterB
+	remove_country_flag = lady_warship_graygoo
+}

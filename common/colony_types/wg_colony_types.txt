@@ -1,0 +1,990 @@
+# 自动化模版用的消费品
+col_wsg_factory = {
+	icon = GFX_colony_type_factory
+	potential = {
+		exists = owner
+		owner = {
+			has_authority = auth_warshipgirls
+		}
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_cybrex
+			is_planet_class = pc_habitat
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_sh
+			is_planet_class = pc_shenhai
+		}
+		is_special_colony_type = no
+	}
+	planet_modifier = {
+		planet_district_industrial_build_speed_mult = 0.25
+		planet_artisans_upkeep_mult = -0.2
+	}
+	triggered_planet_modifier = {
+		potential = {
+			owner = {
+				has_authority = auth_warshipgirls
+				has_project_s_ascension_path = yes
+			}
+		}
+		job_sep_artisan_per_pop = 0.03
+	}
+	triggered_planet_modifier = {
+		potential = {
+			owner = {
+				OR = {
+					AND = {
+						has_authority = auth_warshipgirls
+						has_project_s_ascension_path = no
+					}
+					has_authority = auth_shenhai
+				}
+			}
+		}
+		job_artisan_per_pop = 0.05
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 100
+			has_active_wg_factory_building = yes
+		}
+	}
+}
+
+col_wsg_foundry = {
+	icon = GFX_colony_type_foundry
+	potential = {
+		exists = owner
+		owner = {
+			has_authority = auth_warshipgirls
+		}
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_cybrex
+			is_planet_class = pc_habitat
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_sh
+			is_planet_class = pc_shenhai
+		}
+		is_special_colony_type = no
+	}
+	planet_modifier = {
+		planet_district_industrial_build_speed_mult = 0.25
+		planet_metallurgists_upkeep_mult = -0.2
+	}
+	triggered_planet_modifier = {
+		potential = {
+			owner = {
+				has_authority = auth_warshipgirls
+				has_project_s_ascension_path = no
+				NOT = {
+					has_ascension_perk = ap_mist
+				}
+			}
+		}
+		job_foundry_per_pop = 0.03
+	}
+	triggered_planet_modifier = {
+		potential = {
+			owner = {
+				has_authority = auth_warshipgirls
+				has_project_s_ascension_path = yes
+			}
+		}
+		job_sep_foundry_per_pop = 0.03
+	}
+	triggered_planet_modifier = {
+		potential = {
+			owner = {
+				has_authority = auth_warshipgirls
+				has_project_s_ascension_path = no
+				has_ascension_perk = ap_mist
+			}
+		}
+		job_wsg_foundry_per_pop = 0.03
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 100
+			has_active_wg_foundry_building = yes
+		}
+	}
+}
+
+col_wsg_research = {
+	icon = GFX_colony_type_research
+	potential = {
+		exists = owner
+		owner = {
+			has_authority = auth_warshipgirls
+		}
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_cybrex
+			is_planet_class = pc_habitat
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_sh
+			is_planet_class = pc_shenhai
+		}
+		is_special_colony_type = no
+	}
+	planet_modifier = {
+		planet_researchers_upkeep_mult = -0.2
+	}
+	triggered_planet_modifier = {
+		potential = {
+			owner = {
+				has_authority = auth_warshipgirls
+				has_project_s_ascension_path = yes
+			}
+		}
+		planet_building_sep_research_build_speed_mult = 0.25
+	}
+	triggered_planet_modifier = {
+		potential = {
+			owner = {
+				has_authority = auth_warshipgirls
+				has_project_s_ascension_path = no
+			}
+		}
+		planet_building_wsg_research_build_speed_mult = 0.25
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 10
+			OR = {
+				num_buildings = {
+					type = building_research_lab_1
+					value > 2
+				}
+				num_buildings = {
+					type = building_wsg_research
+					value > 2
+				}
+				num_buildings = {
+					type = building_sep_research
+					value > 2
+				}
+			}
+		}
+		modifier = {
+			add = 20
+			has_active_building = building_wsg_avrora_academy
+		}
+	}
+}
+
+col_wsg_military = {
+	icon = GFX_colony_type_sh_soldier
+	potential = {
+		exists = owner
+		owner = {
+			has_authority = auth_warshipgirls
+		}
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_cybrex
+			is_planet_class = pc_habitat
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_ringworld_habitable_sh
+		}
+		is_special_colony_type = no
+	}
+	planet_modifier = {
+		planet_building_wsg_military_build_speed_mult = 0.25
+		planet_orbital_bombardment_damage = -0.2
+		army_defense_damage_mult = 0.2
+		custom_tooltip = col_wg_soldier_custom
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 100
+			has_active_building = building_wsg_military
+		}
+	}
+}
+
+col_sh_factory = {
+	icon = GFX_colony_type_factory
+	potential = {
+		exists = owner
+		owner = {
+			has_authority = auth_shenhai
+		}
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_cybrex
+			is_planet_class = pc_habitat
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_sh
+			is_planet_class = pc_shenhai
+		}
+		is_special_colony_type = no
+	}
+	planet_modifier = {
+		planet_district_industrial_build_speed_mult = 0.25
+		planet_artisans_upkeep_mult = -0.2
+		job_artisan_per_pop = 0.05
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 100
+			has_active_wg_factory_building = yes
+		}
+	}
+}
+
+col_sh_foundry = {
+	icon = GFX_colony_type_foundry
+	potential = {
+		exists = owner
+		owner = {
+			has_authority = auth_shenhai
+		}
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_cybrex
+			is_planet_class = pc_habitat
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_sh
+			is_planet_class = pc_shenhai
+		}
+		is_special_colony_type = no
+	}
+	planet_modifier = {
+		planet_district_industrial_build_speed_mult = 0.25
+		planet_metallurgists_upkeep_mult = -0.2
+		job_sh_foundry_per_pop = 0.03
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 100
+			has_active_wg_foundry_building = yes
+		}
+	}
+}
+
+col_sh_research = {
+	icon = GFX_colony_type_research
+	potential = {
+		exists = owner
+		owner = {
+			has_authority = auth_shenhai
+		}
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_cybrex
+			is_planet_class = pc_habitat
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_sh
+			is_planet_class = pc_shenhai
+		}
+		is_special_colony_type = no
+	}
+	planet_modifier = {
+		planet_researchers_upkeep_mult = -0.2
+		planet_building_sh_research_build_speed_mult = 0.25
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 20
+			num_buildings = {
+				type = building_sh_research
+				value > 2
+			}
+		}
+	}
+}
+
+col_sh_military = {
+	icon = GFX_colony_type_sh_soldier
+	potential = {
+		exists = owner
+		owner = {
+			has_authority = auth_shenhai
+		}
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_cybrex
+			is_planet_class = pc_habitat
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_ringworld_habitable_sh
+		}
+		is_special_colony_type = no
+	}
+	planet_modifier = {
+		planet_building_wsg_military_build_speed_mult = 0.25
+		planet_orbital_bombardment_damage = -0.2
+		army_defense_damage_mult = 0.2
+		custom_tooltip = col_wg_soldier_custom
+	}
+	weight_modifier = {
+		base = 0
+	}
+}
+
+#港球城市
+col_wsg_port_city = {
+	icon = GFX_colony_type_urban
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_wsg_port
+	}
+	planet_modifier = {
+		planet_district_arcology_wsg_housing_build_speed_mult = 0.25
+		pop_growth_speed = 0.25
+		pop_happiness = 0.1
+		planet_stability_add = 5
+	}
+	weight_modifier = {
+		base = 10
+		modifier = {
+			add = 20
+			num_districts = {
+				type = district_rw_wsg_city
+				value >= 2
+			}
+		}
+	}
+}
+
+#neo合金
+col_wsg_port_neo = {
+	icon = GFX_colony_type_foundry
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_wsg_port
+	}
+	planet_modifier = {
+		planet_district_arcology_wsg_neo_build_speed_mult = 0.25
+		planet_metallurgists_upkeep_mult = -0.2
+		planet_jobs_alloys_produces_mult = 0.1
+		custom_tooltip = col_wsg_port_neo_custom
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 10
+			has_active_wg_foundry_building = yes
+		}
+		modifier = {
+			add = 20
+			num_districts = {
+				type = district_arcology_wsg_neo
+				value >= 5
+			}
+		}
+	}
+}
+
+#neo消费品
+col_wsg_port_factory = {
+	icon = GFX_colony_type_factory
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_wsg_port
+	}
+	planet_modifier = {
+		planet_district_arcology_wsg_neo_build_speed_mult = 0.25
+		planet_artisans_upkeep_mult = -0.2
+		planet_jobs_consumer_goods_produces_mult = 0.1
+		custom_tooltip = col_wsg_port_factory_custom
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 10
+			has_active_wg_factory_building = yes
+		}
+		modifier = {
+			add = 20
+			num_districts = {
+				type = district_arcology_wsg_neo
+				value >= 5
+			}
+		}
+	}
+}
+
+#港球科研
+col_wsg_port_science = {
+	icon = GFX_colony_type_research
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_wsg_port
+	}
+	planet_modifier = {
+		planet_district_arcology_wsg_science_build_speed_mult = 0.25
+		planet_researchers_upkeep_mult = -0.2
+		planet_researchers_produces_mult = 0.1
+		custom_tooltip = col_wsg_port_science_custom
+	}
+	weight_modifier = {
+		base = 0
+	}
+}
+
+#港球调度站
+col_wsg_port_military = {
+	icon = GFX_colony_type_bureaucratic
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_wsg_port
+	}
+	planet_modifier = {
+		planet_district_arcology_wsg_military_build_speed_mult = 0.25
+		planet_orbital_bombardment_damage = -0.2
+		army_defense_damage_mult = 0.2
+		custom_tooltip = col_wg_soldier_custom
+	}
+	weight_modifier = {
+		base = 0
+	}
+}
+
+#港环
+col_wsg_ring_city = {
+	icon = GFX_colony_type_urban
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_ringworld_habitable_wsg
+	}
+	planet_modifier = {
+		planet_district_rw_wsg_city_build_speed_mult = 0.25
+		planet_pop_assembly_organic_mult = 0.1
+		pop_happiness = 0.1
+		planet_stability_add = 5
+	}
+	weight_modifier = {
+		base = 10
+	}
+}
+
+#港环合金
+col_wsg_ring_alloy = {
+	icon = GFX_colony_type_foundry
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_ringworld_habitable_wsg
+	}
+	planet_modifier = {
+		planet_district_rw_wsg_alloys_build_speed_mult = 0.25
+		planet_metallurgists_upkeep_mult = -0.2
+		planet_jobs_alloys_produces_mult = 0.15
+		custom_tooltip = col_wsg_ring_alloy_custom
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 10
+			has_active_wg_foundry_building = yes
+		}
+		modifier = {
+			add = 20
+			num_districts = {
+				type = district_rw_wsg_alloys
+				value >= 2
+			}
+		}
+	}
+}
+
+#港环消费品
+col_wsg_ring_factory = {
+	icon = GFX_colony_type_factory
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_ringworld_habitable_wsg
+	}
+	planet_modifier = {
+		planet_district_rw_wsg_alloys_build_speed_mult = 0.25
+		planet_artisans_upkeep_mult = -0.2
+		planet_jobs_consumer_goods_produces_mult = 0.15
+		custom_tooltip = col_wsg_ring_factory_custom
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 10
+			has_active_wg_factory_building = yes
+		}
+		modifier = {
+			add = 20
+			num_districts = {
+				type = district_rw_wsg_alloys
+				value >= 2
+			}
+		}
+	}
+}
+
+#港环科研
+col_wsg_ring_science = {
+	icon = GFX_colony_type_research
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_ringworld_habitable_wsg
+	}
+	planet_modifier = {
+		planet_district_rw_wsg_science_build_speed_mult = 0.25
+		planet_researchers_upkeep_mult = -0.2
+		planet_researchers_produces_mult = 0.15
+		custom_tooltip = col_wsg_ring_science_custom
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 20
+			num_districts = {
+				type = district_rw_wsg_science
+				value >= 2
+			}
+		}
+	}
+}
+
+#港环精炼
+col_wsg_ring_resource = {
+	icon = GFX_colony_type_refinery
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+			# NOR = { 
+			# 	has_ascension_perk = ap_project_s
+			# 	has_country_flag = wg_ascension_path_project_s 
+			# }
+		}
+		is_planet_class = pc_ringworld_habitable_wsg
+	}
+	planet_modifier = {
+		planet_district_rw_wsg_soldier_build_speed_mult = 0.25
+		planet_jobs_sr_pantsu_produces_mult = 0.15
+	}
+	triggered_planet_modifier = {
+		potential = {
+			owner = {
+				has_project_s_ascension_path = yes
+			}
+		}
+		planet_jobs_sr_se_produces_mult = 0.15
+	}
+	triggered_planet_modifier = {
+		potential = {
+			owner = {
+				has_project_s_ascension_path = no
+			}
+		}
+		planet_jobs_sr_neo_produces_mult = 0.15
+		planet_jobs_sr_alpha_produces_mult = 0.15
+	}
+	weight_modifier = {
+		base = 0
+	}
+}
+
+#胖次球
+col_wg_pantsu = {
+	icon = GFX_colony_type_pantsu
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		owner = {
+			OR = {
+				has_technology = tech_wsg_pantsu
+				has_technology = tech_sh_assembly
+			}
+		}
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_cybrex
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_sh
+		}
+		is_special_colony_type = no
+	}
+	planet_modifier = {
+		planet_jobs_sr_pantsu_produces_mult = 0.15
+		custom_tooltip = col_wg_pantsu_custom
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 100
+			has_modifier = planet_pantsuhd
+		}
+		modifier = {
+			add = 10
+			OR = {
+				num_buildings = {
+					type = building_wsg_pantsu
+					value >= 3
+				}
+				num_buildings = {
+					type = building_wsg_pantsu2
+					value >= 3
+				}
+			}
+		}
+	}
+}
+
+#NEO+alpha
+col_wg_neo_alpha = {
+	icon = GFX_colony_type_neo_alpha
+	potential = {
+		exists = owner
+		owner = {
+			uses_sr_senergy_country = no
+		}
+		owner = {
+			OR = {
+				has_technology = tech_building_wsg_neo
+			}
+		}
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_cybrex
+			is_planet_class = pc_habitat
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_sh
+		}
+		is_special_colony_type = no
+	}
+	planet_modifier = {
+		planet_jobs_sr_neo_produces_mult = 0.15
+		planet_jobs_sr_alpha_produces_mult = 0.15
+		custom_tooltip = col_wg_neo_alpha_custom
+	}
+	weight_modifier = {
+		base = 0
+	}
+}
+
+#深海球复合区划
+col_shenhai = {
+	icon = GFX_colony_type_foundry
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_shenhai
+	}
+	planet_modifier = {
+		planet_jobs_alloys_produces_mult = 0.1
+		planet_jobs_consumer_goods_produces_mult = 0.1
+		planet_metallurgists_upkeep_mult = -0.2
+		planet_artisans_upkeep_mult = -0.2
+	}
+	weight_modifier = {
+		base = 2000
+	}
+}
+
+#深海能源核心
+col_sh_srse = {
+	icon = GFX_colony_type_senergy
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		owner = {
+			OR = {
+				has_technology = tech_sh_senergy
+				has_technology = tech_wsg_senergy
+			}
+		}
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_cybrex
+			is_planet_class = pc_habitat
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_sh
+		}
+		is_special_colony_type = no
+	}
+	planet_modifier = {
+		planet_jobs_sr_se_produces_mult = 0.15
+		custom_tooltip = col_srse_custom
+	}
+	weight_modifier = {
+		base = 0
+	}
+}
+
+col_sh_science = {
+	icon = GFX_colony_type_research
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_shenhai
+	}
+	planet_modifier = {
+		planet_researchers_upkeep_mult = -0.2
+		planet_researchers_produces_mult = 0.15
+		custom_tooltip = col_sh_science_custom
+	}
+	weight_modifier = {
+		base = 0
+	}
+}
+
+#深海环
+col_sh_ring_city = {
+	icon = GFX_colony_type_urban
+	potential = {
+		exists = owner
+		is_capital = no
+		is_planet_class = pc_ringworld_habitable_sh
+	}
+	planet_modifier = {
+		planet_district_rw_sh_city_build_speed_mult = 0.25
+		planet_pop_assembly_organic_mult = 0.1
+		planet_stability_add = 5
+	}
+	weight_modifier = {
+		base = 10
+		modifier = {
+			add = 20
+			num_districts = {
+				type = district_rw_sh_city
+				value >= 2
+			}
+		}
+	}
+}
+
+#深海环合金
+col_sh_ring_alloy = {
+	icon = GFX_colony_type_foundry
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_ringworld_habitable_sh
+	}
+	planet_modifier = {
+		planet_district_rw_sh_alloys_build_speed_mult = 0.25
+		planet_metallurgists_upkeep_mult = -0.2
+		planet_jobs_alloys_produces_mult = 0.15
+		custom_tooltip = col_sh_ring_alloy_custom
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 10
+			has_active_wg_foundry_building = yes
+		}
+		modifier = {
+			add = 20
+			num_districts = {
+				type = district_rw_sh_alloys
+				value >= 2
+			}
+		}
+	}
+}
+
+# 深海环消费品
+col_sh_ring_factory = {
+	icon = GFX_colony_type_factory
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_ringworld_habitable_sh
+	}
+	planet_modifier = {
+		planet_district_rw_sh_alloys_build_speed_mult = 0.25
+		planet_artisans_upkeep_mult = -0.2
+		planet_jobs_consumer_goods_produces_mult = 0.15
+		custom_tooltip = col_sh_ring_factory_custom
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 10
+			has_active_wg_factory_building = yes
+		}
+		modifier = {
+			add = 20
+			num_districts = {
+				type = district_rw_sh_alloys
+				value >= 2
+			}
+		}
+	}
+}
+
+#深海环科研
+col_sh_ring_science = {
+	icon = GFX_colony_type_research
+	potential = {
+		exists = owner
+		owner = {
+			is_wg_empire = yes
+		}
+		is_planet_class = pc_ringworld_habitable_sh
+	}
+	planet_modifier = {
+		planet_district_rw_sh_goods_build_speed_mult = 0.25
+		planet_researchers_upkeep_mult = -0.2
+		planet_researchers_produces_mult = 0.15
+		custom_tooltip = col_sh_ring_science_custom
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 20
+			num_districts = {
+				type = district_rw_sh_goods
+				value >= 2
+			}
+		}
+	}
+}
+
+#深海环调度
+col_sh_ring_soldier = {
+	icon = GFX_colony_type_sh_soldier
+	potential = {
+		is_planet_class = pc_ringworld_habitable_sh
+		owner = {
+			is_wg_empire = yes
+		}
+		exists = owner
+	}
+	planet_modifier = {
+		planet_district_rw_sh_soldier_build_speed_mult = 0.25
+		planet_orbital_bombardment_damage = -0.2
+		army_defense_damage_mult = 0.2
+		custom_tooltip = col_sh_soldier_custom
+	}
+	weight_modifier = {
+		base = 0
+	}
+}
+
+#偶像城市
+col_wsg_idol = {
+	icon = GFX_colony_type_wsg_idol
+	potential = {
+		exists = owner
+		owner = {
+			has_authority = auth_warshipgirls
+		}
+		is_special_colony_type = no
+	}
+	planet_modifier = {
+		planet_building_wsg_stage_build_speed_mult = 0.25
+		planet_culture_workers_unity_produces_add = 2
+		job_wsg_idol_per_pop = 0.03
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 20
+			num_buildings = {
+				type = building_wsg_stage
+				value >= 3
+			}
+		}
+	}
+}
+
+#深海凝聚力
+col_sh_unity = {
+	icon = GFX_colony_type_bureaucratic
+	potential = {
+		exists = owner
+		owner = {
+			has_authority = auth_shenhai
+		}
+		is_special_colony_type = no
+	}
+	planet_modifier = {
+		planet_building_sh_unity_1_build_speed_mult = 0.25
+		planet_administrators_unity_produces_add = 2
+		planet_priests_unity_produces_add = 2
+		#job_sh_bureaucrat_per_pop = 0.02
+	}
+	triggered_planet_modifier = {
+		potential = {
+			owner = {
+				has_ascension_perk = ap_shenhai_icebreaking
+			}
+		}
+		planet_building_sh_unity_2_build_speed_mult = 0.25
+		job_sh_pool_per_pop = 0.02
+		planet_culture_workers_unity_produces_add = 2
+	}
+	weight_modifier = {
+		base = 0
+		modifier = {
+			add = 20
+			num_buildings = {
+				type = building_sh_unity_1
+				value >= 3
+			}
+		}
+	}
+}

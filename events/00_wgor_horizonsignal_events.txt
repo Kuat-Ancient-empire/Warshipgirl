@@ -1,0 +1,744 @@
+############################################
+# HORIZON SIGNAL - THE WORM-IN-WAITING	   #
+# Written and designed by Alexis Kennedy   #
+# Scripted and edited by Maximilian Olbers #
+############################################
+
+namespace = akx
+
+ship_event = {
+	id = akx.9005
+	title = akx.9005.name
+	desc = akx.9005.desc
+	picture = GFX_evt_black_hole
+	show_sound = event_activating_unknown_technology
+	location = this
+
+	is_triggered_only = yes
+
+	immediate = {
+		fleet = {
+			set_event_locked = yes
+			leader = { save_global_event_target_as = horizonsignal_firstleader }
+			exile_leader_as = exiled_horizonsignal_firstleader
+		}
+	}
+
+	after = {
+		owner = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = 36
+				min = 600
+				max = 3000
+			}
+			hidden_effect = {
+				if = {
+					limit = { is_vaild_gray_owner = yes }
+					country_event = { id = akx.9007 days = 320 random = 40 }
+				} else_if = {
+					limit = { always = yes }
+					country_event = { id = akx.9009 days = 320 random = 40 }
+				}
+			}
+		}
+		fleet = {
+			hidden_effect = { set_event_locked = no }
+			delete_fleet = this
+		}
+	}
+
+	option = {
+		name = akx.9005.a.spiritualist
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_fanatic_spiritualist
+					has_ethic = ethic_spiritualist
+				}
+			}
+		}
+	}
+
+	option = {
+		name = akx.9005.a.materialist
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_fanatic_materialist
+					has_ethic = ethic_materialist
+				}
+			}
+		}
+	}
+
+	option = {
+		name = akx.9005.a.neutral
+		trigger = {
+			owner = {
+				NOR = {
+					has_ethic = ethic_fanatic_spiritualist
+					has_ethic = ethic_spiritualist
+					has_ethic = ethic_fanatic_materialist
+					has_ethic = ethic_materialist
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = akx.9007
+	title = akx.9007.name
+	desc = akx.9007.desc
+	picture = GFX_evt_wg_encounter_the_loop
+	show_sound = event_ship_bridge
+	is_triggered_only = yes
+
+	immediate = {
+		capital_scope = {
+			planet_event = { id = akx.9100 days = 320 random = 40 }
+		}
+		country_event = { id = akx.9008 days = 90 }
+		# 移除灰风
+		every_owned_leader = {
+			limit = { has_leader_flag = "gray_leader" }
+			kill_leader = { show_notification = no }
+		}
+		every_owned_fleet = {
+			limit = { has_fleet_flag = gray_fleet }
+			delete_fleet = {
+				target = this
+				destroy_template = yes
+				kill_leader = no
+			}
+		}
+		every_owned_army = {
+			limit = { army_type = gray_army }
+			leader = { unassign_leader = this }
+			remove_army = yes
+		}
+		remove_country_flag = gray_official_active
+		remove_country_flag = gray_warship_active
+		remove_country_flag = gray_army_active
+		if = {
+			limit = { has_country_flag = gray_warship_active }
+			every_owned_fleet = {
+				limit = { has_fleet_flag = gray_fleet }
+				delete_fleet = {
+					target = this
+					destroy_template = yes
+				}
+			}
+		} else_if = {
+			limit = { has_country_flag = gray_army_active }
+			every_owned_army = {
+				limit = { army_type = gray_army }
+				if = {
+					limit = { exists = leader }
+					unassign_leader = leader
+				}
+				remove_army = yes
+			}
+		}
+		
+	}
+
+	after = {
+		if = {
+			limit = { NOT = { has_technology = tech_akx_worm_1 }}
+			add_tech_progress = {
+				tech = tech_akx_worm_1
+				progress = 0.1
+			}
+			if = {
+				limit = { NOT = { has_tech_option = tech_akx_worm_1 }}
+				add_research_option = tech_akx_worm_1
+			}
+		}
+	}
+
+	option = {
+		name = GODDAMNIT
+		custom_tooltip = akx.9007.tooltip
+	}
+
+	option = {
+		name = akx.9007.a
+		custom_tooltip = akx.9007.tooltip
+	}
+}
+
+country_event = {
+	id = akx.9008
+	title = akx.9008.name
+	desc = akx.9008.desc
+	picture = GFX_evt_wg_encounter_the_loop
+	show_sound = event_ship_bridge
+	is_triggered_only = yes
+
+	option = {
+		name = akx.9008.a 
+		hidden_effect = {
+			country_event = { id = akx.9114 }
+		}
+	}
+
+}
+
+country_event = {
+	id = akx.9114
+	title = "TRANSMISSION"
+	desc = akx.9114.desc
+	is_triggered_only = yes
+
+	diplomatic = yes
+	custom_gui = wg_gray_commu_window
+	custom_gui_option = wg_gray_commu_option
+
+	immediate = {
+		set_country_flag = gray_encountered_the_loop
+	}
+
+	option = {
+		name = akx.9114.a 
+		response_text = akx.9114.a.response
+		is_dialog_only = yes
+	}
+
+	option = {
+		name = akx.9114.b
+		trigger = {
+			NOR = { 
+				has_authority = auth_shenhai 
+				has_authority = auth_warshipgirls
+			}
+		}
+		response_text = akx.9114.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = akx.9114.b
+		trigger = {
+			OR = { 
+				has_authority = auth_shenhai 
+				has_authority = auth_warshipgirls
+			}
+		}
+		response_text = akx.9114.b.response_wg
+		is_dialog_only = yes
+	}
+	option = {
+		name = akx.9114.c
+		response_text = akx.9114.c.response
+		custom_tooltip = akx.9114.c.tooltip
+		hidden_effect = {
+			remove_country_flag = ban_commu_with_gray
+		}
+		default_hide_option = yes
+	}
+}
+
+country_event = {
+	id = akx.9009
+	title = akx.9010.name
+	desc = akx.9010.desc
+	picture = GFX_evt_black_hole
+	show_sound = event_ship_bridge
+	location = event_target:horizonsignal_system
+	is_triggered_only = yes
+
+	option = {
+		name = ONSCREEN
+		hidden_effect = { country_event = { id = akx.9010 }}
+	}
+
+}
+
+country_event = {
+	id = akx.9010
+	title = akx.9009.name
+	desc = akx.9009.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	picture_event_data = {
+		room = worm_room
+	}
+
+	trigger = {
+		any_owned_leader = {
+			is_ruler = no
+		}
+	}
+
+	immediate = {
+		random_owned_leader = {
+			limit = {
+				NOR = {
+					is_ruler = yes
+					is_special_affection_leader = yes
+					has_leader_flag = wsg_event_leader
+					has_leader_flag = overtime_yamato #劳模
+					has_trait = leader_trait_admiral_Rodney #老罗
+					has_trait = leader_trait_official_Ella #艾拉
+					has_trait = leader_trait_official_santee #桑提
+					has_trait = leader_trait_general_washington_axe #花生
+					has_trait = leader_trait_scientist_astesia #星极
+					has_leader_flag = Canarias #三小姐
+					has_leader_flag = NieAdmiral #乜提
+				}
+			}
+			set_leader_flag = horizonsignal_secondleader
+			save_global_event_target_as = horizonsignal_secondleader
+		}
+	}
+
+	option = {
+		name = akx.9010.z
+		response_text = akx.9010.z.response
+		is_dialog_only = yes
+	}
+
+	option = {
+		name = akx.9010.a.collective
+		custom_tooltip = akx.9010.a.tooltip
+		trigger = {
+			OR = {
+				has_ethic = ethic_fanatic_authoritarian
+				has_ethic = ethic_authoritarian
+			}
+		}
+		# Update event chain with PoI
+		hidden_effect = {
+			set_country_flag = secondleader_sent
+			if = {
+				limit = { event_target:horizonsignal_secondleader = {
+					has_leader_flag = badseal_flag
+				}}
+				event_target:horizonsignal_secondleader = {
+					exile_leader_as = badseal_leader
+				}
+				country_event = { id = akx.9014 days = 15 }
+			} else = {
+				event_target:horizonsignal_secondleader = {
+					exile_leader_as = exiled_horizonsignal_secondleader
+				}
+				country_event = { id = akx.9011 days = 30 }
+			}
+		}
+	}
+
+	option = {
+		name = akx.9010.a.notcollective
+		custom_tooltip = akx.9010.a.tooltip
+		trigger = {
+			NOR = {
+				has_ethic = ethic_fanatic_authoritarian
+				has_ethic = ethic_authoritarian
+			}
+		}
+		# Update event chain with PoI
+		hidden_effect = {
+			set_country_flag = secondleader_sent
+			if = {
+				limit = { event_target:horizonsignal_secondleader = {
+					has_leader_flag = badseal_flag
+				}}
+				event_target:horizonsignal_secondleader = {
+					exile_leader_as = badseal_leader
+				}
+				country_event = { id = akx.9014 days = 15 }
+			} else = {
+				event_target:horizonsignal_secondleader = {
+					exile_leader_as = exiled_horizonsignal_secondleader
+				}
+				country_event = { id = akx.9011 days = 30 }
+			}
+		}
+	}
+
+	option = {
+		name = akx.9010.b.collective
+		custom_tooltip = akx.9010.a.tooltip
+		trigger = {
+			OR = {
+				has_ethic = ethic_fanatic_authoritarian
+				has_ethic = ethic_authoritarian
+			}
+		}
+		# Update event chain with PoI
+		hidden_effect = {
+			set_country_flag = secondleader_bomb
+			if = {
+				limit = { event_target:horizonsignal_secondleader = {
+					has_leader_flag = badseal_flag
+				}}
+				event_target:horizonsignal_secondleader = {
+					exile_leader_as = badseal_leader
+				}
+				country_event = { id = akx.9014 days = 15 }
+			} else = {
+				event_target:horizonsignal_secondleader = {
+					exile_leader_as = exiled_horizonsignal_secondleader
+				}
+				country_event = { id = akx.9012 days = 30 }
+			}
+		}
+	}
+
+	option = {
+		name = akx.9010.b.notcollective
+		custom_tooltip = akx.9010.a.tooltip
+		trigger = {
+			NOR = {
+				has_ethic = ethic_fanatic_authoritarian
+				has_ethic = ethic_authoritarian
+			}
+		}
+		# Update event chain with PoI
+		hidden_effect = {
+			set_country_flag = secondleader_bomb
+			if = {
+				limit = { event_target:horizonsignal_secondleader = {
+					has_leader_flag = badseal_flag
+				}}
+				event_target:horizonsignal_secondleader = {
+					exile_leader_as = badseal_leader
+				}
+				country_event = { id = akx.9014 days = 15 }
+			} else = {
+				event_target:horizonsignal_secondleader = {
+					exile_leader_as = exiled_horizonsignal_secondleader
+				}
+				country_event = { id = akx.9012 days = 30 }
+			}	
+		}
+	}
+
+	option = {
+		name = akx.9010.c
+		hidden_effect = {
+			country_event = { id = akx.9013 }
+		}
+	}
+}
+
+country_event = {
+	id = akx.9011
+	title = akx.9011.name
+	desc = akx.9011.desc
+	picture = GFX_evt_black_hole
+	show_sound = event_ship_bridge
+	location = event_target:horizonsignal_system
+
+	is_triggered_only = yes
+
+	immediate = {
+		
+	}
+
+	after = {
+		hidden_effect = { country_event = { id = akx.9019 days = 320 random = 40 }}
+	}
+
+	option = {
+		name = akx.9011.a
+	}
+	option = {
+		name = akx.9011.b
+	}
+	option = {
+		name = akx.9011.c
+	}
+}
+
+country_event = {
+	id = akx.9014
+	title = akx.9009.name
+	desc = akx.9014.desc
+	diplomatic = yes
+	picture_event_data = {
+		room = worm_room
+	}
+	is_triggered_only = yes
+
+	immediate = {
+		create_fleet = {
+			name = "NAME_Other_Science_Ship"
+			effect = {
+				set_owner = root
+				create_ship_design = {
+					design = "NAME_Prototype"
+				}
+				create_ship = {
+					name = "NAME_From_Beyond"
+					design = last_created_design
+					graphical_culture = "extra_dimensional_01"
+					prefix = no
+					upgradable = no
+				}
+				set_location = from.capital_scope
+				save_event_target_as = seal_leader
+			}
+		}
+		event_target:seal_leader = {
+			set_leader = event_target:badseal_leader
+			leader = { unassign_leader = this }
+			delete_fleet = this
+		}
+		capital_scope = {
+			planet_event = { id = akx.9100 days = 320 random = 40 }
+		}
+	}
+
+	option = {
+		name = akx.9014.a
+		if = {
+			limit = {
+				has_technology = tech_akx_worm_1
+			}
+		}
+		else = {
+			add_tech_progress = {
+				tech = tech_akx_worm_1
+				progress = 0.10
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_tech_option = tech_akx_worm_1
+					}
+				}
+				add_research_option = tech_akx_worm_1
+			}
+		}
+	}
+
+}
+
+country_event = {
+	id = akx.9019
+	title = akx.9020.name
+	desc = akx.9020.desc
+	picture = GFX_evt_black_hole
+	show_sound = event_mystic_reveal
+	location = event_target:horizonsignal_black_hole
+	is_triggered_only = yes
+
+	option = {
+		name = ONSCREEN
+		hidden_effect = { country_event = { id = akx.9020 }}
+	}
+
+}
+
+country_event = {
+	id = akx.9020
+	title = akx.9009.name
+	desc = akx.9019.desc
+	diplomatic = yes
+	picture_event_data = {
+		room = worm_room
+	}
+
+	is_triggered_only = yes
+
+	immediate = {
+		random_owned_leader = {
+			limit = {
+				NOR = {
+					is_ruler = yes
+					is_special_affection_leader = yes
+					has_leader_flag = wsg_event_leader
+					has_leader_flag = overtime_yamato #劳模
+					has_trait = leader_trait_admiral_Rodney #老罗
+					has_trait = leader_trait_official_Ella #艾拉
+					has_trait = leader_trait_official_santee #桑提
+					has_trait = leader_trait_general_washington_axe #花生
+					has_trait = leader_trait_scientist_astesia #星极
+					has_leader_flag = Canarias #三小姐
+					has_leader_flag = NieAdmiral #乜提
+				}
+			}
+			save_global_event_target_as = horizonsignal_thirdleader
+		}
+	}
+
+	option = {
+		name = akx.9020.a
+		custom_tooltip = akx.9020.a.tooltip
+		hidden_effect = {
+			set_country_flag = thirdleader_sent
+			if = {
+				limit = { event_target:horizonsignal_thirdleader = {
+					has_leader_flag = badseal_flag
+				}}
+				event_target:horizonsignal_thirdleader = {
+					exile_leader_as = badseal_leader
+				}
+				country_event = { id = akx.9014 days = 15 }
+			} else = {
+				event_target:horizonsignal_thirdleader = {
+					exile_leader_as = exiled_horizonsignal_thirdleader
+				}
+				country_event = { id = akx.9021 days = 30 }
+			}
+		}
+	}
+
+	option = {
+		name = akx.9020.b
+		custom_tooltip = akx.9020.a.tooltip
+		hidden_effect = {
+			set_country_flag = thirdleader_bomb
+			if = {
+				limit = { event_target:horizonsignal_thirdleader = {
+					has_leader_flag = badseal_flag
+				}}
+				event_target:horizonsignal_thirdleader = {
+					exile_leader_as = badseal_leader
+				}
+				country_event = { id = akx.9014 days = 15 }
+			} else = {
+				event_target:horizonsignal_thirdleader = {
+					exile_leader_as = exiled_horizonsignal_thirdleader
+				}
+				country_event = { id = akx.9022 days = 30 }
+			}
+		}
+	}
+
+	option = {
+		name = akx.9020.c
+		hidden_effect = {
+			country_event = { id = akx.9023 }
+		}
+	}
+}
+
+planet_event = {
+	id = akx.10020
+	title = akx.10020.name
+	desc = akx.10020.desc
+	picture = GFX_evt_black_hole
+	show_sound = event_activating_unknown_technology
+	location = root
+
+	is_triggered_only = yes
+
+	pre_triggers = {
+		is_ai = no
+	}
+
+	immediate = {
+		solar_system = {
+			every_system_planet = {
+				limit = {
+					NOR = {
+						is_planet_class = pc_gas_giant
+						is_planet_class = pc_ringworld_habitable
+						is_planet_class = pc_ringworld_habitable_damaged
+						is_planet_class = pc_ringworld_tech
+						is_planet_class = pc_ringworld_tech_damaged
+						is_planet_class = pc_ringworld_seam
+						is_planet_class = pc_ringworld_seam_damaged
+						is_planet_class = pc_habitat
+						is_planet_class = pc_asteroid
+						is_planet_class = pc_ice_asteroid
+						is_planet_class = pc_city
+						is_planet_class = pc_relic
+						is_star = yes
+					}
+					is_ringworld_wg = no
+					is_habitat_wg = no
+				}
+				every_owned_pop = {
+					limit = {
+						is_robot_pop = no
+						is_sapient = yes
+					}
+					if = {
+						limit = { NOT = { has_trait = trait_natural_physicists } }
+						# remove opposite traits
+						if = {
+							limit = { has_trait = trait_natural_engineers }
+							modify_species = {
+								species = this
+								remove_trait = trait_natural_engineers
+							}
+						}
+						if = {
+							limit = { has_trait = trait_natural_sociologists }
+							modify_species = {
+								species = this
+								remove_trait = trait_natural_sociologists
+							}
+						}
+						if = {
+							limit = { has_trait = trait_nerve_stapled }
+							modify_species = {
+								species = this
+								remove_trait = trait_nerve_stapled
+							}
+						}
+						# add trait
+						modify_species = {
+							species = this
+							add_trait_no_notify = trait_natural_physicists
+						}
+					}
+					if = {
+						limit = { NOT = { has_trait = trait_repugnant } }
+						# remove opposite traits
+						if = {
+							limit = { has_trait = trait_charismatic }
+							modify_species = {
+								species = this
+								remove_trait = trait_charismatic
+							}
+						}
+						modify_species = {
+							species = this
+							add_trait_no_notify = trait_repugnant
+						}
+					}
+					modify_species = {
+						species = this
+						ideal_planet_class = pc_nuked
+					}
+				}
+				set_planet_flag = nuked_planet_anomalies_disabled
+				if = {
+					limit = { NOR = {
+						has_planet_flag = port_home
+						has_planet_flag = clovertheater_future_flag
+					}}
+					change_pc = pc_nuked
+					reroll_planet = yes
+				}
+			}
+			every_system_planet = {
+				limit = { is_star = yes }
+				change_pc = pc_black_hole
+			}
+			set_star_class = sc_black_hole
+		}
+		owner = { observer_event = { id = observer.71 } }
+	}
+
+	after = {
+		hidden_effect = {
+			owner = {
+				remove_country_flag = worm_events_available
+				set_country_flag = worm_awaited
+				set_country_flag = worm_tomb_ending
+				country_event = { id = wg_worm.1 }
+			}
+		}
+	}
+
+	option = {
+		name = akx.10020.a
+		owner = { end_event_chain = WORM_CHAIN_2 }
+	}
+}

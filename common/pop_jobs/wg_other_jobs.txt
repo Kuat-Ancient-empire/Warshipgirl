@@ -1,0 +1,694 @@
+primitive_priest_lex = {
+	category = specialist
+	is_capped_by_modifier = yes
+	building_icon = building_lex_monument
+	clothes_texture_index = 3
+	icon = priest
+
+	possible_pre_triggers = {
+		has_owner = yes
+	}
+
+	possible = {
+		owner = {
+			is_primitive = yes
+		}
+	}
+
+	resources = {
+		category = planet_jobs
+		produces = {
+			unity = 2
+			food = 0.5
+			energy = 0.1
+		}
+	}
+
+	planet_modifier = {
+		planet_amenities_add = 2
+	}
+
+	weight = {
+		weight = 2
+		modifier = {
+			factor = 6
+			is_spiritualist = yes
+		}
+	}
+}
+
+primitive_gamer_Parit = {
+	category = specialist
+	is_capped_by_modifier = yes
+	building_icon = building_wg_fe_war_factory
+	clothes_texture_index = 3
+	icon = manager
+
+	possible_pre_triggers = {
+		has_owner = yes
+	}
+
+	possible = {
+		owner = {
+			is_primitive = yes
+			OR = {
+				has_country_flag = Parit_age
+			}
+		}
+	}
+
+	resources = {
+		category = planet_jobs
+		produces = {
+			unity = 2
+		}
+	}
+
+	planet_modifier = {
+		planet_amenities_add = 2
+	}
+
+	weight = {
+		weight = 2
+		modifier = {
+			factor = 6
+			is_spiritualist = yes
+		}
+		modifier = {
+			factor = 0
+			is_materialist = yes
+		}
+	}
+}
+eater_Parit = {
+	category = worker
+	is_capped_by_modifier = yes
+	building_icon = building_food_Parit
+	clothes_texture_index = 3
+	icon = fe_hedonist
+	
+	possible_pre_triggers = {
+		has_owner = yes
+	}
+
+	possible = {
+		owner = {
+			is_primitive = yes
+			OR = {
+				has_country_flag = Parit_age
+			}
+		}
+	}
+
+	resources = {
+		category = planet_jobs
+		produces = {
+			unity = 2
+		}
+		upkeep = {
+			food = 1
+			consumer_goods = 1
+		}		
+	}
+
+	planet_modifier = {
+		planet_amenities_add = 2
+	}
+
+	weight = {
+		weight = 2
+		modifier = {
+			factor = 6
+			is_spiritualist = yes
+		}
+		modifier = {
+			factor = 0
+			is_materialist = yes
+		}
+	}
+}
+energy_Parit = {
+	category = ruler
+	condition_string = RULER_JOB_TRIGGER
+	building_icon = building_bio_reactor
+	clothes_texture_index = 3
+	icon = primitive_noble
+
+	possible_pre_triggers = {
+		has_owner = yes
+		#is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+	}
+	possible = {
+		owner = {
+			OR = {
+				has_country_flag = Parit_age
+				is_regular_empire = yes
+			}
+		}
+	}
+
+
+	resources = {
+		category = Parit_jobs
+		produces = {
+			energy = 80
+		}		
+	}
+	
+	weight = {
+		weight = 2000
+		modifier = {
+			factor = 0.2
+			has_citizenship_rights = no	
+			NOT = { has_trait = trait_mechanical }	
+		}		
+		modifier = {
+			factor = 0.1
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 2
+			species = {
+				has_species_flag = racket_species_flag
+			}
+		}
+		modifier = {
+			factor = 5
+			has_job = wsg_neo_producer
+		}
+		modifier = {
+			factor = 15
+			has_job = wsg_neo_producer
+			OR = {
+				has_trait = trait_robust
+				has_trait = trait_robot_efficient_processors
+			}
+		}
+		modifier = {
+			factor = 0
+			years_passed > 15
+			jobs_work_minerals_goods = yes
+		}		
+	}
+}
+
+#胖次收集者
+wsg_shop_pantsu_collector = {
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_wsg_pantsu
+	clothes_texture_index = 3
+	icon = wsg_pantsu_maker
+
+	possible_pre_triggers = {
+		has_owner = yes
+		#is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+	}
+
+	resources = {
+		category = planet_translucers
+		produces = {
+			sr_pantsu = 1
+		}
+	}
+	
+	weight = {
+		weight = 16		
+	}
+}
+
+#过山车
+dyson_ring_roller_coaster = {
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_amusement_megaplex
+	clothes_texture_index = 3
+
+	possible_pre_triggers = {
+		has_owner = yes
+		#is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+	}
+    planet_modifier = {
+		planet_amenities_add = 5
+	}
+
+	resources = {
+		category = planet_entertainers
+		produces = {
+			unity = 4
+		}
+		upkeep = {
+			consumer_goods = 2
+		}
+	}
+	
+	weight = {
+		weight = 16		
+	}
+}
+
+
+corrupt_enforcer = {
+	category = specialist
+	condition_string = BATTLE_THRALL_JOB_TRIGGER
+	building_icon = building_precinct_house
+	clothes_texture_index = 5
+	icon = criminal
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible = {
+		battle_thrall_job_check_trigger = yes
+	}
+
+	planet_modifier = {
+		planet_crime_add = 25
+		branch_office_criminal_syndicate_value_add = 2
+		planet_stability_add = -5
+		planet_max_branch_office_buildings_add = 1
+	}
+
+	weight = {
+		weight = 100
+	}
+}
+
+criminal_bureaucrats = {
+	category = criminal
+	is_capped_by_modifier = yes
+	can_set_priority = no
+	clothes_texture_index = 2
+	building_icon = building_residence
+	contributes_to_diplo_weight = no
+	ignores_favorite = yes #this means that if you favorite e.g. clerks, the +1000 bonus will not matter for jobs working as criminals
+	icon = criminal
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_sapient = yes
+	}
+
+	possible = {
+		# check that this is not a robot in servitude
+		NOT = {
+			has_citizenship_type = {
+				country = owner
+				type = citizenship_robot_servitude
+			}
+		}
+		owner = {
+			is_gestalt = no
+		}
+	}
+    country_modifier = {
+		country_admin_cap_add = -2
+	}
+	planet_modifier = {
+		#planet_crime_add = 25
+		trade_value_add = -5
+		branch_office_criminal_syndicate_value_add = 50
+		pop_government_ethic_attraction = -0.30
+		planet_max_branch_office_buildings_add = 1
+	}
+
+	weight = {
+		weight = 100
+	}
+}
+
+wg_alien_heretics = {
+	icon = purge
+	category = purge
+	purge = purge_normal
+	clothes_texture_index = 2
+    is_capped_by_modifier = no
+
+	possible = { 
+		owner = { has_origin = origin_wg_warhammer }
+		species = {
+			NOR = {
+				has_trait = uf_trait_united_fleet
+				has_trait = uf_trait_united_fleet_1
+				has_trait = uf_trait_united_fleet_2
+				has_trait = wsg_trait_warshipgirls
+				has_trait = wsg_trait_warshipgirls1
+				has_trait = wsg_trait_mist
+				has_trait = wsg_trait_warshipgirls2
+				has_trait = sh_trait_shenhai
+				has_trait = sh_trait_shenhai1
+				has_trait = sh_trait_shenhai2
+				has_trait = sh_trait_shenhai3
+				has_trait = trait_intelligent_galo #合法异形
+			}
+		}
+	}
+
+	weight = {
+		weight = 50000
+	}
+}
+
+
+wg_hive_city_foundry = {
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_organic_sanctuary
+	clothes_texture_index = 4
+	icon = foundry
+	
+    resources = {
+		category = planet_metallurgists
+		produces = {
+			alloys = 6
+			consumer_goods = 3
+		}
+		upkeep = {
+			minerals = 20
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		#is_enslaved = no
+		is_being_assimilated = no
+	}
+
+	possible_precalc = can_fill_specialist_job
+	possible = {
+	}
+	
+	weight = {
+		weight = 50
+	}
+}
+
+wg_hive_city_worker = {
+	category = worker
+	condition_string = WORKER_JOB_TRIGGER
+	building_icon = building_organic_sanctuary
+	clothes_texture_index = 2
+	icon = primitive_laborer
+
+	possible_pre_triggers = {
+		has_owner = yes
+		#is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+	}
+
+	possible_precalc = can_fill_worker_job
+	possible = {
+	}
+
+	planet_modifier = {
+		trade_value_add = 2
+	}
+	resources = {
+		category = planet_merchants
+		produces = {
+		    energy = 4
+			minerals = 4 
+			food = 2
+		}		
+	}
+
+	weight = {
+		weight = 2	
+		modifier = {
+			factor = 0.9
+			always = yes
+		}	
+	}
+}
+
+wg_hive_city_ruler = {	
+	category = ruler
+	condition_string = RULER_JOB_TRIGGER
+	building_icon = building_organic_sanctuary
+	clothes_texture_index = 1
+	icon = noble
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+	}
+
+	possible_precalc = can_fill_ruler_job
+	possible = {
+	}
+  
+	resources = {
+		category = planet_administrators
+		produces = {
+			unity = 25
+		}
+		upkeep = {
+			consumer_goods = 8
+		}		
+	}
+	planet_modifier = {
+		planet_amenities_add = 25
+		planet_stability_add = 10
+	}
+	pop_modifier = {
+		pop_happiness = 2
+	}
+	
+	
+	weight = {
+		weight = 9000	
+	}
+}
+
+wg_hive_city_soldier = {
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_organic_sanctuary
+	clothes_texture_index = 4
+	icon = soldier
+	
+    resources = {
+		category = planet_administrators
+		upkeep = {
+			consumer_goods = 1
+		}
+	}
+	country_modifier = {
+		country_naval_cap_add = 15
+	}
+	pop_modifier = {
+		pop_defense_armies_add = 1
+	}
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		#is_enslaved = no
+		is_being_assimilated = no
+	}
+
+	possible_precalc = can_fill_specialist_job
+	possible = {
+	}
+	
+	weight = {
+		weight = 50
+	}
+}
+
+wg_forge_foundry = {
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_organic_sanctuary
+	clothes_texture_index = 4
+	icon = foundry
+	
+    resources = {
+		category = planet_metallurgists
+		produces = {
+			alloys = 12
+		}
+		upkeep = {
+			minerals = 25
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		#is_enslaved = no
+		is_being_assimilated = no
+	}
+
+	possible_precalc = can_fill_specialist_job
+	possible = {
+	}
+	
+	weight = {
+		weight = 50
+	}
+}
+
+wg_forge_research = {
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_organic_sanctuary
+	clothes_texture_index = 4
+	
+    resources = {
+		category = planet_researchers
+		produces = {
+			physics_research = 6
+			engineering_research = 6
+			society_research = 6
+		}
+		# 特质：博学
+		produces = {
+			physics_research = 2
+			engineering_research = 2
+			society_research = 2
+			trigger = {
+				exists = species
+				species = {
+					has_trait = wsg_trait_knowledgeable2
+				}
+				exists = owner
+				owner = { has_edict = wg_sr_se_trait_enable }
+			}
+		}
+		# 特质：博学
+		upkeep = {
+			consumer_goods = 1
+			trigger = {
+				exists = species
+				species = {
+					has_trait = wsg_trait_knowledgeable2
+				}
+				exists = owner
+				owner = { has_edict = wg_sr_se_trait_enable }
+			}
+		}
+
+		produces = {
+			trigger = { 
+				exists = owner
+				owner = { has_valid_civic = civic_technocracy }
+			}
+			unity = 1
+		}
+		upkeep = {
+			consumer_goods = 2.5
+		}	
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		#is_enslaved = no
+		is_being_assimilated = no
+	}
+
+	possible_precalc = can_fill_specialist_job
+	possible = {
+	}
+	
+	weight = {
+		weight = 50
+	}
+}
+
+wg_forge_head_research = {
+	category = ruler
+	condition_string = RULER_JOB_TRIGGER
+	building_icon = building_organic_sanctuary
+	clothes_texture_index = 4
+	icon = wg_forge_research
+	
+    resources = {
+		category = planet_researchers
+		produces = {
+			physics_research = 15
+			engineering_research = 15
+			society_research = 15
+		}
+		# 特质：博学
+		produces = {
+			physics_research = 2
+			engineering_research = 2
+			society_research = 2
+			trigger = {
+				exists = species
+				species = {
+					has_trait = wsg_trait_knowledgeable2
+				}
+				exists = owner
+				owner = { NOT = { has_deficit = sr_se }}
+			}
+		}
+		# 特质：博学
+		upkeep = {
+			consumer_goods = 1
+			trigger = {
+				exists = species
+				species = {
+					has_trait = wsg_trait_knowledgeable2
+				}
+				exists = owner
+				owner = { NOT = { has_deficit = sr_se }}
+			}
+		}
+
+		produces = {
+			trigger = { 
+				exists = owner
+				owner = { has_valid_civic = civic_technocracy }
+			}
+			unity = 1
+		}
+		produces = {
+			trigger = { 
+				exists = owner
+				owner = { has_tradition = tr_wg_mist_5 }
+			}
+			physics_research = 3
+			engineering_research = 3
+			society_research = 3
+		} 
+		upkeep = {
+			consumer_goods = 5
+		}	
+	}
+	planet_modifier = {
+		planet_jobs_physics_research_produces_mult = 0.01
+		planet_jobs_society_research_produces_mult = 0.01
+		planet_jobs_engineering_research_produces_mult = 0.01
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		#is_enslaved = no
+		is_being_assimilated = no
+	}
+
+	possible_precalc = can_fill_ruler_job
+	possible = {
+	}
+	
+	weight = {
+		weight = 2000
+	}
+}

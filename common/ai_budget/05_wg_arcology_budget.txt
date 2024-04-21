@@ -1,0 +1,594 @@
+# 改港区球
+minerals_expenditure_decisions_arcology_wsg = {
+	resource = minerals
+	type = expenditure
+	category = decisions
+
+	potential = {
+		has_authority = auth_warshipgirls
+		OR = {
+			AND = {
+				has_technology = tech_housing_2
+				any_owned_planet = {
+					is_planet_class = pc_relic
+					num_uncleared_blockers < 1
+				}
+			}
+			AND = {
+				has_ascension_perk = ap_port_project
+				any_owned_planet = {
+					is_artificial = no
+					NOR = {
+						is_planet_class = pc_city
+						is_planet_class = pc_relic
+						is_planet_class = pc_wsg_port
+						has_modifier = resort_colony
+						has_modifier = penal_colony
+						has_modifier = slave_colony
+						has_modifier = pm_wenkwort_custodian
+					}
+					num_uncleared_blockers < 1
+					# 15格以下的垃圾球不改
+					planet_size >= 15
+					OR = {
+						num_pops >= 70
+						is_capital = yes
+					}
+				}
+				# 已改造的星球 除以 拥有的星球，如果比例大于0.6则偏向不改造
+				# 让ai留下一产的用的球
+				check_variable_arithmetic = {
+					which = wg_modified_planet
+					divide = trigger:num_owned_planets
+					value < 0.6
+				}
+			}
+		}
+		# only consider these kinds of decisions when "wealthy"
+		has_resource = {
+			type = minerals
+			amount > 8000
+		}
+		# 确保有足够特殊资源
+		if = {
+			limit = { has_technology = tech_wsg_senergy }
+			has_monthly_income = {
+				resource = sr_se
+				value > 15
+			}
+		} else = {
+			has_monthly_income = {
+				resource = sr_neo
+				value > 15
+			}
+		}
+		check_variable = { which = wg_modified_planet value <= 15 }
+	}
+
+	weight = {
+		weight = 0.20
+	}
+
+	desired_min = {
+		base = 20000
+	}
+	desired_max = {
+		base = 25000
+	}
+}
+influence_expenditure_decisions = {
+	resource = influence
+	type = expenditure
+	category = decisions
+
+	potential = {
+		has_authority = auth_warshipgirls
+		has_ascension_perk = ap_port_project
+	}
+
+	weight = {
+		weight = 0.20
+		modifier = {
+			factor = 5
+			OR = {
+				AND = {
+					has_technology = tech_housing_2
+					any_owned_planet = {
+						is_planet_class = pc_relic
+						num_uncleared_blockers < 1
+					}
+				}
+				AND = {
+					has_ascension_perk = ap_port_project
+					any_owned_planet = {
+						OR = {
+							is_artificial = no
+							is_initial_ringworld_wg = yes
+						}
+						NOR = {
+							is_planet_class = pc_city
+							is_planet_class = pc_relic
+							is_planet_class = pc_wsg_port
+							has_modifier = resort_colony
+							has_modifier = penal_colony
+							has_modifier = slave_colony
+							has_modifier = pm_wenkwort_custodian
+						}
+						num_uncleared_blockers < 1
+						AND = {
+							planet_size >= 15
+							is_artificial = no
+						}
+						OR = {
+							num_pops >= 70
+							is_capital = yes
+							is_initial_ringworld_wg = yes
+						}
+					}
+					check_variable_arithmetic = {
+						which = wg_modified_planet
+						divide = trigger:num_owned_planets
+						value < 0.6
+					}
+				}
+			}
+		}
+	}
+
+	# this is the cost of the arcology project decision
+	desired_max = {
+		base = 200
+	}
+}
+
+influence_expenditure_edicts = {	
+	resource = influence
+	type = expenditure
+	category = edicts
+
+	potential = {
+		NOT = {
+			has_crisis_level = crisis_level_2
+		}
+		always = yes
+	}
+
+	weight = {
+		weight = 0.50
+		modifier = {
+			factor = 0.2
+			is_wg_empire = yes
+			num_tradition_categories >= 6
+			years_passed >= 45
+		}
+	}
+
+	desired_min = {
+		base = 100
+		modifier = {
+			factor = 0.2
+			is_wg_empire = yes
+			num_tradition_categories >= 6
+			years_passed >= 45
+			has_ascension_perk = ap_port_project
+		}
+	}
+
+	desired_max = {
+		base = 300
+		modifier = {
+			factor = 0.33
+			is_wg_empire = yes
+			num_tradition_categories >= 6
+			years_passed >= 45
+		}
+	}
+}
+
+# 改环
+minerals_expenditure_decisions_arcology_rw_wsg = {
+	resource = minerals
+	type = expenditure
+	category = decisions
+
+	potential = {
+		has_authority = auth_warshipgirls
+		has_ascension_perk = ap_port_project
+		OR = {
+			has_technology = tech_neo_exchange
+			has_technology = tech_wsg_senergy
+		}
+		any_owned_planet = {
+			is_initial_ringworld_wg = yes
+			num_uncleared_blockers < 1
+			OR = {
+				num_pops >= 50
+				is_capital = yes
+			}
+		}
+		check_variable = { which = wg_modified_ringworld value < 11 }
+		# only consider these kinds of decisions when "wealthy"
+		has_resource = {
+			type = minerals
+			amount > 12000
+		}
+		if = {
+			limit = { has_technology = tech_wsg_senergy }
+			has_monthly_income = {
+				resource = sr_se
+				value > 15
+			}
+		} else = {
+			has_monthly_income = {
+				resource = sr_neo
+				value > 15
+			}
+		}
+	}
+
+	weight = {
+		weight = 0.20
+	}
+
+	desired_min = {
+		base = 25000
+	}
+	desired_max = {
+		base = 25000
+	}
+}
+se_expenditure_decisions_arcology_rw_wsg = {
+	resource = sr_se
+	type = expenditure
+	category = decisions
+
+	potential = {
+		has_authority = auth_warshipgirls
+		has_ascension_perk = ap_project_s
+		has_ascension_perk = ap_port_project
+		OR = {
+			AND = {
+				has_technology = tech_housing_2
+				any_owned_planet = {
+					is_planet_class = pc_relic
+					num_uncleared_blockers < 1
+				}
+			}
+			AND = {
+				has_ascension_perk = ap_port_project
+				any_owned_planet = {
+					OR = {
+						is_artificial = no
+						is_initial_ringworld_wg = yes
+					}
+					NOR = {
+						is_planet_class = pc_city
+						is_planet_class = pc_relic
+						is_planet_class = pc_wsg_port
+						has_modifier = resort_colony
+						has_modifier = penal_colony
+						has_modifier = slave_colony
+						has_modifier = pm_wenkwort_custodian
+					}
+					num_uncleared_blockers < 1
+					OR = {
+						num_pops >= 70
+						is_capital = yes
+						is_initial_ringworld_wg = yes
+					}
+				}
+			}
+		}
+		# only consider these kinds of decisions when "wealthy"
+		has_resource = {
+			type = minerals
+			amount > 12000
+		}
+		has_monthly_income = {
+			resource = sr_se
+			value > 15
+		}
+	}
+
+	weight = {
+		weight = 0.20
+		modifier = {
+			factor = 0.1
+			OR = {
+				check_variable = { which = wg_modified_ringworld value > 11 }
+				check_variable = { which = wg_modified_planet value > 15 }
+			}
+		}
+	}
+
+	desired_min = {
+		base = 400
+	}
+	desired_max = {
+		base = 400
+	}
+}
+neo_expenditure_decisions_arcology_rw_wsg = {
+	resource = sr_neo
+	type = expenditure
+	category = decisions
+
+	potential = {
+		has_authority = auth_warshipgirls
+		has_ascension_perk = ap_mist
+		has_ascension_perk = ap_port_project
+		OR = {
+			AND = {
+				has_technology = tech_housing_2
+				any_owned_planet = {
+					is_planet_class = pc_relic
+					num_uncleared_blockers < 1
+				}
+			}
+			AND = {
+				has_ascension_perk = ap_port_project
+				any_owned_planet = {
+					OR = {
+						is_artificial = no
+						is_initial_ringworld_wg = yes
+					}
+					NOR = {
+						is_planet_class = pc_city
+						is_planet_class = pc_relic
+						is_planet_class = pc_wsg_port
+						has_modifier = resort_colony
+						has_modifier = penal_colony
+						has_modifier = slave_colony
+						has_modifier = pm_wenkwort_custodian
+					}
+					num_uncleared_blockers < 1
+					OR = {
+						num_pops >= 70
+						is_capital = yes
+						is_initial_ringworld_wg = yes
+					}
+				}
+			}
+		}
+		# only consider these kinds of decisions when "wealthy"
+		has_resource = {
+			type = minerals
+			amount > 12000
+		}
+		has_monthly_income = {
+			resource = sr_neo
+			value > 15
+		}
+	}
+
+	weight = {
+		weight = 0.20
+		modifier = {
+			factor = 0.1
+			OR = {
+				check_variable = { which = wg_modified_ringworld value > 11 }
+				check_variable = { which = wg_modified_planet value > 15 }
+			}
+		}
+	}
+
+	desired_min = {
+		base = 400
+	}
+	desired_max = {
+		base = 400
+	}
+}
+###################################################
+# 深海
+##################################################
+# 深海球
+minerals_expenditure_decisions_shpc = {
+	resource = minerals
+	type = expenditure
+	category = decisions
+
+	potential = {
+		has_authority = auth_shenhai
+		has_ascension_perk = ap_shenhai_project
+		any_owned_planet = {
+			OR = {
+				# 改造
+				AND = {
+					is_planet_class = pc_shenhai
+					NOT = { has_modifier = planet_spc_upgrade }
+				}
+				AND = {
+					habitable_structure = no
+					NOR = {
+						is_planet_class = pc_city
+						is_planet_class = pc_wsg_port
+						is_planet_class = pc_swim
+						is_planet_class = pc_ringworld_habitable_sh
+						is_planet_class = pc_ringworld_habitable_wsg
+						is_planet_class = pc_ringworld_habitable_swim
+						is_planet_class = pc_dyson_ring
+						is_planet_class = pc_relic
+						has_modifier = resort_colony
+						has_modifier = penal_colony
+						has_modifier = slave_colony
+					}
+					NAND = {
+						has_modifier = planet_spc_upgrade
+						is_planet_class = pc_shenhai
+					}
+					num_uncleared_blockers < 1
+					check_variable = { which = sh_pc_count value <= 15 }
+				}
+			}
+			OR = {
+				num_pops >= 40
+				is_capital = yes
+			}
+		}
+		# only consider these kinds of decisions when "wealthy"
+		has_resource = { type = minerals amount > 3500 }
+		has_resource = { type = energy amount > 3500 }
+	}
+
+	weight = {
+		weight = 0.15
+	}
+
+	desired_min = {
+		base = 5000
+	}
+	desired_max = {
+		base = 5000
+	}
+}
+
+energy_expenditure_decisions_shpc = {
+	resource = energy
+	type = expenditure
+	category = decisions
+
+	potential = {
+		has_authority = auth_shenhai
+		has_ascension_perk = ap_shenhai_project
+		
+		any_owned_planet = {
+			OR = {
+				# 改造
+				AND = {
+					is_planet_class = pc_shenhai
+					NOT = { has_modifier = planet_spc_upgrade }
+				}
+				AND = {
+					habitable_structure = no
+					NOR = {
+						is_planet_class = pc_city
+						is_planet_class = pc_wsg_port
+						is_planet_class = pc_swim
+						is_planet_class = pc_ringworld_habitable_sh
+						is_planet_class = pc_ringworld_habitable_wsg
+						is_planet_class = pc_ringworld_habitable_swim
+						is_planet_class = pc_dyson_ring
+						is_planet_class = pc_relic
+						has_modifier = resort_colony
+						has_modifier = penal_colony
+						has_modifier = slave_colony
+					}
+					NAND = {
+						has_modifier = planet_spc_upgrade
+						is_planet_class = pc_shenhai
+					}
+					num_uncleared_blockers < 1
+					check_variable = { which = sh_pc_count value <= 15 }
+				}
+			}
+			OR = {
+				num_pops >= 40
+				is_capital = yes
+			}
+		}
+		# only consider these kinds of decisions when "wealthy"
+		has_resource = { type = minerals amount > 3500 }
+		has_resource = { type = energy amount > 3500 }
+	}
+
+	weight = {
+		weight = 0.15
+	}
+
+	desired_min = {
+		base = 5000
+	}
+	desired_max = {
+		base = 5000
+	}
+}
+# 改环
+minerals_expenditure_decisions_arcology_rw_sh = {
+	resource = minerals
+	type = expenditure
+	category = decisions
+
+	potential = {
+		has_authority = auth_shenhai
+		has_ascension_perk = ap_shenhai_project
+		any_owned_planet = {
+			is_initial_ringworld_wg = yes
+			num_uncleared_blockers < 1
+			free_district_slots < 1
+			OR = {
+				num_pops >= 50
+				is_capital = yes
+			}
+		}
+		check_variable = { which = wg_modified_ringworld value < 11 }
+		# only consider these kinds of decisions when "wealthy"
+		has_resource = {
+			type = minerals
+			amount > 12000
+		}
+		if = {
+			limit = { has_technology = tech_wsg_senergy }
+			has_monthly_income = {
+				resource = sr_se
+				value > 15
+			}
+		} else = {
+			has_monthly_income = {
+				resource = sr_neo
+				value > 15
+			}
+		}
+	}
+
+	weight = {
+		weight = 0.20
+	}
+
+	desired_min = {
+		base = 20000
+	}
+	desired_max = {
+		base = 20000
+	}
+}
+se_expenditure_decisions_arcology_rw_sh = {
+	resource = sr_se
+	type = expenditure
+	category = decisions
+
+	potential = {
+		has_authority = auth_shenhai
+		has_ascension_perk = ap_shenhai_project
+		any_owned_planet = {
+			is_initial_ringworld_wg = yes
+			num_uncleared_blockers < 1
+			free_district_slots < 1
+			OR = {
+				num_pops >= 50
+				is_capital = yes
+			}
+		}
+		check_variable = { which = wg_modified_ringworld value < 11 }
+		# only consider these kinds of decisions when "wealthy"
+		has_resource = {
+			type = minerals
+			amount > 12000
+		}
+		has_monthly_income = {
+			resource = sr_se
+			value > 15
+		}
+	}
+
+	weight = {
+		weight = 0.30
+	}
+
+	desired_min = {
+		base = 500
+	}
+	desired_max = {
+		base = 500
+	}
+}

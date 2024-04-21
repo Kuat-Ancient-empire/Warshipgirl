@@ -1,0 +1,749 @@
+namespace = wg_worm
+
+# 创建时虫妈主界面
+country_event = {
+	id = wg_worm.1
+	title = wg_worm.1.name
+	desc = wg_worm.1.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	picture_event_data = {
+		room = worm_room
+	}
+
+	trigger = {
+		NOT = { has_country_flag = owned_wg_worm_country }
+		is_ai = no
+	}
+
+	immediate = {
+		if = {
+			limit = { NOT = { any_country = { has_country_flag = owned_wg_worm_country }}}
+			create_species = {
+				name = WG_WORM_SPECIES
+				plural = WG_WORM_SPECIES
+				class = ART
+				portrait = art13
+				namelist = ART1
+				effect = {
+					save_global_event_target_as = wg_worm_species
+				}
+			}
+			create_country = {
+				name = "NAME_wg_worm_country"
+				species = event_target:wg_worm_species
+				type = wg_worm
+				flag = {
+					icon = {
+						category = "wg_event_flags"
+						file = "wge_flags_06.dds"
+					}
+					background= {
+						category = "backgrounds"
+						file = "00_solid.dds"
+					}
+					colors={
+						"purple"
+						"purple"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					save_global_event_target_as = wg_worm_country
+					set_country_flag = wg_worm_country
+					establish_communications_no_message = root
+				}
+			}
+		}
+		set_country_flag = owned_wg_worm_country
+		country_event = { id = wg_worm.100 }
+	}
+
+	option = {
+		name = OK
+		change_variable = { which = rankpts value = 3 }
+	}
+}
+
+country_event = {
+	id = wg_worm.2
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		if = {
+			limit = { has_modifier = wg_worm_cooldown }
+			country_event = { id = wg_worm.99 }
+		} else = {
+			country_event = { id = wg_worm.100 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_worm.99
+	title = wg_worm.100.name
+	desc = wg_worm.99.desc.a
+	desc = wg_worm.99.desc.b
+	desc = wg_worm.99.desc.c
+	is_triggered_only = yes
+	diplomatic = yes
+	picture_event_data = {
+		room = worm_room
+	}
+
+	trigger = {
+		has_modifier = wg_worm_cooldown
+		FROM = { OR = {
+			is_country_type = wg_worm 
+			is_same_value = ROOT 
+		}}
+	}
+
+	option = {
+		name = OK
+		custom_tooltip = wg_worm.99.tooltip
+	}
+
+}
+
+country_event = {
+	id = wg_worm.100
+	title = wg_worm.100.name
+	desc = {
+		exclusive_trigger = {
+			NOT = { has_country_flag = triggered_wg_worm_events }
+		}
+		text = wg_worm.100.desc.a
+	}
+	desc = wg_worm.100.desc.a
+	desc = wg_worm.100.desc.b
+	desc = wg_worm.100.desc.c
+	is_triggered_only = yes
+	diplomatic = yes
+	picture_event_data = {
+		room = worm_room
+	}
+
+	trigger = {
+		NOT = { has_modifier = wg_worm_cooldown }
+		FROM = { OR = {
+			is_country_type = wg_worm 
+			is_same_value = ROOT 
+		}}
+	}
+
+	after = {
+		hidden_effect = {
+			set_variable = { which = wg_worm_outcome_1 value = 0 }
+			set_variable = { which = wg_worm_outcome_2 value = 0 }
+			set_variable = { which = wg_worm_outcome_3 value = 0 }
+			set_country_flag = triggered_wg_worm_events
+		}
+	}
+
+	immediate = {
+		random_list = {
+			20 = { set_variable = { which = wg_worm_outcome_1 value = 1 }}
+			20 = { set_variable = { which = wg_worm_outcome_1 value = 2 }}
+			10 = { set_variable = { which = wg_worm_outcome_1 value = 3 }}
+			5 = { set_variable = { which = wg_worm_outcome_1 value = 4 }}
+			5 = { 
+				modifier = {
+					factor = 0
+					NOT = { any_owned_leader = {
+						has_leader_flag = gained_trait_the_loop
+					}}
+				}
+				set_variable = { which = wg_worm_outcome_1 value = 5 }
+			}
+			10 = { set_variable = { which = wg_worm_outcome_1 value = 6 }}
+			# 1 = { set_variable = { which = wg_worm_outcome_1 value = 7 }}
+			# 1 = { set_variable = { which = wg_worm_outcome_1 value = 8 }}
+			# 1 = { set_variable = { which = wg_worm_outcome_1 value = 9 }}
+			# 1 = { set_variable = { which = wg_worm_outcome_1 value = 10 }}
+		}
+		random_list = {
+			20 = { 
+				modifier = {
+					factor = 0
+					check_variable = { which = wg_worm_outcome_1 value = 1 }
+				}
+				set_variable = { which = wg_worm_outcome_2 value = 1 }
+			}
+			20 = {  
+				modifier = {
+					factor = 0
+					check_variable = { which = wg_worm_outcome_1 value = 2 }
+				}
+				set_variable = { which = wg_worm_outcome_2 value = 2 }
+			}
+			10 = {  
+				modifier = {
+					factor = 0
+					check_variable = { which = wg_worm_outcome_1 value = 3 }
+				}
+				set_variable = { which = wg_worm_outcome_2 value = 3 }
+			}
+			5 = {  
+				modifier = {
+					factor = 0
+					check_variable = { which = wg_worm_outcome_1 value = 4 }
+				}
+				set_variable = { which = wg_worm_outcome_2 value = 4 }
+			}
+			5 = {  
+				modifier = {
+					factor = 0
+					check_variable = { which = wg_worm_outcome_1 value = 5 }
+				}
+				modifier = {
+					factor = 0
+					NOT = { any_owned_leader = {
+						has_leader_flag = gained_trait_the_loop
+					}}
+				}
+				set_variable = { which = wg_worm_outcome_2 value = 5 }
+			}
+			10 = {  
+				modifier = {
+					factor = 0
+					check_variable = { which = wg_worm_outcome_1 value = 6 }
+				}
+				set_variable = { which = wg_worm_outcome_2 value = 6 }
+			}
+			# 1 = {  
+			# 	modifier = {
+			# 		factor = 0
+			# 		check_variable = { which = wg_worm_outcome_1 value = 7 }
+			# 	}
+			# 	set_variable = { which = wg_worm_outcome_2 value = 7 }
+			# }
+			# 1 = {  
+			# 	modifier = {
+			# 		factor = 0
+			# 		check_variable = { which = wg_worm_outcome_1 value = 8 }
+			# 	}
+			# 	set_variable = { which = wg_worm_outcome_2 value = 8 }
+			# }
+			# 1 = {  
+			# 	modifier = {
+			# 		factor = 0
+			# 		check_variable = { which = wg_worm_outcome_1 value = 9 }
+			# 	}
+			# 	set_variable = { which = wg_worm_outcome_2 value = 9 }
+			# }
+			# 1 = {  
+			# 	modifier = {
+			# 		factor = 0
+			# 		check_variable = { which = wg_worm_outcome_1 value = 10 }
+			# 	}
+			# 	set_variable = { which = wg_worm_outcome_2 value = 10 }
+			# }
+		}
+		random_list = {
+			20 = {  
+				modifier = {
+					factor = 0
+					OR = {
+						check_variable = { which = wg_worm_outcome_1 value = 1 }
+						check_variable = { which = wg_worm_outcome_2 value = 1 }
+					}
+				}
+				set_variable = { which = wg_worm_outcome_3 value = 1 }
+			}
+			20 = {  
+				modifier = {
+					factor = 0
+					OR = {
+						check_variable = { which = wg_worm_outcome_1 value = 2 }
+						check_variable = { which = wg_worm_outcome_2 value = 2 }
+					}
+				}
+				set_variable = { which = wg_worm_outcome_3 value = 2 }
+			}
+			10 = { 
+				modifier = {
+					factor = 0
+					OR = {
+						check_variable = { which = wg_worm_outcome_1 value = 3 }
+						check_variable = { which = wg_worm_outcome_2 value = 3 }
+					}
+				}
+				set_variable = { which = wg_worm_outcome_3 value = 3 }
+			}
+			5 = { 
+				modifier = {
+					factor = 0
+					OR = {
+						check_variable = { which = wg_worm_outcome_1 value = 4 }
+						check_variable = { which = wg_worm_outcome_2 value = 4 }
+					}
+				}
+				set_variable = { which = wg_worm_outcome_3 value = 4 }
+			}
+			5 = { 
+				modifier = {
+					factor = 0
+					OR = {
+						check_variable = { which = wg_worm_outcome_1 value = 5 }
+						check_variable = { which = wg_worm_outcome_2 value = 5 }
+					}
+				}
+				modifier = {
+					factor = 0
+					NOT = { any_owned_leader = {
+						has_leader_flag = gained_trait_the_loop
+					}}
+				}
+				set_variable = { which = wg_worm_outcome_3 value = 5 }
+			}
+			10 = { 
+				modifier = {
+					factor = 0
+					OR = {
+						check_variable = { which = wg_worm_outcome_1 value = 6 }
+						check_variable = { which = wg_worm_outcome_2 value = 6 }
+					}
+				}
+				set_variable = { which = wg_worm_outcome_3 value = 6 }
+			}
+			# 1 = { 
+			# 	modifier = {
+			# 		factor = 0
+			# 		OR = {
+			# 			check_variable = { which = wg_worm_outcome_1 value = 7 }
+			# 			check_variable = { which = wg_worm_outcome_2 value = 7 }
+			# 		}
+			# 	}
+			# 	set_variable = { which = wg_worm_outcome_3 value = 7 }
+			# }
+			# 1 = { 
+			# 	modifier = {
+			# 		factor = 0
+			# 		OR = {
+			# 			check_variable = { which = wg_worm_outcome_1 value = 8 }
+			# 			check_variable = { which = wg_worm_outcome_2 value = 8 }
+			# 		}
+			# 	}
+			# 	set_variable = { which = wg_worm_outcome_3 value = 8 }
+			# }
+			# 1 = { 
+			# 	modifier = {
+			# 		factor = 0
+			# 		OR = {
+			# 			check_variable = { which = wg_worm_outcome_1 value = 9 }
+			# 			check_variable = { which = wg_worm_outcome_2 value = 9 }
+			# 		}
+			# 	}
+			# 	set_variable = { which = wg_worm_outcome_3 value = 9 }
+			# }
+			# 1 = { 
+			# 	modifier = {
+			# 		factor = 0
+			# 		OR = {
+			# 			check_variable = { which = wg_worm_outcome_1 value = 10 }
+			# 			check_variable = { which = wg_worm_outcome_2 value = 10 }
+			# 		}
+			# 	}
+			# 	set_variable = { which = wg_worm_outcome_3 value = 10 }
+			# }
+		}
+	}
+
+	option = {
+		name = wg_worm_outcome_1_name
+		# 任意星球地块+1
+		trigger = {
+			OR = {
+				check_variable = { which = wg_worm_outcome_1 value = 1 }
+				check_variable = { which = wg_worm_outcome_2 value = 1 }
+				check_variable = { which = wg_worm_outcome_3 value = 1 }
+			}
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value >= 2000 }
+		}
+		add_resource = { energy = -2000 }
+		custom_tooltip = wg_worm_outcome_1.tooltip
+		hidden_effect = { 
+			add_modifier = { modifier = wg_worm_cooldown days = 1799 }
+			country_event = { id = wg_worm.100 days = 1800 }
+			country_event = { id = wg_worm.101 }
+		}
+	}
+
+	option = {
+		name = wg_worm_outcome_2_name
+		# 给buff
+		trigger = {
+			OR = {
+				check_variable = { which = wg_worm_outcome_1 value = 2 }
+				check_variable = { which = wg_worm_outcome_2 value = 2 }
+				check_variable = { which = wg_worm_outcome_3 value = 2 }
+			}
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value >= 2000 }
+		}
+		add_resource = { energy = -2000 }
+		custom_tooltip = wg_worm_outcome_2_tooltip
+		hidden_effect = { 
+			random_list = {
+				1 = { set_variable = { which = wg_worm_outcome_2_buff value = 1 }}
+				1 = { set_variable = { which = wg_worm_outcome_2_buff value = 2 }}
+				1 = { set_variable = { which = wg_worm_outcome_2_buff value = 3 }}
+				1 = { set_variable = { which = wg_worm_outcome_2_buff value = 4 }}
+				1 = { set_variable = { which = wg_worm_outcome_2_buff value = 5 }}
+				1 = { set_variable = { which = wg_worm_outcome_2_buff value = 6 }}
+				1 = { set_variable = { which = wg_worm_outcome_2_buff value = 7 }}
+				1 = { set_variable = { which = wg_worm_outcome_2_buff value = 8 }}
+			}
+			add_modifier = { modifier = wg_worm_cooldown days = 1799 }
+			country_event = { id = wg_worm.100 days = 1800 }
+			country_event = { id = wg_worm.102 }
+		}
+	}
+	option = {
+		name = wg_worm_outcome_3_name
+		# 送建筑
+		trigger = {
+			OR = {
+				check_variable = { which = wg_worm_outcome_1 value = 3 }
+				check_variable = { which = wg_worm_outcome_2 value = 3 }
+				check_variable = { which = wg_worm_outcome_3 value = 3 }
+			}
+		}
+		allow = {
+			resource_stockpile_compare = { resource = minerals value >= 2000 }
+		}
+		add_resource = { minerals = -2000 }
+		custom_tooltip = wg_worm_outcome_3_tooltip
+		hidden_effect = { 
+			random_list = {
+				1 = { change_variable = { which = wg_worm_outcome_3_building value = 1 }}
+				1 = { change_variable = { which = wg_worm_outcome_3_building value = 2 }}
+				1 = { change_variable = { which = wg_worm_outcome_3_building value = 3 }}
+			}
+			add_modifier = { modifier = wg_worm_cooldown days = 1799 }
+			country_event = { id = wg_worm.100 days = 1800 }
+			country_event = { id = wg_worm.103 }
+		}
+	}
+	option = {
+		name = wg_worm_outcome_4_name
+		# 随机境内的球变成了废土球
+		allow = {
+			resource_stockpile_compare = { resource = energy value >= 2000 }
+		}
+		trigger = {
+			OR = {
+				check_variable = { which = wg_worm_outcome_1 value = 4 }
+				check_variable = { which = wg_worm_outcome_2 value = 4 }
+				check_variable = { which = wg_worm_outcome_3 value = 4 }
+			}
+		}
+		add_resource = { energy = -2000 }
+		custom_tooltip = wg_worm_outcome_4.tooltip
+		hidden_effect = { 
+			add_modifier = { modifier = wg_worm_cooldown days = 1799 }
+			country_event = { id = wg_worm.100 days = 1800 }
+			country_event = { id = wg_worm.104 }
+		}
+	}
+	option = {
+		# 送特质
+		name = wg_worm_outcome_5_name
+		allow = {
+			resource_stockpile_compare = { resource = food value >= 2000 }
+		}
+		trigger = {
+			OR = {
+				check_variable = { which = wg_worm_outcome_1 value = 5 }
+				check_variable = { which = wg_worm_outcome_2 value = 5 }
+				check_variable = { which = wg_worm_outcome_3 value = 5 }
+			}
+		}
+		add_resource = { food = -2000 }
+		custom_tooltip = wg_worm_outcome_5.tooltip
+		hidden_effect = { 
+			add_modifier = { modifier = wg_worm_cooldown days = 1799 }
+			country_event = { id = wg_worm.100 days = 1800 }
+			country_event = { id = wg_worm.105 }
+		}
+	}
+	option = {
+		# 给陆军
+		name = wg_worm_outcome_6_name
+		allow = {
+			resource_stockpile_compare = { resource = consumer_goods value >= 2000 }
+		}
+		trigger = {
+			OR = {
+				check_variable = { which = wg_worm_outcome_1 value = 6 }
+				check_variable = { which = wg_worm_outcome_2 value = 6 }
+				check_variable = { which = wg_worm_outcome_3 value = 6 }
+			}
+		}
+		add_resource = { consumer_goods = -2000 }
+		custom_tooltip = wg_worm_outcome_6.tooltip
+		hidden_effect = { 
+			add_modifier = { modifier = wg_worm_cooldown days = 1799 }
+			country_event = { id = wg_worm.100 days = 1800 }
+			country_event = { id = wg_worm.106 }
+		}
+	}
+	option = {
+		name = wg_worm_outcome_7_name
+		trigger = {
+			OR = {
+				check_variable = { which = wg_worm_outcome_1 value = 7 }
+				check_variable = { which = wg_worm_outcome_2 value = 7 }
+				check_variable = { which = wg_worm_outcome_3 value = 7 }
+			}
+		}
+	}
+	option = {
+		name = wg_worm_outcome_8_name
+		trigger = {
+			OR = {
+				check_variable = { which = wg_worm_outcome_1 value = 8 }
+				check_variable = { which = wg_worm_outcome_2 value = 8 }
+				check_variable = { which = wg_worm_outcome_3 value = 8 }
+			}
+		}
+	}
+	option = {
+		name = wg_worm_outcome_9_name
+		trigger = {
+			OR = {
+				check_variable = { which = wg_worm_outcome_1 value = 9 }
+				check_variable = { which = wg_worm_outcome_2 value = 9 }
+				check_variable = { which = wg_worm_outcome_3 value = 9 }
+			}
+		}
+	}
+	option = {
+		name = wg_worm_outcome_10_name
+		trigger = {
+			OR = {
+				check_variable = { which = wg_worm_outcome_1 value = 10 }
+				check_variable = { which = wg_worm_outcome_2 value = 10 }
+				check_variable = { which = wg_worm_outcome_3 value = 10 }
+			}
+		}
+	}
+
+	option = {
+		name = wg_worm_exit
+		default_hide_option = yes
+	}
+}
+
+country_event = {
+	id = wg_worm.101
+	title = wg_worm.100.name
+	desc = wg_worm.101.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	picture_event_data = {
+		room = worm_room
+	}
+
+	option = {
+		name = OK
+		random_owned_planet = {
+			limit = { planet_size < 20 }
+			random_list = {
+				10 = { change_planet_size = 1 }
+				6 = { change_planet_size = 2 }
+				3 = { change_planet_size = 3 }
+				1 = { change_planet_size = 4 }
+			}
+		}
+	}
+
+}
+
+country_event = {
+	id = wg_worm.102
+	title = wg_worm.100.name
+	desc = wg_worm.102.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	picture_event_data = {
+		room = worm_room
+	}
+
+	after = {
+		# hidden_effect = { }
+	}
+
+	option = {
+		name = OK
+		if = {
+			limit = { check_variable = { which = wg_worm_outcome_2_buff value = 1 }}
+			add_modifier = { modifier = wg_worm_outcome_2_buff_1 days = 1800 }
+		} else_if = {
+			limit = { check_variable = { which = wg_worm_outcome_2_buff value = 2 }}
+			add_modifier = { modifier = wg_worm_outcome_2_buff_2 days = 1800 }
+		} else_if = {
+			limit = { check_variable = { which = wg_worm_outcome_2_buff value = 3 }}
+			add_modifier = { modifier = wg_worm_outcome_2_buff_3 days = 1080 }
+		} else_if = {
+			limit = { check_variable = { which = wg_worm_outcome_2_buff value = 4 }}
+			add_modifier = { modifier = wg_worm_outcome_2_buff_4 days = 1800 }
+		} else_if = {
+			limit = { check_variable = { which = wg_worm_outcome_2_buff value = 5 }}
+			add_modifier = { modifier = wg_worm_outcome_2_buff_5 days = 1800 }
+		} else_if = {
+			limit = { check_variable = { which = wg_worm_outcome_2_buff value = 6 }}
+			add_modifier = { modifier = wg_worm_outcome_2_buff_6 days = 1800 }
+		} else_if = {
+			limit = { check_variable = { which = wg_worm_outcome_2_buff value = 7 }}
+			add_modifier = { modifier = wg_worm_outcome_2_buff_7 days = 1080 }
+		} else_if = {
+			limit = { check_variable = { which = wg_worm_outcome_2_buff value = 8 }}
+			add_modifier = { modifier = wg_worm_outcome_2_buff_8 days = 1080 }
+		} 
+		hidden_effect = { set_variable = { which = wg_worm_outcome_2_buff value = 0 }}
+	}
+}
+
+country_event = {
+	id = wg_worm.103
+	title = wg_worm.100.name
+	desc = wg_worm.103.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	picture_event_data = {
+		room = worm_room
+	}
+
+	after = {
+		hidden_effect = { set_variable = { which = wg_worm_outcome_3_building value = 0 }}
+	}
+
+	option = {
+		name = OK
+		if = {
+			limit = { check_variable = { which = wg_worm_outcome_3_building value = 1 }}
+			change_variable = { which = building_wg_worm_farming_allow value = 1 }
+		} else_if = {
+			limit = { check_variable = { which = wg_worm_outcome_3_building value = 2 }}
+			change_variable = { which = building_wg_worm_mining_allow value = 1 }
+		} else_if = {
+			limit = { check_variable = { which = wg_worm_outcome_3_building value = 3 }}
+			change_variable = { which = building_wg_worm_generator_allow value = 1 }
+		}
+	}
+
+}
+# 变废土球
+country_event = {
+	id = wg_worm.104
+	title = wg_worm.100.name
+	desc = wg_worm.104.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	picture_event_data = {
+		room = worm_room
+	}
+	location = event_target:the_loop_planet
+
+	immediate = {
+		random_planet_within_border = {
+			limit = {
+				has_owner = no
+				is_preventing_anomaly = no
+				has_anomaly = no
+				is_artificial = no
+				is_star = no
+				is_colony = no
+				is_colonizable = no
+				is_asteroid = no
+				NOT = { exists = archaeological_site }
+			}
+			save_event_target_as = the_loop_planet
+		}
+	}
+
+	option = {
+		name = OK
+		if = {
+			limit = { exists = event_target:the_loop_planet }
+			event_target:the_loop_planet = {
+				change_pc = pc_nuked
+			}
+		}
+	}
+}
+# 给圆环特质
+country_event = {
+	id = wg_worm.105
+	title = wg_worm.100.name
+	desc = wg_worm.105.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	picture_event_data = {
+		room = worm_room
+	}
+
+	immediate = {
+		random_owned_leader = {
+			limit = { 
+				is_special_affection_leader = no 
+				NOT = { has_leader_flag = gained_trait_the_loop }
+			}
+			save_event_target_as = the_loop_leader
+		}
+	}
+
+	option = {
+		name = OK
+		event_target:the_loop_leader = {
+			set_leader_flag = gained_trait_the_loop
+			if = {
+				limit = { is_ruler = yes }
+				ruler = { add_trait_no_notify = leader_trait_ruler_wg_the_loop }
+			} else = {
+				switch = {
+					trigger = leader_class
+					official = { add_trait_no_notify = leader_trait_official_wg_the_loop }
+					scientist = { add_trait_no_notify = leader_trait_scientist_wg_the_loop }
+					commander = { add_trait_no_notify = leader_trait_commander_wg_the_loop }
+				}
+			}
+		}
+	}
+
+}
+# 给陆军
+country_event = {
+	id = wg_worm.106
+	title = wg_worm.100.name
+	desc = wg_worm.106.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	picture_event_data = {
+		room = worm_room
+	}
+
+	option = {
+		name = OK
+		custom_tooltip = wg_worm.106.tooltip
+		capital_scope = {
+			while = {
+				count = 3
+				create_army = {
+					name = "NAME_the_loop_army"
+					owner = root
+					species = root.owner_species
+					type = wg_army_the_loop
+				}
+			}
+		}
+	}
+
+}

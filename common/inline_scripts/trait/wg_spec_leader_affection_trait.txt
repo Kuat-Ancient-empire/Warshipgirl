@@ -1,0 +1,90 @@
+icon = {
+	layer = {
+		icon = "gfx/interface/icons/traits/affection1.dds"
+		visible = { owner = { OR = {
+			NOT = { is_variable_set = $LEADER$_affection }
+			check_variable = { which = $LEADER$_affection value < @$LEADER$_affection_to_lv2 }
+		}}}
+	}
+	layer = {
+		icon = "gfx/interface/icons/traits/affection2.dds"
+		visible = { owner = {
+			check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv2 }
+			check_variable = { which = $LEADER$_affection value < @$LEADER$_affection_to_lv3 }
+		}}
+	}
+	layer = {
+		icon = "gfx/interface/icons/traits/affection3.dds"
+		visible = { owner = {
+			check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv3 }
+			check_variable = { which = $LEADER$_affection value < @$LEADER$_affection_to_lv4 }
+		}}
+	}
+	layer = {
+		icon = "gfx/interface/icons/traits/affection4.dds"
+		visible = { owner = {
+			if = {
+				limit = { has_country_flag = $MARRIED_FLAG$ }
+				check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv4 }
+				check_variable = { which = $LEADER$_affection value < @$LEADER$_affection_to_lv5 }
+			} else = {
+				check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv4 }
+			}
+		}}
+	}
+	layer = {
+		icon = "gfx/interface/icons/traits/affection5.dds"
+		visible = { owner = {
+			check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv5 }
+			has_country_flag = $MARRIED_FLAG$
+		}}
+	}
+}
+
+triggered_desc = {
+	trigger = { owner = { OR = {
+		NOT = { is_variable_set = $LEADER$_affection }
+		check_variable = { which = $LEADER$_affection value < @$LEADER$_affection_to_lv2 }
+	}}}
+	text = $LEADER$_affection_lv1_desc
+}
+triggered_desc = {
+	trigger = { owner = {
+		check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv2 }
+		check_variable = { which = $LEADER$_affection value < @$LEADER$_affection_to_lv3 }
+	}}
+	text = $LEADER$_affection_lv2_desc
+}
+triggered_desc = {
+	trigger = { owner = {
+		check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv3 }
+		check_variable = { which = $LEADER$_affection value < @$LEADER$_affection_to_lv4 }
+	}}
+	text = $LEADER$_affection_lv3_desc
+}
+triggered_desc = {
+	trigger = { owner = {
+		if = {
+			limit = { has_country_flag = $MARRIED_FLAG$ }
+			check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv4 }
+			check_variable = { which = $LEADER$_affection value < @$LEADER$_affection_to_lv5 }
+		} else = {
+			check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv4 }
+		}
+	}}
+	text = $LEADER$_affection_lv4_desc
+}
+triggered_desc = {
+	trigger = { owner = {
+		check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv5 }
+		NOT = { has_country_flag = $MARRIED_FLAG$ }
+	}}
+	text = max_affection_$LEADER$
+}
+triggered_desc = {
+	trigger = { owner = {
+		check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv5 }
+		has_country_flag = $MARRIED_FLAG$
+	}}
+	text = $LEADER$_affection_lv5_desc
+}

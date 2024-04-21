@@ -1,0 +1,2106 @@
+namespace = wg_origin_sh_chaser
+country_event = {
+	id = wg_origin_sh_chaser.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_origin = origin_sh_chaser
+	}
+
+	immediate = {
+		set_country_flag = wg_custom_origin
+		ruler = {
+			set_name = NAME_origin_Chaser
+			add_trait_no_notify = leader_trait_origin_sh_chaser
+			set_skill = 4
+			set_leader_flag = leader_death_events_blocked
+			set_leader_flag = immune_to_negative_traits
+			switch = {
+				trigger = leader_class
+				official = {
+					add_trait_no_notify = subclass_official_economy_councilor
+				}
+				scientist = {
+					add_trait_no_notify = subclass_scientist_councilor
+				}
+				commander = {
+					add_trait_no_notify = subclass_commander_councilor
+				}
+			}
+		}
+		set_variable = {
+			which = origin_sh_chaser_value
+			value = 3
+		}
+		country_event = {
+			id = wg_origin_sh_chaser.2
+		}
+	}
+}
+
+country_event = { # Start the situation
+	id = wg_origin_sh_chaser.2
+	title = "wg_origin_sh_chaser.2.name"
+	desc = "wg_origin_sh_chaser.2.desc"
+	picture = GFX_evt_board_meeting
+	show_sound = event_radio_chatter
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+	}
+
+	immediate = {
+		start_situation = {
+			type = origin_sh_chaser_promise
+		}
+		country_event = {
+			id = wg_origin_sh_chaser.4 days = 1800 random = 360
+		}
+		country_event = {
+			id = wg_origin_sh_chaser.5 days = 3600 random = 360
+		}
+		country_event = {
+			id = wg_origin_sh_chaser.6 days = 5400 random = 360
+		}
+		country_event = {
+			id = wg_origin_sh_chaser.14 days = 7200 random = 360
+		}
+		country_event = {
+			id = wg_origin_sh_chaser.20 days = 1800 random = 3600
+		}
+		country_event = {
+			id = wg_origin_sh_chaser.40 days = 3600 random = 3600
+		}
+		country_event = {
+			id = wg_origin_sh_chaser.50 days = 7200 random = 3600
+		}
+		country_event = {
+			id = wg_origin_sh_chaser.100 days = 14400
+		}
+	}
+
+	option = {
+		name = "wg_origin_sh_chaser.2.a"
+	}
+
+}
+###############
+#Origin Events#
+###############
+
+country_event = {
+	id = wg_origin_sh_chaser.4
+	title = "wg_origin_sh_chaser.4.name"
+	desc = "wg_origin_sh_chaser.4.desc"
+	picture = GFX_evt_sh_chaser_1
+
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			exists = ruler
+			ruler = { has_trait = leader_trait_origin_sh_chaser }
+		}
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = "wg_origin_sh_chaser.4.a"
+	}
+}
+
+country_event = {
+	id = wg_origin_sh_chaser.5
+	title = "wg_origin_sh_chaser.5.name"
+	desc = "wg_origin_sh_chaser.5.desc"
+	picture = GFX_evt_wg_juggernaut_ruined
+
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			exists = ruler
+			ruler = { has_trait = leader_trait_origin_sh_chaser }
+		}
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = "wg_origin_sh_chaser.5.a"
+		add_monthly_resource_mult = {
+			resource = engineering_research
+			value = @tier1researchreward
+			min = @tier1researchmin
+			max = @tier1researchmax
+		}
+	}
+}
+
+country_event = {
+	id = wg_origin_sh_chaser.6
+	title = "wg_origin_sh_chaser.6.name"
+	desc = "wg_origin_sh_chaser.6.desc"
+	picture = GFX_evt_wsg_rank4
+
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			exists = ruler
+			ruler = { has_trait = leader_trait_origin_sh_chaser }
+		}
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = "wg_origin_sh_chaser.6.a"
+		add_modifier = {
+			modifier = wg_origin_sh_chaser_6_modifier
+		}
+	}
+}
+
+situation_event = { # situation finished - calculation
+	id = wg_origin_sh_chaser.7
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		owner = {
+			country_event = {
+				id = wg_origin_sh_chaser.5300 days = 360 random = 180
+			}
+			country_event = {
+				id = wg_origin_sh_chaser.5300 days = 1080 random = 180
+			}
+			country_event = {
+				id = wg_origin_sh_chaser.5300 days = 3600 random = 180
+			}
+			country_event = {
+				id = wg_origin_sh_chaser.5300 days = 7200 random = 180
+			}
+			export_trigger_value_to_variable = {
+				trigger = num_owned_planets
+				variable = num_owned_planet
+			}
+			export_trigger_value_to_variable = {
+				trigger = num_starbases
+				variable = num_starbases
+			}
+			multiply_variable = {
+				which = num_starbases
+				value = 0.1
+			}
+			change_variable = {
+				which = origin_sh_chaser_value
+				value = num_owned_planet
+			}
+			change_variable = {
+				which = origin_sh_chaser_value
+				value = num_starbases
+			}
+			if = {
+				limit = {
+					check_variable = {
+						which = origin_sh_chaser_value
+						value >= 10
+					}
+				}
+				country_event = { id = wg_origin_sh_chaser.9 }
+			}
+			else = {
+				country_event = { id = wg_origin_sh_chaser.8 }
+			}
+		}
+	}
+}
+
+country_event = { # situation finished - bad
+	id = wg_origin_sh_chaser.8
+	title = "wg_origin_sh_chaser.8.name"
+	desc = "wg_origin_sh_chaser.8.desc"
+	picture = GFX_evt_legendary_leader
+	show_sound = event_factions
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.8.a
+		custom_tooltip = wg_origin_sh_chaser.8.a.tt
+		add_modifier = {
+			modifier = wg_origin_sh_chaser_unity_negative_low
+			days = 1800
+		}
+		hidden_effect = {
+			change_variable = {
+				which = origin_sh_chaser_value
+				value = -1
+			}
+		}
+	}
+}
+
+country_event = { # situation finished - good
+	id = wg_origin_sh_chaser.9
+	title = "wg_origin_sh_chaser.9.name"
+	desc = "wg_origin_sh_chaser.9.desc"
+	picture = GFX_evt_legendary_leader
+	show_sound = event_celebration
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.9.a
+		custom_tooltip = wg_origin_sh_chaser.9.a.tt
+		hidden_effect = {
+			change_variable = {
+				which = origin_sh_chaser_value
+				value = 10
+			}
+		}
+		add_modifier = {
+			modifier = wg_origin_sh_chaser_unity_positive_low
+			days = 1800
+		}
+	}
+}
+# Country problems event chain
+
+country_event = {
+	id = wg_origin_sh_chaser.14
+	title = "wg_origin_sh_chaser.14.name"
+	desc = "wg_origin_sh_chaser.14.desc"
+	picture = GFX_evt_board_meeting
+	show_sound = event_factions
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.14.a
+		owner = {
+			add_modifier = {
+				modifier = council_in_tatter
+				days = -1
+			}
+		}
+	}
+}
+
+country_event = { # some planets can't recieve signal and they want to have it
+	id = wg_origin_sh_chaser.20
+	title = "wg_origin_sh_chaser.20.name"
+	desc = "wg_origin_sh_chaser.20.desc"
+	picture = GFX_evt_mysterious_signal
+	show_sound = event_planetary_riot
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.20.a
+		enable_special_project = {
+			name = "wg_origin_sh_chaser_SPIRITUALIST_PROJECT"
+			owner = root
+		}
+		add_modifier = {
+			modifier = paragon_origin_comms_down
+			days = -1
+		}
+	}
+}
+
+country_event = {
+	id = wg_origin_sh_chaser.21
+	title = "wg_origin_sh_chaser.21.name"
+	desc = "wg_origin_sh_chaser.21.desc"
+	picture = GFX_evt_communication_event
+	show_sound = event_sensor_ping
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.21.a
+		remove_modifier = paragon_origin_comms_down
+		add_modifier = {
+			modifier = wg_origin_sh_chaser_unity_positive_low
+			days = 180
+		}
+	}
+}
+
+
+country_event = { #
+	id = wg_origin_sh_chaser.40
+	title = "wg_origin_sh_chaser.40.name"
+	desc = "wg_origin_sh_chaser.40.desc"
+	picture = GFX_evt_SHCM
+	show_sound = event_planetary_riot
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.40.a
+		enable_special_project = {
+			name = "wg_origin_sh_chaser_WORKER_PROJECT"
+			owner = root
+		}
+		add_modifier = {
+			modifier = wg_origin_sh_chaser_worker_strike
+			days = -1
+		}
+	}
+}
+
+country_event = { 
+	id = wg_origin_sh_chaser.41
+	title = "wg_origin_sh_chaser.41.name"
+	desc = "wg_origin_sh_chaser.41.desc"
+	picture = GFX_evt_SHCM
+	show_sound = event_mystic_reveal
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.41.a
+		remove_modifier = wg_origin_sh_chaser_worker_strike
+		add_modifier = {
+			modifier = wg_origin_sh_chaser_unity_positive_low
+			days = 180
+		}
+	}
+}
+
+country_event = { # nepotism on the rise
+	id = wg_origin_sh_chaser.50
+	title = "wg_origin_sh_chaser.50.name"
+	desc = "wg_origin_sh_chaser.50.desc"
+	picture = GFX_evt_SH3
+	show_sound = event_planetary_riot
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.50.a
+		enable_special_project = {
+			name = "wg_origin_sh_chaser_MATERIALIST_PROJECT"
+			owner = root
+		}
+		add_modifier = {
+			modifier = wg_origin_sh_chaser_nepotism
+			days = -1
+		}
+	}
+}
+
+country_event = {
+	id = wg_origin_sh_chaser.51
+	title = "wg_origin_sh_chaser.51.name"
+	desc = "wg_origin_sh_chaser.51.desc"
+	picture = GFX_evt_SH3
+	show_sound = event_radio_chatter
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.51.a
+		every_planet_within_border = {
+			limit = {
+			}
+			random_owned_pop = {
+				limit = { is_pop_category = ruler }
+				unemploy_pop = yes
+			}
+		}
+		remove_modifier = wg_origin_sh_chaser_nepotism
+		add_modifier = {
+			modifier = wg_origin_sh_chaser_unity_positive_low
+			days = 180
+		}
+	}
+}
+
+
+country_event = {
+	id = wg_origin_sh_chaser.100
+	title = "wg_origin_sh_chaser.100.name"
+	desc = "wg_origin_sh_chaser.100.desc"
+	picture = GFX_evt_enclave_overlord
+	show_sound = event_factions
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.100.a
+		custom_tooltip = wg_origin_sh_chaser.100.a.tt
+		hidden_effect = {
+			ruler = {
+				hidden_effect = {
+					change_variable = {
+						which = origin_sh_chaser_value
+						value = -1
+					}
+				}
+			}
+			country_event = {
+				id = wg_origin_sh_chaser.101 days = 3600
+			}
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser.100.b
+		custom_tooltip = wg_origin_sh_chaser.100.b.tt
+		hidden_effect = {
+			if = {
+				limit = {
+					check_variable = {
+						which = origin_sh_chaser_value
+						value >= 25
+					}
+				}
+				set_country_flag = wg_origin_sh_chaser.102.desc.c
+			}
+			else = {
+				change_variable = {
+					which = origin_sh_chaser_value
+					value = -10
+				}
+			}
+			country_event = {
+				id = wg_origin_sh_chaser.102 days = 10
+			}
+		}
+	}
+}
+
+
+country_event = {
+	id = wg_origin_sh_chaser.101
+	title = "wg_origin_sh_chaser.101.name"
+	desc = "wg_origin_sh_chaser.101.desc"
+	picture = GFX_evt_night_raid
+	show_sound = event_factions
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.101.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.102
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.102
+	title = "wg_origin_sh_chaser.102.name"
+	desc = {
+		trigger = {
+			has_country_flag = wg_origin_sh_chaser.102.desc.c
+		}
+		text = "wg_origin_sh_chaser.102.desc.c"
+	}
+	desc = {
+		trigger = {
+			NOT = {
+				has_country_flag = wg_origin_sh_chaser.102.desc.c
+			}
+			has_ascension_perk = ap_shenhai_icebreaking
+		}
+		text = "wg_origin_sh_chaser.102.desc.b"
+	}
+	desc = {
+		trigger = {
+			NOT = {
+				has_country_flag = wg_origin_sh_chaser.102.desc.c
+			}
+			NOT = {
+				has_ascension_perk = ap_shenhai_icebreaking
+			}
+		}
+		text = "wg_origin_sh_chaser.102.desc.a"
+	}
+	picture = GFX_evt_smugglers_in_bar
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		ruler = {
+			set_leader_flag = wg_origin_sh_chaser_portrait
+			change_leader_portrait = wsg124
+		}
+		if = {
+			limit = { has_country_flag = wg_origin_sh_chaser.102.desc.c }
+			change_variable = {
+				which = origin_sh_chaser_value
+				value = 1
+			}
+		}
+		else_if = {
+			limit = { has_ascension_perk = ap_shenhai_icebreaking }
+			change_variable = {
+				which = origin_sh_chaser_value
+				value = -5
+			}
+		}
+		else = {
+			change_variable = {
+				which = origin_sh_chaser_value
+				value = -10
+			}
+		}
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.102.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.103 days = 10
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_origin_sh_chaser.103
+	title = "wg_origin_sh_chaser.103.name"
+	desc = "wg_origin_sh_chaser.103.desc"
+	picture = GFX_evt_legendary_leader
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.103.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.104
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.104
+	title = "wg_origin_sh_chaser.104.name"
+	desc = "wg_origin_sh_chaser.104.desc"
+	picture = GFX_evt_legendary_leader
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.104.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.105
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.105
+	title = "wg_origin_sh_chaser.105.name"
+	desc = "wg_origin_sh_chaser.105.desc"
+	picture = GFX_evt_legendary_leader
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.105.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.106
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.106
+	title = "wg_origin_sh_chaser.106.name"
+	desc = "wg_origin_sh_chaser.106.desc"
+	picture = GFX_evt_legendary_leader
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.106.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.107 days = 10
+			}
+		}
+	}
+}
+country_event = { #After the Fall - First negotiation batch - with Reformists
+	id = wg_origin_sh_chaser.107
+	title = "wg_origin_sh_chaser.107.name"
+	desc = "wg_origin_sh_chaser.107.desc"
+	picture = GFX_evt_galactic_senate
+	show_sound = event_factions
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.107.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.108 days = 15 random = 30
+			}
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser.107.b
+		custom_tooltip = wg_origin_sh_chaser.107.b.tt
+		allow = {
+			check_variable = {
+				which = origin_sh_chaser_value
+				value < 25
+			}
+			custom_tooltip = wg_origin_sh_chaser.107.b.allow
+		}
+		hidden_effect = {
+			ruler = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+			set_origin = origin_legendary_leader_death
+			random_owned_planet = {
+				limit = {
+					solar_system = {
+						is_capital_system = no
+					}
+				}
+				save_event_target_as = rebel_planet
+				create_rebels = {
+					name = NAME_Defensive_C_SH
+					authority = auth_shenhai
+					ethos = { ethic = ethic_fanatic_authoritarian ethic = ethic_militarist }
+					civics = { civic = civic_yamato civic = civic_CM }
+					authority = auth_shenhai
+					species = root
+					origin = "origin_legendary_leader_death"
+					flag = random
+					effect = {
+						add_modifier = {
+							modifier = paragon_origin_one_system_war
+							days = -1
+						}
+						shift_ethic = ethic_fanatic_authoritarian
+						shift_ethic = ethic_militarist
+						set_country_type = default
+						set_country_flag = rebel_empire_@root
+						set_country_flag = origin_rebel_empire
+						save_event_target_as = rebel_empire_1
+						add_resource = {
+							minerals = 15000
+							energy = 15000
+							food = 15000
+							consumer_goods = 10000
+							alloys = 10000
+							rare_crystals = 1000
+							volatile_motes = 1000
+							exotic_gases = 1000
+							influence = 1000
+							unity = 10000
+						}
+						establish_communications_no_message = root
+						create_fleet_from_naval_cap = 0.6
+						declare_war = {
+							target = root
+							name = {
+								key = "NAME_The_Civil_War"
+								variable_string = "[This.MainDefender.GetAdj]"
+							}
+							attacker_war_goal = "wg_independence"
+						}
+					}
+				}
+				solar_system = {
+					if = {
+						limit = { exists = starbase }
+						starbase = {
+							if = {
+								limit = { is_owned_by = root.owner }
+								set_owner = event_target:rebel_empire_1
+								if = {
+									limit = { has_starbase_size = starbase_outpost }
+									set_starbase_size = starbase_starport
+									set_starbase_module = {
+										slot = 1
+										module = shipyard
+									}
+									set_starbase_module = {
+										slot = 2
+										module = shipyard
+									}
+								}
+								else_if = {
+									limit = {
+										NOT = { has_starbase_module = shipyard }
+									}
+									set_starbase_module = {
+										slot = 1
+										module = shipyard
+									}
+									set_starbase_module = {
+										slot = 2
+										module = shipyard
+									}
+								}
+							}
+						}
+					}
+					else = {
+						create_starbase = {
+							size = starbase_starport
+							module = shipyard
+							module = shipyard
+							owner = event_target:rebel_empire_1
+						}
+					}
+					add_claims = {
+						who = root.owner
+						show_notification = no
+					}
+					every_system_planet = {
+						limit = {
+							is_colony = yes
+							NOT = { is_same_value = event_target:rebel_planet }
+							is_owned_by = root.owner
+						}
+						set_owner = event_target:rebel_empire_1
+					}
+					every_fleet_in_system = {
+						limit = { is_owned_by = root.owner }
+						set_mia = mia_return_home
+					}
+				}
+			}
+			every_owned_planet = {
+				limit = {
+					solar_system = {
+						is_capital_system = no
+					}
+				}
+				random = {
+					chance = 20
+					solar_system = {
+						if = {
+							limit = { exists = starbase }
+							starbase = {
+								if = {
+									limit = { is_owned_by = root.owner }
+									set_owner = event_target:rebel_empire_1
+									if = {
+										limit = { has_starbase_size = starbase_outpost }
+										set_starbase_size = starbase_starport
+										set_starbase_module = {
+											slot = 1
+											module = shipyard
+										}
+										set_starbase_module = {
+											slot = 2
+											module = shipyard
+										}
+									}
+									else_if = {
+										limit = {
+											NOT = { has_starbase_module = shipyard }
+										}
+										set_starbase_module = {
+											slot = 1
+											module = shipyard
+										}
+										set_starbase_module = {
+											slot = 2
+											module = shipyard
+										}
+									}
+								}
+							}
+						}
+						else = {
+							create_starbase = {
+								size = starbase_starport
+								module = shipyard
+								module = shipyard
+								owner = event_target:rebel_empire_1
+							}
+						}
+						add_claims = {
+							who = root.owner
+							show_notification = no
+						}
+						every_system_planet = {
+							limit = {
+								is_colony = yes
+								NOT = { is_same_value = event_target:rebel_planet }
+								is_owned_by = root.owner
+							}
+							set_owner = event_target:rebel_empire_1
+						}
+						every_fleet_in_system = {
+							limit = { is_owned_by = root.owner }
+							set_mia = mia_return_home
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+country_event = { #Coronation
+	id = wg_origin_sh_chaser.108
+	title = "wg_origin_sh_chaser.108.name"
+	desc = "wg_origin_sh_chaser.108.desc"
+	picture = GFX_evt_coronation
+	show_sound = event_coronation
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+		country_event = {
+			id = wg_origin_sh_chaser.199 days = 1800 random = 1800
+		}
+	}
+	after = {
+		country_event = {
+			id = wg_origin_sh_chaser.109 days = 5
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser.108.a
+		trigger = {
+			is_militarist = yes
+		}
+		ruler = {
+			add_trait = leader_trait_legendary_military_knowledge_3
+			add_trait = leader_trait_legendary_foe_hammer_3
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser.108.b
+		trigger = {
+			is_spiritualist = yes
+		}
+		ruler = {
+			add_trait = leader_trait_legendary_great_teacher_3
+			add_trait = leader_trait_legendary_pious_ascet_3
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser.108.c
+		trigger = {
+			is_authoritarian = yes
+		}
+		ruler = {
+			add_trait = leader_trait_legendary_commanding_presence_3
+			add_trait = leader_trait_legendary_high_king_3
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser.108.d
+		trigger = {
+			is_xenophile = yes
+		}
+		ruler = {
+			add_trait = leader_trait_legendary_gunboat_diplomacy_3
+			add_trait = leader_trait_legendary_scientific_diplomacy_3
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser.108.f
+		trigger = {
+			is_materialist = yes
+		}
+		ruler = {
+			add_trait = leader_trait_legendary_industry_titan_3
+			add_trait = leader_trait_legendary_natural_ruler_3
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser.108.g
+		trigger = {
+			is_xenophobe = yes
+		}
+		ruler = {
+			add_trait = leader_trait_legendary_autarky_3
+			add_trait = leader_trait_legendary_evervigilant_3
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser.108.h
+		paragon_origin_gain_modifier = yes
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.109
+	title = "wg_origin_sh_chaser.109.name"
+	desc = "wg_origin_sh_chaser.109.desc"
+	picture = GFX_evt_legendary_leader
+	show_sound = event_celebration
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.109.a
+		add_resource = {
+			unity = 3000
+		}
+	}
+}
+
+# 衰弱
+country_event = {
+	id = wg_origin_sh_chaser.199
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					has_ascension_perk = ap_shenhai_icebreaking
+					has_ascension_perk = ap_shenhai_silent
+				}
+			}
+			country_event = {
+				id = wg_origin_sh_chaser.200 days = 1800 random = 1800
+			}
+		}
+		else = {
+			country_event = {
+				id = wg_origin_sh_chaser.199 days = 1800 random = 1800
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.200
+	title = "wg_origin_sh_chaser.200.name"
+	desc = "wg_origin_sh_chaser.200.desc"
+	picture = GFX_evt_legendary_leader
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.200.a
+		hidden_effect = {
+			change_variable = {
+				which = origin_sh_chaser_value
+				value = -5
+			}
+			country_event = {
+				id = wg_origin_sh_chaser.201 days = 10
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.201
+	title = "wg_origin_sh_chaser.201.name"
+	desc = "wg_origin_sh_chaser.201.desc"
+	picture = GFX_evt_legendary_leader
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.201.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.202 days = 1800
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.202
+	title = "wg_origin_sh_chaser.202.name"
+	desc = "wg_origin_sh_chaser.202.desc"
+	picture = GFX_evt_board_meeting
+	show_sound = event_conversation
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.202.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.203 days = 180
+			}
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser.202.b
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.204 days = 10
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_origin_sh_chaser.203
+	title = "wg_origin_sh_chaser.203.name"
+	desc = "wg_origin_sh_chaser.203.desc"
+	picture = GFX_evt_arguing_senate
+	show_sound = event_conversation
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.203.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.205 days = 180
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.204
+	title = "wg_origin_sh_chaser.204.name"
+	desc = "wg_origin_sh_chaser.204.desc"
+	picture = GFX_evt_arguing_senate
+	show_sound = event_conversation
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.204.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.205 days = 180
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.205
+	title = "wg_origin_sh_chaser.205.name"
+	desc = "wg_origin_sh_chaser.205.desc"
+	picture = GFX_evt_arguing_senate
+	show_sound = event_conversation
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.205.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.206 days = 30
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.206
+	title = "wg_origin_sh_chaser.206.name"
+	desc = "wg_origin_sh_chaser.206.desc"
+	picture = GFX_evt_legendary_leader
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.206.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.207 days = 5
+			}
+			country_event = {
+				id = wg_origin_sh_chaser.208 days = 60
+			}
+		}
+	}
+}
+country_event = { 
+	id = wg_origin_sh_chaser.207
+	title = "wg_origin_sh_chaser.207.name"
+	desc = "wg_origin_sh_chaser.207.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_14_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_SH_LEXINGTON
+            plural = WG_SH_LEXINGTON
+            class = WG_SH_LEXINGTON
+            portrait = wsg9964
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = WG_SH_LEXINGTON_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:WG_SH_LEXINGTON_species
+			immortal = yes
+			name = "NAME_WG_SH_LEXINGTON"
+			set_age = 18
+			gender = female
+			hide_age = yes
+			background_ethic = ethic_militarist
+			custom_description = WG_SH_LEXINGTON_desc
+			custom_catch_phrase = WG_SH_LEXINGTON_catch_phrase
+			traits = {
+				trait = subclass_commander_councilor
+				trait = leader_trait_commander_sh_lexington
+				trait = leader_trait_maven_of_war
+				trait = leader_trait_master_gunner
+				trait = trait_ruler_military_pioneer_3
+				trait = leader_trait_cautious_2
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				save_event_target_as = ethic_leader
+				set_leader_flag = legendary_leader
+				set_leader_flag = is_in_recruit_window
+				add_skill_without_trait_selection = 10
+			}
+		}
+		last_created_leader = {
+			add_trait_no_notify = leader_trait_shenhai2
+			set_variable = { which = affection value = 15 }
+			wg_affection_normal_system_launch = yes
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wg_origin_sh_chaser.207.a
+		response_text = wg_origin_sh_chaser.207.a.response
+		is_dialog_only = yes
+	}
+    option = {
+		name = wg_origin_sh_chaser.207.b
+		response_text = wg_origin_sh_chaser.207.b.response
+		is_dialog_only = yes
+	}
+    option = {
+		name = wg_origin_sh_chaser.207.c
+		response_text = wg_origin_sh_chaser.207.c.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_origin_sh_chaser.207.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_origin_sh_chaser.208
+	title = "wg_origin_sh_chaser.208.name"
+	desc = "wg_origin_sh_chaser.208.desc"
+	picture = GFX_evt_arguing_senate
+	show_sound = event_conversation
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.208.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.209 days = 5
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_origin_sh_chaser.209
+	title = "wg_origin_sh_chaser.209.name"
+	desc = "wg_origin_sh_chaser.209.desc"
+	picture = GFX_evt_legendary_leader
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.209.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.210 days = 10
+			}
+		}
+	}
+}
+# 衰弱
+country_event = {
+	id = wg_origin_sh_chaser.210
+	title = "wg_origin_sh_chaser.210.name"
+	desc = "wg_origin_sh_chaser.210.desc"
+	picture = GFX_evt_legendary_leader
+	show_sound = event_conversation
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.210.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.211 days = 10
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.211
+	title = "wg_origin_sh_chaser.211.name"
+	desc = "wg_origin_sh_chaser.211.desc"
+	picture = GFX_evt_legendary_leader
+	show_sound = event_conversation
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+		hidden_effect = {
+			set_variable = {
+				which = origin_sh_chaser_transform_cost
+				value = 50
+			}
+		}
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.211.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin_sh_chaser.212 days = 10
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.212
+	title = "wg_origin_sh_chaser.212.name"
+	desc = "wg_origin_sh_chaser.212.desc"
+	picture = GFX_evt_sh_chaser_1
+	show_sound = event_conversation
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = ruler
+		ruler = { has_trait = leader_trait_origin_sh_chaser }
+	}
+
+	immediate = {
+	}
+	after = {
+	}
+	option = {
+		name = wg_origin_sh_chaser_transform_1
+		custom_tooltip = wg_origin_sh_chaser_transform_1_desc
+		allow = { NOT = { has_modifier = wg_origin_sh_chaser_transform_1 } }
+		add_modifier = { modifier = wg_origin_sh_chaser_transform_1 }
+		hidden_effect = {
+			change_variable = {
+				which = origin_sh_chaser_transform_cost
+				value = 20
+			}
+			country_event = { id = wg_origin_sh_chaser.212 }
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser_transform_2
+		custom_tooltip = wg_origin_sh_chaser_transform_2_desc
+		allow = { NOT = { has_modifier = wg_origin_sh_chaser_transform_2 } }
+		add_modifier = { modifier = wg_origin_sh_chaser_transform_2 }
+		hidden_effect = {
+			change_variable = {
+				which = origin_sh_chaser_transform_cost
+				value = 20
+			}
+			country_event = { id = wg_origin_sh_chaser.212 }
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser_transform_3
+		custom_tooltip = wg_origin_sh_chaser_transform_3_desc
+		allow = { NOT = { has_modifier = wg_origin_sh_chaser_transform_3 } }
+		add_modifier = { modifier = wg_origin_sh_chaser_transform_3 }
+		hidden_effect = {
+			change_variable = {
+				which = origin_sh_chaser_transform_cost
+				value = 100
+			}
+			country_event = { id = wg_origin_sh_chaser.212 }
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser_transform_4
+		custom_tooltip = wg_origin_sh_chaser_transform_4_desc
+		allow = { NOT = { has_modifier = wg_origin_sh_chaser_transform_4 } }
+		add_modifier = { modifier = wg_origin_sh_chaser_transform_4 }
+		hidden_effect = {
+			change_variable = {
+				which = origin_sh_chaser_transform_cost
+				value = 30
+			}
+			country_event = { id = wg_origin_sh_chaser.212 }
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser_transform_5
+		custom_tooltip = wg_origin_sh_chaser_transform_5_desc
+		allow = { NOT = { has_modifier = wg_origin_sh_chaser_transform_5 } }
+		add_modifier = { modifier = wg_origin_sh_chaser_transform_5 }
+		hidden_effect = {
+			change_variable = {
+				which = origin_sh_chaser_transform_cost
+				value = 30
+			}
+			country_event = { id = wg_origin_sh_chaser.212 }
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser_transform_6
+		custom_tooltip = wg_origin_sh_chaser_transform_6_desc
+		allow = { NOT = { has_modifier = wg_origin_sh_chaser_transform_6 } }
+		add_modifier = { modifier = wg_origin_sh_chaser_transform_6 }
+		hidden_effect = {
+			change_variable = {
+				which = origin_sh_chaser_transform_cost
+				value = 80
+			}
+			country_event = { id = wg_origin_sh_chaser.212 }
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser_transform_7
+		custom_tooltip = wg_origin_sh_chaser_transform_7_desc
+		allow = { NOT = { has_modifier = wg_origin_sh_chaser_transform_7 } }
+		add_modifier = { modifier = wg_origin_sh_chaser_transform_7 }
+		hidden_effect = {
+			change_variable = {
+				which = origin_sh_chaser_transform_cost
+				value = 50
+			}
+			country_event = { id = wg_origin_sh_chaser.212 }
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser_transform_8
+		custom_tooltip = wg_origin_sh_chaser_transform_8_desc
+		allow = { NOT = { has_modifier = wg_origin_sh_chaser_transform_8 } }
+		add_modifier = { modifier = wg_origin_sh_chaser_transform_8 }
+		hidden_effect = {
+			change_variable = {
+				which = origin_sh_chaser_transform_cost
+				value = 80
+			}
+			country_event = { id = wg_origin_sh_chaser.212 }
+		}
+	}
+	option = {
+		name = wg_origin_sh_chaser.212.a
+		hidden_effect = {
+			country_event = { id = wg_origin_sh_chaser.213 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_origin_sh_chaser.213
+	title = "wg_origin_sh_chaser.213.name"
+	desc = "wg_origin_sh_chaser.213.desc"
+	picture = GFX_evt_legendary_leader
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		hidden_effect = {
+			change_variable = {
+				which = origin_sh_chaser_value
+				value = 10
+			}
+			add_modifier = {
+				modifier = wg_origin_sh_chaser_transform_cost
+				multiplier = origin_sh_chaser_transform_cost
+			}
+		}
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.213.a
+	}
+}
+country_event = {
+	id = wg_origin_sh_chaser.5300
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NOT = { has_ascension_perk = ap_shenhai_silent }
+	}
+	immediate = {
+		random_list = {
+			10 = { 
+				modifier = {
+					factor = 0
+					OR = {
+						has_technology = tech_battleships
+						has_country_flag = wg_origin_sh_chaser.5310
+					}
+				}
+				set_country_flag = wg_origin_sh_chaser.5310
+				country_event = {
+					id = wg_origin_sh_chaser.5310
+				}
+			}
+			10 = { 
+				modifier = {
+					factor = 0
+					has_country_flag = wg_origin_sh_chaser.5315
+				}
+				set_country_flag = wg_origin_sh_chaser.5315
+				country_event = {
+					id = wg_origin_sh_chaser.5315
+				}
+			}
+			10 = { 
+				modifier = {
+					factor = 0
+					OR = {
+						has_country_flag = wg_origin_sh_chaser.5320
+					}
+				}
+				set_country_flag = wg_origin_sh_chaser.5320
+				country_event = {
+					id = wg_origin_sh_chaser.5320
+				}
+			}
+			10 = { 
+				modifier = {
+					factor = 0
+					OR = {
+						has_technology = tech_mine_living_metal
+						has_country_flag = wg_origin_sh_chaser.5330
+					}
+				}
+				set_country_flag = wg_origin_sh_chaser.5330
+				country_event = {
+					id = wg_origin_sh_chaser.5330
+				}
+			}
+			10 = { 
+				modifier = {
+					factor = 0
+					OR = {
+						has_technology = tech_dark_matter_power_core
+						has_country_flag = wg_origin_sh_chaser.5335
+					}
+				}
+				set_country_flag = wg_origin_sh_chaser.5335
+				country_event = {
+					id = wg_origin_sh_chaser.5335
+				}
+			}
+			10 = { 
+				modifier = {
+					factor = 0
+					OR = {
+						has_country_flag = wg_origin_sh_chaser.5340
+					}
+				}
+				set_country_flag = wg_origin_sh_chaser.5340
+				country_event = {
+					id = wg_origin_sh_chaser.5340
+				}
+			}
+			10 = { 
+				modifier = {
+					factor = 0
+					OR = {
+						has_country_flag = wg_origin_sh_chaser.5345
+					}
+				}
+				set_country_flag = wg_origin_sh_chaser.5345
+				country_event = {
+					id = wg_origin_sh_chaser.5345
+				}
+			}
+			10 = { 
+				modifier = {
+					factor = 0
+					OR = {
+						has_technology = tech_orbital_ring_tier_1
+						has_country_flag = wg_origin_sh_chaser.5370
+					}
+				}
+				set_country_flag = wg_origin_sh_chaser.5370
+				country_event = {
+					id = wg_origin_sh_chaser.5370
+				}
+			}
+			
+		}
+	}
+}
+
+country_event = { #Ruler Insight - Exceptional ship
+	id = wg_origin_sh_chaser.5310
+	title = "wg_origin_sh_chaser.5310.name"
+	desc = "wg_origin_sh_chaser.5310.desc"
+	picture = GFX_evt_legendary_leader
+	show_sound = event_celebration
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.good
+	}
+	after = {
+		add_research_option = tech_battleships
+	}
+}
+
+country_event = { #Ruler Insight - Some Research
+	id = wg_origin_sh_chaser.5315
+	title = "wg_origin_sh_chaser.5315.name"
+	desc = "wg_origin_sh_chaser.5315.desc"
+	picture = GFX_evt_legendary_leader
+	show_sound = event_celebration
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.good
+	}
+	after = {
+		locked_random_list = {
+			1 = {
+				add_monthly_resource_mult = {
+					resource = physics_research
+					value = 9
+				}
+			}
+			1 = {
+				add_monthly_resource_mult = {
+					resource = society_research
+					value = 9
+				}
+			}
+			1 = {
+				add_monthly_resource_mult = {
+					resource = engineering_research
+					value = 9
+				}
+			}
+		}
+	}
+}
+
+country_event = { #Ruler Insight - All Leaders exp gain (not Ruler) 
+	id = wg_origin_sh_chaser.5320
+	title = "wg_origin_sh_chaser.5320.name"
+	desc = "wg_origin_sh_chaser.5320.desc"
+	picture = GFX_evt_legendary_leader
+	show_sound = event_celebration
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.good
+	}
+	after = {
+		every_owned_leader = {
+			limit = {
+				is_ruler = no
+			}
+			add_experience = 450
+		}
+	}
+}
+
+country_event = { #Ruler Insight - Make Living Metal
+	id = wg_origin_sh_chaser.5330
+	title = "wg_origin_sh_chaser.5330.name"
+	desc = "wg_origin_sh_chaser.5330.desc"
+	picture = GFX_evt_legendary_leader
+	show_sound = event_celebration
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.good
+	}
+	after = {
+		add_research_option = tech_mine_living_metal
+	}
+}
+
+country_event = { #Ruler Insight - Make Dark Matter
+	id = wg_origin_sh_chaser.5335
+	title = "wg_origin_sh_chaser.5335.name"
+	desc = "wg_origin_sh_chaser.5335.desc"
+	picture = GFX_evt_legendary_leader
+	show_sound = event_celebration
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.good
+	}
+	after = {
+		add_research_option = tech_dark_matter_power_core
+	}
+}
+
+country_event = { #Ruler Insight - Ascend Your Planet
+	id = wg_origin_sh_chaser.5340
+	title = "wg_origin_sh_chaser.5340.name"
+	desc = "wg_origin_sh_chaser.5340.desc"
+	picture = GFX_evt_legendary_leader
+	show_sound = event_celebration
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			capital_scope = { has_planetary_ascension_tier < 10 }
+		}
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.good
+	}
+	after = {
+		custom_tooltip = wg_origin_sh_chaser.5340.tt
+		hidden_effect = {
+			capital_scope = { set_planetary_ascension_tier = value:add_planet_ascension_tier }
+		}
+	}
+}
+
+country_event = { #Slap Unique Modifier On Capital
+	id = wg_origin_sh_chaser.5345
+	title = "wg_origin_sh_chaser.5345.name"
+	desc = "wg_origin_sh_chaser.5345.desc"
+	picture = GFX_evt_legendary_leader
+	show_sound = event_celebration
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.good
+	}
+	after = {
+		capital_scope = { add_deposit = d_arcane_device }
+	}
+}
+
+country_event = { #Ruler Insight - Tech Orbital Rings
+	id = wg_origin_sh_chaser.5370
+	title = "wg_origin_sh_chaser.5370.name"
+	desc = "wg_origin_sh_chaser.5370.desc"
+	picture = GFX_evt_legendary_leader
+	show_sound = event_celebration
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = root.owner.ruler
+		room = root.owner
+	}
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_overlord_dlc = yes
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_origin_sh_chaser.good
+	}
+	after = {
+		add_research_option = tech_orbital_ring_tier_1
+	}
+}

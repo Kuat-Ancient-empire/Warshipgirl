@@ -1,0 +1,27 @@
+random_kill_army_if_IMPAVIDO = {
+	if = {
+		limit = {
+			# Check if the commander on side A has the supreme warrior trait
+			any_ground_combat_$SIDE_A$ = {
+				exists = leader
+				leader = {
+					has_trait = leader_trait_general_impavido
+				}
+			}
+		}
+
+		# 20% of the time: kill a random frontline unit
+		random_list = {
+			# NOTE: Update custom loc for effect when changing probablity
+			75 = {}
+			25 = {
+				random_ground_combat_$SIDE_B$ = {
+					limit = {
+						is_in_frontline = yes
+					}
+					remove_army = yes
+				}
+			}
+		}
+	}
+}

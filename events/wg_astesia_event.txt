@@ -1,0 +1,2137 @@
+namespace = wg_astesia
+
+country_event = {
+	id = wg_astesia.1
+	title = wg_astesia.1.title
+	desc = wg_astesia.1.desc
+	picture = GFX_evt_think_tank
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	trigger = {
+		NOT = { has_country_flag = get_wg_astesia }
+	}
+	immediate = {
+		
+		if = {
+			limit = { NOT = { any_country = { has_country_flag = get_wg_astesia }}}
+			create_species = {
+				name = Terra_Ultra
+				plural = Terra_Ultra
+				class = "Warship_Girls"
+				portrait = wsg11
+				name_list = WSG
+				effect = {
+					save_global_event_target_as = wg_astesia_species
+				}
+			}
+			create_country = {
+				name = "Name_leader_wg_astesia"
+				species = event_target:wg_astesia_species
+				type = wg_astesia
+				flag = {
+					icon = {
+						category = "wg_event_flags"
+						file = "wge_flags_10.dds"
+					}
+					background={
+						category="backgrounds"
+						file="stripes.dds"
+					}
+					colors={
+						"blue"
+						"indigo"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					save_global_event_target_as = wg_astesia_country
+					set_country_flag = wg_astesia_country	
+				}
+			}
+		}
+		event_target:wg_astesia_country = {
+			establish_communications_no_message = root
+		}
+		save_global_event_target_as = wg_astesia_own_country
+		set_variable = { which = wg_astesia_affection value = 1 }
+		set_variable = { which = wg_astesia_affection_level value = 1 }
+		set_variable = { which = wg_astesia_level value = 10 }
+		set_variable = { which = wg_astesia_cloth value = 0 }
+		set_country_flag = get_wg_astesia
+		country_event = {
+			id = wg_astesia.2 days = 540
+			id = wg_astesia.100 days = 360
+		}
+	}
+
+	option = {
+		name = wg_astesia.1.a
+	}
+}
+country_event = {
+	id = wg_astesia.2
+	title = wg_astesia.2.title
+	desc = wg_astesia.2.desc
+	picture = GFX_evt_think_tank
+	is_triggered_only = yes
+	fire_only_once = yes
+	trigger = {
+		has_country_flag = get_wg_astesia
+		OR = {
+			has_ascension_perk = ap_shenhai_silent
+			has_ascension_perk = ap_wg_crisis
+			has_civic = civic_CM
+			has_civic = civic_wsg_super_harbor
+		}
+	}
+	immediate = {
+		remove_country_flag = get_wg_astesia
+		event_target:wg_astesia_country = {
+			destroy_country = yes
+		}
+	}
+	option = {
+		name = wg_astesia.2.a
+		add_resource = {
+			energy = -500
+			minerals = -1000
+			alloys = -1000
+		}
+	}
+}
+
+country_event = {
+	id = wg_astesia.10
+	title = wg_astesia.10.title
+	desc = {
+		trigger = {
+			NOT = { has_country_flag = wg_astesia_changed }
+		}
+		text = wg_astesia.10.desc.a
+	}
+	desc = {
+		trigger = {
+			has_country_flag = wg_astesia_changed
+		}
+		text = wg_astesia.10.desc.b
+	}
+	picture = GFX_evt_space_debris
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		FromFrom = {
+			has_ship_flag = wg_astesia_ship
+		}
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = wg_astesia_changed } }
+			remove_country_flag = get_wg_astesia
+			event_target:wg_astesia_country = {
+				destroy_country = yes
+			}
+		}
+	}
+	option = {
+		name = wg_astesia.10.a
+		trigger = {
+			NOT = { has_country_flag = wg_astesia_changed }
+		}
+	}
+	option = {
+		name = wg_astesia.10.b
+		trigger = {
+			has_country_flag = wg_astesia_changed
+		}
+	}
+}
+
+#对话界面
+country_event = {
+	id = wg_astesia.3
+	title = wg_astesia
+	is_triggered_only = yes
+	diplomatic = yes
+	desc = {
+		trigger = {
+			NOT = { has_country_flag = wg_astesia_changed }
+		}
+		text = wg_astesia.3.desc.1
+		text = wg_astesia.3.desc.2
+		text = wg_astesia.3.desc.3
+		text = wg_astesia.3.desc.4
+	}
+	desc = {
+		trigger = {
+			NOT = { has_country_flag = wg_astesia_changed }
+			has_country_flag = wg_astesia_talk_extra
+		}
+		text = wg_astesia.3.desc.5
+		text = wg_astesia.3.desc.6
+		text = wg_astesia.3.desc.7
+	}
+	desc = {
+		trigger = {
+			has_country_flag = wg_astesia_changed
+		}
+		text = wg_astesia.3.desc.8
+		text = wg_astesia.3.desc.9
+		text = wg_astesia.3.desc.10
+	}
+	desc = {
+		trigger = {
+			has_country_flag = wg_astesia_changed
+			has_country_flag = married_wg_astesia
+		}
+		text = wg_astesia.3.desc.11
+		text = wg_astesia.3.desc.12
+		text = wg_astesia.3.desc.13
+	}
+	custom_gui = wg_astesia_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	trigger = {
+		from = { OR = {
+			is_country_type = wg_astesia 
+			is_same_value = ROOT
+		}}
+		OR = {
+			wg_astesia_active_diplo = no
+			NOT = { has_country_flag = wg_astesia_engaged }
+		}
+	}
+
+	immediate = {
+		set_country_flag = wg_astesia_engaged
+	}
+	
+	after = {
+		hidden_effect = { 
+			remove_country_flag = wg_astesia_engaged 
+			random_owned_leader = {
+				limit = { has_leader_flag = wg_astesia_leader } 
+				change_wg_astesia_portrait = yes
+			}
+		}
+	}
+
+	option = {
+		name = wg_astesia.3.a
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.5
+			}
+		}
+	}
+	option = {
+		name = wg_astesia.3.b
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.4
+			}
+		}
+	}
+	option = {
+		name = wg_astesia.3.c
+		trigger = {
+			OR = {
+				has_country_flag = wg_astesia_stage_1
+				has_country_flag = wg_astesia_stage_2
+				has_country_flag = wg_astesia_stage_3
+				has_country_flag = wg_astesia_stage_4
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { has_country_flag = wg_astesia_stage_1 }
+				remove_country_flag = wg_astesia_stage_1
+				country_event = {
+					id = wg_astesia.101
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = wg_astesia_stage_2 }
+				remove_country_flag = wg_astesia_stage_2
+				country_event = {
+					id = wg_astesia.107
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = wg_astesia_stage_3 }
+				remove_country_flag = wg_astesia_stage_3
+				country_event = {
+					id = wg_astesia.110
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = wg_astesia_stage_4 }
+				remove_country_flag = wg_astesia_stage_4
+				country_event = {
+					id = wg_astesia.113
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_astesia.3.d
+		trigger = {
+			OR = {
+				has_country_flag = wg_astesia_stage_5
+				has_country_flag = wg_astesia_stage_6
+				has_country_flag = wg_astesia_stage_7
+				has_country_flag = wg_astesia_stage_8
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { has_country_flag = wg_astesia_stage_5 }
+				remove_country_flag = wg_astesia_stage_5
+				country_event = {
+					id = wg_astesia.140
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = wg_astesia_stage_6 }
+				remove_country_flag = wg_astesia_stage_6
+				country_event = {
+					id = wg_astesia.146
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = wg_astesia_stage_7 }
+				remove_country_flag = wg_astesia_stage_7
+				country_event = {
+					id = wg_astesia.152
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = wg_astesia_stage_8 }
+				remove_country_flag = wg_astesia_stage_8
+				country_event = {
+					id = wg_astesia.160
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_astesia_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_astesia_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+country_event = {
+	id = wg_astesia.4
+	title = wg_astesia
+	is_triggered_only = yes
+	diplomatic = yes
+	desc = {
+		trigger = {
+			NOT = { has_country_flag = wg_astesia_changed }
+		}
+		text = wg_astesia.3.desc.1
+		text = wg_astesia.3.desc.2
+		text = wg_astesia.3.desc.3
+	}
+	desc = {
+		trigger = {
+			NOT = { has_country_flag = wg_astesia_changed }
+			has_country_flag = wg_astesia_talk_extra
+		}
+		text = wg_astesia.3.desc.5
+		text = wg_astesia.3.desc.6
+		text = wg_astesia.3.desc.7
+	}
+	desc = {
+		trigger = {
+			has_country_flag = wg_astesia_changed
+		}
+		text = wg_astesia.3.desc.8
+		text = wg_astesia.3.desc.9
+		text = wg_astesia.3.desc.10
+	}
+	desc = {
+		trigger = {
+			has_country_flag = wg_astesia_changed
+			has_country_flag = married_wg_astesia
+		}
+		text = wg_astesia.3.desc.11
+		text = wg_astesia.3.desc.12
+		text = wg_astesia.3.desc.13
+	}
+	custom_gui = wg_astesia_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	trigger = {
+		from = { OR = {
+			is_country_type = wg_astesia 
+			is_same_value = ROOT
+		}}
+		OR = {
+			has_country_flag = get_wg_astesia
+			is_same_value = event_target:wg_astesia_own_country
+		}
+		NOT = {
+			has_country_flag = wg_astesia_hurt
+		}
+	}
+
+	immediate = {
+		set_country_flag = wg_astesia_engaged
+	}
+	
+	after = {
+		hidden_effect = { 
+			remove_country_flag = wg_astesia_engaged 
+			random_owned_leader = {
+				limit = { has_leader_flag = wg_astesia_leader } 
+				change_wg_astesia_portrait = yes
+			}
+		}
+	}
+
+	option = {
+		name = wg_astesia.3.a
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.5
+			}
+		}
+	}
+	option = {
+		name = wg_astesia.3.b
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.4
+			}
+		}
+	}
+	option = {
+		name = wg_astesia.3.c
+		trigger = {
+			OR = {
+				has_country_flag = wg_astesia_stage_1
+				has_country_flag = wg_astesia_stage_2
+				has_country_flag = wg_astesia_stage_3
+				has_country_flag = wg_astesia_stage_4
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { has_country_flag = wg_astesia_stage_1 }
+				remove_country_flag = wg_astesia_stage_1
+				country_event = {
+					id = wg_astesia.101
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = wg_astesia_stage_2 }
+				remove_country_flag = wg_astesia_stage_2
+				country_event = {
+					id = wg_astesia.107
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = wg_astesia_stage_3 }
+				remove_country_flag = wg_astesia_stage_3
+				country_event = {
+					id = wg_astesia.110
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = wg_astesia_stage_4 }
+				remove_country_flag = wg_astesia_stage_4
+				country_event = {
+					id = wg_astesia.113
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_astesia.3.d
+		trigger = {
+			OR = {
+				has_country_flag = wg_astesia_stage_5
+				has_country_flag = wg_astesia_stage_6
+				has_country_flag = wg_astesia_stage_7
+				has_country_flag = wg_astesia_stage_8
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { has_country_flag = wg_astesia_stage_5 }
+				remove_country_flag = wg_astesia_stage_5
+				country_event = {
+					id = wg_astesia.140
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = wg_astesia_stage_6 }
+				remove_country_flag = wg_astesia_stage_6
+				country_event = {
+					id = wg_astesia.146
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = wg_astesia_stage_7 }
+				remove_country_flag = wg_astesia_stage_7
+				country_event = {
+					id = wg_astesia.152
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = wg_astesia_stage_8 }
+				remove_country_flag = wg_astesia_stage_8
+				country_event = {
+					id = wg_astesia.160
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_astesia_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_astesia_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+
+
+#debug使用，星极好感上升至2级
+country_event = {
+	id = wg_astesia.23333
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		set_variable = {
+			which = wg_astesia_affection
+			value = @wg_astesia_affection_to_lv2
+		}
+	}
+}
+
+#debug使用，星极好感上升至3级
+country_event = {
+	id = wg_astesia.23334
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		set_variable = {
+			which = wg_astesia_affection
+			value = @wg_astesia_affection_to_lv3
+		}
+	}
+}
+
+#debug使用，星极好感上升至4级
+country_event = {
+	id = wg_astesia.23335
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		set_variable = {
+			which = wg_astesia_affection
+			value = @wg_astesia_affection_to_lv4
+		}
+	}
+}
+
+#debug使用，星极好感上升至5级
+country_event = {
+	id = wg_astesia.23336
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		set_variable = {
+			which = wg_astesia_affection
+			value = @wg_astesia_affection_to_lv5
+		}
+	}
+}
+
+#debug使用，获取一枚戒指
+country_event = {
+	id = wg_astesia.23337
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		hidden_effect = {
+			change_variable = {
+				which = wsg_rings
+				value = 1
+			}
+		}
+		
+	}
+}
+
+country_event = {
+	id = wg_astesia.23338
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		switch = {
+			trigger = has_country_flag
+			wg_astesia_official_active = {
+				event_target:wg_astesia_official = { add_experience = 500 }
+			}
+			wg_astesia_scientist_active = {
+				event_target:wg_astesia_scientist = { add_experience = 500 }
+			}
+			wg_astesia_admiral_active = {
+				event_target:wg_astesia_admiral = { add_experience = 500 }
+			}
+			wg_astesia_general_active = {
+				event_target:wg_astesia_general = { add_experience = 500 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_astesia.5
+	title = wg_astesia
+	is_triggered_only = yes
+	diplomatic = yes
+	desc = {
+		trigger = {
+		}
+		text = wg_astesia.5.desc.1
+		text = wg_astesia.5.desc.2
+		text = wg_astesia.5.desc.3
+		text = wg_astesia.5.desc.4
+	}
+	custom_gui = wg_astesia_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	trigger = {
+		from = { OR = {
+			is_country_type = wg_astesia 
+			is_same_value = ROOT
+		}}
+		OR = {
+			has_country_flag = get_wg_astesia
+			is_same_value = event_target:wg_astesia_own_country
+		}
+		NOT = {
+			has_country_flag = wg_astesia_hurt
+		}
+	}
+
+	immediate = {
+		set_country_flag = wg_astesia_engaged
+	}
+	after = {
+		hidden_effect = { 
+			remove_country_flag = wg_astesia_engaged 
+			random_owned_leader = {
+				limit = { has_leader_flag = wg_astesia_leader } 
+				change_wg_astesia_portrait = yes
+			}
+		}
+	}
+	option = {
+		name = wg_astesia.5.a
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.4
+			}
+		}
+	}
+	option = {
+		name = wg_astesia_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_astesia_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+country_event = {
+	id = wg_astesia.100
+	title = wg_astesia.100.title
+	desc = wg_astesia.100.desc
+	picture = GFX_evt_think_tank
+	is_triggered_only = yes
+	trigger = {
+		has_country_flag = get_wg_astesia
+		NOR = {
+			has_ascension_perk = ap_shenhai_silent
+			has_ascension_perk = ap_wg_crisis
+			has_civic = civic_CM
+		}
+	}
+	immediate = {
+	}
+	option = {
+		name = wg_astesia.100.a
+		custom_tooltip = wg_astesia.100.a.desc
+		hidden_effect = {
+			set_country_flag = wg_astesia_stage_1
+			set_country_flag = wg_astesia_talk_extra
+		}
+	}
+	option = {
+		name = wg_astesia.100.b
+		custom_tooltip = wg_astesia.100.b.desc
+	}
+}
+country_event = {
+	id = wg_astesia.101
+	title = wg_astesia.101.title
+	desc = wg_astesia.101.desc
+	picture = GFX_evt_think_tank
+	is_triggered_only = yes
+	option = {
+		name = wg_astesia.101.a
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.102
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.102
+	title = wg_astesia
+	desc = wg_astesia.102.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 12 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.102.a
+		hidden_effect = { country_event = { id = wg_astesia.103 }}
+	}
+}
+country_event = {
+	id = wg_astesia.103
+	title = wg_astesia
+	desc = wg_astesia.103.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 12 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.103.a
+		hidden_effect = { country_event = { id = wg_astesia.104 }}
+	}
+}
+country_event = {
+	id = wg_astesia.104
+	title = wg_astesia
+	desc = wg_astesia.104.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 12 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.104.a
+		hidden_effect = { country_event = { id = wg_astesia.105 }}
+	}
+}
+country_event = {
+	id = wg_astesia.105
+	title = wg_astesia
+	desc = wg_astesia.105.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 12 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.105.a
+		hidden_effect = {
+			set_variable = { which = wg_astesia_affection value = 25 }
+			country_event = { id = wg_astesia.106 days = 90 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.106
+	title = wg_astesia.106.title
+	desc = wg_astesia.106.desc
+	picture = GFX_evt_think_tank
+	is_triggered_only = yes
+	trigger = {
+	}
+	immediate = {
+	}
+	option = {
+		name = wg_astesia.106.a
+		custom_tooltip = wg_astesia.106.a.desc
+		hidden_effect = {
+			set_country_flag = wg_astesia_stage_2
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.107
+	title = wg_astesia
+	desc = wg_astesia.107.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 9 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.107.a
+		hidden_effect = { country_event = { id = wg_astesia.108 }}
+	}
+}
+country_event = {
+	id = wg_astesia.108
+	title = wg_astesia
+	desc = wg_astesia.108.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 9 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.108.a
+		custom_tooltip = wg_astesia.108.a.desc
+		hidden_effect = {
+			change_variable = { which = wg_astesia_affection value = 10 }
+			country_event = { id = wg_astesia.109 days = 120 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.109
+	is_triggered_only = yes
+	hide_window = yes
+	immediate = {
+		set_country_flag = wg_astesia_stage_3
+	}
+}
+country_event = {
+	id = wg_astesia.110
+	title = wg_astesia
+	desc = wg_astesia.110.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 8 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.110.a
+		hidden_effect = { country_event = { id = wg_astesia.111 }}
+	}
+}
+country_event = {
+	id = wg_astesia.111
+	title = wg_astesia
+	desc = wg_astesia.111.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 8 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.111.a
+		custom_tooltip = wg_astesia.111.a.desc
+		hidden_effect = {
+			change_variable = { which = wg_astesia_affection value = 10 }
+			country_event = { id = wg_astesia.112 days = 120 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.112
+	is_triggered_only = yes
+	hide_window = yes
+	immediate = {
+		set_country_flag = wg_astesia_stage_4
+	}
+}
+country_event = {
+	id = wg_astesia.113
+	title = wg_astesia
+	desc = wg_astesia.113.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 10 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.113.a
+		hidden_effect = { country_event = { id = wg_astesia.114 }}
+	}
+}
+country_event = {
+	id = wg_astesia.114
+	title = wg_astesia
+	desc = wg_astesia.114.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 10 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.114.a
+		custom_tooltip = wg_astesia.114.a.desc
+		hidden_effect = {
+			change_variable = { which = wg_astesia_affection value = 10 }
+			country_event = { id = wg_astesia.115 days = 180 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_astesia.115
+	title = wg_astesia.115.title
+	desc = wg_astesia.115.desc
+	picture = GFX_evt_think_tank
+	is_triggered_only = yes
+	option = {
+		name = wg_astesia.115.a
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.116
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.116
+	title = wg_astesia
+	desc = wg_astesia.116.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 12 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.116.a
+		hidden_effect = { country_event = { id = wg_astesia.117 }}
+	}
+}
+country_event = {
+	id = wg_astesia.117
+	title = wg_astesia
+	desc = wg_astesia.117.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 12 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.117.a
+		hidden_effect = { country_event = { id = wg_astesia.118 }}
+	}
+}
+country_event = {
+	id = wg_astesia.118
+	title = wg_astesia
+	desc = wg_astesia.118.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 12 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.118.a
+		hidden_effect = { country_event = { id = wg_astesia.119 }}
+	}
+}
+country_event = {
+	id = wg_astesia.119
+	title = wg_astesia
+	desc = wg_astesia.119.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 12 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.119.a
+		hidden_effect = { country_event = { id = wg_astesia.120 }}
+	}
+}
+country_event = {
+	id = wg_astesia.120
+	title = wg_astesia
+	desc = wg_astesia.120.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 12 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.120.a
+		hidden_effect = { country_event = { id = wg_astesia.121 days = 360 }}
+	}
+}
+
+country_event = {
+	id = wg_astesia.121
+	is_triggered_only = yes
+	hide_window = yes
+	immediate = {
+		if = {
+			limit = {
+				has_technology = tech_synthetic_workers
+			}
+			country_event = {
+				id = wg_astesia.122
+			}
+		}
+		else = {
+			country_event = { id = wg_astesia.121 days = 360 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.122
+	title = wg_astesia.122.title
+	desc = wg_astesia.122.desc
+	picture = GFX_evt_robot_assembly_plant
+	is_triggered_only = yes
+	option = {
+		name = wg_astesia.122.a
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.123
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.123
+	title = wg_astesia
+	desc = wg_astesia.123.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 5 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.123.a
+		hidden_effect = { country_event = { id = wg_astesia.124 }}
+	}
+}
+country_event = {
+	id = wg_astesia.124
+	title = wg_astesia
+	desc = wg_astesia.124.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 5 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.124.a
+		hidden_effect = {
+			change_variable = { which = wg_astesia_affection value = 35 }
+			country_event = { id = wg_astesia.125 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.125
+	title = wg_astesia
+	desc = wg_astesia.125.desc
+	picture = GFX_evt_robot_assembly_plant
+	is_triggered_only = yes
+	option = {
+		name = wg_astesia.125.a
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.126
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.126
+	title = wg_astesia.126.title
+	desc = wg_astesia.126.desc
+	picture = GFX_evt_robot_assembly_plant
+	is_triggered_only = yes
+	option = {
+		name = wg_astesia.126.a
+		custom_tooltip = wg_astesia.126.a.desc
+		hidden_effect = {
+			capital_scope = {
+				enable_special_project = {
+					name = wg_astesia_special_project_1
+				}
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.127
+	title = wg_astesia.127.title
+	desc = wg_astesia.127.desc
+	picture = GFX_evt_robot_assembly_plant
+	is_triggered_only = yes
+	
+	option = {
+		name = wg_astesia.127.a
+		custom_tooltip = wg_astesia.127.a.desc
+		trigger = {
+			OR = {
+				NOT = {
+					exists = event_target:sh_fallen_empire
+				}
+				NOR = {
+					has_ascension_perk = ap_shenhai_silent
+					has_civic = civic_CM
+					has_origin = origin_wg_warhammer
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_astesia.130.a
+		custom_tooltip = wg_astesia.130.a.desc
+		trigger = {
+			OR = {
+				has_ascension_perk = ap_shenhai_silent
+				has_civic = civic_CM
+				has_origin = origin_wg_warhammer
+			}
+			exists = event_target:sh_fallen_empire
+		}
+		capital_scope = {
+			enable_special_project = {
+				name = wg_astesia_special_project_2
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.128
+	title = wg_astesia
+	desc = wg_astesia.128.desc
+	picture = GFX_evt_robot_assembly_plant
+	is_triggered_only = yes
+	option = {
+		name = wg_astesia.128.a
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.129
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.129
+	title = "TRANSMISSION"
+	desc = wg_astesia.129.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = event_target:wg_fallen_empire
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	option = {
+		name = wg_astesia.129.a
+		hidden_effect = { country_event = { id = wg_astesia.130 days = 5 }}
+	}
+}
+country_event = {
+	id = wg_astesia.130
+	title = wg_astesia.130.title
+	desc = wg_astesia.130.desc
+	picture = GFX_evt_robot_assembly_plant
+	is_triggered_only = yes
+	option = {
+		name = wg_astesia.130.a
+		hidden_effect = {
+			capital_scope = {
+				enable_special_project = {
+					name = wg_astesia_special_project_2
+				}
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.131
+	title = wg_astesia.131.title
+	desc = wg_astesia.131.desc
+	picture = GFX_evt_robot_assembly_plant
+	is_triggered_only = yes
+	fire_only_once = yes
+	option = {
+		name = wg_astesia.131.a
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.132
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.132
+	title = wg_astesia
+	desc = wg_astesia.132.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 12 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.132.a
+		hidden_effect = {
+			country_event = { id = wg_astesia.133 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.133
+	title = wg_astesia
+	desc = wg_astesia.133.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 12 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.133.a
+		hidden_effect = {
+			country_event = { id = wg_astesia.134 days = 360 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_astesia.134
+	title = wg_astesia.134.title
+	desc = wg_astesia.134.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = event_target:sh_fallen_empire
+		planet_background = event_target:sh_fallen_empire
+		graphical_culture = event_target:sh_fallen_empire
+		city_level = event_target:sh_fallen_empire
+		room = event_target:sh_fallen_empire.ruler
+	}
+
+	option = {
+		name = wg_astesia.134.a
+		hidden_effect = { country_event = { id = wg_astesia.135 }}
+	}
+}
+country_event = {
+	id = wg_astesia.135
+	title = "TRANSMISSION"
+	desc = wg_astesia.135.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = event_target:sh_fallen_empire
+		planet_background = event_target:sh_fallen_empire
+		graphical_culture = event_target:sh_fallen_empire
+		city_level = event_target:sh_fallen_empire
+		room = event_target:sh_fallen_empire.ruler
+	}
+
+	option = {
+		name = wg_astesia.135.a
+		hidden_effect = { country_event = { id = wg_astesia.136 days = 5 }}
+	}
+}
+country_event = {
+	id = wg_astesia.136
+	title = wg_astesia
+	desc = wg_astesia.136.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 5 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.136.a
+		hidden_effect = {
+			country_event = { id = wg_astesia.137 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.137
+	title = wg_astesia
+	desc = wg_astesia.137.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 5 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.137.a
+		hidden_effect = {
+			country_event = { id = wg_astesia.138 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.138
+	title = wg_astesia
+	desc = wg_astesia.138.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 5 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.138.a
+		hidden_effect = {
+			country_event = { id = wg_astesia.139 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.139
+	title = wg_astesia
+	desc = wg_astesia.139.desc
+	picture = GFX_evt_surreal_visions
+	is_triggered_only = yes
+	option = {
+		name = wg_astesia.139.a
+		custom_tooltip = wg_astesia.139.a.desc
+		hidden_effect = {
+			set_country_flag = wg_astesia_changed
+			change_variable = { which = wg_astesia_affection value = 30 }
+			create_wg_astesia_scientist = yes
+			set_country_flag = wg_astesia_stage_5
+			complete_special_project = {
+				type = wg_astesia_special_project_2
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_astesia.140
+	title = wg_astesia
+	desc = wg_astesia.140.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		remove_country_flag = wg_astesia_stage_5
+		set_variable = { which = wg_dialogue_bg value = 13 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.140.a
+		hidden_effect = {
+			country_event = { id = wg_astesia.141 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.141
+	title = wg_astesia
+	desc = wg_astesia.141.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 13 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.141.a
+		hidden_effect = {
+			country_event = { id = wg_astesia.142 }
+		}
+	}
+	option = {
+		name = wg_astesia.141.b
+		hidden_effect = {
+			country_event = { id = wg_astesia.143 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.142
+	title = wg_astesia
+	desc = wg_astesia.142.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 13 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.142.a
+		hidden_effect = {
+			country_event = { id = wg_astesia.144 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.143
+	title = wg_astesia
+	desc = wg_astesia.143.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 13 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.143.a
+		hidden_effect = {
+			country_event = { id = wg_astesia.144 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.144
+	title = wg_astesia
+	desc = wg_astesia.144.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 13 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+		change_variable = { which = wg_astesia_affection value = 10 }
+	}
+
+	option = {
+		name = wg_astesia.144.a
+		custom_tooltip = wg_astesia.111.a.desc
+		hidden_effect = {
+			country_event = { id = wg_astesia.145 days = 120 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.145
+	is_triggered_only = yes
+	hide_window = yes
+	immediate = {
+		set_country_flag = wg_astesia_stage_6
+	}
+}
+country_event = {
+	id = wg_astesia.146
+	title = wg_astesia
+	desc = wg_astesia.146.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		remove_country_flag = wg_astesia_stage_6
+		set_variable = { which = wg_dialogue_bg value = 11 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.146.a
+		hidden_effect = {
+			country_event = { id = wg_astesia.147 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.147
+	title = wg_astesia
+	desc = wg_astesia.147.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 11 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.147.a
+		hidden_effect = {
+			country_event = { id = wg_astesia.148 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.148
+	title = wg_astesia
+	desc = wg_astesia.148.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 11 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.148.a
+		hidden_effect = {
+			country_event = { id = wg_astesia.149 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.149
+	title = wg_astesia
+	desc = wg_astesia.149.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 11 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.149.a
+		hidden_effect = {
+			country_event = { id = wg_astesia.150 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.150
+	title = wg_astesia
+	desc = wg_astesia.150.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 11 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+		change_variable = { which = wg_astesia_affection value = 10 }
+	}
+
+	option = {
+		name = wg_astesia.150.a
+		custom_tooltip = wg_astesia.111.a.desc
+		hidden_effect = {
+			country_event = { id = wg_astesia.151 days = 120 }
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.151
+	is_triggered_only = yes
+	hide_window = yes
+	immediate = {
+		set_country_flag = wg_astesia_stage_7
+	}
+}
+country_event = {
+	id = wg_astesia.152
+	title = wg_astesia
+	desc = wg_astesia.152.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 10 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.152.a
+		hidden_effect = { country_event = { id = wg_astesia.153 }}
+	}
+}
+country_event = {
+	id = wg_astesia.153
+	title = wg_astesia
+	desc = wg_astesia.153.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 10 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.153.a
+		hidden_effect = { country_event = { id = wg_astesia.154 }}
+	}
+}
+country_event = {
+	id = wg_astesia.154
+	title = wg_astesia
+	desc = wg_astesia.154.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 10 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.154.a
+		hidden_effect = { country_event = { id = wg_astesia.155 }}
+	}
+}
+country_event = {
+	id = wg_astesia.155
+	title = wg_astesia
+	desc = wg_astesia.155.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 10 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.155.a
+		hidden_effect = { country_event = { id = wg_astesia.156 }}
+	}
+}
+country_event = {
+	id = wg_astesia.156
+	title = wg_astesia
+	desc = wg_astesia.156.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 10 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.156.a
+		hidden_effect = { country_event = { id = wg_astesia.157 }}
+	}
+}
+country_event = {
+	id = wg_astesia.157
+	title = wg_astesia
+	desc = wg_astesia.157.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 10 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.157.a
+		hidden_effect = { country_event = { id = wg_astesia.158 }}
+	}
+}
+country_event = {
+	id = wg_astesia.158
+	title = wg_astesia
+	desc = wg_astesia.158.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 10 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+		change_variable = { which = wg_astesia_affection value = 10 }
+	}
+
+	option = {
+		name = wg_astesia.158.a
+		custom_tooltip = wg_astesia.111.a.desc
+		hidden_effect = { country_event = { id = wg_astesia.159 days = 120 } }
+	}
+}
+country_event = {
+	id = wg_astesia.159
+	is_triggered_only = yes
+	hide_window = yes
+	immediate = {
+		set_country_flag = wg_astesia_stage_8
+	}
+}
+country_event = {
+	id = wg_astesia.160
+	title = wg_astesia
+	desc = wg_astesia.160.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 6 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.160.a
+		hidden_effect = { country_event = { id = wg_astesia.161 } }
+	}
+}
+country_event = {
+	id = wg_astesia.161
+	title = wg_astesia
+	desc = wg_astesia.161.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 6 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.161.a
+		hidden_effect = { country_event = { id = wg_astesia.162 } }
+	}
+}
+country_event = {
+	id = wg_astesia.162
+	title = wg_astesia
+	desc = wg_astesia.162.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 6 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+		change_variable = { which = wg_astesia_affection value = 10 }
+	}
+
+	option = {
+		name = wg_astesia.162.a
+		custom_tooltip = wg_astesia.111.a.desc
+		hidden_effect = { country_event = { id = wg_astesia.163 days = 180 } }
+	}
+}
+country_event = {
+	id = wg_astesia.163
+	is_triggered_only = yes
+	hide_window = yes
+	immediate = {
+		if = {
+			limit = { check_variable = { which = wsg_rings value >= 1 } }
+			country_event = {
+				id = wg_astesia.164
+			}
+		}
+		else = {
+			country_event = {
+				id = wg_astesia.163
+				days = 180
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.164
+	title = wg_astesia.164.title
+	desc = wg_astesia.164.desc
+	picture = GFX_evt_intelligence_report
+	is_triggered_only = yes
+	option = {
+		name = wg_astesia.164.a
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.165
+			}
+		}
+	}
+	option = {
+		name = wg_astesia.164.b
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.163 days = 1080
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.165
+	title = wg_astesia.165.title
+	desc = wg_astesia.165.desc
+	picture = GFX_evt_intelligence_report
+	is_triggered_only = yes
+	option = {
+		name = wg_astesia.165.a
+		add_resource = { energy = -1000 }
+		change_variable = { which = wsg_rings value = -1 }
+		hidden_effect = {
+			country_event = {
+				id = wg_astesia.166
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_astesia.166
+	title = wg_astesia
+	desc = wg_astesia.166.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 12 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.166.a
+		hidden_effect = { country_event = { id = wg_astesia.167 }}
+	}
+}
+country_event = {
+	id = wg_astesia.167
+	title = wg_astesia
+	desc = wg_astesia.167.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 12 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+		set_country_flag = married_wg_astesia
+		set_variable = { which = wg_astesia_affection value = 200 }
+		every_owned_leader = {
+			fire_on_action = {
+				on_action = on_wg_affection_system_check
+			}
+		}
+	}
+
+	option = {
+		name = wg_astesia.167.a
+	}
+}
+country_event = {
+	id = wg_astesia.168
+	is_triggered_only = yes
+	fire_only_once = yes
+	hide_window = yes
+	trigger = {
+		has_country_flag = married_wg_astesia
+	}
+	immediate = {
+		country_event = {
+			id = wg_astesia.169 days = 5 random = 30
+		}
+	}
+}
+country_event = {
+	id = wg_astesia.169
+	title = wg_astesia
+	desc = wg_astesia.169.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	fire_only_once = yes
+	
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+	trigger = {
+		has_country_flag = married_wg_astesia
+	}
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 6 }
+		set_variable = { which = wg_dialogue_character value = 2 }
+	}
+
+	option = {
+		name = wg_astesia.169.a
+	}
+}

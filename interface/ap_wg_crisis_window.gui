@@ -1,0 +1,553 @@
+guiTypes = {
+	### ENCLAVE CARAVANEER EVENT OPTION ###
+
+	containerWindowType = {
+		name = "ap_wg_crisis_option"
+		position = { x=0 y=0 }
+		size = { width = 202 height = 999 }
+		moveable = no
+		
+		buttonType = {
+			name = "option_button"
+			quadTextureSprite = "GFX_wg_crisis_option_button_202_41" 
+			position = { x=0 y=0 }
+			font = "malgun_goth_24"
+			text = "OPTION_TEXT"
+		}
+
+		OverlappingElementsBoxType = {
+			name = "trigger_icons"
+			position = { x = 0  y = 10 }
+			size = { x=65 y= 28 }
+		}
+	}
+	containerWindowType = {
+		name = "wg_hiding_button"
+		position = { x = 0 y = 0 }
+		size = { width = 142 height = 34 }
+		moveable = no
+		
+		buttonType = {
+			name = "option_button"
+			quadTextureSprite = ""
+			position = { x = 0 y = 0 }
+			font = "malgun_goth_24"
+			text = "OPTION_TEXT"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+
+		OverlappingElementsBoxType = {
+			name = "trigger_icons"
+			position = { x = 0  y = 10 }
+			size = { x=65 y= 28 }
+		}
+		
+	}
+
+	##################################################################
+	# 灾飞界面窗口
+	# 除了下方containerWindowType的size（窗口大小）之外，其余不建议改动
+	# 改动size后需要改动下方EVENT_DIPLO里的option_list位置
+	# 
+	# 窗口关闭的原理是将第二个选项（什么效果也不触发的）隐藏起来，其中第二选项为default_hide_option
+	# 然后将取消按钮伪装成退出按钮，点击退出时自动执行隐藏的事件选项达到关闭界面效果
+	##################################################################
+
+	### ENCLAVE CARAVANEER EVENT WINDOW ###
+
+	containerWindowType = {
+		name = "ap_wg_crisis_window"
+		orientation = center
+		origo = center
+		moveable = yes
+		size = { width = 1468 height = 833 }
+		
+		background = {
+			name = "background"
+			spriteType = "GFX_wg_crisis_bg" 
+			orientation = center
+			position = { x = 0 y = 0 }
+		}
+		
+		buttonType = {
+			name = "alien_message_background"
+			size = { x = 675 y = 274 }
+			Orientation = "UPPER_LEFT"
+			position = { x = -1453 y = -12450 }
+			spriteType = "GFX_tiles_dark_area_cut_8"
+			alwaysTransparent = yes
+		}
+		
+		instantTextBoxType = {
+			name = "alien_message"
+			font = "cg_16b"
+			position = { x = 958 y = 175 }
+			maxWidth = 242
+			maxHeight = 520
+			format = left
+			scrollbartype = "standardtext_slider"
+		}
+
+		instantTextBoxType = {
+			name = "heading"
+			font = "malgun_goth_24"
+			text = "DIPLOMACY"
+			position = { x = -1453 y = -12450 }
+			maxWidth = 543
+			maxHeight = 22
+			fixedSize = yes
+			alwaysTransparent = yes
+		}
+
+		buttonType = {
+			name = "close"
+			quadTextureSprite = "GFX_wg_crisis_button_close"
+			position = { x= -280 y = 30 }
+			Orientation = "UPPER_RIGHT"
+			shortcut = "ESCAPE"
+			clicksound = "back_click"
+		}
+
+		iconType = {
+			name = "wg_crisis_point_icon"
+			quadTextureSprite = "GFX_wg_crisis_point_icon"
+			font = "cg_16b"
+			pdx_tooltip = "wg_crisis_points_desc"
+			position = { x = 963 y = 63 }
+			Orientation = "UPPER_LEFT"
+		}
+		effectButtonType = {
+			name = "wg_crisis_window_tutorial_button"
+			quadTextureSprite = "GFX_wg_crisis_tutorial_button"
+			position = { x = 1147 y = 125 }
+			Orientation = "UPPER_LEFT"
+			effect = "wg_crisis_window_tutorial_button_effect"
+		}
+		###############################################
+		#                等级解锁图案                  #
+		###############################################
+		@level_complete_icon_x = 909
+		effectButtonType = {
+			name = "wg_crisis_lv1_complete"
+			quadTextureSprite = "GFX_wg_crisis_level_complete_icon"
+			position = { x = @level_complete_icon_x y = 68 }
+			Orientation = "UPPER_LEFT"
+			effect = wg_crisis_level_1_complete
+		}
+		effectButtonType = {
+			name = "wg_crisis_lv2_complete"
+			quadTextureSprite = "GFX_wg_crisis_level_complete_icon"
+			position = { x = @level_complete_icon_x y = 192 }
+			Orientation = "UPPER_LEFT"
+			effect = wg_crisis_level_2_complete
+		}
+		effectButtonType = {
+			name = "wg_crisis_lv3_complete"
+			quadTextureSprite = "GFX_wg_crisis_level_complete_icon"
+			position = { x = @level_complete_icon_x y = 331 }
+			Orientation = "UPPER_LEFT"
+			effect = wg_crisis_level_3_complete
+		}
+		effectButtonType = {
+			name = "wg_crisis_lv4_complete"
+			quadTextureSprite = "GFX_wg_crisis_level_complete_icon"
+			position = { x = @level_complete_icon_x y = 472 }
+			Orientation = "UPPER_LEFT"
+			effect = wg_crisis_level_4_complete
+		}
+		effectButtonType = {
+			name = "wg_crisis_lv5_complete"
+			quadTextureSprite = "GFX_wg_crisis_level_complete_icon"
+			position = { x = @level_complete_icon_x y = 612 }
+			Orientation = "UPPER_LEFT"
+			effect = wg_crisis_level_5_complete
+		}
+
+		###############################################
+		#                灾飞天赋按钮                  #
+		###############################################
+		@wg_crisis_perk_lv1_y = 60
+		@wg_crisis_perk_lv2_y = 190
+		@wg_crisis_perk_lv3_y = 330
+		@wg_crisis_perk_lv4_y = 470
+		@wg_crisis_perk_lv5_y = 605
+
+		# 每个天赋的水平位置请至少隔2格，即1号天赋在x1，2号天赋在x3，如此类推
+		@wg_crisis_perk_x1 = 161 #+63
+		@wg_crisis_perk_x2 = 224 #+63
+		@wg_crisis_perk_x3 = 287 #+63
+		@wg_crisis_perk_x4 = 350 #+63
+		@wg_crisis_perk_x5 = 413 #+63
+		@wg_crisis_perk_x6 = 476 #+63
+		@wg_crisis_perk_x7 = 539 #+63
+		@wg_crisis_perk_x8 = 602 #+63
+		@wg_crisis_perk_x9 = 665 #+63
+#		# lv1
+		effectButtonType = {
+			name = "wg_crisis_perk_lv1-1"
+			spriteType = "GFX_wg_crisis_perk_lv1-1"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x4 y = @wg_crisis_perk_lv1_y }
+			effect = "wg_crisis_prek_lv1_1_passive"
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv1-2"
+			spriteType = "GFX_wg_crisis_perk_lv1-2"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x6 y = @wg_crisis_perk_lv1_y }
+			effect = "wg_crisis_prek_lv1_2_passive"
+		}
+		# lv2
+		effectButtonType = {
+			name = "wg_crisis_perk_lv2-1"
+			spriteType = "GFX_wg_crisis_perk_lv2-1"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x3 y = @wg_crisis_perk_lv2_y }
+			effect = "wg_crisis_prek_lv2_1_passive"
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv2-2"
+			spriteType = "GFX_wg_crisis_perk_lv2-2"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x5 y = @wg_crisis_perk_lv2_y }
+			effect = "wg_crisis_prek_lv2_2_passive"
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv2-3"
+			spriteType = "GFX_wg_crisis_perk_lv2-3"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x7 y = @wg_crisis_perk_lv2_y }
+			effect = "wg_crisis_prek_lv2_3_passive"
+		}
+		# lv3
+		effectButtonType = {
+			name = "wg_crisis_perk_lv3-1"
+			spriteType = "GFX_wg_crisis_perk_lv3-1"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x2 y = @wg_crisis_perk_lv3_y }
+			effect = "wg_crisis_prek_lv3_1_passive"
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv3-2"
+			spriteType = "GFX_wg_crisis_perk_lv3-2"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x4 y = @wg_crisis_perk_lv3_y }
+			effect = "wg_crisis_prek_lv3_2_passive"
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv3-3"
+			spriteType = "GFX_wg_crisis_perk_lv3-3"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x6 y = @wg_crisis_perk_lv3_y }
+			effect = "wg_crisis_prek_lv3_3_passive"
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv3-4"
+			spriteType = "GFX_wg_crisis_perk_lv3-4"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x8 y = @wg_crisis_perk_lv3_y }
+			effect = "wg_crisis_prek_lv3_4_passive"
+		}
+		# lv4
+		effectButtonType = {
+			name = "wg_crisis_perk_lv4-1"
+			spriteType = "GFX_wg_crisis_perk_lv4-1"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x2 y = @wg_crisis_perk_lv4_y }
+			effect = "wg_crisis_prek_lv4_1_passive"
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv4-2"
+			spriteType = "GFX_wg_crisis_perk_lv4-2"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x4 y = @wg_crisis_perk_lv4_y }
+			effect = "wg_crisis_prek_lv4_2_passive"
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv4-3"
+			spriteType = "GFX_wg_crisis_perk_lv4-3"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x6 y = @wg_crisis_perk_lv4_y }
+			effect = "wg_crisis_prek_lv4_3_passive"
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv4-4"
+			spriteType = "GFX_wg_crisis_perk_lv4-4"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x8 y = @wg_crisis_perk_lv4_y }
+			effect = "wg_crisis_prek_lv4_4_passive"
+		}
+		# lv5
+		effectButtonType = {
+			name = "wg_crisis_perk_lv5-1"
+			spriteType = "GFX_wg_crisis_perk_lv5-1"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x1 y = @wg_crisis_perk_lv5_y }
+			effect = "wg_crisis_prek_lv5_1_passive"
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv5-2"
+			spriteType = "GFX_wg_crisis_perk_lv5-2"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x3 y = @wg_crisis_perk_lv5_y }
+			effect = "wg_crisis_prek_lv5_2_passive"
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv5-3"
+			spriteType = "GFX_wg_crisis_perk_lv5-3"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x5 y = @wg_crisis_perk_lv5_y }
+			effect = "wg_crisis_prek_lv5_3_passive"
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv5-4"
+			spriteType = "GFX_wg_crisis_perk_lv5-4"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x7 y = @wg_crisis_perk_lv5_y }
+			effect = "wg_crisis_prek_lv5_4_passive"
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv5-5"
+			spriteType = "GFX_wg_crisis_perk_lv5-5"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x9 y = @wg_crisis_perk_lv5_y }
+			effect = "wg_crisis_prek_lv5_5_passive"
+		}
+		###############################################
+		#            灾飞天赋按钮（已激活）             #
+		###############################################
+#		# lv1
+		effectButtonType = {
+			name = "wg_crisis_perk_lv1-1_active"
+			spriteType = "GFX_wg_crisis_perk_lv1-1_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x4 y = @wg_crisis_perk_lv1_y }
+			effect = "wg_crisis_prek_lv1_1_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv1-2_active"
+			spriteType = "GFX_wg_crisis_perk_lv1-2_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x6 y = @wg_crisis_perk_lv1_y }
+			effect = "wg_crisis_prek_lv1_2_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		# lv2
+		effectButtonType = {
+			name = "wg_crisis_perk_lv2-1_active"
+			spriteType = "GFX_wg_crisis_perk_lv2-1_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x3 y = @wg_crisis_perk_lv2_y }
+			effect = "wg_crisis_prek_lv2_1_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv2-2_active"
+			spriteType = "GFX_wg_crisis_perk_lv2-2_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x5 y = @wg_crisis_perk_lv2_y }
+			effect = "wg_crisis_prek_lv2_2_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv2-3_active"
+			spriteType = "GFX_wg_crisis_perk_lv2-3_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x7 y = @wg_crisis_perk_lv2_y }
+			effect = "wg_crisis_prek_lv2_3_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		# lv3
+		effectButtonType = {
+			name = "wg_crisis_perk_lv3-1_active"
+			spriteType = "GFX_wg_crisis_perk_lv3-1_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x2 y = @wg_crisis_perk_lv3_y }
+			effect = "wg_crisis_prek_lv3_1_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv3-2_active"
+			spriteType = "GFX_wg_crisis_perk_lv3-2_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x4 y = @wg_crisis_perk_lv3_y }
+			effect = "wg_crisis_prek_lv3_2_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv3-3_active"
+			spriteType = "GFX_wg_crisis_perk_lv3-3_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x6 y = @wg_crisis_perk_lv3_y }
+			effect = "wg_crisis_prek_lv3_3_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv3-4_active"
+			spriteType = "GFX_wg_crisis_perk_lv3-4_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x8 y = @wg_crisis_perk_lv3_y }
+			effect = "wg_crisis_prek_lv3_4_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		# lv4
+		effectButtonType = {
+			name = "wg_crisis_perk_lv4-1_active"
+			spriteType = "GFX_wg_crisis_perk_lv4-1_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x2 y = @wg_crisis_perk_lv4_y }
+			effect = "wg_crisis_prek_lv4_1_active"
+			no_clicksound = yes
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv4-2_active"
+			spriteType = "GFX_wg_crisis_perk_lv4-2_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x4 y = @wg_crisis_perk_lv4_y }
+			effect = "wg_crisis_prek_lv4_2_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv4-3_active"
+			spriteType = "GFX_wg_crisis_perk_lv4-3_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x6 y = @wg_crisis_perk_lv4_y }
+			effect = "wg_crisis_prek_lv4_3_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv4-4_active"
+			spriteType = "GFX_wg_crisis_perk_lv4-4_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x8 y = @wg_crisis_perk_lv4_y }
+			effect = "wg_crisis_prek_lv4_4_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		# lv5
+		effectButtonType = {
+			name = "wg_crisis_perk_lv5-1_active"
+			spriteType = "GFX_wg_crisis_perk_lv5-1_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x1 y = @wg_crisis_perk_lv5_y }
+			effect = "wg_crisis_prek_lv5_1_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv5-2_active"
+			spriteType = "GFX_wg_crisis_perk_lv5-2_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x3 y = @wg_crisis_perk_lv5_y }
+			effect = "wg_crisis_prek_lv5_2_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv5-3_active"
+			spriteType = "GFX_wg_crisis_perk_lv5-3_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x5 y = @wg_crisis_perk_lv5_y }
+			effect = "wg_crisis_prek_lv5_3_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv5-4_active"
+			spriteType = "GFX_wg_crisis_perk_lv5-4_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x7 y = @wg_crisis_perk_lv5_y }
+			effect = "wg_crisis_prek_lv5_4_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+		effectButtonType = {
+			name = "wg_crisis_perk_lv5-5_active"
+			spriteType = "GFX_wg_crisis_perk_lv5-5_active"
+			Orientation = "UPPER_LEFT"
+			position = { x = @wg_crisis_perk_x9 y = @wg_crisis_perk_lv5_y }
+			effect = "wg_crisis_prek_lv5_5_active"
+			no_clicksound = yes
+			oversound = no_sound
+		}
+
+		### EVENT DIPLO ###
+		
+		containerWindowType = {
+			name = "EVENT_DIPLO"
+			position = { x = 950 y = 0 }
+			size = { width=355 height= 999  }
+			moveable = no
+			
+			instantTextBoxType={
+				name = "action_title"
+				font = "malgun_goth_24"
+				position = { x = 50 y = 70 }
+				maxWidth = 520
+				alwaysTransparent = yes
+			}
+			instantTextBoxType={ name = "action_desc" font = "malgun_goth_24" position = { x = -1453 y = -12450 } } # hidden
+			
+			listboxType = {
+				name = "option_list"
+				position = { x = 10 y = 125 }
+				backGround=""
+				size = { x = 202 y = 275 }
+				spacing = 20
+				scrollbartype = "standardlistbox_slider"
+				borderSize = { x = 0 y = 0 }
+				Orientation = "UPPER_LEFT"
+			}
+		}
+		############################################
+		### ALL OF THIS IS HIDDEN OR DISPLACED ! ###
+		############################################
+		iconType = { name = "empire_header_line" quadTextureSprite = "GFX_line_long_caravaneer" position = { x = -1453 y = -12450 } }
+		buttonType = { name = "focus_button" position = { x = -1453 y = -12450 } spriteType = "GFX_fleetview_focus" }
+		buttonType = { name = "confirm_button" quadTextureSprite = "GFX_standard_button_142_34_button" } # hidden
+		containerWindowType = {
+			name = "portrait"
+			position = { x = -1453 y = -12450 }
+			size = { width = 0 height = 0 } # hide portrait window
+			iconType = { name = "portrait" spriteType = "GFX_portrait_gamesetup_mask"  } # hidden
+			iconType = { name = "black_frame" spriteType = "GFX_diplomacy_portrait_shadow_frame" } # hidden
+			iconType = { name = "stripes_1" spriteType = "GFX_diplomacy_stripes_2" } # hidden
+			iconType = { name = "city_frame" spriteType = "GFX_diplomacy_portrait_frame" } # hidden
+		}
+		iconType = { name = "empire_info_bg" spriteType = "GFX_diplomacy_dark_fade_bg" } # hidden
+		instantTextBoxType={ name = "empire_name" font = "malgun_goth_24" } # hidden 
+		instantTextBoxType={ name = "empire_government_type" font = "cg_16b" } # hidden
+		instantTextBoxType={ name = "empire_personality_type" font = "cg_16b" } # hidden
+		OverlappingElementsBoxType = { name = "empire_ethics_icons" position = { x = -1453 y = -12450 } } # hidden
+		buttonType = { name = "empire_flag" spriteType = "GFX_empire_flag_128" position = { x = -1453 y = -12450 } } # hidden
+		containerWindowType = {
+			name = "leader_details"
+			position = { x = -1453 y = -12450 }
+			containerWindowType = { name = "empire_traits_box" } # hidden
+			instantTextBoxType = { name = "empire_traits_label" font = "cg_16b" } # hidden
+			overlappingElementsBoxType = { name = "leader_traits" } # hidden
+			instantTextBoxType = { name = "leader_name" font = "cg_16b" } # hidden
+			instantTextBoxType = { name = "leader_species" font = "cg_16b" } # hidden
+		}
+		containerWindowType = {
+			name = "opinion_window"
+			position = { x = -1453 y = -12450 }
+			size = { width = 94 height = 30 }
+			iconType = { name = "their_opinion_icon" spriteType = "GFX_diplomacy_opinion" } # hidden
+			instantTextBoxType = { name = "their_opinion" font = "cg_16b" }
+		}	
+	}
+}

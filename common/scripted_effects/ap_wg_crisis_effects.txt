@@ -1,0 +1,97 @@
+######################################################
+# 自定义带参封装效果说明
+# wg_crisis_perk_button_effects以及wg_crisis_perk_button_active_effects
+# 为控制灾飞界面上天赋按钮的提示，以及点击后触发的确认提示
+# 若要自定义自己的天赋效果，请自己ctrl+f将wg_crisis_perk改成自己定义的前缀名即可
+# 当然相应的本地化词条以及对应复制的button effect也要改动
+# 触发的事件编号为ap_wg_crisis.1xy（x为PERK_LEVEL，y为PERK）
+# 需要改动编号的话请自行于注释处处理
+
+# add_wg_crisis_points为增加灾飞点数的效果
+# 使用该效果增加点数后会自动判断是否达到某一级灾飞等级的要求并执行相关事件
+######################################################
+
+# 未激活的天赋按钮效果
+# 输入参数：
+# PERK_LEVEL（整数）天赋等级
+# PERK（整数）在前者输入天赋等级中的第x个天赋
+
+# 提示格式为：
+###################
+# 天赋名
+# 天赋介绍
+# §E获得效果：§!
+# 未激活天赋前获得的buff
+# （以下提示仅在天赋未被激活时出现）
+# 激活提示
+# §E激活效果：§!
+# 激活天赋后获得的buff
+###################
+# this = button_scope
+# FROM = country
+# 因封装效果用在按钮上，所有需要判断的条件和执行的效果需要加from转scope
+wg_crisis_perk_button_effects = {
+	custom_tooltip = wg_crisis_perk_lv$PERK_LEVEL$-$PERK$_name
+	custom_tooltip = wg_crisis_perk_lv$PERK_LEVEL$-$PERK$_desc
+	custom_tooltip = wg_crisis_perk_gain
+	custom_tooltip = wg_crisis_perk_lv$PERK_LEVEL$-$PERK$_passive_effect
+	if = {
+		limit = { FROM = { check_variable = { which = active_wg_crisis_perk_lv$PERK_LEVEL$ value = 0 }}}
+		custom_tooltip = "active_wg_crisis_perks"
+		custom_tooltip = "wg_crisis_perk_gain_active"
+		custom_tooltip = wg_crisis_perk_lv$PERK_LEVEL$-$PERK$_active_effect
+		# 执行的二次确认事件窗口，事件编号为ap_wg_crisis.1xy（x为PERK_LEVEL，y为PERK）
+		# 将ap_wg_crisis事件前缀名改成其他即可，如果想要改动事件编号，只能改动（1）这个数字至其他数字或者直接删除 
+		hidden_effect = { FROM = { country_event = { id = ap_wg_crisis.1$PERK_LEVEL$$PERK$ }}}
+	}
+}
+
+# 已激活的天赋按钮效果
+# 输入参数：
+# PERK_LEVEL（整数）天赋等级
+# PERK（整数）在前者输入天赋等级中的第x个天赋
+wg_crisis_perk_button_active_effects = {
+	custom_tooltip = wg_crisis_perk_lv$PERK_LEVEL$-$PERK$_name
+	custom_tooltip = wg_crisis_perk_lv$PERK_LEVEL$-$PERK$_desc
+	custom_tooltip = "wg_crisis_perk_gain"
+	custom_tooltip = wg_crisis_perk_lv$PERK_LEVEL$-$PERK$_passive_effect
+	custom_tooltip = wg_crisis_perk_lv$PERK_LEVEL$-$PERK$_active_effect
+}
+
+# 增加灾飞点数
+# 输入参数：
+# POINTS （实数）
+add_wg_crisis_points = {
+	change_variable = { which = wg_crisis_points value = $POINTS$ }
+	if = {
+		# 判断达到的等级（这里是2级，下方依次为3,4,5级）以及对应触发的事件
+		limit = { 
+			check_variable = { which = wg_crisis_points value >= @wg_crisis_points_to_lv2 }
+			check_variable = { which = wg_crisis_level value = 1 }
+			has_technology = tech_wg_fm_hyper_dimensional_theory
+		}
+		country_event = { id = ap_wg_crisis.1024 days = 5 }
+		country_event = { id = ap_wg_crisis.6 }
+	} else_if = {
+		limit = { 
+			check_variable = { which = wg_crisis_points value >= @wg_crisis_points_to_lv3 }
+			check_variable = { which = wg_crisis_level value = 2 }
+			has_country_flag = wg_crisis_lv3_2ndObj_finish
+		}
+		country_event = { id = ap_wg_crisis.7 }
+	} else_if = {
+		limit = { 
+			check_variable = { which = wg_crisis_points value >= @wg_crisis_points_to_lv4 }
+			check_variable = { which = wg_crisis_level value = 3 }
+			has_technology = tech_wg_fm_psionic_energy_hypersiphon
+		}
+		country_event = { id = ap_wg_crisis.8 }
+	} else_if = {
+		limit = { 
+			check_variable = { which = wg_crisis_points value >= @wg_crisis_points_to_lv5 }
+			check_variable = { which = wg_crisis_level value = 4 }
+			has_country_flag = wg_crisis_lv5_2ndObj_finish
+		}
+		country_event = { id = ap_wg_crisis.9 }
+	}
+}

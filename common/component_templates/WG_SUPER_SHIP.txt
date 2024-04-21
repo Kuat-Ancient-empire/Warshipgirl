@@ -1,0 +1,150 @@
+#这是舰RMOD用来测试的舰船
+utility_component_template = {
+	key = "WG_plunger"
+	size = small
+	icon = "GFX_KDC_CAT"
+	icon_frame = 1
+	power = 50000000
+	resources = {
+		category = ship_components
+	}
+	ftl = yes
+	jumpdrive = yes
+	ship_modifier = {
+		ship_windup_mult = -1.0
+		ship_ftl_jumpdrive_range_mult = 20.0
+		ship_jumpdrive_cooldown_mult = -1.0
+		ship_evasion_mult = 1.00
+		ship_speed_mult = 1.00
+	}
+	sensor_range = 20
+	hyperlane_range = 50
+	ai_weight = {
+		weight = 4
+	}
+
+	size_restriction = { wg_plunger }
+	component_set = "ftl_components"
+}
+
+utility_component_template = {
+	key = "WG_plunger2"
+	size = medium
+	icon = "GFX_KDC_CAT"
+	icon_frame = 1
+	power = 0
+	hidden = yes
+	size_restriction = { wg_plunger }
+	component_set = "ship_aura_components"
+	prerequisites = { "tech_UNITEDFLEET" }	
+	hostile_aura = {
+		name = "wg_plunger"
+		radius = @shipAuraRange
+		apply_on = ships
+		stack_info = {
+			id = WG_plunger2
+			priority = 200
+		}
+		limit = { 
+			is_in_combat = yes
+		}
+		damage_per_day = {
+			accuracy = 5.0
+			damage = { min = 20000000 max = 20000000 }
+			
+			shield_penetration = 2
+			armor_penetration = 2
+		}		
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}		
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 2
+			is_ai = yes
+			is_preferred_weapons = weapon_type_energy
+		}
+	}
+}
+
+utility_component_template = {
+	key = "WG_plunger3"
+	size = medium
+	icon = "GFX_KDC_CAT"
+	icon_frame = 1
+	power = 0
+	hidden = yes
+	size_restriction = { wg_plunger }
+	component_set = "ship_aura_components"
+	prerequisites = { "tech_UNITEDFLEET" }	
+    hostile_aura = {
+		name = "wg_plunger"
+		radius = @shipAuraRange
+		apply_on = ships
+		stack_info = {
+			id = WG_plunger3
+			priority = 200
+		}
+		modifier = {
+			ship_weapon_range_mult = -300.00
+			ship_weapon_damage = -300.00
+			ship_shield_hardening_add = -30.00
+			ship_armor_hardening_add = -30.00
+		}		
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}		
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 2
+			is_ai = yes
+			is_preferred_weapons = weapon_type_energy
+		}
+	}
+}
+
+weapon_component_template = {
+	key = "WG_plunger4"
+	size = titanic
+	type = instant
+	
+	icon = "GFX_KDC_CAT"
+	icon_frame = 1
+	
+	use_ship_kill_target = no
+	hidden = yes	
+	damage = { min = 500000000 max = 500000000 }
+	windup = { min = 0 max = 0 }
+	total_fire_time = 0
+	range = 1500.0
+	accuracy = 30.0
+	shield_penetration = 1.01
+	armor_penetration = 1.01
+	
+	tracking = 30.0
+	power = -1000000
+	
+	component_set = "Monolith_weapon"
+	projectile_gfx = "monolith_weapon"
+	tags = {  }
+	ai_tags = { weapon_role_artillery }
+	ai_tag_weight = 0
+}

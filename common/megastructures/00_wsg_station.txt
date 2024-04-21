@@ -1,0 +1,2238 @@
+wsg_station = {
+	entity = "wsg_gateway_entity"
+	construction_entity = "wsg_gateway_entity"
+	portrait = "GFX_wsg_station_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	scales_with_planet = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 1200
+	resources = {
+		category = megastructures
+		cost = { alloys = 10000 unity = 500 }
+		upkeep = { energy = 60 minerals = 60 }
+	}
+	country_modifier = { 
+		country_naval_cap_add = 150 
+		country_resource_max_add = 5000
+	}
+	ship_modifier = {
+		ship_starting_experience_add = 100
+	}
+	station_modifier = {
+		starbase_shipyard_capacity_add = 12
+		starbase_shipyard_build_cost_mult = -0.05
+		starbase_shipyard_build_speed_mult = 0.80		
+	}
+	
+	potential = { 
+		OR = {
+			has_ascension_perk = ap_wsg_station
+		}
+	}
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_maximum_eight"
+			from = {
+				has_wg_special_authority = yes
+				check_variable = { 
+					which = num_wsg_station
+					value < 8
+				}
+			}	
+		}
+
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_only_one_in_system"
+			NOT = {
+				has_star_flag = wsg_station_built
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+	}		
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_anomaly" NOT = { has_anomaly = yes } }
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				#can_build_megastructure_on_planet = yes
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					is_ringworld_wg = yes
+					is_habitat_wg = yes
+					solar_system = {
+						has_star_flag = ring_world_built
+					}
+					
+					#all of these checks ensure that you don't double up on megastructures, and you don't get the weird situation
+					#of being able to build it around a proper ring world
+				}
+			}	
+			custom_tooltip = { fail_text = "requires_no_anomaly" NOT = { has_anomaly = yes } }
+			custom_tooltip = {
+				fail_text = "requires_colonizeable_planet" 
+				AND = {
+					exists = owner
+				}
+			}
+		}
+	}
+	ai_weight = {
+		factor = 0
+		modifier = { factor = 0.75 from = { has_any_megastructure_in_empire = yes }	}
+		modifier = { factor = 0.0 from = { any_system_within_border = { has_megastructure = wsg_station } } }
+	}
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		set_star_flag = wsg_station_built_flag
+		from = { 
+			change_variable = {
+				which = num_wsg_station
+				value = 1
+			}
+			if = {
+				limit = { NOT = { has_country_flag = built_wsg_station }}
+				set_country_flag = built_wsg_station
+				change_variable = { which = rankpts value = 3 }
+			}
+			if = {
+				limit = { is_country_type = default_ev }
+				change_variable = {
+					which = ev_maintenance_value
+					value = 5
+				}
+			}		
+		}		
+		fromfrom.planet = {
+			set_planet_flag = planet_wsg_station
+			set_planet_flag = megastructure
+			add_modifier = { modifier = planet_wsg_station_modifier days = -1 }
+		}
+	}
+}
+
+dyson_yamato = {
+	entity = "uf_dyson_cloud_entity"
+	construction_entity = "uf_dyson_cloud_entity"
+	portrait = "GFX_wsg_yamato_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 1260
+	construction_blocks_and_blocked_by = none
+	show_in_outliner = no
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 3000
+			unity = 200
+		}
+		produces = {
+			energy = 300
+		}
+		produces = {
+			trigger = {
+				owner = {
+					has_country_flag = built_one_radioactive
+				}
+			}
+			energy = 50
+		}
+	}
+
+	potential = { 
+		OR = {
+			has_ascension_perk = ap_wsg_station
+		}
+	}
+	
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border_or_wg_subject"
+			OR = {
+				is_inside_border = from
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_wsg_jurisdiction_subject }
+						overlord = { is_same_value = from }
+					}
+				}
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_sh_jurisdiction_subject }
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+		#custom_tooltip = {
+			#fail_text = "requires_only_one_yamato_in_system"
+			#NOT = {
+				#has_star_flag = dyson_yamato_built
+			#}
+		#}		
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system" # or is in my subject's territory
+			OR = {
+				NOT = {
+					any_system_planet = {
+						is_surveyed = {
+							who = prev.from
+							status = no
+						}
+					}
+				}
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_black_hole_neutron_star_pulsar"
+			NOT = {
+				is_star_class = sc_black_hole
+				is_star_class = sc_neutron_star
+				is_star_class = sc_pulsar
+			}
+		}
+		# custom_tooltip = {
+		# 	fail_text = "requires_no_existing_megastructure"
+		# 	#NOT = { has_any_megastructure = yes }
+		# 	has_no_non_gate_megastructure = yes
+		# }
+	}
+	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "must_build_around_star"
+				is_star = yes
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_only_one_yamato_in_planet"
+				NOT = { has_planet_flag = has_dyson_yamato }
+			}
+
+		}
+	}
+	
+	# root = system
+	# from = country	
+	ai_weight = {
+		factor = 0
+		
+		modifier = {
+			factor = 0.1
+			starbase = { NOT = { has_starbase_size >= starbase_starfortress } }
+		}	
+		
+		modifier = {
+			factor = 0.1
+			any_neighbor_system = {
+				exists = owner
+				NOT = { 
+					owner = { is_same_value = from } 
+				}
+			}
+		}
+	}
+	
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		set_star_flag = dyson_yamato_built
+		FROM = { if = {
+			limit = { NOT = { has_country_flag = built_dyson_yamato }}
+			set_country_flag = built_dyson_yamato
+			change_variable = { which = rankpts value = 3 }
+		}}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = has_dyson_yamato
+		}
+	}
+}
+
+wsg_mining_station = {
+	entity = "uf_minerals_station_avoid_entity"
+	construction_entity = "uf_minerals_station_avoid_entity"
+	portrait = "GFX_wsg_mining_station_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	show_in_outliner = no
+	entity_offset = { x = 0 y = 0 }
+	build_time = 720
+	resources = {
+		category = megastructures
+		cost = { alloys = 1800 unity = 100 }
+		upkeep = { energy = 20 }
+		produces = { minerals = 200 }
+	}
+	potential = { 
+		OR = {
+			has_ascension_perk = ap_wsg_station
+		}
+		NOT = {
+			has_civic = civic_wsg_drg	
+		}	
+	}
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_inside_border_or_wg_subject"
+			OR = {
+				is_inside_border = from
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_wsg_jurisdiction_subject }
+						overlord = { is_same_value = from }
+					}
+				}
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_sh_jurisdiction_subject }
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_megastructure"
+			#NOT = { has_any_megastructure = yes }
+			has_no_non_gate_megastructure = yes
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_anomaly" NOT = { has_anomaly = yes }}
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_asteroid"
+				is_asteroid = yes
+			}
+			custom_tooltip = {
+				fail_text = "requires_only_one_mining_station_in_planet"
+				NOT = { has_planet_flag = has_wsg_mining_station }
+			}
+		}
+	}	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			if = {
+				limit = { NOT = { has_country_flag = built_wsg_mining_station }}
+				set_country_flag = built_wsg_mining_station
+				change_variable = { which = rankpts value = 3 }
+			}
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = has_wsg_mining_station
+		}
+	}
+}
+
+wsg_hidden_capital = {
+	entity = ""
+	construction_entity = ""
+	portrait = "GFX_wsg_hidden_capital_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	build_time = 360
+	
+	country_modifier = { 
+		country_admin_cap_add = 50 
+		country_edict_fund_mult = 0.5
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 12000 influence = 200 }
+		upkeep = { 
+			energy = 50 
+			consumer_goods = 50
+		}
+		produces = { 
+			unity = 200
+			influence = 1
+		}
+	}
+	prerequisites = { "tech_wsg_hc" }
+	
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_only_one_wsg_hidden_capital"
+			from = { NOT = { has_country_flag = built_wsg_hidden_capital } }
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_habitable_planets"
+			NOT = {
+				any_system_planet = {
+					OR = {
+						is_colony = yes
+						colonizable_planet = yes
+					}
+				}
+			}
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_anomaly" NOT = { has_anomaly = yes } }
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_asteroid"
+				is_asteroid = yes
+			}			
+		}
+	}	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		set_star_flag = wsg_hidden_capital_built
+		from = { 
+			if = {
+				limit = { NOT = { has_country_flag = built_wsg_hidden_capital }}
+				set_country_flag = built_wsg_hidden_capital
+				change_variable = { which = rankpts value = 4 }
+			}
+			set_country_flag = has_built_or_repaired_megastructure	
+			country_event = { id = wsg.3032 }			
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+		}
+	}
+}
+
+shenhai_energy_core_1 = {
+	entity = "mammalian_01_construction_platform_entity"
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -7 y = -7 }
+	build_time = 720
+		
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 unity = 5000 }
+		upkeep = { 
+			energy = 5
+		}
+	}
+	prerequisites = { "tech_wsg_senergy2" }
+	
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_only_one_shenhai_energy_core"
+			from = { NOT = { has_country_flag = built_shenhai_energy_core } }
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_habitable_planets"
+			NOT = {
+				any_system_planet = {
+					OR = {
+						is_colony = yes
+						colonizable_planet = yes
+					}
+				}
+			}
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_survey_not_habitable"
+				is_surveyed = {			# prevent leaking habitability information
+					who = prev.from
+					status = yes
+				}
+				colonizable_planet = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld = no
+			}
+		} # use these for all non-star megastructures
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			if = {
+				limit = { NOT = { has_country_flag = built_shenhai_energy_core }}
+				set_country_flag = built_shenhai_energy_core
+				change_variable = { which = rankpts value = 5 }
+			}
+			set_country_flag = has_built_or_repaired_megastructure	
+			#country_event = { id = wsg.3032 }回头写			
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+		}
+	}
+}
+
+shenhai_energy_core_2 = {
+	entity = "shenhai_energy_stage_2_section_entity"
+	construction_entity = "shenhai_energy_stage_2_section_entity"
+	portrait = "GFX_wg_energy_core"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	build_time = 1080
+		
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 sr_pantsu = 100 unity = 5000 }
+		upkeep = { 
+			energy = 300
+			sr_pantsu = 40
+		}
+		produces = {
+			sr_se = 50
+		}
+	}
+	upgrade_from = {
+		shenhai_energy_core_1
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			#country_event = { id = wsg.3032 }回头写			
+		}
+	}
+}
+
+shenhai_energy_core_3 = {
+	entity = "shenhai_energy_stage_2_section_entity"
+	construction_entity = "shenhai_energy_stage_2_section_entity"
+	portrait = "GFX_wg_energy_core"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	build_time = 1080
+		
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 sr_pantsu = 100 unity = 5000 }
+		upkeep = { 
+			energy = 900
+			sr_pantsu = 120
+		}
+		produces = {
+			sr_se = 150
+		}
+	}
+	upgrade_from = {
+		shenhai_energy_core_2
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			#country_event = { id = wsg.3032 }回头写			
+		}
+	}
+}
+shenhai_energy_core_4 = {
+	entity = "shenhai_energy_stage_3_section_entity"
+	construction_entity = "shenhai_energy_stage_3_section_entity"
+	portrait = "GFX_wg_energy_core"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	build_time = 1080
+		
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 sr_pantsu = 100 unity = 5000 }
+		upkeep = { 
+			energy = 1500
+			sr_pantsu = 200
+		}
+		produces = {
+			sr_se = 250
+		}
+	}
+	country_modifier = {
+		custom_tooltip = job_wsg_senergy_sr_pantsu_upkeep_decrease
+	}
+	upgrade_from = {
+		shenhai_energy_core_3
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			#country_event = { id = wsg.3032 }回头写			
+		}
+	}
+}
+
+#转转环
+ration_dyson_ring_faster = {
+	entity = "wsg_01_ring_world_ration_dyson_faster_entity"
+	construction_entity = "wsg_01_ring_world_ration_dyson_faster_entity"
+	portrait = "GFX_wsg_ration_dyson_ring_background"
+	entity_offset = { x = 0 y = 0 }
+	resources = {
+		category = megastructures
+		produces = {
+			energy = 75
+			engineering_research = 25
+			physics_research = 25
+		}
+	}
+	
+	potential = {
+		always = no
+	}
+
+	show_prereqs = yes
+
+	on_build_complete = {
+	}
+}
+
+#转转环
+ration_dyson_ring_low = {
+	entity = "wsg_01_ring_world_ration_dyson_low_entity"
+	construction_entity = "wsg_01_ring_world_ration_dyson_low_entity"
+	portrait = "GFX_wsg_ration_dyson_ring_background"
+	entity_offset = { x = 0 y = 0 }
+	resources = {
+		category = megastructures
+		produces = {
+			energy = 50
+			engineering_research = 50
+			physics_research = 50
+		}
+	}
+	
+	potential = {
+		always = no
+	}
+
+	show_prereqs = yes
+
+	on_build_complete = {
+	}
+}
+#转转环开局
+ration_dyson_ring_low2 = {
+	entity = "wsg_01_ring_world_ration_dyson_low_entity"
+	construction_entity = "wsg_01_ring_world_ration_dyson_low_entity"
+	portrait = "GFX_wsg_ration_dyson_ring_background"
+	entity_offset = { x = 0 y = 0 }
+	resources = {
+		category = megastructures
+		produces = {
+			energy = 50
+			engineering_research = 50
+			physics_research = 50
+		}
+	}
+	
+	potential = {
+		always = no
+	}
+
+	show_prereqs = yes
+
+	on_build_complete = {
+	}
+}
+
+#转转环升级
+ration_dyson_ring_faster2 = {
+	entity = "wsg_01_ring_world_ration_dyson_faster_entity"
+	construction_entity = "wsg_01_ring_world_ration_dyson_faster_entity"
+	portrait = "GFX_wsg_ration_dyson_ring_background"
+	entity_offset = { x = 0 y = 0 }
+	build_time = 0
+	resources = {
+		category = megastructures
+		produces = {
+			energy = 75
+			engineering_research = 25
+			physics_research = 25
+		}
+	}
+	upgrade_from = {
+		ration_dyson_ring_low2
+	}
+
+	show_prereqs = yes
+
+	on_build_complete = {
+		random_system_planet = { 
+			limit = { has_planet_flag = dyson_ring_home_system_flag }
+			destroy_colony = yes
+			every_owned_pop = {
+				kill_pop = yes
+			}
+			change_pc = pc_barren
+		}
+		every_system_planet = { 
+			limit = { has_planet_flag = dyson_ring_planet_system_flag }
+			remove_planet = yes
+		}
+		from = { 
+			country_event = { id = wsg.2115 }		
+		}
+	}
+}
+
+#转转环
+ration_dyson_ring_super_faster = {
+	entity = "wsg_01_ring_world_ration_dyson_super_faster_entity"
+	construction_entity = "wsg_01_ring_world_ration_dyson_super_faster_entity"
+	portrait = "GFX_wsg_ration_dyson_ring_background"
+	entity_offset = { x = 0 y = 0 }
+	build_time = 360
+	resources = {
+		category = megastructures
+		produces = {
+			engineering_research = 100
+			physics_research = 100
+			unity = 100
+		}
+		cost = { alloys = 5000 }
+	}
+	country_modifier = {
+		all_technology_research_speed = 0.05
+		planet_jobs_unity_produces_mult = 0.05
+	}
+	upgrade_from = {
+		ration_dyson_ring_faster2
+	}
+
+	show_prereqs = yes
+
+	on_build_complete = {
+		from = { 
+			country_event = { id = wsg.2116 }		
+		}
+	}
+}
+
+#转转环
+ration_dyson_ring_super_super_faster = {
+	entity = "wsg_01_ring_world_ration_dyson_super_faster_1_entity"
+	construction_entity = "wsg_01_ring_world_ration_dyson_super_faster_1_entity"
+	portrait = "GFX_wsg_ration_dyson_ring_background"
+	entity_offset = { x = 0 y = 0 }
+	build_time = 360
+	resources = {
+		category = megastructures
+		produces = {
+			engineering_research = 100
+			physics_research = 100
+			unity = 100
+		}
+		cost = { alloys = 10000 }
+	}
+	country_modifier = {
+		all_technology_research_speed = 0.05
+		planet_jobs_unity_produces_mult = 0.05
+	}
+	upgrade_from = {
+		ration_dyson_ring_super_faster
+	}
+	show_prereqs = yes
+
+	on_build_complete = {
+	}
+}
+
+#转转环
+ration_dyson_ring_super_super_super_faster = {
+	entity = "wsg_01_ring_world_ration_dyson_super_faster_2_entity"
+	construction_entity = "wsg_01_ring_world_ration_dyson_super_faster_2_entity"
+	portrait = "GFX_wsg_ration_dyson_ring_background"
+	entity_offset = { x = 0 y = 0 }
+	build_time = 360
+	resources = {
+		category = megastructures
+		produces = {
+			engineering_research = 100
+			physics_research = 100
+			unity = 100
+		}
+		cost = { alloys = 10000 }
+	}
+	country_modifier = {
+		all_technology_research_speed = 0.05
+		planet_jobs_unity_produces_mult = 0.05
+	}
+	upgrade_from = {
+		ration_dyson_ring_super_super_faster
+	}
+	show_prereqs = yes
+
+	on_build_complete = {
+	}
+}
+
+#转转环
+ration_dyson_ring_super_super_super_super_faster = {
+	entity = "wsg_01_ring_world_ration_dyson_super_faster_3_entity"
+	construction_entity = "wsg_01_ring_world_ration_dyson_super_faster_3_entity"
+	portrait = "GFX_wsg_ration_dyson_ring_background"
+	entity_offset = { x = 0 y = 0 }
+	build_time = 360
+	resources = {
+		category = megastructures
+		produces = {
+			engineering_research = 100
+			physics_research = 100
+			unity = 100
+		}
+		cost = { alloys = 10000 }
+	}
+	country_modifier = {
+		all_technology_research_speed = 0.05
+		planet_jobs_unity_produces_mult = 0.05
+	}
+	upgrade_from = {
+		ration_dyson_ring_super_super_super_faster
+	}
+	show_prereqs = yes
+
+	on_build_complete = {
+	}
+}
+
+wg_kebab_center_01 = {
+	entity = "mammalian_01_construction_platform_entity"
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -7 y = -7 }
+	build_time = 1080
+		
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 unity = 2000 }
+		upkeep = { 
+			energy = 5
+		}
+	}
+	prerequisites = { "tech_space_kebab_center" }
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_only_one_kebab_center"
+			from = { NOT = { has_country_flag = built_kebab_center } }
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_anomaly" NOT = { has_anomaly = yes } }
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_molten"
+				is_planet_class = pc_molten
+			}			
+		}
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			if = {
+				limit = { NOT = { has_country_flag = built_kebab_center }}
+				set_country_flag = built_kebab_center
+				change_variable = { which = rankpts value = 5 }
+			}
+			set_country_flag = has_built_or_repaired_megastructure	
+			country_event = { id = wsg.2112 }			
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+		}
+	}
+}
+wg_kebab_center_02 = {
+	entity = "wsg_kebab_center_entity"
+	construction_entity = "wsg_kebab_center_entity"
+	portrait = "GFX_wsg_kebab_center_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	build_time = 1080
+		
+	resources = {
+		category = megastructures
+		produces = {
+			food = 1000
+		}
+		produces = {
+			trigger = {
+				owner = {
+					has_country_flag = kebab_seal
+				}
+			}
+			food = -10
+		}
+		produces = {
+			trigger = {
+				owner = {
+					has_country_flag = kebab_seal2
+				}
+			}
+			food = -1000
+		}
+		cost = { alloys = 5000 unity = 2000 }
+		upkeep = { 
+			energy = 50
+		}
+	}
+	country_modifier = {
+		custom_tooltip = kebab_center_effects
+	}
+	
+	upgrade_from = {
+		wg_kebab_center_01
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = wsg.2113 }			
+		}
+		fromfrom.planet = {
+			set_planet_size = 20
+		}
+		random_megastructure = {
+			limit = { 
+				is_megastructure_type = wg_kebab_center_02
+			}
+			save_global_event_target_as = kebab_center_target
+		}
+	}
+}
+
+wg_projector = {
+	entity = "uf_star_eater_ship_entity"
+	construction_entity = "uf_star_eater_ship_entity"
+	portrait = "GFX_wsg_projector_background"
+	entity_offset = { x = 0 y = 0 }
+	construction_blocks_and_blocked_by = none
+
+	potential = {
+		always = no
+	}	
+}
+
+wg_projector_1 = {
+	entity = "uf_star_eater_ship_2_entity"
+	construction_entity = "uf_star_eater_ship_2_entity"
+	portrait = "GFX_wsg_projector_background"
+	entity_offset = { x = 0 y = 0 }
+	build_time = 360
+	possible = {
+		custom_tooltip = {
+			fail_text = "WG_projector_unexplored"
+			FROM = { has_country_flag = wg_projector_explored }
+		}
+	}
+	resources = {
+		category = megastructures
+		cost = { energy = 10000 }
+	}
+	country_modifier = {
+		all_technology_research_speed = 0.10
+	}
+	upgrade_from = {
+		wg_projector
+	}
+	possible = {
+		custom_tooltip = {
+			fail_text = "WG_projector_unexplored"
+			FROM = { has_country_flag = wg_projector_explored }
+		}
+	}
+	
+
+	show_prereqs = yes
+
+	on_build_complete = {
+		from = { 
+			country_event = { id = wsgancrel.225 }		
+		}
+	}
+}
+
+wg_mega_shipyard = {
+	entity = "shipyard_wsg_entity"
+	construction_entity = "shipyard_wsg_entity"
+	portrait = "GFX_wsg_projector_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	show_galactic_map_icon = no
+	potential = {
+		always = no
+	}
+	
+	station_modifier = {
+		starbase_shipyard_capacity_add = 800
+		starbase_shipyard_build_cost_mult = -0.05
+		starbase_shipyard_build_speed_mult = 5.0		
+	}
+}
+
+wg_space_farm = {
+	entity = "uf_space_farm_full_entity"
+	construction_entity = "uf_space_farm_full_entity"
+	portrait = "GFX_uf_space_farm_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	build_time = 1480
+	show_in_outliner = no
+	potential = { 
+		OR = {
+			has_ascension_perk = ap_wsg_station
+		}
+	}	
+	resources = {
+		category = megastructures
+		cost = { 
+			unity = 200
+			alloys = 3000 
+		}
+		upkeep = { 
+			energy = 20
+		}
+		produces = {
+			food = 300
+		}
+	}
+	possible = {
+		exists = starbase
+
+		custom_tooltip = {
+			fail_text = "requires_inside_border_or_wg_subject"
+			OR = {
+				is_inside_border = from
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_wsg_jurisdiction_subject }
+						overlord = { is_same_value = from }
+					}
+				}
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_sh_jurisdiction_subject }
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system" # or is in my subject's territory
+			OR = {
+				NOT = {
+					any_system_planet = {
+						is_surveyed = {
+							who = prev.from
+							status = no
+						}
+					}
+				}
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_only_one_wg_space_farm"
+			NOT = {
+				has_star_flag = wg_space_farm_built
+			}
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld_wg = no
+			}
+			custom_tooltip = {
+				#can_build_megastructure_on_planet = yes
+				fail_text = "requires_no_farm_megastructure" 
+				NOT = {
+					has_planet_flag = uf_farm_megastructure
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+		} # use these for all non-star megastructures
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		set_star_flag = wg_space_farm_built
+	}
+}
+
+wg_star_city = {
+	entity = "uf_star_city_entity"
+	construction_entity = "uf_star_city_entity"
+	portrait = "GFX_uf_star_city_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	build_time = 1500
+	potential = { 
+		OR = {
+			has_ascension_perk = ap_wsg_station
+		}
+	}
+	country_modifier = {
+		country_unity_produces_mult = 0.02
+	}
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 unity = 250 }
+		upkeep = { 
+			energy = 20
+		}
+		produces = {
+			unity = 120
+		}
+	}
+	possible = {
+		exists = starbase
+
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_maximum_five"
+			from = {
+				has_wg_special_authority = yes
+				check_variable = { 
+					which = num_star_city
+					value < 5
+				}
+			}	
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld_wg = no
+			}
+			custom_tooltip = {
+				#can_build_megastructure_on_planet = yes
+				fail_text = "requires_no_farm_megastructure" 
+				NOT = {
+					has_planet_flag = uf_farm_megastructure
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+		} # use these for all non-star megastructures
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = {
+			change_variable = {
+				which = num_star_city
+				value = 1
+			}
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = megastructure
+		}
+	}
+}
+
+wg_mega_store = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	build_time = 360
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls	
+			has_authority = auth_shenhai
+		}
+	}
+	prerequisites = { "tech_wg_mega_store" }
+	resources = {
+		category = megastructures
+		cost = { alloys = 1500 unity = 250 }
+		upkeep = { 
+			energy = 5
+		}
+	}
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld_wg = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+		} # use these for all non-star megastructures
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.106 }
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = megastructure
+		}
+	}
+}
+
+wg_mega_store_1 = {
+	entity = "uf_megastructure_store_entity"
+	construction_entity = "uf_megastructure_store_entity"
+	portrait = "GFX_uf_mega_store_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	show_in_outliner = no
+	entity_offset = { x = -5 y = -5 }
+	build_time = 720
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls	
+			has_authority = auth_shenhai
+		}
+	}
+	prerequisites = { "tech_wg_mega_store" }
+	resources = {
+		category = megastructures
+		cost = { alloys = 3500 unity = 250 }
+		upkeep = { 
+			energy = 10
+		}
+	}
+	country_modifier = {
+		country_resource_max_add = 50000
+		custom_tooltip = wg_mega_store_effects
+	}
+	station_modifier = {
+		trade_value_add = 2
+	}
+
+	upgrade_from = {
+		wg_mega_store
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.107 }
+			set_country_flag = has_built_or_repaired_megastructure	
+		}
+		every_system_planet = {
+			limit = { 
+				OR = {
+					check_modifier_value = { modifier = trade_value_add value > 0 }
+					is_colony = yes
+					is_colonizable = yes
+				}
+				NOT = { has_modifier = wg_mega_store_modifier }
+			}
+			add_modifier = { modifier = wg_mega_store_modifier }
+		}
+	}
+}
+kebab_seal = {
+	entity = "kebab_seal_full_entity"
+	construction_entity = "kebab_seal_full_entity"
+	portrait = "GFX_wg_seal_kebab_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 360
+	potential = { 
+		has_country_flag = kebab_seal_center_allowed
+	}
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 3000
+			unity = 200
+		}
+		produces = {
+			food = 1000
+		}
+		upkeep = {
+			energy = 50
+		}
+	}
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_only_one_kebab_seal"
+			from = { NOT = { has_country_flag = built_kebab_seal } }
+		}		
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_black_hole_neutron_star_pulsar"
+			NOT = {
+				is_star_class = sc_black_hole
+				is_star_class = sc_neutron_star
+				is_star_class = sc_pulsar
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_binary_trinary"
+			NOR = {
+				is_star_class = sc_binary_1
+				is_star_class = sc_binary_2
+				is_star_class = sc_binary_3
+				is_star_class = sc_binary_4
+				is_star_class = sc_binary_5
+				is_star_class = sc_binary_6
+				is_star_class = sc_binary_7
+				is_star_class = sc_binary_8
+				is_star_class = sc_binary_9
+				is_star_class = sc_binary_10
+				is_star_class = sc_trinary_1
+				is_star_class = sc_trinary_2
+				is_star_class = sc_trinary_3
+				is_star_class = sc_trinary_4
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_megastructure"
+			#NOT = { has_any_megastructure = yes }
+			has_no_non_gate_megastructure = yes
+		}
+	}
+	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "must_build_around_star"
+				is_star = yes
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+		}
+	}
+	
+	# root = system
+	# from = country	
+	ai_weight = {
+		factor = 15
+		
+		modifier = {
+			factor = 0.1
+			starbase = { NOT = { has_starbase_size >= starbase_starfortress } }
+		}	
+		
+		modifier = {
+			factor = 0.1
+			any_neighbor_system = {
+				exists = owner
+				NOT = { 
+					owner = { is_same_value = from } 
+				}
+			}
+		}
+	}
+	
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		FROM = { 
+			country_event = { id = wg_boss.258 }
+			set_country_flag = built_kebab_seal
+			change_variable = { which = rankpts value = 5 }
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+		}
+	}
+}
+
+
+mist_neo_alpha_core_0 = {
+	entity = "mammalian_01_construction_platform_entity"
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -7 y = -7 }
+	build_time = 720
+		
+	resources = {
+		category = megastructures
+		cost = { alloys = 3000 unity = 2000 }
+		upkeep = { 
+			energy = 5
+		}
+	}
+	prerequisites = { "tech_mist_neo_alpha_core" }
+	
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_habitable_planets"
+			NOT = {
+				any_system_planet = {
+					OR = {
+						is_colony = yes
+						colonizable_planet = yes
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_megastructure"
+			has_no_non_gate_megastructure = yes
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_black_hole"
+			NOT = { is_star_class = sc_black_hole }
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_binary_trinary"
+			NOR = {
+				is_star_class = sc_binary_1
+				is_star_class = sc_binary_2
+				is_star_class = sc_binary_3
+				is_star_class = sc_binary_4
+				is_star_class = sc_binary_5
+				is_star_class = sc_binary_6
+				is_star_class = sc_binary_7
+				is_star_class = sc_binary_8
+				is_star_class = sc_binary_9
+				is_star_class = sc_binary_10
+				is_star_class = sc_trinary_1
+				is_star_class = sc_trinary_2
+				is_star_class = sc_trinary_3
+				is_star_class = sc_trinary_4
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_mist_alpha_core_under_construction"
+			from = { 
+				NOR = { 
+					has_megastructure = mist_neo_alpha_core_0 
+					has_megastructure = mist_neo_alpha_core_1 
+				} 
+			}
+		}	
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_survey_not_habitable"
+				is_surveyed = {			# prevent leaking habitability information
+					who = prev.from
+					status = yes
+				}
+				colonizable_planet = no
+			}
+			custom_tooltip = {
+				fail_text = "must_build_around_star"
+				is_star = yes
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld = no
+			}
+		}
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			if = {
+				change_variable = { which = rankpts value = 5 }
+			}
+			set_country_flag = has_built_or_repaired_megastructure	
+			country_event = { id = wsg.3320 }			
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+		}
+	}
+}
+
+mist_neo_alpha_core_1 = {
+	entity = "uf_new_gateway_inactive_entity"
+	construction_entity = "uf_new_gateway_inactive_entity"
+	portrait = "GFX_mist_neo_alpha_core_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	build_time = 1080
+	prerequisites = { "tech_mist_neo_alpha_core" }	
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 sr_neo = 200 unity = 1000 }
+		upkeep = { 
+			energy = 30
+		}
+	}
+	upgrade_from = {
+		mist_neo_alpha_core_0
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = wsg.3321 }		
+		}
+	}
+}
+mist_neo_alpha_core_2 = {
+	entity = "uf_new_gateway_active_entity"
+	construction_entity = "uf_new_gateway_active_entity"
+	portrait = "GFX_mist_neo_alpha_core_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	build_time = 720
+	prerequisites = { "tech_mist_neo_alpha_core" }	
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 sr_neo = 300 unity = 1000 }
+		upkeep = { 
+			energy = 40
+			minerals = 800
+		}
+		produces = {
+			sr_neo = 100
+		}
+	}
+	upgrade_from = {
+		mist_neo_alpha_core_1
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = wsg.3322 }			
+		}
+	}
+}
+mist_neo_alpha_core_3 = {
+	entity = "uf_new_gateway_active_entity"
+	construction_entity = "uf_new_gateway_active_entity"
+	portrait = "GFX_mist_neo_alpha_core_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	build_time = 720
+	prerequisites = { "tech_mist_neo_alpha_core" }	
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 sr_neo = 300 unity = 1000 }
+		upkeep = { 
+			energy = 50
+			sr_neo = 80
+			rare_crystals = 120
+		}
+		produces = {
+			sr_alpha = 60
+		}
+	}
+	upgrade_from = {
+		mist_neo_alpha_core_1
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = wsg.3323 }				
+		}
+	}
+}
+
+sh_planetary_ship_megastructure_ruin = {
+	entity = "planetary_ship_megastructure_ruin_entity"
+	construction_entity = "planetary_ship_megastructure_ruin_entity"
+	portrait = "GFX_sh_planetary_ship_megastructure_ruin_background"
+    entity_offset = { x = 5 y = 5 }
+	
+	potential = {
+		always = no
+	}
+
+	show_prereqs = yes
+
+	on_build_complete = {
+	}
+}
+
+sh_planetary_ship_megastructure_ruin_2 = {
+	entity = "planetary_ship_megastructure_ruin_entity"
+	construction_entity = "planetary_ship_megastructure_ruin_entity"
+	portrait = "GFX_sh_planetary_ship_megastructure_ruin_background"
+    entity_offset = { x = 5 y = 5 }
+	show_in_outliner = no
+	upgrade_from = {
+		sh_planetary_ship_megastructure_ruin
+	}
+	potential = {
+		has_country_flag = sh_planetary_ship_reversed
+	}
+    resources = {
+		category = megastructures
+		produces = {
+			trigger = {
+				owner = {
+					has_country_flag = sh_planetary_ship_reversed
+				}
+			}
+			unity = 300
+		}
+	}
+	show_prereqs = yes
+
+	on_build_complete = {
+		every_system_ambient_object = {
+			limit = {
+				OR = {
+					is_ambient_object_type = large_debris_object
+					is_ambient_object_type = medium_debris_01_object
+					is_ambient_object_type = medium_debris_02_object
+					is_ambient_object_type = small_debris_object
+				}
+			}
+			destroy_ambient_object = this
+		}
+	}
+	
+}
+
+sh_planetary_ship_megastructure_ruin_3 = {
+	entity = "planetary_ship_kind_cat_entity"
+	construction_entity = "planetary_ship_planet_full_main_3_entity"
+	portrait = "GFX_planetary_ship_megastructures_3_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 720
+	upgrade_from = {
+		sh_planetary_ship_megastructure_ruin
+	} 	
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 10000
+			energy = 20000
+			sr_dark_matter = 2000
+		}
+	}
+	potential = {
+		has_country_flag = sh_planetary_ship_restoration
+	}
+	prerequisites = { "tech_planetary_ship" }		
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 	
+			set_country_flag = has_built_or_repaired_megastructure	
+			country_event = { id = sh_fe.31 }	
+		}
+		random_megastructure = {
+			limit = { 
+				is_megastructure_type = sh_planetary_ship_megastructure_ruin_3
+			}
+			save_event_target_as = sh_planetary_ship_megastructure_ruin_target 
+			remove_megastructure = this
+		}
+		random_system_planet = {
+			create_fleet = {
+				name = "NAME_planetary_ship_2"
+				effect = {
+					set_owner = ROOT.owner
+					create_ship = {
+						random_existing_design = planetary_ship_2
+					}
+					set_location = {
+						target = event_target:sh_planetary_ship_megastructure_ruin_target
+						distance = 1
+						angle = random
+					}
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+				}
+				settings = { 
+					spawn_debris = no 
+					is_boss = yes
+				}
+			}
+		}
+		every_system_ambient_object = {
+			limit = {
+				OR = {
+					is_ambient_object_type = large_debris_object
+					is_ambient_object_type = medium_debris_01_object
+					is_ambient_object_type = medium_debris_02_object
+					is_ambient_object_type = small_debris_object
+				}
+			}
+			destroy_ambient_object = this
+		}
+	}
+}
+
+wg_polymer_matrix = {
+	entity = "uf_shield_full_entity"
+	construction_entity = "uf_shield_full_entity"
+	portrait = "GFX_uf_polymer_matrix_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 2520
+	scales_with_planet = yes
+		
+	resources = {
+		category = megastructures
+		cost = { alloys = 7000 unity = 1000 }
+		produces = {
+			energy = 300
+			minerals = 300
+			alloys = 100
+		}
+	}
+	prerequisites = { "tech_wg_polymer_matrix" }
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_anomaly" NOT = { has_anomaly = yes } }
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_survey_not_habitable"
+				is_surveyed = {			# prevent leaking habitability information
+					who = prev.from
+					status = yes
+				}
+				OR = {
+					is_colony = yes
+					is_colonizable = yes
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_gas_giant" 
+				NOT = { is_planet_class = pc_gas_giant }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+		}
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			set_country_flag = has_built_or_repaired_megastructure	
+			#country_event = { id = wsg.2112 }			
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = megastructure
+		}
+	}
+}
+
+wg_drg_station = {
+	entity = "wg_drg_entity"
+	construction_entity = "wg_drg_entity"
+	portrait = "GFX_uf_ews_background"
+	place_entity_on_planet_plane = no
+	show_in_outliner = no
+	entity_offset = { x = -7 y = -7 }
+	build_time = 360
+	potential = { 
+		has_civic = civic_wsg_drg	
+	}	
+	construction_blocks_and_blocked_by = none
+	resources = {
+		category = megastructures
+		cost = { alloys = 1500 unity = 100 }
+		upkeep = { energy = 10 food = 10 }
+		produces = { 
+			minerals = 75 
+			alloys = 5 
+		}
+		produces = {
+			trigger = {
+				owner = { 
+					has_country_flag = karl_vv_missing	
+				}
+			}
+			unity = 5
+		}
+		produces = {
+			trigger = {
+				owner = { 
+					OR = {
+						has_technology = tech_exotic_gases
+						has_technology = tech_mine_exotic_gases
+					}	
+				}
+			}
+			exotic_gases = 5
+		} 
+		produces = {
+			trigger = {
+				owner = { 
+					OR = {
+						has_technology = tech_volatile_motes
+						has_technology = tech_mine_volatile_motes
+					}	
+				}
+			}
+			volatile_motes = 5
+		} 
+		produces = {
+			trigger = {
+				owner = { 
+					OR = {
+						has_technology = tech_rare_crystals
+						has_technology = tech_mine_rare_crystals
+					}	
+				}
+			}
+			rare_crystals = 5
+		}
+	}
+	
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border_or_wg_subject"
+			OR = {
+				is_inside_border = from
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_wsg_jurisdiction_subject }
+						overlord = { is_same_value = from }
+					}
+				}
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_sh_jurisdiction_subject }
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			OR = {
+				NOT = {
+					any_system_planet = {
+						is_surveyed = {
+							who = prev.from
+							status = no
+						}
+					}
+				}
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_anomaly" NOT = { has_anomaly = yes } }
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_survey_not_habitable"
+				colonizable_planet = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_gas_giant" 
+				NOT = { is_planet_class = pc_gas_giant }
+			}
+		}
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			random_list = {
+				1 = {
+					country_event = { id = wsg.3326 }
+				}
+				1 = {
+					country_event = { id = wsg.3327 }
+				}
+			}
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = megastructure
+		}
+	}
+}

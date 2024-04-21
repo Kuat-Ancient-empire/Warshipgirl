@@ -1,0 +1,339 @@
+create_wg_rbq_dragon_fleet = {
+	set_country_flag = wg_rbq_dragon_changing
+	if = {
+		limit = { check_variable = { which = wg_yukikaze_active_type value = 2 }}
+		if = {
+			limit = {
+				any_owned_army = {
+					is_wg_rbq_dragon_army = yes
+					exists = planet
+				}
+			}
+			random_owned_army = {
+				limit = { is_wg_rbq_dragon_army = yes }
+				planet = { save_event_target_as = wg_rbq_dragon_warship_location }
+			}
+		}
+		else = {
+			random_owned_army = {
+				limit = { is_wg_rbq_dragon_army = yes }
+				fleet = { save_event_target_as = wg_rbq_dragon_warship_location }
+			}
+		}
+	}
+	else_if = {
+		limit = { always = yes }
+		capital_scope = {
+			save_event_target_as = wg_rbq_dragon_warship_location
+		}
+	}
+	create_fleet = {
+		name = "NAME_wg_rbq_dragon1"
+		effect = {
+			create_ship = {
+				name = "NAME_wg_rbq_dragon"
+				design = "NAME_wg_rbq_dragon"
+				upgradable = no
+			}
+			set_fleet_flag = wg_event_limit_fleet
+			set_owner = prev
+			set_location = event_target:wg_rbq_dragon_warship_location
+			set_fleet_flag = wg_rbq_dragon_fleet
+			save_global_event_target_as = wg_rbq_dragon_fleet
+		}
+		settings = { 
+			can_disband = no
+			can_upgrade = no 
+			can_change_composition = no 
+			can_change_leader = no 
+			uses_naval_capacity = no
+			spawn_debris = no
+		}	
+	}
+	every_owned_army = {
+		limit = { is_wg_rbq_dragon_army = yes }
+		if = {
+			limit = { exists = leader }
+			unassign_leader = leader
+		}
+		remove_army = yes
+	}
+	set_variable = { which = wg_yukikaze_active_type value = 1 }
+	remove_wg_yukikaze_leader = yes
+	create_leader = {
+		class = commander
+		species = event_target:wg_yukikaze_species
+		name = "NAME_wg_rbq_dragon"
+		event_leader = yes
+		gender = female
+		immortal = yes
+		custom_description = wsg_rbqdragon_desc
+		skill = 1
+		set_age = 24
+		traits = {
+			trait = leader_trait_admiral_wg_rbq_dragon
+		}
+		effect = {
+			change_leader_portrait = wsg169
+			set_leader_flag = not_has_wg_affection_normal
+			set_leader_flag = immune_to_negative_traits
+			set_leader_flag = has_gained_level_trait
+			set_leader_flag = has_gained_trait
+			set_leader_flag = wg_yukikaze_leader
+			set_leader_flag = wg_yukikaze_admiral
+			set_leader_flag = legendary_leader
+			save_global_event_target_as = wg_yukikaze_admiral
+			event_target:wg_rbq_dragon_fleet = { assign_leader = PREV }
+		}
+	}
+	event_target:wg_yukikaze_admiral = {
+		add_skill_without_trait_selection = owner.wg_yukikaze_level
+		leader_event = {
+			id = wg_affection.8 days = 1
+		}
+	}
+}
+
+create_wg_rbq_dragon_army = {
+	set_country_flag = wg_rbq_dragon_changing
+	if = {
+		limit = { check_variable = { which = wg_yukikaze_active_type value = 1 }}
+		if = {
+			limit = { exists = event_target:wg_rbq_dragon_fleet }
+			event_target:wg_rbq_dragon_fleet = {
+				save_event_target_as = wg_rbq_dragon_transport_location
+			}
+		} else = {
+			random_controlled_fleet = {
+				limit = { has_fleet_flag = wg_rbq_dragon_fleet }
+				save_event_target_as = wg_rbq_dragon_transport_location
+			}
+		}
+	}
+	else_if = {
+		limit = { always = yes }
+		capital_scope = {
+			save_event_target_as = wg_rbq_dragon_transport_location
+		}
+	}
+	create_fleet = {
+		name = "NAME_wg_rbq_dragon"
+		effect = {
+			set_owner = prev
+			set_location = {
+				target = event_target:wg_rbq_dragon_transport_location
+				distance = 0
+				angle = random 
+			}
+			create_wg_rbq_dragon_army_transport = yes
+		}
+	}
+	remove_wg_yukikaze_leader = yes
+	set_variable = { which = wg_yukikaze_active_type value = 2 }
+	every_owned_fleet = {
+		limit = { has_fleet_flag = wg_rbq_dragon_fleet }
+		delete_fleet = this
+	}
+}
+
+remove_wg_yukikaze_leader = {
+	every_owned_leader = {
+		limit = { has_leader_flag = wg_yukikaze_leader }
+		kill_leader = { show_notification = no }
+	}
+}
+
+create_wg_rbq_dragon_army_transport = {
+	random_country = {
+		limit = { has_country_flag = wg_dragon_owner }
+		save_event_target_as = wg_yukikaze_own_country
+	}
+	if = {
+		limit = { 
+			event_target:wg_yukikaze_own_country = { 
+				check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv5 }
+				has_country_flag = married_wg_dragon
+			}
+		}
+		create_army_transport = {
+			species = event_target:wg_yukikaze_own_country
+			ship_name = "NAME_wg_rbq_dragon"
+			army_name = "NAME_wg_rbq_dragon"
+			army_type = "wg_rbq_dragon_army_affection_5"
+		}
+	}
+	else_if = {
+		limit = { event_target:wg_yukikaze_own_country = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}}
+		create_army_transport = {
+			species = event_target:wg_yukikaze_own_country
+			ship_name = "NAME_wg_rbq_dragon"
+			army_name = "NAME_wg_rbq_dragon"
+			army_type = "wg_rbq_dragon_army_affection_3"
+		}
+	} 
+	else_if = { 
+		limit = { always = yes }
+		create_army_transport = {
+			species = event_target:wg_yukikaze_own_country
+			ship_name = "NAME_wg_rbq_dragon"
+			army_name = "NAME_wg_rbq_dragon"
+			army_type = "wg_rbq_dragon_army"
+		}
+	}
+	remove_wg_dragon_army = yes
+}
+
+create_wg_rbq_dragon_army_troop = {
+	if = {
+		limit = { NOT = { exists = event_target:wg_yukikaze_own_country }}
+		random_country = {
+			limit = { has_country_flag = get_wg_yukikaze }
+			save_event_target_as = wg_yukikaze_own_country
+		}
+	}
+	if = {
+		limit = { 
+			event_target:wg_yukikaze_own_country = { 
+				check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv5 }
+				has_country_flag = married_wg_dragon
+			}
+		}
+		create_army = {
+			species = event_target:wg_yukikaze_own_country
+			owner = event_target:wg_yukikaze_own_country
+			type = wg_rbq_dragon_army_affection_5
+		}
+	}
+	else_if = {
+		limit = { event_target:wg_yukikaze_own_country = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}}
+		create_army = {
+			species = event_target:wg_yukikaze_own_country
+			owner = event_target:wg_yukikaze_own_country
+			type = wg_rbq_dragon_army_affection_3
+		}
+	} 
+	else_if = { 
+		limit = { always = yes }
+		create_army = {
+			species = event_target:wg_yukikaze_own_country
+			owner = event_target:wg_yukikaze_own_country
+			type = wg_rbq_dragon_army
+		}
+	}
+	remove_wg_dragon_army = yes
+}
+
+remove_wg_rbq_dragon_army = {
+	last_created_army = { save_event_target_as = new_wg_dragon_army }
+	if = {
+		limit = { NOT = { exists = event_target:wg_yukikaze_own_country }}
+		random_country = {
+			limit = { has_country_flag = get_wg_yukikaze }
+			save_event_target_as = wg_yukikaze_own_country
+		}
+	}
+	event_target:wg_yukikaze_own_country = {
+		every_owned_army = {
+			limit = { 
+				NOT = { is_same_value = event_target:new_wg_dragon_army }
+				is_wg_rbq_dragon_army = yes
+			}
+			remove_army = yes
+		}
+	}
+}
+
+#####################################################################
+#  水b龙好感度
+#####################################################################
+reset_wg_yukikaze_affection_level = {
+	optimize_memory
+	if = {
+		limit = { check_variable = { which = wg_yukikaze_active_type value = 1 }}
+		if = {
+			limit = { NOT = { exists = event_target:wg_yukikaze_admiral }}
+			random_owned_leader = {
+				limit = { has_leader_flag = wg_yukikaze_admiral }
+				save_global_event_target_as = wg_yukikaze_admiral
+			}
+		}
+	}
+	
+	if = {
+		limit = { check_variable = { which = wg_yukikaze_affection value >= @wg_yukikaze_affection_to_lv5 }}
+		if = {
+			limit = { has_country_flag = married_wg_yukikaze }
+			if = {
+				limit = { 
+					check_variable = { which = wg_yukikaze_active_type value = 3 }
+				}
+				country_event = { id = wg_yukikaze.15 }
+			}
+		}
+		else = { 
+			set_country_flag = wg_yukikaze_affection_max
+		}
+	} else = { 
+		remove_country_flag = wg_yukikaze_affection_max 
+		if = {
+			limit = { check_variable = { which = wg_yukikaze_affection value >= @wg_yukikaze_affection_to_lv4 }}
+		}
+		else_if = {
+			limit = { check_variable = { which = wg_yukikaze_affection value >= @wg_yukikaze_affection_to_lv3 }}
+			if = {
+				limit = { 
+					check_variable = { which = wg_yukikaze_active_type value = 3 }
+				}
+				country_event = { id = wg_yukikaze.15 }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { which = wg_yukikaze_affection value >= @wg_yukikaze_affection_to_lv2 }}
+		}
+		else_if = {
+			limit = { check_variable = { which = wg_yukikaze_affection value < @wg_yukikaze_affection_to_lv2 }}
+			if = {
+				limit = { 
+					check_variable = { which = wg_yukikaze_active_type value = 3 }
+				}
+				country_event = { id = wg_yukikaze.15 }
+			}
+			if = {
+				limit = { check_variable = { which = wg_yukikaze_affection value < 1 }}
+				set_variable = { which = wg_yukikaze_affection value = 1 }
+			}
+		}
+	}
+}
+
+# 增加好感度（陆军状态下用）
+# scope: country
+add_wg_yukikaze_army_affection = {
+	change_variable = { which = wg_yukikaze_affection value = 1 }
+	if = {
+		limit = { 
+			special_leader_affection_lv5_trigger = { LEADER = wg_yukikaze MARRIED_FLAG = married_wg_yukikaze }
+		}
+		country_event = { id = wg_yukikaze.15 days = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { which = wg_yukikaze_affection value = @wg_yukikaze_affection_to_lv2 }}
+		country_event = { id = wg_yukikaze.15 days = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { which = wg_yukikaze_affection value = @wg_yukikaze_affection_to_lv3 }}
+		country_event = { id = wg_yukikaze.15 days = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { which = wg_yukikaze_affection value = @wg_yukikaze_affection_to_lv4 }}
+		country_event = { id = wg_yukikaze.15 days = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { which = wg_yukikaze_affection value = @wg_yukikaze_affection_to_lv5 }}
+		set_country_flag = wg_yukikaze_affection_max
+		if = {
+			limit = { has_country_flag = married_wg_yukikaze }
+			country_event = { id = wg_yukikaze.15 days = 1 }
+		}
+	}
+}

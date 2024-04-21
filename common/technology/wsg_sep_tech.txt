@@ -1,0 +1,1738 @@
+# （舰娘）深海能源利用
+tech_wsg_senergy = {
+    icon = tech_building_senergy_1
+	cost = @tier4cost3
+	area = physics
+	tier = 4
+	category = { field_manipulation }
+	weight = 0
+	is_rare = yes
+	is_dangerous = yes
+	prerequisites = { "tech_wsg_pantsu" }
+	is_reverse_engineerable = no
+	
+	gateway = senergy_tech
+	
+	ai_weight = {
+		modifier = {
+			factor = 100
+			has_authority = auth_warshipgirls
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+# 解锁巨构：巨型深海能源核心工厂
+tech_wsg_senergy2 = {
+	cost = @tier5cost3
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	weight = @tier5weight1
+	is_rare = yes
+	prerequisites = { }
+	is_reverse_engineerable = no
+
+	prereqfor_desc = {
+		diplo_action = {
+			title = "senergy_megastructure"
+			desc = "senergy_megastructure_desc"
+		}
+		custom = {
+			title = "job_wsg_senergy_enhance"
+			desc = "job_wsg_senergy_enhance_desc"
+		}
+	}
+
+	modifier = {
+		country_sr_se_produces_mult = 0.05
+	}
+	
+	ai_weight = {
+		modifier = {
+			factor = 100
+			has_authority = auth_warshipgirls
+		}
+	}
+	potential = {
+		OR = {
+			AND = {
+				has_authority = auth_warshipgirls
+				has_technology = tech_wsg_senergy
+			}
+			AND = {
+				has_authority = auth_shenhai
+				has_technology = tech_sh_senergy
+			}
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+# 深海能源量产（堕落妈直接送算了）
+# 每座深海能源工厂产能+3，消耗+30%
+tech_wsg_senergy_manufacture = {
+    icon = tech_wsg_senergy
+	cost = @tier5cost3
+	area = engineering
+	tier = 5
+	category = { industry }
+	weight = 0
+	is_rare = yes
+	is_dangerous = yes
+	
+	gateway = senergy_tech
+
+	modifier = {
+		country_sr_se_produces_mult = 0.2
+	}
+	
+	prereqfor_desc = {
+		custom = {
+			title = "wsg_senergy_manufacture_building_workers_increase"
+			desc = "wsg_senergy_manufacture_building_workers_increase_desc"
+		}
+	}
+
+	ai_weight = {
+		modifier = {
+			factor = 100
+			has_authority = auth_warshipgirls
+		}
+	}
+	potential = {
+		OR = {
+			AND = {
+				has_ascension_perk = ap_project_s
+				has_authority = auth_warshipgirls
+				has_technology = tech_wsg_senergy
+			}
+			AND = {
+				has_authority = auth_shenhai
+				has_technology = tech_sh_senergy
+			}
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+# 深海能源植入
+tech_wsg_senergy_implantation = {
+	cost = @tier5cost2
+	area = society
+	tier = 4
+	category = { biology }
+	weight = @tier3weight2
+	is_rare = yes
+	is_dangerous = yes
+	prerequisites = { "tech_wsg_senergy" }
+
+	gateway = senergy_tech
+	prereqfor_desc = {
+		custom = {
+			title = "wsg_project_S_prerequisite"
+			desc = "wsg_project_S_prerequisite_desc"
+		}
+	}
+	
+	modifier = {
+		modify_species_cost_mult = -0.3
+	}
+
+	ai_weight = {
+		modifier = {
+			factor = 100
+			has_authority = auth_warshipgirls
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+# 深海能源特性改造
+tech_wsg_genetic_resequencing_s = {
+	cost = @tier5cost1
+	area = society
+	tier = 5
+	is_rare = yes
+	category = { biology }	
+	weight = 0
+	feature_flags = {
+		advanced_gene_modding #no longer does anything except make a tooltip, handled in game rules
+		add_advanced_traits #ditto
+	}
+	gateway = biological
+	prereqfor_desc = {
+		diplo_action = {
+			title = "wsg_project_S_genetic_edicts"
+			desc = "wsg_project_S_genetic_edicts_desc"
+		}
+	}	
+	ai_weight = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_biology" }
+		}
+	}
+	potential = {
+		has_authority = auth_warshipgirls
+	}
+}
+
+# （深海能源）三级建造厂
+tech_warshipgirl_senergy_assembly_plantF = {
+    icon = tech_warshipgirl_assembly_plantF
+	cost = @tier5cost1
+	area = engineering
+	tier = 5
+	category = { materials }
+	prerequisites = { "tech_wsg_senergy" "tech_warshipgirl_assembly_plantU" }
+	weight = @tier5weight1
+	
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_materials" }			
+		}
+	}
+	
+	ai_weight = {
+		modifier = {
+			factor = 100
+			OR = {
+				has_authority = auth_warshipgirls
+			}
+		}
+	}
+	potential = {
+		OR = {
+			AND = {
+				has_ascension_perk = ap_project_s
+				has_authority = auth_warshipgirls
+			}
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+#反重力电梯
+tech_building_wsg_elevator = {
+	cost = @tier3cost3
+	category = { voidcraft }
+	tier = 3
+	area = engineering
+	prerequisites = { "tech_wsg_senergy" "tech_housing_2" }
+	weight = @tier3weight3
+
+	
+	ai_weight = {
+		modifier = {
+			factor = 100
+			OR = {
+				has_authority = auth_warshipgirls
+			}
+		}
+	}
+	potential = {
+		OR = {
+			AND = {
+				has_ascension_perk = ap_project_s
+				has_authority = auth_warshipgirls
+			}
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+tech_building_sep_factory = {
+	cost = @tier3cost3
+	area = engineering
+	tier = 3
+	category = { materials }
+	prerequisites = { "tech_luxuries_2" "tech_wsg_senergy" }
+	weight = @tier2weight3
+
+	# Unlocks better consumer goods buildings
+
+	weight_modifier = {
+		modifier = {
+			factor = 0
+			NOR = {
+				has_technology = tech_mine_rare_crystals
+				has_technology = tech_rare_crystals
+				has_country_flag = has_market_access
+			}
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_materials" }
+		}
+	}
+
+	ai_weight = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_materials" }
+		}
+	}
+	potential = {
+		OR = {
+			is_gestalt = no
+			has_valid_civic = civic_machine_servitor
+		}
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+tech_building_sep_foundry = {
+	cost = @tier4cost1
+	area = engineering
+	tier = 4
+	category = { materials }
+	prerequisites = { "tech_wsg_senergy" }
+	weight = @tier4weight1
+
+	ai_weight = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_materials" }
+		}
+	}
+	potential = {
+		OR = {
+			is_gestalt = no
+			has_valid_civic = civic_machine_servitor
+		}
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+tech_building_sep_foundry2 = {
+	cost = @tier5cost1
+	area = engineering
+	tier = 4
+	category = { materials }
+	prerequisites = { "tech_building_sep_foundry" }
+	weight = @tier4weight3
+
+	ai_weight = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_materials" }
+		}
+	}
+	potential = {
+		OR = {
+			is_gestalt = no
+			has_valid_civic = civic_machine_servitor
+		}
+		OR = {
+			AND = {
+				has_ascension_perk = ap_project_s
+				has_authority = auth_warshipgirls
+			}
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+#实验室
+tech_building_sep_research = {
+	icon = tech_building_sep_research
+	area = physics
+	category = { computing }
+	tier = 3
+	cost = @tier3cost2
+	prerequisites = { "tech_wsg_senergy" }
+	weight = @tier2weight2
+
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}
+
+	ai_weight = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}
+	potential = {
+		always = no
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+#实验室
+tech_building_sep_research2 = {
+	icon = tech_building_sep_research2
+	area = physics
+	category = { computing }
+	tier = 4
+	cost = @tier4cost2
+	prerequisites = { "tech_building_wsg_research" }
+	weight = @tier3weight3
+
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}
+
+	ai_weight = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}
+	potential = {
+		OR = {
+			AND = {
+				has_ascension_perk = ap_project_s
+				has_authority = auth_warshipgirls
+			}
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+#实验室
+tech_building_sep_research3 = {
+	icon = tech_building_sep_research3
+	area = physics
+	category = { computing }
+	tier = 5
+	cost = @tier5cost3
+	prerequisites = { "tech_building_sep_research2" }
+	weight = @tier5weight3
+
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}
+
+	ai_weight = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}
+	potential = {
+		OR = {
+			AND = {
+				has_ascension_perk = ap_project_s
+				has_authority = auth_warshipgirls
+			}
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+# 减二飞人口维护的建筑
+# tech_building_wsg_distributor = {
+# 	cost = @tier3cost3
+# 	category = { voidcraft }
+# 	tier = 4
+# 	area = engineering
+# 	prerequisites = { "tech_wsg_genetic_resequencing_s" }
+# 	weight = @tier3weight3
+
+	
+# 	ai_weight = {
+# 		modifier = {
+# 			factor = 100
+# 			OR = {
+# 				has_authority = auth_warshipgirls
+# 			}
+# 		}
+# 	}
+# 	potential = {
+# 		OR = {
+# 			AND = {
+# 				has_ascension_perk = ap_project_s
+# 				has_ascension_perk = ap_mist
+# 				has_authority = auth_warshipgirls
+# 			}
+# 			is_wg_fallen_empire = yes
+# 		}
+# 	}
+# }
+
+tech_building_wsg_rare_resource_factory = {
+	area = engineering
+	category = { industry }
+	tier = 3
+	cost = @tier3cost2
+	prerequisites = { "tech_wsg_senergy" }
+	weight = @tier2weight2
+
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_industry" }
+		}
+	}
+
+	ai_weight = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_industry" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+############ 武器 ############
+tech_wsg_s_ia = {
+    area = physics
+	cost = @tier5cost1
+	tier = 5
+	category = { particles }
+	prerequisites = { "tech_ship_armor_5" "tech_shields_4" "tech_wsg_senergy" }
+	weight = @tier1weight2
+	is_rare = yes
+	is_reverse_engineerable = no
+
+	gateway = senergy_tech
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+#SE
+tech_wsg_ses = {
+    area = physics
+    icon = tech_wsg_ses
+	cost = @tier5cost3
+	tier = 5
+	category = { particles }
+	prerequisites = { "tech_wsg_s_ia" }
+	weight = @tier5weight2
+	is_rare = yes
+	is_dangerous = yes
+	is_reverse_engineerable = no
+
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}		
+}
+
+#HA
+tech_wsg_sha = {
+    area = engineering
+    icon = tech_wsg_sha
+	cost = @tier5cost3
+	tier = 5
+	category = { materials }
+	prerequisites = { "tech_wsg_s_ia" }
+	weight = @tier5weight2
+	is_rare = yes
+	is_dangerous = yes
+	is_reverse_engineerable = no
+
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = value:tech_weight_likelihood
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_materials" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_materials" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}		
+}
+
+tech_wsg_senergy_reactor = {
+	cost = @tier5cost3
+	area = physics
+	tier = 5
+	category = { particles }
+	weight = @tier5weight1
+	is_rare = yes
+	is_dangerous = yes
+	prerequisites = { "tech_wsg_senergy" }
+	is_reverse_engineerable = no
+	
+	gateway = senergy_tech
+
+	ai_weight = {
+		modifier = {
+			factor = 100
+			has_authority = auth_shenhai
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+tech_wsg_senergy_sensors = {
+	area = physics
+	cost = @tier5cost1
+	tier = 5
+	category = { computing }
+	is_reverse_engineerable = no
+	ai_update_type = military
+	prerequisites = { "tech_sensors_4" "tech_wsg_senergy" }
+	weight = @tier4weight1
+	is_rare = yes
+	
+	gateway = senergy_tech
+
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_tradition = tr_discovery_adopt
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}	
+	
+	ai_weight = {
+		factor = 1.25 #good component
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}
+	
+	prereqfor_desc = {
+		component = {
+			title = "TECH_UNLOCK_WSG_SENERGY_SENSOR_TITLE"
+			desc = "TECH_UNLOCK_WSG_SENERGY_SENSOR_DESC"
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+tech_wsg_senergy_propulsion = {
+	area = engineering
+	cost = @tier5cost2
+	tier = 5
+	category = { propulsion }
+	is_reverse_engineerable = no
+	ai_update_type = military
+	prerequisites = { "tech_wsg_senergy" "tech_thrusters_4" }
+	weight = @tier4weight1
+
+	gateway = senergy_tech
+	
+	weight_modifier = {
+		factor = 1.25
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_propulsion" }
+		}
+		modifier = {
+			factor = 2
+			has_technology = tech_battleships
+		}
+	}
+	
+	prereqfor_desc = {
+		hide_prereq_for_desc = component
+		custom = {
+			title = "TECH_UNLOCK_WSG_SENERGY_THRUSTER_TITLE"
+			desc = "TECH_UNLOCK_WSG_SENERGY_THRUSTER_DESC"
+		}
+	}
+	
+	ai_weight = {
+		factor = 1.25 #important component
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_propulsion" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}	
+	}	
+}
+
+tech_wsg_senergy_computer = {
+    area = physics
+	cost = @tier4cost3
+	tier = 4
+	category = { computing }
+	ai_update_type = military
+	prerequisites = { "tech_combat_computers_2" "tech_wsg_senergy" }
+	weight = @tier4weight2
+	is_rare = yes
+	is_reverse_engineerable = no
+
+	gateway = senergy_tech
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}	
+	}	
+}
+
+tech_wsg_senergy_jump_drive = {
+	cost = @tier5cost3
+	area = physics
+	tier = 5
+	category = { field_manipulation }
+	ai_update_type = all
+	weight = @tier5weight1
+	is_rare = yes
+	is_dangerous = yes
+	prerequisites = { "tech_wsg_senergy" "tech_jump_drive_1" }	
+	is_reverse_engineerable = no
+
+	gateway = senergy_tech
+
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_field_manipulation" }
+		}
+	}
+
+	ai_weight = {
+		modifier = {
+			factor = 100
+			has_authority = auth_shenhai
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+tech_wsg_weapon_S_300 = {
+	area = physics
+	cost = @tier5cost1
+	tier = 4
+	category = { particles }
+	ai_update_type = military	
+	prerequisites = { "tech_wsg_senergy" }
+	weight = @tier4weight2
+	is_rare = yes
+	is_reverse_engineerable = no
+
+	gateway = energy_weapons
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+tech_wsg_weapon_S_380 = {
+	area = physics
+	cost = @tier5cost1
+	tier = 5
+	category = { particles }
+	ai_update_type = military	
+	prerequisites = { "tech_wsg_senergy" "tech_energy_lance_1" }
+	weight = @tier4weight2
+	is_rare = yes
+	is_reverse_engineerable = no
+
+	gateway = energy_weapons
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+tech_wsg_weapon_S_460 = {
+    area = physics
+	cost = @tier5cost3
+	tier = 5 
+	category = { particles }
+	ai_update_type = military	
+	prerequisites = { "tech_wsg_weapon_S_380" "tech_titans" }
+	weight = @tier4weight2
+	is_rare = yes
+	is_reverse_engineerable = no
+	
+	gateway = energy_weapons
+
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+tech_wsg_weapon_S_A2 = {
+	cost = @tier5cost1
+	area = engineering
+	tier = 5
+	ai_update_type = military
+	category = { voidcraft }	
+	prerequisites = { "tech_wsg_senergy" }
+	weight = @tier3weight3
+	is_rare = yes
+	is_reverse_engineerable = no
+		
+	modifier = {
+		local_trade_protection_add = 10
+	}
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_voidcraft" }
+		}
+	}
+	
+	ai_weight = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_voidcraft" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+tech_wsg_weapon_S_40 = {
+    area = physics
+	cost = @tier5cost2
+	tier = 5
+	category = { particles }
+	prerequisites = { "tech_wsg_senergy" "tech_wsg_PD" }
+	weight = @tier1weight2
+	is_rare = yes
+	is_reverse_engineerable = no
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+tech_wsg_weapon_S_301 = {
+	cost = @tier5cost2
+	area = engineering
+	tier = 5
+	category = { propulsion }
+	prerequisites = { "tech_wsg_senergy" }
+	weight = @tier1weight2
+	is_rare = yes
+	is_reverse_engineerable = no
+
+	weight_modifier = {
+		factor = 1.25
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_propulsion" }
+		}
+	}
+
+	ai_weight = {
+		factor = 2
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_propulsion" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+tech_wsg_weapon_ES_300 = {
+	area = physics
+	cost = @tier5cost1
+	tier = 4
+	category = { particles }
+	ai_update_type = military	
+	prerequisites = { "tech_wsg_weapon_S_300" "tech_dark_matter_power_core" }
+	weight = @tier4weight2
+	is_rare = yes
+	is_reverse_engineerable = no
+
+	gateway = senergy_tech
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+tech_wsg_weapon_ES_406 = {
+	area = physics
+	cost = @tier5cost1
+	tier = 5
+	category = { particles }
+	ai_update_type = military	
+	prerequisites = { "tech_wsg_weapon_S_380" "tech_dark_matter_power_core" }
+	weight = @tier4weight2
+	is_rare = yes
+	is_reverse_engineerable = no
+
+	gateway = senergy_tech
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+tech_wsg_weapon_ES_460 = {
+    area = physics
+	cost = @tier5cost3
+	tier = 5 
+	category = { particles }
+	ai_update_type = military	
+	prerequisites = { "tech_wsg_weapon_S_460" "tech_dark_matter_power_core" }
+	weight = @tier4weight2
+	is_rare = yes
+	is_dangerous = yes
+	is_reverse_engineerable = no
+	
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+# 胖次商店特供 S450
+tech_wsg_weapon_X_S450 = {
+    area = physics
+	cost = @tier5cost3
+	tier = 5 
+	category = { particles }
+	ai_update_type = military	
+	weight = 0
+	is_rare = yes
+	is_reverse_engineerable = no
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+# 胖次商店特供 S508
+tech_wsg_weapon_T_S510 = {
+    area = physics
+	cost = @tier5cost3
+	tier = 5 
+	category = { particles }
+	ai_update_type = military	
+	weight = 0
+	is_rare = yes
+	is_dangerous = yes
+	is_reverse_engineerable = no
+	
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+tech_wsg_senergy_fire_control = {
+	area = physics
+	cost = @tier4cost1
+	tier = 4
+	category = { computing }
+	is_reverse_engineerable = no
+	ai_update_type = military
+	prerequisites = { "tech_wsg_senergy" "tech_wsg_fire_control" }
+	weight = @tier4weight1
+	is_rare = yes
+	
+	gateway = senergy_tech
+
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}
+	
+	ai_weight = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}
+
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+tech_wsg_weapon_S_6 = {
+	area = physics
+	cost = @tier4cost1
+	tier = 4
+	category = { particles }
+	ai_update_type = military	
+	prerequisites = { "tech_wsg_senergy" "tech_wsg_180" }
+	weight = @tier3weight1
+	is_rare = yes
+	is_reverse_engineerable = no
+
+	gateway = energy_weapons
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+tech_wsg_weapon_S_305 = {
+	area = physics
+	cost = @tier5cost1
+	tier = 5
+	category = { particles }
+	ai_update_type = military	
+	prerequisites = { "tech_wsg_weapon_S_380" }
+	weight = @tier4weight2
+	is_rare = yes
+	is_reverse_engineerable = no
+
+	gateway = energy_weapons
+	
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	
+	ai_weight = {
+		factor = 2		#weapons are good
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}	
+}
+
+tech_senergy_space_compression = {
+	area = engineering
+	cost = @tier5cost2
+	tier = 5
+	category = { voidcraft }
+	is_reverse_engineerable = no
+	ai_update_type = military
+	weight = @tier5weight3
+	is_dangerous = yes
+	prerequisites = {
+		"tech_wsg_senergy_computer" "tech_wsg_senergy_jump_drive"
+		"tech_wsg_senergy_reactor" "tech_wsg_senergy_propulsion"
+		"tech_wsg_senergy_sensors" "tech_wsg_s_ia"
+		"tech_senergy_aura"
+	}
+
+	gateway = senergy_tech
+
+	modifier = {
+		country_resource_max_add = 40000
+	}
+
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}	
+	}
+}
+
+tech_senergy_aura = {
+	area = engineering
+	cost = @tier5cost2
+	tier = 5
+	category = { voidcraft }
+	is_reverse_engineerable = no
+	ai_update_type = military
+	weight = @tier5weight3
+	is_dangerous = yes
+	prerequisites = {
+		"tech_titans" "tech_wsg_senergy"
+	}
+
+	gateway = senergy_tech
+
+	weight_modifier = {
+		modifier = {
+			factor = 0
+			NOT = { has_ascension_perk = ap_project_s }
+		}
+	}
+
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}	
+	}
+}
+
+tech_senergy_dreadnought = {
+	icon = "tech_new_dreadnought"
+	area = engineering
+	cost = @tier5cost2
+	tier = 5
+	category = { voidcraft }
+	is_reverse_engineerable = no
+	ai_update_type = military
+	weight = 0
+	is_dangerous = yes
+
+	gateway = senergy_tech
+
+	potential = {
+		is_wg_empire = yes
+		OR = {
+			has_technology = tech_senergy_space_compression
+			has_technology = tech_sh_senergy_space_compression
+		}
+	}
+}
+
+tech_wg_heavy_carrier = {
+	icon = "tech_wg_heavy_carrier"
+	area = engineering
+	cost = @tier5cost3
+	tier = 5
+	category = { voidcraft }
+	is_reverse_engineerable = no
+	ai_update_type = military
+	weight = 5
+	is_dangerous = yes
+
+	gateway = senergy_tech
+
+	potential = {
+		is_wg_empire = yes
+		OR = {
+			has_technology = tech_mist_dreadnought
+			has_technology = tech_senergy_dreadnought
+			has_technology = tech_parit_dreadnought
+		}
+	}
+}
+
+tech_building_wg_dark_matter = {
+    icon = tech_building_wg_dark_matter
+	cost = @tier5cost1
+	area = physics
+	tier = 4
+	category = { field_manipulation }
+	weight = 20
+	is_rare = yes
+	is_dangerous = yes
+	is_reverse_engineerable = no
+	
+	potential = {
+		OR = {
+			AND = {
+				has_authority = auth_warshipgirls
+				has_technology = tech_wsg_senergy
+			}
+			AND = {
+				has_authority = auth_warshipgirls
+				has_technology = tech_building_wsg_neo
+			}
+			AND = {
+				has_authority = auth_shenhai
+				has_technology = tech_sh_senergy
+			}
+		}
+	}
+}
+
+tech_building_wsg_base_resources_department = {
+    icon = tech_building_wsg_base_resources_department
+	cost = @tier2cost1
+	area = society
+	tier = 2
+	category = { statecraft }
+	weight = @tier2weight1
+	is_rare = yes
+	ai_weight = {
+		modifier = {
+			factor = 100
+			OR = {
+				has_authority = auth_warshipgirls
+			}
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}
+}
+
+tech_building_wsg_base_resources_department_2 = {
+    icon = tech_building_wsg_base_resources_department_2
+	cost = @tier3cost3
+	area = society
+	tier = 3
+	category = { statecraft }
+	weight = @tier3weight1
+	is_rare = yes
+	prerequisites = {
+		"tech_wsg_pantsu"
+		"tech_building_wsg_base_resources_department"
+	}
+	ai_weight = {
+		modifier = {
+			factor = 100
+			OR = {
+				has_authority = auth_warshipgirls
+			}
+		}
+	}
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			is_wg_fallen_empire = yes
+		}
+	}
+}

@@ -1,0 +1,196 @@
+purge = {
+	category = purge
+	is_capped_by_modifier = no
+	clothes_texture_index = 2
+
+	ignores_sapience = yes
+
+	possible = {
+		exists = owner
+		OR = {
+			has_citizenship_type = { type = citizenship_purge_machine }
+			has_citizenship_type = { type = citizenship_purge }
+			has_pop_flag = event_purge
+		}
+	}
+
+	resources = {
+		category = planet_jobs
+		produces = {
+			trigger = { 
+				owner = { has_valid_civic = civic_CM } 
+			}
+			sr_pantsu = 1
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { has_valid_civic = civic_fanatic_purifiers }
+			}
+			unity = 2
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { has_valid_civic = civic_hive_devouring_swarm }
+			}
+			society_research = 2
+		}
+		produces = { # regular processing
+			trigger = {
+				has_purge_type = { type = purge_processing }
+				is_robotic_species = no
+				is_lithoid = no
+			}
+			food = 6
+		}
+		produces = { # regular processing
+			trigger = {
+				has_purge_type = { type = purge_processing }
+				is_lithoid = yes
+			}
+			minerals = 4
+		}
+		produces = { # processing robots (devouring swarm)
+			trigger = {
+				has_purge_type = { type = purge_processing }
+				is_robotic_species = yes
+			}
+			alloys = 3
+		}
+		produces = {
+			trigger = {
+				has_purge_type = { type = purge_matrix }
+			}
+			energy = 6
+		}
+		produces = {
+			trigger = {
+				has_purge_type = { type = purge_labor_camps }
+			}
+			food = 3
+			minerals = 3
+		}
+		produces = {
+			trigger = {
+				planet = { has_active_building = building_food_processing_facility }
+				OR = {
+					has_purge_type = { type = purge_labor_camps }
+					AND = {
+						has_purge_type = { type = purge_processing }
+						is_robotic_species = no
+						is_lithoid = no
+					}
+				}
+			}
+			food = 1
+		}
+		produces = {
+			trigger = {
+				planet = { has_active_building = building_food_processing_center }
+				OR = {
+					has_purge_type = { type = purge_labor_camps }
+					AND = {
+						has_purge_type = { type = purge_processing }
+						is_robotic_species = no
+						is_lithoid = no
+					}
+				}
+			}
+			food = 2
+		}
+		produces = {
+			trigger = {
+				planet = { has_active_building = building_mineral_purification_plant }
+				OR = {
+					has_purge_type = { type = purge_labor_camps }
+					AND = {
+						has_purge_type = { type = purge_processing }
+						is_lithoid = yes
+					}
+				}
+			}
+			minerals = 1
+		}
+		produces = {
+			trigger = {
+				planet = { has_active_building = building_mineral_purification_hub }
+				OR = {
+					has_purge_type = { type = purge_labor_camps }
+					AND = {
+						has_purge_type = { type = purge_processing }
+						is_lithoid = yes
+					}
+				}
+			}
+			minerals = 2
+		}
+		produces = {
+			trigger = {
+				planet = { has_active_building = building_foundry_2 }
+				has_purge_type = { type = purge_processing }
+				is_robotic_species = yes
+			}
+			alloys = 1
+		}
+		produces = {
+			trigger = {
+				planet = { has_active_building = building_foundry_3 }
+				has_purge_type = { type = purge_processing }
+				is_robotic_species = yes
+			}
+			alloys = 2
+		}
+		produces = {
+			trigger = {
+				planet = { has_active_building = building_energy_grid }
+				has_purge_type = { type = purge_matrix }
+			}
+			energy = 1
+		}
+		produces = {
+			trigger = {
+				planet = { has_active_building = building_energy_nexus }
+				has_purge_type = { type = purge_matrix }
+			}
+			energy = 2
+		}
+	}
+
+	weight = {
+		weight = @special_job_weight
+
+		modifier = {
+			factor = 200 # brings @special_job_weight up to 2
+			exists = planet
+			exists = planet.controller
+			OR = {
+				has_pop_flag = event_purge
+				planet.controller = {
+					OR = {
+						is_country_type = swarm
+						is_country_type = ai_empire
+					}
+				}
+			}
+		}
+
+		modifier = {
+			factor = 9999 # u die when flagged
+			has_pop_flag = event_purge
+		}
+
+		modifier = {
+			factor = 9999 # u die when crisis'd
+			exists = planet
+			exists = planet.controller
+			planet.controller = {
+				OR = {
+					is_country_type = swarm
+					is_country_type = ai_empire
+					# extradimensionals just bombard you
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,373 @@
+#yamato
+civic_yamato={
+	icon="gfx/interface/icons/governments/civics/laomo.dds"
+	potential={authority={value=auth_shenhai}}
+	possible={
+	}
+	
+	random_weight={
+		base=0
+		modifier = {
+			add = 100
+			is_ai = yes
+			has_authority = auth_shenhai
+		}
+	}
+	
+	modifier={
+		planet_jobs_produces_mult = 0.15
+		ship_weapon_range_mult = 0.05
+		ship_fire_rate_mult = 0.10
+		ship_weapon_damage= 0.2
+	}
+}
+
+#要塞姬
+civic_yaosai={
+	icon="gfx/interface/icons/governments/civics/yaosai.dds"
+	potential = {
+		authority = {
+			OR = {
+				value = auth_shenhai
+				value = auth_wg_fe
+				value = auth_sh_fe
+			}
+		}		
+	}
+	possible={
+	}
+	
+	random_weight={
+		base=0
+		modifier = {
+			add = 100
+			is_ai = yes
+			has_authority = auth_shenhai
+		}
+	}
+	
+	modifier = {
+		country_naval_cap_mult = 0.15
+		shipclass_starbase_damage_mult = 0.20
+		shipclass_starbase_hull_mult = 0.20
+		shipclass_military_station_damage_mult = 0.20
+		starbase_defense_platform_capacity_add = 5
+		starbase_defensive_war_ship_build_speed_mult = 0.25
+		ship_home_territory_fire_rate_mult = 0.25		
+	}
+}
+
+#吃喝
+civic_eat_and_drink = {
+	icon="gfx/interface/icons/governments/civics/eatanddrink.dds"
+	potential={authority={value=auth_shenhai}}
+	possible={
+	}
+	
+	random_weight={
+		base=0
+		modifier = {
+			add = 100
+			is_ai = yes
+			has_authority = auth_shenhai
+		}
+	}
+	
+	modifier={
+		planet_researchers_unity_produces_add = 1
+		country_war_exhaustion_mult = -0.25	
+		planet_jobs_specialist_produces_mult = 0.05		
+		planet_stability_add = 5
+	}
+}
+
+#大头目
+civic_BOSSAP = {
+	icon="gfx/interface/icons/governments/civics/bossap.dds"
+	potential={authority={value=auth_shenhai}}
+	possible={
+	}
+	
+	random_weight={
+		base=0
+		modifier = {
+			add = 100
+			is_ai = yes
+			has_authority = auth_shenhai
+		}
+	}
+	
+	modifier={
+		planet_pops_consumer_goods_upkeep_mult = -0.20
+		planet_buildings_upkeep_mult = -0.10
+		planet_districts_upkeep_mult = -0.10
+		ships_upkeep_mult = -0.15
+		armies_upkeep_mult= -0.2
+	}
+}
+
+#CM深海
+civic_CM ={
+	description = "civic_tooltip_CM_effects"
+	icon="gfx/interface/icons/governments/civics/CM.dds"
+	potential = {
+		authority={value=auth_shenhai}
+	}	
+	possible = {
+		ethics = {
+			OR = {
+				value = ethic_fanatic_xenophobe
+			}
+		}
+		civics = {
+			NOR = {
+				value = civic_barbaric_despoilers
+				value = civic_fanatic_purifiers
+			}
+		}
+	}
+	random_weight={
+		base=0
+	}
+	modification = no
+	modifier={
+		planet_pop_assembly_organic_add = 1
+		ship_weapon_range_mult = 0.10
+		ship_fire_rate_mult = 0.15
+		ship_weapon_damage=0.20
+		starbase_shipyard_build_cost_mult = -0.10
+		country_naval_cap_mult = 0.35
+		planet_jobs_engineering_research_produces_mult = 0.20
+		intel_encryption_add = 10
+	}
+}
+
+#深海罪企
+civic_sh_criminal_syndicate ={
+	description = "civic_tooltip_sh_criminal_syndicate_effects"
+	icon="gfx/interface/icons/governments/civics/sh_criminal_syndicate.dds"
+	potential = {
+		authority={value=auth_shenhai}
+	}	
+	possible = {
+		ethics = {
+			OR = {
+				text = civic_tooltip_xenophobe
+				value = ethic_xenophobe
+				value = ethic_fanatic_xenophobe
+			}
+		}
+		origin = {
+			NOR = {
+				value = pantsu_shop_origin
+			}	
+		}
+	}
+	random_weight={
+		base=0
+	}
+	modification = no
+	modifier={
+		planet_branch_offices_cost_mult = -0.20
+		empire_size_branch_office_mult = -0.5
+		intel_decryption_add = 2
+	}
+}
+
+#先进补给网络
+civic_AP_NET = {
+	description = "civic_tooltip_AP_NET_effects"
+	icon="gfx/interface/icons/governments/civics/AP_NET.dds"
+	potential={authority={value=auth_shenhai}}
+	possible={
+	}
+	
+	random_weight={
+		base=0
+		modifier = {
+			add = 100
+			is_ai = yes
+			has_authority = auth_shenhai
+		}
+	}
+	
+	modifier={
+		job_sh_AP_NET_manager_per_pop = 0.1
+	}
+}
+
+# civic_sh_criminal_syndicate = {
+# 	
+
+# 	potential = {
+# 		authority = { value = auth_shenhai }
+# 	}
+# 	possible = {
+		
+# 	}
+
+# 	modifier = {
+		
+# 	}
+
+# 	random_weight={
+# 		base=0
+# 	}
+# }
+civic_fanatic_purifiers = {
+	modification = no
+	playable = { host_has_dlc = "Utopia" }
+	ai_playable = { host_has_dlc = "Utopia" }
+	potential = {
+		ethics = { NOT = { value = ethic_gestalt_consciousness } }
+		authority = { NOT = { value = auth_corporate } }
+	}
+	possible = {
+		ethics = {
+			value = ethic_fanatic_xenophobe
+			OR = {
+				value = ethic_militarist
+				value = ethic_spiritualist
+			}
+		}
+		civics = {
+			NOR = {
+				value = civic_barbaric_despoilers
+				value = civic_pompous_purists
+			}
+		}
+		origin = {
+			NOR = {
+				value = origin_syncretic_evolution
+				value = origin_common_ground
+				value = origin_hegemon
+				value = origin_toxic_knights
+				value = origin_broken_shackles
+			}
+		}
+	}
+	random_weight = {
+		base = 1000
+		modifier = {
+			factor = 0
+			NOT = { host_has_dlc = "Utopia" }
+		}
+	}
+
+	description = "civic_tooltip_fanatic_purifiers_effects"
+	modifier = {
+		ship_fire_rate_mult = 0.33
+		army_damage_mult = 0.33
+		starbase_shipyard_build_cost_mult = -0.15
+		country_naval_cap_mult = 0.33
+	}
+
+	swap_type = {
+		trigger = {
+			is_scope_valid = yes
+			has_country_flag = dark_forest_achievement
+		}
+		description = "civic_tooltip_fanatic_purifiers_effects"
+		modifier = {
+			country_government_civic_points_add = 1
+		}
+	}
+}
+
+
+###################
+#fallen empire
+
+civic_sh_fe={
+	icon="gfx/interface/icons/governments/civics/sh_fe.dds"
+	potential={
+		country_type = { value = fallen_empire }
+		authority = { value = auth_sh_fe}
+	}
+	possible={}
+	
+	modifier={
+		ship_weapon_range_mult = 1
+		ship_weapon_damage = 1
+		ships_upkeep_mult = -0.50
+		armies_upkeep_mult= -0.50
+		country_war_exhaustion_mult = 0.5
+		pop_growth_speed_reduction = 1.0
+		planet_max_buildings_add = 16
+	}
+	random_weight = {
+		base = 999999
+	}
+}
+
+civic_sh_awakened_fe = {
+	icon="gfx/interface/icons/governments/civics/wg_fe2.dds"
+	potential = {
+		country_type = { value = awakened_fallen_empire }
+		authority = { value = auth_sh_fe}
+	}
+
+	modifier = {
+		ships_upkeep_mult = -0.75
+		armies_upkeep_mult= -0.75
+		ship_weapon_range_mult = 1
+		ship_hull_mult = 1
+		ship_hull_regen_add_static = 10
+		ship_hull_damage_mult = 1
+		ship_shield_mult = 1
+		ship_shield_regen_add_static = 50
+		ship_shield_damage_mult = 1
+		ship_shield_penetration_mult = 0.1
+		ship_armor_mult = 1
+		ship_armor_regen_add_static = 50
+		ship_armor_damage_mult = 1
+		ship_armor_penetration_mult = 0.1
+		ship_disengage_chance_mult = 0.1
+		ship_disengage_chance_mult = 0.1
+		starbase_shipyard_capacity_add = 30
+		command_limit_add = 200
+		country_naval_cap_add = 9999
+		country_resource_max_add = 1000000
+		planet_max_buildings_add = 16
+	}
+
+	random_weight = {
+		base = 99999
+	}
+}
+
+civic_sh_awakened_fe_advance = {
+	icon="gfx/interface/icons/governments/civics/wg_fe2.dds"
+	potential = {
+		country_type = { value = awakened_fallen_empire }
+		authority = { value = auth_sh_fe}
+	}
+
+	modifier = {
+		ships_upkeep_mult = -1.0
+		armies_upkeep_mult= -1.0
+		ship_weapon_range_mult = 1
+		ship_hull_mult = 2
+		ship_hull_regen_add_static = 10
+		ship_hull_damage_mult = 2
+		ship_shield_mult = 2
+		ship_shield_regen_add_static = 50
+		ship_shield_damage_mult = 2
+		ship_shield_penetration_mult = 0.5
+		ship_armor_mult = 2
+		ship_armor_regen_add_static = 50
+		ship_armor_damage_mult = 2
+		ship_armor_penetration_mult = 0.5
+		ship_disengage_chance_mult = 0.5
+		starbase_shipyard_capacity_add = 30
+		command_limit_add = 200
+		ship_starting_experience_add = 10000
+		country_naval_cap_add = 9999
+		country_resource_max_add = 1000000
+		planet_max_buildings_add = 16
+	}
+
+	random_weight = {
+		base = 99999
+	}
+}

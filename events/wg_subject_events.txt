@@ -1,0 +1,142 @@
+namespace = wg_subject
+
+country_event = {
+	id = wg_subject.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		from = { has_authority = auth_warshipgirls }
+	}
+
+	immediate = {
+		from = { country_event = { id = wg_subject.2 } }
+		this = { save_global_event_target_as = wsg_subject_target }
+	}
+}
+country_event = {
+	id = wg_subject.2
+	title = "wg_subject.2.name"
+	desc = "wg_subject.2.desc"
+	picture = GFX_evt_wsg_on_star
+	is_triggered_only = yes
+	option = {
+		name = "wg_subject.2.a"
+		allow = {
+			custom_tooltip = {
+				fail_text = no_warshipgirls_no_civilization
+				event_target:wsg_subject_target = { 
+					any_owned_pop = { 
+						has_wsg_species_traits = yes
+					}
+				}
+			}
+			custom_tooltip = {
+				fail_text = no_warshipgirls_main_species
+				event_target:wsg_subject_target = { 
+					owner_main_species = {
+						has_wsg_species_traits = yes
+					}
+				}
+			}
+		}
+		event_target:wsg_subject_target = {
+			set_country_flag = wsg_subject_flag
+			change_government = {
+				authority = auth_warshipgirls
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { 
+					civic = civic_wsg_subject
+					civic = random
+				}
+			}
+			hidden_effect = {
+				if = {
+					limit = { root = { has_country_flag = wg_ascension_path_project_s } }
+					set_country_flag = wg_ascension_path_project_s
+				}
+				else_if = {
+					limit = { root = { has_technology = tech_antimatter_power } }
+					add_tech_progress = {
+						tech = tech_building_wsg_neo
+						progress = 0.1
+					}
+				}
+				add_modifier = { modifier = "wg_ai_base" days = -1 }
+				add_modifier = { modifier = "wg_subject_base" days = -1 }
+			}
+		}
+		clear_global_event_target = wsg_subject_target
+	}
+	option = {
+		name = "wg_subject.2.b"
+		clear_global_event_target = wsg_subject_target
+	}
+}
+
+country_event = {
+	id = wg_subject.3
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		from = { has_authority = auth_shenhai }
+	}
+
+	immediate = {
+		from = { country_event = { id = wg_subject.4 } }
+		this = { save_global_event_target_as = sh_subject_target }
+	}
+}
+country_event = {
+	id = wg_subject.4
+	title = "wg_subject.4.name"
+	desc = "wg_subject.4.desc"
+	picture = GFX_evt_SHKH
+	is_triggered_only = yes
+	option = {
+		name = "wg_subject.4.a"
+		allow = {
+			custom_tooltip = {
+				fail_text = no_shenhai_no_civilization
+				event_target:sh_subject_target = { 
+					any_owned_pop = { 
+						has_sh_species_traits = yes
+					}
+				}
+			}
+			custom_tooltip = {
+				fail_text = no_shenhai_main_species
+				event_target:sh_subject_target = { 
+					owner_main_species = {
+						has_sh_species_traits = yes
+					}
+				}
+			}
+		}
+		event_target:sh_subject_target = {
+			set_country_flag = sh_subject_flag
+			hidden_effect = {
+				add_modifier = { modifier = "wg_ai_base" days = -1 }
+				add_modifier = { modifier = "wg_subject_base" days = -1 }
+				shift_ethic = ethic_militarist
+			}
+			change_government = {
+				authority = auth_shenhai
+				cooldown = no
+				remove_invalid_civics = yes
+				civics = { 
+					civic = civic_sh_subject
+					civic = random
+				}
+			}
+		}
+		clear_global_event_target = sh_subject_target
+	}
+	option = {
+		name = "wg_subject.2.b"
+		clear_global_event_target = sh_subject_target
+	}
+}
+

@@ -1,0 +1,244 @@
+namespace = action
+
+# Primitive planet surveyed
+ship_event = {
+	id = action.12
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		FROM = {
+			AND = {
+				has_owner = yes
+				owner = { is_country_type = primitive }
+			}
+			NOT =  { has_planet_flag = fotd_hunter@root.owner }
+		}
+	}
+
+	immediate = {
+		owner = {
+			save_event_target_as = ship_owner
+			if = {
+				limit = {
+					NOT = { has_country_flag = encountered_first_primitive }
+				}
+				set_country_flag = encountered_first_primitive
+			}
+		}
+		FROM = {
+			if = {
+				limit = {
+					exists = owner
+				}
+				owner = {
+					establish_contact = { who = event_target:ship_owner }
+					save_event_target_as = primitive_civ
+				}
+				save_event_target_as = primitive_planet
+			}
+		}
+		if = {
+			limit = {
+				exists = event_target:primitive_civ
+				event_target:primitive_civ = {
+					NOT = { has_country_flag = humans_late_medieval_age }
+					NOT = { has_country_flag = benefactor_empire }
+					NOT = { has_country_flag = primitive_cousins_of_@root.owner }
+					OR = {
+						has_country_flag = stone_age
+						has_country_flag = bronze_age
+						has_country_flag = iron_age
+						has_country_flag = late_medieval_age
+						has_country_flag = renaissance_age
+						has_country_flag = steam_age
+					}
+				}
+			}
+			owner = { country_event = { id = action.5 } }
+			break = yes
+		}
+		if = {
+			limit = {
+				exists = event_target:primitive_civ
+				event_target:primitive_civ = {
+					NOR = {
+						has_country_flag = humans_machine_age
+						has_country_flag = humans_early_space_age
+						has_country_flag = benefactor_empire
+					}
+					OR = {
+						has_country_flag = industrial_age
+						has_country_flag = machine_age
+						has_country_flag = atomic_age
+						has_country_flag = early_space_age
+					}
+				}
+			}
+			owner = { country_event = { id = action.6 } }
+			break = yes
+		}
+		if = {
+			limit = {
+				exists = event_target:primitive_civ
+				event_target:primitive_civ = {
+					NOR = {
+						has_country_flag = humans_machine_age
+						has_country_flag = humans_early_space_age 
+					}
+					has_country_flag = wg_information_age
+				}
+			}
+			owner = { country_event = { id = wsg.3108 } }
+			break = yes
+		}
+		if = {
+			limit = {
+				exists = event_target:primitive_civ
+				event_target:primitive_civ = { has_country_flag = humans_late_medieval_age }
+			}
+			owner = { country_event = { id = galactic_features.101 } }
+			break = yes
+		}
+		if = {
+			limit = {
+				exists = event_target:primitive_civ
+				event_target:primitive_civ = { has_country_flag = humans_machine_age }
+			}
+			owner = { country_event = { id = galactic_features.102 } }
+			break = yes
+		}
+		if = {
+			limit = {
+				exists = event_target:primitive_civ
+				event_target:primitive_civ = { has_country_flag = humans_early_space_age }
+			}
+			owner = { country_event = { id = galactic_features.103 } }
+			break = yes
+		}
+		if = {
+			limit = {
+				exists = event_target:primitive_civ
+				event_target:primitive_civ = { has_country_flag = benefactor_empire }
+			}
+			owner = { country_event = { id = origin.1355 } }
+			break = yes
+		}
+		if = {
+			limit = {
+				exists = event_target:primitive_civ
+				event_target:primitive_civ = { has_country_flag = primitive_cousins_of_@root.owner }
+			}
+			#owner = { country_event = { id = origin.410 } }
+			break = yes
+		}
+	}
+}
+
+# Establish comms when entering Fallen Empire borders
+fleet_event = {
+	id = action.40
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		owner = { is_country_type = default }
+		from = {
+			OR = {
+				AND = {
+					exists = space_owner
+					space_owner = {
+						OR = {
+							is_country_type = fallen_empire
+							is_country_type = awakened_fallen_empire
+							is_sh_fallen_empire = yes
+						}
+						NOT = { has_communications = root.owner }
+					}
+				}
+				any_neighbor_system = {
+					exists = space_owner
+					space_owner = {
+						OR = {
+							is_country_type = fallen_empire
+							is_country_type = awakened_fallen_empire
+							is_sh_fallen_empire = yes
+						}
+						NOT = { has_communications = root.owner }
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		from = {
+			if = {
+				limit = {
+					exists = space_owner
+					space_owner = {
+						OR = {
+							is_country_type = fallen_empire
+							is_country_type = awakened_fallen_empire
+							is_sh_fallen_empire = yes
+						}
+						NOT = { has_communications = root.owner }
+					}
+				}
+				space_owner = {
+					save_event_target_as = contact_empire
+				}
+			}
+			else = {
+				random_neighbor_system = {
+					limit = {
+						exists = space_owner
+						space_owner = {
+							OR = {
+								is_country_type = fallen_empire
+								is_country_type = awakened_fallen_empire
+								is_sh_fallen_empire = yes
+							}
+							NOT = { has_communications = root.owner }
+						}
+					}
+					space_owner = {
+						save_event_target_as = contact_empire
+					}
+				}
+			}
+		}
+		owner = {
+			establish_contact = {
+				who = event_target:contact_empire
+				location = event_target:contact_empire.capital_scope
+			}
+			establish_communications_no_message = event_target:contact_empire
+			if = {
+				limit = {
+					OR = {
+						has_authority = auth_warshipgirls
+						has_authority = auth_shenhai
+					}
+					is_ai = no
+					event_target:contact_empire = { is_wg_fallen_empire = yes }
+				}
+				country_event = { id = wg_fe.2 }
+			} 
+			else_if = {
+				limit = {
+					OR = {
+						has_authority = auth_warshipgirls
+						has_authority = auth_shenhai
+					}
+					is_ai = no
+					event_target:contact_empire = { is_sh_fallen_empire = yes }
+				}
+				country_event = { id = sh_fe.2 }
+			} else = {
+				country_event = { id = action.1 }
+			}
+		}
+	}
+}

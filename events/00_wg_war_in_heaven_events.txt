@@ -1,0 +1,192 @@
+namespace = war_in_heaven
+
+# Ancient Rival awakens
+country_event = {
+	id = war_in_heaven.1
+	title = OK
+	desc = OK
+	
+	hide_window = yes
+	
+	trigger = {
+		host_has_dlc = "Leviathans Story Pack"
+		is_country_type = fallen_empire
+		is_at_war = no
+		fleet_power > 60000
+		has_global_flag = sleepers_awake_happened
+		NOT = { has_global_flag = sleepers_awake_rival_waking }
+		has_country_flag = sleepers_awake_ancient_rival
+		any_country = {
+			is_country_type = awakened_fallen_empire
+			has_country_flag = sleepers_awake_first_sleeper	
+		}
+		NOT = { has_global_flag = no_war_in_heaven }
+		is_wg_fallen_empire = no
+		is_sh_fallen_empire = no
+	}	
+	
+	mean_time_to_happen = {
+		years = 5	
+		modifier = {
+			factor = 0.01
+			OR = {
+				has_global_flag = war_in_heaven_debug
+				NOT = { has_country_flag = timed_ancient_rival }
+			}
+		}
+	}
+
+	immediate = {	
+		every_country = {
+			limit = { is_country_type = default }
+			set_timed_country_flag = { flag = ai_no_wars days = 3650 }
+		}
+		random_country = {
+			limit = { 
+				is_country_type = awakened_fallen_empire
+				has_country_flag = sleepers_awake_first_sleeper 
+			}
+			save_global_event_target_as = FirstSleeper
+			set_timed_country_flag = { flag = ai_no_wars days = 3650 }
+		}	
+		save_global_event_target_as = SecondSleeper
+		set_timed_country_flag = { flag = ai_no_wars days = 3650 }
+		set_timed_country_flag = { flag = war_in_heaven_timer days = 730 }
+		set_timed_country_flag = { flag = war_in_heaven_timer_2 days = 3650 }
+		set_global_flag = sleepers_awake_rival_waking
+		set_country_type = awakened_fallen_empire
+		change_government = {
+			civics = {
+				civic = civic_revanchist_fervor
+				civic = civic_ancient_caches_of_technology
+			}
+		}
+		if = {
+			limit = {
+				has_paragon_dlc = yes
+			}
+			unlock_council_slots = 2
+			while = {
+				count = 2
+				create_leader = {
+					class = scientist
+					species = owner_main_species
+					name = random
+					skill = 10
+					leader_age_min = 25
+					leader_age_max = 45
+				}
+			}
+		}
+		# Changing country type resets resources, so give them full stores
+		add_awakened_fallen_empire_resources = yes
+		add_awakened_fallen_empire_fleet = yes #also some more fleet
+		
+		# Establish communications / notify
+		every_country = {
+			limit = {
+				OR = { 
+					is_country_type = default
+					is_country_type = fallen_empire
+				}				
+			}
+			if = {
+				limit = { NOT = { has_communications = root } }
+				establish_communications_no_message = root	
+				root = { save_event_target_as = contact_empire }
+				country_event = { id = action.1 }				
+			}
+			country_event = { id = war_in_heaven.2 }
+		}
+		observer_event = { id = observer.75 }
+	}
+}
+
+# The War in Heaven
+country_event = {
+	id = war_in_heaven.3
+	title = OK
+	desc = OK
+	
+	hide_window = yes
+	
+	trigger = {
+		host_has_dlc = "Leviathans Story Pack"
+		is_country_type = awakened_fallen_empire
+		is_at_war = no
+		fleet_power > 60000
+		has_global_flag = sleepers_awake_rival_waking
+		has_country_flag = sleepers_awake_ancient_rival
+		OR = {
+			has_global_flag = war_in_heaven_debug
+			NOT = { has_country_flag = war_in_heaven_timer }
+		}
+		NOT = { has_global_flag = war_in_heaven_started }
+		any_country = {
+			is_country_type = awakened_fallen_empire
+			NOT = { is_same_value = root }
+			has_country_flag = sleepers_awake_first_sleeper	
+			is_at_war = no
+			fleet_power > 60000
+		}
+		NOT = { has_global_flag = no_war_in_heaven }
+		is_wg_fallen_empire = no
+		is_sh_fallen_empire = no
+	}	
+
+	
+	mean_time_to_happen = {
+		years = 1	
+		modifier = {
+			factor = 0.01
+			OR = {
+				has_global_flag = war_in_heaven_debug
+				NOT = { has_country_flag = war_in_heaven_timer_2 }
+			}
+		}
+	}
+
+	immediate = {
+		remove_country_flag = ai_no_wars
+		event_target:FirstSleeper = {
+			remove_country_flag = ai_no_wars
+		}
+		set_global_flag = war_in_heaven_started
+		set_global_flag = war_in_heaven_ongoing
+		set_timed_global_flag = {
+			flag = war_in_heaven_recently_started
+			days = 5400
+		}
+		declare_war = {
+			target = event_target:FirstSleeper
+			name = "NAME_The_War_in_Heaven"
+			attacker_war_goal = "wg_war_in_heaven"
+		}
+		if = {
+			limit = { has_galactic_emperor = no }
+			every_country = {
+				limit = {
+					is_country_type = default			
+				}		
+				country_event = { id = war_in_heaven.4 }
+			}
+		}
+		else = {
+			every_country = {
+				limit = { 
+					is_country_type = default
+					is_galactic_community_member = yes
+				}
+				country_event = { id = war_in_heaven.7 }
+			}
+			every_country = {
+				limit = { 
+					is_country_type = default
+					is_galactic_community_member = no
+				}
+				country_event = { id = war_in_heaven.4 }
+			}
+		}
+		observer_event = { id = observer.76 }
+	}
+}

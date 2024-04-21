@@ -1,0 +1,162 @@
+wg_shimakaze_portrait_1 = {
+	potential = { 
+		exists = event_target:wg_shimakaze_own_country
+		event_target:wg_shimakaze_own_country = {
+			OR = {
+				check_variable = { which = wg_shimakaze_cloth value = 0 }
+				NOT = { is_variable_set = wg_shimakaze_cloth }
+			}
+			NOT = { has_country_flag = wg_shimakaze_hurt }
+		}
+	}
+	allow = { always = yes }
+	effect = { } #no need
+}
+
+wg_shimakaze_portrait_1_broken = {
+	potential = { 
+		exists = event_target:wg_shimakaze_own_country
+		event_target:wg_shimakaze_own_country = {
+			OR = {
+				check_variable = { which = wg_shimakaze_cloth value = 0 }
+				NOT = { is_variable_set = wg_shimakaze_cloth }
+			}
+			has_country_flag = wg_shimakaze_hurt 
+		}
+	}
+	allow = { always = yes }
+	effect = { } #no need
+}
+
+wg_shimakaze_portrait = {
+	potential = { 
+		exists = event_target:wg_shimakaze_own_country
+		event_target:wg_shimakaze_own_country = {
+			check_variable = { which = wg_shimakaze_cloth value = 1 }
+			OR = {
+				has_country_flag = get_wg_shimakaze
+				is_same_value = event_target:wg_shimakaze_own_country
+			}
+			NOT = { has_country_flag = wg_shimakaze_hurt }
+		}
+	}
+	allow = { always = yes }
+	effect = { } #no need
+}
+
+wg_shimakaze_portrait_broken = {
+	potential = { 
+		exists = event_target:wg_shimakaze_own_country
+		event_target:wg_shimakaze_own_country = {
+			check_variable = { which = wg_shimakaze_cloth value = 1 }
+			OR = {
+				has_country_flag = get_wg_shimakaze
+				is_same_value = event_target:wg_shimakaze_own_country
+			}
+			has_country_flag = wg_shimakaze_hurt 
+		}
+	}
+	allow = { always = yes }
+	effect = { } #no need
+}
+
+wg_shimakaze_cloth_button_prev = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = {
+		event_target:wg_shimakaze_own_country = {
+			hidden_effect = {
+				change_variable = { which = wg_shimakaze_cloth value = -1 }
+				if = {
+					limit = { check_variable = { which = wg_shimakaze_cloth value < 0 }}
+					set_variable = { which = wg_shimakaze_cloth value = 1 }
+				}
+			}
+		}
+		custom_tooltip = change_cloth
+	}
+}
+wg_shimakaze_cloth_button_next = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = {
+		event_target:wg_shimakaze_own_country = {
+			hidden_effect = {
+				change_variable = { which = wg_shimakaze_cloth value = 1 }
+				if = {
+					limit = { check_variable = { which = wg_shimakaze_cloth value > 1 }}
+					set_variable = { which = wg_shimakaze_cloth value = 0 }
+				}
+			}
+		}
+		custom_tooltip = change_cloth
+	}
+}
+
+wg_shimakaze_link_button_effect = {
+	potential = { 
+		exists = event_target:wg_shimakaze_own_country
+		FROM = { 
+			is_same_value = event_target:wg_shimakaze_own_country
+			check_variable = { which = link_button_current_page value = 0 }
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = already_has_wg_shimakaze_diplo
+			OR = {
+				wg_shimakaze_active_diplo = no
+				NOT = { has_country_flag = wg_shimakaze_engaged }
+			}
+		}
+	}}
+	effect = { FROM = {
+		hidden_effect = { country_event = { id = wg_old_leader_diplo.3000 }}
+	}}
+}
+
+wg_shimakaze_affection1_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv1_trigger = { LEADER = wg_shimakaze }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_shimakaze_affection_show_lv2 }
+}
+wg_shimakaze_affection2_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv2_trigger = { LEADER = wg_shimakaze }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_shimakaze_affection_show_lv3 }
+}
+wg_shimakaze_affection3_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv3_trigger = { LEADER = wg_shimakaze }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_shimakaze_affection_show_lv4 }
+}
+wg_shimakaze_affection4_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv4_trigger = { LEADER = wg_shimakaze MARRIED_FLAG = married_wg_shimakaze }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_shimakaze_affection_show_lv5 }
+}
+wg_shimakaze_affection5_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv5_trigger = { LEADER = wg_shimakaze MARRIED_FLAG = married_wg_shimakaze }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_shimakaze_affection_show_lv5 }
+}

@@ -1,0 +1,228 @@
+is_special_affection_leader = {
+	OR = {
+		has_leader_flag = wsg_special_affection_leader 
+		has_leader_flag = wsg_lady_leader
+		has_leader_flag = wg_shimakaze_leader
+		has_leader_flag = gray_leader
+		has_leader_flag = Sharan_leader # 屑狐狸
+		has_leader_flag = bubbles_leader
+		has_leader_flag = yuudaichi_leader
+		has_leader_flag = wg_dragon_leader
+		has_leader_flag = wg_yukikaze_leader
+	}
+}
+
+double_chance_affection_trigger = {
+	has_modifier = wg_modifier_canteen_affectionUp2
+}
+
+is_wg_event_leader = {
+	OR = {
+		has_leader_flag = wsg_event_leader
+		has_leader_flag = overtime_yamato #劳模
+		has_trait = leader_trait_admiral_Rodney #老罗
+		has_trait = leader_trait_official_Ella #艾拉
+		has_trait = leader_trait_official_santee #桑提
+		has_trait = leader_trait_general_washington_axe #花生
+		has_trait = leader_trait_ruler_lexington #太太
+		has_trait = leader_trait_scientist_astesia #星极
+		has_leader_flag = Canarias #三小姐
+		has_leader_flag = NieAdmiral #乜提
+		has_leader_flag = mist_Renown
+		has_leader_flag = mist_Repulse 
+		has_leader_flag = projectS_missouri
+	}
+}
+
+is_wg_leader_all = {
+	OR = {
+		is_wg_leader_normal = yes
+		is_special_affection_leader = yes
+	}
+}
+
+is_wg_leader_normal = {
+	OR = {
+		has_leader_flag = has_wg_affection_normal
+		AND = {
+			is_special_affection_leader = no
+			# 不能是缄默深海
+			owner = {
+				NOR = {
+					has_ascension_perk = ap_shenhai_silent
+					has_civic = civic_CM
+				}
+			}
+			OR = { 
+				species = { 
+					has_wg_traits = yes
+					NOT = { has_trait = sh_trait_shenhai2 }
+				}
+				is_wg_event_leader = yes
+			}
+		}
+	}
+}
+
+is_wg_or_special_affection_admiral = {
+	OR = { 
+		AND = {
+			is_wg_leader_normal = yes
+			NOT = { has_leader_flag = affection_max }
+		}
+		AND = {
+			has_leader_flag = wg_shimakaze_leader
+			NOT = { owner = { has_country_flag = wg_shimakaze_affection_max }}
+		}
+		AND = {
+			has_leader_flag = gray_leader
+			owner = { 
+				is_vaild_gray_owner = yes
+				NOT = { has_country_flag = wg_gray_affection_max }
+			}
+		}
+		AND = {
+			has_leader_flag = Sharan_leader
+			owner = { 
+				has_country_flag = has_afk_Sharan
+				NOT = { has_country_flag = Sharan_affection_max }
+			}
+		}
+	}
+}
+
+# scope: leader
+is_wg_leader_with_affection_not_full = {
+	OR = {
+		AND = {
+			is_wg_leader_normal = yes
+			NOT = { has_leader_flag = affection_max }
+		}
+		AND = {
+			has_leader_flag = wg_shimakaze_leader
+			owner = { 
+				has_country_flag = get_wg_shimakaze 
+				NOT = { has_country_flag = wg_shimakaze_affection_max }
+			}
+		}
+		AND = {
+			has_leader_flag = wsg_lady_leader
+			owner = { 
+				has_country_flag = gain_wsg_lady 
+				NOT = { has_country_flag = wg_lady_affection_max }
+			}
+		}
+		AND = {
+			has_leader_flag = gray_leader
+			owner = { 
+				is_vaild_gray_owner = yes
+				NOT = { has_country_flag = wg_gray_affection_max }
+			}
+		}
+		AND = {
+			has_leader_flag = Sharan_leader
+			owner = { 
+				has_country_flag = has_afk_Sharan
+				NOT = { has_country_flag = Sharan_affection_max }
+			}
+		}
+		AND = {
+			has_leader_flag = bubbles_leader
+			owner = { 
+				has_country_flag = modified_bubbles
+				NOT = { has_country_flag = wg_bubbles_affection_max }
+			}
+		}
+		AND = {
+			has_leader_flag = wg_dragon_leader
+			owner = { 
+				has_country_flag = wg_dragon_owner
+				NOT = { has_country_flag = wg_dragon_affection_max }
+			}
+		}
+		has_leader_flag = wsg_special_affection_leader 
+	}
+}
+
+# scope: country
+check_affection_event_active_diplo = {
+	has_active_event = {
+		wg_affection.2005
+		wg_affection.2006
+		wg_affection.2007
+	}
+}
+
+has_married_selected_leader = {
+	OR = {
+		AND = {
+			check_variable = { which = selected_check_affection_leader value = 1 }
+			ruler = { has_leader_flag = married }
+		}
+		AND = {
+			check_variable = { which = selected_check_affection_leader value = 2 }
+			has_country_flag = married_wsg_lady
+		}
+		AND = {
+			check_variable = { which = selected_check_affection_leader value = 3 }
+			has_country_flag = married_wg_shimakaze
+		}
+		AND = {
+			check_variable = { which = selected_check_affection_leader value = 4 }
+			has_country_flag = married_gray
+		}
+		AND = {
+			check_variable = { which = selected_check_affection_leader value = 5 }
+			has_country_flag = married_bubbles
+		}
+		AND = {
+			check_variable = { which = selected_check_affection_leader value = 6 }
+			has_country_flag = married_swgs_Sharan
+		}
+		AND = {
+			check_variable = { which = selected_check_affection_leader value = 7 }
+			has_country_flag = married_yuudaichi
+		}
+		AND = {
+			check_variable = { which = selected_check_affection_leader value = 8 }
+			has_country_flag = married_wg_dragon
+		}
+	}
+}
+
+
+special_leader_affection_lv1_trigger = {
+	owner = { OR = {
+		NOT = { is_variable_set = $LEADER$_affection }
+		check_variable = { which = $LEADER$_affection value < @$LEADER$_affection_to_lv2 }
+	}}
+}
+special_leader_affection_lv2_trigger = {
+	owner = { 
+		check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv2 }
+		check_variable = { which = $LEADER$_affection value < @$LEADER$_affection_to_lv3 }
+	}
+}
+special_leader_affection_lv3_trigger = {
+	owner = { 
+		check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv3 }
+		check_variable = { which = $LEADER$_affection value < @$LEADER$_affection_to_lv4 }
+	}
+}
+special_leader_affection_lv4_trigger = {
+	owner = { 
+		if = {
+			limit = { has_country_flag = $MARRIED_FLAG$ }
+			check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv4 }
+			check_variable = { which = $LEADER$_affection value < @$LEADER$_affection_to_lv5 }
+		} else = {
+			check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv4 }
+		}
+	}
+}
+special_leader_affection_lv5_trigger = {
+	owner = { 
+		check_variable = { which = $LEADER$_affection value >= @$LEADER$_affection_to_lv4 }
+		has_country_flag = $MARRIED_FLAG$
+	}
+}

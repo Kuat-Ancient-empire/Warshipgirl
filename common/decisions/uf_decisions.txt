@@ -1,0 +1,959 @@
+decision_planet_uf_population_control = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_uf_population_control
+	
+	resources = {
+		category = decisions
+		cost = {
+			unity = 100
+		}
+	}	
+	
+	potential = {
+		owner = { 
+			has_authority = auth_united_fleet
+		}
+		NOT = {
+			has_modifier = planet_uf_population_control
+		}
+	}
+
+	
+	effect = {
+		custom_tooltip = decision_planet_uf_population_control_effects_short
+		add_modifier = { modifier = "planet_uf_population_control" }
+	}
+}
+decision_planet_uf_population_control_end = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_uf_population_control_end
+
+	potential = {
+		has_modifier = planet_uf_population_control
+	}
+
+	
+	effect = {
+		remove_modifier = planet_uf_population_control
+	}
+}
+
+decision_planet_uf_no_assimilation = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_no_assimilation
+	
+	resources = {
+		category = decisions
+		cost = {
+			unity = 100
+		}
+	}	
+	
+	potential = {
+		owner = { 
+			has_technology = tech_uf_assimilation
+		}
+		NOT = {
+			has_modifier = planet_uf_no_assimilation
+		}
+	}
+
+	
+	effect = {
+		add_modifier = { modifier = "planet_uf_no_assimilation" }
+		hidden_effect = {
+			set_planet_flag = uf_planet_no_assimilation_flag
+		}
+	}
+}
+
+decision_end_planet_uf_no_assimilation = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_no_assimilation_end
+
+	resources = {
+		category = decisions
+	}
+	
+	potential = {
+		has_planet_flag = uf_planet_no_assimilation_flag
+	}
+	
+	effect = {
+		custom_tooltip = decision_end_planet_uf_no_assimilation_effects_short
+		remove_modifier = planet_uf_no_assimilation
+		hidden_effect = {
+			remove_planet_flag = uf_planet_no_assimilation_flag
+		}
+	}
+}
+
+decision_planet_uf_evolver = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_uf_evolver
+	
+	resources = {
+		category = decisions
+		cost = {
+			unity = 500
+		}
+	}	
+	
+	potential = {
+		owner = { 
+			has_technology = tech_uf_evolver
+		}
+		NOT = {
+			has_modifier = planet_uf_evolver
+		}
+	}
+
+	
+	effect = {
+		add_modifier = { modifier = "planet_uf_evolver" }
+		hidden_effect = {
+			set_planet_flag = uf_planet_uf_evolver_flag
+			if = { # 产业革命兼容
+				limit = { has_deposit = PR_D_core } # 产业革命核心地块
+				add_deposit = PR_D_MOD_planet_uf_evolver
+			}
+		}
+	}
+}
+
+decision_end_planet_uf_evolver = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_uf_evolver_end
+
+	resources = {
+		category = decisions
+	}
+	
+	potential = {
+		has_planet_flag = uf_planet_uf_evolver_flag
+	}
+	
+	effect = {
+		remove_modifier = planet_uf_evolver
+		hidden_effect = {
+			remove_planet_flag = uf_planet_uf_evolver_flag
+			if = { # 产业革命兼容
+				limit = { has_deposit = PR_D_MOD_planet_uf_evolver } # 产业革命核心地块
+				remove_deposit = PR_D_MOD_planet_uf_evolver
+			}
+		}
+	}
+}
+####
+decision_uf_auto_building = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_uf_auto_building
+	
+    enactment_time = 360
+	resources = {
+		category = decisions
+		cost = {
+			unity = 100
+			minerals = 800
+		}
+	}
+    potential = {
+		OR = {
+			has_building = building_uf_research
+			has_building = building_uf_research_2
+			has_building = building_uf_research_3
+			has_building = building_uf_rare_resource
+			has_building = building_uf_admin
+		}
+		owner = { 
+			has_technology = tech_uf_auto_building_decision
+		}
+	}
+	effect = {
+		custom_tooltip = decision_uf_auto_building_effects_short
+		hidden_effect = {
+			wg_change_building_effect = { BUILDING1 = building_uf_research BUILDING2 = building_uf_auto_research }
+			wg_change_building_effect = { BUILDING1 = building_uf_research_2 BUILDING2 = building_uf_auto_research_2 }
+			wg_change_building_effect = { BUILDING1 = building_uf_research_3 BUILDING2 = building_uf_auto_research_3 }
+			wg_change_building_effect = { BUILDING1 = building_uf_rare_resource BUILDING2 = building_uf_auto_rare_resource }
+			wg_change_building_effect = { BUILDING1 = building_uf_admin BUILDING2 = building_uf_admin_auto }
+		}
+	}
+}
+decision_uf_non_auto_building = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_uf_non_auto_building
+
+	enactment_time = 360
+	resources = {
+		category = decisions
+		cost = {
+			unity = 100
+			minerals = 800
+		}
+	}
+	
+    potential = {
+		OR = {
+			has_building = building_uf_auto_research
+			has_building = building_uf_auto_research_2
+			has_building = building_uf_auto_research_3
+			has_building = building_uf_auto_rare_resource
+			has_building = building_uf_admin_auto
+		}
+		owner = { 
+			has_technology = tech_uf_auto_building_decision
+		}
+	}
+	effect = {
+		custom_tooltip = decision_uf_non_auto_building_effects_short
+		hidden_effect = {
+			wg_change_building_effect = { BUILDING1 = building_uf_auto_research BUILDING2 = building_uf_research }
+			wg_change_building_effect = { BUILDING1 = building_uf_auto_research_2 BUILDING2 = building_uf_research_2 }
+			wg_change_building_effect = { BUILDING1 = building_uf_auto_research_3 BUILDING2 = building_uf_research_3 }
+			wg_change_building_effect = { BUILDING1 = building_uf_auto_rare_resource BUILDING2 = building_uf_rare_resource }
+			wg_change_building_effect = { BUILDING1 = building_uf_admin_auto BUILDING2 = building_uf_admin }
+		}
+	}
+}
+####
+decision_uf_ring_shipyard_upgrade = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_uf_shipyard_upgrade
+
+	resources = {
+		category = decisions
+	}
+	enactment_time = 90
+	resources = {
+		category = decisions
+		cost = {
+			unity = 2000
+		}
+	}
+	potential = {
+		is_capital = yes
+		owner = { 
+			has_technology = tech_uf_ring_shipyard_upgrade
+		}
+	}
+	effect = {
+		custom_tooltip = decision_uf_ring_shipyard_upgrade_effects_short
+		hidden_effect = {
+			owner = {
+			    set_timed_country_flag = { flag = uf_ring_shipyard_3 days = 1 }
+				every_owned_megastructure = {
+					limit = {
+						OR = {
+							is_megastructure_type = uf_ring_shipyard
+						}
+					}
+					upgrade_megastructure_to =  uf_ring_shipyard_3
+				}
+			}
+		}
+	}
+}
+####################################
+decision_uf_planet_project = {
+	owned_planets_only = yes
+	icon = P_uf_planet_project
+
+	enactment_time = 2400
+	resources = {
+		category = decisions
+		cost = {
+			influence = 200
+			minerals = 15000
+			sr_uf = 500
+		}
+	}
+	
+	potential = {
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_uf
+			is_planet_class = pc_auto_uf
+			is_planet_class = pc_uf_glory
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_swim
+			is_planet_class = pc_ringworld_habitable_sh
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_swim
+			is_planet_class = pc_dyson_ring
+			is_planet_class = pc_ringworld_habitable			
+			is_planet_class = pc_relic
+			has_modifier = resort_colony
+			has_modifier = penal_colony
+			has_modifier = slave_colony
+		}
+		habitable_structure = no
+		exists = owner
+		owner = { has_ascension_perk = ap_uf_4 }
+	}
+	
+	allow = {
+		if = {
+			limit = { owner = { is_ai = no }}
+			custom_tooltip = {
+				fail_text = decision_arcology_project_requirements
+				free_district_slots < 1
+				num_districts = { type = district_farming value < 1 }
+				num_districts = { type = district_mining value < 1 }
+				num_districts = { type = district_generator value < 1 }
+			}
+		}
+		num_uncleared_blockers < 1
+	}
+	
+	effect = {
+		# Make city-planet
+		custom_tooltip = decision_uf_planet_project_effects
+		hidden_effect = {		
+			clear_deposits = yes
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_city
+				VARIABLE = num_housing_districts
+			}
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_industrial
+				VARIABLE = num_industrial_districts
+			}
+			change_pc = pc_uf
+			remove_all_districts = yes
+			while = {
+				count = num_housing_districts
+				add_district = district_uf_housing
+			}
+			while = {
+				count = num_industrial_districts
+				add_district = district_uf_alloys
+			}
+			clear_variable = num_housing_districts
+			clear_variable = num_industrial_districts
+			set_planet_entity = {
+				entity = "uf_planet"
+			}
+			planet_event = { id = uf_origin.58 }
+		}
+	}
+
+}
+decision_auto_uf_planet_project = {
+	owned_planets_only = yes
+	icon = P_auto_uf_planet_project
+
+	enactment_time = 2400
+	resources = {
+		category = decisions
+		cost = {
+			influence = 200
+			minerals = 15000
+			sr_uf = 500
+		}
+	}
+	
+	potential = {
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_uf
+			is_planet_class = pc_auto_uf
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_swim
+			is_planet_class = pc_uf_glory
+			is_planet_class = pc_ringworld_habitable_sh
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_swim
+			is_planet_class = pc_dyson_ring
+			is_planet_class = pc_ringworld_habitable			
+			is_planet_class = pc_relic
+			has_modifier = resort_colony
+			has_modifier = penal_colony
+			has_modifier = slave_colony
+		}
+		habitable_structure = no
+		exists = owner
+		owner = { has_ascension_perk = ap_uf_4 }
+	}
+	
+	allow = {
+		if = {
+			limit = { owner = { is_ai = no }}
+			custom_tooltip = {
+				fail_text = decision_arcology_project_requirements
+				free_district_slots < 1
+				num_districts = { type = district_farming value < 1 }
+				num_districts = { type = district_mining value < 1 }
+				num_districts = { type = district_generator value < 1 }
+			}
+		}
+		num_uncleared_blockers < 1
+	}
+	
+	effect = {
+		# Make city-planet
+		custom_tooltip = decision_auto_uf_planet_project_effects
+		hidden_effect = {		
+			clear_deposits = yes
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_city
+				VARIABLE = num_housing_districts
+			}
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_industrial
+				VARIABLE = num_industrial_districts
+			}
+			change_pc = pc_auto_uf
+			remove_all_districts = yes
+			while = {
+				count = num_housing_districts
+				add_district = district_auto_uf_housing
+			}
+			while = {
+				count = num_industrial_districts
+				add_district = district_auto_uf_alloys
+			}
+			clear_variable = num_housing_districts
+			clear_variable = num_industrial_districts
+			set_planet_entity = {
+				entity = "uf_planet"
+			}
+			planet_event = { id = uf_origin.58 }
+		}
+	}
+
+}
+
+decision_auto_to_non_auto_uf_planet_project = {
+	owned_planets_only = yes
+	icon = P_uf_planet_project
+
+	enactment_time = 1080
+	resources = {
+		category = decisions
+		cost = {
+			influence = 50
+			minerals = 5000
+			sr_uf = 200
+		}
+	}
+	
+	potential = {
+		is_planet_class = pc_auto_uf
+		exists = owner
+		owner = { has_ascension_perk = ap_uf_4 }
+	}
+	
+	effect = {
+		change_pc = pc_uf
+		set_planet_entity = {
+			entity = "uf_planet"
+		}
+	}
+}
+decision_non_auto_to_auto_uf_planet_project = {
+	owned_planets_only = yes
+	icon = P_auto_uf_planet_project
+
+	enactment_time = 1080
+	resources = {
+		category = decisions
+		cost = {
+			influence = 50
+			minerals = 5000
+			sr_uf = 200
+		}
+	}
+	
+	potential = {
+		is_planet_class = pc_uf
+		exists = owner
+		owner = { has_ascension_perk = ap_uf_4 }
+	}
+	
+	effect = {
+		change_pc = pc_auto_uf
+		set_planet_entity = {
+			entity = "uf_planet"
+		}
+	}
+}
+
+decision_non_auto_to_auto_uf_rw_project = {
+	owned_planets_only = yes
+	icon = decision_shenhai_rw_project
+
+	enactment_time = 1540
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+			minerals = 10000
+			sr_uf = 400
+		}
+	}
+	
+	potential = {
+		is_planet_class = pc_ringworld_habitable_uf
+		exists = owner
+		owner = { has_ascension_perk = ap_uf_4 }
+	}
+	
+	effect = {
+		change_pc = pc_ringworld_habitable_auto_uf
+		set_planet_entity = {
+			entity = "ringworld_habitable_uf"
+			graphical_culture = owner
+		}
+	}
+}
+decision_auto_to_non_auto_uf_rw_project = {
+	owned_planets_only = yes
+	icon = decision_shenhai_rw_project
+
+	enactment_time = 1540
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+			minerals = 10000
+			sr_uf = 400
+		}
+	}
+	
+	potential = {
+		is_planet_class = pc_ringworld_habitable_auto_uf
+		exists = owner
+		owner = { has_ascension_perk = ap_uf_4 }
+	}
+	
+	effect = {
+		change_pc = pc_ringworld_habitable_uf
+		set_planet_entity = {
+			entity = "ringworld_habitable_uf"
+			graphical_culture = owner
+		}
+	}
+}
+
+decision_uf_planet_project_relic = {
+	owned_planets_only = yes
+	icon = P_uf_planet_project
+
+	enactment_time = 2400
+	resources = {
+		category = decisions
+		cost = {
+			influence = 200
+			minerals = 20000
+			sr_uf = 500
+		}
+	}
+
+	potential = {
+		is_planet_class = pc_relic
+		habitable_structure = no
+		exists = owner
+		owner = { is_regular_empire = yes }
+		owner = { has_ascension_perk = ap_uf_4 }
+	}
+
+	allow = {
+		num_uncleared_blockers < 1
+	}
+
+	effect = {
+		# Make city-planet
+		custom_tooltip = decision_uf_planet_project_effects
+		hidden_effect = {
+			clear_deposits = yes
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_city
+				VARIABLE = num_housing_districts
+			}
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_industrial
+				VARIABLE = num_industrial_districts
+			}
+			change_pc = pc_uf
+			remove_all_districts = yes
+			while = {
+				count = num_housing_districts
+				add_district = district_uf_housing
+			}
+			while = {
+				count = num_industrial_districts
+				add_district = district_uf_alloys
+			}
+			clear_variable = num_housing_districts
+			clear_variable = num_industrial_districts
+			set_planet_entity = {
+				entity = "uf_planet"
+			}
+			add_deposit = d_former_relic_world
+			planet_event = { id =  uf_origin.58 }
+		}
+	}
+
+}
+
+decision_auto_uf_planet_project_relic = {
+	owned_planets_only = yes
+	icon = P_auto_uf_planet_project
+
+	enactment_time = 2400
+	resources = {
+		category = decisions
+		cost = {
+			influence = 200
+			minerals = 20000
+			sr_uf = 500
+		}
+	}
+
+	potential = {
+		is_planet_class = pc_relic
+		habitable_structure = no
+		exists = owner
+		owner = { is_regular_empire = yes }
+		owner = { has_ascension_perk = ap_uf_4 }
+	}
+
+	allow = {
+		num_uncleared_blockers < 1
+	}
+
+	effect = {
+		# Make city-planet
+		custom_tooltip = decision_auto_uf_planet_project_effects
+		hidden_effect = {
+			clear_deposits = yes
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_city
+				VARIABLE = num_housing_districts
+			}
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_industrial
+				VARIABLE = num_industrial_districts
+			}
+			change_pc = pc_auto_uf
+			remove_all_districts = yes
+			while = {
+				count = num_housing_districts
+				add_district = district_auto_uf_housing
+			}
+			while = {
+				count = num_industrial_districts
+				add_district = district_auto_uf_alloys
+			}
+			clear_variable = num_housing_districts
+			clear_variable = num_industrial_districts
+			set_planet_entity = {
+				entity = "uf_planet"
+			}
+			add_deposit = d_former_relic_world
+			planet_event = { id =  uf_origin.58 }
+		}
+	}
+
+}
+
+decision_uf_rw_project = {
+	owned_planets_only = yes
+	icon = decision_shenhai_rw_project
+
+	enactment_time = 3600
+	resources = {
+		category = decisions
+		cost = {
+			trigger = {
+				owner = { is_ai = no }
+			}
+			influence = 300
+			sr_uf = 1000
+			minerals = 25000
+		}
+
+	}
+	
+	potential = {
+		is_ringworld = yes
+		is_colony = yes
+		is_wg_upgraded_ringworld = no
+		exists = owner
+		owner = { 
+			is_regular_empire = yes 
+			owner = { has_ascension_perk = ap_uf_4 }
+		}
+	}
+	
+	allow = {
+		if = {
+			limit = { hidden_trigger = { owner = { is_ai = no }}}
+			custom_tooltip = {
+				fail_text = decision_sh_rw_project_requirements
+				free_district_slots < 1
+				num_districts = { type = district_rw_farming value < 1 }
+				num_districts = { type = district_rw_commercial value < 1 }
+			}
+		}
+		num_uncleared_blockers < 1
+	}
+	
+	effect = {
+		# Make city-planet
+		custom_tooltip = decision_uf_rw_effects
+		hidden_effect = {		
+			swap_districts_effect = {
+				DISTRICT1 = district_rw_city
+				DISTRICT2 = district_rw_uf_city
+			}
+			swap_districts_effect = {
+				DISTRICT1 = district_rw_industrial
+				DISTRICT2 = district_rw_uf_alloys
+			}
+			swap_districts_effect = {
+				DISTRICT1 = district_rw_science
+				DISTRICT2 = district_rw_uf_science
+			}
+			change_pc = pc_ringworld_habitable_uf
+			while = {
+				limit = { has_district = district_rw_generator }
+				remove_district = district_rw_generator
+			}
+			while = {
+				limit = { has_district = district_rw_commercial }
+				remove_district = district_rw_commercial 
+			}
+			set_planet_entity = {
+				entity = "ringworld_habitable_uf"
+				graphical_culture = owner
+			}
+			planet_event = { id =  uf_origin.59 }
+		}
+	}
+
+}
+
+decision_auto_uf_rw_project = {
+	owned_planets_only = yes
+	icon = decision_shenhai_rw_project
+
+	enactment_time = 3600
+	resources = {
+		category = decisions
+		cost = {
+			trigger = {
+				owner = { is_ai = no }
+			}
+			influence = 300
+			sr_uf = 1000
+			minerals = 25000
+		}
+
+	}
+	
+	potential = {
+		is_initial_ringworld_wg = yes
+		exists = owner
+		owner = { 
+			is_regular_empire = yes 
+			owner = { has_ascension_perk = ap_uf_4 }
+		}
+	}
+	
+	allow = {
+		if = {
+			limit = { hidden_trigger = { owner = { is_ai = no }}}
+			custom_tooltip = {
+				fail_text = decision_sh_rw_project_requirements
+				free_district_slots < 1
+				num_districts = { type = district_rw_farming value < 1 }
+				num_districts = { type = district_rw_commercial value < 1 }
+			}
+		}
+		num_uncleared_blockers < 1
+	}
+	
+	effect = {
+		# Make city-planet
+		custom_tooltip = decision_auto_uf_rw_effects
+		hidden_effect = {		
+			swap_districts_effect = {
+				DISTRICT1 = district_rw_city
+				DISTRICT2 = district_rw_auto_uf_city
+			}
+			swap_districts_effect = {
+				DISTRICT1 = district_rw_industrial
+				DISTRICT2 = district_rw_auto_uf_alloys
+			}
+			swap_districts_effect = {
+				DISTRICT1 = district_rw_science
+				DISTRICT2 = district_rw_auto_uf_science
+			}
+			change_pc = pc_ringworld_habitable_auto_uf
+			while = {
+				limit = { has_district = district_rw_generator }
+				remove_district = district_rw_generator
+			}
+			while = {
+				limit = { has_district = district_rw_commercial }
+				remove_district = district_rw_commercial 
+			}
+			set_planet_entity = {
+				entity = "ringworld_habitable_uf"
+				graphical_culture = owner
+			}
+			planet_event = { id =  uf_origin.59 }
+		}
+	}
+
+}
+
+decision_planet_auto_building_upgrade = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_auto_building_upgrade
+	enactment_time = 720
+	resources = {
+		category = decisions
+		cost = {
+			unity = 200
+			sr_uf = 200
+		}
+		cost = {
+			multiplier = auto_building_upgrade
+			unity = 200
+			sr_uf = 200
+		}
+	}	
+	allow = {
+		custom_tooltip = {
+			fail_text = col_uf_auto_world_requirements
+			OR = {
+				colony_type = col_uf_auto_world
+				is_capital = yes
+			}
+		}
+	}
+	potential = {
+		owner = { 
+			has_technology = tech_uf_auto_building_upgrade
+			has_authority = auth_united_fleet
+		}
+	}
+
+	effect = {
+		custom_tooltip = decision_auto_building_upgrade_effects
+		change_variable = { which = "auto_building_upgrade" value = 1 }
+	}
+}
+
+decision_planet_uf_cat_girls = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_uf_cat_girls
+	
+	resources = {
+		category = decisions
+		cost = {
+			unity = 100
+		}
+	}	
+	
+	potential = {
+		owner = { 
+			has_country_flag = uf_cat_girls
+		}
+		NOT = {
+			has_modifier = uf_cat_girls_modifier
+		}
+	}
+
+	
+	effect = {
+		add_modifier = { modifier = "uf_cat_girls_modifier" }
+	}
+}
+
+decision_build_hm_jammer = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_build_hm_jammer
+
+	enactment_time = 720
+
+	potential = {
+		owner = { any_situation = {
+			is_situation_type = hm_jammer_build_situation
+		}}
+		NOT = { has_modifier = hm_jammer_planet_buff }
+	}
+	allow = {
+		NOT = { has_modifier = decision_build_hm_jammer_debuff }
+	}
+	resources = {
+		category = none
+		cost = {
+			energy = 50000
+			minerals = 50000
+			alloys = 20000
+			sr_uf = 20000
+		}
+	}
+	effect = {
+		custom_tooltip = decision_build_hm_jammer_effect
+		hidden_effect = { 
+			change_variable = { which = hm_jammer_progress value = 24 }
+			set_variable = { which = hm_jammer_progress_perc value = hm_jammer_progress }
+			divide_variable = { which = hm_jammer_progress_perc value = 1.2 }
+			if = {
+				limit = { check_variable = { which = hm_jammer_progress value >= 120 }}
+				if = {
+					limit = { NOT = { has_modifier = hm_jammer_planet_buff }}
+					planet_event = { id = monolith_crisis.340 }
+				}
+			} else_if = {
+				limit = { 
+					check_variable = { which = hm_jammer_progress value >= 60 }
+					NOT = { has_modifier = hm_jammer_planet_buff_50 }
+				}
+				add_modifier = { modifier = hm_jammer_planet_buff_50 }
+			}
+		}
+	}
+	on_queued = {
+		set_variable = { which = job_produce_mult_value value = modifier:planet_jobs_produces_mult }
+		multiply_variable = { which = job_produce_mult_value value = 100 }
+		change_variable = { which = job_produce_mult_value value = 50 }
+		add_modifier = { modifier = decision_build_hm_jammer_debuff days = 720 multiplier = job_produce_mult_value }
+		add_modifier = { modifier = decision_build_hm_jammer_debuff_2 days = 720 }
+	}
+
+	on_unqueued = {
+		remove_modifier = decision_build_hm_jammer_debuff
+		remove_modifier = decision_build_hm_jammer_debuff_2
+	}
+
+	abort_trigger = {
+		OR = {
+			owner = { NOT = { any_situation = {
+				is_situation_type = hm_jammer_build_situation
+			}}}
+			has_modifier = hm_jammer_planet_buff
+		}
+	}
+	abort_effect = {
+		remove_modifier = decision_build_hm_jammer_debuff
+		remove_modifier = decision_build_hm_jammer_debuff_2
+	}
+}

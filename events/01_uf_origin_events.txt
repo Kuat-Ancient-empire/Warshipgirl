@@ -1,0 +1,4590 @@
+namespace = uf_origin
+
+#老家
+country_event = {
+	id = uf_origin.1
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+	trigger = {
+		any_country = { 
+			has_authority = auth_united_fleet 
+		}
+	}
+	immediate = {
+		every_country = {
+			limit = { 
+				has_authority = auth_united_fleet
+				NOT = {has_origin = origin_united_fleet_glory_world}
+			}
+			set_global_flag = seismic_disturbance_global
+			set_global_flag = pheromonefrenzy_done_global
+			save_event_target_as = uf_origin_target
+			country_event = { id = uf_origin.30 days = 360 }
+			country_event = { id = uf_story.30 days = 720 }
+			country_event = { id = uf_origin.5 }
+			country_event = { id = uf_origin.10002 }
+			country_event = { id = uf_origin.10003 }
+			country_event = { id = uf_origin.10004 }
+			add_modifier = {
+				modifier = uf_administrator_modifier
+				days = -1
+			}
+			add_modifier = {
+				modifier = wg_uf_origin_base_resource
+				days = -1
+			}
+			#开局额外领袖
+			create_leader = {
+				class = scientist
+				species = owner_main_species
+				event_leader = yes
+				traits = {
+					trait = leader_trait_scientist_uf_survey
+					trait = leader_trait_scientist_uf	
+					trait = leader_trait_uf				
+				}
+			}
+			set_variable = { which = num_waifu value = 0 }
+			wg_waifu_create_effect = yes
+			last_created_leader = {
+				save_event_target_as = uf_start_science_ship_leader
+			}
+			create_fleet = {
+				effect = {
+					set_owner = root
+					create_ship = {
+						name = random
+						random_existing_design = science
+					}
+					set_fleet_stance = evasive
+					set_location = root.capital_scope.star
+					if = {
+						limit = {
+							exists = event_target:uf_start_science_ship_leader
+						}
+						set_leader = event_target:uf_start_science_ship_leader
+					}
+				}
+			}
+			
+			owner = {
+				add_resource = { sr_uf = 100 }
+				give_technology = { tech = tech_powered_exoskeletons message = no }
+				give_technology = { tech = tech_starbase_2 message = no }
+				give_technology = { tech = tech_lasers_2 message = no }
+				give_technology = { tech = tech_doctrine_fleet_size_1 message = no }
+				give_technology = { tech = tech_planetary_unification message = no }
+			}
+			capital_scope = {
+				clear_deposits = yes
+				add_deposit = d_bomb_crater
+				add_deposit = d_bomb_crater
+				add_deposit = d_decrepit_dwellings
+				add_deposit = d_failing_infrastructure
+				add_deposit = d_hot_springs
+				add_deposit = d_rushing_waterfalls
+				add_deposit = d_geothermal_vent
+				add_deposit = d_veiny_cliffs
+				add_deposit = d_mineral_fields
+				add_deposit = d_mineral_fields
+				add_deposit = d_submerged_ore_veins
+				add_deposit = d_submerged_ore_veins
+				add_deposit = d_submerged_ore_veins
+				add_deposit = d_black_soil
+				add_deposit = d_black_soil
+				add_deposit = d_tropical_island
+				remove_building = building_commercial_zone
+				add_building = building_uf_assembly
+				add_deposit = r_uf_food
+				add_building = building_uf_entertainment_center
+				random_owned_pop = {
+					kill_pop = yes
+				}
+				random_owned_pop = {
+					kill_pop = yes
+				}
+				random_owned_pop = {
+					kill_pop = yes
+				}
+				random_owned_pop = {
+					kill_pop = yes
+				}
+				random_owned_pop = {
+					kill_pop = yes
+				}
+				random_owned_pop = {
+					kill_pop = yes
+				}
+			}
+			if  = {
+				limit = {
+					has_civic = civic_uf_1
+				}
+				capital_scope = {
+					save_event_target_as = uf_capital_target
+					solar_system = {
+						spawn_megastructure = {
+							type = "uf_ring_shipyard"
+							coords_from = event_target:uf_capital_target
+						}
+					}
+					set_planet_flag = has_megastructure
+					add_modifier = {
+						modifier = planet_uf_ring_shipyard
+						days = -1
+					}
+				}
+			}
+			if  = {
+				limit = {
+					has_civic = civic_uf_4
+				}
+				give_technology = { tech = tech_uf_assimilation message = no }	
+
+			}
+			random_planet_within_border = {
+				limit = { has_planet_flag = uf_home_second_planet }
+				set_owner = event_target:uf_origin_target
+				while = {
+					count = 6
+					create_pop = {
+						species = owner_main_species
+					}
+				}
+				clear_deposits = yes
+				add_deposit = d_decrepit_dwellings
+				add_deposit = r_mecha_wreckage
+				add_deposit = d_radioactive_wasteland
+				add_deposit = d_bomb_crater
+				add_deposit = d_bomb_crater
+				add_deposit = d_bomb_crater
+				add_deposit = d_bomb_crater
+				add_deposit = d_veiny_cliffs
+				add_deposit = d_mineral_fields
+				add_deposit = d_mineral_fields
+				add_deposit = d_mineral_fields
+				add_deposit = d_arid_highlands
+				add_deposit = d_underwater_vent
+				add_deposit = d_underwater_vent
+				add_deposit = d_geothermal_vent
+				add_deposit = d_geothermal_vent
+				add_deposit = d_fungal_caves
+				add_deposit = r_planetary_artillery
+				add_deposit = r_uf_hyperdimensional_matter
+				add_building = building_uf_residence_s
+				add_building = building_uf_research #我故意损坏的
+				add_building = building_uf_energy #我故意损坏的
+				add_district = district_farming
+				add_district = district_generator
+				add_district = district_generator
+				add_district = district_city
+				add_modifier = {
+					modifier = planet_uf_ring_shipyard_damaged
+					days = -1
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.2
+	title = uf_origin.2.name
+	desc = uf_origin.2.desc
+	picture = GFX_evt_uf_ring_shipyard
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = ring_shipyard_system }
+	}
+
+	option = {
+		name = uf_origin.2.a
+		owner = {
+			add_resource = { unity = 100 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.3
+	title = uf_origin.3.name
+	desc = uf_origin.3.desc
+	picture = GFX_evt_megastructure_construction
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = ring_shipyard_system }
+	}
+
+	option = {
+		name = uf_origin.3.a
+	}
+}
+
+country_event = {
+	id = uf_origin.4
+	title = uf_origin.4.name
+	desc = uf_origin.4.desc
+	picture = GFX_evt_uf_ring_shipyard
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = ring_shipyard_system }
+	}
+
+	option = {
+		name = uf_origin.4.a
+	}
+}
+
+country_event = {
+	id = uf_origin.5
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_authority = auth_united_fleet
+	}
+
+	immediate = {
+		random_owned_pop = {
+			limit = { 
+				has_trait = uf_trait_united_fleet 
+			}
+			species = { save_event_target_as = uf_species }
+		}
+		every_owned_leader = {
+			limit = {
+				OR = {
+					is_same_species = event_target:uf_species
+				}
+			}
+			add_trait_no_notify = leader_trait_uf
+			if = {
+				limit = { leader_class = scientist }
+				add_trait_no_notify = leader_trait_scientist_uf
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.6
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		has_authority = auth_united_fleet 
+		from = {
+			species = { has_trait = uf_trait_united_fleet }
+		}
+	}
+
+	immediate = {
+		from = { 
+			add_trait_no_notify = leader_trait_uf
+			if = {
+				limit = { leader_class = scientist }
+				add_trait_no_notify = leader_trait_scientist_uf
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.200
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		has_authority = auth_united_fleet 
+		from = {
+			species = { has_trait = uf_trait_united_fleet }
+			leader_class = scientist
+		}
+	}
+
+	immediate = {
+		from = { 
+			add_trait_no_notify = leader_trait_scientist_uf
+		}
+	}
+}
+country_event = {
+	id = uf_origin.201
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		has_authority = auth_united_fleet 
+		from = {
+			species = { has_trait = uf_trait_united_fleet }
+			leader_class = scientist
+		}
+	}
+
+	immediate = {
+		from = { 
+			remove_trait = leader_trait_scientist_uf
+		}
+	}
+}
+
+planet_event = {
+	id = uf_origin.7
+	title = uf_origin.7.name
+	desc = uf_origin.7.desc
+	picture = GFX_evt_uf_hyperdimensional_matter
+	show_sound = event_cityscape
+	location = root
+	fire_only_once = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_building = building_uf_hyperdimensional_matter	
+	}
+	option = {
+		name = uf_origin.7.a
+		owner = {
+			add_resource = { unity = 100 }
+		}		
+	}
+}
+#联合一飞改特性
+country_event = {
+	id = uf_origin.8
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_authority = auth_united_fleet
+	}
+
+	immediate = {
+		owner_main_species = {
+			modify_species = {
+				species = this
+				base = none
+				remove_trait = uf_trait_united_fleet
+				add_trait = uf_trait_united_fleet_1
+				effect = {
+					save_event_target_as = uf_species 
+				}
+			}
+		}
+		event_target:uf_species = {
+			set_species_identity = owner_main_species
+		}
+		change_dominant_species = { species = event_target:uf_species change_all = yes }
+		every_owned_leader = {
+			limit = { 
+				OR = { 
+					has_trait = leader_trait_uf 
+					is_same_species = event_target:uf_species
+				}
+			}
+			remove_trait = leader_trait_uf
+			add_trait_no_notify = leader_trait_uf_1
+			if = {
+				limit = { leader_class = scientist }
+				remove_trait = leader_trait_scientist_uf
+				add_trait_no_notify = leader_trait_scientist_uf_1
+			}
+		}
+		every_pool_leader = {
+			limit = {
+				OR = {
+					is_same_species = root
+				}
+				NOR = {
+					has_trait = leader_trait_uf_1
+				}
+			}
+			add_trait_no_notify = leader_trait_uf_1
+			remove_trait = leader_trait_uf
+			if = {
+				limit = { leader_class = scientist }
+				remove_trait = leader_trait_scientist_uf
+				add_trait_no_notify = leader_trait_scientist_uf_1
+			}
+		}
+		every_owned_leader = {
+			limit = {
+				has_leader_flag = uf_vv_admiral
+				NOT = { has_trait = leader_trait_admiral_uf_vv_4 }
+			}
+			change_leader_portrait = wsg112
+			switch = {
+				trigger = leader_class
+				admiral = { 
+				    remove_trait = leader_trait_admiral_uf_vv
+					#remove_trait = leader_trait_admiral_uf
+					add_trait_no_notify = leader_trait_admiral_uf_vv_1 
+					#add_trait_no_notify = leader_trait_admiral_uf_1 
+				}
+			}
+		}
+		every_owned_leader = {
+			limit = {
+				has_leader_flag = uf_Yubari_scientist
+			}
+			change_leader_portrait = wsg9983
+			switch = {
+				trigger = leader_class
+				scientist = { 
+				    remove_trait = leader_trait_scientist_uf_Yubari
+					add_trait_no_notify = leader_trait_scientist_uf_Yubari_2
+				}
+			}
+		}
+		country_event = { id = wsg.9997 days = 1 }
+	}
+}
+
+country_event = {
+	id = uf_origin.9
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		from = {
+			species = { has_trait = uf_trait_united_fleet_1 }
+		}
+	}
+
+	immediate = {
+		from = { 
+			remove_trait = leader_trait_uf
+			add_trait_no_notify = leader_trait_uf_1
+			if = {
+				limit = { leader_class = scientist }
+				remove_trait = leader_trait_scientist_uf
+				add_trait_no_notify = leader_trait_scientist_uf_1
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.210
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		from = {
+			species = { has_trait = uf_trait_united_fleet_1 }
+			leader_class = scientist
+		}
+	}
+
+	immediate = {
+		from = { 
+			remove_trait = leader_trait_scientist_uf
+			add_trait_no_notify = leader_trait_scientist_uf_1
+		}
+	}
+}
+country_event = {
+	id = uf_origin.211
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		from = {
+			species = { has_trait = uf_trait_united_fleet_1 }
+			leader_class = scientist
+		}
+	}
+
+	immediate = {
+		from = { 
+			remove_trait = leader_trait_scientist_uf_1
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.10
+	title = uf_origin.10.name
+	desc = uf_origin.10.desc
+	picture = GFX_evt_uf_space_farm_1
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = space_farm_system }
+	}
+
+	option = {
+		name = uf_origin.10.a
+	}
+}
+
+country_event = {
+	id = uf_origin.11
+	title = uf_origin.11.name
+	desc = uf_origin.11.desc
+	picture = GFX_evt_uf_space_farm_2
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = space_farm_system }
+	}
+
+	option = {
+		name = uf_origin.11.a
+	}
+}
+
+country_event = {
+	id = uf_origin.12
+	title = uf_origin.12.name
+	desc = uf_origin.12.desc
+	picture = GFX_evt_uf_space_farm_3
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = space_farm_system }
+	}
+
+	option = {
+		name = uf_origin.12.a
+		hidden_effect = {
+			country_event = { id = uf_origin.1012 days = 5 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.1012
+	title = uf_origin.1012.name
+	desc = uf_origin.1012.desc
+	picture = GFX_evt_uf_space_farm_4
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    trigger = {
+		NOT = { has_country_flag = triggered_1012 }
+	}
+	option = {
+		name = uf_origin.1012.a
+		set_country_flag = triggered_1012
+		add_modifier = {
+			modifier = uf_overeating
+			days = 720
+		}
+	}
+}
+
+
+country_event = {
+	id = uf_origin.13
+	title = uf_origin.13.name
+	desc = uf_origin.13.desc
+	picture = GFX_evt_megastructure_construction
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = hyperdimensional_matter_core_system }
+	}
+
+	option = {
+		name = uf_origin.13.a
+	}
+}
+
+country_event = {
+	id = uf_origin.14
+	title = uf_origin.14.name
+	desc = uf_origin.14.desc
+	picture = GFX_evt_uf_hyperdimensional_matter_core_1
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = hyperdimensional_matter_core_system }
+	}
+
+	option = {
+		name = uf_origin.14.a
+	}
+}
+
+country_event = {
+	id = uf_origin.15
+	title = uf_origin.15.name
+	desc = uf_origin.15.desc
+	picture = GFX_evt_uf_hyperdimensional_matter_core_1
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = hyperdimensional_matter_core_system }
+	}
+
+	option = {
+		name = uf_origin.15.a
+	}
+}
+
+country_event = {
+	id = uf_origin.16
+	title = "uf_origin.16.name"
+	desc = "uf_origin.16.desc"
+	picture = GFX_evt_wg_dreadnought_carrier
+	is_triggered_only = yes
+	trigger = {
+		last_increased_tech = tech_uf_battlecrusier
+	}
+	option = {
+		name = "uf_origin.16.a"
+		capital_scope = {
+			enable_special_project = {
+				name = uf_large_shipyard_design
+				owner = ROOT
+				location = this
+			}
+		}
+		hidden_effect = {
+			country_event = { id = uf_story.119 days = 360 random = 360 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.17
+	title = uf_origin.17.name
+	desc = uf_origin.17.desc
+	picture = GFX_evt_uf_new_age
+	show_sound = event_the_great_awakening
+	location = from
+
+	is_triggered_only = yes
+	immediate = {
+		begin_event_chain = { event_chain = ap_uf_1_chain }
+		capital_scope = {
+			enable_special_project = {
+				name = uf_progress_1
+				owner = owner
+				location = this
+			}
+			enable_special_project = {
+				name = uf_progress_2
+				owner = owner
+				location = this
+			}
+			enable_special_project = {
+				name = uf_progress_3
+				owner = owner
+				location = this
+			}
+		}
+		country_event = { id = uf_origin.43 days = 7200 }
+	}
+
+
+	option = {
+		name = uf_origin.17.a
+		custom_tooltip = uf_origin.17.a.response
+	}
+}
+
+planet_event = {
+	id = uf_origin.18
+	title = "uf_origin.18.name"
+	desc = "uf_origin.18.desc"
+	picture = GFX_evt_uf_hyperdimensional_matter
+	location = ROOT
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = uf_origin.18.a
+		custom_tooltip = uf_origin.18.a_tooltip	
+		owner = {
+			set_country_flag = hyperdimensional_matter_tech_allowed
+			add_event_chain_counter = { 
+				event_chain = "ap_uf_1_chain" 
+				counter = "ap_uf_porject_counter" 
+				amount = 1 
+			}
+		}
+		owner = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_completed_event_chain_counter = {
+							event_chain = "ap_uf_1_chain" 
+							counter = "ap_uf_porject_counter" 
+						}
+						NOT = { has_country_flag = ap_uf_1_chain_finished }
+					}
+					country_event = { id = uf_origin.28 days = 5 }
+				}
+			}	
+		}
+	}
+}
+
+planet_event = {
+	id = uf_origin.19
+	title = "uf_origin.19.name"
+	desc = "uf_origin.19.desc"
+	picture = GFX_evt_circuitry_modification
+	location = ROOT
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = uf_origin.19.a
+		custom_tooltip = uf_origin.19.a_tooltip	
+		hidden_effect = {
+			owner = {
+				country_event = { id = uf_origin.8 }
+				country_event = { id = uf_story.32 days = 30 }
+			}
+		}
+		owner = {
+			add_event_chain_counter = { 
+				event_chain = "ap_uf_1_chain" 
+				counter = "ap_uf_porject_counter" 
+				amount = 1 
+			}
+		}
+		owner = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_completed_event_chain_counter = {
+							event_chain = "ap_uf_1_chain" 
+							counter = "ap_uf_porject_counter" 
+						}
+						NOT = { has_country_flag = ap_uf_1_chain_finished }
+					}
+					country_event = { id = uf_origin.28 days = 5 }
+				}
+			}	
+		}
+	}
+}
+
+planet_event = {
+	id = uf_origin.20
+	title = "uf_origin.20.name"
+	desc = "uf_origin.20.desc"
+	picture = GFX_evt_wsg_master_plan
+	location = ROOT
+	
+	is_triggered_only = yes
+	trigger = {
+		NOT = { owner = {
+			has_technology = tech_uf_assimilation
+		}}
+	}
+	option = {
+		name = uf_origin.20.a
+		owner = {
+			give_technology = { tech = tech_uf_assimilation }
+		}
+		owner = {
+			add_event_chain_counter = { 
+				event_chain = "ap_uf_1_chain" 
+				counter = "ap_uf_porject_counter" 
+				amount = 1 
+			}
+		}
+		owner = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_completed_event_chain_counter = {
+							event_chain = "ap_uf_1_chain" 
+							counter = "ap_uf_porject_counter" 
+						}
+						NOT = { has_country_flag = ap_uf_1_chain_finished }
+					}
+					country_event = { id = uf_origin.28 days = 5 }
+				}
+			}	
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.21
+	title = "uf_origin.21.name"
+	desc = "uf_origin.21.desc"
+	picture = GFX_evt_wg_dreadnought_carrier
+	is_triggered_only = yes
+	trigger = {
+		last_increased_tech = tech_uf_battlecrusier
+	}
+	option = {
+		name = "uf_origin.21.a"
+	}
+}
+
+planet_event = {
+	id = uf_origin.22
+	title = "uf_origin.22.name"
+	desc = "uf_origin.22.desc"
+	picture = GFX_evt_wsg_master_plan
+	location = ROOT
+	
+	is_triggered_only = yes
+	trigger = { 
+		owner = { has_technology = tech_uf_assimilation }
+	}
+	option = {
+		name = uf_origin.22.a
+		owner = {
+			add_resource = { unity = 1000 }
+			add_resource = { influence = 100 }
+		}
+		owner = {
+			add_modifier = {
+				modifier = uf_chain_unity
+				days = 3600
+			}
+		}
+		owner = {
+			add_event_chain_counter = { 
+				event_chain = "ap_uf_1_chain" 
+				counter = "ap_uf_porject_counter" 
+				amount = 1 
+			}
+		}
+		owner = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_completed_event_chain_counter = {
+							event_chain = "ap_uf_1_chain" 
+							counter = "ap_uf_porject_counter" 
+						}
+						NOT = { has_country_flag = ap_uf_1_chain_finished }
+					}
+					country_event = { id = uf_origin.28 days = 5 }
+				}
+			}	
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.23
+	title = uf_origin.23.name
+	desc = uf_origin.23.desc
+	picture = GFX_evt_uf_ews
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = ews_system }
+	}
+
+	option = {
+		name = uf_origin.23.a
+	}
+}
+
+country_event = {
+	id = uf_origin.24
+	title = uf_origin.24.name
+	desc = uf_origin.24.desc
+	picture = GFX_evt_uf_ews
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = ews_system }
+	}
+
+	option = {
+		name = uf_origin.24.a
+		owner = {
+			add_resource = { unity = 3000 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.25
+	hide_window = yes
+	is_triggered_only = yes
+    immediate = {
+		every_country = {
+			limit = { 
+				is_country_type = default 
+				NOT = { has_modifier = uf_ews_modifier }
+			}
+			add_modifier = {
+				modifier = uf_ews_modifier
+				days = -1
+			}
+		}
+		country_event = { id = uf_origin.25 days = 3600 }#每隔10年监测一次
+		country_event = { id = uf_origin.26 days = 90 }#90
+	}
+}
+
+country_event = {
+	id = uf_origin.26
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		NOT = { has_country_flag = triggered_uf_origin_27 }
+	}
+    immediate = {
+		if = {
+			limit = { 
+				any_country = {
+					is_country_type = default
+					is_homicidal = no
+					has_communications = prev
+					NOR = {
+						is_at_war_with = prev
+						is_same_value = prev
+						has_civic = civic_criminal_heritage
+						is_gestalt = yes
+					}
+				}
+			}
+			random_country = {
+				limit = {
+					is_country_type = default
+					is_homicidal = no
+					has_communications = prev
+					NOR = {
+						is_at_war_with = prev
+						is_same_value = prev
+						has_civic = civic_criminal_heritage
+						is_gestalt = yes
+					}
+				}
+				save_event_target_as = ews_thank_country
+			}
+			root = { set_country_flag = triggered_uf_origin_27 }
+			country_event = { id = uf_origin.27 }
+		}
+	}
+}
+country_event = {
+	id = uf_origin.27
+	title = "uf_origin.27.name"
+	desc = "uf_origin.27.desc"
+
+	location = event_target:ews_thank_country
+	fire_only_once = yes
+	diplomatic = yes
+	is_triggered_only = yes
+
+	picture_event_data = {
+		portrait = event_target:ews_thank_country
+		planet_background = event_target:ews_thank_country
+		graphical_culture = event_target:ews_thank_country
+		city_level = event_target:ews_thank_country
+		room = event_target:ews_thank_country.ruler
+	}
+
+	option = {
+		name = uf_origin.27.a
+		owner = {
+			add_resource = { influence = 100 }
+		}
+		event_target:ews_thank_country = {
+			add_opinion_modifier = {
+				who = root
+				modifier = triggered_opinion_of_uf_ews_1
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.28
+	title = "uf_origin.28.name"
+	desc = "uf_origin.28.desc"
+	picture = GFX_evt_uf_new_age
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_origin.28.a
+		owner = {
+			add_monthly_resource_mult = {
+				resource = influence
+				value = @tier4influencereward
+				min = @tier4influencemin
+				max = @tier4influencemax
+			}
+            add_monthly_resource_mult = {
+				resource = unity
+				value = @tier5unityreward
+				min = @tier5unitymin
+				max = @tier5unitymax
+			}
+			add_modifier = {
+				modifier = uf_chain_finished
+				days = -1
+			}
+		}
+		owner= {
+			end_event_chain = "ap_uf_1_chain"
+			set_country_flag = ap_uf_1_chain_finished
+		}
+		hidden_effect = {
+			country_event = { id = uf_story.120 days = 360 random = 360 }
+		}
+	}
+}
+
+planet_event = {
+	id = uf_origin.29
+	title = "uf_origin.29.name"
+	desc = "uf_origin.29.desc"
+	picture = GFX_evt_wg_dreadnought_carrier
+	location = ROOT
+	
+	is_triggered_only = yes
+
+	option = {
+		name = uf_origin.29.a
+		custom_tooltip = uf_origin.29.a_tooltip
+		owner = {
+			give_technology = { tech = tech_uf_large_shipyard }
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.30
+	title = "uf_origin.30.name"
+	desc = "uf_origin.30.desc"
+	picture = GFX_evt_uf_rebuilding_homeworld
+	location = root
+    fire_only_once = yes
+	is_triggered_only = yes
+
+    trigger = {
+		NOT = {
+			has_global_flag = uf_rebuilding_homeworld_chain_global_finished
+		}
+	}
+	option = {
+		name = uf_origin.30.a
+		set_country_flag = uf_monument_flag
+		begin_event_chain = {
+			event_chain = "uf_rebuilding_homeworld"
+			target = this.owner
+		}
+		hidden_effect = {
+			enable_special_project = {
+				name = "uf_rebuilding_homeworld_progress_1"
+				location = event_target:uf_home_ambient_object_target
+				owner = root
+			}
+			capital_scope = {
+				enable_special_project = {
+					name = "uf_rebuilding_homeworld_progress_2"
+					location = this
+					owner = root
+				}	
+			}
+			enable_special_project = {
+				name = "uf_rebuilding_homeworld_progress_3"
+				location = event_target:uf_home_second_planet_target
+				owner = root
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.31
+	title = "uf_origin.31.name"
+	desc = "uf_origin.31.desc"
+	picture = GFX_evt_wg_parit2
+	location = root
+
+	is_triggered_only = yes
+	immediate = {
+	    event_target:uf_home_system_target = {
+			every_system_ambient_object = {
+				limit = {
+					OR = {
+						is_ambient_object_type = large_debris_object
+						is_ambient_object_type = medium_debris_01_object
+						is_ambient_object_type = medium_debris_02_object
+						is_ambient_object_type = small_debris_object
+					}
+					NOT = { has_ambient_object_flag = uf_second_planet_debris_object }
+				}
+				destroy_ambient_object = this
+			}
+		}
+	}
+	option = {
+		name = uf_origin.31.a
+		owner = {
+			add_event_chain_counter = { 
+				event_chain = "uf_rebuilding_homeworld" 
+				counter = "rebuilding_homeworld_counter" 
+				amount = 1 
+			}
+		}
+		owner = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_completed_event_chain_counter = {
+							event_chain = "uf_rebuilding_homeworld" 
+							counter = "rebuilding_homeworld_counter" 
+						}
+					}
+					country_event = { id = uf_origin.34 days = 5 }
+				}
+			}	
+		}
+	}
+}
+
+planet_event = {
+	id = uf_origin.32
+	title = "uf_origin.32.name"
+	desc = "uf_origin.32.desc"
+	picture = GFX_evt_ancient_alien_temple
+	location = root
+
+	is_triggered_only = yes
+	trigger = {
+		has_building = building_uf_monument	
+		owner = {
+			NOT = { has_country_flag = uf_monument_event_triggered }
+		}	
+	}
+    immediate = {
+		owner = {
+			set_country_flag = uf_monument_event_triggered
+		}
+	}
+	option = {
+		name = uf_origin.32.a
+		owner = {
+			add_resource = { unity = 500 }
+		}
+		owner = {
+			add_modifier = {
+				modifier = uf_rebuilding_unity
+				days = 7200
+			}
+		}
+		owner = {
+			add_event_chain_counter = { 
+				event_chain = "uf_rebuilding_homeworld" 
+				counter = "rebuilding_homeworld_counter" 
+				amount = 1 
+			}
+		}
+		owner = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_completed_event_chain_counter = {
+							event_chain = "uf_rebuilding_homeworld" 
+							counter = "rebuilding_homeworld_counter" 
+						}
+					}
+					country_event = { id = uf_origin.34 days = 5 }
+				}
+			}	
+		}
+	}
+}
+country_event = {
+	id = uf_origin.33
+	title = "uf_origin.33.name"
+	desc = "uf_origin.33.desc"
+	picture = GFX_evt_crisis_defeated
+	location = root
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_origin.33.a
+        trigger = { 
+			has_technology = tech_terrestrial_sculpting
+		}
+		add_monthly_resource_mult = {
+			resource = society_research
+			value = @tier5researchreward
+			min = @tier5researchmin
+			max = @tier5researchmax
+		}
+		add_modifier = {
+			modifier = uf_rebuilding_planet
+			days = -1
+		}
+		random_planet_within_border = {
+			limit = {
+				has_planet_flag = uf_home_second_planet
+			}
+			change_pc = pc_ocean
+			hidden_effect = {
+				remove_deposit = d_radioactive_wasteland
+				remove_deposit = d_bomb_crater
+				remove_deposit = d_bomb_crater
+				remove_deposit = d_bomb_crater
+				remove_deposit = d_bomb_crater
+			}
+		}
+		owner = {
+			add_event_chain_counter = { 
+				event_chain = "uf_rebuilding_homeworld" 
+				counter = "rebuilding_homeworld_counter" 
+				amount = 1 
+			}
+		}
+		owner = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_completed_event_chain_counter = {
+							event_chain = "uf_rebuilding_homeworld" 
+							counter = "rebuilding_homeworld_counter" 
+						}
+					}
+					country_event = { id = uf_origin.34 days = 5 }
+				}
+			}	
+		}
+	}
+	option = {
+		name = uf_origin.33.a
+        trigger = { 
+            NOT = { has_technology = tech_terrestrial_sculpting }
+        }
+		owner = {
+			give_technology = { tech = tech_terrestrial_sculpting }
+		}
+		add_modifier = {
+			modifier = uf_rebuilding_planet
+			days = -1
+		}
+		random_planet_within_border = {
+			limit = {
+				has_planet_flag = uf_home_second_planet
+			}
+			change_pc = pc_ocean
+			hidden_effect = {
+				remove_deposit = d_radioactive_wasteland
+				remove_deposit = d_bomb_crater
+				remove_deposit = d_bomb_crater
+				remove_deposit = d_bomb_crater
+				remove_deposit = d_bomb_crater
+			}
+		}
+		owner = {
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+		}
+		owner = {
+			add_event_chain_counter = { 
+				event_chain = "uf_rebuilding_homeworld" 
+				counter = "rebuilding_homeworld_counter" 
+				amount = 1 
+			}
+		}
+		owner = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_completed_event_chain_counter = {
+							event_chain = "uf_rebuilding_homeworld" 
+							counter = "rebuilding_homeworld_counter" 
+						}
+					}
+					country_event = { id = uf_origin.34 days = 5 }
+				}
+			}	
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.34
+	title = "uf_origin.34.name"
+	desc = "uf_origin.34.desc"
+	picture = GFX_evt_uf_new_age
+	location = root
+
+	is_triggered_only = yes
+    immediate = {
+		set_global_flag = uf_rebuilding_homeworld_chain_global_finished
+	}
+	option = {
+		name = uf_origin.34.a
+		owner = {
+			add_monthly_resource_mult = {
+				resource = influence
+				value = @tier4influencereward
+				min = @tier4influencemin
+				max = @tier4influencemax
+			}
+            add_monthly_resource_mult = {
+				resource = unity
+				value = @tier5unityreward
+				min = @tier5unitymin
+				max = @tier5unitymax
+			}
+		}
+		owner= {
+			end_event_chain = "uf_rebuilding_homeworld"
+			set_country_flag = uf_rebuilding_homeworld_chain_finished
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.35
+	title = "uf_origin.35.name"
+	desc = "uf_origin.35.desc"
+	picture = GFX_evt_sapient_AI
+	is_triggered_only = yes
+
+	option = {
+		name = "uf_origin.35.a"
+		capital_scope = {
+			enable_special_project = {
+				name = uf_hm_reactor_project_1
+				owner = ROOT
+				location = this
+			}
+		}
+		capital_scope = {
+			enable_special_project = {
+				name = uf_hm_reactor_project_2
+				owner = ROOT
+				location = this
+			}
+		}
+	}
+}
+country_event = {
+	id = uf_origin.36
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			last_increased_tech = tech_uf_weapon_med_large
+			last_increased_tech = tech_uf_weapon_craft
+			last_increased_tech = tech_uf_ia
+			last_increased_tech = tech_uf_weapon_missile
+		}	
+		NOR = { 
+			has_country_flag = 20years_lol 
+			has_country_flag = triggered_uf_36
+		}
+	}
+	immediate = {
+		country_event = { id = uf_origin.35 days = 30 }
+		set_country_flag = triggered_uf_36
+	}
+}
+country_event = {
+	id = uf_origin.37
+	title = "uf_origin.37.name"
+	desc = "uf_origin.37.desc"
+	picture = GFX_evt_uf_hm_ring
+	is_triggered_only = yes
+
+	option = {
+		name = "uf_origin.37.a"
+		set_country_flag = uf_hm_ring_project_allowed
+		capital_scope = {
+			enable_special_project = {
+				name = uf_hm_reactor_project_3
+				owner = ROOT
+				location = this
+			}
+		}
+		hidden_effect = {
+			abort_special_project = { type = "uf_hm_reactor_project_2" }
+		}
+	}
+}
+country_event = {
+	id = uf_origin.38
+	title = "uf_origin.38.name"
+	desc = "uf_origin.38.desc"
+	picture = GFX_evt_sapient_AI
+	is_triggered_only = yes
+
+	option = {
+		name = "uf_origin.38.a"
+		custom_tooltip = uf_origin.42.a.response
+		add_research_option = "tech_uf_hm_reactor"
+			add_tech_progress = {
+			tech = tech_uf_hm_reactor
+			progress = 0.20
+		}
+		hidden_effect = {
+			every_country = {
+				limit = {
+					has_authority = auth_united_fleet
+					has_modifier = uf_hm_reactor_project_modifier
+				}
+				remove_modifier = "uf_hm_reactor_project_modifier"	
+			}
+			abort_special_project = { type = "uf_hm_reactor_project_1" }
+			
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.39
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_special_project = uf_hm_reactor_project_2
+			has_special_project = uf_archaeological_project_3
+		}
+		NOT = { has_modifier = uf_hm_reactor_project_modifier }
+	}
+	immediate = {
+		add_modifier = {
+			modifier = uf_hm_reactor_project_modifier
+			days = -1
+		}
+	}			
+}
+
+country_event = {
+	id = uf_origin.40
+	hide_window = yes
+	
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_special_project = uf_hm_reactor_project_2
+			has_special_project = uf_archaeological_project_3
+		}
+		has_modifier = uf_hm_reactor_project_modifier
+	}
+	immediate = {
+		remove_modifier = "uf_hm_reactor_project_modifier"	
+	}			
+}
+
+country_event = {
+	id = uf_origin.41
+	title = uf_origin.41.name
+	desc = uf_origin.41.desc
+	picture = GFX_evt_uf_hm_ring
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_hm_ring_system }
+	}
+
+	option = {
+		name = uf_origin.41.a
+	}
+}
+country_event = {
+	id = uf_origin.42
+	title = uf_origin.42.name
+	desc = uf_origin.42.desc
+	picture = GFX_evt_uf_hm_ring_2
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_origin.42.a
+		custom_tooltip = uf_origin.42.a.response
+		add_research_option = "tech_uf_hm_reactor"
+			add_tech_progress = {
+			tech = tech_uf_hm_reactor
+			progress = 0.20
+		}
+		add_resource = { exotic_gases = 2000 }
+		hidden_effect = {
+			abort_special_project = { type = "uf_hm_reactor_project_3" }
+		}
+	}
+}
+#应该不会真的有憨憨20年还没研究联合的武器
+country_event = {
+	id = uf_origin.43
+	title = "uf_origin.43.name"
+	desc = "uf_origin.43.desc"
+	picture = GFX_evt_sapient_AI
+	is_triggered_only = yes
+    trigger = {
+		NOT = { has_country_flag = triggered_uf_36 }
+	}
+	immediate = {
+		set_country_flag = 20years_lol
+	}
+	option = {
+		name = "uf_origin.35.a"
+		capital_scope = {
+			enable_special_project = {
+				name = uf_hm_reactor_project_1
+				owner = ROOT
+				location = this
+			}
+		}
+		capital_scope = {
+			enable_special_project = {
+				name = uf_hm_reactor_project_2
+				owner = ROOT
+				location = this
+			}
+		}
+	}
+}
+
+#联合二飞改特性
+country_event = {
+	id = uf_origin.44
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_authority = auth_united_fleet
+	}
+
+	immediate = {
+		owner_main_species = {
+			modify_species = {
+				species = this
+				base = none
+				remove_trait = uf_trait_united_fleet
+				remove_trait = uf_trait_united_fleet_1
+				add_trait = uf_trait_united_fleet_2
+				effect = {
+					save_event_target_as = uf_species 
+				}
+			}
+		}
+		event_target:uf_species = {
+			set_species_identity = owner_main_species
+		}
+		change_dominant_species = { species = event_target:uf_species change_all = yes }
+		every_owned_leader = {
+			limit = { 
+				OR = { 
+					has_trait = leader_trait_uf_1 
+					has_trait = leader_trait_uf
+					is_same_species = event_target:uf_species
+				}
+			}
+			remove_trait = leader_trait_uf
+			remove_trait = leader_trait_uf_1
+			add_trait_no_notify = leader_trait_uf_2
+			if = {
+				limit = { leader_class = scientist }
+				remove_trait = leader_trait_scientist_uf_1
+				add_trait_no_notify = leader_trait_scientist_uf_2
+			}
+		}
+		every_pool_leader = {
+			limit = {
+				OR = {
+					is_same_species = root
+				}
+				NOR = {
+					has_trait = leader_trait_uf_2
+				}
+			}
+			add_trait_no_notify = leader_trait_uf_2
+			remove_trait = leader_trait_uf_1
+			remove_trait = leader_trait_uf
+			if = {
+				limit = { leader_class = scientist }
+				remove_trait = leader_trait_scientist_uf_1
+				add_trait_no_notify = leader_trait_scientist_uf_2
+			}
+		}
+		every_owned_leader = {
+			limit = {
+				has_leader_flag = uf_vv_admiral
+				NOT = { has_trait = leader_trait_admiral_uf_vv_4 }
+			}
+			change_leader_portrait = wsg112
+			switch = {
+				trigger = leader_class
+				admiral = { 
+				    remove_trait = leader_trait_admiral_uf_vv_1 
+					add_trait_no_notify = leader_trait_admiral_uf_vv_2 
+				}
+			}
+		}
+		every_owned_leader = {
+			limit = {
+				has_leader_flag = uf_Yubari_scientist
+			}
+			change_leader_portrait = wsg9983
+			switch = {
+				trigger = leader_class
+				scientist = { 
+				    remove_trait = leader_trait_scientist_uf_Yubari_2 
+					add_trait_no_notify = leader_trait_scientist_uf_Yubari_3 
+				}
+			}
+		}
+		country_event = { id = uf_origin.46 days = 1 }
+		country_event = { id = wsg.9997 days = 1 }
+	}
+}
+
+country_event = {
+	id = uf_origin.45
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		from = {
+			species = { has_trait = uf_trait_united_fleet_2 }
+		}
+	}
+
+	immediate = {
+		from = { 
+			remove_trait = leader_trait_uf_1
+			add_trait_no_notify = leader_trait_uf_2
+			if = {
+				limit = { leader_class = scientist }
+				remove_trait = leader_trait_scientist_uf_1
+				add_trait_no_notify = leader_trait_scientist_uf_2
+			}
+		}
+	}
+}
+
+
+country_event = {
+	id = uf_origin.220
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		has_authority = auth_united_fleet 
+		from = {
+			species = { has_trait = uf_trait_united_fleet_2 }
+			leader_class = scientist
+		}
+	}
+
+	immediate = {
+		from = { 
+			remove_trait = leader_trait_scientist_uf_1
+			add_trait_no_notify = leader_trait_scientist_uf_2
+		}
+	}
+}
+country_event = {
+	id = uf_origin.221
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		has_authority = auth_united_fleet 
+		from = {
+			species = { has_trait = uf_trait_united_fleet_2 }
+			leader_class = scientist
+		}
+	}
+
+	immediate = {
+		from = { 
+			remove_trait = leader_trait_scientist_uf_2
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.46
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		every_owned_pop = {
+			limit = { 
+				OR = { 
+					has_trait = uf_trait_united_fleet 
+					has_trait = uf_trait_united_fleet_1 
+				}
+			}
+			modify_species = {
+				species = this
+				remove_trait = uf_trait_united_fleet
+				remove_trait = uf_trait_united_fleet_1
+			}
+		}
+	}
+}
+#二飞
+country_event = {
+	id = uf_origin.48
+	title = uf_origin.48.name
+	desc = uf_origin.48.desc
+	picture = GFX_evt_uf_awakening
+	show_sound = event_the_great_awakening
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_origin.48.a
+		begin_event_chain = { event_chain = ap_uf_2_chain }
+		capital_scope = {
+			enable_special_project = {
+				name = uf_progress_4
+				owner = owner
+				location = this
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.49
+	title = uf_origin.49.name
+	desc = uf_origin.49.desc
+	picture = GFX_evt_uf_awakening_2
+	show_sound = event_the_great_awakening
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_origin.49.a
+		capital_scope = {
+			enable_special_project = {
+				name = uf_progress_5
+				owner = owner
+				location = this
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.50
+	title = uf_origin.50.name
+	desc = uf_origin.50.desc
+	picture = GFX_evt_wg_box3
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_origin.50.a
+		hidden_effect = {
+			country_event = { id = uf_origin.51 days = 5 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.51
+	title = uf_origin.51.name
+	desc = uf_origin.51.desc
+	picture = GFX_evt_uf_awakening
+	show_sound = event_the_great_awakening
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_origin.51.a
+		every_owned_leader = {
+			limit = {
+				is_ruler = yes
+			}
+			remove_trait = leader_trait_uf_1
+			add_trait_no_notify = leader_trait_uf_2
+		}
+		capital_scope = {
+			enable_special_project = {
+				name = uf_progress_6
+				owner = owner
+				location = this
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.52
+	title = uf_origin.52.name
+	desc = uf_origin.52.desc
+	picture = GFX_evt_uf_awakening
+	show_sound = event_the_great_awakening
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_origin.52.a
+		owner= {
+			end_event_chain = "ap_uf_2_chain"
+			set_country_flag = ap_uf_2_chain_finished
+		}
+		give_technology = { tech = tech_uf_genetic_resequencing }
+		hidden_effect = {
+			country_event = { id = uf_story.34 days = 60 }
+		}	
+	}
+}
+
+country_event = {
+	id = uf_origin.53
+	title = uf_origin.53.name
+	desc = uf_origin.53.desc
+	picture = GFX_evt_uf_hyperdimensional_matter_core_1
+	show_sound = event_cityscape
+	
+	is_triggered_only = yes
+
+	option = {
+		name = uf_origin.53.a
+	}
+}
+
+country_event = {
+	id = uf_origin.54
+	title = "uf_origin.54.name"
+	desc = "uf_origin.54.desc"
+	picture = GFX_evt_pantsu_wormhole
+	is_triggered_only = yes
+	trigger = {
+		last_increased_tech = tech_uf_mozheng
+	}
+	option = {
+		name = "uf_origin.54.a"
+		add_resource = { sr_pantsu = 1 }
+		add_modifier = {
+			modifier = uf_pantsu
+			days = 720
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.55
+	title = uf_origin.55.name
+	desc = uf_origin.55.desc
+	picture = GFX_evt_uf_star_fortress
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = fortress_system }
+	}
+
+	option = {
+		name = uf_origin.55.a
+	}
+}
+country_event = {
+	id = uf_origin.56
+	title = uf_origin.56.name
+	desc = uf_origin.56.desc
+	picture = GFX_evt_uf_star_fortress
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = fortress_system }
+	}
+
+	option = {
+		name = uf_origin.56.a
+	}
+}
+country_event = {
+	id = uf_origin.57
+	title = uf_origin.57.name
+	desc = uf_origin.57.desc
+	picture = GFX_evt_uf_star_fortress
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = fortress_system }
+	}
+
+	option = {
+		name = uf_origin.57.a
+	}
+}
+
+planet_event = {
+	id = uf_origin.58
+	title = uf_origin.58.name
+	desc = uf_origin.58.desc
+	picture = GFX_evt_uf_planet_project
+	show_sound = event_cityscape
+	location = root
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_origin.58.a
+	}
+}
+planet_event = {
+	id = uf_origin.59
+	title = uf_origin.59.name
+	desc = uf_origin.59.desc
+	picture = GFX_evt_uf_rw_project
+	show_sound = event_cityscape
+	location = root
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_origin.59.a
+	}
+}
+
+country_event = {
+	id = uf_origin.60
+	title = "uf_origin.60.name"
+	desc = "uf_origin.60.desc"
+	picture = GFX_evt_uf_glory
+	is_triggered_only = yes
+	trigger = {
+		last_increased_tech = tech_uf_mega_starship
+	}
+	option = {
+		name = "uf_origin.60.a"
+		capital_scope = {
+			enable_special_project = {
+				name = uf_glory_design
+				owner = ROOT
+				location = this
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = uf_origin.61
+	title = "uf_origin.61.name"
+	desc = "uf_origin.61.desc"
+	picture = GFX_evt_uf_glory
+	location = ROOT
+	
+	is_triggered_only = yes
+	trigger = {
+		owner = { NOT = {
+			has_technology = tech_uf_star_glory
+		}}
+	}
+	option = {
+		name = uf_origin.61.a
+		owner = {
+			give_technology = { tech = tech_uf_star_glory }
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.62
+	title = uf_origin.62.name
+	desc = uf_origin.62.desc
+	picture = GFX_evt_uf_glory
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_glory_system }
+	}
+
+	option = {
+		name = uf_origin.62.a
+	}
+}
+
+country_event = {
+	id = uf_origin.63
+	title = uf_origin.63.name
+	desc = uf_origin.63.desc
+	picture = GFX_evt_uf_glory
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_glory_system }
+	}
+
+	option = {
+		name = uf_origin.63.a
+	}
+}
+
+country_event = {
+	id = uf_origin.64
+	title = uf_origin.64.name
+	desc = uf_origin.64.desc
+	picture = GFX_evt_uf_glory
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_glory_system }
+	}
+
+	option = {
+		name = uf_origin.64.a
+	}
+}
+
+country_event = {
+	id = uf_origin.65
+	title = uf_origin.65.name
+	desc = uf_origin.65.desc
+	picture = GFX_evt_uf_glory
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_glory_system }
+	}
+
+	option = {
+		name = uf_origin.65.a
+	}
+}
+
+country_event = {
+	id = uf_origin.66
+	title = uf_origin.66.name
+	desc = uf_origin.66.desc
+	picture = GFX_evt_uf_glory
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_glory_system }
+	}
+
+	option = {
+		name = uf_origin.66.a
+	}
+}
+
+country_event = {
+	id = uf_origin.67
+	title = uf_origin.67.name
+	desc = uf_origin.67.desc
+	picture = GFX_evt_uf_hyperlane
+	show_sound = event_ship_bridge
+	is_triggered_only = yes
+
+	immediate = {
+		random_system_within_border = {
+			limit = {
+				any_system_megastructure = {
+					is_megastructure_type = uf_hyperlane_a
+				}
+			}
+			save_event_target_as = uf_hyperlane_a_target
+		}	
+		random_system_within_border = {
+			limit = {
+				any_system_megastructure = {
+					is_megastructure_type = uf_hyperlane_c
+				}
+			}
+			save_event_target_as = uf_hyperlane_c_target
+		}
+	}
+	after = {
+		random_owned_megastructure = {
+			limit = { is_megastructure_type = uf_hyperlane_a }
+			remove_megastructure = this
+		}
+		random_owned_megastructure = {
+			limit = { is_megastructure_type = uf_hyperlane_b }
+			remove_megastructure = this
+		}
+		random_owned_megastructure = {
+			limit = { is_megastructure_type = uf_hyperlane_c }
+			remove_megastructure = this
+		}
+		random_owned_megastructure = {
+			limit = { is_megastructure_type = uf_hyperlane_d }
+			remove_megastructure = this
+		}
+	}
+	option = {
+		name = uf_origin.67.a
+		add_hyperlane = { 
+			from = event_target:uf_hyperlane_a_target
+			to = event_target:uf_hyperlane_c_target
+		}
+	}
+	option = {
+		name = uf_origin.67.b
+		remove_hyperlane = { 
+			from = event_target:uf_hyperlane_a_target
+			to = event_target:uf_hyperlane_c_target
+		}
+	}
+	option = {
+		name = uf_origin.67.c
+	}
+}
+
+country_event = {
+	id = uf_origin.68
+	title = uf_origin.67.name
+	desc = uf_origin.67.desc
+	picture = GFX_evt_uf_hyperlane
+	show_sound = event_ship_bridge
+	is_triggered_only = yes
+    force_open = yes
+	immediate = {
+		random_system_within_border = {
+			limit = {
+				any_system_megastructure = {
+					is_megastructure_type = uf_hyperlane_b
+				}
+			}
+			save_event_target_as = uf_hyperlane_b_target
+		}	
+		random_system_within_border = {
+			limit = {
+				any_system_megastructure = {
+					is_megastructure_type = uf_hyperlane_d
+				}
+			}
+			save_event_target_as = uf_hyperlane_d_target
+		}
+	}
+	after = {
+		random_owned_megastructure = {
+			limit = { is_megastructure_type = uf_hyperlane_a }
+			remove_megastructure = this
+		}
+		random_owned_megastructure = {
+			limit = { is_megastructure_type = uf_hyperlane_b }
+			remove_megastructure = this
+		}
+		random_owned_megastructure = {
+			limit = { is_megastructure_type = uf_hyperlane_c }
+			remove_megastructure = this
+		}
+		random_owned_megastructure = {
+			limit = { is_megastructure_type = uf_hyperlane_d }
+			remove_megastructure = this
+		}
+	}
+	option = {
+		name = uf_origin.67.a
+		add_hyperlane = { 
+			from = event_target:uf_hyperlane_b_target
+			to = event_target:uf_hyperlane_d_target
+		}
+	}
+	option = {
+		name = uf_origin.67.b
+		remove_hyperlane = { 
+			from = event_target:uf_hyperlane_b_target
+			to = event_target:uf_hyperlane_d_target
+		}
+	}
+	option = {
+		name = uf_origin.67.c
+	}
+}
+
+country_event = {
+	id = uf_origin.69
+	title = uf_origin.69.name
+	desc = uf_origin.69.desc
+	picture = GFX_evt_uf_hyperlane
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = hyperlane_point_system }
+	}
+
+	option = {
+		name = uf_origin.69.a
+	}
+}
+
+country_event = {
+	id = uf_origin.70
+	title = uf_origin.70.name
+	desc = uf_origin.70.desc
+	picture = GFX_evt_uf_mega_shipyard
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_shipyard_base_system }
+	}
+
+	option = {
+		name = uf_origin.70.a
+	}
+}
+
+country_event = {
+	id = uf_origin.71
+	title = uf_origin.71.name
+	desc = uf_origin.71.desc
+	picture = GFX_evt_uf_mega_shipyard_1
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_shipyard_base_system }
+		country_event = { id = uf_origin.75 days = 1 }
+	}
+
+	option = {
+		name = uf_origin.71.a
+	}
+}
+country_event = {
+	id = uf_origin.72
+	title = uf_origin.72.name
+	desc = uf_origin.72.desc
+	picture = GFX_evt_uf_mega_shipyard_2
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_shipyard_base_system }
+	}
+
+	option = {
+		name = uf_origin.72.a
+	}
+}
+
+country_event = {
+	id = uf_origin.73
+	title = uf_origin.73.name
+	desc = uf_origin.73.desc
+	picture = GFX_evt_uf_mega_shipyard_3
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_shipyard_base_system }
+	}
+
+	option = {
+		name = uf_origin.73.a
+	}
+}
+
+country_event = {
+	id = uf_origin.74
+	title = uf_origin.74.name
+	desc = uf_origin.74.desc
+	picture = GFX_evt_uf_mega_shipyard
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_shipyard_base_system }
+	}
+
+	option = {
+		name = uf_origin.74.a
+	}
+}
+
+country_event = {
+	id = uf_origin.75
+	hide_window = yes
+
+	is_triggered_only = yes
+    immediate = {
+		random_country = {
+			limit = {
+				has_authority = auth_united_fleet
+				has_country_flag = uf_kind_shipyard_builder
+				is_ai = no
+			}
+			save_event_target_as = uf_owner
+		}
+		event_target:uf_shipyard_system_target = {
+			create_starbase = {
+				size = starbase_outpost
+				effect = {
+					set_owner = event_target:uf_owner
+				}
+			}
+		}
+		clear_global_event_target = uf_shipyard_system_target
+	}
+}
+
+planet_event = {
+	id = uf_origin.76
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		from.owner = { 
+			save_event_target_as = sun_killer
+			country_event = { id = uf_origin.77 } 
+		}
+		if = {
+			limit = { 
+				solar_system = { any_system_planet = {
+					has_owner = yes
+					owner = { NOT = { is_country_type = default_ev }}
+				}}
+			}
+			solar_system = { random_system_planet = {
+				limit = { has_owner = yes }
+				save_event_target_as = destroyed_colony
+				owner = { save_event_target_as = colony_pre_owner }
+			}}
+		}
+		if = {
+			limit = {
+				exists = space_owner
+				space_owner = {
+					NOT = { is_same_value = from.owner }
+					OR = {
+						is_country_type = default
+						is_country_type = fallen_empire
+						is_country_type = awakened_fallen_empire
+					}
+				}
+			}
+			# Generate threat
+			add_threat = { who = from.owner amount = 3 }
+			# modifier for allies + those upset by robots
+			every_country = {
+				limit = {
+					NOR = {
+						is_same_value = from.owner
+						is_same_value = root.owner
+						AND = {
+							has_federation = yes
+							is_in_federation_with = from.owner
+						}
+					}
+					OR = {
+						has_communications = from.owner
+						has_communications = root.owner
+					}
+					OR = {
+						AND = {
+							has_federation = yes
+							is_in_federation_with = root.owner
+						}
+						has_ai_personality = awakened_fallen_empire_spiritualist
+						AND = {
+							is_country_type = default
+							OR = {
+								is_egalitarian = yes
+								is_spiritualist = yes
+							}
+						}
+					}
+				}
+				add_opinion_modifier = {
+					modifier = opinion_destroyed_a_system
+					who = from.owner
+				}
+			}
+			# modifiers for victim
+			space_owner = {
+				add_opinion_modifier = {
+					modifier = opinion_destroyed_my_system
+					who = from.owner
+				}
+				if = {
+					limit = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+					add_modifier = {
+						modifier = colossus_victim
+						days = 10800 # 30 years
+					}
+				}
+			} 
+		}	
+		solar_system = {
+			set_star_flag = ring_world_built
+			every_system_planet = {
+				limit = { exists = owner }
+				owner = {
+					if = {
+						limit = { #isn't the case when the crisis bombards planets, for instance
+							is_at_war_with = root.from.fleet.owner
+						}
+						add_static_war_exhaustion = {
+							attacker = root.from.fleet.owner
+							location = root
+							value_for_planet_destruction = 1.0
+						}
+					}
+				}
+			}
+			destroy_system_uf_origin = yes
+			PREV.FROM = { fleet_event = { id = sh.30261 } }
+			remove_star_flag = ring_world_built
+		}
+		# 补充摧毁国家触发
+		event_target:colony_pre_owner = {
+			if = {
+				limit = { NOT = { any_owned_planet = {
+					NOT = { is_same_value = event_target:destroyed_colony }
+				}}}
+				# empire destruction menace reward
+				event_target:sun_killer = {
+					if = {
+						limit = { has_ascension_perk = ap_become_the_crisis }
+						complete_crisis_objective = crisobj_destroy_empires
+					}
+				}
+				destroy_country = yes
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.77
+	title = uf_origin.77.name
+	desc = uf_origin.77.desc
+	picture = GFX_evt_black_hole
+	show_sound = event_mystic_reveal
+	location = from
+	
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_country_flag = sun_killer_flag }
+	}
+
+	immediate = {
+		set_country_flag = sun_killer_flag
+	}
+
+	option = {
+		name = uf_origin.77.a
+		owner = {
+			add_resource = { influence = 500 }
+		}
+	}
+}
+
+planet_event = {
+	id = uf_origin.78
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = { # remove hive mind?
+		from.owner = { country_event = { id = uf_origin.79 } }
+		if = {
+			limit = {
+				exists = owner
+				owner = {
+					NOT = { is_same_value = from.owner }
+					OR = {
+						is_country_type = default
+						is_country_type = fallen_empire
+						is_country_type = awakened_fallen_empire
+					}
+				}
+			}
+			# Generate threat
+
+			every_country = {
+				limit = {
+					NOR = {
+						is_same_value = from.owner
+						is_same_value = root.owner
+						AND = {
+							has_federation = yes
+							is_in_federation_with = from.owner
+						}
+					}
+					OR = {
+						has_communications = from.owner
+						has_communications = root.owner
+					}
+					OR = {
+						AND = {
+							has_federation = yes
+							is_in_federation_with = root.owner
+						}
+						has_ai_personality = awakened_fallen_empire_spiritualist
+						AND = {
+							is_country_type = default
+							OR = {
+								is_egalitarian = yes
+								is_spiritualist = yes
+							}
+						}
+					}
+				}
+				# add_opinion_modifier = {
+				# 	modifier = opinion_uf_assimilation_a_world
+				# 	who = from.owner
+				# }
+			}
+			# modifiers for victim
+			owner = {
+				# add_opinion_modifier = {
+				# 	modifier = opinion_uf_assimilation_my_world
+				# 	who = from.owner
+				# }
+				if = {
+					limit = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+					add_modifier = {
+						modifier = colossus_victim
+						days = 10800 # 30 years
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				exists = owner
+				owner = { is_country_type = primitive }
+			}
+			# modifier for allies + those upset by genocide
+			every_country = {
+				limit = {
+					NOR = { is_same_value = from.owner }
+					OR = {
+						has_communications = from.owner
+						has_communications = root.owner
+					}
+					is_country_type = default
+					NOR = {
+						is_xenophobe = yes
+						is_homicidal = yes
+						is_xenophile = yes
+					}
+				}
+				add_opinion_modifier = {
+					modifier = opinion_assimilated_a_primitive_world
+					who = from.owner
+				}
+			}
+			every_country = {
+				limit = {
+					NOR = { is_same_value = from.owner }
+					OR = {
+						has_communications = from.owner
+						has_communications = root.owner
+					}
+					OR = {
+						has_ai_personality = awakened_fallen_empire_xenophile
+						AND = {
+							is_country_type = default
+							is_xenophile = yes
+						}
+					}
+				}
+				add_opinion_modifier = {
+					modifier = opinion_assimilated_a_primitive_world
+					who = from.owner
+				}
+			}
+		}
+		# Add war exhaustion to planet owner 
+		owner = {
+			if = {
+				limit = { #isn't the case when the crisis bombards planets, for instance
+					is_at_war_with = from.fleet.owner
+				}
+				add_static_war_exhaustion = {
+					attacker = from.fleet.owner
+					location = root
+					value_for_planet_destruction = 1.0
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = owner
+				owner = { is_same_value = from.owner }
+			}
+			# already owned
+		}
+		else = {
+			set_owner = from.owner
+		}
+		every_owned_pop = {
+			change_species = from.owner_main_species
+		}
+		every_owned_pop = {
+			limit = {
+				has_modifier = pop_recently_conquered
+			}
+			remove_modifier = pop_recently_conquered
+		}
+		every_owned_pop = {
+			set_citizenship_type = {
+				type = citizenship_full_machine
+				cooldown = yes
+			}
+		}
+		add_modifier = {
+			modifier = planet_uf_world_assimilation
+			days = 3600
+		}
+		if = {
+			limit = {
+				is_planet_class = pc_habitat
+			}
+			spawn_habitat_nanobot_effect = yes
+		}
+		else_if = {
+			limit = {
+				is_planet_class = pc_ringworld_habitable
+			}
+			spawn_ringworld_nanobot_effect = yes
+		}
+		if = {
+			limit = {
+				OR = {
+					is_planet_class = pc_habitat
+					is_planet_class = pc_ringworld_habitable
+				}
+			}
+			# nothing
+		}
+		else = {
+			switch = {
+				trigger = is_planet_class
+				pc_desert = { change_pc = pc_desert }
+				pc_arid = { change_pc = pc_arid }
+				pc_savannah = { change_pc = pc_savannah }
+				pc_ocean = { change_pc = pc_ocean }
+				pc_continental = { change_pc = pc_continental }
+				pc_tropical = { change_pc = pc_tropical }
+				pc_tundra = { change_pc = pc_tundra }
+				pc_arctic = { change_pc = pc_arctic }
+				pc_alpine = { change_pc = pc_alpine }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.79
+	title = uf_origin.79.name
+	desc = uf_origin.79.desc
+	picture = GFX_evt_crisis_defeated
+	show_sound = event_mystic_reveal
+	location = from
+	
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_country_flag = uf_assimilation_flag }
+	}
+
+	immediate = {
+		set_country_flag = uf_assimilation_flag
+	}
+
+	option = {
+		name = uf_origin.79.a
+		owner = {
+			add_resource = { unity = 100 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.80
+	title = uf_origin.80.name
+	desc = uf_origin.80.desc
+	picture = GFX_evt_megastructure_construction
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = resource_ring_system }
+	}
+
+	option = {
+		name = uf_origin.80.a
+	}
+}
+country_event = {
+	id = uf_origin.81
+	title = uf_origin.81.name
+	desc = uf_origin.81.desc
+	picture = GFX_evt_uf_resource_ring_1
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = resource_ring_system }
+	}
+
+	option = {
+		name = uf_origin.81.a
+	}
+}
+country_event = {
+	id = uf_origin.82
+	title = uf_origin.82.name
+	desc = uf_origin.82.desc
+	picture = GFX_evt_uf_resource_ring_2
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = resource_ring_system }
+	}
+
+	option = {
+		name = uf_origin.82.a
+	}
+}
+
+country_event = {
+	id = uf_origin.83
+	title = uf_origin.83.name
+	desc = uf_origin.83.desc
+	picture = GFX_evt_uf_resource_ring_3
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = resource_ring_system }
+	}
+
+	option = {
+		name = uf_origin.83.a
+	}
+}
+
+country_event = {
+	id = uf_origin.84
+	hide_window = yes
+	is_triggered_only = yes
+    immediate = {
+		every_country = {
+			limit = { 
+				is_country_type = default 
+				NOR = { 
+					is_gestalt = yes
+					is_homicidal = yes
+					has_authority = auth_united_fleet
+				}
+				NOT = { has_modifier = uf_galactic_university_modifier }
+			}
+			add_modifier = {
+				modifier = uf_galactic_university_modifier
+				days = -1
+			}
+		}
+		country_event = { id = uf_origin.84 days = 3600 }#每隔10年监测一次
+	}
+}
+
+country_event = {
+	id = uf_origin.85
+	title = uf_origin.85.name
+	desc = uf_origin.85.desc
+	picture = GFX_evt_uf_galactic_university
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_galactic_university_system }
+	}
+
+	option = {
+		name = uf_origin.85.a
+	}
+}
+
+country_event = {
+	id = uf_origin.86
+	title = uf_origin.86.name
+	desc = uf_origin.86.desc
+	picture = GFX_evt_uf_galactic_university
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_galactic_university_system }
+	}
+
+	option = {
+		name = uf_origin.86.a
+	}
+}
+
+country_event = {
+	id = uf_origin.87
+	title = uf_origin.87.name
+	desc = uf_origin.87.desc
+	picture = GFX_evt_uf_galactic_university
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_galactic_university_system }
+	}
+
+	option = {
+		name = uf_origin.87.a
+	}
+}
+
+country_event = {
+	id = uf_origin.88
+	title = uf_origin.88.name
+	desc = uf_origin.88.desc
+	picture = GFX_evt_uf_galactic_university
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_galactic_university_system }
+	}
+
+	option = {
+		name = uf_origin.88.a
+	}
+}
+
+country_event = {
+	id = uf_origin.89
+	title = "uf_origin.89.name"
+	desc = "uf_origin.89.desc"
+	picture = GFX_evt_uf_special_science
+	is_triggered_only = yes
+	trigger = {
+		last_increased_tech = tech_uf_science
+	}
+	immediate = {
+		create_ship_design = { design = "NAME_uf_science" }
+		add_ship_design = last_created_design
+	}
+	option = {
+		name = "uf_origin.89.a"
+	}
+}
+#荣耀世界
+country_event = {
+	id = uf_origin.90
+	title = uf_origin.90.name
+	desc = uf_origin.90.desc
+	picture = GFX_evt_uf_mega_habitat_4
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_mega_habitat_system }
+	}
+	option = {
+		name = uf_origin.90.a
+	}
+}
+country_event = {
+	id = uf_origin.91
+	title = uf_origin.91.name
+	desc = uf_origin.91.desc
+	picture = GFX_evt_uf_mega_habitat_1
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_mega_habitat_system }
+		country_event = { id = uf_origin.92 days = 1 }
+	}
+
+	option = {
+		name = uf_origin.91.a
+	}
+}
+
+country_event = {
+	id = uf_origin.92
+	hide_window = yes
+
+	is_triggered_only = yes
+    immediate = {
+		random_country = {
+			limit = {
+				has_authority = auth_united_fleet
+				has_country_flag = uf_mega_habitat_builder
+				is_ai = no
+			}
+			save_event_target_as = uf_owner
+		}
+		event_target:uf_mega_habitat_system_target = {
+			create_starbase = {
+				size = starbase_outpost
+				effect = {
+					set_owner = event_target:uf_owner
+				}
+			}
+		}
+		event_target:pc_uf_glory_target_1 = {
+			set_owner = event_target:uf_owner
+			while = {
+				count = 10
+				create_pop = {
+					species = owner_main_species
+				}
+			}
+			remove_building = building_colony_shelter
+			add_building = building_capital
+			add_district = district_uf_glory_city
+			add_district = district_uf_glory_city
+			add_district = district_uf_glory_base_resources_2
+			add_district = district_uf_glory_auto_hyperdimensional_matter
+		}
+		clear_global_event_target = pc_uf_glory_target_1
+		clear_global_event_target = uf_mega_habitat_system_target
+	}
+}
+
+country_event = {
+	id = uf_origin.93
+	title = uf_origin.93.name
+	desc = uf_origin.93.desc
+	picture = GFX_evt_uf_mega_habitat_2
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_mega_habitat_system }
+	}
+
+	option = {
+		name = uf_origin.93.a
+	}
+}
+country_event = {
+	id = uf_origin.94
+	title = uf_origin.94.name
+	desc = uf_origin.94.desc
+	picture = GFX_evt_uf_mega_habitat_3
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_mega_habitat_system }
+	}
+
+	option = {
+		name = uf_origin.94.a
+	}
+}
+country_event = {
+	id = uf_origin.95
+	title = uf_origin.95.name
+	desc = uf_origin.95.desc
+	picture = GFX_evt_uf_mega_habitat_4
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+
+    immediate = {
+		from = { save_event_target_as = uf_mega_habitat_system }
+		country_event = { id = uf_origin.96 days = 1 }
+	}
+	option = {
+		name = uf_origin.95.a
+	}
+}
+country_event = {
+	id = uf_origin.96
+	hide_window = yes
+
+	is_triggered_only = yes
+    immediate = {
+		every_planet_within_border = {
+			limit = {
+				has_planet_flag = pc_uf_glory_flag
+			}
+			set_owner = root
+			while = {
+				count = 10
+				create_pop = {
+					species = owner_main_species
+				}
+			}
+			remove_building = building_colony_shelter
+			add_building = building_capital
+			add_district = district_uf_glory_city
+			add_district = district_uf_glory_city
+			add_district = district_uf_glory_auto_hyperdimensional_matter
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.97
+	title = uf_origin.97.name
+	desc = uf_origin.97.desc
+	picture = GFX_evt_uf_star_city
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_star_city_system }
+	}
+
+	option = {
+		name = uf_origin.97.a
+	}
+}
+##联合之剑事件
+country_event = {
+	id = uf_origin.98
+	title = "uf_origin.98.name"
+	desc = "uf_origin.98.desc"
+	picture = GFX_evt_uf_sword
+	is_triggered_only = yes
+	trigger = {
+		last_increased_tech = tech_uf_sword
+	}
+	option = {
+		name = "uf_origin.98.a"
+		enable_special_project = {
+			name = "uf_sword_design"
+			owner = root
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.99
+	title = "uf_origin.99.name"
+	desc = "uf_origin.99.desc"
+	picture = GFX_evt_uf_sword
+	is_triggered_only = yes
+
+	option = {
+		name = "uf_origin.99.a"
+		add_tech_progress = {
+            tech = tech_uf_sword_1
+            progress = 0.5
+        }
+	}
+}
+
+country_event = {
+	id = uf_origin.100
+	title = uf_origin.100.name
+	desc = uf_origin.100.desc
+	picture = GFX_evt_uf_sword
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_sword_system }
+	}
+
+	option = {
+		name = uf_origin.100.a
+	}
+}
+
+country_event = {
+	id = uf_origin.101
+	title = uf_origin.101.name
+	desc = uf_origin.101.desc
+	picture = GFX_evt_uf_sword_1
+	show_sound = event_super_explosion
+	location = from
+	fire_only_once = yes
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_sword_system }
+		country_event = { id = uf_origin.102 days = 1 }
+	}
+
+	option = {
+		name = uf_origin.101.a
+	}
+}
+
+country_event = {
+	id = uf_origin.102
+	hide_window = yes
+
+	is_triggered_only = yes
+    immediate = {
+		random_country = {
+			limit = {
+				has_authority = auth_united_fleet
+				has_country_flag = uf_galaxy_gun_builder
+				is_ai = no
+			}
+			save_event_target_as = uf_owner
+		}
+		event_target:uf_galaxy_gun_system_target = {
+			create_starbase = {
+				size = starbase_outpost
+				effect = {
+					set_owner = event_target:uf_owner
+				}
+			}
+		}
+	}
+}
+country_event = {
+	id = uf_origin.103
+	title = uf_origin.103.name
+	desc = uf_origin.103.desc
+	picture = GFX_evt_uf_sword_2
+	show_sound = event_cityscape
+	location = from
+	fire_only_once = yes
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_sword_system }
+	}
+
+	option = {
+		name = uf_origin.103.a
+	}
+}
+country_event = {
+	id = uf_origin.104
+	title = uf_origin.104.name
+	desc = uf_origin.104.desc
+	picture = GFX_evt_uf_sword_3
+	show_sound = event_cityscape
+	location = from
+	fire_only_once = yes
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_sword_system }
+	}
+
+	option = {
+		name = uf_origin.104.a
+	}
+}
+country_event = {
+	id = uf_origin.105
+	title = uf_origin.105.name
+	desc = uf_origin.105.desc
+	picture = GFX_evt_uf_sword_4
+	show_sound = event_cityscape
+	location = from
+    fire_only_once = yes
+	
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_sword_system }
+		# 造完联合之剑就触发黑石碑天灾事件
+		if = {
+			limit = { NOT = { has_global_flag = monolith_crisis_disabled }}
+			if = {
+				limit = { check_variable = { which = uf_crisis_time value = 1 }}
+				country_event = { id = monolith_crisis.100 days = 18000 }
+			} else_if = {
+				limit = { check_variable = { which = uf_crisis_time value = 2 }}
+				country_event = { id = monolith_crisis.100 days = 10800 }
+			} else_if = {
+				limit = { check_variable = { which = uf_crisis_time value = 3 }}
+				country_event = { id = monolith_crisis.100 days = 7200 }
+			} else_if = {
+				limit = { check_variable = { which = uf_crisis_time value = 4 }}
+				country_event = { id = monolith_crisis.100 days = 3600 }
+			} else_if = {
+				limit = { check_variable = { which = uf_crisis_time value = 5 }}
+				country_event = { id = monolith_crisis.100 days = 1800 }
+			}
+			set_global_flag = monolith_crisis_triggered
+		}
+		set_global_flag = built_uf_sword
+	}
+
+	option = {
+		name = uf_origin.105.a
+	}
+}
+
+country_event = {
+	id = uf_origin.106
+	title = uf_origin.106.name
+	desc = uf_origin.106.desc
+	picture = GFX_evt_megastructure_construction
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_mega_store_system }
+	}
+
+	option = {
+		name = uf_origin.106.a
+	}
+}
+
+country_event = {
+	id = uf_origin.107
+	title = uf_origin.107.name
+	desc = uf_origin.107.desc
+	picture = GFX_evt_treasure_pile
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_mega_store_system }
+	}
+
+	option = {
+		name = uf_origin.107.a
+	}
+}
+#############
+country_event = {
+	id = uf_origin.108
+	title = uf_origin.108.name
+	desc = uf_origin.108.desc
+	picture = GFX_evt_uf_glory
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = uf_glory_system }
+	}
+
+	option = {
+		name = uf_origin.108.a
+	}
+}
+
+country_event = {
+	id = uf_origin.109
+	title = uf_origin.109.name
+	desc = uf_origin.109.desc
+	picture = GFX_evt_uf_star_fortress
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_origin.109.a
+	}
+}
+
+country_event = {
+	id = uf_origin.110
+	title = uf_origin.110.name
+	desc = uf_origin.110.desc
+	picture = GFX_evt_uf_star_fortress
+	show_sound = event_cityscape
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_origin.110.a
+	}
+}
+########
+country_event = {
+	id = uf_origin.10000
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_policy_flag = uf_assimilation_flag
+		num_unique_species > 1
+	}
+
+	immediate = {
+		every_owned_planet = {
+			planet_event = { id = uf_origin.10001 }
+		}
+	}
+}
+
+planet_event = {
+	id = uf_origin.10001
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = {
+			has_planet_flag = uf_planet_no_assimilation_flag
+		}
+		any_owned_pop = { species = {
+			NOT = {
+				is_same_species = root.owner_main_species
+			}
+		}}
+	}
+
+	immediate = {
+		# 判断异族人口是否少于6个
+		if = {
+			limit = { count_owned_pop = {
+				limit = { species = {
+					NOT = { is_same_species = root.owner_main_species }
+				}}
+				count <= 6
+			}}
+			while = {
+				limit = { any_owned_pop = { species = {
+					NOT = { is_same_species = root.owner_main_species }
+				}}}
+				random_owned_pop = {
+					limit = {
+						NOT = { is_same_species = root.owner_main_species }
+					}
+					kill_pop = yes
+				}
+				create_pop = {
+					species = owner_main_species
+				}
+			}
+		} else = {
+			random_list = {
+				1 = { # 6 pops
+					while = {
+						count = 6
+						random_owned_pop = {
+							limit = { species = {
+								NOT = { is_same_species = root.owner_main_species }
+							}}
+							kill_pop = yes
+						}
+						create_pop = {
+							species = owner_main_species
+						}
+					}
+				}
+
+				1 = { # 12 pops
+					while = {
+						count = 12
+						random_owned_pop = {
+							limit = { species = {
+								NOT = { is_same_species = owner.owner_main_species }
+							}}
+							kill_pop = yes
+						}
+						create_pop = {
+							species = owner_main_species
+						}
+					}
+				}
+				1 = { # 20 pops
+					while = {
+						count = 20
+						random_owned_pop = {
+							limit = { species = {
+								NOT = { is_same_species = owner.owner_main_species }
+							}}
+							kill_pop = yes
+						}
+						create_pop = {
+							species = owner_main_species
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.10002
+	title = "uf_origin.10002.name"
+	desc = "uf_origin.10002.desc"
+	picture = GFX_evt_uf_requires_shipset_mod
+	location = root
+
+	is_triggered_only = yes
+    trigger = {
+		NOT = { has_global_flag = enable_united_fleet_shipsets }
+	}
+
+	option = {
+		name = uf_origin.10002.a
+		country_event = { id = uf_origin.10002 days = 5 }
+	}
+	option = {
+		name = uf_origin.10002.b
+		set_global_flag = enable_united_fleet_shipsets
+	}
+}
+
+country_event = {
+	id = uf_origin.10003
+	hide_window = yes
+	is_triggered_only = yes
+    trigger = {
+		any_country = { has_authority = auth_united_fleet }
+	}
+    immediate = {
+		every_country = {
+			limit = { 
+				is_wg_empire = yes
+				is_ai = yes
+			}
+			capital_scope = {
+				solar_system = {
+				    set_name = "Cunning Hell"
+					star = {
+						change_pc = pc_black_hole
+						set_planet_size = 13
+						set_name = "Cunning Hell"
+					}
+					set_star_class = sc_black_hole
+				}
+			}
+			every_owned_pop = {
+				kill_pop = yes
+			}
+			every_owned_fleet = {
+				delete_fleet = this
+			}
+            every_planet_within_border = {
+				limit = {
+					is_colony = yes
+				}
+				remove_all_buildings = yes
+				remove_all_districts = yes
+				clear_deposits = yes
+				destroy_colony = yes
+				change_pc = pc_barren
+			}
+			destroy_country = yes
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.10004
+	title = uf_origin.10004.name
+	desc = uf_origin.10004.desc
+	location = fromfrom
+	
+	picture_event_data = {
+		room = "UF_O_room"
+	}
+	diplomatic = yes
+	force_open = yes	
+	trigger = {
+		has_authority = auth_united_fleet
+	}
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	option = {
+		name = uf_origin.10004.a
+		hidden_effect = { 
+			set_variable = { which = uf_crisis_time value = 4 }
+			country_event = { id = monolith_crisis.10000 }
+		}
+	}
+}
+
+planet_event = {
+	id = uf_origin.10005
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+        planet_devastation >= 10
+		has_orbital_bombardment_stance = uf_doom	
+		FROM = {
+			OR = {
+				has_authority = auth_united_fleet
+			}
+		}
+		has_owner = yes	
+	}	
+	
+	immediate = {
+		FROM = {
+			if = {
+				limit = { has_ascension_perk = ap_become_the_crisis }
+				complete_crisis_objective = crisobj_destroy_worlds
+			}
+		}
+		# 炸球后摧毁国家
+		if = {
+			limit = {
+				exists = owner
+				owner = {
+					NOT = { is_country_type = default_ev }
+					NOT = {
+						any_owned_planet = {
+							NOT = { is_same_value = root }
+						}
+					}
+				}
+			}
+			# empire destruction menace reward
+			FROM = { 
+				if = {
+					limit = { has_ascension_perk = ap_become_the_crisis }
+					complete_crisis_objective = crisobj_destroy_empires
+				}
+			}
+			owner = { destroy_country = yes }
+		}
+		owner = { 
+			if = {
+				limit = { #isn't the case when the crisis bombards planets, for instance
+					is_at_war_with = from.fleet.owner
+				}
+				add_static_war_exhaustion = {
+					attacker = from
+					location = root
+					value_for_planet_destruction = 1.0
+				}
+			}
+			country_event = { id = uf_origin.10006 } 
+		}
+		from = { country_event = { id = uf_origin.10007 } }
+		if = {
+			limit = { 
+				is_ringworld_wg = yes 
+			}
+			change_pc = pc_ringworld_habitable_damaged
+            reset_planet = yes
+        }
+        else_if = {
+            limit = { is_habitat_wg = yes }
+			remove_planet = yes
+        }		
+        else = {
+			change_pc = pc_shattered
+        }
+		remove_all_buildings = yes
+		every_owned_pop = {
+			kill_pop = yes
+		}
+		clear_planet_modifiers = yes
+		set_planet_flag = uf_doom_flag
+	}
+}
+
+country_event = {
+	id = uf_origin.10006
+	title = "uf_origin.10006.name"
+	picture = GFX_evt_wsg_bombardment
+	desc = uf_origin.10006.desc
+	show_sound = event_super_explosion
+	location = from
+	
+	is_triggered_only = yes
+	
+	option = {
+		name =uf_origin.10006.a
+		custom_tooltip = bombed_to_broken_world
+	}
+}
+
+country_event = {
+	id = uf_origin.10007
+	title = "uf_origin.10006.name"
+	picture = GFX_evt_wsg_bombardment
+	desc = uf_origin.10007.desc
+	show_sound = event_super_explosion
+	location = from
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = uf_origin.10007.a
+		custom_tooltip = bombed_to_broken_world
+	}
+}
+
+country_event = {
+	id = uf_origin.10008
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_owned_leader = {
+			add_experience = 3500
+			remove_all_negative_traits = yes
+		}
+	}
+}
+
+planet_event = {
+	id = uf_origin.10009
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		has_planet_flag = uf_heavy_colonizer_ship
+	}
+
+	immediate = {
+		while = {
+			count = 9
+			create_pop = {
+				species = owner_main_species
+			}
+		}
+		if = {
+			limit = { is_planet_class = pc_habitat }
+			remove_building = building_colony_shelter
+			add_building = building_hab_major_capital
+		}
+		else = {
+			remove_building = building_colony_shelter
+			add_building = building_capital
+		}
+		add_building = building_uf_residence
+		add_building = building_uf_entertainment_center
+		remove_planet_flag = uf_heavy_colonizer_ship
+	}
+}
+
+planet_event = {
+	id = uf_origin.10010
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		exists = FROM
+		FROM = { 
+			is_ship_size = uf_colonizer
+		} 
+	}
+
+	immediate = {
+		set_planet_flag = uf_heavy_colonizer_ship
+	}
+}
+
+country_event = {
+	id = uf_origin.10011
+	hide_window = yes
+	fire_only_once = yes
+	is_triggered_only = yes
+	trigger = {
+		has_origin = origin_united_fleet_glory_world
+	}
+	immediate = {
+		set_country_flag = uf_rebuilding_homeworld_chain_finished
+		set_global_flag = seismic_disturbance_global
+		set_global_flag = pheromonefrenzy_done_global
+		add_modifier = {
+			modifier = uf_administrator_modifier
+			days = -1
+		}
+		add_modifier = {
+			modifier = uf_modifier_glory_world_start
+			days = -1
+		}
+		if  = {
+			limit = {
+				has_civic = civic_uf_4
+			}
+			give_technology = { tech = tech_uf_assimilation message = no }	
+
+		}
+		country_event = { id = uf_origin.10002 }
+		no_scope = {
+			spawn_system = {
+				min_distance >= 600
+				max_distance <= 605
+				min_orientation_angle = 305
+				max_orientation_angle = 310
+				initializer = "uf_mega_habitat_origin_2_system"
+				hyperlane = no
+			}
+		}
+		event_target:uf_mega_habitat_origin_old_start_planet = {
+			every_owned_pop = {
+				resettle_pop = {
+					pop = this
+					planet = event_target:uf_mega_habitat_origin_start_home_planet
+				}
+				unemploy_pop = yes
+			}
+			change_pc = pc_barren_cold
+			set_name = "King Heaven"
+		}
+		
+		event_target:uf_mega_habitat_origin_2_system_target = {
+			set_star_flag = empire_home_system
+			set_star_flag = empire_cluster
+			create_starbase = {
+				size = starbase_starport
+				module = shipyard
+				building = crew_quarters
+				owner = root
+				effect = {
+					set_starbase_module = {
+						slot = 2
+						module = trading_hub
+					}
+				}
+			}
+		}
+		event_target:uf_mega_habitat_origin_start_home_planet = {
+			remove_deposit = yes
+			clear_planet_modifiers = yes
+			clear_blockers = yes
+			set_owner = root
+			set_controller = root
+			set_capital = yes
+			while = {
+				count = 22
+				create_pop = {
+					species = owner_main_species
+				}
+			}
+			remove_building = building_colony_shelter
+			add_building = building_capital
+			add_building = building_uf_assembly
+			add_building = building_uf_entertainment_center
+			add_district = district_uf_glory_city
+			add_district = district_uf_glory_auto_science
+			add_district = district_uf_glory_auto_hyperdimensional_matter
+			add_district = district_uf_glory_auto_hyperdimensional_matter
+		}
+		event_target:uf_mega_habitat_origin_2_system_target = {
+			random_owned_planet = {
+				limit = { has_planet_flag = uf_new_capital }
+				set_owner = root
+				set_controller = root
+				set_capital = yes
+			}
+		}
+		event_target:pc_uf_glory_flag_o = {
+			remove_deposit = yes
+			clear_planet_modifiers = yes
+			clear_blockers = yes
+			set_owner = root
+			set_controller = root
+			while = {
+				count = 25
+				create_pop = {
+					species = owner_main_species
+				}
+			}
+			remove_building = building_colony_shelter
+			add_building = building_capital
+			add_building = building_uf_assembly
+			add_building = building_uf_entertainment_center
+			add_district = district_uf_glory_city
+			add_district = district_uf_glory_base_resources
+			add_district = district_uf_glory_auto_industry
+		}
+		event_target:pc_uf_glory_flag_o_1 = {
+			remove_deposit = yes
+			clear_planet_modifiers = yes
+			clear_blockers = yes
+			set_owner = root
+			set_controller = root
+			while = {
+				count = 25
+				create_pop = {
+					species = owner_main_species
+				}
+			}
+			remove_building = building_colony_shelter
+			add_building = building_capital
+			add_building = building_uf_assembly
+			add_building = building_uf_entertainment_center
+			add_district = district_uf_glory_city
+			add_district = district_uf_glory_base_resources
+			add_district = district_uf_glory_auto_industry
+		}
+		event_target:pc_uf_glory_flag_o_2 = {
+			remove_deposit = yes
+			clear_planet_modifiers = yes
+			clear_blockers = yes
+			set_owner = root
+			set_controller = root
+			while = {
+				count = 25
+				create_pop = {
+					species = owner_main_species
+				}
+			}
+			remove_building = building_colony_shelter
+			add_building = building_capital
+			add_building = building_uf_assembly
+			add_building = building_uf_entertainment_center
+			add_district = district_uf_glory_city
+			add_district = district_uf_glory_base_resources_2
+			add_district = district_uf_glory_auto_rare_resource
+		}
+		event_target:pc_uf_glory_flag_o_3 = {
+			remove_deposit = yes
+			clear_planet_modifiers = yes
+			clear_blockers = yes
+			set_owner = root
+			set_controller = root
+			while = {
+				count = 25
+				create_pop = {
+					species = owner_main_species
+				}
+			}
+			remove_building = building_colony_shelter
+			add_building = building_capital
+			add_building = building_uf_assembly
+			add_building = building_uf_entertainment_center
+			add_district = district_uf_glory_city
+			add_district = district_uf_glory_base_resources_2
+			add_district = district_uf_glory_auto_rare_resource
+		}
+		ROOT = { random_owned_leader = {
+			limit = { leader_class = official }
+			unassign_leader = this
+			save_event_target_as = target_official
+		}}
+		capital_scope = {
+			set_sector_capital = yes
+			sector = { assign_leader = event_target:target_official }
+		}
+		event_target:uf_mega_habitat_origin_2_system_target = {
+			remove_star_flag = empire_home_system
+			remove_star_flag = empire_cluster
+			every_neighbor_system = {
+				remove_star_flag = empire_cluster
+			}			
+			create_fleet = {
+				effect = {
+					set_owner = root
+					create_ship = {
+						name = random
+						random_existing_design = science
+					}
+					set_fleet_stance = evasive
+					set_location = root.capital_scope.star
+					owner = {
+						random_owned_leader = {
+							limit = {
+								leader_class = scientist
+								NOR = {
+									is_researching_area = physics
+									is_researching_area = society
+									is_researching_area = engineering
+								}
+							}
+							save_event_target_as = science_ship_leader
+						}
+					}
+					if = {
+						limit = {
+							exists = event_target:science_ship_leader
+						}
+						set_leader = event_target:science_ship_leader
+					}
+				}
+			}
+			
+			create_fleet = {
+				effect = {
+					set_owner = root
+					create_ship = {
+						name = random
+						random_existing_design = constructor
+					}
+					set_fleet_stance = evasive
+					set_location = root.capital_star
+				}
+			}
+			create_fleet = {
+				name = "NAME_uf_15th_Fleet"
+				effect = {
+					set_owner = root
+					while = { count = 5
+						create_ship = {
+							name = random
+							design = "NAME_15th_battleship"
+						}
+					}
+					while = { count = 12
+						create_ship = {
+							name = random
+							design = "NAME_15th_battlecrusier"
+						}
+					}
+					while = { count = 12
+						create_ship = {
+							name = random
+							design = "NAME_15th_corvette"
+						}
+					}
+					set_fleet_stance = passive
+					set_location = root.capital_star
+					owner = {
+						random_owned_leader = {
+							limit = {
+								leader_class = commander
+								has_leader_flag = uf_vv_admiral
+							}
+							save_event_target_as = commander_ship_leader
+						}
+					}
+					if = {
+						limit = {
+							exists = event_target:admiral_ship_leader
+						}
+						set_leader = event_target:admiral_ship_leader
+					}
+				}
+				settings = { 
+					can_upgrade = no 
+					spawn_debris = no 
+				}
+			}
+		}
+		country_event = { id = uf_origin.10016 }
+	}
+}
+
+country_event = {
+	id = uf_origin.10012
+	hide_window = yes
+    trigger = {
+		has_authority = auth_united_fleet
+		is_multiplayer = yes 
+	}
+	is_triggered_only = yes
+    immediate = {
+		set_global_flag = uf_rebuilding_homeworld_chain_global_finished
+	}
+}
+
+country_event = {
+	id = uf_origin.10013
+	hide_window = yes
+	is_triggered_only = yes
+    trigger = {
+		has_authority = auth_united_fleet
+		has_civic = civic_uf_5
+	}
+	immediate = {
+		every_owned_leader = {
+			add_experience = 800
+			remove_all_negative_traits = yes
+		}
+		random_owned_leader = {
+			limit = { is_councilor_type = councilor_research }
+			kill_leader = { show_notification = no }
+		}
+		create_leader = {
+			class = scientist
+			species = root
+			name = "NAME_uf_Yubari"
+			set_age = 42
+			gender = female
+			skill = 1
+			traits = {
+				trait = leader_trait_scientist_uf_Yubari
+				trait = leader_trait_experimenter_3 
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				change_leader_portrait = wsg9983
+				add_experience = 1700
+				set_leader_flag = wsg_event_leader
+				set_leader_flag = legendary_leader
+				set_leader_flag = uf_Yubari_scientist
+			}
+		}
+		random_owned_leader = {
+			limit = { has_leader_flag = uf_Yubari_scientist }
+			set_council_position = councilor_research
+			root = {
+				random_owned_fleet = {
+					limit = { 
+						NOT = { exists = leader }
+						any_owned_ship = { is_ship_size = science }
+					}
+					set_leader = prevprev
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.10014
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		last_increased_tech = tech_repeatable_uf_auto_building_upgrade
+	}
+	immediate = {
+		every_owned_planet = {
+			limit = {
+				OR = {
+					colony_type = col_uf_auto_world
+					has_modifier = uf_glory_world_cente
+				}
+			}
+			change_variable = { which = "auto_building_upgrade" value = 1 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_origin.10015
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		give_technology = { tech = tech_uf_tradition_ship_section message = no }
+	}
+}
+#银河之上作弊
+country_event = { 
+	id = uf_origin.10016
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		create_country = {
+            name = "NAME_UF_BEYOND_THE_GALAXY_CHEAT_SPACESTATION"
+            flag = {
+               	icon = {
+                   	category = "warshipgirls"
+                   	file = "wg_flags_06.dds"
+                }
+                background= {
+                    category = "backgrounds"
+                    file = "v.dds"
+                }
+                colors={
+                   	"yellow"
+                   	"black"
+                   	"null"
+                   	"null"
+				}
+            }
+			name_list = "WSG2"
+            type = uf_beyond_the_galaxy_cheat_station
+			effect = {
+				save_global_event_target_as = uf_cheat_station_country
+				set_country_flag = uf_cheat_station_country_flag
+				establish_communications_no_message = root.owner
+			}
+        }
+		capital_scope = {
+			solar_system = {
+				random_system_planet = {
+					limit = {
+						is_star = yes
+					}
+					save_event_target_as = uf_cheat_station_star
+				}
+			}
+			create_fleet = {
+				name = "NAME_UF_BEYOND_THE_GALAXY_CHEAT_SPACESTATION"
+				settings = {
+					spawn_debris = no
+					is_boss = yes
+				}
+				effect = {
+					set_owner = event_target:uf_cheat_station_country
+					create_ship = {
+						design = "NAME_UF_BEYOND_THE_GALAXY_CHEAT_SPACESTATION"
+					}
+					set_event_locked = yes
+					set_location = {
+						target = event_target:uf_cheat_station_star
+						distance = 400
+						angle = random
+					}
+					set_fleet_flag = uf_cheat_station_flag
+					set_fleet_stance = passive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 100
+				 }
+			}
+		}	
+	}
+}
+country_event = {
+	id = uf_origin.10017
+	title = "uf_origin.10017.title"
+	desc = "uf_origin.10017.desc"
+    trigger = {
+        from = { OR = {
+            is_country_type = uf_beyond_the_galaxy_cheat_station
+            is_same_value = root # returned from menu
+        }}
+        is_ai = no
+    }
+
+    diplomatic = yes
+	is_triggered_only = yes
+
+	picture_event_data = {
+		room = UF4_room
+    }
+    
+    immediate = {
+        set_country_flag = engaged_with_great_ming
+    }
+	option = { 
+        name = uf_origin.10017.g
+		custom_tooltip = uf_origin.10017.g.tooltip
+		hidden_effect = {
+			create_fleet = {
+				name = "WGSUPER"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = root
+					create_ship = {
+						name = random
+						design = "WGSUPER"
+						upgradable = no
+					}
+					set_location = root.capital_scope
+				}
+				settings = { 
+					can_upgrade = no 
+				}
+			}
+		}
+    }
+	option = { 
+        name = uf_origin.10017.d
+		custom_tooltip = uf_origin.10017.d.tooltip
+		hidden_effect = {
+			create_fleet = {
+				name = "NAME_SRA_SOGZ_UF_design_2"
+				settings = {
+					spawn_debris = no
+					is_boss = yes
+				}
+				effect = {
+					set_owner = root
+					create_ship = {
+						name = random
+						design = "NAME_SRA_SOGZ_UF_design_2"
+						upgradable = no
+					}
+					set_location = root.capital_scope
+				}
+				settings = { 
+					can_upgrade = no 
+				}
+			}
+		}
+    }
+	option = { 
+        name = uf_origin.10017.c
+		custom_tooltip = uf_origin.10017.c.tooltip
+		hidden_effect = {
+			create_fleet = {
+				name = "NAME_uf_navigator"
+				settings = {
+					spawn_debris = no
+					is_boss = yes
+				}
+				effect = {
+					set_owner = root
+					create_ship = {
+						name = random
+						design = "NAME_uf_navigator"
+						upgradable = no
+					}
+					set_location = root.capital_scope
+				}
+				settings = { 
+					can_upgrade = no 
+				}
+			}
+		}
+    }
+	option = { 
+        name = uf_origin.10017.f
+		custom_tooltip = uf_origin.10017.f.tooltip
+		hidden_effect = {
+			create_fleet = {
+				name = "NAME_type59_fleet"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = root
+					create_ship = {
+						name = random
+						design = "NAME_type59"
+						upgradable = no
+					}
+					set_location = root.capital_scope
+				}
+				settings = { 
+					can_upgrade = no 
+				}
+			}
+		}
+    }
+	option = { 
+        name = uf_origin.10017.e
+		custom_tooltip = uf_origin.10017.e.tooltip
+		hidden_effect = {
+			create_fleet = {
+				name = "NAME_monolith_crisis_huge_fleet"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = root
+					while = { count = 1
+						create_ship = {
+							name = random
+							design = "NAME_monolith_crisis_titan"
+							upgradable = no
+						}
+					}
+					while = { count = 5
+						create_ship = {
+							name = random
+							design = "NAME_monolith_crisis_large"
+						}
+					}
+					while = { count = 10
+						create_ship = {
+							name = random
+							design = "NAME_monolith_crisis_small"
+						}
+					}
+					set_location = root.capital_scope
+				}
+				settings = { 
+					can_upgrade = no 
+				}
+			}
+		}
+    }
+
+    option = { 
+        name = uf_origin.10017.b
+		custom_tooltip = uf_origin.10017.b.tooltip
+		hidden_effect = {
+			create_fleet = {
+				name = "NAME_uf_cheat_uf_glory"
+				settings = {
+					spawn_debris = no
+					is_boss = yes
+				}
+				effect = {
+					set_owner = root
+					create_ship = {
+						name = random
+						design = "NAME_uf_cheat_uf_glory"
+						upgradable = no
+					}
+					set_location = root.capital_scope
+				}
+				settings = { 
+					can_upgrade = no 
+				}
+			}
+		}
+    }
+    option = { 
+        name = uf_origin.10017.a
+		custom_tooltip = uf_origin.10017.a.tooltip
+		hidden_effect = {
+			create_fleet = {
+				name = "NAME_uf_cheat_small_fleet"
+				effect = {
+					set_owner = root
+					while = { count = 2
+						create_ship = {
+							name = random
+							design = "NAME_uf_cheat_titan"
+							upgradable = no
+						}
+					}
+					while = { count = 6
+						create_ship = {
+							name = random
+							design = "NAME_15th_battleship"
+						}
+					}
+					while = { count = 12
+						create_ship = {
+							name = random
+							design = "NAME_15th_battlecrusier"
+						}
+					}
+					while = { count = 25
+						create_ship = {
+							name = random
+							design = "NAME_15th_corvette"
+						}
+					}
+					set_location = root.capital_scope
+				}
+				settings = { 
+					can_upgrade = no 
+					uses_naval_capacity = no
+				}
+			}
+		}
+    }
+	option = { 
+        name = uf_origin.10017.i
+		custom_tooltip = uf_origin.10017.i.tooltip
+		hidden_effect = {
+			create_fleet = {
+				name = "NAME_WG_Khan_star_destroyer"
+				effect = {
+					set_owner = root
+					while = { count = 1
+						create_ship = {
+							name = random
+							design = "NAME_WG_Khan_star_destroyer"
+							upgradable = no
+						}
+					}
+					set_location = root.capital_scope
+				}
+				settings = { 
+					can_upgrade = no 
+					uses_naval_capacity = no
+				}
+			}
+		}
+    }
+	option = { 
+        name = uf_origin.10017.h
+		custom_tooltip = uf_origin.10017.h.tooltip
+		hidden_effect = {
+			create_fleet = {
+				name = "NAME_wsg_old_dreadnought"
+				effect = {
+					set_owner = root
+					while = { count = 1
+						create_ship = {
+							name = random
+							design = "NAME_wsg_dreadnought"
+							upgradable = no
+						}
+					}
+					while = { count = 1
+						create_ship = {
+							name = random
+							design = "NAME_wsg_dreadnought_dark"
+							upgradable = no
+						}
+					}
+					set_location = root.capital_scope
+				}
+				settings = { 
+					can_upgrade = no 
+					uses_naval_capacity = no
+				}
+			}
+		}
+    }
+	option = { 
+        name = uf_origin.10017.j
+		custom_tooltip = uf_origin.10017.j.tooltip
+		hidden_effect = {
+			create_fleet = {
+				name = "NAME_wsg_logo_titan_fleet"
+				effect = {
+					set_owner = root
+					while = { count = 1
+						create_ship = {
+							name = random
+							design = "NAME_WG_LOGO_TITAN_1"
+							graphical_culture = "mammalian_01"
+							upgradable = no
+						}
+					}
+					while = { count = 1
+						create_ship = {
+							name = random
+							design = "NAME_WG_LOGO_TITAN_2"
+							graphical_culture = "mammalian_01"
+							upgradable = no
+						}
+					}
+					while = { count = 1
+						create_ship = {
+							name = random
+							design = "NAME_WG_LOGO_TITAN_3"
+							graphical_culture = "mammalian_01"
+							upgradable = no
+						}
+					}
+					while = { count = 1
+						create_ship = {
+							name = random
+							design = "NAME_WG_LOGO_TITAN_4"
+							graphical_culture = "mammalian_01"
+							upgradable = no
+						}
+					}
+					while = { count = 1
+						create_ship = {
+							name = random
+							design = "NAME_WG_LOGO_TITAN_5"
+							graphical_culture = "mammalian_01"
+							upgradable = no
+						}
+					}
+					while = { count = 1
+						create_ship = {
+							name = random
+							design = "NAME_WG_LOGO_TITAN_6"
+							graphical_culture = "mammalian_01"
+							upgradable = no
+						}
+					}
+					set_location = root.capital_scope
+				}
+				settings = { 
+					can_upgrade = no 
+					uses_naval_capacity = no
+				}
+			}
+		}
+    }
+	option = { 
+        name = uf_origin.10017.m
+		custom_tooltip = uf_origin.10017.m.tooltip
+		hidden_effect = {
+			create_fleet = {
+				name = "NAME_WG_FE_ARK_2"
+				effect = {
+					set_owner = root
+					while = { count = 1
+						create_ship = {
+							name = random
+							design = "NAME_WG_FE_ARK_2"
+							upgradable = no
+						}
+					}
+					set_location = root.capital_scope
+				}
+				settings = { 
+					can_upgrade = no 
+					uses_naval_capacity = no
+				}
+			}
+		}
+    }
+	option = { 
+        name = uf_origin.10017.k
+		custom_tooltip = uf_origin.10017.k.tooltip
+		hidden_effect = {
+			create_fleet = {
+				name = "NAME_waterdrop"
+				effect = {
+					set_owner = root
+					while = { count = 1
+						create_ship = {
+							name = random
+							design = "NAME_waterdrop"
+							upgradable = no
+						}
+					}
+					set_location = root.capital_scope
+				}
+				settings = { 
+					can_upgrade = no 
+					uses_naval_capacity = no
+				}
+			}
+		}
+    }
+	option = { 
+        name = uf_origin.10017.l
+    }
+}
+

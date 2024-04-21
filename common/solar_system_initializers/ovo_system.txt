@@ -1,0 +1,105 @@
+ovo_system = {
+	name = "NAME_ovo_system"
+	class = "sc_b"
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 70
+	}
+
+	
+	flags = { ovo_system }
+	
+	init_effect = {
+		every_neighbor_system = {
+			set_star_flag = empire_cluster
+			every_neighbor_system = {
+				set_star_flag = empire_cluster
+			}
+		}
+		generate_home_system_resources = yes
+	}
+
+	planet = {
+		class = "pc_b_star"
+		orbit_distance = 0
+		orbit_angle = 1
+		size = { min = 20 max = 30 }
+		has_ring = no
+		init_effect = {
+		    save_global_event_target_as = ovo_star_target
+		}	
+	}
+	
+	planet = {
+		count = 1
+		orbit_distance = 45
+	}
+	
+	change_orbit = 25
+	
+	planet = {
+		count = 3
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = { min = 15 max = 110 }
+		
+		init_effect = {
+			prevent_anomaly = yes
+		}		
+	}
+	
+	planet = {
+		class = pc_wsg_port
+		orbit_distance = 35
+		orbit_angle = random
+		size = { min = 13 max = 25 }
+		home_planet = yes
+		has_ring = no
+		deposit_blockers = none
+		modifiers = none
+
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+			set_planet_flag = ovo_planet
+			save_global_event_target_as = ovo_planet
+			add_modifier =  { modifier = planet_OVO2 days = -1 }
+			add_deposit = d_neo2
+			add_deposit = d_grassy_building
+			add_deposit = d_grassy_building
+			add_deposit = d_grassy_building
+			add_deposit = d_grassy_building
+			add_deposit = d_grassy_building
+			add_deposit = d_grassy_building
+		}
+	}
+	
+	planet = {
+		class = pc_wg_water
+		orbit_distance = 40
+		size = { min = 12 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 1 }
+			orbit_distance = 5
+		}
+	}
+
+	planet = {
+		class = pc_frozen
+		count = 2
+		orbit_distance = 45
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 1 }
+			orbit_distance = 5
+		}
+	}
+	init_effect = {
+		save_global_event_target_as = ovo_system
+	}
+}

@@ -1,0 +1,817 @@
+#母港区系
+d_port_system = {
+	class = "sc_g"
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 70
+	}
+
+	usage = custom_empire
+	
+	flags = { empire_home_system }
+	
+	init_effect = {
+		every_neighbor_system = {
+			set_star_flag = empire_cluster
+			every_neighbor_system = {
+				set_star_flag = empire_cluster
+			}
+		}
+		generate_home_system_resources = yes
+	}
+
+	planet = {
+		count = 1
+		class = "pc_g_star"
+		orbit_distance = 0
+		orbit_angle = 1
+		size = { min = 20 max = 30 }
+		has_ring = no
+	}
+	
+	planet = {
+		count = 1
+		orbit_distance = 45
+	}
+	
+	change_orbit = 25
+	
+	planet = {
+		count = 3
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = { min = 15 max = 110 }
+		
+		init_effect = {
+			set_planet_flag = port_ck2
+			prevent_anomaly = yes
+		}		
+	}
+	
+	planet = {
+		count = 1
+		class = ideal_planet_class
+		orbit_distance = 35
+		orbit_angle = random
+		size = { min = 30 max = 35 }
+		home_planet = yes
+		has_ring = no
+		deposit_blockers = none
+		modifiers = none
+
+		init_effect = {
+			set_planet_flag = port_home
+			prevent_anomaly = yes
+			clear_deposits = yes
+			add_deposit = r_neoforce_remain	
+			add_deposit = r_port_pilan_ruins
+			add_deposit = r_DM
+			add_deposit = r_hp_shipyard
+			add_deposit = r_cherry_tree
+			add_deposit = d_dp_obelisk
+			add_deposit = d_satellite_group
+			add_deposit = d_plant_reaper
+			add_deposit = d_bison_power_station
+			add_deposit = d_dp_mining_station			
+		}
+
+			planet = {
+				count = 1
+				orbit_angle = { min = 90 max = 270 }
+				size = { min = 8 max = 12 }
+				class = pc_barren_cold
+				orbit_distance = 25
+				satellite_naming_policy = lower_case_latin_letters
+
+				change_orbit = @base_moon_distance
+			}
+	}
+	planet = {
+	    class = pc_frozen
+		orbit_distance = 40
+		size = { min = 20 max = 25 }
+		change_orbit = @base_moon_distance
+		init_effect = {
+			add_modifier =  { modifier = planet_clovertheater days = -1 }
+			set_planet_flag = clovertheater_future_flag
+		}		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 1 }
+			orbit_distance = 5
+		}
+	}
+
+	planet = {
+		class = pc_frozen
+		count = 2
+		orbit_distance = 45
+		change_orbit = @base_moon_distance
+		init_effect = {
+			set_planet_flag = wg_civic_drg_planet
+		}
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 1 }
+			orbit_distance = 5
+		}
+	}	
+	neighbor_system = {
+		trigger = { num_guaranteed_colonies >= 2 }
+		distance = { min = 13 max = @distance }
+		initializer = "neighbor_t1"
+	}
+	neighbor_system = {
+		trigger = { num_guaranteed_colonies >= 1 }
+		distance = { min = 13 max = @distance }	
+		initializer = "neighbor_t1_first_colony"
+	}
+}
+
+#转转环
+wg_dyson_ring_home_system = {
+	usage = custom_empire
+	flags = { empire_home_system wg_dyson_ring_system }
+	class = "sc_g"
+	
+	planet = {
+		class = star
+		name = "NAME_WG_NO_NAME"
+		size = { min = 25 max = 25 }
+		orbit_distance = 0
+		deposit_blockers = none
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+			save_global_event_target_as = wg_dyson_ring_home_system_location
+		}			
+	}			
+	planet = {
+		size = { min = 25 max = 25 }
+		class = ideal_planet_class
+		orbit_distance = 0.1
+		orbit_angle = 0
+		orbit_angle = random
+		home_planet = yes
+		has_ring = no
+		deposit_blockers = none
+		modifiers = none
+		init_effect = {
+		    change_pc = pc_dyson_ring
+			set_planet_flag = dyson_ring_home_system_flag
+		}
+	}
+	
+	change_orbit = 60
+	init_effect = {
+		spawn_megastructure = {
+			type = "ration_dyson_ring_low2"
+			graphical_culture = "wsg_01"
+			orbit_angle = 0
+			orbit_distance = 0
+			planet = star
+		}
+	}
+	planet = {
+		class = "pc_gas_giant"
+		orbit_distance = 90
+		orbit_angle = -160
+		size = 25
+		has_ring = no
+		change_orbit = 6
+		init_effect = {
+			set_planet_flag = dyson_ring_planet_system_flag
+		}
+		moon = {
+			class = "pc_molten"
+			size = 6
+			orbit_distance = 10
+			orbit_angle = 110
+			has_ring = no
+			init_effect = {
+				set_planet_flag = dyson_ring_planet_system_flag
+			}
+		}
+		moon = {
+			class = "pc_frozen"
+			size = 6
+			orbit_distance = 2.5
+			orbit_angle = 10
+			has_ring = no
+			init_effect = {
+				set_planet_flag = dyson_ring_planet_system_flag
+			}
+		}
+	}
+	init_effect = {
+		every_neighbor_system = {
+			set_star_flag = empire_cluster
+			every_neighbor_system = {
+				set_star_flag = empire_cluster
+			}
+		}
+		generate_home_system_resources = yes
+		set_global_flag = spawned_wg_dyson_ring
+	}
+	neighbor_system = {
+		trigger = { num_guaranteed_colonies >= 2 }
+		distance = { min = 13 max = @distance }
+		initializer = "neighbor_t1"
+	}
+	neighbor_system = {
+		trigger = { num_guaranteed_colonies >= 1 }
+		distance = { min = 13 max = @distance }	
+		initializer = "neighbor_t1_first_colony"
+	}
+
+}
+
+
+# 水b起源星系
+wg_origin_waterb_home_system = {
+	class = "sc_b"
+	usage = origin
+	usage_odds = 0
+	name = "NAME_wg_boss_water_system"
+	
+	max_instances = 1
+	spawn_chance = 9999
+	
+	flags = { empire_home_system wg_boss_water_system_home wg_origin_waterb_home_system }
+
+
+	planet = {
+		class = "pc_b_star"
+		size = { min = 15 max = 20 }
+		orbit_distance = 0
+		
+		init_effect = {
+			add_deposit = d_energy_5
+		}
+
+	}	
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 280
+	}
+	change_orbit = 50
+
+	planet = {
+		class = pc_wg_water
+		name = "NAME_wg_water1"
+		orbit_distance = 10
+		size = { min = 15 max = 20 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_wg_water
+			size = { min = 5 max = 10 }
+			name = "NAME_wg_water3m"		
+			orbit_distance = 5
+			#angle = 30
+			init_effect = {
+				add_deposit = d_energy_2
+			}
+		}	
+		moon = {	
+			class = pc_wg_water
+			size = { min = 5 max = 10 }
+			name = "NAME_wg_water4m"		
+			orbit_distance = 5
+			#angle = 60
+		}		
+		init_effect = {
+			add_deposit = d_energy_2
+		}
+	}	
+	planet = {
+		class = pc_ocean
+		orbit_distance = 20
+		home_planet = yes
+		has_ring = no
+		deposit_blockers = none
+		modifiers = none
+		size = { min = 30 max = 30 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_wg_water
+			name = "NAME_wg_water2m"		
+			count = { min = 1 max = 1 }
+			orbit_distance = 5
+		}		
+		init_effect = {	
+			prevent_anomaly = yes
+			set_planet_flag	= wg_waterB_1
+			set_planet_flag = wg_water_B_origin_planet
+			prevent_anomaly = yes			
+		}		
+	}	
+	planet = {
+		class = pc_wg_water
+		name = "NAME_wg_water3"
+		orbit_distance = 30
+		size = { min = 20 max = 25 }
+				
+		init_effect = {	
+			set_planet_flag	= wg_waterB_2	
+			prevent_anomaly = yes
+			add_deposit = d_society_2			
+		}		
+	}
+	planet = {
+		class = pc_wg_water
+		name = "NAME_wg_water4"
+		orbit_distance = 40
+		size = { min = 25 max = 30 }
+		init_effect = {	
+			set_planet_flag	= wg_waterB_3
+			prevent_anomaly = yes	
+			add_deposit = d_physics_2
+		}		
+	}
+	planet = {
+		class = pc_wg_water
+		name = "NAME_wg_water5"
+		orbit_distance = 50
+		size = { min = 15 max = 25 }	
+		init_effect = {
+			add_deposit = d_energy_2
+		}
+	}
+	planet = {
+		class = pc_wg_water
+		name = "NAME_wg_water6"
+		orbit_distance = 60
+		size = { min = 20 max = 30 }
+
+	}	
+	change_orbit = 30
+	planet = {
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = 0
+		init_effect = {
+			random_list = {
+				5 = { add_deposit = d_minerals_1 }
+				3 = { add_deposit = d_minerals_2 }
+				1 = { add_deposit = d_minerals_3 }
+				3 = {}
+			}
+		}
+	}
+	planet = {
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = 60
+		init_effect = {
+			random_list = {
+				5 = { add_deposit = d_minerals_1 }
+				3 = { add_deposit = d_minerals_2 }
+				1 = { add_deposit = d_minerals_3 }
+				3 = {}
+			}
+		}
+	}
+	planet = {
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = 60
+		init_effect = {
+			random_list = {
+				5 = { add_deposit = d_minerals_1 }
+				3 = { add_deposit = d_minerals_2 }
+				1 = { add_deposit = d_minerals_3 }
+			}
+		}
+	}
+	planet = {
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = 60
+		init_effect = {
+			random_list = {
+				5 = { add_deposit = d_minerals_2 }
+				2 = { add_deposit = d_minerals_3 }
+			}
+		}
+	}
+	planet = {
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = 60
+		init_effect = {
+			random_list = {
+				5 = { add_deposit = d_minerals_2 }
+				2 = { add_deposit = d_minerals_3 }
+			}
+		}
+	}
+	planet = {
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = 60
+		init_effect = {
+			add_deposit = d_minerals_3 
+		}
+	}
+	planet = {
+		class = pc_wg_water
+		name = "NAME_wg_water7"
+		orbit_distance = 70
+		size = { min = 10 max = 25 }
+		init_effect = {
+			add_deposit = d_engineering_2
+		}
+	}
+	neighbor_system = {
+		trigger = { num_guaranteed_colonies >= 2 }
+		distance = { min = 13 max = @distance }
+		initializer = "neighbor_t1"
+	}
+	neighbor_system = {
+		trigger = { num_guaranteed_colonies >= 1 }
+		distance = { min = 13 max = @distance }	
+		initializer = "neighbor_t1_first_colony"
+	}
+	init_effect = {
+	}	
+}
+
+wg_warhammer_system_initializer = {
+	name = "NAME_wg_warhammer"
+	usage = origin
+	class = "sc_g"
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 145
+	}
+	asteroid_belt = {
+		type = icy_asteroid_belt
+		radius = 290
+	}
+
+	flags = { empire_home_system wg_warhammer_sol_system }
+
+	#usage = custom_empire
+
+	init_effect = {
+		every_neighbor_system = {
+			set_star_flag = empire_cluster
+			every_neighbor_system = {
+				set_star_flag = empire_cluster
+			}
+		}
+		generate_home_system_resources = yes
+	}
+
+	planet = {
+		name = "NAME_Sol"
+		class = "pc_g_star"
+		orbit_distance = 0
+		orbit_angle = 1
+		size = 30
+		has_ring = no
+	}
+
+	planet = {
+		name = "NAME_Mercury"
+		class = "pc_molten"
+		orbit_distance = 40
+		orbit_angle = 15
+		size = 10
+		has_ring = no
+	}
+
+	planet = {
+		name = "NAME_Venus"
+		class = "pc_toxic"
+		orbit_distance = 25
+		orbit_angle = 125
+		size = 17
+		has_ring = no
+	}
+
+	planet = {
+		name = "NAME_wg_warhammer"
+		class = "pc_wsg_port"
+		orbit_distance = 25
+		orbit_angle = 120
+		size = 20
+		starting_planet = yes
+		has_ring = no
+		deposit_blockers = none
+		modifiers = none
+		flags = { planet_wg_earth }
+
+		init_effect = {
+			save_global_event_target_as = wg_warhammer_earth
+			prevent_anomaly = yes
+		}
+
+		moon = {
+			name = "NAME_Luna"
+			class = "pc_broken"
+			size = 5
+			orbit_distance = 12
+			orbit_angle = 40
+			has_ring = no
+			#entity = "cold_barren_planet_luna_entity"
+		}
+	}
+
+	planet = {
+		name = "NAME_Mars"
+		class = "pc_broken"
+		orbit_distance = 25
+		orbit_angle = 60
+		size = 15
+		has_ring = no
+        flags = { wg_mars_flag }
+		init_effect = {
+			save_global_event_target_as = wg_mars_station
+			add_modifier = { modifier = wg_warhamme_mars_modifier days = -1 }
+		}
+	}
+
+	planet = {
+		name = "NAME_1_Ceres"
+		class = "pc_asteroid"
+		orbit_distance = 30
+		orbit_angle = -210
+		size = 5
+		has_ring = no
+	}
+
+	planet = {
+		name = "NAME_2_Pallas"
+		class = "pc_asteroid"
+		orbit_distance = 0
+		orbit_angle = -95
+		size = 5
+		has_ring = no
+	}
+
+	planet = {
+		name = "NAME_3_Juno"
+		class = "pc_asteroid"
+		orbit_distance = 0
+		orbit_angle = 285
+		size = 5
+		has_ring = no
+	}
+
+	planet = {
+		name = "NAME_4_Vesta"
+		class = "pc_asteroid"
+		orbit_distance = 0
+		orbit_angle = -80
+		size = 5
+		has_ring = no
+	}
+
+	planet = {
+		name = "NAME_Jupiter"
+		class = "pc_gas_giant"
+		orbit_distance = 40
+		orbit_angle = -160
+		size = 35
+		has_ring = no
+		entity = "gas_giant_jupiter_entity"
+		change_orbit = 6
+
+		moon = {
+			name = "NAME_Io"
+			class = "pc_molten"
+			size = 6
+			orbit_distance = 10
+			orbit_angle = 110
+			has_ring = no
+		}
+		moon = {
+			name = "NAME_Europa"
+			class = "pc_frozen"
+			size = 6
+			orbit_distance = 2.5
+			orbit_angle = 10
+			has_ring = no
+		}
+		moon = {
+			name = "NAME_Ganymede"
+			class = "pc_frozen"
+			size = 9
+			orbit_distance = 2.5
+			orbit_angle = 80
+			has_ring = no
+		}
+		moon = {
+			name = "NAME_Callisto"
+			class = "pc_frozen"
+			size = 7
+			orbit_distance = 2.5
+			orbit_angle = -155
+			has_ring = no
+		}
+	}
+
+	planet = {
+		name = "NAME_Saturn"
+		class = "pc_gas_giant"
+		orbit_distance = 25
+		orbit_angle = 170
+		size = 30
+		has_ring = yes
+		entity = "gas_giant_05_entity"
+		change_orbit = 7
+
+		moon = {
+			name = "NAME_Titan"
+			class = "pc_frozen"
+			size = 8
+			orbit_distance = 12
+			orbit_angle = 320
+			has_ring = no
+		}
+	}
+
+	planet = {
+		name = "NAME_Uranus"
+		class = "pc_gas_giant"
+		orbit_distance = 25
+		orbit_angle = 125
+		size = 20
+		has_ring = no
+		entity = "gas_giant_03_entity"
+	}
+
+	planet = {
+		name = "NAME_Neptune"
+		class = "pc_gas_giant"
+		orbit_distance = 25
+		orbit_angle = -195
+		size = 20
+		has_ring = no
+		entity = "gas_giant_02_entity"
+		change_orbit = 4
+
+		moon = {
+			name = "NAME_Triton"
+			class = "pc_frozen"
+			size = 6
+			orbit_distance = 7
+			orbit_angle = 115
+			has_ring = no
+		}
+	}
+
+	planet = {
+		name = "NAME_134340_Pluto"
+		class = "pc_asteroid"
+		orbit_distance = 30
+		orbit_angle = -210
+		size = 5
+		has_ring = no
+	}
+
+	planet = {
+		name = "NAME_136472_Makemake"
+		class = "pc_ice_asteroid"
+		orbit_distance = 0
+		orbit_angle = -95
+		size = 5
+		has_ring = no
+	}
+
+	planet = {
+		name = "NAME_136108_Haumea"
+		class = "pc_ice_asteroid"
+		orbit_distance = 0
+		orbit_angle = 285
+		size = 5
+		has_ring = no
+	}
+
+	planet = {
+		name = "NAME_20000_Varuna"
+		class = "pc_ice_asteroid"
+		orbit_distance = 0
+		orbit_angle = -80
+		size = 5
+		has_ring = no
+	}
+    init_effect = {
+		spawn_megastructure = { 
+			type = "wsg_mars_shipyard" 
+			coords_from = event_target:wg_mars_station
+			init_effect = {
+				save_global_event_target_as = wsg_mars_shipyard_megastructure
+			}
+		}
+	}
+	neighbor_system = {
+		hyperlane_jumps = { min = 1 max = 1 }
+		initializer = "wg_warhammer_neighbor_system"
+	}
+}
+
+wg_warhammer_neighbor_system = {
+	class = "rl_standard_stars"
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 70
+	}
+	
+	flags = { wg_warhammer_neighbor_system_flag }
+	
+	planet = {
+		count = 1
+		class = "pc_g_star"
+		orbit_distance = 0
+		orbit_angle = 1
+		size = { min = 20 max = 30 }
+		has_ring = no
+	}
+	
+	planet = {
+		count = 1
+		orbit_distance = 45
+	}
+	
+	change_orbit = 25
+	
+	planet = {
+		count = 4
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = { min = 15 max = 110 }
+		
+		init_effect = {
+			save_event_target_as = wg_minin_station_target
+			prevent_anomaly = yes
+		}		
+	}
+	
+	planet = {
+		count = 1
+		class = ideal_planet_class
+		orbit_distance = 35
+		orbit_angle = random
+		size = { min = 18 max = 25 }
+		#home_planet = yes
+		has_ring = yes
+		deposit_blockers = none
+		modifiers = none
+
+		init_effect = {
+			set_planet_flag = wg_warhammer_neighbor_planet
+			prevent_anomaly = yes
+			clear_deposits = yes
+			add_deposit = d_rich_mountain
+			add_deposit = d_mineral_fields
+			add_deposit = d_ore_rich_caverns
+			add_deposit = d_black_soil
+			add_deposit = d_teeming_reef
+			add_deposit = d_great_river
+			add_deposit = d_great_river
+			add_deposit = d_lush_jungle
+			add_deposit = d_fungal_caves
+			add_deposit = d_geothermal_vent
+			add_deposit = d_hot_springs
+			add_deposit = d_failing_infrastructure
+			add_deposit = d_decrepit_dwellings
+			add_deposit = d_decrepit_dwellings
+		}
+	}
+	planet = {
+	    class = pc_gas
+		orbit_distance = 40
+		size = { min = 20 max = 25 }
+		change_orbit = @base_moon_distance
+	
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 1 }
+			orbit_distance = 5
+		}
+	}
+
+	planet = {
+		class = pc_frozen
+		count = 2
+		orbit_distance = 45
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 1 }
+			orbit_distance = 5
+		}
+	}
+     init_effect = {
+		spawn_megastructure = { 
+			type = "wsg_40k_mining_station" 
+			coords_from = event_target:wg_minin_station_target
+		}
+		save_global_event_target_as = wg_warhammer_neighbor_system_target
+	}	
+}

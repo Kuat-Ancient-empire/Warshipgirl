@@ -1,0 +1,517 @@
+building_sh_pantsu = {
+	base_buildtime = 500
+
+	category = manufacturing
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	allow = {
+		has_upgraded_capital = yes
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }					
+		}
+		modifier = {
+			job_sh_pantsu_maker_add = 4
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }					
+		}
+		modifier = {
+			job_sh_pantsu_maker_add = 3
+		}
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 400
+		}	
+		upkeep = {
+			energy = 4
+		}
+	}	
+	
+	prerequisites = {
+		"tech_sh_assembly"
+	}
+	
+	triggered_desc = {
+		text = sh_pantsu_effect_desc
+	}
+	upgrades = {
+		building_sh_pantsu2
+	}	
+
+	ai_resource_production = {
+		sr_pantsu = 1
+		energy = 1
+		trigger = {
+			always = yes
+		}
+	}
+}
+building_sh_pantsu2 = {
+	base_buildtime = 500
+	can_build = no
+	category = manufacturing
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai	
+		}
+	}
+	
+	allow = {
+		has_upgraded_capital = yes
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner	
+		}
+		modifier = {
+			job_sh_pantsu_maker_add = 8
+		}
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 500
+		}	
+		upkeep = {
+			energy = 8
+		}
+	}	
+	
+	prerequisites = {
+		"tech_sh_assembly"
+	}
+	
+	triggered_desc = {
+		text = sh_pantsu_effect_desc
+	}
+
+	ai_resource_production = {
+		sr_pantsu = 1
+		energy = 1
+		trigger = {
+			always = yes
+		}
+	}
+}
+#深海合金厂
+building_sh_foundry = {
+	base_buildtime = 360
+	category = manufacturing	
+	base_cap_amount = 1
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	allow = {
+		has_upgraded_capital = yes
+	}
+
+	planet_modifier = {
+		job_sh_foundry_add = 5
+		job_sh_foundry_per_pop = 0.066
+		planet_metallurgists_alloys_produces_add = 1
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 2000
+		}	
+		upkeep = {
+			energy = 20
+			sr_pantsu = 4
+		}
+	}	
+	triggered_planet_modifier = {
+		potential = { has_deposit = PR_D_core }
+		mult = PR_var_plnt_MAN
+		job_sh_foundry_add = 0.066
+	}
+	
+	prerequisites = {
+		"tech_sh_foundry"
+	}
+	triggered_desc = {
+		trigger = {
+			is_planet_class = pc_ringworld_habitable_sh
+		}
+		text = sh_foundry_pc_rw_sh_effect
+	}
+	triggered_desc = {
+		trigger = {
+			is_planet_class = pc_shenhai
+		}
+		text = sh_foundry_pc_rw_sh_effect
+	}
+	triggered_desc = {
+		text = job_sh_foundry_effect_desc
+	}
+	upgrades = {
+		building_sh_foundryU
+	}	
+	ai_resource_production = {
+		alloys = 1
+		trigger = {
+			always = yes
+		}
+	}
+}
+building_sh_foundryU = {
+	base_buildtime = 480
+	can_build = no
+	category = manufacturing	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	allow = {
+		has_major_upgraded_capital = yes
+	}
+
+	planet_modifier = {
+		job_sh_foundry_add = 7
+		job_sh_foundry_per_pop = 0.08
+		planet_metallurgists_alloys_produces_add = 1
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_ascension_perk = ap_shenhai_silent }					
+		}
+		job_sh_foundry_add = 1
+		planet_metallurgists_alloys_produces_add = 0.5
+	}
+	triggered_planet_modifier = {
+		potential = { has_deposit = PR_D_core }
+		mult = PR_var_plnt_MAN
+		job_sh_foundry_add = 0.08
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 3500
+			sr_se = 250
+		}	
+		upkeep = {
+			energy = 40
+			sr_se = 5
+		}
+	}	
+	
+	prerequisites = {
+		"tech_sh_foundryU"
+	}
+	triggered_desc = {
+		trigger = {
+			is_planet_class = pc_ringworld_habitable_sh
+		}
+		text = sh_foundry_pc_rw_sh_effect
+	}
+	
+	triggered_desc = {
+		text = job_sh_foundry_effect_desc
+	}
+
+
+	ai_resource_production = {
+		alloys = 1
+		trigger = {
+			always = yes
+		}
+	}
+}
+#深海能源压缩技术
+building_sh_senergy = {
+	base_buildtime = 600
+
+	category = manufacturing
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	allow = {
+		has_upgraded_capital = yes
+	}
+	planet_modifier = {
+		planet_amenities_add = -5
+	}	
+	
+	upgrades = {
+		building_sh_senergy2
+	}	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }					
+		}
+		modifier = {
+			job_sh_senergy_add = 3
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }					
+		}
+		modifier = {
+			job_sh_senergy_add = 2
+		}
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			alloys = 400
+		}
+		upkeep = {
+			energy = 15
+			sr_pantsu = 3
+			trigger = {
+				owner = { has_country_flag = senergy_produce_tradition_adopted }
+			}
+		}
+		produces = {
+			trigger = {
+				owner = { has_country_flag = senergy_produce_tradition_adopted }
+			}
+			sr_se = 3
+		}
+	}	
+	
+	prerequisites = {
+		"tech_sh_senergy"
+	}
+	
+	triggered_desc = {
+		text = job_sh_senergy_effect_desc
+	}
+	
+	ai_resource_production = {
+		sr_pantsu = 1
+		trigger = {
+			always = yes
+		}
+	}
+}
+building_sh_senergy2 = {
+	base_buildtime = 600
+	can_build = no
+
+	category = manufacturing
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	allow = {
+		has_upgraded_capital = yes
+	}
+	planet_modifier = {
+		planet_amenities_add = -3
+	}	
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }					
+		}
+		modifier = {
+			job_sh_senergy_add = 5
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }					
+		}
+		modifier = {
+			job_sh_senergy_add = 5
+		}
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			alloys = 400
+		}
+		upkeep = {
+			sr_pantsu = 1
+		}
+		upkeep = {
+			energy = 15
+			sr_pantsu = 3
+			trigger = {
+				owner = { has_country_flag = senergy_produce_tradition_adopted }
+			}
+		}
+		produces = {
+			trigger = {
+				owner = { has_country_flag = senergy_produce_tradition_adopted }
+			}
+			sr_se = 3
+		}	
+	}	
+	
+	triggered_desc = {
+		text = job_sh_senergy_effect_desc
+	}
+
+	ai_resource_production = {
+		sr_pantsu = 1
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+building_sh_rare_resource_factory = {
+	base_buildtime = 550
+
+	category = manufacturing
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	allow = {
+		has_upgraded_capital = yes
+	}
+	planet_modifier = {
+	}	
+	destroy_trigger = {
+		free_building_slots = 0
+		exists = owner
+		owner = {
+			is_ai = yes
+			has_monthly_income = {
+				resource = rare_crystals
+				value > 11
+			}
+			has_monthly_income = {
+				resource = exotic_gases
+				value > 11
+			}
+			has_monthly_income = {
+				resource = volatile_motes
+				value > 11
+			}
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner			
+		}
+		modifier = {
+			job_wsg_rare_resource_manufacturer_add = 2
+		}
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 800
+			sr_se = 50
+		}		
+		upkeep = {
+			energy = 15
+			sr_se = 1
+		}
+	}	
+	
+	prerequisites = {
+		"tech_building_sh_rare_resource_factory"
+	}
+	
+	triggered_desc = {
+		text = wsg_rare_resource_manufacturer_effect_desc
+	}
+
+	ai_resource_production = {
+		rare_crystals = 2
+		exotic_gases = 2
+		volatile_motes = 2
+		trigger = {
+			always = yes
+		}
+	}
+}

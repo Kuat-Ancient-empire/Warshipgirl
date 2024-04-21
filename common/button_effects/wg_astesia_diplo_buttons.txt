@@ -1,0 +1,160 @@
+wg_astesia_portrait_0 = {
+	potential = { 
+		exists = event_target:wg_astesia_own_country
+		event_target:wg_astesia_own_country = {
+			OR = {
+				check_variable = { which = wg_astesia_cloth value = 0 }
+				NOT = { is_variable_set = wg_astesia_cloth }
+			}
+		}
+	}
+	allow = { always = yes }
+	effect = { } #no need
+}
+
+
+wg_astesia_portrait_1 = {
+	potential = { 
+		exists = event_target:wg_astesia_own_country
+		event_target:wg_astesia_own_country = {
+			check_variable = { which = wg_astesia_cloth value = 1 }
+			OR = {
+				has_country_flag = get_wg_astesia
+				is_same_value = event_target:wg_astesia_own_country
+			}
+		}
+	}
+	allow = { always = yes }
+	effect = { } #no need
+}
+
+wg_astesia_portrait_2 = {
+	potential = { 
+		exists = event_target:wg_astesia_own_country
+		event_target:wg_astesia_own_country = {
+			check_variable = { which = wg_astesia_cloth value = 2 }
+			OR = {
+				has_country_flag = get_wg_astesia
+				is_same_value = event_target:wg_astesia_own_country
+			}
+		}
+	}
+	allow = { always = yes }
+	effect = { } #no need
+}
+
+wg_astesia_portrait_3 = {
+	potential = { 
+		exists = event_target:wg_astesia_own_country
+		event_target:wg_astesia_own_country = {
+			check_variable = { which = wg_astesia_cloth value = 3 }
+			OR = {
+				has_country_flag = get_wg_astesia
+				is_same_value = event_target:wg_astesia_own_country
+			}
+		}
+	}
+	allow = { always = yes }
+	effect = { } #no need
+}
+
+wg_astesia_cloth_button_prev = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = {
+		event_target:wg_astesia_own_country = {
+			hidden_effect = {
+				change_variable = { which = wg_astesia_cloth value = -1 }
+				if = {
+					limit = { check_variable = { which = wg_astesia_cloth value < 0 }}
+					set_variable = { which = wg_astesia_cloth value = 3 }
+				}
+			}
+		}
+		custom_tooltip = change_cloth
+	}
+}
+wg_astesia_cloth_button_next = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = {
+		event_target:wg_astesia_own_country = {
+			hidden_effect = {
+				change_variable = { which = wg_astesia_cloth value = 1 }
+				if = {
+					limit = { check_variable = { which = wg_astesia_cloth value > 3 }}
+					set_variable = { which = wg_astesia_cloth value = 0 }
+				}
+			}
+		}
+		custom_tooltip = change_cloth
+	}
+}
+
+wg_astesia_link_button_effect = {
+	potential = { 
+		exists = event_target:wg_astesia_own_country
+		FROM = { 
+			is_same_value = event_target:wg_astesia_own_country
+			check_variable = { which = link_button_current_page value = 0 }
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = already_has_wg_astesia_diplo
+			OR = {
+				wg_astesia_active_diplo = no
+				NOT = { has_country_flag = wg_astesia_engaged }
+			}
+		}
+	}}
+	effect = { FROM = {
+		hidden_effect = { country_event = { id = wg_old_leader_diplo.3000 }}
+	}}
+}
+
+wg_astesia_affection1_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv1_trigger = { LEADER = wg_astesia }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_astesia_affection_show_lv2 }
+}
+wg_astesia_affection2_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv2_trigger = { LEADER = wg_astesia }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_astesia_affection_show_lv3 }
+}
+wg_astesia_affection3_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv3_trigger = { LEADER = wg_astesia }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_astesia_affection_show_lv4 }
+}
+wg_astesia_affection4_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv4_trigger = { LEADER = wg_astesia MARRIED_FLAG = married_wg_astesia }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_astesia_affection_show_lv5 }
+}
+wg_astesia_affection5_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv5_trigger = { LEADER = wg_astesia MARRIED_FLAG = married_wg_astesia }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_astesia_affection_show_lv5 }
+}

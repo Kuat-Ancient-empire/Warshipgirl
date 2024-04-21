@@ -1,0 +1,1641 @@
+decision_bison = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_bison
+	
+	resources = {
+		category = decisions
+		cost = {
+			energy = 1500
+		}
+	}
+	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_authority="auth_warshipgirls"
+			has_technology = tech_warshipgirl_assembly_plant
+		}		
+		NOR = {
+			has_modifier = planet_growth_discouraged
+			has_modifier = planet_population_control
+		}
+	}
+	
+	allow = {
+		NOT = { has_modifier = planet_bison }
+	}	
+	
+	effect = {
+		add_modifier = { modifier = "planet_bison" days = 4800 }
+	}
+	
+	ai_weight = {
+		weight = 50
+		modifier = {
+			factor = 100
+			decision_has_resource = {
+				RESOURCE = energy
+				MIN_REQUIREMENT = 5000
+			}
+		}
+		modifier = {
+			factor = 0
+			owner = { has_deficit = energy }
+		}
+	}
+}
+
+decision_planet_lp = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_lp_resources
+	
+	resources = {
+		category = decisions
+		cost = {
+			consumer_goods = 648
+		}
+	}	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_authority="auth_warshipgirls"
+			is_ai = no
+		}
+		NOR = {
+			has_modifier = planet_lp
+		}
+	}
+	
+	# allow = {
+	# 	NOT = { has_modifier = planet_lp }
+	# 	any_owned_pop = {
+	# 		OR = {
+	# 			has_trait = wsg_trait_warshipgirls
+	# 			has_trait = wsg_trait_warshipgirls1
+	# 			has_trait = wsg_trait_warshipgirls2
+	# 			has_trait = sh_trait_shenhai
+	# 			has_trait = sh_trait_shenhai1
+	# 			has_trait = sh_trait_shenhai2
+	# 			has_trait = sh_trait_shenhai3
+	# 		}
+	# 	}
+	# }
+	
+	ai_weight = {
+		weight = 50
+		modifier = {
+			factor = 5
+			happiness_planet <= 60
+			decision_has_resource = {
+				RESOURCE = consumer_goods
+				MIN_REQUIREMENT = 5000
+			}
+		}
+		modifier = {
+			factor = 10
+			happiness_planet <= 40
+			decision_has_resource = {
+				RESOURCE = consumer_goods
+				MIN_REQUIREMENT = 3000
+			}
+		}
+		modifier = {
+			factor = 0.5
+			owner = { has_deficit = consumer_goods }
+		}
+	}
+	
+	effect = {
+		add_modifier = { modifier = "planet_lp" }
+		hidden_effect = {
+			planet_event = { id = wsg.3077 }
+		}		
+	}
+}
+
+decision_planet_noshoes = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_noshoes
+	
+	resources = {
+		category = decisions
+		cost = {
+			energy = 1000
+		}
+	}	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_authority="auth_warshipgirls"
+			is_ai = no
+		}
+		NOR = {
+			has_modifier = planet_noshoes
+		}
+	}
+	
+	allow = {
+		NOT = { has_modifier = planet_noshoes }
+	}
+
+	ai_weight = {
+		weight = 50
+		modifier = {
+			factor = 5
+			free_amenities < 5
+			decision_has_resource = {
+				RESOURCE = energy
+				MIN_REQUIREMENT = 5000
+			}
+		}
+		modifier = {
+			factor = 10
+			free_amenities < 0
+			decision_has_resource = {
+				RESOURCE = energy
+				MIN_REQUIREMENT = 5000
+			}
+		}
+		modifier = {
+			factor = 0
+			free_amenities > 10
+		}
+	}
+	
+	effect = {
+		add_modifier = { modifier = "planet_noshoes" }
+	}
+}
+##############################
+decision_planet_pantsuhd = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_pantsuhd_resources
+	
+	resources = {
+		category = decisions
+		cost = {
+			energy = 500
+		}
+	}	
+	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_technology = tech_wsg_pantsu
+			has_authority="auth_warshipgirls"
+			is_ai = no
+		}
+	}
+	
+	allow = {
+		NOT = { has_modifier = planet_pantsuhd }
+	}
+
+	ai_weight = {
+		weight = 5
+		modifier = {
+			factor = 10
+			OR = {
+				num_buildings = {
+					type = building_wsg_pantsu
+					value >= 2
+				}
+				num_buildings = {
+					type = building_wsg_pantsu2
+					value >= 2
+				}
+			}
+			decision_has_resource = {
+				RESOURCE = energy
+				MIN_REQUIREMENT = 5000
+			}
+		}
+		modifier = {
+			factor = 0
+			NOR = {
+				has_building = building_wsg_pantsu
+				has_building = building_wsg_pantsu2
+			}
+		}
+	}
+	
+	effect = {
+		add_modifier = { modifier = "planet_pantsuhd" }
+		hidden_effect = {
+			add_deposit = d_pantsuhd
+			planet_event = { id = wsg.3049 }
+		}
+	}
+}
+
+decision_end_planet_pantsuhd = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = PS_pantsuhd_resources
+
+	resources = {
+		category = decisions
+	}
+	
+	potential = {
+		has_deposit = d_pantsuhd
+	}
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			add = 1000
+			NOR = {
+				has_building = building_wsg_pantsu
+				has_building = building_wsg_pantsu2
+			}
+		}
+	}
+	
+	effect = {
+		custom_tooltip = decision_end_planet_pantsuhd_effects_short
+		remove_modifier = planet_pantsuhd
+		hidden_effect = {
+			remove_deposit = d_pantsuhd
+		}
+	}
+}
+##############################
+decision_planet_Santee = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_Santee
+	
+	resources = {
+		category = decisions
+		cost = {
+			influence = 50
+		}
+	}	
+	allow = {
+		NOT = { has_modifier = planet_st }
+	}	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_authority="auth_warshipgirls"
+		}
+		from = { 
+			OR = {
+				is_xenophobe = yes 
+				is_authoritarian = yes 
+			}
+		}
+	}
+	
+	effect = {
+		add_modifier = { modifier = "planet_st" }
+	}
+}
+
+decision_end_planet_Santee = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = PS_Santee
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 50
+		}
+	}
+	
+	potential = {
+		has_modifier = planet_st
+	}
+	
+	effect = {
+		custom_tooltip = decision_end_planet_Santee_effects_short
+		remove_modifier = planet_st
+	}
+}
+##############################
+decision_planet_mist = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_mist_resources
+	
+	resources = {
+		category = decisions
+		cost = {
+			unity = 300
+			sr_neo = 500
+		}
+	}	
+	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_technology = tech_building_wsg_neo
+			has_authority="auth_warshipgirls"
+			is_ai = no
+		}
+	}
+	
+	allow = {
+		NOT = { has_modifier = planet_mist }
+	}
+
+	ai_weight = {
+		weight = 5
+		modifier = {
+			factor = 10
+			OR = {
+				has_building = building_research_lab_1
+				has_building = building_research_lab_2
+				has_building = building_research_lab_3
+				has_building = building_wsg_research
+				has_building = building_wsg_research2
+				has_building = building_wsg_research3
+			}
+			decision_has_resource = {
+				RESOURCE = sr_neo
+				MIN_REQUIREMENT = 300
+			}
+		}
+		modifier = {
+			factor = 0
+			owner = { has_deficit = sr_neo }
+		}
+	}
+	
+	effect = {
+		add_modifier = { modifier = "planet_mist" }
+		#hidden_effect = {
+			#add_deposit = d_neo
+		#}
+	}
+}
+
+decision_end_planet_mist = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = PS_mist_resources
+
+	resources = {
+		category = decisions
+	}
+	
+	potential = {
+		always = no
+	}
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			add = 1000
+			OR = {
+				NOR = {
+					has_building = building_research_lab_1
+					has_building = building_research_lab_2
+					has_building = building_research_lab_3
+					has_building = building_wsg_research
+					has_building = building_wsg_research2
+					has_building = building_wsg_research3
+				}
+				owner = { has_deficit = sr_neo }
+			}
+		}
+	}
+	
+	effect = {
+		custom_tooltip = decision_end_planet_mist_effects_short
+		remove_modifier = planet_mist
+		hidden_effect = {
+			remove_deposit = d_neo
+		}
+	}
+}
+##############################
+decision_planet_NEOB = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_NEOB_resources
+	
+	resources = {
+		category = decisions
+		cost = {
+			unity = 300
+			sr_neo = 500
+		}
+	}	
+	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_technology = tech_building_wsg_neo
+			has_authority="auth_warshipgirls"
+			is_ai = no
+		}
+	}
+	
+	potential = {
+		always = no
+	}
+
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 10
+			decision_has_resource = {
+				RESOURCE = sr_neo
+				MIN_REQUIREMENT = 300
+			}
+		}
+		modifier = {
+			factor = 0
+			owner = { has_deficit = sr_neo }
+		}
+	}
+	
+	effect = {
+		add_modifier = { modifier = "planet_NEOB" }
+			#hidden_effect = {
+				#add_deposit = d_neo
+			#}
+	}
+}
+
+decision_end_planet_NEOB = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = PS_NEOB_resources
+
+	resources = {
+		category = decisions
+	}
+	
+	potential = {
+		has_deposit = d_neo
+		has_modifier = planet_NEOB
+	}
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			add = 1000
+			owner = { has_deficit = sr_neo }
+		}
+	}
+	
+	effect = {
+		custom_tooltip = decision_end_planet_NEOB_effects_short
+		remove_modifier = planet_NEOB
+		hidden_effect = {
+			remove_deposit = d_neo
+		}
+	}
+}
+
+####################################
+decision_port_project = {
+	owned_planets_only = yes
+	icon = decision_port_project
+
+	enactment_time = 2400
+	resources = {
+		category = decisions
+		cost = {
+			trigger = {
+				owner = { is_ai = no }
+			}
+			influence = 200
+			minerals = 20000
+		}
+		cost = {
+			trigger = {
+				owner = { is_ai = yes }
+			}
+			influence = 150
+			minerals = 20000
+		}
+	}
+	
+	potential = {
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_swim
+			is_planet_class = pc_ringworld_habitable_sh
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_swim
+			is_planet_class = pc_dyson_ring
+			is_planet_class = pc_ringworld_habitable			
+			is_planet_class = pc_relic
+			has_modifier = resort_colony
+			has_modifier = penal_colony
+			has_modifier = slave_colony
+		}
+		habitable_structure = no
+		exists = owner
+		owner = { has_ascension_perk = ap_port_project }
+	}
+	
+	allow = {
+		if = {
+			limit = { owner = { is_ai = no }}
+			custom_tooltip = {
+				fail_text = decision_arcology_project_requirements
+				free_district_slots < 1
+				num_districts = { type = district_farming value < 1 }
+				num_districts = { type = district_mining value < 1 }
+				num_districts = { type = district_generator value < 1 }
+			}
+		}
+		num_uncleared_blockers < 1
+	}
+	
+	effect = {
+		# Make city-planet
+		custom_tooltip = decision_port_project_effects
+		hidden_effect = {		
+			owner = { if = {
+				limit = { is_ai = yes }
+				change_variable = { which = wg_modified_planet value = 1 }
+			}}
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_city 
+				VARIABLE = num_housing_districts
+			}
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_industrial
+				VARIABLE = num_industrial_districts
+			}
+			change_pc = pc_wsg_port
+			remove_all_districts = yes
+			clear_deposits = yes
+			while = {
+				count = num_housing_districts
+				add_district = district_arcology_wsg_housing
+			}
+			while = {
+				count = num_industrial_districts
+				add_district = district_arcology_wsg_neo
+			}
+			clear_variable = num_housing_districts
+			clear_variable = num_industrial_districts
+			set_planet_entity = {
+				entity = "wsg_port_planet"
+			}
+			owner = {
+				country_event = { id = distar.201 } # port for living planet distar.197, triggers in event
+			}
+			planet_event = { id = wsg.3020 }
+		}
+	}
+
+	ai_weight = {
+		weight = 50
+		modifier = {
+			add = 150
+			planet_size >= 15
+			decision_has_resource = {
+				RESOURCE = minerals
+				MIN_REQUIREMENT = 35000
+			}
+			decision_has_resource = {
+				RESOURCE = influence
+				MIN_REQUIREMENT = 200
+			}
+		}
+		modifier = {
+			factor = 0.1
+			planet_size < 15
+		}
+		modifier = {
+			factor = 0.01
+			owner = { check_variable_arithmetic = {
+				which = wg_modified_planet
+				divide = trigger:num_owned_planets
+				value >= 0.6
+			}}
+		}
+		modifier = {
+			factor = 0.5
+			planet_size < 18
+		}
+		modifier = {
+			factor = 2
+			planet_size >= 20
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				is_capital = yes
+				num_pops >= 70
+			}
+		}
+	}
+}
+
+decision_port_project_relic = {
+	owned_planets_only = yes
+	icon = decision_port_project
+
+	enactment_time = 3600
+	resources = {
+		category = decisions
+		cost = {
+			trigger = {
+				owner = { is_ai = no }
+			}
+			influence = 200
+			minerals = 25000
+		}
+		cost = {
+			trigger = {
+				owner = { is_ai = yes }
+			}
+			influence = 150
+			minerals = 25000
+		}
+	}
+
+	potential = {
+		is_planet_class = pc_relic
+		habitable_structure = no
+		exists = owner
+		owner = { is_regular_empire = yes }
+		owner = { has_ascension_perk = ap_port_project }
+	}
+
+	allow = {
+		num_uncleared_blockers < 1
+	}
+
+	effect = {
+		# Make city-planet
+		custom_tooltip = decision_port_project_effects
+		hidden_effect = {
+			clear_deposits = yes
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_city
+				VARIABLE = num_housing_districts
+			}
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_industrial
+				VARIABLE = num_industrial_districts
+			}
+			change_pc = pc_wsg_port
+			remove_all_districts = yes
+			while = {
+				count = num_housing_districts
+				add_district = district_arcology_wsg_housing
+			}
+			while = {
+				count = num_industrial_districts
+				add_district = district_arcology_wsg_neo
+			}
+			clear_variable = num_housing_districts
+			clear_variable = num_industrial_districts
+			set_planet_entity = {
+				entity = "wsg_port_planet"
+			}
+			add_deposit = d_former_relic_world
+			planet_event = { id =  wsg.3020 }
+			owner = { 
+				if = {
+					limit = { NOT = { has_country_flag = first_wsg_port }}
+					set_country_flag = first_wsg_port
+					change_variable = { which = rankpts value = 4 }
+				}
+			}
+			while = {
+				count = 4
+				solar_system = {
+					random_system_ambient_object = {
+						limit = { has_ambient_object_flag = relic_world_debris }
+						destroy_ambient_object = this
+					}
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 10
+		modifier = {
+			add = 100
+			decision_has_resource = {
+				RESOURCE = minerals
+				MIN_REQUIREMENT = 35000
+			}
+		}
+	}
+}
+
+
+####################################
+decision_dreadnought_project = {
+	owned_planets_only = yes
+	icon = decision_dreadnough_project
+
+	enactment_time = 1200
+	resources = {
+		category = decisions
+		cost = {
+			influence = 200
+			alloys = 8000
+			sr_neo = 500
+			sr_alpha = 200
+		}
+	}
+	
+	potential = {
+		exists = owner
+		is_capital = yes
+		from = { has_country_flag = dreadnought_allowed }
+	}
+	
+	effect = {
+		# Make city-planet
+		custom_tooltip = decision_dreadnought_project_effects
+		hidden_effect = {		
+			owner = {
+				country_event = { id = wsg.3035 } 
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}
+###########
+decision_wg_zro = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_wg_zro
+
+	resources = {
+		category = decisions
+		cost = {
+			sr_zro = 100
+		}
+	}
+
+	potential = {
+		owner = {
+			is_regular_empire = yes
+			has_technology = tech_wg_zro
+		}
+	}
+
+	allow = {
+		NOT = { has_modifier = planet_wg_zeo }
+	}
+
+	effect = {
+		add_modifier = { modifier = "planet_wg_zeo" days = 4800 }
+		hidden_effect = {
+			random_list = {
+				1 = { 
+					modifier = {
+						factor = 0
+						has_modifier = planet_wg_zro_great_success
+					}
+					planet_event = { id = wsg.9995 }
+				}
+				9 = { }
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 5
+
+		# don't encourage growth if there is no free housing
+		modifier = {
+			factor = 0
+			free_housing < 1
+		}
+	}
+}
+
+##########
+decision_wsg_rw_project = {
+	owned_planets_only = yes
+	icon = decision_shenhai_rw_project
+
+	enactment_time = 2400
+	resources = {
+		category = decisions
+		cost = {
+			trigger = {
+				owner = { is_ai = no }
+			}
+			influence = 250
+			minerals = 25000
+		}
+		cost = {
+			trigger = {
+				owner = { is_ai = yes }
+			}
+			influence = 200
+			minerals = 25000
+		}
+		cost = {
+			trigger = {
+				owner = { NOR = { 
+					has_technology = tech_wsg_senergy 
+					has_ascension_perk = ap_become_the_gray
+				}}
+			}
+			sr_neo = 400
+		}
+		cost = {
+			trigger = {
+				owner = {
+					has_technology = tech_wsg_senergy 
+					NOT = { has_ascension_perk = ap_become_the_gray }
+				}
+			}
+			sr_se = 400
+		}
+		cost = {
+			trigger = {
+				owner = { has_ascension_perk = ap_become_the_gray }
+			}
+			nanites = 10000
+		}
+	}
+	
+	potential = {
+		is_ringworld = yes
+		is_colony = yes
+		is_wg_upgraded_ringworld = no
+		exists = owner
+		NOR = {
+			is_planet_class = pc_shattered_ring_habitable
+		}
+		owner = { 
+			is_regular_empire = yes 
+			has_ascension_perk = ap_port_project
+			has_technology = tech_wsg_pantsu
+		}
+	}
+	
+	allow = {
+		if = {
+			limit = { hidden_trigger = { owner = { is_ai = no }}}
+			custom_tooltip = {
+				fail_text = decision_sh_rw_project_requirements
+				free_district_slots < 1
+				num_districts = { type = district_rw_farming value < 1 }
+				num_districts = { type = district_rw_commercial value < 1 }
+			}
+		}
+		hidden:owner = { 
+			has_technology = tech_wsg_pantsu
+			OR = {
+				AND = {
+					has_technology = tech_building_wsg_foundry
+					has_technology = tech_building_wsg_alpha
+					has_technology = tech_neo_exchange
+				}
+				AND = {
+					has_technology = tech_building_sep_foundry
+					has_technology = tech_wsg_senergy
+				}
+				has_ascension_perk = ap_become_the_gray
+			}
+		}
+		num_uncleared_blockers < 1
+	}
+	
+	effect = {
+		# Make city-planet
+		custom_tooltip = decision_wsg_rw_effects
+		hidden_effect = {		
+			owner = { if = {
+				limit = { is_ai = yes }
+				change_variable = { which = wg_modified_ringworld value = 1 }
+			}}
+			swap_districts_effect = {
+				DISTRICT1 = district_rw_city
+				DISTRICT2 = district_rw_wsg_city
+			}
+			swap_districts_effect = {
+				DISTRICT1 = district_rw_industrial
+				DISTRICT2 = district_rw_wsg_alloys
+			}
+			swap_districts_effect = {
+				DISTRICT1 = district_rw_science
+				DISTRICT2 = district_rw_wsg_science
+			}
+			change_pc = pc_ringworld_habitable_wsg
+			while = {
+				limit = { has_district = district_rw_generator }
+				remove_district = district_rw_generator
+			}
+			while = {
+				limit = { has_district = district_rw_commercial }
+				remove_district = district_rw_commercial 
+			}
+			set_planet_entity = {
+				entity = "ringworld_habitable_wsg"
+				graphical_culture = owner
+			}
+			planet_event = { id =  wsg.3205 }
+		}
+	}
+
+	ai_weight = {
+		weight = 10
+		modifier = {
+			add = 100
+			decision_has_resource = {
+				RESOURCE = minerals
+				MIN_REQUIREMENT = 35000
+			}
+			decision_has_resource = {
+				RESOURCE = influence
+				MIN_REQUIREMENT = 350
+			}
+			if = {
+				limit = { owner = { has_technology = tech_wsg_senergy }}
+				decision_has_resource = {
+					RESOURCE = sr_se
+					MIN_REQUIREMENT = 550
+				}
+			} else = {
+				decision_has_resource = {
+					RESOURCE = neo
+					MIN_REQUIREMENT = 550
+				}
+			}
+		}
+	}
+}
+
+decision_water_project_1 = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_resort_colony
+	
+	resources = {
+		category = decisions
+		cost = {
+			influence = 30
+		}
+	}
+	
+	potential = {
+		owner = { 
+			is_regular_empire = yes
+			has_technology = tech_wg_waterB2
+		}		
+		NOR = {
+			has_modifier = planet_growth_discouraged
+			has_modifier = planet_population_control
+		}
+		OR = {
+			is_planet_class = pc_swim
+			is_planet_class = pc_ringworld_habitable_swim
+		}	
+	}
+	
+	allow = {
+		custom_tooltip = {
+			fail_text = swim_project_requirements
+			owner = {
+				NOT = { has_country_flag = timed_swim_project_flag }
+			}	
+		}
+	}	
+	
+	effect = {
+		add_modifier = { modifier = "wg_swim_planet_colony" days = 4800 }
+		owner = {
+			set_timed_country_flag = { flag = timed_swim_project_flag days = 4800 }
+		}	
+	}
+	
+	ai_weight = {
+		weight = 5
+
+		modifier = {
+			factor = 0
+			free_housing < 1
+		}
+	}
+}
+
+decision_wg_planet_arch_dig = {
+	owned_planets_only = yes
+	sound = event_dig_site
+	icon = decision_archaeological_dig
+
+	enactment_time = 360
+
+	potential = {
+		is_same_value = event_target:lex_sol_III
+		NOT = { has_global_flag = finish_lex_sol_III_event }
+		owner = {
+			has_event_chain = lex_sol_chain
+			has_point_of_interest = {
+				poi = lex_sol_III_poi
+			}
+		}
+	}
+
+	allow = {
+		
+	}
+
+	effect = {
+		planet_event = { id = wsg.3110 }
+	}
+}
+	
+############
+decision_wg_sunflower = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_wg_sunflower
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 5
+		}
+	}
+	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_authority="auth_warshipgirls"
+			has_civic = civic_sunflower
+		}		
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = decision_sunflower_pop_requirements
+			NOT = { has_planet_flag = sunflower_lv10 }
+		}
+		custom_tooltip = {
+			fail_text = decision_sunflower_temple_requirements
+			has_building = building_sunflower_temple
+		}
+		custom_tooltip = {
+			fail_text = decision_last_sunflower_pop
+			count_owned_pop = {
+				limit = { has_trait = trait_wg_sunflower }
+				count > 1
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = decision_wg_sunflower_effects_short
+		hidden_effect = {
+			random_list = { 
+				60 = {
+				}
+				10 = {
+					owner = {
+						country_event = { id = wsg.3212 }
+					}
+				}
+				10 = {
+					owner = {
+						country_event = { id = wsg.3213 }
+					}
+				}
+				10 = {
+					owner = {
+						country_event = { id = wsg.3214 }
+					}
+				}
+				5 = {
+					modifier = {
+						factor = 0
+						owner = {
+							has_country_flag = super_sunflower_buff
+						}
+					}
+					owner = {
+						country_event = { id = wsg.3215 }
+					}
+					add_modifier = {
+						modifier = "planet_wg_sunflower_buff" 	
+						days = 720
+					}
+				}
+				5 = {
+					planet_event = { id = wsg.3216 }
+				}
+			}
+			random_owned_pop = {
+				limit = {
+					has_trait = trait_wg_sunflower					
+				}
+				kill_pop = yes
+			}
+			if = {
+				limit = { 
+					NOR = {
+						has_planet_flag = sunflower_lv1
+						has_planet_flag = sunflower_lv2
+						has_planet_flag = sunflower_lv3
+						has_planet_flag = sunflower_lv4
+						has_planet_flag = sunflower_lv5
+						has_planet_flag = sunflower_lv6
+						has_planet_flag = sunflower_lv7
+						has_planet_flag = sunflower_lv8
+						has_planet_flag = sunflower_lv9
+						has_planet_flag = sunflower_lv10
+					}
+				}
+				add_modifier = { modifier = "planet_wg_sunflower" days = -1 }
+				set_planet_flag = sunflower_lv1
+			}
+			else_if = {
+				limit = { 
+					has_modifier = planet_wg_sunflower
+				}
+				remove_modifier = planet_wg_sunflower
+				add_modifier = { modifier = "planet_wg_sunflower2" days = -1 }
+				set_planet_flag = sunflower_lv2
+			}
+			else_if = {
+				limit = { 
+					has_modifier = planet_wg_sunflower2
+				}
+				remove_modifier = planet_wg_sunflower2
+				add_modifier = { modifier = "planet_wg_sunflower3" days = -1 }
+				set_planet_flag = sunflower_lv3
+			}
+			else_if = {
+				limit = { 
+					has_modifier = planet_wg_sunflower3
+				}
+				remove_modifier = planet_wg_sunflower3
+				add_modifier = { modifier = "planet_wg_sunflower4" days = -1 }
+				set_planet_flag = sunflower_lv4
+			}
+			else_if = {
+				limit = { 
+					has_modifier = planet_wg_sunflower4
+				}
+				remove_modifier = planet_wg_sunflower4
+				add_modifier = { modifier = "planet_wg_sunflower5" days = -1 }
+				set_planet_flag = sunflower_lv5
+			}
+			else_if = {
+				limit = { 
+					has_modifier = planet_wg_sunflower5
+				}
+				remove_modifier = planet_wg_sunflower5
+				add_modifier = { modifier = "planet_wg_sunflower6" days = -1 }
+				set_planet_flag = sunflower_lv6
+			}
+			else_if = {
+				limit = { 
+					has_modifier = planet_wg_sunflower6
+				}
+				remove_modifier = planet_wg_sunflower6
+				add_modifier = { modifier = "planet_wg_sunflower7" days = -1 }
+				set_planet_flag = sunflower_lv7
+			}
+			else_if = {
+				limit = { 
+					has_modifier = planet_wg_sunflower7
+				}
+				remove_modifier = planet_wg_sunflower7
+				add_modifier = { modifier = "planet_wg_sunflower8" days = -1 }
+				set_planet_flag = sunflower_lv8
+			}
+			else_if = {
+				limit = { 
+					has_modifier = planet_wg_sunflower8
+				}
+				remove_modifier = planet_wg_sunflower8
+				add_modifier = { modifier = "planet_wg_sunflower9" days = -1 }
+				set_planet_flag = sunflower_lv9
+			}
+			else_if = {
+				limit = { 
+					has_modifier = planet_wg_sunflower9
+				}
+				remove_modifier = planet_wg_sunflower9
+				add_modifier = { modifier = "planet_wg_sunflower10" days = -1 }
+				set_planet_flag = sunflower_lv10
+			}
+		}
+	}
+}
+##########
+decision_wsg_fanatic_xenophile = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_wsg_fanatic_xenophile
+	
+	resources = {
+		category = decisions
+		cost = {
+			unity = 500
+		}
+	}	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			OR = {
+				has_authority = auth_warshipgirls
+				has_authority = auth_shenhai
+			}
+			has_ethic = ethic_fanatic_xenophile
+		}
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = decision_num_species_requirements
+			num_species > 1
+		}
+		NOR = {
+			has_modifier = planet_wsg_fanatic_xenophile
+		}
+	}	
+	effect = {
+		add_modifier = { modifier = "planet_wsg_fanatic_xenophile" days = 3600 }
+	}
+}
+#
+decision_planet_super_harbor = {
+	owned_planets_only = yes
+	sound = event_celebration
+	icon = P_super_harbor
+	enactment_time = 30
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_civic = civic_wsg_super_harbor
+		}
+	}
+	allow = {
+		owner = { 
+			NOT = {
+				has_modifier = planet_super_harbor
+			}
+		}
+		any_owned_pop = {
+			NOR = {
+				is_same_species = root.owner.owner_main_species
+			}
+		}
+	}		
+	effect = {
+		custom_tooltip = decision_super_harbor_effects_short
+		hidden_effect = {	
+			random_owned_pop = {
+				limit = {
+					NOR = {
+						is_same_species = root.owner.owner_main_species
+					}
+				}
+				kill_pop = yes
+			}
+		}
+		owner = {
+			add_modifier = {
+				modifier = planet_super_harbor
+				days = 1800
+			}	
+		}
+		owner = {
+			add_monthly_resource_mult = {
+				resource = unity
+				value = 6
+			}
+		}
+	}
+}
+
+decision_planet_super_harbor_C1PERM = {
+	owned_planets_only = yes
+	sound = event_celebration
+	icon = P_super_harbor_C1PERM
+
+	resources = {
+		category = decisions
+		cost = {
+			unity = 200
+			energy = 200
+		}
+	}
+	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_civic = civic_wsg_super_harbor
+		}		
+		NOR = {
+			has_modifier = planet_super_harbor_C1PERM
+		}
+	}
+
+	allow = {
+		NOT = { has_modifier = planet_super_harbor_C1PERM }
+	}	
+	
+	effect = {
+		add_modifier = { modifier = "planet_super_harbor_C1PERM" days = 7200 }
+	}
+}
+#改巢都
+decision_wg_hive_city_project = {
+	owned_planets_only = yes
+	icon = decision_wg_hive_city_project
+
+	enactment_time = 1800
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+			minerals = 8000
+		}
+	}
+	
+	potential = {
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_wg_hive_city
+			is_planet_class = pc_wg_forge
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_swim
+			is_planet_class = pc_ringworld_habitable_sh
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_swim
+			is_planet_class = pc_dyson_ring
+			is_planet_class = pc_ringworld_habitable			
+			is_planet_class = pc_relic
+		}
+		habitable_structure = no
+		exists = owner
+		owner = { has_technology = tech_wg_hive_city }
+	}
+	
+	allow = {
+		if = {
+			limit = { owner = { is_ai = no }}
+			custom_tooltip = {
+				fail_text = decision_wg_hive_city_project_requirements
+				OR = {
+					num_districts = { type = district_city value >= 8 }
+					num_districts = { type = district_industrial value >= 8 }
+				}	
+			}
+		}
+		num_uncleared_blockers < 1
+	}
+	
+	effect = {
+		custom_tooltip = decision_wg_hive_city_project_effects
+		hidden_effect = {		
+			owner = { if = {
+				limit = { is_ai = yes }
+				change_variable = { which = wg_modified_planet value = 1 }
+			}}
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_city 
+				VARIABLE = num_housing_districts
+			}
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_industrial
+				VARIABLE = num_industrial_districts
+			}
+			change_pc = pc_wg_hive_city
+			remove_all_districts = yes
+			clear_deposits = yes
+			while = {
+				count = num_housing_districts
+				add_district = district_wg_hive_world_housing
+			}
+			while = {
+				count = num_industrial_districts
+				add_district = district_wg_hive_world_housing
+			}
+			clear_variable = num_housing_districts
+			clear_variable = num_industrial_districts
+			set_planet_entity = {
+				entity = "wg_hive_city_planet"
+			}
+			owner = {
+				#country_event = { id = distar.201 } # port for living planet distar.197, triggers in event
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 50
+		modifier = {
+			add = 150
+			planet_size >= 15
+			decision_has_resource = {
+				RESOURCE = minerals
+				MIN_REQUIREMENT = 35000
+			}
+			decision_has_resource = {
+				RESOURCE = influence
+				MIN_REQUIREMENT = 200
+			}
+		}
+		modifier = {
+			factor = 0.1
+			planet_size < 15
+		}
+		modifier = {
+			factor = 0.01
+			owner = { check_variable_arithmetic = {
+				which = wg_modified_planet
+				divide = trigger:num_owned_planets
+				value >= 0.6
+			}}
+		}
+		modifier = {
+			factor = 0.5
+			planet_size < 18
+		}
+		modifier = {
+			factor = 2
+			planet_size >= 20
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				is_capital = yes
+				num_pops >= 70
+			}
+		}
+	}
+}
+
+decision_wg_forge_world_project = {
+	owned_planets_only = yes
+	icon = decision_wg_forge_world_project
+
+	enactment_time = 1800
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+			minerals = 15000
+		}
+	}
+	
+	potential = {
+		is_planet_class = pc_wg_hive_city
+		habitable_structure = no
+		exists = owner
+		owner = { has_technology = tech_wg_forge }
+	}
+	
+	allow = {
+		if = {
+			limit = { owner = { is_ai = no }}
+			custom_tooltip = {
+				fail_text = decision_wg_forge_world_project_requirements
+				num_districts = { type = district_wg_hive_world_housing value >= 12 }	
+			}
+		}
+		num_uncleared_blockers < 1
+		num_pops > 40
+	}
+	
+	effect = {
+		custom_tooltip = decision_wg_forge_world_project_effects
+		hidden_effect = {		
+			change_pc = pc_wg_forge
+			clear_deposits = yes
+			set_planet_entity = {
+				entity = "wg_forge_planet"
+			}
+			owner = {
+				#country_event = { id = distar.201 } # port for living planet distar.197, triggers in event
+			}
+		}
+	}
+}
+decision_wg_forge_world_city_project = {
+	owned_planets_only = yes
+	icon = decision_wg_forge_world_project
+
+	enactment_time = 720
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+			minerals = 10000
+		}
+	}
+	
+	potential = {
+		is_planet_class = pc_city
+		habitable_structure = no
+		exists = owner
+		owner = { has_technology = tech_wg_forge }
+	}
+	
+	allow = {
+		if = {
+			limit = { owner = { is_ai = no }}
+			custom_tooltip = {
+				fail_text = decision_wg_hive_city_city_project_requirements
+				num_districts = { type = district_arcology_arms_industry value >= 10 }	
+			}
+		}
+		num_uncleared_blockers < 1
+		num_pops > 40
+	}
+	
+	effect = {
+		custom_tooltip = decision_wg_forge_world_project_effects
+		hidden_effect = {		
+		    wg_relic_world_get_variable_effect = {
+				DISTRICT = district_arcology_arms_industry 
+				VARIABLE = num_arcology_industry_districts
+			}
+			change_pc = pc_wg_forge
+			remove_all_districts = yes
+			clear_deposits = yes
+			while = {
+				count = num_arcology_industry_districts
+				add_district = district_wg_forge
+			}
+			clear_variable = num_arcology_industry_districts
+			set_planet_entity = {
+				entity = "wg_forge_planet"
+			}
+			owner = {
+				#country_event = { id = distar.201 } # port for living planet distar.197, triggers in event
+			}
+		}
+	}
+}
+decision_wg_forge_world_relic_project = {
+	owned_planets_only = yes
+	icon = decision_wg_forge_world_project
+
+	enactment_time = 2400
+	resources = {
+		category = decisions
+		cost = {
+			influence = 200
+			minerals = 25000
+		}
+	}
+	
+	potential = {
+		is_planet_class = pc_relic
+		habitable_structure = no
+		exists = owner
+		owner = { has_technology = tech_wg_forge }
+	}
+	
+	allow = {
+		num_uncleared_blockers < 1
+		num_pops > 50
+	}
+	
+	effect = {
+		custom_tooltip = decision_wg_forge_world_project_effects
+		hidden_effect = {		
+			change_pc = pc_wg_forge
+			remove_all_districts = yes
+			clear_deposits = yes
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_city
+				VARIABLE = num_housing_districts
+			}
+			wg_relic_world_get_variable_effect = {
+				DISTRICT = district_industrial
+				VARIABLE = num_industrial_districts
+			}
+			change_pc = pc_wg_forge
+			remove_all_districts = yes
+			while = {
+				count = num_housing_districts
+				add_district = district_wg_forge
+			}
+			while = {
+				count = num_industrial_districts
+				add_district = district_wg_forge
+			}
+			set_planet_entity = {
+				entity = "wg_forge_planet"
+			}
+			owner = {
+				#country_event = { id = distar.201 } # port for living planet distar.197, triggers in event
+			}
+		}
+	}
+}

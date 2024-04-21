@@ -1,0 +1,47 @@
+# AABBABAB
+
+WG_intro_button_A_effect = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = { 
+		custom_tooltip = "??????"
+		hidden_effect = { if = {
+			limit = { 
+				OR = { 
+					NOT = { is_variable_set = wg_secret_window }
+					check_variable = { which = wg_secret_window value = 0 }
+					check_variable = { which = wg_secret_window value = 1 }
+					check_variable = { which = wg_secret_window value = 4 }
+					check_variable = { which = wg_secret_window value = 6 }
+				}
+			}
+			change_variable = { which = wg_secret_window value = 1 }
+		} else = {
+			set_variable = { which = wg_secret_window value = 0 }
+		}}
+	}
+}
+
+WG_intro_button_B_effect = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = {
+		custom_tooltip = "??????"
+		hidden_effect = { if = {
+			limit = { 
+				OR = { 
+					check_variable = { which = wg_secret_window value = 2 }
+					check_variable = { which = wg_secret_window value = 3 }
+					check_variable = { which = wg_secret_window value = 5 }
+				}
+			}
+			change_variable = { which = wg_secret_window value = 1 }
+		} else_if = {
+			limit = { check_variable = { which = wg_secret_window value = 7 }}
+			set_variable = { which = wg_secret_window value = 0 }
+			country_event = { id = wg_crisis.10010 }
+		} else = {
+			set_variable = { which = wg_secret_window value = 0 }
+		}}
+	}
+}

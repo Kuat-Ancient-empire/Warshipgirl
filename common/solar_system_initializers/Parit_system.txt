@@ -1,0 +1,326 @@
+Parit_system = {
+	name = "NAME_Parit_system"
+	class = "sc_g"
+	usage = misc_system_init
+	
+	usage_odds = 0
+	
+	flags = { wg_Parit_system wg_event_system }
+
+	prevent_anomalies = yes
+
+	planet = {
+		count = 1
+		class = "pc_g_star"
+		orbit_distance = 0
+		orbit_angle = 1
+		size = { min = 20 max = 30 }
+		has_ring = no
+		init_effect = {
+			create_ambient_object = {
+				type = "executor_ship_object"
+				location = this
+			}
+		}			
+	}
+	
+	change_orbit = 45
+	
+	planet = {
+		count = { min = 1 max = 2 }
+		class = rl_unhabitable_planets
+		orbit_distance = 20
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = 1
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+
+	planet = {
+		class = pc_gaia
+		name = "NAME_Parit"
+		orbit_distance = 30
+		modifiers = none
+		size = { min = 20 max = 25 }		
+		init_effect = {
+			save_global_event_target_as = Parit_event
+			add_modifier =  { modifier = planet_Parit days = -1 }
+			set_planet_flag = Parit_planet
+			clear_deposits = yes
+			add_deposit = d_Parit
+			add_deposit = d_Parit2
+			add_deposit = d_Parit3
+			add_deposit = d_Parit4
+			add_deposit = d_Parit5
+			add_deposit = d_rich_mountain
+			add_deposit = d_rich_mountain
+			add_deposit = d_rich_mountain
+			add_deposit = d_ore_rich_caverns
+			add_deposit = d_ore_rich_caverns
+			add_deposit = d_black_soil
+			add_deposit = d_black_soil
+			add_deposit = d_fungal_caves
+			add_deposit = d_underwater_vent
+			add_deposit = d_geothermal_vent
+			add_deposit = d_rushing_waterfalls
+			add_deposit = d_hot_springs
+			add_deposit = d_hot_springs
+			add_deposit = d_alien_pets_deposit	
+			
+			prevent_anomaly = yes
+			create_species = {
+				name = "NAME_Parit_species_SH"
+				class = "ShenHai"
+				portrait = "shenhai"
+				traits = {
+					trait = sh_trait_shenhai3
+					trait = sh_trait_together
+					trait = sh_trait_migrate
+					trait = sh_trait_fool40k
+				}				
+				immortal = yes
+				effect = { save_global_event_target_as = Parit_species_sh }
+			}
+            create_country = {
+                name = random
+                authority = random
+				day_zero_contact = no
+                civics = {
+                    civic = civic_increasing_urbanization
+                    civic = civic_atmospheric_pollution
+                }
+                species = event_target:Parit_species_sh
+                ethos = {
+                    ethic = "ethic_xenophile"
+                    ethic = "ethic_fanatic_egalitarian"			
+                }
+                flag = {
+                    icon = {
+                        category = "warshipgirls"
+                        file = "wg_flags_08.dds"
+                    }
+                    background= {
+                        category = "backgrounds"
+                        file = "circle.dds"
+                    }
+                    colors={
+                        "dark_blue"
+                        "green"
+                        "null"
+                        "null"
+                    }
+                }
+                type = primitive
+            }
+            last_created_country = {
+                set_graphical_culture = fallen_empire_03
+				set_pre_ftl_age = Parit_age
+				set_country_flag = Parit_age
+				set_country_flag = Parit_country
+				save_event_target_as = Parit_country
+            }
+            set_owner = event_target:Parit_country
+
+            
+            while = { count = 15
+				create_army = {
+					name = "Parit_ARMY"
+					owner = event_target:Parit_country
+					species = event_target:Parit_country
+					type = "Parit_army"
+					#land_army = yes
+				}
+			}
+			while = {
+				count = 60
+				create_pop = {
+					species = event_target:Parit_species_sh
+				}					
+			}
+            add_building = building_primitive_capital_Parit
+			add_building = building_data_base_Parit
+			add_building = building_game_centre_Parit
+			add_building = building_game_centre_Parit
+			add_building = building_game_centre_Parit
+			add_building = building_energy_Parit
+			add_building = building_energy_Parit
+			add_building = building_minerlas_Parit
+			add_building = building_minerlas_Parit
+			add_building = building_minerlas_Parit
+			add_building = building_food_Parit
+			add_building = building_food_Parit
+			while = {
+				count = 12
+				add_district = district_city
+			}
+
+            last_created_country = {
+                capital_scope = { set_name = "NAME_Parit" }
+            }			
+        }
+	}
+	planet = {
+		class = pc_gas_giant
+		orbit_distance = 20
+		size = { min = 30 max = 35 }
+		change_orbit = @base_moon_distance
+		
+	}
+	planet = {
+		count = { min = 1 max = 4 }
+		class = rl_unhabitable_planets
+		orbit_distance = 20
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 3 }
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	init_effect = {
+		save_global_event_target_as = wg_Parit_system
+	}
+}
+
+
+Parit_origin_system = {
+	name = "NAME_Parit_system"
+	class = "sc_g"
+	usage = origin
+	
+	usage_odds = 0
+	
+	flags = { empire_home_system }
+
+	prevent_anomalies = yes
+
+	planet = {
+		count = 1
+		class = "pc_g_star"
+		orbit_distance = 0
+		orbit_angle = 1
+		size = { min = 20 max = 30 }
+		has_ring = no
+		init_effect = {
+			create_ambient_object = {
+				type = "executor_ship_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				save_global_event_target_as = executor_ship_object_target
+				set_location = {
+					target = prev
+					distance = 20
+					angle = 20
+				}
+			}
+			create_ambient_object = {
+				type = "ancient_battlefield_object"
+				location = this
+			}
+			last_created_ambient_object = {
+				save_global_event_target_as = parit_battlefield_target
+				set_location = {
+					target = prev
+					distance = 90
+					angle = 80
+				}
+			}
+		}			
+	}
+	
+	change_orbit = 45
+	
+	planet = {
+		count = { min = 1 max = 2 }
+		class = rl_unhabitable_planets
+		orbit_distance = 20
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = 1
+			class = pc_barren_cold
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+			init_effect = {
+				save_global_event_target_as = parit_unknownworld_target
+			}
+		}
+	}
+
+	planet = {
+		class = ideal_planet_class
+		name = "NAME_Parit"
+		orbit_distance = 30
+		home_planet = yes
+		modifiers = none
+		size = { min = 20 max = 25 }
+		
+		init_effect = {			
+			prevent_anomaly = yes
+			set_planet_flag = Parit_home_planet
+			save_global_event_target_as = Parit_home_target
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -15 max = -15 }
+				location = this
+			}
+			add_modifier =  { modifier = planet_Parit2 days = -1 }
+			last_created_ambient_object = {
+				save_global_event_target_as = parit_debris_object
+				set_location = {
+					target = prev
+					distance = 0
+					angle = random
+				}
+			}
+        }
+	}
+	planet = {
+		class = pc_gas_giant
+		orbit_distance = 20
+		size = { min = 30 max = 35 }
+		
+		init_effect = {
+			save_global_event_target_as = parit_gas_target
+		}
+	}
+	planet = {
+		count = { min = 1 max = 4 }
+		class = rl_unhabitable_planets
+		orbit_distance = 20
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 3 }
+			class = rl_unhabitable_planets
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	init_effect = {
+		save_global_event_target_as = wg_Parit_origin_system
+	}
+	neighbor_system = {
+		trigger = { num_guaranteed_colonies >= 2 }
+		hyperlane_jumps = { min = 1 max = @habitable_max_distance }
+		initializer = "neighbor_t1"
+	}
+	neighbor_system = {
+		trigger = { num_guaranteed_colonies >= 1 }
+		hyperlane_jumps = { min = 1 max = @habitable_max_distance }
+		initializer = "neighbor_t1_first_colony"
+	}	
+}

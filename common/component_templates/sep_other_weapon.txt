@@ -1,0 +1,180 @@
+weapon_component_template = {
+	key = "wsg_weapon_S_40"
+	size = point_defence
+	
+	icon = "GFX_wsg_weapon_S_40"
+	icon_frame = 1
+	
+	damage = { min = 3 max = 7.5 }
+	windup = { min = 0.8 max = 1.6 }
+	total_fire_time = 2
+	range = 65
+	armor_damage = 1.0
+	shield_damage = 1.0
+	accuracy = 1.0
+	tracking = 0.9
+	power = -22
+	
+	prerequisites = { "tech_wsg_weapon_S_40" }
+	component_set = "wsg_weapon_S_40"
+	type = point_defence
+	projectile_gfx = "white_laser_pd"
+	tags = { weapon_type_point_defense weapon_type_energy }
+	ai_tags = { weapon_role_point_defense }
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 20
+			sr_se = 0.2
+		}
+		upkeep = {
+			energy = 0.4
+			alloys = 0.15
+		}
+	}
+	ai_weight = {
+		weight = 100
+		modifier = {
+			factor = 5
+			is_wg_empire = yes
+		}
+		modifier = {
+			factor = 0.0
+			component_no_resource = { RESOURCE = sr_se MIN_REQUIREMENT = 250 }
+		}
+	}
+}
+
+weapon_component_template = {
+	key = "wsg_weapon_S_301"
+	size = torpedo
+	
+	icon = "GFX_wsg_weapon_S_301"
+	icon_frame = 1
+	type = missile
+	
+	component_set = "wsg_weapon_S_301"
+	projectile_gfx = "wsg_sy_missile_dual"
+	#projectile_gfx = "large_torpedo_02"
+	
+	tags = { weapon_type_energy weapon_type_explosive g_slot }
+	ai_tags = { weapon_role_anti_shield }
+    firing_arc = 25.0
+	damage = { min = 1500 max = 2500 }
+	windup = { min = 15 max = 30 }
+	total_fire_time = 300
+	range = 110.0
+	accuracy = 0.7
+	tracking = 0.4
+	power = -250
+
+	shield_penetration = 1.0
+	armor_damage = 1.0
+	
+	resources = {
+		category = ship_components
+		cost = {
+			volatile_motes = 3
+			sr_se = 3
+			alloys = 75
+		}		
+		upkeep = {
+			energy = 1
+			alloys = 0.5
+		}
+	}
+
+	ai_weight = {
+		weight = 100
+		modifier = {
+			factor = 5
+			is_wg_empire = yes
+		}
+		modifier = {
+			factor = 0.0
+			OR = {
+				component_no_resource = { RESOURCE = sr_se MIN_REQUIREMENT = 250 }
+			}
+		}
+	}
+
+	missile_speed = 70
+	missile_evasion = 0.3
+	missile_shield = 50
+	missile_armor = 30
+	missile_health = 50
+	missile_retarget_range = 200
+	size_damage_factor = 0.5
+	prerequisites = { "tech_wsg_weapon_S_301" }
+}
+
+strike_craft_component_template = {
+	key = "wsg_weapon_S_A2"
+	size = LARGE
+	entity = "bomber_entity"
+	power = -100
+
+	resources = {
+		category = ship_components
+		cost = {
+			sr_se = 5
+			alloys = 90
+		}
+		upkeep = {
+			energy = 1.2
+		}
+	}
+	ship_modifier = {
+		ship_orbital_bombardment_mult = 0.30
+	}
+	count = 2
+	regeneration_per_day = 1.0
+	launch_time = 5.0
+	
+	damage = { min = 500 max = 800 }
+	cooldown = 5
+	range = 35
+	engagement_range = 180
+	accuracy = 1.0
+	tracking = 0.4
+	
+	health = 250
+	armor = 200
+	shield = 1000
+	evasion = 0.1
+	
+	speed = 800
+	rotation_speed = 0.7
+	acceleration = 0.8
+	
+	shield_damage = 2.0
+	armor_damage = 2.0
+	hull_damage = 1.5
+	
+	ship_behavior = "bombers_behavior"
+	
+	weapon_type = instant
+	projectile_gfx = "neutron_torpedoes"
+	
+	component_set = "wsg_weapon_S_A2"
+	prerequisites = { "tech_wsg_weapon_S_A2" }
+	
+	icon = "GFX_wsg_weapon_S_A2"
+	icon_frame = 1
+	tags = { weapon_type_strike_craft weapon_type_energy }
+	ai_tags = { weapon_role_anti_shield }
+	
+	ai_weight = {
+		weight = 100
+		modifier = {
+			factor = 5
+			is_wg_empire = yes
+		}
+		modifier = {
+			factor = 0.0
+			OR = {
+				component_no_resource = { RESOURCE = sr_se MIN_REQUIREMENT = 250 }
+			}
+		}
+	}
+}

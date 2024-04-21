@@ -1,0 +1,151 @@
+namespace = cara
+
+#################################
+# Caravaneer Events
+# scripted by Maximilian Olbers
+#################################
+
+#@fleet1dealdecay = 3600
+@fleet2dealdecay = 3600
+@fleet3dealdecay = 3600
+
+#################################
+# The Caravaneer Base
+# cara.0000 - 1000
+#################################
+
+# Home - Main menu, cara.100
+
+country_event = {
+	id = cara.4041
+	title = cara.4041.name
+	desc = cara.4041.desc
+	picture = GFX_evt_caravaneers
+	location = from
+	show_sound = event_ship_thrusters
+	trigger = {
+		owner = {
+			has_wg_special_authority = no
+		}
+	}
+	immediate = {
+		if = { #cunning event re-use
+			limit = {
+				exists = event_target:welcome_fleet
+			}
+			event_target:welcome_fleet.owner.species = {
+				save_event_target_as = party_host
+			}
+		}
+		else_if = { #cunning event re-use
+			limit = {
+				exists = event_target:caravaneer_neighbor_species
+			}
+			event_target:caravaneer_neighbor_species = {
+				save_event_target_as = party_host
+			}
+		}
+		event_target:pleased_planet = {
+			if = {
+				limit = {
+					any_owned_pop = {
+						is_xenophile = yes
+						species = { is_crossbreeding_possible = yes }
+						NOT = { is_same_species = event_target:party_host }
+					}
+				}
+				random_owned_pop = {
+					limit = {
+						is_xenophile = yes
+						species = { is_crossbreeding_possible = yes }
+						NOT = { is_same_species = event_target:party_host }
+					}
+					save_event_target_as = party_goer
+				}
+			}
+			else_if = {
+				limit = {
+					any_owned_pop = {
+						is_xenophobe = no
+						species = { is_crossbreeding_possible = yes }
+						NOT = { is_same_species = event_target:party_host }
+					}
+				}
+				random_owned_pop = {
+					limit = {
+						is_xenophobe = no
+						species = { is_crossbreeding_possible = yes }
+						NOT = { is_same_species = event_target:party_host }
+					}
+					save_event_target_as = party_goer
+				}
+			}
+			else = {
+				random_owned_pop = {
+					limit = {
+						species = { is_crossbreeding_possible = yes }
+						NOT = { is_same_species = event_target:party_host }
+					}
+					save_event_target_as = party_goer
+				}
+			}
+		}
+
+		event_target:pleased_planet = {
+			create_half_species = {
+				species_one = event_target:party_host
+				species_two = event_target:party_goer.species
+				country = root
+			}
+			while = {
+				count = 2
+				create_pop = {
+					species = last_created_species
+				}
+			}
+		}
+	}
+
+	is_triggered_only = yes
+
+	option = {
+		exclusive_trigger = {
+			is_xenophile = yes
+		}
+		name = cara.4041.phile
+	}
+	option = {
+		exclusive_trigger = {
+			is_xenophobe = yes
+		}
+		name = cara.4041.phobe
+	}
+	option = {
+		exclusive_trigger = {
+			is_xenophile = no
+			is_xenophobe = no
+		}
+		name = cara.4041.a
+	}
+
+
+	after = {
+		tooltip = {
+			event_target:pleased_planet = {
+				create_half_species = {
+					species_one = event_target:party_host
+					species_two = event_target:party_goer.species
+					country = root
+				}
+				hidden_effect = {
+					while = {
+						count = 3
+						create_pop = {
+							species = last_created_species
+						}
+					}
+				}
+			}
+		}
+	}
+}

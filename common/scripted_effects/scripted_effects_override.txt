@@ -1,0 +1,385 @@
+@ARCHAEOLOGICAL_SITE_XP_0_CLUE = 10
+@ARCHAEOLOGICAL_SITE_XP_1_CLUE = 25
+@ARCHAEOLOGICAL_SITE_XP_2_CLUE = 40
+
+#创造灰风总督
+create_gray_official = {
+	if = {
+		limit = { has_country_flag = gray_warship_active }
+		remove_country_flag = gray_warship_active
+		event_target:gray_leader_admiral = { kill_leader = { show_notification = no fire = yes } }
+		event_target:gray_warship = { delete_fleet = this }		#删除灰风母舰
+	}
+	if = {
+		limit = { has_country_flag = gray_army_active }
+		remove_country_flag = gray_army_active
+		every_owned_army = {
+			limit = { army_type = gray_army }
+			remove_army = yes
+		}
+	}
+	set_country_flag = gray_official_active
+	create_leader = {							#创建灰风总督
+		class = official
+		species = event_target:gray_species
+		name = "NAME_Gray"
+		skip_background_generation = yes
+		custom_catch_phrase = gray_catch_phrase
+		custom_description = gray_backstory
+		background_ethic = ethic_gestalt_consciousness
+		gender = female
+		immortal = yes
+		event_leader = yes
+		skill = 1
+		set_age = 0
+		traits = {
+			trait = leader_trait_wg_gray_legend
+			trait = subclass_governor_economist
+			trait = leader_trait_urbanist_3
+			trait = leader_trait_scrapper_2
+		}
+		effect = {
+			set_leader_flag = not_has_wg_affection_normal
+			set_leader_flag = immune_to_negative_traits
+			save_global_event_target_as = gray_official
+			change_leader_portrait = GrayTempest06
+			set_leader_flag = legendary_leader
+			set_leader_flag = immune_to_negative_traits
+			set_leader_flag = gray_official
+			# set_leader_flag = has_gained_level_trait
+			set_leader_flag = "gray_leader"
+		}
+	}
+	random_owned_leader = {
+		limit = { has_leader_flag = gray_official }
+		leader_event = {
+			id = wg_affection.8 days = 1
+		}
+		if = {
+			limit = { owner = { has_country_flag = gray_encountered_the_loop }}
+			add_trait_no_notify = leader_trait_official_wg_the_loop
+		}
+		add_skill_without_trait_selection = owner.gray_level
+		add_skill_without_trait_selection = 10
+		set_gray_portrait = yes
+	}
+}
+# 创建灰风战舰
+create_gray_warship = {
+	if = {
+		limit = { has_country_flag = gray_official_active }
+		remove_country_flag = gray_official_active
+		event_target:gray_official = {
+			kill_leader = { show_notification = no }
+		}
+	}
+	if = {
+		limit = { has_country_flag = gray_army_active }
+		if = {
+			limit = {
+				any_owned_army = {
+					army_type = gray_army
+					exists = planet
+				}
+			}
+			random_owned_army = {
+				limit = { army_type = gray_army }
+				planet = { save_event_target_as = gray_warship_location }
+			}
+		}
+		else = {
+			random_owned_army = {
+				limit = { army_type = gray_army }
+				fleet = { save_event_target_as = gray_warship_location }
+			}
+		}
+	}
+	else_if = {
+		limit = { has_country_flag = gray_official_active }
+		if = {
+			limit = { any_owned_planet = {
+				exists = leader
+				leader = { has_leader_flag = gray_official }
+			}}
+			random_owned_planet = {
+				limit = {
+					exists = leader
+					leader = { has_leader_flag = gray_official }
+				}
+				save_event_target_as = gray_warship_location
+			}
+		} else = {
+			capital_scope = {
+				save_event_target_as = gray_warship_location
+			}
+		}
+	} 
+	else = {
+		capital_scope = { save_event_target_as = gray_warship_location }
+	}
+	set_country_flag = gray_warship_active
+	create_leader = {
+		class = commander
+		species = event_target:gray_species
+		name = "NAME_Gray"
+		skip_background_generation = yes
+		custom_catch_phrase = gray_catch_phrase
+		custom_description = gray_backstory
+		background_ethic = ethic_gestalt_consciousness
+		immortal = yes
+		event_leader = yes
+		gender = female
+		skill = 1
+		set_age = 0
+		traits = {
+			trait = leader_trait_wg_gray_legend
+		}
+		effect = {
+			set_leader_flag = not_has_wg_affection_normal
+			set_leader_flag = immune_to_negative_traits
+			save_global_event_target_as = gray_leader_admiral
+			set_leader_flag = legendary_leader
+			set_leader_flag = immune_to_negative_traits
+			set_leader_flag = gray_admiral
+			# set_leader_flag = has_gained_level_trait
+			set_leader_flag = "gray_leader"
+		}
+	}
+	create_fleet = {
+		name = "NAME_Gray"
+		settings = {
+			can_upgrade = no						#是否可以升级
+			can_change_composition = no			#是否可以改变舰队结构
+			can_disband = no
+			can_change_leader = no					#是否可以更换领袖
+			uses_naval_capacity = no				#使用舰队容量
+			spawn_debris = no						#产生残骸
+		}
+		effect = {
+			set_owner = root
+			set_fleet_flag = wg_event_limit_fleet
+			create_ship = {
+				name = "NAME_Gray"
+				design = "NAME_Gray_Warship"
+				prefix = no
+				upgradable = no
+				effect = {
+					save_global_event_target_as = gray_warship_ship
+				}
+			}
+			set_fleet_flag = gray_fleet
+			save_global_event_target_as = gray_warship
+			set_location = event_target:gray_warship_location
+			assign_leader = event_target:gray_leader_admiral
+			add_modifier = { modifier = remove_fleet_maintenance }
+		}
+	}
+	if = {
+		limit = { has_country_flag = gray_army_active }
+		remove_country_flag = gray_army_active
+		every_owned_army = {
+			limit = { army_type = gray_army }
+			if = {
+				limit = { exists = leader }
+				unassign_leader = leader
+			}
+			remove_army = yes
+		}
+	}
+	random_owned_leader = { 
+		limit = { has_leader_flag = gray_admiral }
+		leader_event = {
+			id = wg_affection.8 days = 1
+		}
+		if = {
+			limit = { owner = { has_country_flag = gray_encountered_the_loop }}
+			add_trait_no_notify = leader_trait_commander_wg_the_loop
+		}
+		add_skill_without_trait_selection = 10
+		set_gray_portrait = yes
+	}
+}
+#创造灰风地面单位
+create_gray_army = {
+	if = {
+		limit = { has_country_flag = gray_official_active }
+		remove_country_flag = gray_official_active
+		event_target:gray_official = { kill_leader = { show_notification = no } }
+	}
+	if = {
+		limit = { has_country_flag = gray_warship_active }
+		event_target:gray_warship = { save_event_target_as = gray_transport_location }
+	}
+	else_if = {
+		limit = { has_country_flag = gray_official_active }
+		if = {
+			limit = { any_owned_planet = {
+				exists = leader
+				leader = { has_leader_flag = gray_official }
+			}}
+			random_owned_planet = {
+				limit = {
+					exists = leader
+					leader = { has_leader_flag = gray_official }
+				}
+				save_event_target_as = gray_warship_location
+			}
+		} else = {
+			capital_scope = {
+				save_event_target_as = gray_warship_location
+			}
+		}
+	} 
+	else = {
+		capital_scope = { save_event_target_as = gray_transport_location }
+	}
+	set_country_flag = gray_army_active
+	create_fleet = {
+		name = "NAME_Gray"
+		effect = {
+			set_owner = root
+			create_army_transport = {
+				species = event_target:gray_owner
+				ship_name = "NAME_Gray"
+				#graphical_culture = "root"
+				army_name = "NAME_Gray"
+				army_type = "gray_army"
+			}
+			set_location = {
+				target = event_target:gray_transport_location
+				distance = 0
+				angle = random 
+			}
+		}
+	}
+	if = {
+		limit = { has_country_flag = gray_warship_active }
+		remove_country_flag = gray_warship_active
+		event_target:gray_leader_admiral = { kill_leader = { show_notification = no } }
+		event_target:gray_warship_ship = { delete_ship = this }
+	}
+}
+
+# scope: leader
+set_gray_portrait = {
+	if = {
+		limit = { owner = { 
+			OR = {
+				has_wg_special_authority = yes
+				has_global_flag = wg_cheat_all_clothes
+			}
+			check_variable = { which = wg_gray_cloth value = 1 }
+		}}
+		change_leader_portrait = GrayTempest01
+	} else_if = {
+		limit = { owner = { 
+			check_variable = { which = wg_gray_cloth value = 2 }
+		}}
+		change_leader_portrait = GrayTempest02
+	} else_if = {
+		limit = { owner = { 
+			check_variable = { which = wg_gray_cloth value = 3 }
+		}}
+		change_leader_portrait = GrayTempest03
+	} else_if = {
+		limit = { owner = { 
+			check_variable = { which = wg_gray_cloth value = 4 }
+		}}
+		change_leader_portrait = GrayTempest04
+	} else_if = {
+		limit = { owner = { 
+			check_variable = { which = wg_gray_cloth value = 5 }
+		}}
+		change_leader_portrait = GrayTempest05
+	}else_if = {
+		limit = { owner = { 
+			check_variable = { which = wg_gray_cloth value = 6 }
+		}}
+		change_leader_portrait = GrayTempest06
+	} else_if = {
+		limit = { always = yes }
+		change_leader_portrait = GrayTempest06
+	}
+}
+
+reset_gray_cloth = {
+	if = {
+		limit = { 
+			NOR = { 
+				has_wg_special_authority = yes
+				has_global_flag = wg_cheat_all_clothes
+			}
+			check_variable = { which = wg_gray_cloth value = 1 }
+		}
+		set_variable = { which = wg_gray_cloth value = 1 }
+	}
+}
+
+standard_archaeological_site_on_roll_failed = {
+	switch = {
+		trigger = is_site_current_stage_score_no_die
+		-8 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-8 } }
+		-7 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-7 } }
+		-6 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-6 } }
+		-5 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-5 } }
+		-4 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-4 } }
+		-3 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-3 } }
+		-2 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-2 } }
+		-1 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-1 } }
+		0 = { standard_archaeological_site_on_roll_failed_case = { SCORE=0 } }
+		1 = { standard_archaeological_site_on_roll_failed_case = { SCORE=1 } }
+		2 = { standard_archaeological_site_on_roll_failed_case = { SCORE=2 } }
+		3 = { standard_archaeological_site_on_roll_failed_case = { SCORE=3 } }
+		4 = { standard_archaeological_site_on_roll_failed_case = { SCORE=4 } }
+		5 = { standard_archaeological_site_on_roll_failed_case = { SCORE=5 } }
+		6 = { standard_archaeological_site_on_roll_failed_case = { SCORE=6 } }
+		7 = { standard_archaeological_site_on_roll_failed_case = { SCORE=7 } }
+		8 = { standard_archaeological_site_on_roll_failed_case = { SCORE=8 } }
+		9 = { standard_archaeological_site_on_roll_failed_case = { SCORE=9 } }
+		10 = { standard_archaeological_site_on_roll_failed_case = { SCORE=10 } }
+		11 = { standard_archaeological_site_on_roll_failed_case = { SCORE=11 } }
+		12 = { standard_archaeological_site_on_roll_failed_case = { SCORE=12 } }
+		13 = { standard_archaeological_site_on_roll_failed_case = { SCORE=13 } }
+		14 >= { standard_archaeological_site_on_roll_failed_case = { SCORE=14 } }
+	}
+	hidden_effect ={
+		switch = {
+			trigger = is_site_current_stage_score
+			5 <= {
+				prev = {
+					leader = { 
+						add_scientist_affection_arch = { CLUES=1 }
+						add_experience = @ARCHAEOLOGICAL_SITE_XP_0_CLUE 
+					}
+					random_list = {
+						120 = {}
+						10 = {
+							modifier = {
+								factor = 0
+								from = {
+									is_current_stage_clues = 0
+								}
+							}
+							$RANDOM_EVENTS$ = yes
+						}
+					}
+				}
+			}
+			10 <= { 
+				add_stage_clues = 1 
+				prev = { leader = { 
+					add_scientist_affection_arch = { CLUES=2 }
+					add_experience = @ARCHAEOLOGICAL_SITE_XP_1_CLUE 
+				}}
+			}
+			13 <= { 
+				add_stage_clues = 2 
+				prev = { leader = {
+					add_scientist_affection_arch = { CLUES=3 }
+					add_experience = @ARCHAEOLOGICAL_SITE_XP_2_CLUE 
+				}}
+			}
+		}
+	}
+}
+

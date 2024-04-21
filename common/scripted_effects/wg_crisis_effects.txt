@@ -1,0 +1,247 @@
+remove_wg_crisis_global_flags = {
+	remove_global_flag = wg_crisis_very_easy
+	remove_global_flag = wg_crisis_easy
+	remove_global_flag = wg_crisis_normal
+	remove_global_flag = wg_crisis_hard
+	remove_global_flag = wg_crisis_insane
+	remove_global_flag = wg_crisis_disabled
+}
+
+# 过滤不能生成联合门的星系
+initialize_crisis_system_select = {
+	every_system = {
+		limit = { 
+			OR = {
+				any_country = {
+					OR = {
+						is_country_type = fallen_empire
+						is_country_type = awakened_fallen_empire
+					}
+					any_system_within_border = {
+						is_same_value = PREVPREV
+					}
+				}
+				any_country = {
+					is_country_type = default
+					capital_scope = {
+						solar_system = {
+							is_same_value = PREVPREVPREV
+						}
+					}
+				}
+			}
+		}
+		set_timed_star_flag = { flag = forbit_spawn_system days = 1 }
+	}
+	every_system = {
+		limit = {
+			NOT = { has_star_flag = forbit_spawn_system }
+			OR = { 
+				closest_system = {
+					max_steps = 3
+					limit = { has_star_flag = forbit_spawn_system }
+				}
+				has_star_flag = wg_box_system_flag # 箱子星系
+				ag_is_kuat_system = yes #狡猾人老家
+			}
+		}
+		set_timed_star_flag = { flag = forbit_spawn_system days = 1 }
+	}
+}
+
+initialize_second_portal_system_select = {
+	every_system = {
+		limit = {
+			NOT = { has_star_flag = forbit_spawn_system }
+			OR = {
+				AND = {
+					count_system = { count > 400 }
+					distance = {
+						source = event_target:first_portal_system
+						type = hyperlane
+						max_jumps = 8
+					}
+				}
+				AND = {
+					count_system = { count <= 400 }
+					distance = {
+						source = event_target:first_portal_system
+						type = hyperlane
+						max_jumps = 4
+					}
+				}
+			}
+		}
+		set_timed_star_flag = { flag = forbit_spawn_system2 days = 1 }
+		set_timed_star_flag = { flag = forbit_spawn_system days = 1 }
+	}
+	# 检查是否没有地方生成门
+	if = {
+		limit = { NOT = { any_system = {
+			NOT = { has_star_flag = forbit_spawn_system }
+		}}}
+		# 只取门8距离范围外生成其他门
+		every_system = {
+			remove_star_flag = forbit_spawn_system
+		}
+		every_system = {
+			limit = { 
+				has_star_flag = forbit_spawn_system2 
+				NOR = {
+					has_star_flag = wg_box_system_flag # 箱子星系
+					ag_is_kuat_system = yes #狡猾人老家
+				}
+			}
+			set_star_flag = forbit_spawn_system
+		}
+	}
+	every_system = {
+		limit = { has_star_flag = forbit_spawn_system2 }
+		remove_star_flag = forbit_spawn_system2
+	}
+}
+
+initialize_third_portal_system_select = {
+	every_system = {
+		limit = {
+			NOT = { has_star_flag = forbit_spawn_system }
+			OR = {
+				AND = {
+					count_system = { count > 400 }
+					distance = {
+						source = event_target:first_portal_system
+						type = hyperlane
+						max_jumps = 8
+					}
+				}
+				AND = {
+					count_system = { count <= 400 }
+					distance = {
+						source = event_target:first_portal_system
+						type = hyperlane
+						max_jumps = 4
+					}
+				}
+			}
+			OR = {
+				AND = {
+					count_system = { count > 400 }
+					distance = {
+						source = event_target:second_portal_system
+						type = hyperlane
+						max_jumps = 8
+					}
+				}
+				AND = {
+					count_system = { count <= 400 }
+					distance = {
+						source = event_target:second_portal_system
+						type = hyperlane
+						max_jumps = 4
+					}
+				}
+			}
+		}
+		set_timed_star_flag = { flag = forbit_spawn_system3 days = 1 }
+		set_timed_star_flag = { flag = forbit_spawn_system days = 1 }
+	}
+	# 检查是否没有地方生成门
+	if = {
+		limit = { NOT = { any_system = {
+			NOT = { has_star_flag = forbit_spawn_system }
+		}}}
+		# 只取门8距离范围外生成其他门
+		every_system = {
+			remove_star_flag = forbit_spawn_system
+		}
+		every_system = {
+			limit = { 
+				has_star_flag = forbit_spawn_system3
+				NOR = {
+					has_star_flag = wg_box_system_flag # 箱子星系
+					ag_is_kuat_system = yes #狡猾人老家
+				}
+			}
+			set_star_flag = forbit_spawn_system
+		}
+	}
+	every_system = {
+		limit = { has_star_flag = forbit_spawn_system3 }
+		remove_star_flag = forbit_spawn_system3
+	}
+}
+
+# scope: system
+create_UF_ambient_object = {
+	random_system_planet = {
+		limit = { is_star = yes }
+		create_ambient_object = {
+			type = unitedfleet_1
+			location = this
+		}
+		last_created_ambient_object = {
+			set_location = {
+				target = prev
+				distance = 0
+				angle = random
+			}
+		}		
+		create_ambient_object = {
+			type = unitedfleet_2
+			location = this
+		}
+		last_created_ambient_object = {
+			set_location = {
+				target = prev
+				distance = 0
+				angle = random
+			}
+		}
+	}
+}
+
+create_UF_ambient_object2 = {
+	random_system_planet = {
+		limit = { is_star = yes }
+		create_ambient_object = {
+			type = UF_extradimensional_1
+			entity_offset_angle = { min = 0 max = 360 }
+			entity_offset = { min = 30 max = 200 }
+			location = this
+			use_3d_location = no
+			entity_face_object = this
+		}
+		create_ambient_object = {
+			type = UF_extradimensional_2
+			entity_offset_angle = { min = 0 max = 360 }
+			entity_offset = { min = 30 max = 200 }
+			location = this
+			use_3d_location = no
+			entity_face_object = this
+		}
+	}
+}
+
+# scope: ship
+add_many_hp = {
+	if = {
+		limit = { has_hp < 1000 }
+		add_modifier = { modifier = add_hp_200000_times days = $DAYS$ }
+	}
+	else_if = {
+		limit = { has_hp < 2000 }
+		add_modifier = { modifier = add_hp_100000_times days = $DAYS$ }
+	}
+	else_if = {
+		limit = { has_hp < 20000 }
+		add_modifier = { modifier = add_hp_10000_times days = $DAYS$ }
+	}
+	else_if = {
+		limit = { has_hp < 200000 }
+		add_modifier = { modifier = add_hp_1000_times days = $DAYS$ }
+	}
+	else_if = {
+		limit = { has_hp < 1000000 }
+		add_modifier = { modifier = add_hp_200_times days = $DAYS$ }
+	}
+}

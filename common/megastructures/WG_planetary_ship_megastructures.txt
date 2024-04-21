@@ -1,0 +1,509 @@
+planetary_ship_megastructures = {
+	entity = "mammalian_01_construction_platform_entity"
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -7 y = -7 }
+	build_time = 1800
+	prerequisites = { "tech_planetary_ship" }		
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 influence = 300 }
+		upkeep = { 
+			energy = 5
+		}
+	}
+	potential = {
+		if = { #有舰R则无限制
+			limit = { has_global_flag = has_wsg_mod }
+			always = yes
+		}
+		else_if = { #无舰R则根据奇观拓展的限制来
+			limit = { NOT = { has_global_flag = has_wsg_mod } }
+			if = {
+				limit = { is_ai = no }
+				NOT = { has_global_flag = AOW_flag_GLBL_no_player_planetary_ship }
+			}
+			else_if = {
+				limit = { is_ai = yes }
+				NOT = { has_global_flag = AOW_flag_GLBL_no_ai_planetary_ship }
+			}
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_building_planetary_ship_megastructures"
+			from = { NOT = { has_country_flag = building_planetary_ship_megastructures } }
+		}
+	}
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_survey_not_habitable"
+				is_surveyed = {			# prevent leaking habitability information
+					who = prev.from
+					status = yes
+				}
+				colonizable_planet = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_barren" 
+				OR = {
+					is_planet_class = pc_barren
+					is_planet_class = pc_barren_cold
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_terraforming_candidate"
+				NOT = {
+					has_modifier = terraforming_candidate
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_moon"
+				NOT = {
+					has_moon = yes
+				}
+			}
+			custom_tooltip = {#放置处不能有巨构
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_any_megastructure = yes
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					is_ringworld = yes
+					is_artificial = yes
+					is_planet_class = pc_habitat
+				}
+			}
+		} # use these for all non-star megastructures
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			set_country_flag = building_planetary_ship_megastructures #先造好其他的再说
+			country_event = { id = planetary_ship.1 }		
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = planetary_ship_planet_flag
+		}
+	}
+}
+planetary_ship_megastructures_1 = {
+	entity = "planetary_ship_kind_cat_entity"
+	construction_entity = ""
+	portrait = "GFX_planetary_ship_megastructures_1_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 1800
+	upgrade_from = {
+		planetary_ship_megastructures
+	}
+ 	prerequisites = { "tech_planetary_ship" }		
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 }
+		cost = {
+			trigger = { planet = { planet_size < 12 } }	
+			alloys = 5000
+		}
+		cost = {
+			trigger = { planet = { planet_size < 16 } }	
+			alloys = 5000
+		}
+		cost = {
+			trigger = { planet = { planet_size < 22 } }	
+			alloys = 5000
+		}
+		upkeep = { 
+			energy = 25
+		}
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 	
+			country_event = { id = planetary_ship.2 }				
+		}
+	}
+}
+planetary_ship_megastructures_2 = {
+	entity = "planetary_ship_kind_cat_entity"
+	construction_entity = "planetary_ship_planet_main_3_entity"
+	portrait = "GFX_planetary_ship_megastructures_2_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 1800
+	upgrade_from = {
+		planetary_ship_megastructures_1
+	}
+	prerequisites = { "tech_planetary_ship" }		
+	resources = {
+		category = megastructures
+		cost = { alloys = 15000 }
+		cost = {
+			trigger = { planet = { planet_size < 12 } }	
+			alloys = 5000
+		}
+		cost = {
+			trigger = { planet = { planet_size < 16 } }	
+			alloys = 5000
+		}
+		cost = {
+			trigger = { planet = { planet_size < 22 } }	
+			alloys = 5000
+		}
+		upkeep = { 
+			energy = 50
+		}
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 	
+			country_event = { id = planetary_ship.3 }			
+		}
+		fromfrom.planet = { change_pc = pc_planetary_ship }
+	}
+}
+
+planetary_ship_megastructures_3 = {
+	entity = "planetary_ship_kind_cat_entity"
+	construction_entity = "planetary_ship_planet_full_main_3_entity"
+	portrait = "GFX_planetary_ship_megastructures_3_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 1800
+	upgrade_from = {
+		planetary_ship_megastructures_2
+	} 	
+	resources = {
+		category = megastructures
+		cost = { alloys = 10000 }
+		upkeep = { 
+			energy = 100
+		}
+	}
+	prerequisites = { "tech_planetary_ship" }		
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 	
+			country_event = { id = planetary_ship.4 }				
+		}
+		fromfrom.planet = { change_pc = pc_planetary_ship_full }
+	}
+}
+
+planetary_ship_megastructures_4 = {
+	entity = "planetary_ship_kind_cat_entity"
+	construction_entity = "planetary_ship_planet_full_main_3_entity"
+	portrait = "GFX_planetary_ship_megastructures_3_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 360
+	upgrade_from = {
+		planetary_ship_megastructures_3
+	} 	
+	resources = {
+		category = megastructures
+		cost = {
+			energy = 20000
+			sr_dark_matter = 2000
+		}
+	}
+	prerequisites = { "tech_planetary_ship" }		
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 	
+			set_country_flag = has_built_or_repaired_megastructure	
+			country_event = { id = planetary_ship.5 }	
+			remove_country_flag = building_planetary_ship_megastructures
+		}
+		remove_megastructure = fromfrom
+		random_system_planet = {
+			limit = { has_planet_flag = planetary_ship_planet_flag }
+			save_event_target_as = planetary_ship_planet_target 
+			remove_planet_flag = planetary_ship_planet_flag
+			create_fleet = {
+				name = "NAME_planetary_ship_1"
+				effect = {
+					set_owner = ROOT.owner
+					create_ship = {
+						random_existing_design = planetary_ship_1
+					}
+					set_location = {
+						target = event_target:planetary_ship_planet_target
+						distance = 1
+						angle = random
+					}
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+				}
+				settings = { 
+					spawn_debris = no 
+					is_boss = yes
+				}
+			}
+			remove_planet = yes
+		}
+	}
+}
+planetary_ship_megastructures_5 = {
+	entity = "planetary_ship_kind_cat_entity"
+	construction_entity = "planetary_ship_planet_full_main_3_entity"
+	portrait = "GFX_planetary_ship_megastructures_3_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 360
+	upgrade_from = {
+		planetary_ship_megastructures_3
+	} 	
+	resources = {
+		category = megastructures
+		cost = {
+			energy = 20000
+			sr_dark_matter = 2000
+		}
+	}
+	prerequisites = { "tech_planetary_ship" }		
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 	
+			set_country_flag = has_built_or_repaired_megastructure	
+			country_event = { id = planetary_ship.6 }	
+			remove_country_flag = building_planetary_ship_megastructures
+		}
+		remove_megastructure = fromfrom
+		random_system_planet = {
+			limit = { has_planet_flag = planetary_ship_planet_flag }
+			save_event_target_as = planetary_ship_planet_target 
+			remove_planet_flag = planetary_ship_planet_flag
+			create_fleet = {
+				name = "NAME_planetary_ship_2"
+				effect = {
+					set_owner = ROOT.owner
+					create_ship = {
+						random_existing_design = planetary_ship_2
+					}
+					set_location = {
+						target = event_target:planetary_ship_planet_target
+						distance = 1
+						angle = random
+					}
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+				}
+				settings = { 
+					spawn_debris = no 
+					is_boss = yes
+				}
+			}
+			remove_planet = yes
+		}
+	}
+}
+planetary_ship_megastructures_ruin = {
+	entity = "planetary_ship_megastructure_ruin_entity"
+	construction_entity = "planetary_ship_megastructure_ruin_entity"
+	portrait = "GFX_sh_planetary_ship_megastructure_ruin_background"
+    entity_offset = { x = 5 y = 5 }
+	
+	potential = {
+		always = no
+	}
+
+	show_prereqs = yes
+
+	on_build_complete = {
+	}
+}
+planetary_ship_megastructures_ruin_2 = {
+	entity = "planetary_ship_kind_cat_entity"
+	construction_entity = "planetary_ship_planet_full_main_3_entity"
+	portrait = "GFX_planetary_ship_megastructures_3_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 720
+	upgrade_from = {
+		planetary_ship_megastructures_ruin
+	} 	
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 10000
+			energy = 20000
+			sr_dark_matter = 2000
+		}
+	}
+
+	prerequisites = { "tech_planetary_ship" }		
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 	
+			set_country_flag = has_built_or_repaired_megastructure	
+			country_event = { id = planetary_ship.9 }
+		}
+		random_megastructure = {
+			limit = { 
+				is_megastructure_type = planetary_ship_megastructures_ruin_2
+			}
+			save_event_target_as = planetary_ship_megastructures_ruin_target
+			remove_megastructure = this
+		}
+		random_system_planet = {
+			create_fleet = {
+				name = "NAME_planetary_ship_1"
+				effect = {
+					set_owner = ROOT.owner
+					create_ship = {
+						random_existing_design = planetary_ship_1
+					}
+					set_location = {
+						target = event_target:planetary_ship_megastructures_ruin_target
+						distance = 1
+						angle = random
+					}
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+				}
+				settings = { 
+					spawn_debris = no 
+					is_boss = yes
+				}
+			}
+		}
+		every_system_ambient_object = {
+			limit = {
+				OR = {
+					is_ambient_object_type = large_debris_object
+					is_ambient_object_type = medium_debris_01_object
+					is_ambient_object_type = medium_debris_02_object
+					is_ambient_object_type = small_debris_object
+				}
+			}
+			destroy_ambient_object = this
+		}
+	}
+}
+
+planetary_ship_megastructures_ruin_3 = {
+	entity = "planetary_ship_kind_cat_entity"
+	construction_entity = "planetary_ship_planet_full_main_3_entity"
+	portrait = "GFX_planetary_ship_megastructures_3_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 720
+	upgrade_from = {
+		planetary_ship_megastructures_ruin
+	} 	
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 10000
+			energy = 20000
+			sr_dark_matter = 2000
+		}
+	}
+
+	prerequisites = { "tech_planetary_ship" }		
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 	
+			set_country_flag = has_built_or_repaired_megastructure	
+			country_event = { id = planetary_ship.9 }
+		}
+		random_megastructure = {
+			limit = { 
+				is_megastructure_type = planetary_ship_megastructures_ruin_3
+			}
+			save_event_target_as = planetary_ship_megastructures_ruin_target 
+			remove_megastructure = this
+		}
+		random_system_planet = {
+			create_fleet = {
+				name = "NAME_planetary_ship_2"
+				effect = {
+					set_owner = ROOT.owner
+					create_ship = {
+						random_existing_design = planetary_ship_2
+					}
+					set_location = {
+						target = event_target:planetary_ship_megastructures_ruin_target
+						distance = 1
+						angle = random
+					}
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+				}
+				settings = { 
+					spawn_debris = no 
+					is_boss = yes
+				}
+			}
+		}
+		every_system_ambient_object = {
+			limit = {
+				OR = {
+					is_ambient_object_type = large_debris_object
+					is_ambient_object_type = medium_debris_01_object
+					is_ambient_object_type = medium_debris_02_object
+					is_ambient_object_type = small_debris_object
+				}
+			}
+			destroy_ambient_object = this
+		}
+	}
+}

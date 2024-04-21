@@ -1,0 +1,221 @@
+wg_automate_amenity_management = {
+	category = "planet_automation_amenities"
+	available = {
+		free_amenities <= -5
+		owner = {
+			is_wg_empire = yes
+		}
+		free_building_slots > 0
+	}
+
+	emergency = yes
+
+	buildings = {
+		wg_residence = {
+			building = building_wsg_luxury_residence
+			available = {
+				owner = {
+					has_authority = auth_warshipgirls
+					NOT = { has_origin = origin_wsg_ice_breaking }
+				}
+			}
+		}
+
+		wg_residence2 = {
+			building = building_wsg_luxury_residence2
+			available = {
+				owner = {
+					has_authority = auth_warshipgirls
+					has_origin = origin_wsg_ice_breaking
+				}
+			}
+		}
+
+		sh_residence = {
+			building = building_sh_residence
+			available = {
+				owner = {
+					has_authority = auth_shenhai
+				}
+			}
+		}
+	}
+}
+
+wg_automate_planet_rare_resource_management = {
+	category = "planet_automation_rare_resources"
+	available = {
+		owner = {
+			uses_sr_senergy_country = yes
+			OR = {
+				AND = {
+					wg_gas_require_trigger = yes
+					resource_stockpile_compare = {
+						resource = exotic_gases
+						value < 1000
+					}
+				}
+				AND = {
+					wg_crystals_require_trigger = yes
+					resource_stockpile_compare = {
+						resource = rare_crystals
+						value < 500
+					}
+				}
+				AND = {
+					resource_stockpile_compare = {
+						resource = volatile_motes
+						value < 1000
+					}
+					wg_mote_require_trigger = yes
+				}
+			}
+		}
+		free_building_slots > 0
+	}
+
+	empire_wide_emergency = yes
+
+	buildings = {
+		wg_rare_resource = {
+			building = building_wsg_rare_resource_factory
+			available = {
+				owner = {
+					has_authority = auth_warshipgirls
+					has_project_s_ascension_path = yes
+				}
+			}
+		}
+		sh_rare_resource = {
+			building = building_sh_rare_resource_factory
+			available = {
+				owner = {
+					has_authority = auth_shenhai
+				}
+			}
+		}
+	}
+}
+
+wg_automate_planet_pantsu_management = {
+	category = "planet_automation_rare_resources"
+	available = {
+		owner = {
+			is_wg_empire = yes
+			resource_stockpile_compare = {
+				resource = sr_pantsu
+				value < 1500
+			}
+			wg_pantsu_require_trigger = yes
+			OR = {
+				has_project_s_ascension_path = no
+				NOT = { any_owned_planet = {
+					free_district_slots > 1
+					OR = {
+						uses_district_set = port_world
+						uses_district_set = rw_port_world
+					}
+				}}
+			}
+		}
+		free_building_slots > 1
+	}
+
+	empire_wide_emergency = yes
+
+	buildings = {
+		wg_pantsu = {
+			building = building_wsg_pantsu
+			available = {
+				owner = { has_authority = auth_warshipgirls }
+			}
+		}
+		sh_pantsu = {
+			building = building_sh_pantsu
+			available = {
+				owner = { has_authority = auth_shenhai }
+			}
+		}
+	}
+}
+
+wg_automate_planet_se_management = {
+	category = "planet_automation_rare_resources"
+	available = {
+		owner = {
+			uses_sr_senergy_country = yes
+			resource_stockpile_compare = {
+				resource = sr_se
+				value < 1500
+			}
+			wg_se_require_trigger = yes
+			NOT = { any_owned_planet = {
+				free_district_slots > 1
+				OR = {
+					uses_district_set = port_world
+					uses_district_set = rw_port_world
+				}
+			}}
+		}
+		free_building_slots > 1
+	}
+
+	empire_wide_emergency = yes
+
+	buildings = {
+		wg_pantsu = {
+			building = building_wsg_senergy_1
+			available = {
+				owner = { has_authority = auth_warshipgirls }
+			}
+		}
+		sh_pantsu = {
+			building = building_sh_senergy
+			available = {
+				owner = { has_authority = auth_shenhai }
+			}
+		}
+	}
+}
+
+wg_automate_port_district_pantsu_management = {
+	category = "planet_automation_rare_resources"
+	available = {
+		owner = {
+			uses_sr_senergy_country = yes
+			OR = {
+				wg_pantsu_require_trigger = yes
+				wg_se_require_trigger = yes
+			}
+		}
+		uses_district_set = port_world
+		free_district_slots > 1
+	}
+
+	empire_wide_emergency = yes
+
+	prio_districts = {
+		district_arcology_wsg_neo_alpha
+	}
+}
+
+wg_automate_ringworld_district_pantsu_management = {
+	category = "planet_automation_rare_resources"
+	available = {
+		owner = {
+			uses_sr_senergy_country = yes
+			OR = {
+				wg_pantsu_require_trigger = yes
+				wg_se_require_trigger = yes
+			}
+		}
+		uses_district_set = rw_port_world
+		free_district_slots > 1
+	}
+
+	empire_wide_emergency = yes
+
+	prio_districts = {
+		district_rw_wsg_soldier
+	}
+}

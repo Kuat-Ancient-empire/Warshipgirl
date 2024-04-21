@@ -1,0 +1,72 @@
+
+animation = { name = "SRA_UF_weapon_planet_killer_hit_effect_idle_animation" file = "SRA_UF_weapon_planet_killer_hit_effect_idle.anim" }
+
+
+################################################################
+#####							planet killer
+################################################################
+
+entity = {
+	name = "SRA_UF_weapon_planet_killer_windup_effect_entity"
+	default_state = "attack"
+	get_state_from_parent = no
+	state = {
+		name = "attack" looping = no state_time = 0.1
+		event = { time = 0.0 particle = "SRA_UF_weapon_planet_killer_muzzle_windup_effect" trigger_once = yes keep_particle = yes }
+		
+		event = { trigger_once = yes sound = { soundeffect = "neutron_windup_layer_1" } }
+		event = { trigger_once = yes sound = { soundeffect = "neutron_windup_layer_2" } }
+	}
+}
+entity = {
+	name = "SRA_UF_weapon_planet_killer_muzzle_effect_entity"
+	cull_radius = 1.0
+	default_state = "idle"
+	state = { name = "idle" state_time = 7.0 looping = no
+		event = { time = 0 particle = "SRA_UF_weapon_planet_killer_muzzle" keep_particle = yes trigger_once = yes }
+		
+		event = { trigger_once = yes sound = { soundeffect = "neutron_fire_layer_1" } }
+		event = { trigger_once = yes sound = { soundeffect = "neutron_fire_layer_2" } }
+		event = { trigger_once = yes sound = { soundeffect = "neutron_fire_layer_3" } }
+		event = { trigger_once = yes sound = { soundeffect = "distance_neutron_fire_layer_1" } }
+		event = { trigger_once = yes sound = { soundeffect = "distance_neutron_fire_layer_2" } }
+		event = { trigger_once = yes sound = { soundeffect = "distance_neutron_fire_layer_3" } }
+		event = { trigger_once = yes sound = { soundeffect = "colossus_neutron_beam" stop_on_state_change = yes } }
+	}	
+}
+entity = {
+	name = "SRA_UF_weapon_planet_killer_hit_effect_entity"
+	locator = { name = "root" 	position = { 0 0 24 } }
+	attach = { "root" = "SRA_UF_weapon_planet_killer_hit_effect_alt2_entity" }
+}
+entity = {
+	name = "SRA_UF_weapon_planet_killer_hit_effect_alt2_entity"
+	pdxmesh = "SRA_UF_weapon_planet_killer_hit_effect_mesh"
+	default_state = "idle"
+	state = { name = "idle" looping = yes animation = "idle" animation_speed = 2.5
+		start_event = { particle = "SRA_UF_weapon_planet_killer_hit_effect" keep_particle = yes trigger_once = yes }
+		start_event = { node = "particle_1" particle = "SRA_UF_weapon_planet_killer_paricles_effect" keep_particle = yes trigger_once = yes }
+		start_event = { node = "particle_2" particle = "SRA_UF_weapon_planet_killer_paricles_effect" keep_particle = yes trigger_once = yes }
+		start_event = { node = "particle_3" particle = "SRA_UF_weapon_planet_killer_paricles_effect" keep_particle = yes trigger_once = yes }
+
+		event = { trigger_once = yes sound = { soundeffect = "neutron_hit_layer_1" } }
+		event = { trigger_once = yes sound = { soundeffect = "neutron_hit_layer_2" } }
+		event = { trigger_once = yes sound = { soundeffect = "distance_neutron_hit_layer_1" } }
+		event = { trigger_once = yes sound = { soundeffect = "distance_neutron_hit_layer_2" } }
+	}
+	state = { name = "stop" state_time = 0.5 looping = no }
+}
+entity = {
+	name = "SRA_UF_weapon_planet_killer_hit_effect_alt_entity"
+	cull_radius = 1.0
+	default_state = "idle"
+	state = { name = "idle" state_time = 5 looping = no
+		start_event = { particle = "SRA_UF_weapon_planet_killer_hit_effect" keep_particle = yes }
+
+		event = { trigger_once = yes sound = { soundeffect = "neutron_hit_layer_1" } }
+		event = { trigger_once = yes sound = { soundeffect = "neutron_hit_layer_2" } }
+		event = { trigger_once = yes sound = { soundeffect = "distance_neutron_hit_layer_1" } }
+		event = { trigger_once = yes sound = { soundeffect = "distance_neutron_hit_layer_2" } }
+	}	
+	state = { name = "stop" state_time = 0.5 looping = no }
+}

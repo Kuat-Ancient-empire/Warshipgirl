@@ -1,0 +1,65 @@
+is_wg_rbq_dragon_army = {
+	OR = {
+		army_type = wg_rbq_dragon_army
+		army_type = wg_rbq_dragon_army_affection_3
+		army_type = wg_rbq_dragon_army_affection_5
+	}
+}
+
+wg_rbq_dragon_available = {
+	has_country_flag = get_wg_yukikaze
+	NOT = { has_modifier = wg_yukikaze_recover_cd }
+}
+
+wg_rbq_dragon_changing_prev_warship_allow_triggers = {
+	hidden_trigger = {
+		any_owned_fleet = { has_fleet_flag = wg_rbq_dragon_fleet }
+	}
+	custom_tooltip = {
+		fail_text = wg_rbq_dragon_allow_triggers.a
+		any_owned_fleet = { 
+			has_fleet_flag = wg_rbq_dragon_fleet
+			is_in_combat = no
+		}
+	}
+	custom_tooltip = {
+		fail_text = wg_rbq_dragon_allow_triggers.b
+		any_owned_fleet = { 
+			has_fleet_flag = wg_rbq_dragon_fleet
+			NOT = { has_hp_percentage < 0.7 }
+		}
+	}
+}
+
+wg_rbq_dragon_changing_prev_army_allow_triggers = {
+	hidden_trigger = {
+		any_owned_army = {
+			is_wg_rbq_dragon_army = yes
+			OR = {
+				exists = planet
+				AND = {
+					exists = fleet
+					fleet = { num_ships > 0 }
+				}
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = wg_dragon_allow_triggers.a
+		any_owned_army = {
+			is_wg_rbq_dragon_army = yes
+			if = {
+				limit = { exists = fleet }
+				fleet = { is_in_combat = no }
+			} else_if = {
+				limit = { exists = planet }
+				planet = { has_ground_combat = no }
+			}
+		}
+	}
+}
+
+married_yukikaze_trigger = {
+	check_variable = { which = wg_yukikaze_affection value >= @wg_yukikaze_affection_to_lv4 }
+	NOT = { has_country_flag = married_wg_yukikaze }
+}

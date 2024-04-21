@@ -1,0 +1,1522 @@
+namespace = wg_yukikaze
+country_event = {
+	id = wg_yukikaze.1
+	title = wg_yukikaze.1.title
+	desc = wg_yukikaze.1.desc
+	picture = GFX_evt_space_dragon_blue
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	trigger = {
+		NOT = { has_country_flag = get_wg_yukikaze }
+	}
+	immediate = {
+		
+		event_target:wg_rbq_dragon_fleet = {
+			delete_fleet = this
+			owner = { destroy_country = yes }
+		}
+		if = {
+			limit = { NOT = { any_country = { has_country_flag = get_wg_yukikaze }}}
+			create_species = {
+				name = NAME_SPECIES_wg_rbq_dragon
+				plural = NAME_SPECIES_wg_rbq_dragon
+				class = "Warship_Girls"
+				portrait = wsg169
+				name_list = WSG
+				effect = {
+					save_global_event_target_as = wg_yukikaze_species
+				}
+			}
+		}
+		set_country_flag = get_wg_yukikaze
+		save_global_event_target_as = wg_yukikaze_own_country
+		set_variable = { which = wg_yukikaze_affection value = 1 }
+		set_variable = { which = wg_yukikaze_affection_level value = 1 }
+		set_variable = { which = yukikaze_level value = 1 }
+	}
+
+	option = {
+		name = EXCELLENT
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6000 }
+		}
+	}
+}
+# 触发随机语音界面
+country_event = {
+	id = wg_yukikaze.2
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = wg_yukikaze_diplo_active
+		if = {
+			limit = { has_modifier = wg_yukikaze_recover_cd }
+			random_list = {
+				1 = { country_event = { id = wg_yukikaze.401 }}
+				1 = { country_event = { id = wg_yukikaze.402 }}
+			}
+		} else_if = {
+			limit = { check_variable = { which = wg_yukikaze_active_type value = 0 }}
+			random_list = {
+				1 = { country_event = { id = wg_yukikaze.100 }}
+				1 = { country_event = { id = wg_yukikaze.101 }}
+			}
+		} else_if = {
+			limit = { check_variable = { which = wg_yukikaze_active_type value = 1 }}
+			random_list = {
+				1 = { country_event = { id = wg_yukikaze.201 }}
+				1 = { country_event = { id = wg_yukikaze.202 }}
+				1 = { country_event = { id = wg_yukikaze.203 }}
+			}
+		} else_if = {
+			limit = { check_variable = { which = wg_yukikaze_active_type value = 2 }}
+			random_list = {
+				1 = { country_event = { id = wg_yukikaze.301 }}
+				1 = { country_event = { id = wg_yukikaze.302 }}
+				1 = { country_event = { id = wg_yukikaze.303 }}
+			}
+		}
+	} 
+}
+
+# 战斗时大破
+country_event = {
+	id = wg_yukikaze.10
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_country_flag = wg_rbq_dragon_changing }
+		wg_rbq_dragon_available = yes
+		check_variable = { which = wg_yukikaze_active_type value = 1 }
+		FROMFROM = { has_fleet_flag = wg_rbq_dragon_fleet }
+	}
+
+	immediate = {
+		country_event = { id = wg_yukikaze.601 }
+	}
+}
+
+# 陆军船被毁
+country_event = {
+	id = wg_yukikaze.11
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_country_flag = wg_rbq_dragon_changing }
+		wg_rbq_dragon_available = yes
+		check_variable = { which = wg_yukikaze_active_type value = 2 }
+		NOT = { any_owned_army = { 
+			is_wg_rbq_dragon_army = yes
+			OR = {
+				exists = planet
+				AND = {
+					exists = fleet
+					fleet = { num_ships > 0 }
+				}
+			}
+		}}
+	}
+
+	immediate = {
+		country_event = { id = wg_yukikaze.601 }
+	}
+}
+
+# 地面战斗失败
+country_event = {
+	id = wg_yukikaze.12
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_country_flag = wg_rbq_dragon_changing }
+		wg_rbq_dragon_available = yes
+		check_variable = { which = wg_dragon_active_type value = 2 }
+		NOT = { any_owned_army = { 
+			is_wg_rbq_dragon_army = yes
+			OR = {
+				exists = planet
+				AND = {
+					exists = fleet
+					fleet = { num_ships > 0 }
+				}
+			}
+		}}
+	}
+
+	immediate = {
+		country_event = { id = wg_yukikaze.601 }
+	}
+}
+
+# 解散陆军
+country_event = {
+	id = wg_yukikaze.13
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		wg_rbq_dragon_available = yes
+		check_variable = { which = wg_yukikaze_active_type value = 2 }
+		NOT = { any_owned_army = { is_wg_rbq_dragon_army = yes }}
+	}
+
+	immediate = {
+		set_variable = { which = wg_yukikaze_active_type value = 0 }
+	}
+}
+
+# 每个月检测是否大破
+event = {
+	id = wg_yukikaze.14
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = event_target:wg_yukikaze_own_country
+		event_target:wg_yukikaze_own_country = {
+			NOT = { has_country_flag = wg_rbq_dragon_changing }
+			wg_rbq_dragon_available = yes
+			OR = {
+				# 龙形态
+				AND = {
+					check_variable = { which = wg_yukikaze_active_type value = 1 }
+					NOT = { any_owned_fleet = { has_fleet_flag = wg_rbq_dragon_fleet }}
+				}
+				# 陆军形态
+				AND = {
+					check_variable = { which = wg_yukikaze_active_type value = 2 }
+					NOT = { any_owned_army = { 
+						is_wg_rbq_dragon_army = yes
+						OR = {
+							exists = planet
+							AND = {
+								exists = fleet
+								fleet = { num_ships > 0 }
+							}
+						}
+					}}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		country_event = { id = wg_yukikaze.601 }
+	}
+}
+
+# 重设陆军类型
+country_event = {
+	id = wg_yukikaze.15
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_active_event = { wg_yukikaze.15 }}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					any_owned_army = {
+						exists = planet
+						is_wg_rbq_dragon_army = yes
+						planet = { has_ground_combat = no }
+					}
+					any_owned_army = {
+						exists = fleet
+						is_wg_rbq_dragon_army = yes
+						fleet = { is_in_combat = no }
+					}
+				}
+			}
+			if = {
+				limit = {
+					any_owned_army = {
+						exists = planet
+						is_wg_rbq_dragon_army = yes
+					}
+				}
+				random_owned_army = {
+					limit = { is_wg_rbq_dragon_army = yes }
+					planet = { create_wg_rbq_dragon_army_troop = yes }
+				}
+			} else_if = {
+				limit = { 
+					any_owned_army = {
+						exists = fleet
+						is_wg_rbq_dragon_army = yes
+					}
+				}
+				random_owned_army = {
+					limit = { is_wg_rbq_dragon_army = yes }
+					fleet = { create_wg_rbq_dragon_army_transport = yes }
+				}
+			}
+		} else = {
+			country_event = { id = wg_yukikaze.15 days = 1 }
+		}
+	}
+}
+
+# 升级加好感
+country_event = {
+	id = wg_yukikaze.16
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		wg_rbq_dragon_available = yes
+		FROM = { 
+			has_leader_flag = wg_yukikaze_leader
+		}
+	}
+
+	immediate = {
+		change_variable = { which = wg_yukikaze_level value = 1 }
+		change_variable = { which = wg_yukikaze_affection value = 2 }
+		if = { # buff加成的额外好感度
+			limit = { owner = { has_modifier = wg_modifier_canteen_affectionUp2 }}
+			change_variable = { which = wg_yukikaze_affection value = 2 }
+		}
+		random_list = {
+			40 = { 
+				modifier = { # buff加成的额外几率
+					ROOT = { has_modifier = wg_modifier_canteen_affectionUp1 }
+					factor = 2
+				}
+				change_variable = { which = wg_yukikaze_affection value = 1 }
+				if = { # buff加成的额外好感度
+					limit = { owner = { has_modifier = wg_modifier_canteen_affectionUp2 }}
+					change_variable = { which = wg_yukikaze_affection value = 1 }
+				}
+			}
+			60 = {}
+		}
+		random_list = {
+			20 = {
+				modifier = { # buff加成的额外几率
+					ROOT = { has_modifier = wg_modifier_canteen_affectionUp1 }
+					factor = 2
+				}
+				change_variable = { which = wg_yukikaze_affection value = 1 }
+				if = { # buff加成的额外好感度
+					limit = { owner = { has_modifier = wg_modifier_canteen_affectionUp2 }}
+					change_variable = { which = wg_yukikaze_affection value = 1 }
+				}
+			}
+			80 = {}
+		}
+		reset_wg_yukikaze_affection_level = yes
+	}
+}
+
+# on_planet_army_win_wg
+# 陆军侵略/防御胜利增加好感事件
+planet_event = {
+	id = wg_yukikaze.17
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = {
+			any_owned_army = {
+				exists = planet
+				planet = { is_same_value = event_target:victory_planet }
+				is_wg_rbq_dragon_army = yes
+			}
+		}
+	}
+
+	immediate = {
+		FROM = { add_wg_yukikaze_army_affection = yes }
+		if = { # buff加成的额外好感度
+			limit = { has_modifier = wg_modifier_canteen_affectionUp2 }
+			FROM = { add_wg_yukikaze_army_affection = yes }
+		}
+	}
+}
+
+# 初始形态 - 1
+country_event = {
+	id = wg_yukikaze.100
+	title = ""
+	desc = wg_yukikaze.100.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_main_1
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "wg_yukikaze_to_warship"
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.200 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_to_army"
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.300 }
+		}
+	}
+	option = {
+		name = "talk_to_wg_yukikaze"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6001 }
+		}
+	}
+	option = {
+		name = "marry_wg_yukikaze"
+		trigger = { married_yukikaze_trigger = yes }
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.999 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+
+# 初始形态 - 2
+country_event = {
+	id = wg_yukikaze.101
+	title = ""
+	desc = wg_yukikaze.101.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_main_2
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "wg_yukikaze_to_warship"
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.200 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_to_army"
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.300 }
+		}
+	}
+	option = {
+		name = "talk_to_wg_yukikaze"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6001 }
+		}
+	}
+	option = {
+		name = "marry_wg_yukikaze"
+		trigger = { married_yukikaze_trigger = yes }
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.999 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+
+# 变战舰
+country_event = {
+	id = wg_yukikaze.200
+	title = ""
+	desc = wg_yukikaze.200.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_to_warship
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		create_wg_rbq_dragon_fleet = yes
+	}
+	option = {
+		name = OK
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+		remove_country_flag = wg_rbq_dragon_changing
+	}
+}
+
+# 战舰 - 1
+country_event = {
+	id = wg_yukikaze.201
+	title = ""
+	desc = wg_yukikaze.201.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_warship_1
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "wg_yukikaze_to_army"
+		trigger = {
+			exists = event_target:wg_rbq_dragon_fleet
+		}
+		allow = { wg_rbq_dragon_changing_prev_warship_allow_triggers = yes}
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.300 }
+		}
+	}
+	option = {
+		name = "talk_to_wg_yukikaze"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6001 }
+		}
+	}
+	option = {
+		name = "marry_wg_yukikaze"
+		trigger = { married_yukikaze_trigger = yes }
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.999 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 战舰 - 2
+country_event = {
+	id = wg_yukikaze.202
+	title = ""
+	desc = wg_yukikaze.202.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_warship_2
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "wg_yukikaze_to_army"
+		trigger = {
+			exists = event_target:wg_rbq_dragon_fleet
+		}
+		allow = { wg_rbq_dragon_changing_prev_warship_allow_triggers = yes}
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.300 }
+		}
+	}
+	option = {
+		name = "talk_to_wg_yukikaze"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6001 }
+		}
+	}
+	option = {
+		name = "marry_wg_yukikaze"
+		trigger = { married_yukikaze_trigger = yes }
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.999 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 战舰 - 3
+country_event = {
+	id = wg_yukikaze.203
+	title = ""
+	desc = wg_yukikaze.203.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_warship_3
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "wg_yukikaze_to_army"
+		trigger = {
+			exists = event_target:wg_rbq_dragon_fleet
+		}
+		allow = { wg_rbq_dragon_changing_prev_warship_allow_triggers = yes}
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.300 }
+		}
+	}
+	option = {
+		name = "talk_to_wg_yukikaze"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6001 }
+		}
+	}
+	option = {
+		name = "marry_wg_yukikaze"
+		trigger = { married_yukikaze_trigger = yes }
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.999 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+
+# 变陆军
+country_event = {
+	id = wg_yukikaze.300
+	title = ""
+	desc = wg_yukikaze.300.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_to_army
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		create_wg_rbq_dragon_army = yes
+	}
+
+	option = {
+		name = OK
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+		remove_country_flag = wg_rbq_dragon_changing
+	}
+}
+# 陆军 - 1
+country_event = {
+	id = wg_yukikaze.301
+	title = ""
+	desc = wg_yukikaze.301.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_army_1
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "wg_yukikaze_to_warship"
+		trigger = { wg_rbq_dragon_changing_prev_army_allow_triggers = yes }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.200 }
+		}
+	}
+	option = {
+		name = "talk_to_wg_yukikaze"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6001 }
+		}
+	}
+	option = {
+		name = "marry_wg_yukikaze"
+		trigger = { married_yukikaze_trigger = yes }
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.999 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 陆军 - 2
+country_event = {
+	id = wg_yukikaze.302
+	title = ""
+	desc = wg_yukikaze.302.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_army_2
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "wg_yukikaze_to_warship"
+		trigger = { wg_rbq_dragon_changing_prev_army_allow_triggers = yes }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.200 }
+		}
+	}
+	option = {
+		name = "talk_to_wg_yukikaze"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6001 }
+		}
+	}
+	option = {
+		name = "marry_wg_yukikaze"
+		trigger = { married_yukikaze_trigger = yes }
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.999 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 陆军 - 3
+country_event = {
+	id = wg_yukikaze.303
+	title = ""
+	desc = wg_yukikaze.303.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_army_3
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "wg_yukikaze_to_warship"
+		trigger = { wg_rbq_dragon_changing_prev_army_allow_triggers = yes }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.200 }
+		}
+	}
+	option = {
+		name = "talk_to_wg_yukikaze"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6001 }
+		}
+	}
+	option = {
+		name = "marry_wg_yukikaze"
+		trigger = { married_yukikaze_trigger = yes }
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.999 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 大破通讯 - 1
+country_event = {
+	id = wg_yukikaze.401
+	title = ""
+	desc = wg_yukikaze.401.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_hurt_1
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "talk_to_wg_yukikaze"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6001 }
+		}
+	}
+	option = {
+		name = "marry_wg_yukikaze"
+		trigger = { married_yukikaze_trigger = yes }
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.999 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 大破通讯 - 2
+country_event = {
+	id = wg_yukikaze.402
+	title = ""
+	desc = wg_yukikaze.402.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_hurt_2
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "talk_to_wg_yukikaze"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6001 }
+		}
+	}
+	option = {
+		name = "marry_wg_yukikaze"
+		trigger = { married_yukikaze_trigger = yes }
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.999 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 恢复返回
+country_event = {
+	id = wg_yukikaze.501
+	title = ""
+	desc = wg_yukikaze.501.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_recover
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_country_flag = wg_yukikaze_diplo_active
+		set_variable = { which = wg_yukikaze_active_type value = 0 }
+	}
+
+	option = {
+		name = "wg_yukikaze_to_warship"
+		trigger = { }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.200 }
+		}
+		custom_tooltip = wg_yukikaze.501.tooltip
+	}
+	option = {
+		name = "wg_yukikaze_to_army"
+		trigger = { }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.300 }
+		}
+		custom_tooltip = wg_yukikaze.501.tooltip
+	}
+	option = {
+		name = "talk_to_wg_yukikaze"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6001 }
+		}
+		custom_tooltip = wg_yukikaze.501.tooltip
+	}
+	option = {
+		name = "marry_wg_yukikaze"
+		trigger = { married_yukikaze_trigger = yes }
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		hidden_effect = {
+			country_event = { id = wg_yukikaze.999 }
+		}
+		custom_tooltip = wg_yukikaze.501.tooltip
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		custom_tooltip = wg_yukikaze.501.tooltip
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 大破语音
+country_event = {
+	id = wg_yukikaze.601
+	title = ""
+	desc = wg_yukikaze.601.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_break
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_variable = { which = wg_yukikaze_active_type value = 0 }
+		remove_wg_yukikaze_leader = yes
+		subtract_variable = { which = wg_yukikaze_affection value = @wg_yukikaze_affection_reduce }
+	}
+
+	option = {
+		name = UNFORTUNATE
+		if = {
+			limit = { has_country_flag = married_wg_yukikaze }
+			add_modifier = {
+				modifier = wg_yukikaze_recover_cd days = 900
+			}
+			hidden_effect = { country_event = { id = wg_yukikaze.501 days = 900 }}
+		} else = {
+			add_modifier = {
+				modifier = wg_yukikaze_recover_cd days = 1800
+			}
+			hidden_effect = { country_event = { id = wg_yukikaze.501 days = 1800 }}
+		}
+		custom_tooltip = wg_yukikaze.601.tooltip
+	}
+}
+# 结婚
+country_event = {
+	id = wg_yukikaze.999
+	title = ""
+	desc = wg_yukikaze.999.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_marry
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_country_flag = married_wg_yukikaze
+		reset_wg_yukikaze_affection_level = yes
+	}
+	after = {
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+
+	option = {
+		name = OK
+	}
+}
+# 随机触发对话
+country_event = {
+	id = wg_yukikaze.1000
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_list = {
+			1 = {
+				# 好感>=1
+				random_list = {
+					1 = { country_event = { id = wg_yukikaze.1001 }}
+					1 = { country_event = { id = wg_yukikaze.1002 }}
+					1 = { country_event = { id = wg_yukikaze.1003 }}
+				}
+			}
+			1 = {
+				# 好感>=3
+				random_list = {
+					1 = { country_event = { id = wg_yukikaze.1011 }}
+					1 = { country_event = { id = wg_yukikaze.1012 }}
+					1 = { country_event = { id = wg_yukikaze.1013 }}
+				}
+				modifier = {
+					factor = 0
+					check_variable = { which = wg_yukikaze_affection_level value < 3 }
+				}
+			}
+			1 = {
+				# 好感>=5
+				random_list = {
+					1 = { country_event = { id = wg_yukikaze.1021 }}
+					1 = { country_event = { id = wg_yukikaze.1022 }}
+					1 = { country_event = { id = wg_yukikaze.1023 }}
+				}
+				modifier = {
+					factor = 0
+					check_variable = { which = wg_yukikaze_affection_level value < 5 }
+				}
+			}
+		}
+	}
+}
+
+# 和雪风聊 好感度1 -1
+country_event = {
+	id = wg_yukikaze.1001
+	title = ""
+	desc = wg_yukikaze.1001.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_affection_1_talk_1
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "return_wg_yukikaze_interface"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6000 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 和雪风聊 好感度1 -2
+country_event = {
+	id = wg_yukikaze.1002
+	title = ""
+	desc = wg_yukikaze.1002.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_affection_1_talk_2
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "return_wg_yukikaze_interface"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6000 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 和雪风聊 好感度1 -3
+country_event = {
+	id = wg_yukikaze.1003
+	title = ""
+	desc = wg_yukikaze.1003.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_affection_1_talk_3
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "return_wg_yukikaze_interface"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6000 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 和雪风聊 好感度3 -1
+country_event = {
+	id = wg_yukikaze.1011
+	title = ""
+	desc = wg_yukikaze.1011.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_affection_3_talk_1
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "return_wg_yukikaze_interface"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6000 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 和雪风聊 好感度3 -2
+country_event = {
+	id = wg_yukikaze.1012
+	title = ""
+	desc = wg_yukikaze.1012.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_affection_3_talk_2
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "return_wg_yukikaze_interface"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6000 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 和雪风聊 好感度3 -3
+country_event = {
+	id = wg_yukikaze.1013
+	title = ""
+	desc = wg_yukikaze.1013.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_affection_3_talk_3
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "return_wg_yukikaze_interface"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6000 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 和雪风聊 好感度5 -1
+country_event = {
+	id = wg_yukikaze.1021
+	title = ""
+	desc = wg_yukikaze.1021.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_affection_5_talk_1
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "return_wg_yukikaze_interface"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6000 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 和雪风聊 好感度5 -2
+country_event = {
+	id = wg_yukikaze.1022
+	title = ""
+	desc = wg_yukikaze.1022.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_affection_5_talk_2
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "return_wg_yukikaze_interface"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6000 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+# 和雪风聊 好感度5 -3
+country_event = {
+	id = wg_yukikaze.1023
+	title = ""
+	desc = wg_yukikaze.1023.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_yukikaze_affection_5_talk_3
+
+	custom_gui = wg_yukikaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = "return_wg_yukikaze_interface"
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.6000 }
+		}
+	}
+	option = {
+		name = "wg_yukikaze_exit"
+		default_hide_option = yes
+		remove_country_flag = wg_yukikaze_diplo_active
+	}
+}
+
+# 随机，改造家里球后有机会出现的福利
+planet_event = {
+	id = wg_yukikaze.10000
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		# always = no
+		solar_system = {
+			has_star_flag = wg_origin_waterb_home_system
+		}
+		from = { has_country_flag = origin_waterb }
+	}
+
+	immediate = {
+		from = { 
+			country_event = { 
+				id = wg_yukikaze.10001 
+				scopes = { from = root } 
+				days = 60
+				random = 180
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_yukikaze.10001
+	title = wg_yukikaze.10001.name
+	desc = wg_yukikaze.10001.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_big_water_B
+	location = from
+
+	option = {
+		name = DIG
+		from = { enable_special_project = {
+			name = explore_waterb_planet
+			location = this
+			owner = root
+		}}
+	}
+	option = {
+		name = wg_yukikaze.10001.b
+	}
+}
+
+country_event = {
+	id = wg_yukikaze.10002
+	title = wg_yukikaze.10002.name
+	desc = wg_yukikaze.10002.desc
+	picture = GFX_evt_drilling_for_gas
+	is_triggered_only = yes
+	location = from
+
+	immediate = {
+		FROM = { 
+			if = {
+				limit = { OR = {
+					is_planet_class = pc_swim
+					is_planet_class = pc_ringworld_habitable_swim
+				}}
+				add_deposit = d_waterb_underwater_vent
+			} else = {
+				set_planet_flag = d_waterb_underwater_vent
+			}
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+		tooltip = {
+			from = { add_deposit = d_waterb_underwater_vent }
+		}
+	}
+}
+
+country_event = {
+	id = wg_yukikaze.10003
+	title = wg_yukikaze.10003.name
+	desc = wg_yukikaze.10003.desc
+	picture = GFX_evt_mining_operations
+	is_triggered_only = yes
+	location = from
+
+	immediate = {
+		FROM = { 
+			if = {
+				limit = { OR = {
+					is_planet_class = pc_swim
+					is_planet_class = pc_ringworld_habitable_swim
+				}}
+				add_deposit = d_waterb_underwater_mote
+			} else = {
+				set_planet_flag = d_waterb_underwater_mote
+			}
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+		tooltip = {
+			from = { add_deposit = d_waterb_underwater_mote }
+		}
+	}
+}
+
+country_event = {
+	id = wg_yukikaze.10004
+	title = wg_yukikaze.10004.name
+	desc = wg_yukikaze.10004.desc
+	picture = GFX_evt_medieval_alien_civilization
+	is_triggered_only = yes
+	location = from
+
+	immediate = {
+		FROM = { 
+			if = {
+				limit = { OR = {
+					is_planet_class = pc_swim
+					is_planet_class = pc_ringworld_habitable_swim
+				}}
+				add_deposit = d_waterb_underwater_buildings
+			} else = {
+				set_planet_flag = d_waterb_underwater_buildings
+			}
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+		add_resource = { minor_artifacts = 20 }
+		tooltip = {
+			from = { add_deposit = d_waterb_underwater_buildings }
+		}
+	}
+}
+
+country_event = {
+	id = wg_yukikaze.10005
+	title = wg_yukikaze.10005.name
+	desc = wg_yukikaze.10005.desc
+	picture = GFX_evt_treasure_pile
+	show_sound = event_mystic_reveal
+	is_triggered_only = yes
+	location = from
+
+	immediate = {
+		FROM = { 
+			if = {
+				limit = { OR = {
+					is_planet_class = pc_swim
+					is_planet_class = pc_ringworld_habitable_swim
+				}}
+				add_deposit = d_waterb_underwater_buildings
+			} else = {
+				set_planet_flag = d_waterb_underwater_buildings
+			}
+		}
+	}
+
+	option = {
+		name = wg_yukikaze.10005.a
+		random_list = {
+			1 = { add_resource = { minerals = 5000 }}
+			1 = { add_resource = { energy = 5000 }}
+			1 = { add_resource = { alloys = 5000 }}
+		}
+	}
+
+	option = {
+		name = wg_yukikaze.10005.b
+		add_monthly_resource_mult = {
+			resource = unity
+			value = 5
+		}
+	}
+}
+# 改造全水星球后移除野生生物地块
+planet_event = {
+	id = wg_yukikaze.10100
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_planet_class = pc_swim
+	}
+
+	immediate = {
+		clear_deposits = yes
+		export_trigger_value_to_variable = {
+			trigger = planet_size
+			variable = free_districts
+		}
+		while = {
+			count = 15
+			random_list = {
+				5 = { 
+					if = {
+						limit = { NOR = {
+							AND = {
+								check_variable = { which = free_districts value < 7 }
+								is_planet_class = pc_swim
+							}
+							AND = {
+								check_variable = { which = free_districts value < 3 }
+								is_planet_class = pc_ringworld_habitable_swim
+							}
+						}}
+						add_deposit = d_toxic_kelp 
+						subtract_variable = { which = free_districts value = 1 }
+					}
+				}
+				5 = { 
+					if = {
+						limit = { NOR = {
+							AND = {
+								check_variable = { which = free_districts value < 7 }
+								is_planet_class = pc_swim
+							}
+							AND = {
+								check_variable = { which = free_districts value < 3 }
+								is_planet_class = pc_ringworld_habitable_swim
+							}
+						}}
+						add_deposit = d_waterb_boggy_fens 
+						subtract_variable = { which = free_districts value = 1 }
+					}
+				}
+				5 = { 
+					if = {
+						limit = { NOR = {
+							AND = {
+								check_variable = { which = free_districts value < 7 }
+								is_planet_class = pc_swim
+							}
+							AND = {
+								check_variable = { which = free_districts value < 3 }
+								is_planet_class = pc_ringworld_habitable_swim
+							}
+						}}
+						add_deposit = d_waterb_seal 
+						subtract_variable = { which = free_districts value = 2 }
+					}
+				}
+				5 = { 
+					if = {
+						limit = { NOR = {
+							AND = {
+								check_variable = { which = free_districts value < 7 }
+								is_planet_class = pc_swim
+							}
+							AND = {
+								check_variable = { which = free_districts value < 3 }
+								is_planet_class = pc_ringworld_habitable_swim
+							}
+						}}
+						add_deposit = d_waterb_underwater_volcano 
+						subtract_variable = { which = free_districts value = 2 }
+					}
+				}
+				5 = {
+					modifier = {
+						factor = 4
+						OR = {
+							AND = {
+								check_variable = { which = free_districts value < 10 }
+								is_planet_class = pc_swim
+							}
+							AND = {
+								check_variable = { which = free_districts value < 5 }
+								is_planet_class = pc_ringworld_habitable_swim
+							}
+						}
+					}
+				}
+			}
+		}
+		while = {
+			count = 3
+			random_list = {
+				1 = { add_deposit = d_waterb_underwater_buildings }
+				1 = { 
+					modifier = { factor = 0 has_deposit = d_waterb_underwater_vent }
+					add_deposit = d_waterb_underwater_vent 
+				}
+				1 = { 
+					modifier = { factor = 0 has_deposit = d_waterb_underwater_crystal }
+					add_deposit = d_waterb_underwater_crystal 
+				}
+				1 = { 
+					modifier = { factor = 0 has_deposit = d_waterb_underwater_mote }
+					add_deposit = d_waterb_underwater_mote 
+				}
+				2 = {}
+			}
+		}
+		if = {
+			limit = { has_planet_flag = d_waterb_underwater_vent }
+			add_deposit = d_waterb_underwater_vent
+		}
+		if = {
+			limit = { has_planet_flag = d_waterb_underwater_mote }
+			add_deposit = d_waterb_underwater_mote
+		}
+		if = {
+			limit = { has_planet_flag = d_waterb_underwater_buildings }
+			add_deposit = d_waterb_underwater_buildings
+		}
+		clear_variable = free_districts
+	}
+}
+
+# 雪风后续事件
+country_event = {
+	id = wg_yukikaze.10100
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		always = no
+	}
+}
+
+

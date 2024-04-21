@@ -1,0 +1,45 @@
+r_united_fleet_2 = {
+	activation_duration = @triumph_duration
+	portrait = "GFX_relic_uf"
+	sound = "relic_activation_ether_drake_trophy"
+
+	resources = {
+		category = relics
+		# Activation cost
+		cost = {
+			influence = 200
+		}
+	}
+	
+	ai_weight = {
+		weight = 100
+	}
+	
+	triggered_country_modifier = {
+		potential = {
+			always = yes
+		}
+		all_technology_research_speed = 1.00
+	}
+
+	score = 1000
+
+	active_effect = {
+		custom_tooltip = r_united_fleet_active
+		custom_tooltip = relic_triumph_cooldown
+		hidden_effect = {
+			add_modifier = {
+				modifier = "relic_activation_cooldown" 
+				days = 3600
+			}
+			country_event = { id = wg_crisis_2.999 }			
+		}
+	}
+
+	possible = {
+		inline_script = {
+			script = relics/activation_checks
+			RELIC = r_united_fleet_2
+		}
+	}
+}

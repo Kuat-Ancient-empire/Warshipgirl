@@ -1,0 +1,4118 @@
+namespace = wg_fe
+country_event = {
+	id = wg_fe.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_wg_fallen_empire = yes
+	}
+
+	immediate = {
+		ruler = { change_leader_portrait = wsg1 }
+		every_playable_country = {
+			limit = {
+				OR = {
+					has_authority = auth_warshipgirls
+					has_authority = auth_shenhai
+				}
+				NOT = { has_communications = root }
+			}
+			establish_communications_no_message = root
+			establish_contact = {
+				who = root
+				location = root.capital_scope
+			}
+			root = { every_system_within_border = { every_system_planet = {
+				set_surveyed = { surveyed = yes surveyor = prevprevprev }
+			}}}
+			country_event = { id = wg_fe.2 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_fe.2
+	title = "TRANSMISSION"
+	desc = wg_fe.2.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	trigger = {
+		OR = {
+			has_authority = auth_warshipgirls
+			has_authority = auth_shenhai
+		}
+		is_ai = no
+	}
+
+	picture_event_data = {
+		portrait = event_target:wg_fallen_empire
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	option = {
+		trigger = { has_authority = auth_warshipgirls }
+		name = wg_fe.2.a
+	}
+
+	option = {
+		trigger = { 
+			has_authority = auth_shenhai
+			NOT = { has_civic = civic_CM }
+		}
+		name = wg_fe.2.b
+	}
+
+	option = {
+		trigger = { 
+			has_authority = auth_shenhai
+			has_civic = civic_CM
+		}
+		name = wg_fe.2.c
+	}
+
+}
+
+# 暂时禁用
+# 旧存档游戏后期前补堕落
+#event = {
+#	id = wg_fe.3
+#	hide_window = yes
+#	fire_only_once = yes
+#
+#	mean_time_to_happen = {
+#		years = 5
+#	}
+#
+#	trigger = {
+#		any_country = {
+#			NOT = { has_country_flag = wg_fallen_empire }
+#		}
+#		end_game_years_passed <= 0
+#		NOT = { has_global_flag = created_wg_fallen_empire }
+#	}
+#
+#	immediate = {
+#		random_country = {
+#			limit = { is_country_type = global_event }
+#			country_event = { id = wg_fe.4 }
+#		}
+#	}
+#}
+
+country_event = {
+	id = wg_fe.4
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		is_country_type = global_event
+		any_country = {
+			is_wg_empire = yes
+			OR = {
+				is_ai = no
+				has_origin = origin_wg_fe_child
+			}
+		}
+		NOT = { any_country = { has_authority = auth_united_fleet }}
+		any_country = {
+			NOT = { has_country_flag = wg_fallen_empire }
+		}
+		OR = {
+			any_country = { has_origin = origin_wg_fe_child }
+			NOR = { 
+				num_fallen_empires < 1 
+				any_system = { has_star_flag = wg_fallen_empire_capital_system }
+				has_global_flag = created_wg_fallen_empire
+			}
+		}
+	}
+
+	immediate = {
+		set_global_flag = created_wg_fallen_empire
+		create_species = {
+			name = "NAME_FE_species_WSG"
+			class = "Warship_Girls"
+			portrait = "Warship_girls"
+			traits = {
+				trait = wsg_trait_warshipgirls2
+				trait = wsg_trait_mind_control
+				trait = wsg_trait_knowledgeable2
+				trait = wsg_trait_game
+				trait = wsg_trait_gugu
+			}
+			allow_negative_traits = no
+			immortal = yes
+			effect = { 
+				save_global_event_target_as = fe_species_wsg
+				change_species_characteristics = {
+					gender = female
+				}
+			}
+		}
+		create_country = {
+			name = "NAME_WG_fallen_empire"
+			type = fallen_empire
+			ignore_initial_colony_error = yes
+			authority = auth_wg_fe
+			civics = {
+				civic = civic_wg_fe	
+				civic = civic_yaosai
+			}			
+			species = event_target:fe_species_wsg
+			ethos = {
+				ethic = ethic_pacifist
+				ethic = ethic_fanatic_egalitarian
+			}			
+			flag = {
+				icon = {
+					category = "warshipgirls"
+					file = "wg_flags_09.dds"
+				}
+				background = {
+					category = "backgrounds"
+					file = "diagonal.dds"
+				}
+				colors = {
+					"blue"
+					"purple"
+					"null"
+					"null"
+				}
+			}
+			name_list = "WSG2"
+			origin = "origin_wg_fallen_empire"
+			effect = {
+				save_global_event_target_as = wg_fallen_empire
+				set_country_flag = wg_fallen_empire
+				set_country_flag = z_cm_flg_cntr_wih_awk_ignore #天灾之主
+				add_modifier = { modifier = wg_fe_cheat days = -1 }
+				add_resource = {
+					minerals = 50000
+					energy = 50000	
+					food = 50000
+					alloys = 50000
+					consumer_goods = 50000
+					influence = 500
+				}
+				create_species = {
+					name = "NAME_FE_species_SH"
+					class = "ShenHai"
+					portrait = "shenhai"
+					traits = {
+						trait = sh_trait_shenhai3
+						trait = sh_trait_fleet
+						trait = sh_trait_repair
+						trait = sh_trait_gear22
+					}
+					immortal = yes
+					effect = { 
+						save_global_event_target_as = fe_species_sh
+						change_species_characteristics = {
+							gender = female
+						}
+					}
+				}
+				create_leader = {
+					class = random_ruler
+					species = event_target:fe_species_wsg
+					gender = female
+					name = PRESCRIPTED_ruler_name_wg_fe
+					skill = 10
+					immortal = yes
+				}
+				last_created_leader = {
+					set_age = 1453
+					change_leader_portrait = wsg1
+					set_gender = female
+				}
+				set_leader = last_created_leader
+				create_leader = {
+					class = official
+					species = event_target:fe_species_wsg
+					gender = female
+					name = random
+					skill = 10
+					immortal = yes
+				}
+								
+				# must initialize global designs here
+				add_global_ship_design = "NAME_WG_FE_ESCORTE"
+				add_global_ship_design = "NAME_WG_FE_BATTLE_CRUISE"
+				add_global_ship_design = "NAME_WG_FE_TITAN"
+				add_global_ship_design = "NAME_WG_FE_PLATFORM"
+				add_global_ship_design = "NAME_WG_FE_CONSTRUCTION"
+				country_event = { id = wg_fe.5 days = 1}
+				country_event = { id = wg_fe.6 days = 1}
+				# 主动联络所有舰娘/深海
+				
+			}
+		}
+	
+		last_created_country = {
+			save_global_event_target_as = wg_fallen_empire
+			set_graphical_culture = fallen_empire_03
+			if = {
+				limit = { count_system = { count <= 250 }}
+				country_event = { id = wg_fe.11 }
+			}
+			else_if = {
+				limit = { count_system = { count <= 450 } }
+				country_event = { id = wg_fe.12 }
+			}
+			else_if = {
+				limit = { count_system = { count <= 650 } }
+				country_event = { id = wg_fe.13 }
+			}
+			else_if = {
+				limit = { count_system = { count <= 850 } }
+				country_event = { id = wg_fe.14 }
+			}
+			else = {
+				country_event = { id = wg_fe.15 }
+			}
+			country_event = { id = wg_fe.1 days = 7200 random = 3600 } # for test, should be 7200 days + 3600 random
+		}
+		
+	}
+}
+
+country_event = {
+	id = wg_fe.11
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	immediate = {
+		set_spawn_system_batch = begin
+		no_scope = {
+			# makes system positions originate from galactic core
+			#set_spawn_system_batch = begin
+			# batch-processes the spawn_system effects between "begin" and "end",
+			# so caches are recalculated only once rather than for every system spawned
+			spawn_system = {
+				min_distance >= 200
+				max_distance <= 210
+				min_orientation_angle = 100
+				max_orientation_angle = 102
+				initializer = "wg_fallen_empire_colony_1_system"
+			}
+			event_target:wg_fe_colony_1_system = {
+				random_neighbor_system_euclidean = {
+					limit = { 
+						NOT = { has_hyperlane_to = PREV }
+						any_neighbor_system_euclidean = { has_hyperlane_to = PREV }
+					}
+					add_hyperlane = { from = this to = PREV }
+				}
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 100
+					max_orientation_angle = 110
+					initializer = "wg_fallen_empire_capital_system"
+				}
+			}
+			event_target:wg_fe_home_system = {
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 130
+					max_orientation_angle = 140
+					initializer = "wg_fallen_empire_colony_2_system"
+				}
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 240
+					max_orientation_angle = 260
+					initializer = "wg_fallen_empire_colony_3_system"
+				}
+			
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_1_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_2_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_3_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+					random_neighbor_system_euclidean = {
+						limit = {
+							NOR = { 
+								has_star_flag = wg_fallen_empire_colony_1_system
+								has_star_flag = wg_fallen_empire_colony_2_system
+								has_star_flag = wg_fallen_empire_capital_system
+							}
+							NOT = { has_hyperlane_to = PREV }
+							any_neighbor_system_euclidean = { has_hyperlane_to = PREV }
+						}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+			}
+		}
+		set_spawn_system_batch = end
+	}	
+}
+
+
+country_event = {
+	id = wg_fe.12
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	immediate = {
+		set_spawn_system_batch = begin
+		no_scope = {
+			spawn_system = {
+				min_distance >= 320
+				max_distance <= 330
+				min_orientation_angle = 100
+				max_orientation_angle = 102
+				initializer = "wg_fallen_empire_colony_1_system"
+			}
+			event_target:wg_fe_colony_1_system = {
+				random_neighbor_system_euclidean = {
+					limit = { 
+						NOT = { has_hyperlane_to = PREV }
+						any_neighbor_system_euclidean = { has_hyperlane_to = PREV }
+					}
+					add_hyperlane = { from = this to = PREV }
+				}
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 100
+					max_orientation_angle = 110
+					initializer = "wg_fallen_empire_capital_system"
+				}
+			}
+			event_target:wg_fe_home_system = {
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 130
+					max_orientation_angle = 140
+					initializer = "wg_fallen_empire_colony_2_system"
+				}
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 240
+					max_orientation_angle = 260
+					initializer = "wg_fallen_empire_colony_3_system"
+				}
+			
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_1_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_2_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_3_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+					random_neighbor_system_euclidean = {
+						limit = {
+							NOR = { 
+								has_star_flag = wg_fallen_empire_colony_1_system
+								has_star_flag = wg_fallen_empire_colony_2_system
+								has_star_flag = wg_fallen_empire_capital_system
+							}
+							NOT = { has_hyperlane_to = PREV }
+							any_neighbor_system_euclidean = { has_hyperlane_to = PREV }
+						}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+			}
+		}
+		set_spawn_system_batch = end
+	}	
+}
+
+
+country_event = {
+	id = wg_fe.13
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	immediate = {
+		set_spawn_system_batch = begin
+		no_scope = {
+			spawn_system = {
+				min_distance >= 410
+				max_distance <= 415
+				min_orientation_angle = 100
+				max_orientation_angle = 102
+				initializer = "wg_fallen_empire_colony_1_system"
+			}
+			event_target:wg_fe_colony_1_system = {
+				random_neighbor_system_euclidean = {
+					limit = { 
+						NOT = { has_hyperlane_to = PREV }
+						any_neighbor_system_euclidean = { has_hyperlane_to = PREV }
+					}
+					add_hyperlane = { from = this to = PREV }
+				}
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 100
+					max_orientation_angle = 110
+					initializer = "wg_fallen_empire_capital_system"
+				}
+			}
+			event_target:wg_fe_home_system = {
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 130
+					max_orientation_angle = 140
+					initializer = "wg_fallen_empire_colony_2_system"
+				}
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 240
+					max_orientation_angle = 260
+					initializer = "wg_fallen_empire_colony_3_system"
+				}
+			
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_1_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_2_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_3_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+					random_neighbor_system_euclidean = {
+						limit = {
+							NOR = { 
+								has_star_flag = wg_fallen_empire_colony_1_system
+								has_star_flag = wg_fallen_empire_colony_2_system
+								has_star_flag = wg_fallen_empire_capital_system
+							}
+							NOT = { has_hyperlane_to = PREV }
+							any_neighbor_system_euclidean = { has_hyperlane_to = PREV }
+						}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+			}
+		}
+		set_spawn_system_batch = end
+	}	
+}
+
+country_event = {
+	id = wg_fe.14
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	immediate = {
+		set_spawn_system_batch = begin
+		no_scope = {
+			spawn_system = {
+				min_distance >= 450
+				max_distance <= 460
+				min_orientation_angle = 100
+				max_orientation_angle = 102
+				initializer = "wg_fallen_empire_colony_1_system"
+			}
+			event_target:wg_fe_colony_1_system = {
+				random_neighbor_system_euclidean = {
+					limit = { 
+						NOT = { has_hyperlane_to = PREV }
+						any_neighbor_system_euclidean = { has_hyperlane_to = PREV }
+					}
+					add_hyperlane = { from = this to = PREV }
+				}
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 100
+					max_orientation_angle = 110
+					initializer = "wg_fallen_empire_capital_system"
+				}
+			}
+			event_target:wg_fe_home_system = {
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 130
+					max_orientation_angle = 140
+					initializer = "wg_fallen_empire_colony_2_system"
+				}
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 240
+					max_orientation_angle = 260
+					initializer = "wg_fallen_empire_colony_3_system"
+				}
+			
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_1_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_2_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_3_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+					random_neighbor_system_euclidean = {
+						limit = {
+							NOR = { 
+								has_star_flag = wg_fallen_empire_colony_1_system
+								has_star_flag = wg_fallen_empire_colony_2_system
+								has_star_flag = wg_fallen_empire_capital_system
+							}
+							NOT = { has_hyperlane_to = PREV }
+							any_neighbor_system_euclidean = { has_hyperlane_to = PREV }
+						}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+			}
+		}
+		set_spawn_system_batch = end
+	}	
+}
+
+country_event = {
+	id = wg_fe.15
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	immediate = {
+		set_spawn_system_batch = begin
+		no_scope = {
+			spawn_system = {
+				min_distance >= 460
+				max_distance <= 460
+				min_orientation_angle = 100
+				max_orientation_angle = 102
+				initializer = "wg_fallen_empire_colony_1_system"
+			}
+			event_target:wg_fe_colony_1_system = {
+				random_neighbor_system_euclidean = {
+					limit = { 
+						NOT = { has_hyperlane_to = PREV }
+						any_neighbor_system_euclidean = { has_hyperlane_to = PREV }
+					}
+					add_hyperlane = { from = this to = PREV }
+				}
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 100
+					max_orientation_angle = 110
+					initializer = "wg_fallen_empire_capital_system"
+				}
+			}
+			event_target:wg_fe_home_system = {
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 130
+					max_orientation_angle = 140
+					initializer = "wg_fallen_empire_colony_2_system"
+				}
+				spawn_system = { 
+					min_distance >= 20
+					max_distance <= 50
+					min_orientation_angle = 240
+					max_orientation_angle = 260
+					initializer = "wg_fallen_empire_colony_3_system"
+				}
+			
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_1_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_2_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+				random_system = {
+					limit = { has_star_flag = wg_fallen_empire_colony_3_system }
+					if = {
+						limit = { NOT = { has_hyperlane_to = PREV }}
+						add_hyperlane = { from = this to = PREV }
+					}
+					random_neighbor_system_euclidean = {
+						limit = {
+							NOR = { 
+								has_star_flag = wg_fallen_empire_colony_1_system
+								has_star_flag = wg_fallen_empire_colony_2_system
+								has_star_flag = wg_fallen_empire_capital_system
+							}
+							NOT = { has_hyperlane_to = PREV }
+							any_neighbor_system_euclidean = { has_hyperlane_to = PREV }
+						}
+						add_hyperlane = { from = this to = PREV }
+					}
+				}
+			}
+		}
+		set_spawn_system_batch = end
+	}	
+}
+
+country_event = {
+	id = wg_fe.6
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		create_ship_design = { design = "NAME_WG_FE_ESCORTE" }
+		add_ship_design = last_created_design
+		create_ship_design = { design = "NAME_WG_FE_BATTLE_CRUISE" }
+		add_ship_design = last_created_design
+		create_ship_design = { design = "NAME_WG_FE_CONSTRUCTION" }
+		add_ship_design = last_created_design
+		create_ship_design = { design = "NAME_WG_FE_COLOSSUS" }
+		add_ship_design = last_created_design
+		create_ship_design = { design = "NAME_WG_FE_TITAN" }
+		add_ship_design = last_created_design
+		create_ship_design = { design = "NAME_WG_FE_PLATFORM" }
+		add_ship_design = last_created_design
+	}
+}
+
+country_event = {
+	id = wg_fe.5
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_wg_fallen_empire = yes
+	}
+
+	immediate = {
+		event_target:fe_species_sh = {
+			set_citizenship_type = {
+				country = root
+				type = citizenship_full
+				cooldown = yes
+			}
+			set_military_service_type = {
+				country = root
+				type = military_service_full
+				cooldown = yes
+			}
+		}
+		if = {
+			limit = { NOT = { exists = event_target:fe_species_wsg }}
+			create_species = {
+				name = "NAME_FE_species_WSG"
+				class = "Warship_Girls"
+				portrait = "Warship_girls"
+				traits = {
+					trait = wsg_trait_warshipgirls1
+					trait = wsg_trait_mind_control
+					trait = wsg_trait_game
+					trait = wsg_trait_gugu
+				}
+				immortal = yes
+				effect = { 
+					save_global_event_target_as = fe_species_wsg 
+					change_species_characteristics = {
+						gender = female
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				owner_species = {
+					NAND = {
+						is_same_species = event_target:fe_species_wsg 
+						has_trait = wsg_trait_warshipgirls1
+					}
+				}
+			}
+			change_species = event_target:fe_species_wsg
+			if = {
+				limit = {
+					has_country_flag = wg_fe_will_leave
+				}
+				random_country = {
+					limit = {
+						is_ai = no
+						OR = {
+							has_authority = auth_warshipgirls
+							has_authority = auth_shenhai
+						}
+						NOR = {
+							has_civic = civic_CM
+							has_ascension_perk = ap_shenhai_silent
+						}
+					}
+					owner_species = {
+						save_event_target_as = saved_species
+					}
+				}
+			}
+			every_owned_planet = {
+				limit = {
+					count_owned_pop = {
+						count > 0
+					}
+				}
+				every_owned_pop = {
+					limit = { species = {
+						NOR = {
+							is_same_species = event_target:fe_species_wsg
+							is_same_species = event_target:fe_species_sh
+							is_same_species = event_target:saved_species
+						}
+					}}
+					PREV = { create_pop = {
+						species = event_target:fe_species_wsg
+					}}
+					kill_pop = yes
+				}
+			}
+		}
+	}
+}
+
+# 中期触发事件
+event = {
+	id = wg_fe.20000
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		#mid_game_years_passed >= 0
+	}
+
+	immediate = {
+		every_country = {
+			country_event = { id = wg_fe.20 days = 5400 random = 1800 }
+		}
+	}
+}
+
+# 中期15年后堕落妈送暗物质科技
+country_event = {
+	id = wg_fe.20
+	title = "TRANSMISSION"
+	desc = wg_fe.20.desc
+
+	trigger = {
+		OR = {
+			has_authority = auth_warshipgirls
+			has_authority = auth_shenhai
+		}
+		NOR = { 
+			has_technology = tech_dark_matter_power_core
+			has_country_flag = given_dark_matter_tech
+			has_civic = civic_CM
+			has_ascension_perk = ap_shenhai_silent
+		}
+		is_ai = no
+		exists = event_target:wg_fallen_empire
+	}
+
+	picture_event_data = {
+		portrait = event_target:wg_fallen_empire
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	diplomatic = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = given_dark_matter_tech
+		random_owned_planet = {
+			limit = {
+				count_owned_pop = {
+					limit = { species = { is_same_value = root.owner_species }}
+					count >= 5
+				}
+			}
+			save_event_target_as = wg_fe_task_planet
+		}
+	}
+
+	option = {
+		name = wg_fe.20.a
+		response_text = wg_fe.20.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		trigger = {
+			NOT = { has_origin = origin_wg_fe_child }
+		}
+		name = wg_fe.20.b
+		response_text = wg_fe.20.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		trigger = {
+			has_origin = origin_wg_fe_child 
+		}
+		name = wg_fe.20.b
+		response_text = wg_fe.20.b.response2
+		is_dialog_only = yes
+	}
+	option = {
+		trigger = {
+			NOR = {
+				has_origin = origin_wg_fe_child
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+			}
+		}
+		name = wg_fe.20.c
+		response_text = wg_fe.20.c.response
+		add_research_option = tech_dark_matter_power_core
+		add_research_option = tech_dark_matter_deflector
+		add_research_option = tech_dark_matter_propulsion
+		add_tech_progress = {
+			tech = tech_dark_matter_power_core
+			progress = 0.2
+		}
+		add_tech_progress = {
+			tech = tech_dark_matter_deflector
+			progress = 0.2
+		}
+		add_tech_progress = {
+			tech = tech_dark_matter_propulsion
+			progress = 0.2
+		}
+		add_resource = {
+			sr_dark_matter = 500
+		}
+		hidden_effect = {
+			event_target:wg_fallen_empire = { #增加舰娘堕落留下的几率
+				set_country_flag = add_stay_chance5
+			}
+		}
+	}
+	option = { # 妈宝起源直接送齐三件套
+		trigger = {
+			has_origin = origin_wg_fe_child
+			NOR = {
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+			}
+		}
+		name = wg_fe.20.c
+		response_text = wg_fe.20.c.response2
+		add_research_option = tech_dark_matter_power_core
+		add_research_option = tech_dark_matter_deflector
+		add_research_option = tech_dark_matter_propulsion
+		add_tech_progress = {
+			tech = tech_dark_matter_power_core
+			progress = 0.2
+		}
+		add_tech_progress = {
+			tech = tech_dark_matter_deflector
+			progress = 0.2
+		}
+		add_tech_progress = {
+			tech = tech_dark_matter_propulsion
+			progress = 0.2
+		}
+		add_resource = {
+			sr_dark_matter = 1000
+		}
+	}
+	option = {
+		trigger = {
+			NOR = {
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+				any_country = { has_origin = origin_wg_fe_child }
+			}
+		}
+		name = wg_fe.20.e
+		response_text = wg_fe.20.e.response
+		custom_tooltip = wg_fe.20.d.tooltip
+		add_research_option = tech_dark_matter_power_core
+		add_tech_progress = {
+			tech = tech_dark_matter_power_core
+			progress = 0.2
+		}
+		add_resource = {
+			sr_dark_matter = 500
+		}
+		hidden_effect = {
+			event_target:wg_fe_task_planet = {
+				random_owned_pop = {
+					limit = {
+						is_same_species = root.owner_species
+					}
+					kill_pop = yes
+				}
+			}
+			event_target:wg_fallen_empire = {
+				random_owned_planet = {
+					limit = {
+						z_mod_num_pop_trigger = { OPERATOR = ">" NUM = 1 }		
+					}
+					create_pop = { 
+						species = root
+					}	
+				}
+				root.owner_species = {
+					set_citizenship_type = {
+						country = prevprev
+						type = citizenship_full
+						cooldown = yes
+					}
+				}
+			}
+			event_target:wg_fallen_empire = { #舰娘堕落绝对不会留下来
+				set_country_flag = wg_fe_will_leave
+			}
+		}
+	}
+}
+
+# 后期5年觉醒 or 跑路
+country_event = {
+	id = wg_fe.21
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = event_target:wg_fallen_empire
+		is_wg_fallen_empire = yes
+		end_game_years_passed >= 5
+		NOR = { 
+			has_global_flag = wg_crisis_disabled
+			has_global_flag = triggered_wgfe_crisis_event
+			has_global_flag = wg_fallen_empire_awakened
+			has_global_flag = triggered_wgfe_crisis_event2
+		}
+		OR = {
+			has_global_flag = wg_crisis_easy
+			has_global_flag = wg_crisis_normal
+			has_global_flag = wg_crisis_hard
+			has_global_flag = wg_crisis_insane
+		}
+		has_global_flag = wg_crisis_triggered
+	}
+
+	immediate = {
+		set_global_flag = triggered_wgfe_crisis_event
+		random_list = {
+			10 = { # 觉醒
+				modifier = {
+					factor = 0
+					has_country_flag = wg_fe_will_leave
+					NOT = { any_country = { has_origin = origin_wg_fe_child }} #妈宝起源必定留下
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						has_global_flag = wg_crisis_hard
+						has_global_flag = wg_crisis_insane
+					}
+				}
+				modifier = {
+					add = 2
+					any_country = {
+						has_country_flag = finish_game_console_event
+					}
+				}
+				modifier = {
+					add = 5
+					has_country_flag = add_stay_chance5
+				}
+				modifier = {
+					add = 2
+					any_country = {
+						has_country_flag = finish_VV_event
+					}
+				}
+				modifier = {
+					add = 3
+					any_country = {
+						has_country_flag = finish_wsg_lady_events
+					}
+				}
+				set_global_flag = wg_fallen_empire_awakened
+				event_target:wg_fallen_empire = {
+					country_event = { id = wg_fe.22 }
+				}
+			} 
+			10 = { # 跑路
+				modifier = {
+					factor = 0.5
+					OR = {
+						has_global_flag = wg_crisis_easy
+						has_global_flag = wg_crisis_normal
+					}
+				}
+				modifier = {
+					factor = 0
+					any_country = { has_origin = origin_wg_fe_child } #妈宝起源必定留下
+				}
+				event_target:wg_fallen_empire = {
+					country_event = { id = wg_fe.25 }
+				}
+			} 
+		}
+	}
+}
+
+# 堕落妈觉醒
+country_event = {
+	id = wg_fe.22
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		exists = event_target:wg_fallen_empire
+		event_target:wg_fallen_empire = {
+			NOT = { is_country_type = awakened_fallen_empire }
+		}
+	}
+
+	immediate = {
+		set_country_type = awakened_fallen_empire
+		set_global_flag = wg_fallen_empire_awakened
+		set_country_flag = guardians_of_the_galaxy
+		set_empire_name = "烛幽 誓约"
+		if = {
+			limit = { 
+				OR = {
+					has_global_flag = wg_crisis_easy
+					has_global_flag = wg_crisis_normal
+				}
+			}
+			change_government = {
+				civics = {
+					civic = civic_wg_awakened_fe
+					civic = civic_ancient_caches_of_technology
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				OR = {
+					has_global_flag = wg_crisis_hard
+					has_global_flag = wg_crisis_insane
+				}
+			}
+			change_government = {
+				civics = {
+					civic = civic_wg_awakened_fe_advance
+					civic = civic_ancient_caches_of_technology
+				}
+			}
+			add_resource = {
+				minerals = 500000
+				energy = 500000
+				food = 500000
+				alloys = 500000
+				consumer_goods = 500000
+				sr_pantsu = 50000
+				sr_se = 50000
+			}
+			capital_scope = {
+				create_wg_fe_capital_fleet_and_admiral = yes
+			}
+		}
+		add_resource = {
+			minerals = 50000
+			energy = 50000	
+			food = 50000
+			alloys = 50000
+			consumer_goods = 50000
+			influence = 1000
+			sr_pantsu = 5000
+			sr_se = 5000
+		}
+		capital_scope = {
+			create_wg_fe_capital_fleet_and_admiral = yes
+		}
+		every_owned_planet = { # 游戏中心换成兵工厂
+			limit = {
+				has_building = building_wg_fe_game_centre
+			}
+			remove_building = building_wg_fe_game_centre
+			add_building = building_wg_fe_war_factory
+		}
+
+		every_country = {
+			limit = {
+				is_country_type = default
+			}
+			random_list = {
+				33 = { add_opinion_modifier = { who = root modifier = opinion_crisis_fighter } }
+				33 = { add_opinion_modifier = { who = root modifier = opinion_crisis_fighter_small } }
+				33 = { }
+			}
+		}
+		every_country = { # 对除舰娘外国家通知
+			limit = {
+				OR = {
+					is_country_type = default
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+				}
+				NOR = {
+					has_authority = auth_warshipgirls
+					has_authority = auth_shenhai
+				}
+			}
+			establish_communications_no_message = root
+			root = { save_event_target_as = contact_empire }
+			country_event = { id = action.1 days = 3 }
+		}
+		every_playable_country = {
+			limit = {
+				OR = {
+					has_authority = auth_warshipgirls
+					has_authority = auth_shenhai
+				}
+				is_ai = no
+			}
+			country_event = { id = wg_fe.23 }
+		}
+		# 正常的通知
+		every_playable_country = {
+			limit = {
+				NOR = {
+					has_authority = auth_warshipgirls
+					has_authority = auth_shenhai
+				}
+				is_ai = no
+			}
+			country_event = { id = fallen_empires_awakening.5 }
+		}
+		country_event = { id = wg_fe.6 }
+		if = {
+			limit = { OR = { 
+				has_global_flag = wg_crisis_hard
+				has_global_flag = wg_crisis_insane
+			}}
+			country_event = { id = wg_fe.24 days = 720 } # 隔2年刷一次舰队
+			country_event = { id = wg_fe.24 days = 1440 }
+		}
+		else = {
+			country_event = { id = wg_fe.24 days = 1440 } # 隔4年刷一次舰队
+		}
+	}
+}
+
+# （舰娘/深海）觉醒通知
+country_event = {
+	id = wg_fe.23
+	title = "TRANSMISSION"
+	desc = wg_fe.23.desc
+
+	picture_event_data = {
+		portrait = event_target:wg_fallen_empire
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+	diplomatic = yes
+	force_open = yes
+	is_triggered_only = yes
+	show_sound = event_celebration
+
+	option = {
+		trigger = {
+			NOR = {
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+			}
+		}
+		name = wg_fe.23.a
+	}
+	option = {
+		trigger = {
+			has_authority = auth_shenhai
+			OR = { 
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+			}
+		}
+		name = fallen_empires_awakening.5.b
+	}
+
+}
+
+# 每4 or 2年补充资源和舰队
+country_event = {
+	id = wg_fe.24
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = event_target:wg_fallen_empire
+		has_global_flag = wg_invasion_happened
+		is_wg_fallen_empire = yes
+		has_global_flag = wg_fallen_empire_awakened
+	}
+
+	immediate = {
+		capital_scope = {
+			create_wg_fe_capital_fleet_and_admiral = yes
+		}
+		add_resource = {
+			minerals = 50000
+			energy = 50000	
+			food = 50000
+			alloys = 50000
+			consumer_goods = 50000
+			influence = 1000
+			sr_pantsu = 5000
+			sr_se = 5000
+		}
+		country_event = { id = wg_fe.24 days = 1440 }
+	}
+}
+
+# 舰娘堕落收拾细软跑路
+country_event = {
+	id = wg_fe.25
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		NOT = { has_global_flag = wg_fallen_empire_awakened }
+	}
+
+	immediate = {
+		every_playable_country = { # 舰娘/深海通知
+			limit = {
+				OR = {
+					has_authority = auth_warshipgirls
+					has_authority = auth_shenhai
+				}
+				is_ai = no
+			}
+			country_event = { id = wg_fe.26 }
+		}
+		country_event = { id = wg_fe.27 days = 3 }
+	}
+}
+
+country_event = {
+	id = wg_fe.26
+	title = "TRANSMISSION"
+	desc = wg_fe.26.desc
+
+	picture_event_data = {
+		portrait = event_target:wg_fallen_empire
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+	diplomatic = yes
+	force_open = yes
+	is_triggered_only = yes
+	
+	option = {
+		trigger = {
+			has_authority = auth_warshipgirls
+		}
+		name = wg_fe.26.a
+	}
+	option = {
+		trigger = {
+			has_authority = auth_shenhai
+			NOR = { 
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+			}
+		}
+		name = wg_fe.26.b
+	}
+	option = {
+		trigger = {
+			has_authority = auth_shenhai
+			OR = { 
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+			}
+		}
+		name = wg_fe.26.c
+	}
+}
+
+# 移除舰娘堕落所有东西并通知玩家帝国
+country_event = {
+	id = wg_fe.27
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		OR = {
+			has_global_flag = uf_ending_wgfe
+			NOR = { 
+				has_global_flag = triggered_wgfe_crisis_event2
+				has_global_flag = wg_fallen_empire_awakened 
+			}
+		}
+	}
+
+	immediate = {
+		set_global_flag = triggered_wgfe_crisis_event2
+		every_country = { # 舰娘/深海通知
+			limit = {
+				OR = {
+					has_authority = auth_warshipgirls
+					has_authority = auth_shenhai
+				}
+				OR = {
+					has_global_flag = wg_crisis_triggered
+					NOR = { 
+						has_global_flag = wg_crisis_triggered 
+						has_ascension_perk = ap_wg_crisis
+					}
+				}
+				is_ai = no
+			}
+			country_event = { id = wg_fe.28 days = 3 }
+			if = {
+				limit = { end_game_years_passed >= 0 }
+				country_event = { id = wg_fe.32 days = 30 } # 跑路后送舰队
+			}
+		}
+		if = { # 焚飞帝国通知
+			limit = { 
+				exists = event_target:ap_wg_crisis_country 
+				NOT = { has_global_flag = wg_crisis_triggered }
+			}
+			event_target:ap_wg_crisis_country = {
+				country_event = { id = ap_wg_crisis.1037 days = 5 }
+			}
+		}
+		every_country = { # 其他帝国通知
+			limit = {
+				NOR = {
+					has_authority = auth_warshipgirls
+					has_authority = auth_shenhai
+				}
+				is_ai = no
+			}
+			country_event = { id = wg_fe.29 days = 3 }
+		}
+		every_country = {
+			limit = {
+				is_country_type = default
+			}
+			root = { every_system_within_border = { every_system_planet = {
+				set_surveyed = { surveyed = yes surveyor = prevprevprev }
+			}}}
+		}
+		random_country = { # Triggered this way to avoid game over when testing
+			limit = { is_wg_fallen_empire = yes }
+			every_owned_pop = { kill_pop = yes }
+			every_owned_fleet = { delete_fleet = this }
+			destroy_country = yes
+		}
+		random_country = { # Triggered this way to avoid game over when testing
+			limit = { is_country_type = wg_awakened_fleet_country }
+			destroy_country = yes
+		}
+	}
+}
+
+# （舰娘/深海）跑路通知
+country_event = {
+	id = wg_fe.28
+	title = wg_fe.28.name
+	desc = wg_fe.28.desc
+	picture = GFX_evt_ringworld
+	show_sound = event_ghost_town
+	location = event_target:wg_fe_home_system
+
+	is_triggered_only = yes
+
+	option = {
+		trigger = {
+			has_authority = auth_warshipgirls
+		}
+		name = wg_fe.28.a
+	}
+	option = {
+		trigger = {
+			has_authority = auth_shenhai
+			NOR = { 
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+			}
+		}
+		name = wg_fe.28.b
+	}
+	option = {
+		trigger = {
+			has_authority = auth_shenhai
+			OR = { 
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+			}
+		}
+		name = wg_fe.28.c
+	}
+}
+
+# 其他帝国通知
+country_event = {
+	id = wg_fe.29
+	title = wg_fe.29.name
+	desc = wg_fe.29.desc
+	picture = GFX_evt_ringworld
+	show_sound = event_ghost_town
+	location = event_target:wg_fe_home_system
+
+	is_triggered_only = yes
+
+	option = {
+		name = WORRYING
+	}
+}
+
+# 打赢联合后跑路
+country_event = {
+	id = wg_fe.30
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_global_flag = uf_ending_wgfe
+		every_playable_country = {
+			limit = {
+				OR = {
+					has_authority = auth_warshipgirls
+					has_authority = auth_shenhai
+				}
+				is_ai = no
+			}
+			country_event = { id = wg_fe.31 }
+		}
+		country_event = { id = wg_fe.27 days = 5 }
+	}
+}
+
+country_event = {
+	id = wg_fe.31
+	title = "TRANSMISSION"
+	desc = wg_fe.31.desc
+
+	picture_event_data = {
+		portrait = event_target:wg_fallen_empire
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+	diplomatic = yes
+	force_open = yes
+	is_triggered_only = yes
+	
+	option = {
+		trigger = {
+			NOR = { 
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+			}
+		}
+		name = wg_fe.31.a
+	}
+	option = {
+		trigger = {
+			has_authority = auth_shenhai
+			OR = { 
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+			}
+		}
+		name = wg_fe.31.b
+	}
+}
+
+# 跑路后送舰队
+country_event = {
+	id = wg_fe.32
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		capital_scope = {
+			create_fleet = {
+				name = "NAME_WG_FE_WATCHKEEPER"
+				effect = {
+					set_owner = root
+					create_ship = {
+						name = random
+						design = "NAME_WG_FE_WATCHKEEPER"
+						upgradable = no
+						effect = { add_modifier = { modifier = remove_fleet_maintenance days = -1}}
+					}
+					set_location = prev
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+					add_modifier = { modifier = remove_fleet_maintenance days = -1 }
+				}
+				settings = { 
+					can_upgrade = no
+					spawn_debris = no
+				}
+			}
+			create_fleet = {
+				name = "NAME_WG_FE_COLONY_FLEET"
+				effect = {
+					set_owner = root
+					create_ship = {
+						name = random
+						design = "NAME_WG_FE_WATCHKEEPER2"
+						upgradable = no
+					}
+					while = {
+						count = 3
+						create_ship = {
+							name = random
+							design = "NAME_WG_FE_TITAN"
+							graphical_culture = "fallen_empire_03"
+							upgradable = no
+							effect = { add_modifier = { modifier = remove_fleet_maintenance days = -1}}
+						}
+					}
+					while = {
+						count = 25
+						create_ship = {
+							name = random
+							design = "NAME_WG_FE_BATTLE_CRUISE"
+							graphical_culture = "fallen_empire_03"
+							upgradable = no
+							effect = { add_modifier = { modifier = remove_fleet_maintenance days = -1}}
+						}
+					}
+					while = {
+						count = 30
+						create_ship = {
+							name = random
+							design = "NAME_WG_FE_ESCORTE"
+							graphical_culture = "fallen_empire_03"
+							upgradable = no
+							effect = { add_modifier = { modifier = remove_fleet_maintenance days = -1}}
+						}
+					}
+					set_location = prev
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+					add_modifier = { modifier = remove_fleet_maintenance days = -1 }
+				}
+				settings = { 
+					can_upgrade = no
+					uses_naval_capacity = yes
+					spawn_debris = no
+				}
+			}
+		}
+		country_event = { id = wg_fe.131 }
+	}
+}
+
+event = { #每年用伪随机概率判定堕落妈触发事件
+	id = wg_fe.99
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = event_target:wg_fallen_empire
+		any_country = {
+			is_ai = no
+			has_communications = event_target:wg_fallen_empire
+			OR = {
+				has_authority = auth_warshipgirls
+				has_authority = auth_shenhai
+			}
+			NOR = { 
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+				has_civic = civic_fanatic_purifiers
+			}
+		}
+		end_game_years_passed < 0
+		OR = {
+			years_passed >= 20
+			AND = {
+				years_passed >= 10
+				any_country = { has_origin = origin_wg_fe_child }
+			}
+		}
+	}
+
+	immediate = {
+		every_playable_country = {
+			limit = {
+				is_ai = no
+				has_communications = event_target:wg_fallen_empire
+				OR = {
+					has_authority = auth_warshipgirls
+					has_authority = auth_shenhai
+				}
+				NOR = { 
+					has_civic = civic_CM
+					has_ascension_perk = ap_shenhai_silent
+					has_civic = civic_fanatic_purifiers
+					is_hostile = event_target:wg_fallen_empire # 哪有被孝子打还送东西的憨憨妈的
+				}
+			}
+			random_list = {
+				1 = {
+					modifier = {
+						add = 1
+						check_variable = { which = years_not_trigger_fe_event value >= 8 }
+					}
+					set_variable = { which = years_not_trigger_fe_event value = 0 }
+					country_event = { id = wg_fe.100 days = 1 random = 359 }
+				}
+				14 = {
+					modifier = {
+						add = -2
+						check_variable = { which = years_not_trigger_fe_event value >= 1 }
+					}
+					modifier = {
+						add = -2
+						check_variable = { which = years_not_trigger_fe_event value >= 2 }
+					}
+					modifier = {
+						add = -3
+						check_variable = { which = years_not_trigger_fe_event value >= 4 }
+					}
+					modifier = {
+						add = -5
+						check_variable = { which = years_not_trigger_fe_event value >= 6 }
+					}
+					modifier = {
+						factor = 0
+						check_variable = { which = years_not_trigger_fe_event value >= 10 }
+					}
+					if = {
+						limit = { has_origin = origin_wg_fe_child }
+						change_variable = { which = years_not_trigger_fe_event value = 1.5 }
+					} else_if = {
+						limit = { always = yes }
+						change_variable = { which = years_not_trigger_fe_event value = 1 }
+					}
+				}
+			}
+		}
+	}
+
+}
+
+# 堕落妈随机事件
+country_event = {
+	id = wg_fe.100
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = event_target:wg_fallen_empire
+		has_communications = event_target:wg_fallen_empire
+		NOR = { 
+			is_hostile = event_target:wg_fallen_empire # 哪有被孝子打还送东西的憨憨妈的
+			has_civic = civic_CM
+			has_ascension_perk = ap_shenhai_silent
+			has_civic = civic_fanatic_purifiers
+			AND = {
+				has_ascension_perk = ap_wg_crisis
+				has_global_flag = wg_fm_gateway
+			}
+		}
+	}
+
+	immediate = {
+		#random_list = {
+			#1 = {
+				random_list = {
+					5 = {
+						modifier = {
+							factor = 0
+							OR = {
+								has_country_flag = start_pantsu_event
+								has_country_flag = finish_pantsu_event
+								has_authority = auth_shenhai
+								NOT = { has_technology = tech_wsg_pantsu }
+							}
+						}
+						modifier = {
+							factor = 2
+							mid_game_years_passed > 2
+						}
+						country_event = { id = wg_fe.121 }
+					}
+					5 = {
+						modifier = {
+							factor = 0
+							OR = {
+								years_passed < 40
+								has_country_flag = start_game_console_event
+								has_country_flag = finish_game_console_event
+							}
+						}
+						modifier = {
+							factor = 2
+							mid_game_years_passed > 2
+						}
+						set_country_flag = start_game_console_event
+						country_event = { id = wg_fe.110 }
+					}
+					3 = {
+						modifier = {
+							factor = 0
+							has_country_flag = triggered_wows_event
+						}
+						modifier = {
+							factor = 2
+							mid_game_years_passed > 2
+						}
+						set_country_flag = triggered_wows_event
+						country_event = { id = wg_fe.125 }
+					}
+					10 = { # 消费品换资源
+						modifier = {
+							factor = 0.5
+							OR = {
+								years_passed < 100
+							}
+						}
+						country_event = { id = wg_fe.128 }
+					}
+					6 = { #给舰队
+						modifier = {
+							factor = 0
+							OR = {
+								is_at_war = no
+								years_passed < 40
+							}
+						}
+						modifier = {
+							factor = 0.2
+							mid_game_years_passed > 20
+						}
+						modifier = {
+							add = -2
+							check_variable = { which = "give_fe_fleet" value > 0 }
+						}
+						modifier = {
+							add = -2
+							check_variable = { which = "give_fe_fleet" value > 1 }
+						}
+						modifier = {
+							factor = 0
+							check_variable = { which = "give_fe_fleet" value > 2 }
+						}
+						country_event = { id = wg_fe.132 }
+					}
+					5 = { #VV事件
+						modifier = {
+							factor = 0
+							OR = {
+								NOT = { has_country_flag = VV_fourth_chance }
+								has_country_flag = start_VV_event
+								has_country_flag = finish_VV_event
+							}
+						}
+						country_event = { id = wg_fe.134 }
+					}
+					10 = { # 大小姐改造事件
+						modifier = {
+							factor = 0
+							OR = {
+								any_country = { has_country_flag = gain_wsg_lady } # 已经有改造大小姐
+								has_country_flag = wsg_lady_mod_cd # 获得大小姐后15年不能改造
+								has_country_flag = start_wsg_lady_events
+								has_country_flag = finish_wsg_lady_events
+								NAND = { # 必须有大小姐战舰而且已触发大小姐事件
+									is_same_value = event_target:lady_contingency_owner
+									exists = event_target:lady_contingency_fleet
+								}
+							}
+						}
+						modifier = {
+							factor = 30
+							years_passed >= 30
+						}
+						country_event = { id = wg_lady.1 }
+					}
+					5 = {
+						modifier = {
+							factor = 0
+							NOR = {
+								has_country_flag = wg_fe_pantsu_support
+								has_authority = auth_warshipgirls
+								NOT = { has_technology = tech_wsg_pantsu }
+							}
+						}
+						modifier = {
+							factor = 0
+							NOT = {
+								has_country_flag = wg_fe_pantsu_support
+							}
+						}
+						modifier = {
+							factor = 0
+							NOT = { has_origin = origin_wg_fe_child }
+						}
+						modifier = {
+							factor = 2
+							mid_game_years_passed > 1
+						}
+						country_event = { id = wg_origin.7 }#施舍点内裤
+					}
+					15 = {
+						modifier = {
+							factor = 0
+							has_country_flag = triggered_helldivers_event
+						}
+						modifier = {
+							factor = 0
+							NOT = { has_origin = origin_wg_fe_child }
+						}
+						modifier = {
+							factor = 2
+							mid_game_years_passed > 2
+						}
+						set_country_flag = triggered_helldivers_event
+						country_event = { id = wg_origin.8 }#来玩地狱老司机2
+					}
+					10 = {
+						modifier = {
+							factor = 0
+							has_country_flag = triggered_wg_fe_programmer_event
+						}
+						modifier = {
+							factor = 0
+							NOT = { has_origin = origin_wg_fe_child }
+						}
+						modifier = {
+							factor = 2
+							mid_game_years_passed > 2
+						}
+						set_country_flag = triggered_wg_fe_programmer_event
+						country_event = { id = wg_origin.11 }#抓码农
+					}
+					10 = {
+						modifier = {
+							factor = 0
+							has_country_flag = triggered_wg_fe_vaccines_event
+						}
+						modifier = {
+							factor = 0
+							NOT = { has_origin = origin_wg_fe_child }
+						}
+						modifier = {
+							factor = 2
+							mid_game_years_passed > 2
+						}
+						set_country_flag = triggered_wg_fe_vaccines_event
+						country_event = { id = wg_origin.14 }#良性疫苗
+					}
+					10 = {
+						modifier = {
+							factor = 0
+							has_country_flag = triggered_wg_fe_game_event
+						}
+						modifier = {
+							factor = 0
+							NOT = { has_origin = origin_wg_fe_child }
+						}
+						modifier = {
+							factor = 2
+							mid_game_years_passed > 2
+						}
+						set_country_flag = triggered_wg_fe_game_event
+						country_event = { id = wg_origin.17 }#盲人争霸
+					}
+				}
+			#}
+			# 1 = {} #总概率1/2发生事件 (cancelled)
+		#}
+	}
+
+}
+
+########################################################
+# 游戏机事件
+########################################################
+
+country_event = {
+	id = wg_fe.110
+	title = "TRANSMISSION"
+	desc = wg_fe.110.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = wsg7_2
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	option = {
+		name = "wg_fe.110.a"
+		response_text = "wg_fe.110.a.response"
+		is_dialog_only = yes
+	}
+
+	option = {
+		name = "wg_fe.110.b"
+		enable_special_project = {
+			name = wg_fe_game_console
+			location = capital_scope
+			owner = root
+		}
+	}
+
+	option = {
+		name = "wg_fe.110.c"
+		response_text = "wg_fe.110.c.response"
+	}
+
+}
+
+country_event = {
+	id = wg_fe.111
+	title = wg_fe.111.title
+	desc = wg_fe.111.desc
+	is_triggered_only = yes
+	picture = GFX_evt_engineering_research
+
+	option = {
+		trigger = {
+			any_country = {
+				is_primitive = yes
+				OR = {
+					has_country_flag = atomic_age
+					has_country_flag = early_space_age
+				}
+				capital_scope = {
+					has_observation_outpost = yes
+					observation_outpost_owner = {
+						is_same_empire = root
+					}
+				}
+			}
+		}
+		name = "wg_fe.111.a"
+		hidden_effect = {
+			random_list = {
+				1 = { set_country_flag = find_game_console_success } # 33%成功
+				2 = { set_country_flag = find_game_console_fail } # 66%失败
+			}
+			country_event = { id = wg_fe.112 days = 30 }
+		}
+	}
+
+	option = {
+		trigger = {
+			any_country = {
+				is_country_type = enclave
+				has_country_flag = curator_enclave_country
+				has_communications = root
+			}
+		}
+		name = "wg_fe.111.b"
+		hidden_effect = {
+			random_country = {
+				limit = {
+					any_country = {
+						is_country_type = enclave
+						has_country_flag = curator_enclave_country
+						has_communications = root
+					}
+				}
+				save_event_target_as = curators
+			}
+			country_event = { id = wg_fe.113 }
+		}
+	}
+
+	option = {
+		trigger = {
+			any_country = {
+				is_country_type = enclave
+				OR = {
+					has_country_flag = trader_enclave_country_1
+					has_country_flag = trader_enclave_country_2
+					has_country_flag = trader_enclave_country_3
+				}
+				has_communications = root
+			}
+		}
+		name = "wg_fe.111.c"
+		hidden_effect = {
+			random_country = {
+				limit = {
+					is_country_type = enclave
+					OR = {
+						has_country_flag = trader_enclave_country_1
+						has_country_flag = trader_enclave_country_2
+						has_country_flag = trader_enclave_country_3
+					}
+					has_communications = root
+				}
+				save_event_target_as = traders
+			}
+			country_event = { id = wg_fe.115 }
+		}
+	}
+
+	option = {
+		name = "wg_fe.111.d"
+		hidden_effect = {
+			random_list = {
+				1 = { set_country_flag = fix_game_console_success} # 20%成功
+				4 = { set_country_flag = fix_game_console_fail } # 80%失败
+			}
+			country_event = { id = wg_fe.117 days = 3 }
+		}
+	}
+
+	
+}
+
+country_event = {
+	id = wg_fe.11100
+	title = wg_fe.11100.title
+	desc = wg_fe.111.desc_2
+	is_triggered_only = yes
+	picture = GFX_evt_engineering_research
+
+	option = {
+		name = "wg_fe.111.e"
+		hidden_effect = { country_event = { id = wg_fe.118 days = 3 }}
+	}
+}
+
+country_event = {
+	id = wg_fe.112
+	title = "wg_fe.112.title"
+	is_triggered_only = yes
+
+	desc = {
+		trigger = {
+			has_country_flag = find_game_console_success
+		}
+		text = "wg_fe.112.desc.a"
+	}
+	desc = {
+		trigger = {
+			has_country_flag = find_game_console_fail
+		}
+		text = "wg_fe.112.desc.b"
+	}
+	picture = GFX_evt_galactic_market
+
+	option = {
+		trigger = { has_country_flag = find_game_console_success }
+		name = "wg_fe.112.a"
+		hidden_effect = { country_event = { id = wg_fe.118 }}
+	}
+	option = {
+		trigger = { has_country_flag = find_game_console_fail }
+		name = "UNFORTUNATE"
+		hidden_effect = { country_event = { id = wg_fe.120 }}
+	}
+
+}
+
+country_event = {
+	id = wg_fe.113
+	title = leviathans.500.name
+	desc = wg_fe.113.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = "enclave_curator_window"
+	force_open = yes
+
+	picture_event_data = {
+		portrait = event_target:curators
+		room = enclave_curator_room
+	}
+
+	option = {
+		allow = {
+			resource_stockpile_compare = {
+				resource = energy
+				value >= 500
+			}
+		}
+		name = "wg_fe.113.a"
+		custom_gui = "enclave_curator_option"
+		response_text = "wg_fe.113.a.response"
+		add_resource = {
+			energy = -500
+		}
+		hidden_effect = { country_event = { id = wg_fe.114 days = 3 }}
+	}
+
+	option = {
+		name = "wg_fe.113.b"
+		custom_gui = "enclave_curator_option"
+		response_text = "wg_fe.113.b.response"
+		hidden_effect = { country_event = { id = wg_fe.120 days = 3 }}
+	}
+}
+
+country_event = {
+	id = wg_fe.114
+	title = wg_fe.114.title
+	desc = wg_fe.114.desc
+	is_triggered_only = yes
+	picture = GFX_evt_engineering_research
+
+	after = {
+		hidden_effect = { country_event = { id = wg_fe.118 days = 3 }}
+	}
+
+	option = {
+		name = "wg_fe.114.a"
+	}
+
+}
+
+country_event = {
+	id = wg_fe.115
+	title = leviathans.100.name
+	desc = wg_fe.115.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = "enclave_trader_window"
+	force_open = yes
+
+	picture_event_data = {
+		portrait = event_target:traders
+		room = enclave_trader_room
+	}
+
+	option = {
+		allow = {
+			resource_stockpile_compare = {
+				resource = energy
+				value >= 500
+			}
+		}
+		name = "wg_fe.115.a"
+		custom_gui = "enclave_trader_option"
+		response_text = "wg_fe.115.a.response"
+		add_resource = {
+			energy = -500
+		}
+		hidden_effect = { country_event = { id = wg_fe.116 days = 3 }}
+	}
+
+	option = {
+		name = "wg_fe.115.b"
+		custom_gui = "enclave_trader_option"
+		response_text = "wg_fe.115.b.response"
+		hidden_effect = { country_event = { id = wg_fe.120 days = 3 }}
+	}
+
+}
+
+country_event = {
+	id = wg_fe.116
+	title = wg_fe.116.title
+	desc = wg_fe.116.desc
+	is_triggered_only = yes
+	picture = GFX_evt_resource_cache
+
+	after = {
+		hidden_effect = { country_event = { id = wg_fe.118 days = 3 }}
+	}
+
+	option = {
+		name = "wg_fe.116.a"
+	}
+
+}
+
+country_event = {
+	id = wg_fe.117
+	title = wg_fe.117.title
+	is_triggered_only = yes
+	picture = GFX_evt_engineering_research
+
+	desc = {
+		trigger = {
+			has_country_flag = fix_game_console_success
+		}
+		text = wg_fe.117.desc.a
+	}
+	desc = {
+		trigger = {
+			has_country_flag = fix_game_console_fail
+		}
+		text = wg_fe.117.desc.b
+	}
+
+	option = {
+		trigger = { has_country_flag = fix_game_console_success }
+		name = wg_fe.117.a
+		hidden_effect = { country_event = { id = wg_fe.118 days = 3 }}
+		remove_country_flag = fix_game_console_success
+	}
+	option = {
+		trigger = { has_country_flag = fix_game_console_fail }
+		name = wg_fe.117.b
+		hidden_effect = { country_event = { id = wg_fe.120 days = 3 }}
+		remove_country_flag = fix_game_console_fail
+	}
+}
+
+country_event = {
+	id = wg_fe.118
+	title = "TRANSMISSION"
+	desc = wg_fe.118.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = wsg7_2
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	immediate = {
+		remove_country_flag = start_game_console_event
+		set_country_flag = finish_game_console_event
+	}
+
+	option = {
+		name = wg_fe.118.a
+		response_text = wg_fe.118.response
+		hidden_effect = { country_event = { id = wg_fe.119 days = 3 }}
+	}
+}
+
+country_event = {
+	id = wg_fe.119
+	title = wg_fe.119.title
+	desc = wg_fe.119.desc
+	is_triggered_only = yes
+	picture = GFX_evt_half_life_three
+
+	option = {
+		name = wg_fe.119.a
+		add_modifier = {
+			modifier = half_life_3 days = 1800
+		}
+	}
+}
+
+country_event = {
+	id = wg_fe.120
+	title = "TRANSMISSION"
+	desc = wg_fe.118.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = wsg7_2
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	immediate = {
+		remove_country_flag = start_game_console_event
+		set_country_flag = finish_game_console_event
+	}
+
+	option = {
+		name = wg_fe.120.a
+		response_text = wg_fe.120.response
+	}
+}
+
+########################################################
+# 偷胖次事件
+########################################################
+
+country_event = {
+	id = wg_fe.121
+	title = wg_fe.121.name
+	desc = wg_fe.121.desc
+
+	is_triggered_only = yes
+	picture = GFX_evt_pantsu_wormhole
+
+	immediate = {
+		add_modifier = { modifier = steal_pantsu days = -1 }
+		set_country_flag = start_pantsu_event
+	}
+
+	option = {
+		name = wg_fe.121.a
+		enable_special_project = {
+			name = research_pantsu_missing
+			location = capital_scope
+			owner = root
+		}
+	}
+}
+
+country_event = {
+	id = wg_fe.122
+	title = wg_fe.122.name
+	desc = wg_fe.122.desc
+
+	is_triggered_only = yes
+	picture = GFX_evt_pantsu_wormhole
+
+	option = {
+		name = "EXCELLENT"
+		remove_modifier = steal_pantsu
+		hidden_effect = { set_country_flag = finish_pantsu_event }
+		if = {
+			limit = {
+				has_technology = tech_wormhole_stabilization
+			}
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = 12
+			}
+			add_monthly_resource_mult = {
+				resource = unity
+				value = 12
+			}
+		}
+		else = {
+			add_research_option = tech_wormhole_stabilization
+			add_tech_progress = {
+				tech = tech_wormhole_stabilization
+				progress = 0.1
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_fe.123
+	title = wg_fe.123.name
+	desc = wg_fe.123.desc
+
+	is_triggered_only = yes
+	picture = GFX_evt_pantsu_wormhole
+
+	after = {
+		hidden_effect = {
+			country_event = { id = wg_fe.124 days = 1 random = 3 }
+			remove_country_flag = start_pantsu_event
+			set_country_flag = finish_pantsu_event
+		}
+	}
+
+	option = {
+		name = wg_fe.123.a
+	}
+	option = {
+		name = wg_fe.123.b
+	}
+}
+
+country_event = {
+	id = wg_fe.124
+	title = "TRANSMISSION"
+	desc = wg_fe.124.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = event_target:wg_fallen_empire
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	option = {
+		name = wg_fe.124.a
+		response_text = wg_fe.124.a.response
+		is_dialog_only = yes
+	}
+
+	option = {
+		name = wg_fe.124.b
+		response_text = wg_fe.124.b.response
+		remove_modifier = steal_pantsu
+		add_resource = {
+			sr_pantsu = 1000
+		}
+		add_monthly_resource_mult = {
+			resource = sr_pantsu
+			value = 24
+		}
+	}
+}
+
+country_event = {
+	id = wg_fe.125
+	title = "TRANSMISSION"
+	desc = wg_fe.125.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = sh32
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	option = {
+		name = wg_fe.125.a
+		hidden_effect = {
+			random_list = {
+				1 = { country_event = { id = wg_fe.126 days = 360 }}
+				1 = { country_event = { id = wg_fe.127 days = 360 }}
+			}
+		}
+	}
+
+	option = {
+		name = wg_fe.125.b
+	}
+}
+
+country_event = {
+	id = wg_fe.126
+	title = wg_fe.126.name
+	desc = wg_fe.126.desc
+	picture = GFX_evt_world_of_starships
+	is_triggered_only = yes
+
+	option = {
+		name = wg_fe.126.a
+		add_modifier = {
+			modifier = wows_buff days = -1
+		}
+	}
+}
+
+country_event = {
+	id = wg_fe.127
+	title = wg_fe.126.name
+	desc = wg_fe.127.desc
+	picture = GFX_evt_world_of_starships
+	is_triggered_only = yes
+
+	option = {
+		name = wg_fe.127.a
+		add_modifier = {
+			modifier = wows_debuff days = 1800
+		}
+	}
+}
+
+country_event = {
+	id = wg_fe.128
+	title = "TRANSMISSION"
+	desc = wg_fe.128.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = wsg7_2
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	immediate = {
+		if = {
+			limit = { years_passed < 40 }
+			set_variable = { which = "exchange_mutliplier" value = 1 }
+		}
+		else_if = {
+			limit = { years_passed < 80 }
+			set_variable = { which = "exchange_mutliplier" value = 4 }
+		}
+		else_if = {
+			limit = { years_passed < 120 }
+			set_variable = { which = "exchange_mutliplier" value = 7 }
+		}
+		else_if = {
+			limit = { years_passed < 160 }
+			set_variable = { which = "exchange_mutliplier" value = 12 }
+		} else = {
+			set_variable = { which = "exchange_mutliplier" value = 26.4 }
+		}
+	}
+
+	after = {
+		hidden_effect = {
+			while = { count = 3 
+				random_list = {
+					10 = { 
+						modifier = {
+							factor = 1.5
+							years_passed < 100
+						}
+						modifier = {
+							factor = 1.5
+							years_passed < 100
+							years_passed > 75
+							resource_income_compare = { resource = energy value < 200 }
+							resource_stockpile_compare = { resource = energy value < 10000 }
+							resource_income_compare = { resource = minerals value < 200 }
+							resource_stockpile_compare = { resource = minerals value < 10000 }
+						}
+						modifier = {
+							factor = 2
+							years_passed < 75
+							years_passed > 25
+							resource_income_compare = { resource = energy value < 100 }
+							resource_stockpile_compare = { resource = energy value < 5000 }
+							resource_income_compare = { resource = minerals value < 100 }
+							resource_stockpile_compare = { resource = minerals value < 5000 }
+						}
+						modifier = {
+							factor = 0.6
+							OR = {
+								resource_stockpile_compare = { resource = energy value < 30000 }
+								resource_stockpile_compare = { resource = minerals value < 30000 }
+							}
+						}
+						modifier = { factor = 0 has_country_flag = exchange_result1 }   
+						set_country_flag = exchange_result1
+						set_variable = { which = "consumer_goods_cost" value = @wg_fe_exchange_consumer_goods_cost_base }
+						multiply_variable = { which = "consumer_goods_cost" value = "exchange_mutliplier" }
+						set_variable = { which = "energy_out" value = @wg_fe_exchange_energy_base }
+						multiply_variable = { which = "energy_out" value = "exchange_mutliplier" }
+						set_variable = { which = "minerals_out" value = @wg_fe_exchange_minerals_base }
+						multiply_variable = { which = "minerals_out" value = "exchange_mutliplier" }
+					}
+					10 = { 
+						modifier = {
+							factor = 1.5
+							years_passed < 100
+							years_passed > 75
+							resource_income_compare = { resource = alloys value < 200 }
+							resource_stockpile_compare = { resource = alloys value < 10000 }
+						}
+						modifier = {
+							factor = 2
+							years_passed < 75
+							years_passed > 25
+							resource_income_compare = { resource = alloys value < 100 }
+							resource_stockpile_compare = { resource = alloys value < 5000 }
+						}
+						modifier = {
+							factor = 0.6
+							resource_stockpile_compare = { resource = alloys value < 50000 }
+						}
+						modifier = { factor = 0 has_country_flag = exchange_result2 }  
+						set_country_flag = exchange_result2 
+						set_variable = { which = "consumer_goods_cost" value = @wg_fe_exchange_consumer_goods_cost_base }
+						multiply_variable = { which = "consumer_goods_cost" value = "exchange_mutliplier" }
+						set_variable = { which = "alloys_out" value = @wg_fe_exchange_alloys_base }
+						multiply_variable = { which = "alloys_out" value = "exchange_mutliplier" }
+					}
+					10 = { 
+						modifier = {
+							factor = 1.5
+							years_passed < 150
+							years_passed > 75
+							resource_income_compare = { resource = sr_pantsu value < 40 }
+							resource_stockpile_compare = { resource = sr_pantsu value < 1000 }
+						}
+						modifier = {
+							factor = 2
+							years_passed < 75
+							years_passed > 25
+							resource_income_compare = { resource = sr_pantsu value < 20 }
+							resource_stockpile_compare = { resource = sr_pantsu value < 500 }
+						}
+						modifier = { factor = 0 has_country_flag = exchange_result3 }  
+						set_country_flag = exchange_result3 
+						set_variable = { which = "consumer_goods_cost" value = @wg_fe_exchange_consumer_goods_cost_base }
+						multiply_variable = { which = "consumer_goods_cost" value = "exchange_mutliplier" }
+						set_variable = { which = "sr_pantsu_out" value = @wg_fe_exchange_sr_pantsu_base }
+						multiply_variable = { which = "sr_pantsu_out" value = "exchange_mutliplier" }
+					}
+					10 = { 
+						modifier = {
+							factor = 1.6
+							years_passed < 100
+						}
+						modifier = {
+							factor = 2
+							years_passed < 75
+							years_passed > 25
+							OR = {
+								AND = {
+									resource_income_compare = { resource = volatile_motes value < 10 }
+									resource_stockpile_compare = { resource = volatile_motes value < 500 }
+								}
+								AND = {
+									resource_income_compare = { resource = rare_crystals value < 10 }
+									resource_stockpile_compare = { resource = rare_crystals value < 500 }
+								}
+								AND = {
+									resource_income_compare = { resource = exotic_gases value < 10 }
+									resource_stockpile_compare = { resource = exotic_gases value < 500 }
+								}
+							}
+						}
+						modifier = { factor = 0 has_country_flag = exchange_result4 }  
+						set_country_flag = exchange_result4 
+						set_variable = { which = "consumer_goods_cost" value = @wg_fe_exchange_consumer_goods_cost_base }
+						multiply_variable = { which = "consumer_goods_cost" value = "exchange_mutliplier" }
+						set_variable = { which = "volatile_motes_out" value = @wg_fe_exchange_volatile_motes_base }
+						multiply_variable = { which = "volatile_motes_out" value = "exchange_mutliplier" }
+						set_variable = { which = "rare_crystals_out" value = @wg_fe_exchange_rare_crystals_base }
+						multiply_variable = { which = "rare_crystals_out" value = "exchange_mutliplier" }
+						set_variable = { which = "exotic_gases_out" value = @wg_fe_exchange_exotic_gases_base }
+						multiply_variable = { which = "exotic_gases_out" value = "exchange_mutliplier" }
+					}
+					5 = { 
+						modifier = {
+							factor = 0.4
+							years_passed < 70
+						}
+						modifier = {
+							factor = 2
+							years_passed > 70
+							OR = {
+								AND = {
+									has_technology = tech_mine_living_metal
+									resource_income_compare = { resource = sr_living_metal value < 5 }
+									resource_stockpile_compare = { resource = volatile_motes value < 250 }
+								}
+								AND = {
+									has_technology = tech_mine_dark_matter
+									resource_income_compare = { resource = sr_dark_matter value < 5 }
+									resource_stockpile_compare = { resource = sr_dark_matter value < 250 }
+								}
+								AND = {
+									has_technology = tech_mine_zro
+									resource_income_compare = { resource = sr_zro value < 5 }
+									resource_stockpile_compare = { resource = sr_zro value < 250 }
+								}
+							}
+						}
+						modifier = { factor = 0 has_country_flag = exchange_result5 }  
+						set_country_flag = exchange_result5
+						set_variable = { which = "consumer_goods_cost" value = @wg_fe_exchange_consumer_goods_cost_base }
+						multiply_variable = { which = "consumer_goods_cost" value = "exchange_mutliplier" }
+						set_variable = { which = "sr_living_metal_out" value = @wg_fe_exchange_sr_living_metal_base }
+						multiply_variable = { which = "sr_living_metal_out" value = "exchange_mutliplier" }
+						set_variable = { which = "sr_dark_matter_out" value = @wg_fe_exchange_sr_dark_matter_cost }
+						multiply_variable = { which = "sr_dark_matter_out" value = "exchange_mutliplier" }
+						set_variable = { which = "sr_zro_out" value = @wg_fe_exchange_sr_zro_base }
+						multiply_variable = { which = "sr_zro_out" value = "exchange_mutliplier" }
+					}
+					5 = { 
+						modifier = {
+							factor = 0
+							NAND = { 
+								resource_stockpile_compare = { resource = sr_se value > 0 }
+								has_technology = tech_sh_senergy
+								has_technology = tech_wsg_senergy
+							}
+						}
+						modifier = {
+							factor = 1.6
+							years_passed > 50
+						}
+						modifier = {
+							factor = 2
+							years_passed < 75
+							years_passed > 25
+							OR = {
+								resource_income_compare = { resource = sr_se value < 50 }
+								resource_stockpile_compare = { resource = sr_se value < 1500 }
+							}
+						}
+						modifier = {
+							factor = 2.5
+							years_passed > 75
+							OR = {
+								resource_income_compare = { resource = sr_se value < 100 }
+								resource_stockpile_compare = { resource = sr_se value < 5000 }
+							}
+						}
+						modifier = { factor = 0 has_country_flag = exchange_result6 }  
+						set_country_flag = exchange_result6
+						set_variable = { which = "consumer_goods_cost" value = @wg_fe_exchange_consumer_goods_cost_base }
+						multiply_variable = { which = "consumer_goods_cost" value = "exchange_mutliplier" }
+						set_variable = { which = "sr_se_out" value = @wg_fe_exchange_sr_se_base }
+						multiply_variable = { which = "sr_se_out" value = "exchange_mutliplier" }
+					}
+					5 = { 
+						modifier = {
+							factor = 0
+							years_passed < 50
+						}
+						modifier = {
+							factor = 2
+							years_passed > 120
+							mid_game_years_passed > 0
+						}
+						modifier = { factor = 0 has_country_flag = exchange_result7 }
+						modifier = {
+							factor = 0
+							check_variable = { which = buy_fe_fleet_count value >= 5 }
+						}  
+						modifier = {
+							factor = 0.8
+							check_variable = { which = buy_fe_fleet_count value >= 1 }
+						}
+						modifier = {
+							factor = 0.5
+							check_variable = { which = buy_fe_fleet_count value >= 3 }
+						}
+						modifier = {
+							factor = 1.3
+							fleet_power < 10000
+							count_owned_ship = {
+								count < 10
+								limit = {
+									fleet = { NOR = {
+										has_fleet_flag = lady_fleet
+										has_fleet_flag = lady_fleet2
+									}}
+								}
+							}
+							NOR = { 
+								has_country_flag = gain_wsg_lady
+								has_country_flag = gain_lady_Contingency
+							}
+						}
+						set_country_flag = exchange_result7 
+					}
+					5 = { 
+						modifier = {
+							factor = 0
+							years_passed < 50
+						}
+						modifier = {
+							factor = 0
+							OR = {
+								count_tech_options = { area = physics count < 1 }
+								count_tech_options = { area = society count < 1 }
+								count_tech_options = { area = engineering count < 1 }
+							}
+						}
+						modifier = {
+							factor = 2
+							years_passed > 80
+						}
+						modifier = {
+							factor = 2
+							years_passed > 65
+						}
+						modifier = {
+							factor = 0.85
+							tech_unlocked_ratio = { who = THIS ratio > 0.8 }
+						}
+						modifier = {
+							factor = 1.5
+							tech_unlocked_ratio = { who = THIS ratio < 0.35 }
+						}
+						modifier = {
+							factor = 2
+							tech_unlocked_ratio = { who = THIS ratio < 0.1 }
+						}
+						modifier = { factor = 0 has_country_flag = exchange_result8 }  
+						set_country_flag = exchange_result8 
+					}
+					5 = { 
+						modifier = {
+							factor = 0
+							years_passed < 50
+						}
+						modifier = {
+							factor = 2
+							years_passed > 120
+							mid_game_years_passed > 0
+						}
+						modifier = { factor = 0 has_country_flag = exchange_result9 }  
+						set_country_flag = exchange_result9
+					}
+					5 = { 
+						modifier = {
+							factor = 0
+							NOT = { has_global_flag = lgates_activated_globally }
+						}
+						modifier = {
+							factor = 10
+							has_special_project = WSG_LADY_MODIFICATION
+						}
+						modifier = { factor = 0 has_country_flag = exchange_result10 }  
+						set_country_flag = exchange_result10
+						set_variable = { which = "consumer_goods_cost" value = @wg_fe_exchange_consumer_goods_cost_base }
+						multiply_variable = { which = "consumer_goods_cost" value = "exchange_mutliplier" }
+						set_variable = { which = "nanites_out" value = @wg_fe_exchange_nanites_base }
+						multiply_variable = { which = "nanites_out" value = "exchange_mutliplier" }
+					}
+				}
+			}
+			multiply_variable = { which = "consumer_goods_cost" value = -1 }
+			country_event = { id = wg_fe.129 }
+		}
+	}
+
+	option = {
+		name = wg_fe.128.a
+	}
+}
+
+country_event = {
+	id = wg_fe.129
+	title = "TRANSMISSION"
+	desc = wg_fe.129.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = wsg7_2
+		planet_background = event_target:wg_fallen_empire.capital_scope
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	after = {
+		remove_country_flag = exchange_result1
+		remove_country_flag = exchange_result2
+		remove_country_flag = exchange_result3
+		remove_country_flag = exchange_result4
+		remove_country_flag = exchange_result5
+		remove_country_flag = exchange_result6
+		remove_country_flag = exchange_result7
+		remove_country_flag = exchange_result8
+		remove_country_flag = exchange_result9
+		remove_country_flag = exchange_result10
+	}
+
+	option = {
+		trigger = { has_country_flag = exchange_result1 }
+		allow = { 
+			custom_tooltip = {
+				fail_text = not_enough_consumer_goods
+				has_enough_consumer_goods = yes
+			}
+		}
+		name = wg_fe.129.a
+		custom_tooltip = wg_fe.129.tooltip.1
+		response_text = wg_fe.129.response1
+		hidden_effect = {
+			while = { count = "exchange_mutliplier"
+				add_resource = {
+					consumer_goods = @wg_fe_exchange_consumer_goods_cost_base
+					energy = @wg_fe_exchange_energy_base
+					minerals = @wg_fe_exchange_minerals_base
+				}
+			}
+		}
+	}
+	option = {
+		trigger = { has_country_flag = exchange_result2 }
+		allow = { 
+			custom_tooltip = {
+				fail_text = not_enough_consumer_goods
+				has_enough_consumer_goods = yes
+			}
+		}
+		name = wg_fe.129.b
+		custom_tooltip = wg_fe.129.tooltip.2
+		response_text = wg_fe.129.response1
+		hidden_effect = {
+			while = { count = "exchange_mutliplier"
+				add_resource = {
+					consumer_goods = @wg_fe_exchange_consumer_goods_cost_base
+					alloys = @wg_fe_exchange_alloys_base
+				}
+			}
+		}
+	}
+	option = {
+		trigger = { has_country_flag = exchange_result3 }
+		allow = { 
+			custom_tooltip = {
+				fail_text = not_enough_consumer_goods
+				has_enough_consumer_goods = yes
+			}
+		}
+		name = wg_fe.129.c
+		custom_tooltip = wg_fe.129.tooltip.3
+		response_text = wg_fe.129.response2
+		hidden_effect = {
+			while = { count = "exchange_mutliplier"
+				add_resource = {
+					consumer_goods = @wg_fe_exchange_consumer_goods_cost_base
+					sr_pantsu = @wg_fe_exchange_sr_pantsu_base
+				}
+			}
+		}
+	}
+	option = {
+		trigger = { has_country_flag = exchange_result4 }
+		allow = { 
+			custom_tooltip = {
+				fail_text = not_enough_consumer_goods
+				has_enough_consumer_goods = yes
+			}
+		}
+		name = wg_fe.129.d
+		custom_tooltip = wg_fe.129.tooltip.4
+		response_text = wg_fe.129.response1
+		hidden_effect = {
+			while = { count = "exchange_mutliplier"
+				add_resource = {
+					consumer_goods = @wg_fe_exchange_consumer_goods_cost_base
+					volatile_motes = @wg_fe_exchange_volatile_motes_base
+					rare_crystals = @wg_fe_exchange_rare_crystals_base
+					exotic_gases = @wg_fe_exchange_exotic_gases_base
+				}
+			}
+		}
+	}
+	option = {
+		trigger = { has_country_flag = exchange_result5 }
+		allow = { 
+			custom_tooltip = {
+				fail_text = not_enough_consumer_goods
+				has_enough_consumer_goods = yes
+			}
+		}
+		name = wg_fe.129.e
+		custom_tooltip = wg_fe.129.tooltip.5
+		response_text = wg_fe.129.response1
+		hidden_effect = {
+			while = { count = "exchange_mutliplier"
+				add_resource = {
+					consumer_goods = @wg_fe_exchange_consumer_goods_cost_base
+					sr_living_metal = @wg_fe_exchange_sr_living_metal_base
+					sr_dark_matter = @wg_fe_exchange_sr_dark_matter_cost
+					sr_zro = @wg_fe_exchange_sr_zro_base
+				}
+			}
+		}
+	}
+	option = {
+		trigger = { has_country_flag = exchange_result6 }
+		allow = { 
+			custom_tooltip = {
+				fail_text = not_enough_consumer_goods
+				has_enough_consumer_goods = yes
+			}
+		}
+		name = wg_fe.129.f
+		custom_tooltip = wg_fe.129.tooltip.6
+		response_text = wg_fe.129.response1
+		hidden_effect = {
+			while = { count = "exchange_mutliplier"
+				add_resource = {
+					consumer_goods = @wg_fe_exchange_consumer_goods_cost_base
+					sr_se = @wg_fe_exchange_sr_se_base
+				}
+			}
+		}
+	}
+	option = {
+		trigger = { has_country_flag = exchange_result7 }
+		allow = { 
+			resource_stockpile_compare = { resource = consumer_goods value > 3000 }
+		}
+		name = wg_fe.129.g
+		response_text = wg_fe.129.response3
+		add_resource = {
+			consumer_goods = -3000
+		}
+		hidden_effect = {
+			change_variable = { which = buy_fe_fleet_count value = 1 }
+			country_event = { id = wg_fe.130 days = 30 }
+		}
+	}
+	option = {
+		# 换随机科技
+		trigger = { 
+			has_country_flag = exchange_result8 
+		}
+		allow = { 
+			resource_stockpile_compare = { resource = consumer_goods value > 2500 }
+		}
+		name = wg_fe.129.h
+		add_resource = {
+			consumer_goods = -2500
+		}
+		response_text = wg_fe.129.response4
+		random_list = {
+			1 = { add_random_research_option = {
+				add_progress = 0.5
+				area = physics
+				ignore_prereqs = no
+				fail_effects = {
+					add_monthly_resource_mult = {
+						resource = engineering_research
+						value = @tier5researchreward
+						min = @tier5researchmin
+						max = @tier5researchmax
+					}
+				}
+			}}
+			1 = { add_random_research_option = {
+				add_progress = 0.5
+				area = society
+				ignore_prereqs = no
+				fail_effects = {
+					add_monthly_resource_mult = {
+						resource = engineering_research
+						value = @tier5researchreward
+						min = @tier5researchmin
+						max = @tier5researchmax
+					}
+				}
+			}}
+			1 = { add_random_research_option = {
+				add_progress = 0.5
+				area = engineering
+				ignore_prereqs = no
+				fail_effects = {
+					add_monthly_resource_mult = {
+						resource = engineering_research
+						value = @tier5researchreward
+						min = @tier5researchmin
+						max = @tier5researchmax
+					}
+				}
+			}}
+		}
+	}
+	option = {
+		trigger = { has_country_flag = exchange_result9 }
+		allow = { 
+			resource_stockpile_compare = { resource = consumer_goods value > 1500 }
+		}
+		name = wg_fe.129.i
+		add_resource = { consumer_goods = -1500 }
+		response_text = wg_fe.129.response5
+		random_list = {
+			1 = { add_modifier = { modifier = game_buff1 days = 1800 }}
+			1 = { add_modifier = { modifier = game_buff2 days = 1800 }}
+			1 = { add_modifier = { modifier = game_buff3 days = 1800 }}
+			1 = { add_modifier = { modifier = game_buff4 days = 1800 }}
+		}
+	}
+	option = {
+		trigger = { has_country_flag = exchange_result10 }
+		allow = { 
+			custom_tooltip = {
+				fail_text = not_enough_consumer_goods
+				has_enough_consumer_goods = yes
+			}
+		}
+		name = wg_fe.129.j
+		custom_tooltip = wg_fe.129.tooltip.10
+		response_text = wg_fe.129.response1
+		hidden_effect = {
+			while = { count = "exchange_mutliplier"
+				add_resource = {
+					consumer_goods = @wg_fe_exchange_consumer_goods_cost_base
+					nanites = @wg_fe_exchange_nanites_base
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_fe.129.k
+	}
+}
+
+# 买的舰队
+country_event = {
+	id = wg_fe.130
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = event_target:wg_fallen_empire
+		NOT = { has_ascension_perk = ap_wg_crisis }
+	}
+
+	immediate = {
+		capital_scope = {
+			random_list = {
+				1 = {
+					create_fleet = {
+						name = "NAME_wg_fallen_empire_gift"
+						effect = {
+							set_owner = root
+							while = { count = 5
+								create_ship = {
+									name = random
+									design = "NAME_WG_FE_ESCORTE"
+									graphical_culture = "fallen_empire_03"
+									upgradable = no
+									effect = {
+										add_modifier = { modifier = remove_fleet_maintenance days = -1}
+										if = { # 早战debuff
+											limit = { years_passed < 45 }
+											add_modifier = { modifier = gifted_fleet_early_debuff days = 7200 }
+										}
+									}
+								}
+							}
+							set_location = prev
+							add_modifier = { modifier = remove_fleet_maintenance days = -1 }
+						}
+						settings = { 
+							can_upgrade = no 
+							uses_naval_capacity = yes
+						}
+					}
+				}
+				1 = {
+					create_fleet = {
+						name = "NAME_wg_fallen_empire_gift"
+						effect = {
+							set_owner = root
+							while = { count = 1
+								create_ship = {
+									name = random
+									design = "NAME_WG_FE_BATTLE_CRUISE"
+									graphical_culture = "fallen_empire_03"
+									upgradable = no
+									effect = {
+										add_modifier = { modifier = remove_fleet_maintenance days = -1}
+										if = { # 早战debuff
+											limit = { years_passed < 45 }
+											add_modifier = { modifier = gifted_fleet_early_debuff days = 7200 }
+										}
+									}
+								}
+							}
+							set_location = prev
+							add_modifier = { modifier = remove_fleet_maintenance days = -1 }
+						}
+						settings = { 
+							can_upgrade = no 
+							uses_naval_capacity = yes
+						}
+					}
+				}
+				1 = {
+					create_fleet = {
+						name = "NAME_wg_fallen_empire_gift"
+						effect = {
+							set_owner = root
+							while = { count = 1
+								create_ship = {
+									name = random
+									design = "NAME_WG_FE_BATTLE_CRUISE"
+									graphical_culture = "fallen_empire_03"
+									upgradable = no
+									effect = {
+										add_modifier = { modifier = remove_fleet_maintenance days = -1}
+										if = { # 早战debuff
+											limit = { years_passed < 45 }
+											add_modifier = { modifier = gifted_fleet_early_debuff days = 7200 }
+										}
+									}
+								}
+							}
+							while = { count = 3
+								create_ship = {
+									name = random
+									design = "NAME_WG_FE_ESCORTE"
+									graphical_culture = "fallen_empire_03"
+									upgradable = no
+									effect = {
+										add_modifier = { modifier = remove_fleet_maintenance days = -1}
+										if = { # 早战debuff
+											limit = { years_passed < 45 }
+											add_modifier = { modifier = gifted_fleet_early_debuff days = 7200 }
+										}
+									}
+								}
+							}
+							set_location = prev
+						}
+						settings = { 
+							can_upgrade = no 
+							uses_naval_capacity = yes
+						}
+					}
+				}
+			}
+		}
+		country_event = { id = wg_fe.131 }
+	}
+}
+
+# 给舰队提醒
+country_event = {
+	id = wg_fe.131
+	title = wg_fe.131.name
+	desc = wg_fe.131.desc
+	picture = GFX_evt_fleet_neutral
+    is_triggered_only = yes
+
+	option = {
+        name = EXCELLENT
+	}
+}
+
+# 战争时送船，送3次
+country_event = {
+	id = wg_fe.132
+	title = "TRANSMISSION"
+	desc = wg_fe.132.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = wsg7_2
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	trigger = {
+		exists = event_target:wg_fallen_empire
+		NOT = { has_ascension_perk = ap_wg_crisis }
+	}
+
+	option = {
+		name = wg_fe.132.a
+		response_text = wg_fe.132.a.response
+		hidden_effect = { 
+			country_event = { id = wg_fe.133 days = 30 }
+			change_variable = { which = "give_fe_fleet" value = 1 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_fe.133
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = event_target:wg_fallen_empire
+		NOT = { has_ascension_perk = ap_wg_crisis }
+	}
+
+	immediate = {
+		capital_scope = {
+			if = {
+				limit = { years_passed < 80 }
+				create_fleet = {
+					name = "NAME_wg_fallen_empire_gift"
+					effect = {
+						set_owner = root
+						while = { count = 2
+							create_ship = {
+								name = random
+								design = "NAME_WG_FE_BATTLE_CRUISE"
+								graphical_culture = "fallen_empire_03"
+								upgradable = no
+								effect = {
+									add_modifier = { modifier = remove_fleet_maintenance days = -1}
+									if = { # 早战debuff
+											limit = { years_passed < 45 }
+										add_modifier = { modifier = gifted_fleet_early_debuff days = 7200 }
+									}
+								}
+							}
+						}
+						while = { count = 5
+							create_ship = {
+								name = random
+								design = "NAME_WG_FE_ESCORTE"
+								graphical_culture = "fallen_empire_03"
+								upgradable = no
+								effect = {
+									add_modifier = { modifier = remove_fleet_maintenance days = -1}
+									if = { # 早战debuff
+											limit = { years_passed < 45 }
+										add_modifier = { modifier = gifted_fleet_early_debuff days = 7200 }
+									}
+								}
+							}
+						}
+						set_location = prev
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 500
+						add_modifier = { modifier = remove_fleet_maintenance days = -1}
+					}
+					settings = { 
+						can_upgrade = no 
+						uses_naval_capacity = yes
+						spawn_debris = no
+					}
+				}
+			}
+			else = {
+				create_fleet = {
+					name = "NAME_wg_fallen_empire_gift"
+					effect = {
+						set_owner = root
+						while = { count = 4
+							create_ship = {
+								name = random
+								design = "NAME_WG_FE_BATTLE_CRUISE"
+								graphical_culture = "fallen_empire_03"
+								upgradable = no
+								effect = {
+									add_modifier = { modifier = remove_fleet_maintenance days = -1}
+									if = { # 早战debuff
+											limit = { years_passed < 45 }
+										add_modifier = { modifier = gifted_fleet_early_debuff days = 7200 }
+									}
+								}
+							}
+						}
+						while = { count = 15
+							create_ship = {
+								name = random
+								design = "NAME_WG_FE_ESCORTE"
+								graphical_culture = "fallen_empire_03"
+								upgradable = no
+								effect = {
+									add_modifier = { modifier = remove_fleet_maintenance days = -1}
+									if = { # 早战debuff
+											limit = { years_passed < 45 }
+										add_modifier = { modifier = gifted_fleet_early_debuff days = 7200 }
+									}
+								}
+							}
+						}
+						set_location = prev
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 500
+						add_modifier = { modifier = remove_fleet_maintenance days = -1}
+					}
+					settings = { 
+						can_upgrade = no 
+						uses_naval_capacity = yes
+						spawn_debris = no
+					}
+				}
+			}
+		}
+		country_event = { id = wg_fe.131 }
+	}
+}
+
+# 第四次VV拯救事件开始
+country_event = {
+	id = wg_fe.134
+	title = "TRANSMISSION"
+	desc = wg_fe.134.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	trigger = {
+		has_country_flag = VV_fourth_chance
+	}
+
+	picture_event_data = {
+		portrait = event_target:wg_fallen_empire
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	option = {
+		name = wg_fe.134.a
+		response_text = wg_fe.134.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_fe.134.b
+		response_text = wg_fe.134.b.response
+		hidden_effect = { 
+			remove_country_flag = VV_fourth_chance
+			set_country_flag = start_VV_event
+			country_event = { id = wg_fe.135 days = 30 random = 30 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_fe.135
+	title = "TRANSMISSION"
+	desc = wg_fe.135.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = event_target:wg_fallen_empire
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	option = {
+		name = wg_fe.135.a
+		hidden_effect = { country_event = { id = wg_fe.136 days = 5 }}
+	}
+}
+
+country_event = {
+	id = wg_fe.136
+	title = wg_fe.136.name
+	desc = wg_fe.136.desc
+	picture = GFX_evt_megavv
+    is_triggered_only = yes
+
+	option = {
+		name = wg_fe.136.a
+		hidden_effect = { country_event = { id = wg_fe.137 days = 3 }}
+	}
+}
+
+country_event = {
+	id = wg_fe.137
+	title = wg_fe.137.name
+	desc = wg_fe.137.desc
+	picture = GFX_evt_VV4
+    is_triggered_only = yes
+
+	option = {
+		name = wg_fe.137.a
+		add_modifier = {
+			modifier = VV_buff_fe days = -1
+		}
+		change_variable = { which = rankpts value = 1 }
+		hidden_effect = {
+			remove_country_flag = start_VV_event
+			set_country_flag = finish_VV_event
+		}
+	}
+}
+
+
+country_event = {
+	id = wg_fe.138
+	title = "TRANSMISSION"
+	desc = wg_fe.138.desc
+
+	is_triggered_only = yes
+	fire_only_once = yes
+	diplomatic = yes
+	force_open = yes
+	
+	picture_event_data = {
+		portrait = event_target:wg_fallen_empire
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	trigger = {
+		is_ai = no
+		exists = event_target:wg_fallen_empire
+	}
+
+	option = {
+		name = wg_fe.138.a
+		custom_tooltip = wg_fe.138.a.tooltip
+		hidden_effect = {
+			if = {
+				limit = { has_federation = yes }
+				event_target:wg_fallen_empire = { 
+					join_alliance = { 
+						who = root 
+						override_requirements = yes 
+					}
+					federation = {
+						add_federation_experience = 10000
+					}
+				}
+			} 
+			else = {
+				join_alliance = { 
+					who = event_target:wg_fallen_empire
+					override_requirements = yes
+					name = NAME_WG_FE_FEDERATION
+				}
+				federation = {
+					set_federation_type = warship_girls_federation
+					set_federation_leader = root
+					add_federation_experience = 10000
+					set_federation_law = federation_unity_high_wsg
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_fe.138.b
+		hidden_effect = {
+			set_country_flag = denied_form_alliance_with_wgfe
+			if = {
+				limit = {
+					any_country = {
+						is_ai = no
+						OR = {
+							has_authority = auth_warshipgirls
+							has_authority = auth_shenhai
+						}
+						NOR = { 
+							has_country_flag = denied_form_alliance_with_wgfe
+							has_civic = civic_CM
+							has_ascension_perk = ap_shenhai_silent
+							has_civic = civic_fanatic_purifiers
+						}
+					}
+				}
+				random_country = {
+					limit = {
+						is_ai = no
+						OR = {
+							has_authority = auth_warshipgirls
+							has_authority = auth_shenhai
+						}
+						NOR = { 
+							is_at_war_with = event_target:wg_fallen_empire
+							has_country_flag = denied_form_alliance_with_wgfe
+							has_civic = civic_CM
+							has_ascension_perk = ap_shenhai_silent
+							has_civic = civic_fanatic_purifiers
+						}
+					}
+					country_event = { id = wg_fe.138 }
+				}
+			}
+		}
+	}
+}
+#堕落妈舰队重拳出击
+country_event = {
+    id = wg_fe.139
+    hide_window = yes
+    fire_only_once = yes
+
+    trigger = {
+        has_global_flag = wg_invasion_happened
+		has_global_flag = wg_fallen_empire_awakened
+		exists = event_target:wg_fallen_empire
+    }
+    
+    immediate = {
+        create_country = {
+            name = "NAME_awakened_wg_fallen_empire"
+            type = "wg_awakened_fleet_country"
+            species = event_target:fe_species_wsg
+            name_list = "WSG"
+            flag = {
+				icon = {
+					category = "warshipgirls"
+					file = "wg_flags_09.dds"
+				}
+				background = {
+					category = "backgrounds"
+					file = "diagonal.dds"
+				}
+				colors = {
+					"blue"
+					"purple"
+					"null"
+					"null"
+				}
+			}
+            effect = {
+                save_global_event_target_as = wg_awakened_fleet_country_targer
+				establish_communications_no_message = root
+				country_event = { id = wg_fe.140 }
+                set_graphical_culture = fallen_empire_03
+                add_modifier = { modifier = wg_fe_cheat days = -1 }
+                if = {
+                    limit = { 
+                        OR = {
+                            has_global_flag = wg_crisis_hard
+							has_global_flag = wg_crisis_insane
+                        }
+                    }
+                    add_modifier = { modifier = wg_fe_hard_buff days = -1 }
+                }
+                if = {
+                    limit = { 
+                        OR = {
+                            has_global_flag = wg_crisis_insane
+                        }
+                    }
+                    add_modifier = { modifier = wg_fe_insane_buff2 days = -1 }
+                }
+			}	
+		}
+    }
+}
+#攻击传送门
+country_event = {
+    id = wg_fe.140
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = { 
+        is_country_type = wg_awakened_fleet_country
+		exists = event_target:wg_fallen_empire
+        NOR = { 
+            has_global_flag = all_portal_destroyed
+            has_global_flag = wg_awakened_fleet_reinforce_cooldown
+        }
+    }
+
+    immediate = {
+        set_timed_global_flag = { flag = wg_awakened_fleet_reinforce_cooldown days = 600 }
+        if = {
+            limit = { NOT = { has_global_flag = first_portal_destroyed }}
+            event_target:first_portal_system = {
+                save_event_target_as = portal_system_fe
+            }
+        }
+        else_if = {
+            limit = { NOT = { has_global_flag = second_portal_destroyed }}
+            event_target:second_portal_system = {
+                save_event_target_as = portal_system_fe
+            }
+        }
+        else_if = {
+            limit = { NOT = { has_global_flag = third_portal_destroyed }}
+            event_target:third_portal_system = {
+                save_event_target_as = portal_system_fe
+            }
+        }
+
+        event_target:wg_awakened_fleet_country_targer = {
+            if = {
+                limit = { has_global_flag = wg_crisis_easy }
+                create_wg_awakened_fe_admiral = yes
+                create_wg_awakened_fe_fleet = yes
+                last_created_fleet = {
+                    set_fleet_flag = wg_awakened_fe_attack_fleet
+                }
+                create_wg_awakened_fe_admiral = yes
+                create_wg_awakened_fe_fleet2 = yes
+                last_created_fleet = {
+                    set_fleet_flag = wg_awakened_fe_attack_fleet
+                }
+            }
+            else = {
+                create_wg_awakened_fe_admiral = yes
+                create_wg_awakened_fe_fleet = yes
+                last_created_fleet = {
+                    set_fleet_flag = wg_awakened_fe_attack_fleet
+                }
+                while = {
+                    count = 2
+                    create_wg_awakened_fe_admiral = yes
+                create_wg_awakened_fe_fleet2 = yes
+                    last_created_fleet = {
+                        set_fleet_flag = wg_awakened_fe_attack_fleet
+                    }
+                }
+                if = {
+                    limit = {
+                        has_global_flag = wg_crisis_hard
+                        has_global_flag = wg_crisis_insane
+                    }
+                    create_wg_awakened_fe_admiral = yes
+                    create_wg_awakened_fe_fleet = yes
+                    last_created_fleet = {
+                        set_fleet_flag = wg_awakened_fe_attack_fleet
+                    }
+                    while = {
+                        count = 2
+                        create_wg_awakened_fe_admiral = yes
+                        create_wg_awakened_fe_fleet2 = yes
+                        last_created_fleet = {
+                            set_fleet_flag = wg_awakened_fe_attack_fleet
+                        }
+                    }
+                }
+				country_event = { id = wg_fe.141 }
+            }
+            country_event = { id = wg_fe.140 days = 600 random = 100 } #should be 600 and 100
+        }
+    }
+}
+
+country_event = {
+    id = wg_fe.141
+	hide_window = yes
+	is_triggered_only = yes
+    trigger = {
+        is_country_type = wg_awakened_fleet_country
+		any_owned_fleet = {
+			has_fleet_flag = wg_awakened_fe_attack_fleet
+			is_fleet_idle = yes
+		}
+    }
+
+
+    immediate = {
+        if = {
+            limit = { NOT = { has_global_flag = first_portal_destroyed }}
+            event_target:first_portal_system = {
+                save_event_target_as = portal_system_fe
+            }
+        }
+        else_if = {
+            limit = { has_global_flag = wg_crisis_insane }
+            if = {
+                limit = { NOT = { has_global_flag = second_portal_destroyed }}
+                event_target:second_portal_system = {
+                    save_event_target_as = portal_system_fe
+                }
+            }
+            else_if = {
+                limit = { NOT = { has_global_flag = third_portal_destroyed }}
+                event_target:third_portal_system = {
+                    save_event_target_as = portal_system_fe
+                }
+            }
+        }
+        every_owned_fleet = {
+			limit = {
+				has_fleet_flag = wg_awakened_fe_attack_fleet
+				is_fleet_idle = yes
+			}
+			queue_actions = {
+                move_to = event_target:portal_system_fe
+			}
+		}
+    }
+}
+
+#堕落妈自动化舰队回防
+country_event = {
+    id = wg_fe.142
+    hide_window = yes
+    fire_only_once = yes
+	is_triggered_only = yes
+
+    trigger = {
+        has_global_flag = wg_invasion_happened
+		has_global_flag = triggered_wgfe_crisis_event2
+		NOR = { 
+            has_global_flag = all_portal_destroyed
+			has_global_flag = wg_crisis_very_easy
+			has_global_flag = wg_crisis_easy
+        }
+    }
+    
+    immediate = {
+        create_country = {
+            name = "NAME_WG_fallen_empire"
+            type = "wg_awakened_fleet_country"
+            species = event_target:fe_species_wsg
+            name_list = "WSG"
+            flag = {
+				icon = {
+					category = "warshipgirls"
+					file = "wg_flags_09.dds"
+				}
+				background = {
+					category = "backgrounds"
+					file = "diagonal.dds"
+				}
+				colors = {
+					"blue"
+					"purple"
+					"null"
+					"null"
+				}
+			}
+            effect = {
+                save_global_event_target_as = wg_awakened_fleet_country_targer
+				establish_communications_no_message = root
+				country_event = { id = wg_fe.143 }
+                set_graphical_culture = fallen_empire_03
+                add_modifier = { modifier = wg_fe_cheat days = -1 }
+                if = {
+                    limit = { 
+                        OR = {
+                            has_global_flag = wg_crisis_hard
+							has_global_flag = wg_crisis_insane
+                        }
+                    }
+                    add_modifier = { modifier = wg_fe_hard_buff days = -1 }
+                }
+                if = {
+                    limit = { 
+                        OR = {
+                            has_global_flag = wg_crisis_insane
+                        }
+                    }
+                    add_modifier = { modifier = wg_fe_insane_buff2 days = -1 }
+                }
+			}	
+		}
+    }
+}
+#攻击传送门
+country_event = {
+    id = wg_fe.143
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = { 
+        is_country_type = wg_awakened_fleet_country
+        NOR = { 
+            has_global_flag = all_portal_destroyed
+        }
+    }
+
+    immediate = {
+		every_playable_country = {
+			limit = {
+				OR = {
+					has_authority = auth_warshipgirls
+					has_authority = auth_shenhai
+				}
+				is_ai = no
+			}
+			country_event = { id = wg_fe.145 }
+		}
+        if = {
+            limit = { NOT = { has_global_flag = first_portal_destroyed }}
+            event_target:first_portal_system = {
+                save_event_target_as = portal_system_fe
+            }
+        }
+        else_if = {
+            limit = { NOT = { has_global_flag = second_portal_destroyed }}
+            event_target:second_portal_system = {
+                save_event_target_as = portal_system_fe
+            }
+        }
+        else_if = {
+            limit = { NOT = { has_global_flag = third_portal_destroyed }}
+            event_target:third_portal_system = {
+                save_event_target_as = portal_system_fe
+            }
+        }
+
+        event_target:wg_awakened_fleet_country_targer = {
+            if = {
+                limit = { has_global_flag = wg_crisis_easy }
+                create_wg_back_fe_fleet = yes
+                last_created_fleet = {
+                    set_fleet_flag = wg_awakened_fe_attack_fleet
+                }
+                create_wg_back_fe_fleet2 = yes
+                last_created_fleet = {
+                    set_fleet_flag = wg_awakened_fe_attack_fleet
+                }
+            }
+            else = {
+                create_wg_back_fe_fleet = yes
+                last_created_fleet = {
+                    set_fleet_flag = wg_awakened_fe_attack_fleet
+                }
+                while = {
+                    count = 6
+                    create_wg_back_fe_fleet2 = yes
+                    last_created_fleet = {
+                        set_fleet_flag = wg_awakened_fe_attack_fleet
+                    }
+                }
+                if = {
+                    limit = {
+                        has_global_flag = wg_crisis_hard
+                        has_global_flag = wg_crisis_insane
+                    }
+                    create_wg_back_fe_fleet = yes
+                    last_created_fleet = {
+                        set_fleet_flag = wg_awakened_fe_attack_fleet
+                    }
+                    while = {
+                        count = 8
+                        create_wg_back_fe_fleet2 = yes
+                        last_created_fleet = {
+                            set_fleet_flag = wg_awakened_fe_attack_fleet
+                        }
+                    }
+                }
+				country_event = { id = wg_fe.144 }
+            }
+        }
+    }
+}
+
+country_event = {
+    id = wg_fe.144
+	hide_window = yes
+	is_triggered_only = yes
+    trigger = {
+        is_country_type = wg_awakened_fleet_country
+		any_owned_fleet = {
+			has_fleet_flag = wg_awakened_fe_attack_fleet
+			is_fleet_idle = yes
+		}
+    }
+
+
+    immediate = {
+        if = {
+            limit = { NOT = { has_global_flag = first_portal_destroyed }}
+            event_target:first_portal_system = {
+                save_event_target_as = portal_system_fe
+            }
+        }
+        else_if = {
+            limit = { has_global_flag = wg_crisis_insane }
+            if = {
+                limit = { NOT = { has_global_flag = second_portal_destroyed }}
+                event_target:second_portal_system = {
+                    save_event_target_as = portal_system_fe
+                }
+            }
+            else_if = {
+                limit = { NOT = { has_global_flag = third_portal_destroyed }}
+                event_target:third_portal_system = {
+                    save_event_target_as = portal_system_fe
+                }
+            }
+        }
+        every_owned_fleet = {
+			limit = {
+				has_fleet_flag = wg_awakened_fe_attack_fleet
+				is_fleet_idle = yes
+			}
+			queue_actions = {
+                move_to = event_target:portal_system_fe
+			}
+		}
+    }
+}
+
+country_event = {
+	id = wg_fe.145
+	title = "TRANSMISSION"
+	desc = "wg_fe.145.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+
+	picture_event_data = {
+		portrait = wsg1
+		room = ethic_spaceship_room
+	}
+
+	option = {
+		name = "wg_fe.145.a"
+	}
+}

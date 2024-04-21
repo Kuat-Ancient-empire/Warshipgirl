@@ -1,0 +1,154 @@
+#####星极特质
+#占星术
+leader_trait_scientist_astesia = {
+	cost = 0
+	
+	icon = "gfx/interface/icons/traits/wg_Astesia.dds"
+	leader_trait_rarity = paragon
+	sorting_priority = 1000
+	modifier = {
+		ship_anomaly_research_speed_mult = 1
+		ship_archaeological_site_clues_add = 4
+		ship_astral_rift_clues_add = 4
+		ship_ftl_jumpdrive_range_mult = 1
+	}
+	leader_class = { scientist }
+	initial = no
+	randomized = no
+	notify_on_gained = no
+}
+
+
+
+leader_trait_scientist_eddy = {
+	cost = 0
+	inline_script = { 
+		script = trait/wg_scientist_councilor_trait
+		ICON = "gfx/interface/icons/traits/wg_eddy.dds"
+	}
+	leader_trait_rarity = paragon
+	sorting_priority = 1000
+	triggered_councilor_modifier = {
+		potential = { is_councilor_type = councilor_research }
+		all_technology_research_speed = 0.5
+		category_field_manipulation_research_speed_mult = 0.15
+		category_particles_research_speed_mult = 0.15
+		category_propulsion_research_speed_mult = 0.15
+		category_materials_research_speed_mult = 0.15
+	}
+	leader_class = { scientist }
+	initial = no
+	randomized = no
+	notify_on_gained = no
+}
+
+leader_trait_wg_astesia_affection = {
+	cost = 0
+	inline_script = {
+		script = trait/wg_new_leader_affection_trait
+		LEADER_TYPE = wg_astesia
+	}
+
+	triggered_modifier = {
+		# lv2
+		potential = {
+			leader_class = scientist
+			check_variable = { which = affection value >= wg_leader_affection_to_lv2 }
+			check_variable = { which = affection value < wg_leader_affection_to_lv3 }
+		}
+		science_ship_survey_speed = 0.15
+		ship_anomaly_research_speed_mult = 0.15
+	}
+	triggered_councilor_modifier = {
+		# lv2
+		potential = {
+			leader_class = scientist
+			check_variable = { which = affection value >= wg_leader_affection_to_lv2 }
+			check_variable = { which = affection value < wg_leader_affection_to_lv3 }
+		}
+		all_technology_research_speed = 0.05
+	}
+	triggered_modifier = {
+		# lv3
+		potential = {
+			leader_class = scientist
+			check_variable = { which = affection value >= wg_leader_affection_to_lv3 }
+			check_variable = { which = affection value < wg_leader_affection_to_lv4 }
+		}
+		science_ship_survey_speed = 0.20
+		ship_anomaly_research_speed_mult = 0.25
+		ship_archaeological_site_clues_add = 1
+		ship_astral_rift_clues_add = 1
+		ship_speed_mult = 0.2
+	}
+	triggered_councilor_modifier = {
+		# lv3
+		potential = {
+			leader_class = scientist
+			check_variable = { which = affection value >= wg_leader_affection_to_lv3 }
+			check_variable = { which = affection value < wg_leader_affection_to_lv4 }
+		}
+		all_technology_research_speed = 0.1
+	}
+	triggered_modifier = {
+		# lv4
+		potential = {
+			leader_class = scientist
+			if = {
+				limit = { has_leader_flag = married }
+				check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+				check_variable = { which = affection value < wg_leader_affection_to_lv5 }
+			} else = {
+				check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+			}
+		}
+		science_ship_survey_speed = 0.25
+		ship_anomaly_research_speed_mult = 0.30
+		ship_archaeological_site_clues_add = 2
+		ship_astral_rift_clues_add = 2
+		ship_speed_mult = 0.35
+		ship_ftl_jumpdrive_range_mult = 0.30
+	}
+	triggered_councilor_modifier = {
+		# lv4
+		potential = {
+			leader_class = scientist
+			if = {
+				limit = { has_leader_flag = married }
+				check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+				check_variable = { which = affection value < wg_leader_affection_to_lv5 }
+			} else = {
+				check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+			}
+		}
+		all_technology_research_speed = 0.15
+	}
+	triggered_modifier = {
+		# lv5
+		potential = {
+			leader_class = scientist
+			check_variable = { which = affection value >= wg_leader_affection_to_lv5 }
+			has_leader_flag = married
+		}
+		science_ship_survey_speed = 0.35
+		ship_anomaly_research_speed_mult = 0.50
+		ship_archaeological_site_clues_add = 3
+		ship_astral_rift_clues_add = 3
+		ship_speed_mult = 0.5
+		ship_ftl_jumpdrive_range_mult = 0.5
+	}
+	triggered_councilor_modifier = {
+		# lv5
+		potential = {
+			leader_class = scientist
+			check_variable = { which = affection value >= wg_leader_affection_to_lv5 }
+			has_leader_flag = married
+		}
+		all_technology_research_speed = 0.2
+	}
+	
+	leader_class = { scientist }
+	initial = no
+	randomized = no
+	notify_on_gained = no
+}

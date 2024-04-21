@@ -1,0 +1,1033 @@
+namespace = wg_bubbles
+
+# 改造泡泡
+country_event = {
+	id = wg_bubbles.1
+	title = "wg_bubbles.1.name"
+	desc = "wg_bubbles.1.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_genetic_modification
+
+	trigger = {
+		has_country_flag = amoeba_befriended
+		any_controlled_fleet = {
+			OR = {
+				has_fleet_flag = lost_amoeba_fleet@ROOT
+				has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+				has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+			}
+		}
+		OR = {
+			last_increased_tech = tech_wsg_genetic_resequencing
+			last_increased_tech = tech_sh_genetic_resequencing
+			last_increased_tech = tech_sh_genetic_resequencing2
+			last_increased_tech = tech_gene_tailoring
+			last_increased_tech = tech_wsg_genetic_resequencing_s
+			last_increased_tech = tech_uf_genetic_resequencing
+			has_technology = tech_wsg_genetic_resequencing 
+			has_technology = tech_sh_genetic_resequencing 
+			has_technology = tech_sh_genetic_resequencing2
+			has_technology = tech_gene_tailoring 
+			has_technology = tech_wsg_genetic_resequencing_s
+			has_technology = tech_uf_genetic_resequencing
+		}
+		NOR = {
+			has_special_project = MODIFY_BUBBLES
+			has_special_project = MODIFY_BUBBLES2
+			has_country_flag = modified_bubbles
+			has_country_flag = give_up_modify_bubbles
+			has_country_flag = modified_bubbles_event_triggered
+		}
+	}
+
+	immediate = {
+		set_country_flag = modified_bubbles_event_triggered
+	}
+
+	option = {
+		name = "wg_bubbles.1.a"
+		hidden_effect = { if = {
+			limit = { exists = capital_scope }
+			enable_special_project = {
+				name = "MODIFY_BUBBLES"
+				owner = ROOT
+				location = capital_scope
+			}
+		} else = {
+			random_controlled_fleet = {
+				random_owned_ship = {
+					enable_special_project = {
+						name = "MODIFY_BUBBLES2"
+						owner = ROOT
+						location = this
+					}
+				}
+			}
+		}}
+	}
+
+	option = {
+		name = "wg_bubbles.1.b"
+		add_resource = { influence = 200 }
+		set_country_flag = give_up_modify_bubbles
+	}
+
+	option = {
+		name = "wg_bubbles.1.c"
+		trigger = {
+			OR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+			}
+		}
+		add_resource = { influence = 200 }
+		set_country_flag = give_up_modify_bubbles
+	}
+}
+
+# 帮泡泡安装翻译器
+country_event = {
+	id = wg_bubbles.2
+	title = "wg_bubbles.2.name"
+	desc = "wg_bubbles.2.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_friendly_amoeba
+
+	trigger = {
+		has_country_flag = amoeba_befriended
+		any_controlled_fleet = {
+			OR = {
+				has_fleet_flag = lost_amoeba_fleet@ROOT
+				has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+				has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+			}
+		}
+		OR = {
+			last_increased_tech = tech_morphogenetic_field_mastery
+			has_technology = tech_morphogenetic_field_mastery
+		}
+		NOR = { 
+			has_country_flag = modified_bubbles 
+			has_special_project = MODIFY_BUBBLES
+			has_special_project = MODIFY_BUBBLES2
+			has_special_project = MODIFY_BUBBLES_SECOND
+			has_special_project = MODIFY_BUBBLES_SECOND2
+			has_country_flag = give_up_modify_bubbles
+			has_country_flag = can_communicate_bubbles
+			has_country_flag = modified_bubbles_event_triggered
+			has_country_flag = modified_bubbles_event2_triggered
+		}
+	}
+
+	immediate = {
+		set_country_flag = modified_bubbles_event2_triggered
+	}
+
+
+	option = {
+		name = "wg_bubbles.2.a"
+		hidden_effect = { if = {
+			limit = { exists = capital_scope }
+			capital_scope = { enable_special_project = {
+				name = "MODIFY_BUBBLES_SECOND"
+				owner = ROOT
+				location = this
+			}}
+		} else = {
+			random_controlled_fleet = {
+				random_owned_ship = {
+					enable_special_project = {
+						name = "MODIFY_BUBBLES_SECOND2"
+						owner = ROOT
+						location = this
+					}
+				}
+			}
+		}}
+	}
+
+	option = {
+		name = "wg_bubbles.2.b"
+		add_resource = { influence = 200 }
+		set_country_flag = give_up_modify_bubbles
+	}
+
+}
+
+# 泡泡改造完成
+country_event = {
+	id = wg_bubbles.3
+	title = "wg_bubbles.3.name"
+	desc = "wg_bubbles.3.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_friendly_amoeba
+
+	immediate = {
+		
+		set_country_flag = modified_bubbles
+		set_country_flag = bubbles_warship_active
+		save_global_event_target_as = wg_bubbles_own_country
+		if = {
+			limit = { 
+				any_controlled_fleet = {
+					OR = {
+						has_fleet_flag = lost_amoeba_fleet@ROOT
+						has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+						has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+					}
+					NOT = { exists = leader }
+				}
+			}
+			country_event = { id = wg_bubbles.4 }
+		}
+		change_variable = { which = wg_bubbles_affection value = 10 }
+		random_controlled_fleet = {
+			limit = {
+				OR = {
+					has_fleet_flag = lost_amoeba_fleet@ROOT
+					has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+					has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+				}
+			}
+			check_bubbles_planet_modifiers = yes
+		}
+	}
+
+	after = {
+		change_variable = { which = rankpts value = 3 }
+	}
+
+	option = {
+		name = "wg_bubbles.3.a"
+	}
+
+	option = {
+		name = "wg_bubbles.3.b"
+	}
+}
+
+# 创建泡泡领袖
+country_event = {
+	id = wg_bubbles.4
+	hide_window = yes
+	trigger = {
+		NOT = { any_owned_leader = {
+			has_leader_flag = bubbles_leader
+		}}
+	}
+	is_triggered_only = yes
+	
+	immediate = {
+		create_species = {
+			name = BUBBLES
+			plural = BUBBLES
+			class = ART
+			portrait = art13
+			namelist = ART1
+			effect = {
+				save_global_event_target_as = bubbles_species
+			}
+		}
+		create_bubbles_admiral = yes
+		set_variable = { which = bubbles_level value = 1 }
+		event_target:bubbles_admiral = {
+			change_leader_portrait = Bubbles
+			owner = { random_controlled_fleet = {
+				limit = { 
+					OR = {
+						has_fleet_flag = lost_amoeba_fleet@ROOT
+						has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+						has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+					}
+				}
+				assign_leader = PREVPREV
+			}}
+		}
+	}
+}
+
+# 帮泡泡安装了翻译器
+country_event = {
+	id = wg_bubbles.5
+	title = "wg_bubbles.3.name"
+	desc = "wg_bubbles.5.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_friendly_amoeba
+
+	immediate = {
+		set_country_flag = can_communicate_bubbles
+		if = {
+			limit = { 
+				any_controlled_fleet = {
+					OR = {
+						has_fleet_flag = lost_amoeba_fleet@ROOT
+						has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+						has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+					}
+					NOT = { exists = leader }
+				}
+			}
+			country_event = { id = wg_bubbles.4 }
+		}
+		change_variable = { which = wg_bubbles_affection value = 5 }
+		random_controlled_fleet = {
+			limit = {
+				OR = {
+					has_fleet_flag = lost_amoeba_fleet@ROOT
+					has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+					has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+				}
+			}
+			check_bubbles_planet_modifiers = yes
+		}
+	}
+
+	option = {
+		name = "wg_bubbles.5.a"
+	}
+
+	option = {
+		name = "wg_bubbles.5.b"
+	}
+}
+
+# 泡泡沟通界面
+country_event = {
+	id = wg_bubbles.6
+	title = "NAME_Bubbles"
+	desc = "wg_bubbles.6.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_bubbles_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	trigger = {
+		bubbles_available = yes
+		NAND = {
+			has_country_flag = engaged_with_bubbles
+			has_active_event = { wg_bubbles.6 }
+		}
+	}
+
+	immediate = {
+		set_country_flag = engaged_with_bubbles
+	}
+
+	after = {
+		remove_country_flag = engaged_with_bubbles
+	}
+
+	option = { #变成总督
+		name = "wg_bubbles.6.a"
+		trigger = {
+			NOT = { has_country_flag = bubbles_official_active }
+			bubbles_available = yes
+		}
+		allow = {
+			OR = {
+				custom_tooltip = {
+					fail_text = bubbles_not_available
+					NOR = {
+						has_modifier = bubbles_recovery_cd
+						any_owned_leader = {
+							has_leader_flag = bubbles_leader
+						}
+						hidden_trigger = { any_controlled_fleet = { 
+							OR = {
+								has_fleet_flag = lost_amoeba_fleet@ROOT
+								has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+								has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+							}
+						}}
+					}
+				}
+				AND = {
+					hidden_trigger = {
+						any_controlled_fleet = { 
+							OR = {
+								has_fleet_flag = lost_amoeba_fleet@ROOT
+								has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+								has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+							}
+						}
+					}
+					custom_tooltip = {
+						fail_text = wg_bubbles.6.allow.a
+						any_controlled_fleet = { 
+							OR = {
+								has_fleet_flag = lost_amoeba_fleet@ROOT
+								has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+								has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+							}
+							is_in_combat = no
+						}
+					}
+					custom_tooltip = {
+						fail_text = wg_bubbles.6.allow.b
+						any_controlled_fleet = { 
+							OR = {
+								has_fleet_flag = lost_amoeba_fleet@ROOT
+								has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+								has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+							}
+							has_hp_percentage > 0.8
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				fail_text = bubbles_become_ruler
+				NOT = { ruler = { has_leader_flag = bubbles_leader }}
+			}
+		}
+		hidden_effect = { 
+			create_bubbles_official = yes 
+			remove_country_flag = bubbles_killed
+		}
+		custom_tooltip = wg_bubbles.6.a.tooltip
+		response_text = wg_bubbles.6.a.response
+	}
+	option = { #变成战舰
+		name = "wg_bubbles.6.b"
+		trigger = {
+			NOT = { has_country_flag = bubbles_warship_active }
+			bubbles_available = yes
+		}
+		allow = {
+			OR = {
+				custom_tooltip = {
+					fail_text = bubbles_not_available
+					NOR = {
+						has_modifier = bubbles_recovery_cd
+						any_owned_leader = {
+							has_leader_flag = bubbles_leader
+						}
+						hidden_trigger = { any_controlled_fleet = { 
+							OR = {
+								has_fleet_flag = lost_amoeba_fleet@ROOT
+								has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+								has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+							}
+						}}
+					}
+				}
+				hidden_trigger = {
+					any_owned_leader = { has_leader_flag = bubbles_official }
+				}
+			}
+			custom_tooltip = {
+				fail_text = bubbles_become_ruler
+				NOT = { ruler = { has_leader_flag = bubbles_leader }}
+			}
+		}
+		hidden_effect = { 
+			create_bubbles_warship = yes 
+			remove_country_flag = bubbles_killed
+		}
+		custom_tooltip = wg_bubbles.6.b.tooltip
+		response_text = wg_bubbles.6.a.response
+	}
+
+	option = {
+		name = "marry_bubbles"
+		trigger = {
+			check_variable = { which = wg_bubbles_affection value > @wg_bubbles_affection_to_lv4 }
+			NOT = { has_country_flag = married_bubbles }
+		}
+		allow = {
+			OR = {
+				AND = {
+					has_wg_special_authority = no
+					resource_stockpile_compare = {
+						resource = sr_living_metal
+						value >= 100
+					}
+					resource_stockpile_compare = {
+						resource = rare_crystals
+						value >= 1000
+					}
+				}
+				custom_tooltip = {
+					check_variable = { which = wsg_rings value >= 1 }
+					fail_text = not_enough_engagement_rings
+				}
+			}
+		}
+		if = {
+			limit = { has_wg_special_authority = yes }
+			subtract_variable = { which = wsg_rings value = 1 }
+		} else = {
+			add_resource = {
+				sr_living_metal = -100
+				rare_crystals = -1000
+			}
+		}
+		country_event = { id = wg_bubbles.7 }
+	}
+
+	option = {
+		name = "exit_bubbles"
+		default_hide_option = yes
+	}
+}
+
+# 泡泡结婚界面
+country_event = {
+	id = wg_bubbles.7
+	title = "NAME_Bubbles"
+	desc = "wg_bubbles.7.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_bubbles_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	
+	option = {
+		name = wg_bubbles.7.a
+		response_text = wg_bubbles.7.response
+		change_variable = { which = rankpts value = 2 }
+		hidden_effect = { 
+			set_country_flag = married_bubbles 
+			if = {
+				limit = { has_country_flag = bubbles_warship_active }
+				random_controlled_fleet = {
+					limit = {
+						OR = {
+							has_fleet_flag = lost_amoeba_fleet@ROOT
+							has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+							has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+						}
+					}
+					check_bubbles_planet_modifiers = yes
+				}
+			}
+		}
+	}
+}
+
+# 寻觅到泡泡的科学家死掉
+country_event = {
+	id = wg_bubbles.8
+	title = "wg_bubbles.8.name"
+	desc = "wg_bubbles.8.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_exploding_ship
+
+	trigger = {
+		FROM = { 
+			OR = {
+				is_same_value = event_target:amoeba_finding_scientist
+				has_leader_flag = amoeba_finding_scientist
+			}
+			NOT = { has_leader_flag = can_revive }
+			is_special_affection_leader = no
+		} 
+		NOT = { has_country_flag = lost_bubbles_scientist_event_triggered }
+		has_country_flag = modified_bubbles
+		always = no
+	}	
+
+	immediate = {
+		set_country_flag = lost_bubbles_scientist_event_triggered
+		FROM = { save_event_target_as = save_bubbles_scientist }
+		country_event = { id = wg_bubbles.9 days = 7 }
+	}
+
+	option = {
+		name = wg_bubbles.8.a
+	}
+
+}
+
+country_event = {
+	id = wg_bubbles.9
+	title = "wg_bubbles.9.name"
+	desc = "wg_bubbles.9.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_friendly_amoeba
+
+	immediate = {
+		set_country_flag = ban_commu_with_bubbles
+		if = {
+			limit = { has_country_flag = bubbles_official_active }
+			create_bubbles_warship = yes
+		} else = {
+			random_controlled_fleet = {
+				limit = { 
+					OR = {
+						has_fleet_flag = lost_amoeba_fleet@ROOT
+						has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+						has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+					}
+				}
+				save_event_target_as = bubbles_fleet
+			}
+		}
+		every_owned_planet = {
+			remove_all_bubbles_planet_modifiers = yes
+		}
+		if = {
+			limit = { any_system = { has_star_flag = bubbles_found_system }}
+			random_system = {
+				limit = { has_star_flag = bubbles_found_system }
+				random_system_planet = {
+					limit = { 
+						OR = {
+							habitable_planet = yes
+							is_planet_class = pc_barren
+							is_planet_class = pc_barren_cold
+						}
+						has_owner = no
+					}
+					save_event_target_as = bubbles_destination
+				}
+			}
+		} else = {
+			random_system_within_border = {
+				random_system_planet = {
+					limit = { 
+						OR = {
+							habitable_planet = yes
+							is_planet_class = pc_barren
+							is_planet_class = pc_barren_cold
+						}
+						has_owner = no
+					}
+					save_event_target_as = bubbles_destination
+				}
+			}
+		}
+		event_target:bubbles_admiral = {
+			kill_leader = { show_notification = no }
+		}
+		create_country = {
+			name = "NAME_Bubbles"
+			type = faction_wsg_neutral
+			auto_delete = yes
+			flag = {
+    		    icon = {
+    		        category = "pirate"
+    		        file = "flag_pirate_3.dds"
+    		    }
+    		    background = {
+    		        category = "backgrounds"
+    		        file = "00_solid.dds"
+    		    }
+    		    colors = {
+    		        "blue"
+    		        "blue"
+    		        "null"
+    		        "null"
+    		    }
+    		}
+			effect = {
+				event_target:bubbles_fleet = {
+					set_owner = PREV
+					set_fleet_flag = bubbles_escape_fleet
+					auto_move_to_planet = {
+						target = event_target:bubbles_destination
+						clear_auto_move_on_arrival = yes
+					}
+				}
+				every_country = {
+					set_faction_hostility = {
+						target = PREV
+						set_hostile = no
+						set_neutral = yes
+						set_friendly = no
+					}
+				}
+				save_event_target_as = bubbles_country
+				set_country_flag = bubbles_country
+				establish_communications_no_message = root
+				set_faction_hostility = {
+					target = ROOT
+					set_hostile = no
+					set_neutral = no
+					set_friendly = yes
+				}
+			}
+		}
+	}
+
+	option = {
+		name = "wg_bubbles.9.a"
+		begin_event_chain = {
+			event_chain = find_bubbles_chain
+		}
+	}
+
+	option = { # 掩盖事件
+		trigger = { OR = {
+			has_ethic = ethic_authoritarian
+			has_ethic = ethic_fanatic_authoritarian
+		}}
+		name = "wg_bubbles.9.b"
+		allow = {
+			resource_stockpile_compare = {
+				resource = influence
+				value >= 200
+			}
+		}
+		add_resource = { influence = -200 }
+		set_country_flag = give_up_tracking_bubbles
+	}
+
+	option = { # 不管泡泡
+		name = "wg_bubbles.9.c"
+		trigger = { OR = {
+			has_ethic = ethic_egalitarian
+			has_ethic = ethic_fanatic_egalitarian
+			has_ethic = ethic_xenophobe
+			has_ethic = ethic_fanatic_xenophobe
+			is_mechanical_empire = yes
+		}}
+		set_country_flag = give_up_tracking_bubbles
+		add_modifier = { modifier = bubbles_missing days = 1800 }
+	}
+
+	option = { # 强行阻止泡泡
+		name = "wg_bubbles.9.d"
+		trigger = { OR = {
+			has_ethic = ethic_militarist
+			has_ethic = ethic_fanatic_militarist
+			has_ethic = ethic_authoritarian
+			has_ethic = ethic_fanatic_authoritarian
+		}}
+		if = {
+			limit = { has_country_flag = married_bubbles }
+			country_event = { id = wg_bubbles.10 }
+		} else = {
+			set_faction_hostility = {
+				target = event_target:bubbles_country
+				set_hostile = yes
+				set_neutral = no
+				set_friendly = no
+			}
+			custom_tooltip = bubbles_become_enemy
+			set_country_flag = bubbles_become_enemy
+		}
+	}
+}
+
+country_event = {
+	id = wg_bubbles.10
+	title = "wg_bubbles.10.name"
+	desc = "wg_bubbles.10.desc"
+	is_triggered_only = yes
+
+	immediate = {
+		event_target:bubbles_country = {
+			every_owned_fleet = {
+				delete_fleet = this
+			}
+			destroy_country = yes
+		}
+		hidden_effect = {
+			set_country_flag = bubbles_depressed
+			create_bubbles_warship = yes
+		}
+	}
+
+	option = {
+		name = wg_bubbles.10.a
+	}
+}
+
+country_event = {
+	id = wg_bubbles.11
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		FROMFROMFROM = {
+			has_fleet_flag = bubbles_escape_fleet
+		}
+		has_country_flag = bubbles_become_enemy
+	}
+
+	immediate = {
+		FROMFROMFROM = { 
+			save_event_target_as = bubbles_fleet 
+			solar_system = {
+				save_event_target_as = bubbles_killed_system
+			}
+		}
+		random_country = { #防止其他人击杀泡泡触发错事件
+			limit = {
+				event_target:bubbles_fleet = {
+					OR = {
+						has_fleet_flag = lost_amoeba_fleet@PREV
+						has_fleet_flag = lost_amoeba_adult_fleet@PREV
+						has_fleet_flag = lost_amoeba_centenarian_fleet@PREV
+					}
+				}
+			}
+			country_event = { id = wg_bubbles.12 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_bubbles.12
+	title = "wg_bubbles.12.name"
+	desc = "wg_bubbles.12.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_space_debris
+	location = FROMFROMFROMFROM
+
+	option = {
+		name = wg_bubbles.12.a
+		add_modifier = { modifier = kill_bubbles days = 3600 }
+	}
+}
+
+# 泡泡到达目的星系
+country_event = {
+	id = wg_bubbles.13
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { has_fleet_flag = bubbles_escape_fleet }
+	}
+
+	immediate = {
+		FROM = { 
+			save_event_target_as = bubbles_fleet 
+			solar_system = { save_event_target_as = bubbles_mourning_system }
+		}
+		random_country = {
+			limit = {
+				event_target:bubbles_fleet = {
+					OR = {
+						has_fleet_flag = lost_amoeba_fleet@PREV
+						has_fleet_flag = lost_amoeba_adult_fleet@PREV
+						has_fleet_flag = lost_amoeba_centenarian_fleet@PREV
+					}
+				}
+			}
+			event_target:bubbles_mourning_system = {
+				set_star_flag = bubbles_mourning_system@PREV
+			}
+			country_event = { id = wg_bubbles.14 }
+		}
+	}
+}
+
+# 通知玩家泡泡已到达星系
+country_event = {
+	id = wg_bubbles.14
+	title = "wg_bubbles.14.name"
+	desc = "wg_bubbles.14.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_friendly_amoeba
+
+	trigger = {
+		NOR = { 
+			has_country_flag = triggered_bubbles_mourning_event 
+			has_country_flag = give_up_tracking_bubbles
+			has_country_flag = bubbles_become_enemy
+			has_point_of_interest = { poi = find_bubbles_poi.1 }
+		}
+	}
+
+	immediate = {
+		set_country_flag = triggered_bubbles_mourning_event
+	}
+
+	option = {
+		name = wg_bubbles.14.a
+		create_point_of_interest = {
+			id = find_bubbles_poi.1
+			name = find_bubbles_poi.name
+			desc = find_bubbles_poi.desc
+			event_chain = find_bubbles_chain
+			location = event_target:bubbles_fleet
+		}
+	}
+}
+
+# 玩家进入泡泡所在星系
+ship_event = {
+	id = wg_bubbles.19
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { 
+			has_star_flag = bubbles_mourning_system@ROOT.owner 
+			any_fleet_in_system = {
+				has_fleet_flag = bubbles_escape_fleet
+			}
+		}
+		owner = { has_point_of_interest = { poi = find_bubbles_poi.1 }}
+	}
+	immediate = {
+		FROM = {
+			random_fleet_in_system = {
+				limit = { has_fleet_flag = bubbles_escape_fleet }
+				save_event_target_as = bubbles_fleet
+			}
+		}
+		FROMFROM = {
+			country_event = { id = wg_bubbles.15 }
+			remove_point_of_interest = find_bubbles_poi.1
+		}
+	}
+}
+
+# 泡泡通讯
+country_event = {
+	id = wg_bubbles.15
+	title = "Name_Bubbles"
+	desc = "wg_bubbles.15.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_bubbles_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = wg_bubbles.15.a
+		response_text = wg_bubbles.15.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_bubbles.15.b
+		country_event = { id = wg_bubbles.16 }
+	}
+}
+
+country_event = {
+	id = wg_bubbles.16
+	title = "Name_Bubbles"
+	desc = "wg_bubbles.16.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_bubbles_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = wg_bubbles.16.a
+		country_event = { id = wg_bubbles.17 }
+	}
+}
+
+country_event = {
+	id = wg_bubbles.17
+	title = "Name_Bubbles"
+	desc = "wg_bubbles.17.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_bubbles_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = wg_bubbles.17.a
+		country_event = { id = wg_bubbles.18 days = 10}
+	}
+}
+
+country_event = {
+	id = wg_bubbles.18
+	title = "wg_bubbles.18.name"
+	desc = "wg_bubbles.18.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_friendly_amoeba
+	immediate = {
+		remove_country_flag = ban_commu_with_bubbles
+	}
+
+	after = {
+		end_event_chain = find_bubbles_chain
+		change_variable = { which = wg_bubbles_affection value = 10 }
+		event_target:bubbles_fleet = {
+			set_owner = ROOT
+			hidden_effect = { check_bubbles_planet_modifiers = yes }
+			remove_fleet_flag = bubbles_escape_fleet
+		}
+	}
+
+	option = {
+		name = wg_bubbles.18.a
+	}
+	option = {
+		name = wg_bubbles.18.b
+	}
+}
+
+# 泡泡大破
+country_event = {
+	id = wg_bubbles.20
+	title = "Name_Bubbles"
+	desc = "wg_bubbles.20.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_bubbles_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	trigger = {
+		FROMFROM = {
+			OR = {
+				has_fleet_flag = lost_amoeba_fleet@ROOT
+				has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+				has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+			}
+		}
+		NOR = { 
+			has_country_flag = engaged_with_bubbles 
+			has_country_flag = bubbles_changing
+		}
+	}
+
+	option = {
+		name = wg_bubbles.20.a
+		add_modifier = { modifier = bubbles_recovery_cd days = 1260 }
+		custom_tooltip = wg_bubbles.20.a.tooltip
+	}
+}
+
+country_event = {
+	id = wg_bubbles.21
+	title = "Name_Bubbles"
+	desc = "wg_bubbles.21.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_bubbles_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = wg_bubbles.21.a
+		subtract_variable = { which = wg_bubbles_affection value = @wg_bubbles_affection_reduce }
+		custom_tooltip = wg_bubbles.21.a.tooltip
+	}
+}
+
+# 泡泡大破（总督）
+country_event = {
+	id = wg_bubbles.22
+	title = "Name_Bubbles"
+	desc = "wg_bubbles.20.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_bubbles_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	trigger = {
+		FROM = { has_leader_flag = bubbles_official }
+		NOR = { 
+			has_country_flag = engaged_with_bubbles 
+			has_country_flag = bubbles_changing
+		}
+	}
+	
+	immediate = {
+		set_country_flag = bubbles_killed
+	}
+
+	option = {
+		name = wg_bubbles.20.a
+		add_modifier = { modifier = bubbles_recovery_cd days = 1260 }
+		custom_tooltip = wg_bubbles.20.a.tooltip
+	}
+
+}

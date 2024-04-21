@@ -1,0 +1,151 @@
+is_organic_species = {
+	species = {
+		OR = {
+			is_archetype = BIOLOGICAL
+			is_archetype = LITHOID
+
+			is_archetype = WARSHIPGIRL				#_wsg
+			is_archetype = SHENHAI
+			is_archetype = UNITED_FLEET
+			is_archetype = NANITES_CROP
+
+			is_archetype = LILY						# 突击莉莉
+			is_archetype = STARSHIPGIRLS			# swg
+			is_archetype = KANMUSU					# kc
+			is_archetype = DATEALIVE				# DAL
+
+			is_archetype = KANSEN					#_|azl|
+			is_archetype = Dolls					#_灰烬
+			is_archetype = POKEMON					#_[pkman]	[伊布帝国v1.22]=2398450274
+			is_archetype = HUMANOID					#_[ETCPM]
+			is_archetype = MAMMALIAN
+			is_archetype = REPTILIAN
+			is_archetype = AVIAN
+			is_archetype = ARTHROPOID
+			is_archetype = MOLUSCOID
+			is_archetype = FUNGOID
+			is_archetype = PLANTOID
+			is_archetype = NECROID
+			is_archetype = half_species
+			is_archetype = half_species_special
+			is_archetype = half_aberration
+			is_archetype = half_perfect
+			is_archetype = half_amalgamated
+			is_archetype = NYTO						#_|涅托|
+			is_KZ_VOY_organic_species = yes
+		#	is_archetype = ASCENDED					#_|EE|
+			is_archetype = Schale					#_|碧蓝档案|
+			is_archetype = ELF						#_[带刺]
+			is_archetype = Magical_Bitch
+			is_archetype = Magical_Girl
+		}
+	}	
+}
+
+has_food_upkeep = {
+	species = {
+		OR = {
+			is_archetype = BIOLOGICAL
+			is_archetype = WARSHIPGIRL
+			KZ_VOY_has_food_upkeep = yes
+			is_archetype = SHENHAI
+			is_archetype = STARSHIPGIRLS
+			is_archetype = Dolls
+			is_archetype = KANMUSU
+			is_archetype = DATEALIVE
+			is_archetype = UNITED_FLEET
+			is_archetype = NANITES_CROP
+			is_archetype = NYTO
+		}	
+	}
+	NOT = { has_trait = trait_voidling }
+}
+is_merc_enclave_founding_allowed = {
+	owner = {
+		NOT = {
+			has_ethic = ethic_gestalt_consciousness
+			has_civic = civic_fanatic_purifiers 
+		} 
+	}
+	custom_tooltip = {
+		fail_text = enclave.2.tooltip.a
+		success_text = enclave.2.tooltip.aa
+		exists = owner
+		exists = leader
+		is_ship_class = shipclass_military
+	}
+	fleet_size >= 50
+	custom_tooltip = {
+		fail_text = enclave.2.tooltip.c
+		success_text = enclave.2.tooltip.cc
+		exists = solar_system
+		solar_system = {
+			exists = owner
+			owner = { is_same_value = root.owner }
+			NOT = {
+				any_fleet_in_system = {
+					owner = {
+						is_hostile = root.owner
+					}
+				}
+			}	
+		}
+	}
+	custom_tooltip = {
+		fail_text = enclave.2.tooltip.b
+		success_text = enclave.2.tooltip.bb
+		solar_system = {
+			NOR = {
+				any_fleet_in_system = {
+					is_ship_size = enclave_mercenary_station
+				}
+				has_star_flag = enclave
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = enclave.2.tooltip.e
+		success_text = enclave.2.tooltip.ee
+		solar_system = {
+			OR = {
+				any_system_planet = {
+					is_moon = yes
+				}
+				any_system_planet = {
+					is_asteroid = yes
+				}
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = enclave.2.tooltip.d
+		success_text = enclave.2.tooltip.dd
+		controller = {
+			enclave_capacity_left >= 1
+		}
+	}
+	custom_tooltip = {
+		fail_text = "cannot_sold_wg_fleet"
+		NOT = { any_controlled_ship = {
+			is_wg_event_limit_ships = yes
+		}}
+	}
+	custom_tooltip = {
+		fail_text = "cannot_sold_kuat_fleet"
+		NOT = { any_owned_ship = {
+			kuat_is_flagship_system_protection = yes
+		}}
+	}
+}
+
+can_remove_beneficial_traits = {
+	hidden_trigger = { exists = from }
+	from = {
+		OR = {
+			has_tradition = tr_genetics_resequencing
+			has_tradition = tr_cybernetics_integrated_anatomy
+			has_tradition = tr_cybernetics_assimilator_integrated_anatomy
+			has_wsg_genemodding_tech = yes
+		}
+	}
+}

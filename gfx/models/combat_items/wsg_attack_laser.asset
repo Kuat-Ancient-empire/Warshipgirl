@@ -1,0 +1,52 @@
+#打击模型
+entity = {
+	name = "wsg_starkillerbsae_target_star_portal_hit_entity" 
+	locator = { name = "wormhole_b" position = { 0 350 0 } rotation = { 0 0 0 } }
+	locator = { name = "wormhole_a" position = { 0 340 0 } rotation = { 0 0 0 } }
+	locator = { name = "firing_locator_1" position = { 0 350 0 } rotation = { 0 0 0 } }
+	attach = { "wormhole_a" = "wsg_starkiller_ring_world_second_back_ration_entity" }
+	attach = { "wormhole_b" = "wsg_starbasekiller_portal_entity" }
+	attach = { "firing_locator_1" = "wsg_starkillerbase_star_beamlaser_entity" }
+}
+
+#光束
+entity = { 
+	name = "wsg_starkillerbase_star_beamlaser_entity" #lazer beam effect entity	
+	default_state = "idle"
+	scale = 5
+	state = { 
+		name = "idle" state_time = 1
+		event = { time = 0.0 node = "polar_effect_1" particle = "wsg_starkiller_red_effect"  keep_particle = no trigger_once = yes  sound = { soundeffect = "pulsar_star_idle_hum" } }
+	}
+	game_data = { uv_animation_speed   = -0.1 uv_animation_direction  = { 0.4 0.4 } bloom_factor = 0.5 }	
+}
+
+#环段模型
+entity = {
+	name = "wsg_starkiller_ring_world_second_back_ration_entity"
+	pdxmesh = "ring_world_ration_back_mesh"
+	scale = 0.0625
+	default_state = idle
+	attach = { root = fallen_empire_kuat_01_ringworld_tech_entity_01_full_entity }
+	state = { name = "idle" animation = "idle" animation_blend_time = 2  animation_speed = 0.35 }
+}
+
+#portal
+entity = {
+	name = "wsg_starbasekiller_portal_entity" #hole entity
+	pdxmesh = "portal_mesh"
+	
+	locator = { name = "part1" 	position = { 0 0 0 } }
+	
+	default_state = idle
+	state = { name = "idle"		animation = "idle"		animation_blend_time = 0.3
+		start_event = { trigger_once = yes sound = { soundeffect = "ex_dimensional_portal_idle" } }
+	
+		event = { time = 0 node = "root2" particle = "portal_inner_effect_particle" keep_particle = yes trigger_once = yes }
+		event = { time = 0 node = "clock_12_locator" particle = "portal_effect_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ex_dimensional_portal_thunder" } }
+		event = { time = 0 node = "clock_3_locator" particle = "portal_effect_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ex_dimensional_portal_thunder" } }
+		event = { time = 0 node = "clock_6_locator" particle = "portal_effect_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ex_dimensional_portal_thunder" } }
+		event = { time = 0 node = "clock_9_locator" particle = "portal_effect_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ex_dimensional_portal_thunder" } }
+	}
+	scale = 7
+}

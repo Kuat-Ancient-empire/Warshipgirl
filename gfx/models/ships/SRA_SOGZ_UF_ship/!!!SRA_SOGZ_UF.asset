@@ -1,0 +1,283 @@
+@SRA_SOGZ_UF_size = 8	# 模型本体的大小。
+# SRA_SOGZ_UF_front_armor 前装甲
+# SRA_SOGZ_UF_back_floating_wing 前浮翼
+# SRA_SOGZ_UF_back_floating_wing 后浮翼
+# SRA_SOGZ_UF_planet_killer 歼星核心
+# SRA_SOGZ_UF_crystal 水晶
+# SRA_SOGZ_UF_main_front 主体前段
+# SRA_SOGZ_UF_main_middle 主体中段
+# SRA_SOGZ_UF_main_back 主体后段
+
+animation = { name = "SRA_SOGZ_UF_main_idle_animation" file = "SRA_SOGZ_UF_main_idle.anim" }
+animation = { name = "SRA_SOGZ_UF_main_opening_animation" file = "SRA_SOGZ_UF_main_opening.anim" }
+animation = { name = "SRA_SOGZ_UF_main_opened_animation" file = "SRA_SOGZ_UF_main_opened.anim" }
+animation = { name = "SRA_SOGZ_UF_main_closing_animation" file = "SRA_SOGZ_UF_main_closing.anim" }
+animation = { name = "SRA_SOGZ_UF_main_working_opening_animation" file = "SRA_SOGZ_UF_main_working_opening.anim" }
+animation = { name = "SRA_SOGZ_UF_main_working_opened_animation" file = "SRA_SOGZ_UF_main_working_opened.anim" }
+animation = { name = "SRA_SOGZ_UF_main_working_closing_animation" file = "SRA_SOGZ_UF_main_working_closing.anim" }
+entity = {
+	name = "SRA_SOGZ_UF_shipsize_entity"
+}
+
+entity = {
+	name = "SRA_SOGZ_UF_hull_entity"
+	pdxmesh = "SRA_SOGZ_UF_main_mesh"
+	scale = @SRA_SOGZ_UF_size
+	
+	attach = { front_floating_wing_1 = "SRA_SOGZ_UF_front_floating_wing_entity_1" }
+	attach = { front_floating_wing_2 = "SRA_SOGZ_UF_front_floating_wing_entity_2" }
+	attach = { front_floating_wing_3 = "SRA_SOGZ_UF_front_floating_wing_entity_3" }
+	attach = { front_floating_wing_4 = "SRA_SOGZ_UF_front_floating_wing_entity_4" }
+	attach = { back_floating_wing_1 = "SRA_SOGZ_UF_back_floating_wing_entity_1" }
+	attach = { back_floating_wing_2 = "SRA_SOGZ_UF_back_floating_wing_entity_2" }
+	attach = { back_floating_wing_3 = "SRA_SOGZ_UF_back_floating_wing_entity_3" }
+	attach = { back_floating_wing_4 = "SRA_SOGZ_UF_back_floating_wing_entity_4" }
+	attach = { planet_killer_1 = "SRA_SOGZ_UF_planet_killer_entity_1" }
+	attach = { planet_killer_2 = "SRA_SOGZ_UF_planet_killer_entity_2" }
+	attach = { planet_killer_3 = "SRA_SOGZ_UF_planet_killer_entity_3" }
+	attach = { planet_killer_4 = "SRA_SOGZ_UF_planet_killer_entity_4" }
+	attach = { crystal_1 = "SRA_SOGZ_UF_crystal_entity_1" }
+	attach = { crystal_2 = "SRA_SOGZ_UF_crystal_entity_2" }
+	attach = { crystal_3 = "SRA_SOGZ_UF_crystal_entity_3" }
+	attach = { crystal_4 = "SRA_SOGZ_UF_crystal_entity_4" }
+	attach = { crystal_5 = "SRA_SOGZ_UF_crystal_entity_5" }
+
+	default_state = "idle"
+	state = { name = "idle"		animation = "idle" animation_speed = 0.5 animation_blend_time = 0.2 looping = no next_state = "idle"
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"combat_idle" = 0
+				"combat_moving" = 0
+			}
+			default = 1
+		}
+	}
+	state = { name = "idle"		animation = "closing" animation_speed = 0.5 animation_blend_time = 0 looping = no next_state = "idle"
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"combat_idle" = 100
+				"combat_moving" = 100
+			}
+			default = 0
+		}
+	}
+	state = { name = "combat_idle"		animation = "opening" animation_blend_time = 2 looping = no next_state = "combat_idle"
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"combat_idle" = 0
+				"combat_moving" = 0
+			}
+			default = 0
+		}
+	}
+	state = { name = "combat_idle"		animation = "opened" animation_speed = 0.1 animation_blend_time = 0.2 looping = yes next_state = "combat_idle"
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"combat_idle" = 100
+				"combat_moving" = 100
+			}
+			default = 1
+		}
+	}
+	state = { name = "combat_moving"		animation = "opening" animation_blend_time = 0 looping = no next_state = "combat_moving"
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"combat_idle" = 0
+				"combat_moving" = 0
+			}
+			default = 0
+		}
+	}
+	state = { name = "combat_moving"		animation = "opened" animation_speed = 0.1 animation_blend_time = 0.2 looping = yes next_state = "combat_moving"
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"combat_idle" = 100
+				"combat_moving" = 100
+			}
+			default = 1
+		}
+	}
+	state = { name = "moving"		animation = "closing" animation_blend_time = 0 looping = no next_state = "moving"
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"combat_idle" = 100
+				"combat_moving" = 100
+			}
+			default = 0
+		}
+	}
+	state = { name = "moving"		animation = "idle" animation_speed = 0.5 animation_blend_time = 0.2 looping = no next_state = "moving"
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"combat_idle" = 0
+				"combat_moving" = 0
+			}
+			default = 1
+		}
+	}
+	state = { name = "idle" animation = "working_closing" animation_speed = 2.5 looping = no next_state = "idle" 
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"death" = 0
+				"combat_idle" = 0
+				"combat_moving" = 0
+				"working" = 0
+				"working_looping" = 100
+			}
+		}
+		event = { trigger_once = yes sound = { soundeffect = "fallen_empire_colossus_closing" stop_on_state_change = yes } }
+	}
+	state = { name = "moving" animation = "working_closing" animation_speed = 2.5 looping = no next_state = "moving"
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"death" = 0
+				"combat_idle" = 0
+				"combat_moving" = 0
+				"working" = 0
+				"working_looping" = 100
+			}
+		}
+		event = { trigger_once = yes sound = { soundeffect = "fallen_empire_colossus_closing" stop_on_state_change = yes } }
+	}
+	state = { name = "working_looping" animation = "working_opened" animation_speed = 0.25
+		event = { time = 0	id = "beam_start" }
+	}
+	state = { name = "working" animation = "working_opening" animation_speed = 2.5 looping = no next_state = "working_looping" 
+		event = { trigger_once = yes sound = { soundeffect = "fallen_empire_colossus_opening" stop_on_state_change = yes } }
+		event = { time = 1000 id = "beam_start" }
+	}
+	
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+
+
+entity = {
+	name = "SRA_SOGZ_UF_front_floating_wing_entity_1"
+	pdxmesh = "SRA_SOGZ_UF_front_floating_wing_mesh_1"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+entity = {
+	name = "SRA_SOGZ_UF_front_floating_wing_entity_2"
+	pdxmesh = "SRA_SOGZ_UF_front_floating_wing_mesh_2"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+entity = {
+	name = "SRA_SOGZ_UF_front_floating_wing_entity_3"
+	pdxmesh = "SRA_SOGZ_UF_front_floating_wing_mesh_3"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+entity = {
+	name = "SRA_SOGZ_UF_front_floating_wing_entity_4"
+	pdxmesh = "SRA_SOGZ_UF_front_floating_wing_mesh_4"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+
+entity = {
+	name = "SRA_SOGZ_UF_back_floating_wing_entity_1"
+	pdxmesh = "SRA_SOGZ_UF_back_floating_wing_mesh_1"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+entity = {
+	name = "SRA_SOGZ_UF_back_floating_wing_entity_2"
+	pdxmesh = "SRA_SOGZ_UF_back_floating_wing_mesh_2"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+entity = {
+	name = "SRA_SOGZ_UF_back_floating_wing_entity_3"
+	pdxmesh = "SRA_SOGZ_UF_back_floating_wing_mesh_3"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+entity = {
+	name = "SRA_SOGZ_UF_back_floating_wing_entity_4"
+	pdxmesh = "SRA_SOGZ_UF_back_floating_wing_mesh_4"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+
+entity = {
+	name = "SRA_SOGZ_UF_planet_killer_entity_1"
+	pdxmesh = "SRA_SOGZ_UF_planet_killer_mesh_1"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+entity = {
+	name = "SRA_SOGZ_UF_planet_killer_entity_2"
+	pdxmesh = "SRA_SOGZ_UF_planet_killer_mesh_2"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+entity = {
+	name = "SRA_SOGZ_UF_planet_killer_entity_3"
+	pdxmesh = "SRA_SOGZ_UF_planet_killer_mesh_3"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+entity = {
+	name = "SRA_SOGZ_UF_planet_killer_entity_4"
+	pdxmesh = "SRA_SOGZ_UF_planet_killer_mesh_4"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+
+
+entity = {
+	name = "SRA_SOGZ_UF_crystal_entity_1"
+	pdxmesh = "SRA_SOGZ_UF_crystal_mesh_1"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+entity = {
+	name = "SRA_SOGZ_UF_crystal_entity_2"
+	pdxmesh = "SRA_SOGZ_UF_crystal_mesh_2"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+entity = {
+	name = "SRA_SOGZ_UF_crystal_entity_3"
+	pdxmesh = "SRA_SOGZ_UF_crystal_mesh_3"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+entity = {
+	name = "SRA_SOGZ_UF_crystal_entity_4"
+	pdxmesh = "SRA_SOGZ_UF_crystal_mesh_4"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+entity = {
+	name = "SRA_SOGZ_UF_crystal_entity_5"
+	pdxmesh = "SRA_SOGZ_UF_crystal_mesh_5"
+	scale = 1.0
+	game_data = { emissive_recolor_crunch = 0.0 }		# 自发光不随旗帜改变。
+}
+
+
+
+

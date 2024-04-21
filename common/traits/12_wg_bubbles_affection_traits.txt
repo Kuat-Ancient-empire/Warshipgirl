@@ -1,0 +1,200 @@
+#泡泡传奇特质
+leader_trait_wg_bubbles_legend = {
+	cost = 0
+	sorting_priority = 1000
+	icon = "gfx/interface/icons/traits/wsg_bubbles.dds"
+	icon = {
+		layer = {
+			icon = "GFX_trait_frame_destiny"
+		}
+	}
+	triggered_planet_modifier = {
+		potential = { 
+			leader_class = official
+		}
+		pop_growth_from_immigration = 0.2
+		planet_stability_add = 10
+		planet_jobs_unity_produces_mult = 0.2
+		planet_jobs_influence_produces_mult = 0.2
+	}
+	triggered_sector_modifier = {
+		potential = { 
+			leader_class = official
+		}
+		pop_growth_from_immigration = 0.2
+		planet_stability_add = 10
+		planet_jobs_unity_produces_mult = 0.2
+		planet_jobs_influence_produces_mult = 0.2
+	}
+	triggered_fleet_modifier = {
+		potential = { 
+			leader_class = commander
+		}
+		ship_hull_mult = 0.5
+		ship_armor_mult = 0.5
+		ship_speed_mult = 0.5
+		ship_fire_rate_mult = 0.25
+		ship_weapon_damage = 0.25
+		ship_evasion_add = 30
+		ship_evasion_mult = 0.3
+		ship_hull_regen_add_static = 500
+		ship_armor_regen_add_static = 500
+	}
+	leader_class = { official commander }
+	initial = no
+	randomized = no
+	notify_on_gained = no
+}
+
+
+leader_trait_wg_bubbles_affection = {
+	cost = 0
+
+	# replace_traits = { 
+	# 	leader_trait_official_affection
+	# 	leader_trait_admiral_wg_bubbles_affection
+	# 	leader_trait_ruler_wg_bubbles_affection
+	# }
+	
+	inline_script = {
+		script = trait/wg_new_leader_affection_trait
+		LEADER_TYPE = wg_bubbles
+	}
+	triggered_planet_modifier = {
+		# lv1
+		potential = {
+			check_variable = { which = affection value < wg_leader_affection_to_lv2 }
+		}
+		pop_amenities_usage_mult = -0.1
+	}
+	triggered_sector_modifier = {
+		# lv1
+		potential = {
+			check_variable = { which = affection value < wg_leader_affection_to_lv2 }
+		}
+		pop_amenities_usage_mult = -0.1
+	}
+	triggered_planet_modifier = {
+		# lv2
+		potential = {
+			check_variable = { which = affection value >= wg_leader_affection_to_lv2 }
+			check_variable = { which = affection value < wg_leader_affection_to_lv3 }
+		}
+		pop_amenities_usage_mult = -0.1
+		pop_growth_from_immigration = 0.2
+	}
+	triggered_sector_modifier = {
+		# lv2
+		potential = {
+			check_variable = { which = affection value >= wg_leader_affection_to_lv2 }
+			check_variable = { which = affection value < wg_leader_affection_to_lv3 }
+		}
+		pop_amenities_usage_mult = -0.1
+		pop_growth_from_immigration = 0.2
+	}
+	triggered_planet_modifier = {
+		# lv3
+		potential = {
+			check_variable = { which = affection value >= wg_leader_affection_to_lv3 }
+			check_variable = { which = affection value < wg_leader_affection_to_lv4 }
+		}
+		pop_amenities_usage_mult = -0.15
+		pop_growth_from_immigration = 0.2
+	}
+	triggered_sector_modifier = {
+		# lv3
+		potential = {
+			check_variable = { which = affection value >= wg_leader_affection_to_lv3 }
+			check_variable = { which = affection value < wg_leader_affection_to_lv4 }
+		}
+		pop_amenities_usage_mult = -0.15
+		pop_growth_from_immigration = 0.2
+	}
+	triggered_planet_modifier = {
+		# lv4
+		potential = {
+			if = {
+				limit = { owner = { has_country_flag = married_bubbles } }
+				check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+				check_variable = { which = affection value < wg_leader_affection_to_lv5 }
+			} else = {
+				check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+			}
+		}
+		pop_amenities_usage_mult = -0.2
+		pop_growth_from_immigration = 0.2
+		pop_happiness = 0.05
+	}
+	triggered_sector_modifier = {
+		# lv4
+		potential = {
+			if = {
+				limit = { owner = { has_country_flag = married_bubbles } }
+				check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+				check_variable = { which = affection value < wg_leader_affection_to_lv5 }
+			} else = {
+				check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+			}
+		}
+		pop_amenities_usage_mult = -0.2
+		pop_growth_from_immigration = 0.2
+		pop_happiness = 0.05
+	}
+	triggered_planet_modifier = {
+		# lv5
+		potential = {
+			check_variable = { which = affection value >= wg_leader_affection_to_lv5 }
+			owner = { has_country_flag = married_bubbles }
+		}
+		pop_amenities_usage_mult = -0.3
+		pop_growth_from_immigration = 0.2
+		pop_happiness = 0.1
+		planet_decision_enact_speed_mult = -0.2
+		job_entertainer_per_pop = 0.02
+		job_artisan_per_pop = 0.02
+		planet_sh_clerk_produces_mult = 0.3
+		planet_wsg_moyu_produces_mult = 0.3
+		planet_wsg_mahjong_produces_mult = 0.3
+		planet_barthroom_worker_produces_mult = 0.3
+		planet_artisans_produces_mult = 0.3
+		planet_entertainers_produces_mult = 0.3
+	}
+	triggered_sector_modifier = {
+		# lv5
+		potential = {
+			check_variable = { which = affection value >= wg_leader_affection_to_lv5 }
+			owner = { has_country_flag = married_bubbles }
+		}
+		pop_amenities_usage_mult = -0.3
+		pop_growth_from_immigration = 0.2
+		pop_happiness = 0.1
+		planet_decision_enact_speed_mult = -0.2
+		job_entertainer_per_pop = 0.02
+		job_artisan_per_pop = 0.02
+		planet_sh_clerk_produces_mult = 0.3
+		planet_wsg_moyu_produces_mult = 0.3
+		planet_wsg_mahjong_produces_mult = 0.3
+		planet_barthroom_worker_produces_mult = 0.3
+		planet_artisans_produces_mult = 0.3
+		planet_entertainers_produces_mult = 0.3
+	}
+	
+	leader_class = { official }
+	initial = no
+	randomized = no
+	notify_on_gained = no
+}
+
+
+leader_trait_scientist_bubbles_saver = {
+	cost = 0
+	
+	icon = "gfx/interface/icons/traits/wsg_bubbles.dds"
+	modifier = {
+		ship_anomaly_research_speed_mult = 0.3
+		ship_anomaly_generation_chance_mult = 0.2
+	}
+	leader_class = { scientist }
+	initial = no
+	randomized = no
+}

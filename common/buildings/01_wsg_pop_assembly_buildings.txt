@@ -1,0 +1,345 @@
+#港区建造器
+building_warshipgirl_assembly_plant = {
+	base_buildtime = 240
+	base_cap_amount = 1
+	category = pop_assembly
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			has_authority = auth_warshipgirls
+			NOR = {
+				has_ascension_perk = ap_project_s
+				has_ascension_perk = ap_become_the_gray
+			}
+		}
+	}
+	convert_to = {
+		"building_warshipgirl_senergy_assembly_plant"
+		"building_warshipgirl_nano_assembly_plant"
+	}
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				has_wg_special_authority = no
+				has_ascension_perk = ap_project_s
+				has_ascension_perk = ap_become_the_gray
+			}
+		}
+	}
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 3
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_origin = origin_wsg_ice_breaking
+			}					
+		}
+		modifier = {
+			planet_pop_assembly_organic_add = 0.5
+		}
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 300
+		}
+		upkeep = {
+			minerals = 5
+			energy = 5
+		}
+	}
+	prerequisites = {
+		"tech_warshipgirl_assembly_plant"
+	}
+	upgrades = {
+		building_warshipgirl_assembly_plantU
+	}
+}
+
+building_warshipgirl_assembly_plantU = {
+	base_buildtime = 480
+	can_build = no
+	category = pop_assembly
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			has_authority = auth_warshipgirls
+			NOR = {
+				has_ascension_perk = ap_project_s
+				has_ascension_perk = ap_become_the_gray
+			}
+		}
+	}
+	allow = {
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 15 }
+	}
+	convert_to = {
+		"building_warshipgirl_senergy_assembly_plantU"
+		"building_warshipgirl_nano_assembly_plantU"
+	}
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				has_wg_special_authority = no
+				has_ascension_perk = ap_project_s
+				has_ascension_perk = ap_become_the_gray
+			}
+		}
+	}
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 6
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 500
+			sr_pantsu = 50
+		}
+		upkeep = {
+			minerals = 10
+			energy = 10
+			sr_pantsu = 1
+		}
+	}
+	upgrades = {
+		building_warshipgirl_assembly_plantF
+	}
+	prerequisites = {
+		"tech_warshipgirl_assembly_plantU"
+	}
+}
+
+building_warshipgirl_assembly_plantF = {
+	base_buildtime = 640
+	can_build = no
+	category = pop_assembly
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			has_authority = auth_warshipgirls
+			NOR = {
+				has_ascension_perk = ap_project_s
+				has_ascension_perk = ap_become_the_gray
+			}
+		}
+	}
+	allow = {
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 20 }
+	}
+	convert_to = {
+		"building_warshipgirl_senergy_assembly_plantF"
+		"building_warshipgirl_nano_assembly_plantF"
+	}
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				has_wg_special_authority = no
+				has_ascension_perk = ap_project_s
+				has_ascension_perk = ap_become_the_gray
+			}
+		}
+	}
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 8
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 500
+			sr_neo = 50
+		}
+		upkeep = {
+			minerals = 15
+			energy = 15
+			sr_neo = 1
+			sr_pantsu = 1
+		}
+	}
+	prerequisites = {
+		"tech_warshipgirl_assembly_plantF"
+	}
+}
+
+###########################################
+##            S飞升建造器                 ##
+###########################################
+building_warshipgirl_senergy_assembly_plant = {
+	base_buildtime = 240
+	base_cap_amount = 1
+	category = pop_assembly
+	icon = building_warshipgirl_assembly_plant
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			has_authority = auth_warshipgirls
+			has_ascension_perk = ap_project_s
+			NOT = { has_ascension_perk = ap_become_the_gray }
+		}
+	}
+	destroy_trigger = {
+		exists = owner
+		owner = { OR = {
+			has_wg_special_authority = no
+			has_ascension_perk = ap_become_the_gray
+		}}
+	}
+	convert_to = { "building_warshipgirl_nano_assembly_plant" }
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 3
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 300
+		}
+		upkeep = {
+			minerals = 5
+			energy = 5
+		}
+		upkeep = {
+			trigger = {
+				exists = assembling_species
+				assembling_species = {
+					has_trait = wsg_trait_mass_assembly
+				}
+			}
+			sr_se = 15
+		}
+	}
+	prerequisites = {
+		"tech_warshipgirl_assembly_plant"
+	}
+	upgrades = {
+		building_warshipgirl_senergy_assembly_plantU
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_origin = origin_wsg_ice_breaking
+			}					
+		}
+		modifier = {
+			planet_pop_assembly_organic_add = 0.5
+		}
+	}
+}
+
+building_warshipgirl_senergy_assembly_plantU = {
+	base_buildtime = 480
+	can_build = no
+	category = pop_assembly
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			has_authority = auth_warshipgirls
+			has_ascension_perk = ap_project_s
+			NOT = { has_ascension_perk = ap_become_the_gray }
+		}
+	}
+	allow = {
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 15 }
+	}
+	destroy_trigger = {
+		exists = owner
+		owner = { OR = {
+			has_wg_special_authority = no
+			has_ascension_perk = ap_become_the_gray
+		}}
+	}
+	convert_to = { "building_warshipgirl_nano_assembly_plantU" }
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 6
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 500
+			sr_pantsu = 50
+		}
+		upkeep = {
+			minerals = 10
+			energy = 10
+			sr_pantsu = 1
+		}
+		upkeep = {
+			trigger = {
+				exists = assembling_species
+				assembling_species = {
+					has_trait = wsg_trait_mass_assembly
+				}
+			}
+			sr_se = 15
+		}
+	}
+	upgrades = {
+		building_warshipgirl_senergy_assembly_plantF
+	}
+	prerequisites = {
+		"tech_warshipgirl_assembly_plantU"
+	}
+}
+
+building_warshipgirl_senergy_assembly_plantF = {
+	base_buildtime = 640
+	can_build = no
+	category = pop_assembly
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			has_authority = auth_warshipgirls
+			has_ascension_perk = ap_project_s
+			NOT = { has_ascension_perk = ap_become_the_gray }
+		}
+	}
+	allow = {
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 20 }
+	}
+	destroy_trigger = {
+		exists = owner
+		owner = { OR = {
+			has_wg_special_authority = no
+			has_ascension_perk = ap_become_the_gray
+		}}
+	}
+	convert_to = { "building_warshipgirl_nano_assembly_plantF" }
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 9
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 500
+			sr_se = 50
+		}
+		upkeep = {
+			minerals = 15
+			energy = 15
+			sr_se = 1
+			sr_pantsu = 1
+		}
+		upkeep = {
+			trigger = {
+				exists = assembling_species
+				assembling_species = {
+					has_trait = wsg_trait_mass_assembly
+				}
+			}
+			sr_se = 15
+		}
+	}
+	prerequisites = {
+		"tech_warshipgirl_senergy_assembly_plantF"
+	}
+}

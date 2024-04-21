@@ -1,0 +1,99 @@
+wsg_lady_available = {
+	OR = {
+		has_country_flag = gain_wsg_lady
+		is_same_value = event_target:wsg_lady_own_country
+	}
+	NOR = {
+		has_modifier = wsg_lady_recover_cd
+		has_country_flag = modifing_wsg_lady
+		has_country_flag = ban_commu_with_wsg_lady
+	}
+}
+
+has_wsg_lady_active_diplo = {
+	has_active_event = {
+		wg_lady.24 wg_old_leader_diplo.1001
+		wg_lady.25 wg_old_leader_diplo.1002
+		wg_lady.26 wg_old_leader_diplo.1003
+		wg_lady.27 wg_old_leader_diplo.1004
+		wg_lady.28 wg_old_leader_diplo.1005
+		wg_lady.29 wg_old_leader_diplo.1006
+	}
+}
+
+is_lady_army = {
+	OR = {
+		army_type = lady_army
+		army_type = lady_army_dragonslayer
+		army_type = lady_army_affection_3
+		army_type = lady_army_affection_3_dragonslayer
+		army_type = lady_army_affection_5
+		army_type = lady_army_affection_5_dragonslayer
+	}
+}
+
+wg_lady_changing_prev_warship_allow_triggers = {
+	hidden_trigger = {
+		any_controlled_fleet = { has_fleet_flag = lady_fleet2 }
+	}
+	custom_tooltip = {
+		fail_text = wg_lady.27.allow.a
+		any_controlled_fleet = { 
+			has_fleet_flag = lady_fleet2
+			is_in_combat = no
+		}
+	}
+	custom_tooltip = {
+		fail_text = wg_lady.27.allow.b
+		any_controlled_fleet = { 
+			has_fleet_flag = lady_fleet2
+			NOT = { has_hp_percentage < 0.7 }
+		}
+	}
+}
+
+wg_lady_changing_prev_army_allow_triggers = {
+	hidden_trigger = {
+		any_owned_army = {
+			is_lady_army = yes
+			OR = {
+				exists = planet
+				AND = {
+					exists = fleet
+					fleet = { num_ships > 0 }
+				}
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = wg_lady.27.allow.a
+		any_owned_army = {
+			is_lady_army = yes
+			if = {
+				limit = { exists = fleet }
+				fleet = { is_in_combat = no }
+			} else_if = {
+				limit = { exists = planet }
+				planet = { has_ground_combat = no }
+			}
+		}
+	}
+}
+wg_lady_changing_prev_armed_science_allow_triggers = {
+	hidden_trigger = {
+		any_controlled_fleet = { has_fleet_flag = lady_armed_science }
+	}
+	custom_tooltip = {
+		fail_text = wg_lady.27.allow.a
+		any_controlled_fleet = { 
+			has_fleet_flag = lady_armed_science
+			is_in_combat = no
+		}
+	}
+	custom_tooltip = {
+		fail_text = wg_lady.27.allow.b
+		event_target:lady_science_ship = {
+			has_hp_percentage > 0.8
+		}
+	}
+}

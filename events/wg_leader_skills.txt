@@ -1,0 +1,439 @@
+namespace = wg_leader
+# Fleet enters combat
+country_event = {
+    id = wg_leader.1
+    hide_window = yes
+	is_triggered_only = yes
+
+	trigger = { 
+		FROMFROM = { 
+			exists = leader
+			NOT = { has_fleet_flag = drones }
+		}
+    }
+	
+	immediate = {
+		if = {
+			limit = { FROMFROM = { exists = leader }}
+			FROMFROM = {
+				# 乜提督
+				if = { 
+					limit = { 
+						leader = { has_leader_flag = NieAdmiral }
+						NOT = { has_fleet_flag = NieAdmiral_fleet }
+					}
+					set_fleet_flag = NieAdmiral_fleet
+					fleet_event = { id = wg_leader.100 }
+				}
+				# 声望
+				else_if = { 
+					limit = { 
+						leader = { has_leader_flag = mist_Renown }
+						NOT = { has_fleet_flag = mist_Renown_fleet }
+					}
+					set_fleet_flag = mist_Renown_fleet
+					leader = {
+						random_list = {
+							1 = { 
+								modifier = { factor = 0 check_variable = { which = weapon_damage value >= 10 }}
+								change_variable = { which = weapon_damage value = 1 } 
+							}
+							1 = { 
+								modifier = { factor = 0 check_variable = { which = fire_rate value >= 10 }}
+								change_variable = { which = fire_rate value = 1 } 
+							}
+							1 = { 
+								modifier = { factor = 0 check_variable = { which = weapon_range value >= 10 }}
+								change_variable = { which = weapon_range value = 1 } 
+							}
+							1 = { 
+								modifier = { factor = 0 check_variable = { which = accuracy value >= 10 }}
+								change_variable = { which = accuracy value = 1 } 
+							}
+							1 = { 
+								modifier = { factor = 0 check_variable = { which = evasion value >= 10 }}
+								change_variable = { which = evasion value = 1 } 
+							}
+						}
+					}
+					# fleet_event = { id = wg_leader.110 }
+				}
+				# 反击
+				else_if = { 
+					limit = { 
+						leader = { has_leader_flag = mist_Repulse }
+					}
+					clear_variable = renown_debuff_level
+					set_fleet_flag = mist_Repulse_fleet
+					fleet_event = { id = wg_leader.111 days = 30 }
+				}
+				# 沙口秘书
+				else_if = { 
+					limit = { 
+						leader = { has_leader_flag = projectS_missouri }
+					}
+					set_fleet_flag = projectS_missouri_fleet
+					fleet_event = { id = wg_leader.112 days = 30 }
+				}
+			}
+		}
+	}
+}
+
+# Fleet finish combat（乜提督专用）
+country_event = {
+    id = wg_leader.10002
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = { 
+        OR = {
+            FROMFROM = { 
+				has_fleet_flag = NieAdmiral_fleet
+                NOT = { has_fleet_flag = drones }
+            }
+            FROMFROMFROM = { 
+				has_fleet_flag = NieAdmiral_fleet
+                NOT = { has_fleet_flag = drones }
+            }
+        }
+    }
+
+    immediate = {
+		if = {
+			limit = { FROMFROM = { has_fleet_flag = NieAdmiral_fleet } }
+			FROMFROM = { fleet_event = { id = wg_leader.2 }}
+		} else_if = {
+			limit = { FROMFROMFROM = { has_fleet_flag = NieAdmiral_fleet } }
+			FROMFROMFROM = { fleet_event = { id = wg_leader.2 }}
+		}
+    }
+}
+fleet_event = {
+    id = wg_leader.2
+    hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+            limit = { is_in_combat = no }
+			fleet_event = { id = wg_leader.3 }
+		} else = {
+			fleet_event = { id = wg_leader.2 days = 1 }
+		}
+	}
+}
+
+fleet_event = {
+    id = wg_leader.100
+    hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_owned_ship = {
+			set_ship_flag = NieAdmiral_skill
+			set_disable_at_health = 0.40
+		}
+		fleet_event = { id = wg_leader.102 days = 1 }
+	}
+}
+
+ship_event = {
+    id = wg_leader.101
+    hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		OR = {
+			has_ship_flag = NieAdmiral_skill
+			has_ship_flag = NieAdmiral_skill2
+		}
+	}
+
+	immediate = {
+		remove_ship_flag = NieAdmiral_skill
+		set_disabled = no
+		random_list = {
+			50 = {
+				modifier = {
+					factor = 0
+					has_ship_flag = NieAdmiral_skill_failed
+				}
+				set_disable_at_health = 0.01
+				repair_ship = yes
+				reduce_hp_percent = 60
+				add_modifier = { modifier = nie_admiral_buff }
+				set_ship_flag = NieAdmiral_skill2
+			}
+			50 = { 
+				modifier = {
+					factor = 0
+					has_ship_flag = NieAdmiral_skill2
+				}
+				set_ship_flag = NieAdmiral_skill_failed
+				set_disable_at_health = -1.0 
+			}
+		}
+	}
+}
+
+fleet_event = {
+    id = wg_leader.102
+    hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		if = {
+			limit = { is_in_combat = yes }
+			if = {
+				limit = { any_owned_ship = {
+					has_ship_flag = NieAdmiral_skill2
+				}}
+				random_owned_ship = { 
+					limit = { has_ship_flag = NieAdmiral_skill2 }
+						solar_system = {
+						if = {
+							limit = {
+								count_ship_in_system = {
+									limit = { # 舰队里所有船都处于无敌状态但未撤退
+										OR = {
+											has_ship_flag = NieAdmiral_skill
+											has_ship_flag = NieAdmiral_skill_failed
+										}
+										NOT = { has_ship_flag = NieAdmiral_skill2 }
+										Fleet = { has_fleet_flag = NieAdmiral_fleet }
+									}
+									count < 1
+								}
+							}
+							ROOT = { fleet_event = { id = wg_leader.3 days = 5 }}
+						} else = {
+							ROOT = { 
+								fleet_event = { id = wg_leader.102 days = 1 }
+							}
+						}
+					}
+				}
+			} else = {
+				fleet_event = { id = wg_leader.102 days = 1 }
+			}
+		} else = {
+			fleet_event = { id = wg_leader.3 }
+		}
+	}
+}
+
+fleet_event = {
+    id = wg_leader.3
+    hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_fleet_flag = NieAdmiral_fleet }
+			remove_fleet_flag = NieAdmiral_fleet
+			every_owned_ship = {
+				remove_ship_flag = NieAdmiral_skill
+				remove_ship_flag = NieAdmiral_skill_failed
+				set_disable_at_health = -1.0
+				remove_ship_flag = NieAdmiral_skill2
+				remove_modifier = nie_admiral_buff
+			}
+		}
+	}
+}
+
+# Fleet finish combat
+country_event = {
+    id = wg_leader.4
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = { 
+        OR = {
+            FROMFROM = { 
+                NOT = { has_fleet_flag = drones }
+            }
+            FROMFROMFROM = { 
+                NOT = { has_fleet_flag = drones }
+            }
+        }
+    }
+
+    immediate = {
+        FROMFROMFROM = { 
+            every_combatant_fleet = {
+                fleet_event = { id = wg_leader.5 days = 1 }
+                set_variable = { which = "not_in_combat_days" value = 1 }
+            }
+        }
+    }
+}
+
+fleet_event = {
+    id = wg_leader.5
+    hide_window = yes
+	is_triggered_only = yes
+
+	trigger = { 
+        exists = this
+        check_variable = { which = "not_in_combat_days" value < 5 }
+    }
+
+	immediate = {
+		if = {
+			limit = { is_in_combat = no }
+			set_variable = { which = "not_in_combat_days" value = 0 }
+			fire_on_action = {
+				on_action = on_fleet_finish_combat
+			}
+		} else = {
+			fleet_event = { id = wg_leader.5 days = 1 }
+            change_variable = { which = "not_in_combat_days" value = 1 }
+		}
+	}
+}
+
+fleet_event = {
+	id = wg_leader.6
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_fleet_flag = mist_Renown_fleet }
+			remove_fleet_flag = mist_Renown_fleet
+		}
+		else_if = {
+			limit = { has_fleet_flag = mist_Repulse_fleet }
+			remove_fleet_flag = mist_Repulse_fleet
+			remove_modifier = base_weapon_damage_modifier
+			remove_modifier = base_fire_rate_modifier
+			remove_modifier = base_weapon_range_modifier
+			remove_modifier = base_accuracy_modifier
+			remove_modifier = base_evasion_modifier
+			clear_variable = renown_debuff_level
+		}
+		else_if = {
+			limit = { has_fleet_flag = projectS_missouri_fleet }
+			remove_fleet_flag = projectS_missouri_fleet
+			every_owned_ship = {
+				remove_modifier = sr_se_ship_upkeep_modifier
+			}
+		}
+	}
+}
+
+fleet_event = {
+    id = wg_leader.110
+    hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_fleet_flag = mist_Renown_fleet
+	}
+
+	immediate = {
+		remove_modifier = base_weapon_damage_modifier
+		remove_modifier = base_fire_rate_modifier
+		remove_modifier = base_weapon_range_modifier
+		remove_modifier = base_accuracy_modifier
+		remove_modifier = base_evasion_modifier
+		add_modifier = {
+			modifier = base_weapon_damage_modifier
+			multiplier = leader.weapon_damage
+		}
+		add_modifier = {
+			modifier = base_fire_rate_modifier
+			multiplier = leader.fire_rate
+		}
+		add_modifier = {
+			modifier = base_weapon_range_modifier
+			multiplier = leader.fire_rate
+		}
+		add_modifier = {
+			modifier = base_accuracy_modifier
+			multiplier = leader.accuracy
+		}
+		add_modifier = {
+			modifier = base_evasion_modifier
+			multiplier = leader.evasion
+		}
+	}
+}
+
+fleet_event = {
+    id = wg_leader.111
+    hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_fleet_flag = mist_Repulse_fleet
+		is_in_combat = yes
+		check_variable = { which = renown_debuff_level value > -10 }
+	}
+
+	immediate = {
+		remove_modifier = base_weapon_damage_modifier
+		remove_modifier = base_fire_rate_modifier
+		remove_modifier = base_weapon_range_modifier
+		remove_modifier = base_accuracy_modifier
+		remove_modifier = base_evasion_modifier
+		change_variable = {
+			which = renown_debuff_level
+			value = -2
+		}
+		add_modifier = {
+			modifier = base_weapon_damage_modifier
+			multiplier = renown_debuff_level
+		}
+		add_modifier = {
+			modifier = base_fire_rate_modifier
+			multiplier = renown_debuff_level
+		}
+		add_modifier = {
+			modifier = base_weapon_range_modifier
+			multiplier = renown_debuff_level
+		}
+		add_modifier = {
+			modifier = base_accuracy_modifier
+			multiplier = renown_debuff_level
+		}
+		add_modifier = {
+			modifier = base_evasion_modifier
+			multiplier = renown_debuff_level
+		}
+		fleet_event = { id = wg_leader.111 days = 30 }
+	}
+}
+
+fleet_event = {
+	id = wg_leader.112
+    hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_fleet_flag = projectS_missouri_fleet
+		is_in_combat = yes
+	}
+
+	immediate = {
+		every_owned_ship = {
+			remove_modifier = sr_se_ship_upkeep_modifier
+			if = {
+				limit = { is_ship_size_dd_cl = yes }
+				add_modifier = {
+					modifier = sr_se_ship_upkeep_modifier
+				}
+			} else = {
+				add_modifier = {
+					modifier = sr_se_ship_upkeep_modifier
+					multiplier = 2.5
+				}
+			}
+		}
+	}
+}

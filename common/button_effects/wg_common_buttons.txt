@@ -1,0 +1,202 @@
+wg_default_show_effect = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = { }
+}
+wg_default_hide_effect = {
+	potential = { always = no }
+	allow = { always = yes }
+	effect = { }
+}
+wg_shop_exchange_resource_plus20 = {
+	potential = { always = yes }
+	allow = { 
+		from = { 
+			custom_tooltip_fail = {
+				text = wg_shop_exchange_resource_max_reached
+				check_variable = { 
+					which = wg_shop_exchange_resource 
+					value < wg_shop_exchange_resource_max 
+				}
+			}
+			resource_stockpile_compare = {
+				resource = sr_pantsu
+				value >= 1
+				mult = wg_shop_exchange_resource
+			}
+		}
+	}
+	effect = { 
+		from = { hidden_effect = {
+			change_variable = {
+				which = wg_shop_exchange_resource 
+				value = 20
+			}
+			if = {
+				limit = { check_variable = { 
+					which = wg_shop_exchange_resource 
+					value >= wg_shop_exchange_resource_max 
+				}}
+				set_variable = {
+					which = wg_shop_exchange_resource 
+					value = wg_shop_exchange_resource_max 
+				}
+			} else_if = {
+				limit = { resource_stockpile_compare = {
+					resource = sr_pantsu
+					value < 1
+					mult = wg_shop_exchange_resource
+				}}
+				export_resource_stockpile_to_variable = {
+					resource = sr_pantsu
+					variable = wg_shop_exchange_resource
+				}
+			}
+		}}
+		custom_tooltip = wg_shop_exchange_resource_plus20_tooltip
+	} 
+}
+wg_shop_exchange_resource_minus20 = {
+	potential = { always = yes }
+	allow = { 
+		from = { custom_tooltip_fail = {
+			text = wg_shop_exchange_resource_min_reached
+			check_variable = { which = wg_shop_exchange_resource value > 100 }
+		}}
+	}
+	effect = { 
+		from = { hidden_effect = {
+			change_variable = { which = wg_shop_exchange_resource value = -20 }
+			if = {
+				limit = { check_variable = { which = wg_shop_exchange_resource value < 100 }}
+				set_variable = { which = wg_shop_exchange_resource value = 100 }
+			}
+		}}
+		custom_tooltip = wg_shop_exchange_resource_minus20_tooltip
+	} 
+}
+wg_shop_exchange_resource_plus500 = {
+	potential = { always = yes }
+	allow = { 
+		from = { 
+			custom_tooltip_fail = {
+				text = wg_shop_exchange_resource_max_reached
+				check_variable = { 
+					which = wg_shop_exchange_resource 
+					value < wg_shop_exchange_resource_max 
+				}
+			}
+			resource_stockpile_compare = {
+				resource = sr_pantsu
+				value >= 1
+				mult = wg_shop_exchange_resource
+			}
+		}
+	}
+	effect = { 
+		from = { hidden_effect = {
+			change_variable = {
+				which = wg_shop_exchange_resource 
+				value = 500
+			}
+			if = {
+				limit = { check_variable = { 
+					which = wg_shop_exchange_resource 
+					value >= wg_shop_exchange_resource_max 
+				}}
+				set_variable = {
+					which = wg_shop_exchange_resource 
+					value = wg_shop_exchange_resource_max 
+				}
+			} else_if = {
+				limit = { resource_stockpile_compare = {
+					resource = sr_pantsu
+					value < 1
+					mult = wg_shop_exchange_resource
+				}}
+				export_resource_stockpile_to_variable = {
+					resource = sr_pantsu
+					variable = wg_shop_exchange_resource
+				}
+			}
+		}}
+		custom_tooltip = wg_shop_exchange_resource_plus500_tooltip
+	} 
+}
+wg_shop_exchange_resource_minus500 = {
+	potential = { always = yes }
+	allow = { 
+		from = { custom_tooltip_fail = {
+			text = wg_shop_exchange_resource_min_reached
+			check_variable = { which = wg_shop_exchange_resource value > 100 }
+		}}
+	}
+	effect = { 
+		from = { hidden_effect = {
+			change_variable = { which = wg_shop_exchange_resource value = -500 }
+			if = {
+				limit = { check_variable = { which = wg_shop_exchange_resource value < 100 }}
+				set_variable = { which = wg_shop_exchange_resource value = 100 }
+			}
+		}}
+		custom_tooltip = wg_shop_exchange_resource_minus500_tooltip
+	} 
+}
+wg_shop_exchange_resource_max = {
+	potential = { always = yes }
+	allow = { 
+		from = { 
+			custom_tooltip_fail = {
+				text = wg_shop_exchange_resource_max_reached
+				check_variable = { 
+					which = wg_shop_exchange_resource 
+					value < wg_shop_exchange_resource_max 
+				}
+			}
+			resource_stockpile_compare = {
+				resource = sr_pantsu
+				value >= 1
+				mult = wg_shop_exchange_resource
+			}
+		}
+	}
+	effect = { 
+		from = { hidden_effect = {
+			if = {
+				limit = {
+					resource_stockpile_compare = {
+						resource = sr_pantsu
+						value >= 1
+						mult = wg_shop_exchange_resource_max
+					}
+				}
+				set_variable = {
+					which = wg_shop_exchange_resource
+					value = wg_shop_exchange_resource_max
+				}
+			} else = {
+				export_resource_stockpile_to_variable = {
+					resource = sr_pantsu
+					variable = wg_shop_exchange_resource
+				}
+			}
+		}}
+		custom_tooltip = wg_shop_exchange_resource_max_tooltip
+	} 
+}
+
+wg_shop_exchange_resource_min = {
+	potential = { always = yes }
+	allow = { 
+		from = { custom_tooltip_fail = {
+			text = wg_shop_exchange_resource_min_reached
+			check_variable = { which = wg_shop_exchange_resource value > 100 }
+		}}
+	}
+	effect = { 
+		from = { hidden_effect = {
+			set_variable = { which = wg_shop_exchange_resource value = 100 }
+		}}
+		custom_tooltip = wg_shop_exchange_resource_min_tooltip
+	} 
+}

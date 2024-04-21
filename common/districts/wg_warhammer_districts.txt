@@ -1,0 +1,396 @@
+#巢都
+district_wg_hive_world_housing = {
+	base_buildtime = 480
+	is_capped_by_modifier = no
+	icon = district_wg_hive_world_housing
+	
+	show_on_uncolonized = {
+		exists = from
+		from = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = wg_hive_city_world
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = wg_hive_city_world
+		}
+	}
+	
+	conversion_ratio = 1
+	convert_to = {
+		district_city
+		district_nexus
+		district_hive
+		district_arcology_wsg_housing
+		district_wg_forge
+	}	
+	
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = 1200
+		}
+		upkeep = {
+			energy = 10
+		}		
+	}
+	
+	planet_modifier = {
+		planet_housing_add = 25
+		planet_pop_assembly_organic_add = 0.5
+		pop_growth_speed = 0.25
+		job_wg_hive_city_foundry_add = 7
+		job_wg_hive_city_worker_add = 18
+		pop_happiness = -0.02
+		planet_amenities_add = -5
+		planet_crime_add = 5
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				has_authority = auth_shenhai
+			}
+		}
+		modifier = {
+			pop_growth_speed = -0.25
+			planet_pop_assembly_organic_add = 0.2
+		}
+	}
+    triggered_desc = {
+		trigger = { 
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_wg_hive_city_foundry_effect_desc
+	}
+	triggered_desc = {
+		trigger = { 
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_wg_hive_city_worker_effect_desc
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_maintenance_drone_add = 8
+		}
+	}
+
+	triggered_desc = {
+		trigger = { 
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_maintenance_drone_effect_desc
+	}	
+	
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = 5
+			free_housing < 10
+		}
+	}
+}
+
+district_wg_hive_world_admin = {
+	base_buildtime = 480
+	is_capped_by_modifier = no
+	icon = district_wg_hive_world_admin
+	
+	show_on_uncolonized = {
+		exists = from
+		from = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = wg_hive_city_world
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = wg_hive_city_world
+		}
+	}
+	
+	conversion_ratio = 1
+	convert_to = {
+		district_city
+		district_nexus
+		district_hive
+	}	
+	
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = 1500
+		}
+		upkeep = {
+			energy = 15
+		}		
+	}
+	
+	planet_modifier = {
+		planet_housing_add = 15
+		job_wg_hive_city_soldier_add = 10
+		planet_amenities_add = 10
+		planet_crime_add = -10
+	}
+
+    
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				has_authority = auth_warshipgirls
+			}
+		}
+		modifier = {
+			job_wsg_soldier_add = 5
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				has_authority = auth_shenhai
+			}
+		}
+		modifier = {
+			job_sh_soldier_add = 5
+		}
+	}
+	triggered_desc = {
+		trigger = { 
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_wg_hive_city_soldier_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { has_authority = auth_warshipgirls }
+		}
+		text = job_wsg_soldier_effect_desc
+	}	
+    triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { has_authority = auth_shenhai }
+		}
+		text = job_sh_soldier_effect_desc
+	}	
+	
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = 5
+			free_housing < 10
+		}
+	}
+}
+
+district_wg_forge = {
+	base_buildtime = 480
+	is_capped_by_modifier = no
+	icon = district_wg_forge
+	
+	show_on_uncolonized = {
+		exists = from
+		from = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = wg_forge_world
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = wg_forge_world
+		}
+	}
+	
+	conversion_ratio = 1
+	convert_to = {
+		district_city
+		district_nexus
+		district_hive
+		district_arcology_wsg_housing
+		district_wg_forge
+	}	
+	
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = 1200
+		}
+		upkeep = {
+			energy = 30
+		}
+		upkeep= {
+			trigger = { 
+				OR = {
+					has_active_building = building_sep_foundry
+					has_active_building = building_sep_foundry2
+					has_active_building = building_sh_foundry
+					has_active_building = building_sh_foundryU
+				}
+			}
+			sr_se = 0.5
+		}
+	}
+	
+	planet_modifier = {
+		planet_housing_add = 25
+		job_wg_forge_foundry_add = 15
+		planet_amenities_add = -5
+	}
+	triggered_planet_modifier = {
+		potential = { 
+			OR = {
+				has_active_building = building_sep_foundry
+				has_active_building = building_sep_foundry2
+			}
+		}
+		job_sep_foundry_add = 2
+	}
+	triggered_planet_modifier = {
+		potential = { 
+			OR = {
+				has_active_building = building_sh_foundry
+				has_active_building = building_sh_foundryU
+			}
+		}
+		job_sh_foundry_add = 3
+	}
+	triggered_desc = {
+		trigger = {
+			OR = {
+				has_active_building = building_sep_foundry
+				has_active_building = building_sep_foundry2
+			}
+		}
+		text = pc_port_extra_sep_foundry_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			OR = {
+				has_active_building = building_sh_foundry
+				has_active_building = building_sh_foundryU
+			}
+		}
+		text = pc_rw_sh_extra_sh_foundry_effect_desc
+	}
+	triggered_planet_modifier = {
+		potential = { 
+			exists = owner
+			OR = {
+				has_active_building = building_wsg_foundry
+			}
+		}
+		job_wsg_foundry_add = 2
+	}
+	triggered_desc = {
+		trigger = {
+			OR = {
+				has_active_building = building_wsg_foundry
+			}
+		}
+		text = pc_port_extra_wsg_foundry_effect_desc
+	}
+    triggered_desc = {
+		trigger = { 
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_wg_forge_foundry_effect_desc
+	}	
+	
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = 5
+			free_housing < 10
+		}
+	}
+}
+district_wg_forge_research = {
+	base_buildtime = 480
+	is_capped_by_modifier = no
+	icon = district_wg_forge_research
+	
+	show_on_uncolonized = {
+		exists = from
+		from = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = wg_forge_world
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = wg_forge_world
+		}
+	}
+	
+	conversion_ratio = 1
+	convert_to = {
+		district_city
+		district_nexus
+		district_hive
+		district_arcology_wsg_science
+	}	
+	
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = 1200
+		}
+		upkeep = {
+			energy = 10
+		}		
+	}
+	
+	planet_modifier = {
+		planet_housing_add = 25
+		job_wg_forge_research_add = 14
+		job_wg_forge_head_research_add = 1
+	}
+    triggered_desc = {
+		trigger = { 
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_wg_forge_research_effect_desc
+	}
+	triggered_desc = {
+		trigger = { 
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_wg_forge_head_research_effect_desc
+	}
+
+	
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = 5
+			free_housing < 10
+		}
+	}
+}

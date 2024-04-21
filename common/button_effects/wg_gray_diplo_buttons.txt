@@ -1,0 +1,241 @@
+
+wg_gray_01_portrait = {
+	potential = {
+		exists = from
+		from = {
+			check_variable = { which = wg_gray_cloth value = 1 }
+			NOT = { has_modifier = gray_scattered }
+		}
+	}
+	allow = { always = yes }
+	effect = {}
+}
+
+wg_gray_02_portrait = {
+	potential = {
+		exists = from
+		from = {
+			check_variable = { which = wg_gray_cloth value = 2 }
+		}
+	}
+	allow = { always = yes }
+	effect = {}
+}
+
+wg_gray_03_portrait = {
+	potential = {
+		exists = from
+		from = {
+			check_variable = { which = wg_gray_cloth value = 3 }
+		}
+	}
+	allow = { always = yes }
+	effect = {}
+}
+
+wg_gray_04_portrait = {
+	potential = {
+		exists = from
+		from = {
+			check_variable = { which = wg_gray_cloth value = 4 }
+		}
+	}
+	allow = { always = yes }
+	effect = {}
+}
+
+wg_gray_05_portrait = {
+	potential = {
+		exists = from
+		from = {
+			check_variable = { which = wg_gray_cloth value = 5 }
+		}
+	}
+	allow = { always = yes }
+	effect = {}
+}
+
+wg_gray_06_portrait = {
+	potential = {
+		exists = from
+		from = {
+			check_variable = { which = wg_gray_cloth value = 6 }
+		}
+	}
+	allow = { always = yes }
+	effect = {}
+}
+
+wg_gray_01_portrait_broken = {
+	potential = {
+		from = {
+			check_variable = { which = wg_gray_cloth value = 1 }
+			has_modifier = gray_scattered
+		}
+	}
+	allow = { always = yes }
+	effect = {}
+}
+
+wg_gray_portrait_locked = {
+	potential = {
+		exists = from
+		from = {
+			NOT = { has_global_flag = wg_cheat_all_clothes } #作弊解锁 
+			check_variable = { which = wg_gray_cloth value = 1 }
+			has_wg_special_authority = no
+		}
+	}
+	allow = { hidden_trigger = { always = yes }}
+	effect = {
+	}
+}
+
+wg_gray_cloth_button_prev = {
+	potential = { always = yes }
+	allow = { 
+		hidden_trigger = { exists = from }
+	}
+	effect = {
+		from = {
+			hidden_effect = {
+				change_variable = { which = wg_gray_cloth value = -1 }
+				if = {
+					limit = { 
+						check_variable = { which = wg_gray_cloth value = 1 }
+						NOT = { has_global_flag = has_wsg_mod }
+					}
+					change_variable = { which = wg_gray_cloth value = -1 }
+				}
+				if = {
+					limit = { check_variable = { which = wg_gray_cloth value < 1 }}
+					set_variable = { which = wg_gray_cloth value = 6 }
+				}
+			}
+		}
+		custom_tooltip = change_cloth
+	}
+}
+wg_gray_cloth_button_next = {
+	potential = { always = yes }
+	allow = { 
+		hidden_trigger = { exists = from }
+	}
+	effect = {
+		from = {
+			hidden_effect = {
+				change_variable = { which = wg_gray_cloth value = 1 }
+				if = {
+					limit = { 
+						check_variable = { which = wg_gray_cloth value = 1 }
+						NOT = { has_global_flag = has_wsg_mod }
+					}
+					change_variable = { which = wg_gray_cloth value = 1 }
+				}
+				if = {
+					limit = { check_variable = { which = wg_gray_cloth value > 6 }}
+					set_variable = { which = wg_gray_cloth value = 1 }
+				}
+			}
+		}
+		custom_tooltip = change_cloth
+	}
+}
+wg_gray_link_button_effect = {
+	potential = { 
+		exists = from
+		FROM = {
+			is_same_value = from
+			check_variable = { which = link_button_current_page value = 0 }
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = cannot_commu_with_gray
+			NOT = { has_country_flag = ban_commu_with_gray }
+		}
+		custom_tooltip = {
+			fail_text = already_has_wsg_gray_diplo
+			NAND = {
+				has_country_flag = gray_diplomacy_engaged 
+				has_active_event = { 
+					graygoo.500 graygoo.501 graygoo.502 graygoo.503
+				}
+			}
+		}
+	}}
+	effect = {
+		hidden_effect = { country_event = { id = wg_old_leader_diplo.2000 }}
+	}
+}
+
+wg_link_button_next_page_effect = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = {
+		hidden_effect = {
+			change_variable = { which = link_button_current_page value = 1 }
+			if = {
+				limit = { check_variable = { which = link_button_current_page value > 1 }}
+				set_variable = { which = link_button_current_page value = 0 }
+			}
+		}
+	}
+}
+
+wg_portrait_refresh_effect = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = {
+		custom_tooltip = "reset_portrait_tooltip"
+		from = {
+			hidden_effect = { country_event = { id = wsg.9997 }}
+		}
+	}
+}
+
+wg_gray_affection1_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv1_trigger = { LEADER = gray }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_gray_affection_show_lv2 }
+}
+wg_gray_affection2_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv2_trigger = { LEADER = gray }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_gray_affection_show_lv3 }
+}
+wg_gray_affection3_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv3_trigger = { LEADER = gray }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_gray_affection_show_lv4 }
+}
+wg_gray_affection4_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv4_trigger = { LEADER = gray MARRIED_FLAG = married_gray }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_gray_affection_show_lv5 }
+}
+wg_gray_affection5_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv5_trigger = { LEADER = gray MARRIED_FLAG = married_gray }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_gray_affection_show_lv5 }
+}

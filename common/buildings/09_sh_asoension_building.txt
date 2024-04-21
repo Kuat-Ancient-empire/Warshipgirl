@@ -1,0 +1,182 @@
+building_sh_sex = {
+	base_buildtime = 360
+
+	category = government
+	
+	base_cap_amount = 1
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai	
+			has_tradition = tr_sh_icebreaking_1
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			AND = {
+				free_building_slots = 0
+				buildings_stop_pop = yes
+				owner = {
+					is_ai = yes
+				}
+			}
+			owner = { OR = {
+				is_regular_empire = no 
+				has_wg_special_authority = no
+			}}
+			owner = { has_valid_civic = civic_shared_burden }
+			has_modifier = slave_colony
+		}
+	}
+
+	planet_modifier = {
+		pop_growth_speed = 0.50
+		planet_stability_add = 10
+	}
+	prerequisites = {
+#		"tech_sh_sex"
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 200
+		}	
+		upkeep = {
+			energy = 8
+			sr_pantsu = 1
+		}
+	}
+}
+
+building_sh_computer = {
+	base_buildtime = 1500
+	
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+
+	category = unity
+	
+	empire_limit = {
+	 	base = 1
+	}
+
+	
+	potential = {
+		exists = planet
+		OR = {
+			free_building_slots > 0
+			owner = { is_ai = no }
+		}
+		owner = { 
+			has_authority = auth_shenhai	
+			has_ascension_perk = ap_shenhai_upgrade
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			owner = { OR = {
+				is_regular_empire = no 
+				has_wg_special_authority = no
+			}}
+			has_modifier = slave_colony
+		}
+	}
+	allow = {
+		has_upgraded_capital = yes	
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 35 }
+	}
+	planet_modifier = {
+		planet_jobs_society_research_produces_mult = 0.20
+		planet_jobs_engineering_research_produces_mult = 0.20
+		planet_jobs_physics_research_produces_mult = 0.20
+	}
+	country_modifier = {
+		all_technology_research_speed = 0.1
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			influence = 50
+			alloys = 1500
+		}
+		upkeep = {
+			energy = 20
+		}
+	}		
+}
+
+building_sh_computer2 = {
+	base_buildtime = 1500
+	
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+
+	category = unity
+
+	empire_limit = {
+	 	base = 1
+	}
+	potential = {
+		exists = planet
+		OR = {
+			free_building_slots > 0
+			owner = { is_ai = no }
+		}
+		owner = { 
+			has_authority = auth_shenhai	
+			has_ascension_perk = ap_shenhai_upgrade
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+
+	on_built = {
+		owner = { set_country_flag = built_one_computer2 }
+	}
+	on_destroy = {
+		owner = { remove_country_flag = built_one_computer2 }
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			owner = { OR = {
+				is_regular_empire = no 
+				has_wg_special_authority = no
+			}}
+			has_modifier = slave_colony
+		}
+	}
+	allow = {
+		has_upgraded_capital = yes	
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 35 }
+	}
+	planet_modifier = {
+		planet_jobs_produces_mult = 0.20
+		job_sh_clerk_add = 10
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			influence = 50
+			alloys = 1500
+		}
+		upkeep = {
+			energy = 20
+		}
+	}		
+}
+

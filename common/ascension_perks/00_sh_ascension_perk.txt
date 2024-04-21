@@ -1,0 +1,423 @@
+ap_shenhai_space = {
+	modifier = {
+		empire_size_pops_mult = -0.25
+		starbase_outpost_cost_mult = -0.50
+	}
+	
+	potential = {
+        has_authority="auth_shenhai"
+		NOT = {
+			has_ascension_perk = ap_shenhai_space
+		}
+		is_mechanical_empire = no
+	}
+	
+	ai_weight = {
+		factor = 100
+		modifier = {
+			factor = 100
+			has_authority = auth_shenhai
+		}
+	}
+}
+
+ap_shenhai_project = {
+	potential = {
+		has_authority="auth_shenhai"
+		is_regular_empire = yes
+		NOT = { has_valid_civic = civic_agrarian_idyll }
+		NOR = {
+			has_ascension_perk = ap_shenhai_project
+			has_origin = origin_wg_warhammer
+		}
+	}
+	
+	possible = {
+		if = {
+			limit = { hidden_trigger = { is_ai = yes }}
+			num_ascension_perks > 4
+		}
+		custom_tooltip = {
+			fail_text = "requires_ascension_perks_1"
+			num_ascension_perks > 0
+		}		
+	}
+	
+	on_enabled = {
+		custom_tooltip = "decision_shenhai_project_effects"
+	}
+	
+	ai_weight = {
+		factor = 100
+		modifier = {
+			factor = 100
+			has_authority = auth_shenhai
+		}
+		modifier = {
+			factor = 2
+			has_ethic = ethic_pacifist
+		}
+		modifier = {
+			factor = 3
+			has_ethic = ethic_fanatic_pacifist
+		}
+	}
+}
+
+ap_shenhai_mega_fleet = {
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_ascension_perks_1"
+			num_ascension_perks > 0
+		}
+	}
+	modifier = {
+	    ships_upkeep_mult = -0.05
+		starbase_shipyard_build_cost_mult = -0.05
+		starbase_shipyard_build_speed_mult = 0.50
+		country_naval_cap_add = 150
+		command_limit_add = 50
+		country_base_influence_produces_add = 2
+		ship_sensor_range_add = 1
+		ship_hyperlane_range_add = 2
+	}
+	
+	potential = {
+	    has_authority="auth_shenhai"
+		NOT = {
+			has_ascension_perk = ap_shenhai_mega_fleet
+		}
+		is_mechanical_empire = no
+	}
+	
+	ai_weight = {
+		factor = 100
+		modifier = {
+			factor = 100
+			has_authority = auth_shenhai
+		}
+		modifier = {
+			factor = 2
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 3
+			has_ethic = ethic_fanatic_militarist
+		}
+	}
+}
+
+ap_shenhai_upgrade = {
+	on_enabled = {
+		custom_tooltip = "shenhai_upgrade_tooltip"
+		hidden_effect = {
+			country_event = { id = sh.1000 }
+			set_country_flag = sh_shenhai_flag_upgrade
+		}	
+    	add_research_option = tech_sh_experiment
+	}
+	modifier = {
+		SHENHAI_species_trait_points_add = 5
+		modify_species_cost_mult = -0.80
+		planet_pop_assembly_organic_add = 1
+	}		
+	possible = {
+		if = {
+			limit = { hidden_trigger = { is_ai = yes }}
+			num_ascension_perks > 2
+		} else = {
+			custom_tooltip = {
+				fail_text = "requires_ascension_perks_1"
+				num_ascension_perks > 0
+			}	
+			custom_tooltip = {
+				fail_text = "synthetic_empire_synthetic_ascension"
+				NOT = { has_trait = trait_mechanical }
+			}
+			custom_tooltip = {
+				fail_text = "requires_technology_sh_social"
+				has_technology = tech_sh_social
+			}	
+			custom_tooltip = {
+				fail_text = "hive_mind_biological_ascension_only2"
+				NOT = { has_authority = auth_hive_mind }
+			}
+			custom_tooltip = {
+				fail_text = "requires_technology_droid_workers"
+				OR = {
+					has_technology = tech_droid_workers
+					has_origin = origin_wg_warhammer
+				}
+			}
+		}
+	}
+	
+	potential = {
+		has_authority="auth_shenhai"
+		NOT = {
+			has_ascension_perk = ap_shenhai_upgrade
+		}
+		is_mechanical_empire = no
+	}
+	
+	ai_weight = {
+		factor = 100
+		modifier = {
+			factor = 1000
+			has_authority = auth_shenhai
+		}
+	}
+}
+
+ap_shenhai_silent = {
+	on_enabled = {
+		custom_tooltip = "shenhai_silent_tooltip"
+		hidden_effect = {
+		    every_pool_leader = {
+				limit = {
+					has_leader_flag = has_wg_affection
+				}
+				fire_on_action = {
+					on_action = on_wg_affection_system_end
+				}
+			}
+			every_owned_leader = {
+				limit = {
+					has_leader_flag = has_wg_affection
+				}
+				fire_on_action = {
+					on_action = on_wg_affection_system_end
+				}
+			}
+			country_event = { id = sh_fe.17 days = 10 }
+			set_country_flag = sh_shenhai_flag_silent
+			set_global_flag = exists_sh_slient_country
+			if = {
+				limit = { is_ai = yes }
+				country_event = { id = sh.4000 }
+				# ai无法用正常途径获得但必须的后期科技
+				give_technology = { tech = tech_dark_matter_power_core }
+				give_technology = { tech = tech_dark_matter_deflector }
+				give_technology = { tech = tech_dark_matter_propulsion }
+				give_technology = { tech = tech_sh_genetic_resequencing }
+			} else = {
+				country_event = { id = sh.2000 }
+				add_research_option = tech_sh_genetic_resequencing	
+			}
+		}
+		tooltip = {
+			add_research_option = tech_sh_genetic_resequencing	
+		}
+	}
+	modifier = {
+		SHENHAI_species_trait_points_add = 8	
+		country_naval_cap_add = 50
+	}		
+	possible = {
+		if = {
+			limit = { hidden_trigger = { is_ai = yes }}
+			num_ascension_perks > 3
+		} else = {
+			custom_tooltip = {
+				fail_text = "synthetic_empire_synthetic_ascension"
+				NOT = { has_trait = trait_mechanical }
+			}
+			custom_tooltip = {
+				fail_text = "requires_tech_synthetic_workers"
+				OR = {
+					has_technology = tech_synthetic_workers
+					has_origin = origin_wg_warhammer
+				}
+			}	
+			custom_tooltip = {
+				fail_text = "hive_mind_biological_ascension_only2"
+				NOT = { has_authority = auth_hive_mind }
+			}
+			custom_tooltip = {
+				fail_text = "requires_ascension_perks_2"
+				num_ascension_perks > 1
+			}		
+			custom_tooltip = {
+				fail_text = "requires_ascension_ap_shenhai_upgrade"
+				has_ascension_perk = ap_shenhai_upgrade 
+			}
+			custom_tooltip = {
+				fail_text = "requires_technology_sh_senergy"
+				has_technology = tech_sh_senergy
+			}	
+			custom_tooltip = {
+				fail_text = "requires_technology_sh_experiment1"
+				has_technology = tech_sh_experiment1
+			}
+		}
+	}
+	
+	potential = {
+		has_authority="auth_shenhai"
+		NOR = {
+			has_ascension_perk = ap_shenhai_silent
+			has_ascension_perk = ap_shenhai_icebreaking
+			has_country_flag = origin_wg_fe_child_flag
+			has_country_flag = custom_start_parit
+			#has_ascension_perk = ap_become_the_gray
+		}
+		is_mechanical_empire = no
+		if = {
+			limit = { is_ai = yes }
+			# 亲外ai不能缄默
+			NOR = {
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+			}
+		}
+	}
+	
+	ai_weight = {
+		factor = 100
+		modifier = {
+			factor = 1000
+			has_authority = auth_shenhai
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				has_ethic = ethic_egalitarian
+				has_ethic = ethic_fanatic_egalitarian
+			}
+		}
+		modifier = {
+			factor = 1.5
+			OR = {
+				has_ethic = ethic_authoritarian
+				has_ethic = ethic_fanatic_authoritarian
+			}
+		}
+		modifier = {
+			factor = 2
+			has_ethic = ethic_xenophobe
+		}
+		modifier = {
+			factor = 3
+			has_ethic = ethic_fanatic_xenophobe
+		}
+	}
+}
+
+ap_shenhai_icebreaking = {
+	on_enabled = {
+		custom_tooltip = "shenhai_icebreaking_tooltip"
+		hidden_effect = {
+			set_country_flag = sh_shenhai_flag_icebreaking
+			if = {
+				limit = { is_ai = yes }
+				country_event = { id = sh.4100 }
+				# ai无法用正常途径获得但必须的后期科技
+				give_technology = { tech = tech_dark_matter_power_core }
+				give_technology = { tech = tech_dark_matter_deflector }
+				give_technology = { tech = tech_dark_matter_propulsion }
+				give_technology = { tech = tech_sh_genetic_resequencing2 }
+			} else = {
+				country_event = { id = sh.3000 }
+				add_research_option = tech_sh_genetic_resequencing2	
+			}
+		}
+		tooltip = {
+			add_research_option = tech_sh_genetic_resequencing2	
+		}
+	}
+	modifier = {
+		SHENHAI_species_trait_points_add = 8
+	}		
+	possible = {
+		if = {
+			limit = { hidden_trigger = { is_ai = yes }}
+			num_ascension_perks > 3
+		} else = {
+			custom_tooltip = {
+				fail_text = "synthetic_empire_synthetic_ascension"
+				NOT = { has_trait = trait_mechanical }
+			}
+			custom_tooltip = {
+				fail_text = "requires_tech_synthetic_workers"
+				has_technology = tech_synthetic_workers
+			}	
+			custom_tooltip = {
+				fail_text = "hive_mind_biological_ascension_only2"
+				NOT = { has_authority = auth_hive_mind }
+			}
+			custom_tooltip = {
+				fail_text = "requires_ascension_perks_2"
+				num_ascension_perks > 1
+			}		
+			custom_tooltip = {
+				fail_text = "requires_ascension_ap_shenhai_upgrade"
+				has_ascension_perk = ap_shenhai_upgrade 
+			}
+			custom_tooltip = {
+				fail_text = "requires_technology_sh_senergy"
+				has_technology = tech_sh_senergy
+			}	
+			custom_tooltip = {
+				fail_text = "requires_technology_sh_experiment2"
+				has_technology = tech_sh_experiment2
+			}
+		}
+	}
+	
+	potential = {
+		has_authority="auth_shenhai"
+		NOR = {
+			has_ascension_perk = ap_shenhai_silent
+			has_ascension_perk = ap_shenhai_icebreaking
+			has_civic = civic_CM
+			#has_ascension_perk = ap_become_the_gray
+		}
+		is_mechanical_empire = no
+		if = {
+			limit = { is_ai = yes }
+			# 排外ai不能破冰
+			NOR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+			}
+		}
+	}
+	
+	ai_weight = {
+		factor = 100
+		modifier = {
+			factor = 1000
+			has_authority = auth_shenhai
+		}
+		modifier = {
+			factor = 1.25
+			OR = {
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_pacifist
+				has_ethic = ethic_pacifist
+			}
+		}
+		modifier = {
+			factor = 1.25
+			OR = {
+				has_ethic = ethic_egalitarian
+				has_ethic = ethic_fanatic_egalitarian
+			}
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				has_ethic = ethic_authoritarian
+				has_ethic = ethic_fanatic_authoritarian
+			}
+		}
+		modifier = {
+			factor = 2
+			has_ethic = ethic_xenophile
+		}
+		modifier = {
+			factor = 3
+			has_ethic = ethic_fanatic_xenophile
+		}
+	}
+}

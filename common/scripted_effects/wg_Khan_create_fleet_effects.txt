@@ -1,0 +1,620 @@
+# 主刷船触发：
+# 参数 NAME 是舰队名字，不填的话自动取预设name list
+# 其余整数参数不填则会自动省略
+# 带“Min”后缀的参数是最小创造数量，即必定会创造【输入值】的舰船
+# 带“Num”后缀的参数是最大随机数量，会随机创造最多为【输入值】的舰船
+# 例如输入BB1_Min = 3, BB1_Num = 6，会创造 3 ~ 9 个战列
+# BB1 到 BB4 可选择填入GRAPHICS前缀的参数，填入后会设置为指定的舰船外观
+# 参数 DIFF_MULT 为难度系数，创建的舰船数量将会乘上这个系数
+# 参数表见wg_Khan_fleet_data
+create_wg_Khan_fleet = {
+	optimize_memory
+    create_fleet = {
+		[[NAME] name = $NAME$]
+        effect = {
+			set_owner = event_target:WG_Khan_country
+			create_WG_Khan_titan = { Titan_Min=$Titan_Min|0$ Titan_Num=$Titan_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_dreadnought = { Dreadnought_Min=$Dreadnought_Min|0$ Dreadnought_Num=$Dreadnought_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_salted_fish = { SF_Min=$SF_Min|0$ SF_Num=$SF_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB1 = { BB1_Min=$BB1_Min|0$ BB1_Num=$BB1_Num|0$ GRAPHICS=$GRAPHICS1|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB1 = { BB1_Min=$BB1E_Min|0$ BB1_Num=$BB1E_Num|0$ GRAPHICS=$GRAPHICS1E|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB2 = { BB2_Min=$BB2_Min|0$ BB2_Num=$BB2_Num|0$ GRAPHICS=$GRAPHICS2|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB2 = { BB2_Min=$BB2E_Min|0$ BB2_Num=$BB2E_Num|0$ GRAPHICS=$GRAPHICS2E|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB3 = { BB3_Min=$BB3_Min|0$ BB3_Num=$BB3_Num|0$ GRAPHICS=$GRAPHICS3|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB3 = { BB3_Min=$BB3E_Min|0$ BB3_Num=$BB3E_Num|0$ GRAPHICS=$GRAPHICS3E|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB4 = { BB4_Min=$BB4_Min|0$ BB4_Num=$BB4_Num|0$ GRAPHICS=$GRAPHICS4|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB4 = { BB4_Min=$BB4E_Min|0$ BB4_Num=$BB4E_Num|0$ GRAPHICS=$GRAPHICS4E|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_CA = { CA_Min=$CA_Min|0$ CA_Num=$CA_Num|0$ GRAPHICS=$GRAPHICS_CA|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_CA = { CA_Min=$CA2_Min|0$ CA_Num=$CA2_Num|0$ GRAPHICS=$GRAPHICS_CA2|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_DD = { DD_Min=$DD_Min|0$ DD_Num=$DD_Num|0$ GRAPHICS=$GRAPHICS_DD|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_DD = { DD_Min=$DD2_Min|0$ DD_Num=$DD2_Num|0$ GRAPHICS=$GRAPHICS_DD2|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_Outrider = { Outrider_Min=$Outrider_Min|0$ Outrider_Num=$Outrider_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_Champion = { Champion_Min=$Champion_Min|0$ Champion_Num=$Champion_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_NomadCruiser = { NomadCL_Min=$NomadCL_Min|0$ NomadCL_Num=$NomadCL_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_Cara_Destroyer = { CaraDD_Min=$CaraDD_Min|0$ CaraDD_Num=$CaraDD_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_Haters_Cruiser = { Haters_CL_Min=$Haters_CL_Min|0$ Haters_CL_Num=$Haters_CL_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_Haters_Corvette = { Haters_VE_Min=$Haters_VE_Min|0$ Haters_VE_Min=$Haters_VE_Min|0$ DIFF_MULT = $DIFF_MULT$ }
+			set_location = event_target:WG_Khan_gate_star_target
+            set_fleet_stance = aggressive
+            set_fleet_bombardment_stance = Galo
+            set_aggro_range_measure_from = self
+            set_aggro_range = 500
+			set_fleet_flag = Khan_attack_fleet
+			fleet_event = { id = wg_khan.100 } #舰队行动触发
+			add_modifier = { modifier = wg_khan_gate_power1 days = 1440 } # 第一波buff4年后到期
+			add_modifier = { modifier = wg_khan_gate_power2 days = 2520 } # 第二波buff7年后到期
+			add_modifier = { modifier = wg_khan_gate_power3 days = 3600 } # 第一波buff10年后到期
+			add_modifier = { modifier = wg_khan_gate_power4 days = 4320 } # 第一波buff12年后到期
+			add_modifier = { modifier = wg_khan_gate_power5 days = 5400 } # 第一波buff15年后到期
+			#舰队变量设置，匹配模板舰队行为
+            event_target:WG_Khan_country = { change_variable = { which = "fleet_id" value = 1 }}
+            set_variable = { which = "fleet_id" value = event_target:WG_Khan_country.fleet_id }
+            solar_system = { set_variable = { which = wg_khan_fleet_id value = prev.fleet_id }}
+        }
+        settings = { 
+            can_upgrade = no 
+            uses_naval_capacity = no
+            can_change_leader = no
+            can_change_composition = no
+            can_disband = no
+            spawn_debris = no
+        }
+	}
+}
+
+create_wg_Khan_home_fleet = {
+    create_fleet = {
+		[[NAME] name = $NAME$]
+        effect = {
+			set_owner = PREV
+			create_WG_Khan_titan = { Titan_Min=$Titan_Min|0$ Titan_Num=$Titan_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_dreadnought = { Dreadnought_Min=$Dreadnought_Min|0$ Dreadnought_Num=$Dreadnought_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_salted_fish = { SF_Min=$SF_Min|0$ SF_Num=$SF_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB1 = { BB1_Min=$BB1_Min|0$ BB1_Num=$BB1_Num|0$ GRAPHICS=$GRAPHICS1|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB1 = { BB1_Min=$BB1E_Min|0$ BB1_Num=$BB1E_Num|0$ GRAPHICS=$GRAPHICS1E|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB2 = { BB2_Min=$BB2_Min|0$ BB2_Num=$BB2_Num|0$ GRAPHICS=$GRAPHICS2|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB2 = { BB2_Min=$BB2E_Min|0$ BB2_Num=$BB2E_Num|0$ GRAPHICS=$GRAPHICS2E|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB3 = { BB3_Min=$BB3_Min|0$ BB3_Num=$BB3_Num|0$ GRAPHICS=$GRAPHICS3|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB3 = { BB3_Min=$BB3E_Min|0$ BB3_Num=$BB3E_Num|0$ GRAPHICS=$GRAPHICS3E|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB4 = { BB4_Min=$BB4_Min|0$ BB4_Num=$BB4_Num|0$ GRAPHICS=$GRAPHICS4|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_BB4 = { BB4_Min=$BB4E_Min|0$ BB4_Num=$BB4E_Num|0$ GRAPHICS=$GRAPHICS4E|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_CA = { CA_Min=$CA_Min|0$ CA_Num=$CA_Num|0$ GRAPHICS=$GRAPHICS_CA|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_CA = { CA_Min=$CA2_Min|0$ CA_Num=$CA2_Num|0$ GRAPHICS=$GRAPHICS_CA2|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_DD = { DD_Min=$DD_Min|0$ DD_Num=$DD_Num|0$ GRAPHICS=$GRAPHICS_DD|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_DD = { DD_Min=$DD2_Min|0$ DD_Num=$DD2_Num|0$ GRAPHICS=$GRAPHICS_DD2|mammalian_01$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_Outrider = { Outrider_Min=$Outrider_Min|0$ Outrider_Num=$Outrider_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_Champion = { Champion_Min=$Champion_Min|0$ Champion_Num=$Champion_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_NomadCruiser = { NomadCL_Min=$NomadCL_Min|0$ NomadCL_Num=$NomadCL_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_Cara_Destroyer = { CaraDD_Min=$CaraDD_Min|0$ CaraDD_Num=$CaraDD_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_Haters_Cruiser = { Haters_CL_Min=$Haters_CL_Min|0$ Haters_CL_Num=$Haters_CL_Num|0$ DIFF_MULT = $DIFF_MULT$ }
+			create_WG_Khan_Haters_Corvette = { Haters_VE_Min=$Haters_VE_Min|0$ Haters_VE_Min=$Haters_VE_Min|0$ DIFF_MULT = $DIFF_MULT$ }
+			set_location = event_target:spawn_khan_fleet_location
+            set_fleet_stance = aggressive
+            set_aggro_range_measure_from = self
+            set_aggro_range = 500
+        }
+        settings = { 
+            can_upgrade = no 
+            uses_naval_capacity = no
+            can_change_leader = no
+            can_change_composition = no
+            can_disband = no
+            spawn_debris = no
+        }
+	}
+}
+
+# 创建堕落妈泰坦
+# 参数：Titan_Min, Titan_Num
+# 随机参数有40%概率创建船
+create_WG_Khan_titan = {
+	set_variable = { which = Titan_Min value = $Titan_Min$ }
+	set_variable = { which = Titan_Num value = $Titan_Num$ }
+	multiply_variable = { which = Titan_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = Titan_Num value = $DIFF_MULT$ }
+	while = {
+		count = Titan_Min
+		create_ship = {
+			name = random
+			design = "NAME_WG_FE_TITAN"
+			graphical_culture = "fallen_empire_03"
+			upgradable = no
+			effect = {
+				add_modifier = {
+					modifier = "wg_khan_1st_debuff"
+					days = -1
+				}
+			}
+		}
+	}
+	while = {
+		count = Titan_Num
+		random_list = {
+			40 = {
+				create_ship = {
+					name = random
+					design = "NAME_WG_FE_TITAN"
+					graphical_culture = "fallen_empire_03"
+					upgradable = no
+					effect = {
+						add_modifier = {
+							modifier = "wg_khan_1st_debuff"
+							days = -1
+						}
+					}
+				}
+			}
+			60 = {}
+		}
+	}
+}
+
+# 创建可汗无畏舰
+# 参数：Dreadnought_Min, Dreadnought_Num
+# 随机参数有10%概率创建船
+create_WG_Khan_dreadnought = {
+	set_variable = { which = Dreadnought_Min value = $Dreadnought_Min$ }
+	set_variable = { which = Dreadnought_Num value = $Dreadnought_Num$ }
+	multiply_variable = { which = Dreadnought_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = Dreadnought_Num value = $DIFF_MULT$ }
+	while = {
+		count = Dreadnought_Min
+		create_ship = {
+			name = random
+			design = "NAME_WG_Khan_dreadnought"
+			graphical_culture = "npf_01_dirty"
+			upgradable = no
+		}
+	}
+	while = {
+		count = Dreadnought_Num
+		random_list = {
+			10 = {
+				create_ship = {
+					name = random
+					design = "NAME_WG_Khan_dreadnought"
+					graphical_culture = "npf_01_dirty"
+					upgradable = no
+				}
+			}
+			90 = {}
+		}
+	}
+}
+
+# 咸鱼海盗战列
+# 参数：SF_Min, SF_Num
+# 随机参数有50%概率创建船
+create_WG_Khan_salted_fish = {
+	set_variable = { which = SF_Min value = $SF_Min$ }
+	set_variable = { which = SF_Num value = $SF_Num$ }
+	multiply_variable = { which = SF_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = SF_Num value = $DIFF_MULT$ }
+	while = { 
+		count = SF_Min
+		create_ship = {
+			name = random
+			design = "NAME_Salted_Fish_Glory"
+			prefix = no
+			graphical_culture = "pirate_01"
+		}
+	}
+	while = { 
+		count = SF_Num
+		random_list = {
+			50 = {
+				create_ship = {
+					name = random
+					design = "NAME_Salted_Fish_Glory"
+					prefix = no
+					graphical_culture = "pirate_01"
+				}
+			}
+			50 = {}
+		}
+	}
+}
+# 可汗驱逐舰
+# 参数：DD_Min, DD_Num, GRAPHICS
+# 随机参数有50%概率创建船
+create_WG_Khan_DD = {
+	set_variable = { which = DD_Min value = $DD_Min$ }
+	set_variable = { which = DD_Num value = $DD_Num$ }
+	multiply_variable = { which = DD_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = DD_Num value = $DIFF_MULT$ }
+	while = { 
+		count = DD_Min
+		create_ship = {
+			name = random
+			design = "NAME_WG_Khan_Destroyer"
+			prefix = no
+			graphical_culture = $GRAPHICS$
+		}
+	}
+	while = { 
+		count = DD_Num
+		random_list = {
+			50 = {
+				create_ship = {
+					name = random
+					design = "NAME_WG_Khan_Destroyer"
+					prefix = no
+					graphical_culture = $GRAPHICS$
+				}
+			}
+			50 = {}
+		}
+	}
+}
+# 可汗巡洋舰
+# 参数：CA_Min, CA_Num, GRAPHICS
+# 随机参数有50%概率创建船
+create_WG_Khan_CA = {
+	set_variable = { which = CA_Min value = $CA_Min$ }
+	set_variable = { which = CA_Num value = $CA_Num$ }
+	multiply_variable = { which = CA_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = CA_Num value = $DIFF_MULT$ }
+	while = { 
+		count = CA_Min
+		create_ship = {
+			name = random
+			design = "NAME_WG_Khan_Cruiser"
+			prefix = no
+			graphical_culture = $GRAPHICS$
+		}
+	}
+	while = { 
+		count = CA_Num
+		random_list = {
+			50 = {
+				create_ship = {
+					name = random
+					design = "NAME_WG_Khan_Cruiser"
+					prefix = no
+					graphical_culture = $GRAPHICS$
+				}
+			}
+			50 = {}
+		}
+	}
+}
+
+# design为NAME_WG_Khan_battleship的战列
+# 参数：BB1_Min, BB1_Num, GRAPHICS
+# 随机参数有50%概率创建船
+create_WG_Khan_BB1 = {
+	set_variable = { which = BB1_Min value = $BB1_Min$ }
+	set_variable = { which = BB1_Num value = $BB1_Num$ }
+	multiply_variable = { which = BB1_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = BB1_Num value = $DIFF_MULT$ }
+	while = { 
+		count = BB1_Min
+		create_ship = {
+			name = random
+			design = "NAME_WG_Khan_battleship"
+			prefix = no
+			graphical_culture = $GRAPHICS$
+		}
+	}
+	while = { 
+		count = BB1_Num
+		random_list = {
+			50 = {
+				create_ship = {
+					name = random
+					design = "NAME_WG_Khan_battleship"
+					prefix = no
+					graphical_culture = $GRAPHICS$
+				}
+			}
+			50 = {}
+		}
+	}
+}
+
+# design为NAME_WG_Khan_battleship2的战列
+# 参数：BB2_Min, BB2_Num, GRAPHICS
+# 随机参数有50%概率创建船
+create_WG_Khan_BB2 = {
+	set_variable = { which = BB2_Min value = $BB2_Min$ }
+	set_variable = { which = BB2_Num value = $BB2_Num$ }
+	multiply_variable = { which = BB2_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = BB2_Num value = $DIFF_MULT$ }
+	while = {
+		count = BB2_Min
+		create_ship = {
+			name = random
+			design = "NAME_WG_Khan_battleship2"
+			prefix = no
+			graphical_culture = $GRAPHICS$
+		}
+	}
+	while = {
+		count = BB2_Num
+		random_list = {
+			50 = {
+				create_ship = {
+					name = random
+					design = "NAME_WG_Khan_battleship2"
+					prefix = no
+					graphical_culture = $GRAPHICS$
+				}
+			}
+			50 = {}
+		}
+	}
+}
+
+# design为NAME_WG_Khan_battleship3的战列
+# 参数：BB3_Min, BB3_Num, GRAPHICS
+# 随机参数有50%概率创建船
+create_WG_Khan_BB3 = {
+	set_variable = { which = BB3_Min value = $BB3_Min$ }
+	set_variable = { which = BB3_Num value = $BB3_Num$ }
+	multiply_variable = { which = BB3_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = BB3_Num value = $DIFF_MULT$ }
+	while = {
+		count = BB3_Min
+		create_ship = {
+			name = random
+			design = "NAME_WG_Khan_battleship3"
+			prefix = no
+			graphical_culture = $GRAPHICS$
+		}
+	}
+	while = {
+		count = BB3_Num
+		random_list = {
+			50 = {
+				create_ship = {
+					name = random
+					design = "NAME_WG_Khan_battleship3"
+					prefix = no
+					graphical_culture = $GRAPHICS$
+				}
+			}
+			50 = {}
+		}
+	}
+}
+
+# design为NAME_WG_Khan_battleship4的战列
+# 参数：BB4_Min, BB4_Num, GRAPHICS
+# 随机参数有50%概率创建船
+create_WG_Khan_BB4 = {
+	set_variable = { which = BB4_Min value = $BB4_Min$ }
+	set_variable = { which = BB4_Num value = $BB4_Num$ }
+	multiply_variable = { which = BB4_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = BB4_Num value = $DIFF_MULT$ }
+	while = {
+		count = BB4_Min
+		create_ship = {
+			name = random
+			design = "NAME_WG_Khan_battleship4"
+			prefix = no
+			graphical_culture = $GRAPHICS$
+		}
+	}
+	while = {
+		count = BB4_Num
+		random_list = {
+			50 = {
+				create_ship = {
+					name = random
+					design = "NAME_WG_Khan_battleship4"
+					prefix = no
+					graphical_culture = $GRAPHICS$
+				}
+			}
+			50 = {}
+		}
+	}
+}
+
+# 海盗护卫舰
+# 参数：Outrider_Min, Outrider_Num
+# 随机参数有70%概率创建船
+create_WG_Khan_Outrider = {
+	set_variable = { which = Outrider_Min value = $Outrider_Min$ }
+	set_variable = { which = Outrider_Num value = $Outrider_Num$ }
+	multiply_variable = { which = Outrider_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = Outrider_Num value = $DIFF_MULT$ }
+	while = {
+		count = Outrider_Min
+		create_ship = {
+			name = random
+			design = "NAME_Outrider"
+			prefix = no
+			graphical_culture = "pirate_01"
+			effect = {
+				add_modifier = {
+					modifier = "wg_khan_speed_buff"
+					days = -1
+				}
+			}
+		}
+	}
+	while = {
+		count = Outrider_Num
+		random_list = {
+			70 = {
+				create_ship = {
+					name = random
+					design = "NAME_Outrider"
+					prefix = no
+					graphical_culture = "pirate_01"
+					effect = {
+						add_modifier = {
+							modifier = "wg_khan_speed_buff"
+							days = -1
+						}
+					}
+				}
+			}
+			30 = {}
+		}
+	}
+}
+
+# 海盗巡洋舰
+# 参数：Champion_Min, Champion_Num
+# 随机参数有60%概率创建船
+create_WG_Khan_Champion = {
+	set_variable = { which = Champion_Min value = $Champion_Min$ }
+	set_variable = { which = Champion_Num value = $Champion_Num$ }
+	multiply_variable = { which = Champion_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = Champion_Num value = $DIFF_MULT$ }
+	while = {
+		count = Champion_Min
+		create_ship = {
+			name = random
+			design = "NAME_Void_Champion"
+			prefix = no
+			graphical_culture = "pirate_01"
+		}
+	}
+	while = {
+		count = Champion_Num
+		random_list = {
+			60 = {
+				create_ship = {
+					name = random
+					design = "NAME_Void_Champion"
+					prefix = no
+					graphical_culture = "pirate_01"
+				}
+			}
+			40 = {}
+		}
+	}
+}
+
+# 流浪族巡洋舰
+# 参数：NomadCL_Min, NomadCL_Num
+# 随机参数有60%概率创建船
+create_WG_Khan_NomadCruiser = {
+	set_variable = { which = NomadCL_Min value = $NomadCL_Min$ }
+	set_variable = { which = NomadCL_Num value = $NomadCL_Num$ }
+	multiply_variable = { which = NomadCL_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = NomadCL_Num value = $DIFF_MULT$ }
+	while = {
+		count = NomadCL_Min
+		create_ship = {
+			name = random
+			design = "NAME_Nomad_Cruiser"
+			upgradable = no
+		}
+	}
+	while = {
+		count = NomadCL_Num
+		random_list = {
+			60 = {
+				create_ship = {
+					name = random
+					design = "NAME_Nomad_Cruiser"
+					upgradable = no
+				}
+			}
+			40 = {}
+		}
+	}
+}
+
+# 行商驱逐舰
+# 参数：CaraDD_Min, CaraDD_Num
+# 随机参数有70%概率创建船
+create_WG_Khan_Cara_Destroyer = {
+	set_variable = { which = CaraDD_Min value = $CaraDD_Min$ }
+	set_variable = { which = CaraDD_Num value = $CaraDD_Num$ }
+	multiply_variable = { which = CaraDD_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = CaraDD_Num value = $DIFF_MULT$ }
+	while = {
+		count = CaraDD_Min
+		create_ship = {
+			name = random
+			design = "NAME_Khan_caravaneer_destroyer"
+			graphical_culture = "caravaneer_01"
+			upgradable = no
+		}
+	}
+	while = {
+		count = CaraDD_Num
+		random_list = {
+			70 = {
+				create_ship = {
+					name = random
+					design = "NAME_Khan_caravaneer_destroyer"
+					graphical_culture = "caravaneer_01"
+					upgradable = no
+				}
+			}
+			30 = {}
+		}
+	}
+}
+
+# 马达克·沃尔事件巡洋舰
+# 参数：Haters_CL_Min, Haters_CL_Num
+# 随机参数有60%概率创建船
+create_WG_Khan_Haters_Cruiser = {
+	set_variable = { which = Haters_CL_Min value = $Haters_CL_Min$ }
+	set_variable = { which = Haters_CL_Num value = $Haters_CL_Num$ }
+	multiply_variable = { which = Haters_CL_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = Haters_CL_Num value = $DIFF_MULT$ }
+	while = {
+		count = Haters_CL_Min
+		create_ship = {
+			name = random
+			design = "NAME_mardak_vol_haters_cruiser"
+			graphical_culture = "mammalian_01"
+			upgradable = no
+		}
+	}
+	while = {
+		count = Haters_CL_Num
+		random_list = {
+			60 = {
+				create_ship = {
+					name = random
+					design = "NAME_mardak_vol_haters_cruiser"
+					graphical_culture = "mammalian_01"
+					upgradable = no
+				}
+			}
+			40 = {}
+		}
+	}
+}
+
+# 马达克·沃尔事件护卫舰
+# 参数：Haters_VE_Min, Haters_VE_Num
+# 随机参数有70%概率创建船
+create_WG_Khan_Haters_Corvette = {
+	set_variable = { which = Haters_VE_Min value = $Haters_VE_Min$ }
+	set_variable = { which = Haters_VE_Num value = $Haters_VE_Num$ }
+	multiply_variable = { which = Haters_VE_Min value = $DIFF_MULT$ }
+	multiply_variable = { which = Haters_VE_Num value = $DIFF_MULT$ }
+	while = {
+		count = Haters_VE_Min
+		create_ship = {
+			name = random
+			design = "NAME_mardak_vol_haters_corvette"
+			graphical_culture = "mammalian_01"
+			upgradable = no
+		}
+	}
+	while = {
+		count = Haters_VE_Num
+		random_list = {
+			70 = {
+				create_ship = {
+					name = random
+					design = "NAME_mardak_vol_haters_corvette"
+					graphical_culture = "mammalian_01"
+					upgradable = no
+				}
+			}
+			30 = {}
+		}
+	}
+}

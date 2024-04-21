@@ -1,0 +1,615 @@
+wg_lady_portrait_1 = {
+	potential = {
+		exists = from
+		from = {
+			OR = {
+				check_variable = { which = wsg_lady_cloth value = 0 }
+				NOT = { is_variable_set = wsg_lady_cloth }
+			}
+			check_variable = { which = wg_lady_affection value < @wg_lady_affection_to_lv2 }
+			OR = {
+				wsg_lady_available = yes
+				has_country_flag = modifing_wsg_lady
+			}
+		}
+	}
+	allow = { hidden_trigger = { always = yes }}
+	effect = {}
+}
+wg_lady_portrait_2 = {
+	potential = {
+		exists = from
+		from = {
+			OR = {
+				check_variable = { which = wsg_lady_cloth value = 0 }
+				NOT = { is_variable_set = wsg_lady_cloth }
+			}
+			check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv2 }
+			check_variable = { which = wg_lady_affection value < @wg_lady_affection_to_lv4 }
+			OR = {
+				wsg_lady_available = yes
+				has_country_flag = modifing_wsg_lady
+			}
+		}
+	}
+	allow = { hidden_trigger = { always = yes }}
+	effect = {}
+}
+wg_lady_portrait_3 = {
+	potential = {
+		exists = from
+		from = {
+			OR = {
+				check_variable = { which = wsg_lady_cloth value = 0 }
+				NOT = { is_variable_set = wsg_lady_cloth }
+			}
+			check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv4 }
+			OR = {
+				wsg_lady_available = yes
+				has_country_flag = modifing_wsg_lady
+			}
+		}
+	}
+	allow = { hidden_trigger = { always = yes }}
+	effect = {}
+}
+wg_lady_portrait_broken = {
+	potential = {
+		exists = from
+		from = {
+			OR = {
+				check_variable = { which = wsg_lady_cloth value = 0 }
+				NOT = { is_variable_set = wsg_lady_cloth }
+			}
+			has_modifier = wsg_lady_recover_cd
+		}
+	}
+	allow = { hidden_trigger = { always = yes }}
+	effect = {}
+}
+wg_lady_01_portrait = {
+	potential = {
+		exists = from
+		from = {
+			check_variable = { which = wsg_lady_cloth value = 1 }
+		}
+	}
+	allow = { hidden_trigger = { always = yes }}
+	effect = {
+		from = {
+			if = {
+				limit = { NOT = { has_country_flag = wsg_lady_cloth_01_unlock }}
+				custom_tooltip = "wsglady_cloth_01_unlock_tooltip"
+			}
+		}
+	}
+}
+wg_lady_02_portrait = {
+	potential = {
+		exists = from
+		from = {
+			check_variable = { which = wsg_lady_cloth value = 2 }
+		}
+	}
+	allow = { hidden_trigger = { always = yes }}
+	effect = {
+		from = {
+			if = {
+				limit = { NOT = { has_country_flag = wsg_lady_cloth_02_unlock }}
+				custom_tooltip = "wsglady_cloth_02_unlock_tooltip"
+			}
+		}
+	}
+}
+wg_lady_03_portrait = {
+	potential = {
+		exists = from
+		from = {
+			check_variable = { which = wsg_lady_cloth value = 3 }
+		}
+	}
+	allow = { hidden_trigger = { always = yes }}
+	effect = {
+		from = {
+			if = {
+				limit = { NOT = { has_country_flag = married_wsg_lady }}
+				custom_tooltip = "required_marry_wsg_lady"
+			}
+		}
+	}
+}
+wg_lady_04_portrait = {
+	potential = {
+		exists = from
+		from = {
+			check_variable = { which = wsg_lady_cloth value = 4 }
+		}
+	}
+	allow = { hidden_trigger = { always = yes }}
+	effect = {}
+}
+AprilFool_portrait = {
+	potential = {
+		exists = from
+		from = {
+			check_variable = { which = wsg_lady_cloth value = 5 }
+			# OR = {
+			# 	wsg_lady_available = yes
+			# 	has_country_flag = modifing_wsg_lady
+			# }
+		}
+	}
+	allow = { hidden_trigger = { always = yes }}
+	effect = {
+	}
+}
+# 红海胆没大破
+AprilFool_portrait_broken = {
+	potential = {
+		always = no
+		exists = from
+		from = {
+			check_variable = { which = wsg_lady_cloth value = 3 }
+			has_modifier = wsg_lady_recover_cd
+		}
+	}
+	allow = { hidden_trigger = { always = yes }}
+	effect = {
+	}
+}
+wg_lady_portrait_locked = {
+	potential = {
+		NOT = { has_global_flag = april_fool }
+		exists = from
+		from = {
+			NOR = { 
+				has_global_flag = wg_cheat_all_clothes #作弊解锁
+				check_variable = { which = wsg_lady_cloth value = 0 } #默认服装
+				OR = {
+					AND = {
+						check_variable = { which = wsg_lady_cloth value = 1 }
+						has_country_flag = wsg_lady_cloth_01_unlock
+					}
+					AND = {
+						check_variable = { which = wsg_lady_cloth value = 2 }
+						has_country_flag = wsg_lady_cloth_02_unlock
+					}
+					AND = {
+						check_variable = { which = wsg_lady_cloth value = 3 }
+						has_country_flag = married_wsg_lady
+					}
+				}
+			}
+		}
+	}
+	allow = { hidden_trigger = { always = yes }}
+	effect = {
+	}
+}
+wg_lady_cloth_button_prev = {
+	potential = { NOT = { has_global_flag = april_fool }}
+	allow = { always = yes }
+	effect = {
+		from = {
+			hidden_effect = {
+				change_variable = { which = wsg_lady_cloth value = -1 }
+				if = {
+					limit = { check_variable = { which = wsg_lady_cloth value < 0 }}
+					set_variable = { which = wsg_lady_cloth value = 4 }
+				} else_if = {
+					limit = { 
+						check_variable = { which = wsg_lady_cloth value = 3 }
+						NOT = { has_global_flag = wg_cheat_all_clothes } #作弊解锁
+					}
+					set_variable = { which = wsg_lady_cloth value = 2 }
+				}
+			}
+		}
+		custom_tooltip = change_cloth
+	}
+}
+wg_lady_cloth_button_next = {
+	potential = { NOT = { has_global_flag = april_fool }}
+	allow = { always = yes }
+	effect = {
+		from = {
+			hidden_effect = {
+				change_variable = { which = wsg_lady_cloth value = 1 }
+				if = {
+					limit = { check_variable = { which = wsg_lady_cloth value > 4 }}
+					set_variable = { which = wsg_lady_cloth value = 0 }
+				} else_if = {
+					limit = { 
+						check_variable = { which = wsg_lady_cloth value = 3 }
+						NOT = { has_global_flag = wg_cheat_all_clothes } #作弊解锁
+					}
+					set_variable = { which = wsg_lady_cloth value = 4 }
+				}
+			}
+		}
+		custom_tooltip = change_cloth
+	}
+}
+wg_lady_diplo_button_1_effect = {
+	potential = { NOT = { has_global_flag = april_fool }}
+	allow = { 
+		custom_tooltip = {
+			fail_text = wsg_lady_is_official
+			NOT = { has_country_flag = wsg_lady_official_active }
+		}
+		custom_tooltip = {
+			fail_text = wsg_lady_unavailable
+			wsg_lady_available = yes
+		}
+		custom_tooltip = {
+			fail_text = wsg_lady_changing
+			NOT = { has_country_flag = wsg_lady_changing }
+		}
+		if = {
+			limit = { hidden_trigger = { has_country_flag = wsg_lady_warship_active }}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.a
+				any_controlled_fleet = { 
+					has_fleet_flag = lady_fleet2
+					is_in_combat = no
+				}
+			}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.b
+				any_controlled_fleet = { 
+					has_fleet_flag = lady_fleet2
+					NOT = { has_hp_percentage < 0.7 }
+				}
+			}
+		} else_if = {
+			limit = { hidden_trigger = { has_country_flag = wsg_lady_army_active }}
+			hidden_trigger = {  # To prevent exploit
+				any_owned_army = {
+					is_lady_army = yes
+					OR = {
+						exists = planet
+						AND = {
+							exists = fleet
+							fleet = { num_ships > 0 }
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.a
+				any_owned_army = {
+					is_lady_army = yes
+					if = {
+						limit = { exists = planet }
+						planet = { has_ground_combat = no }
+					}
+				}
+			}
+		} else_if = {
+			limit = { hidden_trigger = { has_country_flag = wsg_lady_armed_science_active }}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.a
+				any_controlled_fleet = { 
+					has_fleet_flag = lady_armed_science
+					is_in_combat = no
+				}
+			}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.b
+				event_target:lady_science_ship = {
+					has_hp_percentage > 0.8
+				}
+			}
+		}
+	}
+	effect = {
+		custom_tooltip =  wg_lady_diplo_button_1_tooltip
+		hidden_effect = {
+			set_timed_country_flag = { flag = wsg_lady_changing days = 1 }
+			create_wsg_lady_official = yes
+			set_variable = { which = wsg_lady_prev_type value = wsg_lady_next_type }
+			set_variable = { which = wsg_lady_next_type value = 1 }
+			set_country_flag = wsg_lady_changed
+		}
+	}
+}
+wg_lady_diplo_button_2_effect = {
+	potential = { always = yes }
+	allow = { 
+		custom_tooltip = {
+			fail_text = wsg_lady_is_warship
+			NOT = { has_country_flag = wsg_lady_warship_active }
+		}
+		custom_tooltip = {
+			fail_text = wsg_lady_unavailable
+			wsg_lady_available = yes
+		}
+		custom_tooltip = {
+			fail_text = wsg_lady_changing
+			NOT = { has_country_flag = wsg_lady_changing }
+		}
+		if = {
+			limit = { hidden_trigger = { has_country_flag = wsg_lady_official_active }}
+			hidden_trigger = { any_owned_leader = { has_leader_flag = wsg_lady_official }}
+		} else_if = {
+			limit = { hidden_trigger = { has_country_flag = wsg_lady_army_active }}
+			hidden_trigger = {  # To prevent exploit
+				any_owned_army = {
+					is_lady_army = yes
+					OR = {
+						exists = planet
+						AND = {
+							exists = fleet
+							fleet = { num_ships > 0 }
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.a
+				any_owned_army = {
+					is_lady_army = yes
+					if = {
+						limit = { exists = planet }
+						planet = { has_ground_combat = no }
+					}
+				}
+			}
+		} else_if = {
+			limit = { hidden_trigger = { has_country_flag = wsg_lady_armed_science_active }}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.a
+				any_controlled_fleet = { 
+					has_fleet_flag = lady_armed_science
+					is_in_combat = no
+				}
+			}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.b
+				event_target:lady_science_ship = {
+					has_hp_percentage > 0.8
+				}
+			}
+		}
+	}
+	effect = {
+		custom_tooltip =  wg_lady_diplo_button_2_tooltip
+		hidden_effect = {
+			set_timed_country_flag = { flag = wsg_lady_changing days = 1 }
+			create_wsg_lady_warship = yes
+			set_variable = { which = wsg_lady_prev_type value = wsg_lady_next_type }
+			set_variable = { which = wsg_lady_next_type value = 2 }
+			set_country_flag = wsg_lady_changed
+		}
+	}
+}
+wg_lady_diplo_button_3_effect = {
+	potential = { always = yes }
+	allow = { 
+		custom_tooltip = {
+			fail_text = wsg_lady_is_army
+			NOT = { has_country_flag = wsg_lady_army_active }
+		}
+		custom_tooltip = {
+			fail_text = wsg_lady_unavailable
+			wsg_lady_available = yes
+		}
+		custom_tooltip = {
+			fail_text = wsg_lady_changing
+			NOT = { has_country_flag = wsg_lady_changing }
+		}
+		if = {
+			limit = { hidden_trigger = { has_country_flag = wsg_lady_official_active }}
+			hidden_trigger = { any_owned_leader = { has_leader_flag = wsg_lady_official }}
+		} else_if = {
+			limit = { hidden_trigger = { has_country_flag = wsg_lady_warship_active }}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.a
+				any_controlled_fleet = { 
+					has_fleet_flag = lady_fleet2
+					is_in_combat = no
+				}
+			}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.b
+				any_controlled_fleet = { 
+					has_fleet_flag = lady_fleet2
+					NOT = { has_hp_percentage < 0.7 }
+				}
+			}
+		} else_if = {
+			limit = { hidden_trigger = { has_country_flag = wsg_lady_army_active }}
+			hidden_trigger = {  # To prevent exploit
+				any_owned_army = {
+					is_lady_army = yes
+					OR = {
+						exists = planet
+						AND = {
+							exists = fleet
+							fleet = { num_ships > 0 }
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.a
+				any_owned_army = {
+					is_lady_army = yes
+					if = {
+						limit = { exists = planet }
+						planet = { has_ground_combat = no }
+					}
+				}
+			}
+		}
+	}
+	effect = {
+		custom_tooltip =  wg_lady_diplo_button_4_tooltip
+		hidden_effect = {
+			set_timed_country_flag = { flag = wsg_lady_changing days = 1 }
+			create_wsg_lady_armed_science = yes
+			set_variable = { which = wsg_lady_prev_type value = wsg_lady_next_type }
+			set_variable = { which = wsg_lady_next_type value = 4 }
+			set_country_flag = wsg_lady_changed
+		}
+	}
+}
+
+wg_lady_diplo_button_4_effect = {
+	potential = { always = yes }
+	allow = { 
+		custom_tooltip = {
+			fail_text = wsg_lady_is_science_ship
+			NOT = { has_country_flag = wsg_lady_armed_science_active }
+		}
+		custom_tooltip = {
+			fail_text = wsg_lady_unavailable
+			wsg_lady_available = yes
+		}
+		custom_tooltip = {
+			fail_text = wsg_lady_changing
+			NOT = { has_country_flag = wsg_lady_changing }
+		}
+		if = {
+			limit = { hidden_trigger = { has_country_flag = wsg_lady_official_active }}
+			hidden_trigger = { any_owned_leader = { has_leader_flag = wsg_lady_official }}
+		} else_if = {
+			limit = { hidden_trigger = { has_country_flag = wsg_lady_warship_active }}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.a
+				any_controlled_fleet = { 
+					has_fleet_flag = lady_fleet2
+					is_in_combat = no
+				}
+			}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.b
+				any_controlled_fleet = { 
+					has_fleet_flag = lady_fleet2
+					NOT = { has_hp_percentage < 0.7 }
+				}
+			}
+		} else_if = {
+			limit = { hidden_trigger = { has_country_flag = wsg_lady_armed_science_active }}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.a
+				any_controlled_fleet = { 
+					has_fleet_flag = lady_armed_science
+					is_in_combat = no
+				}
+			}
+			custom_tooltip = {
+				fail_text = wg_lady.27.allow.b
+				event_target:lady_science_ship = {
+					has_hp_percentage > 0.8
+				}
+			}
+		}
+	}
+	effect = {
+		custom_tooltip =  wg_lady_diplo_button_3_tooltip
+		hidden_effect = {
+			set_timed_country_flag = { flag = wsg_lady_changing days = 1 }
+			create_wsg_lady_army = yes
+			set_variable = { which = wsg_lady_prev_type value = wsg_lady_next_type }
+			set_variable = { which = wsg_lady_next_type value = 3 }
+			set_country_flag = wsg_lady_changed
+		}
+	}
+}
+
+wg_lady_link_button_effect = {
+	potential = { 
+		exists = from
+		exists = event_target:wsg_lady_own_country
+		event_target:wsg_lady_own_country = { 
+			is_same_value = from 
+			check_variable = { which = link_button_current_page value = 0 }
+		}
+		from = {
+			NOR = { 
+				has_country_flag = ban_commu_with_wsg_lady 
+				has_country_flag = modifing_wsg_lady
+				has_country_flag = wsg_lady_changing
+			}
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = cannot_commu_with_wg_lady
+			NOR = { 
+				has_country_flag = ban_commu_with_wsg_lady 
+				has_country_flag = modifing_wsg_lady
+				has_country_flag = wsg_lady_changing
+			}
+		}
+		custom_tooltip = {
+			fail_text = already_has_wsg_lady_diplo
+			OR = {
+				has_wsg_lady_active_diplo = no
+				NOT = { has_country_flag = talking_to_wsg_lady }
+			}
+		}
+	}}
+	effect = {
+		FROM = {
+			hidden_effect = { country_event = { id = wg_lady.998 }}
+		}
+	}
+}
+
+wg_lady_affection1_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv1_trigger = { LEADER = lady }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_lady_affection_show_lv2 }
+}
+wg_lady_affection2_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv2_trigger = { LEADER = lady }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_lady_affection_show_lv3 }
+}
+wg_lady_affection3_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv3_trigger = { LEADER = lady }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_lady_affection_show_lv4 }
+}
+wg_lady_affection4_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv4_trigger = { LEADER = lady MARRIED_FLAG = married_wsg_lady }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_lady_affection_show_lv5 }
+}
+wg_lady_affection5_show_effect = {
+	potential = { 
+		from = {
+			special_leader_affection_lv5_trigger = { LEADER = lady MARRIED_FLAG = married_wsg_lady }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_lady_affection_show_lv5 }
+}
+
+# wg_lady_new_message_0_1_effect = {
+# 	potential = { 
+# 		has_country_flag = wsg_lady_changed
+# 		check_variable = { which = wsg_lady_prev_type value = 0 }
+# 		check_variable = { which = wsg_lady_next_type value = 1 }
+# 	}
+# 	allow = { always = yes }
+# 	effect = {}
+# }

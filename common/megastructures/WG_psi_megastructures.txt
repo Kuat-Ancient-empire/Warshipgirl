@@ -1,0 +1,153 @@
+wg_psi_dyson_sphere = {
+	entity = "wg_psi_dyson_sphere_phase_05_entity"
+	construction_entity = "wg_psi_dyson_sphere_phase_05_entity"
+	portrait = "GFX_wsg_psi_dyson_sphere_background"
+	build_time = 1800
+	resources = {
+		category = megastructures
+		produces = {
+			energy = 2000
+			minerals = 1000
+		}
+		cost = {
+			energy = 10000
+			sr_zro = 1000
+		}
+	}
+	upgrade_from = {
+		wg_psi_dyson_sphere_base
+	}
+
+
+	on_build_complete = {
+		FROM = {
+			country_event = { id = wsg.30252 }	
+		}
+	}
+}
+wg_psionic_wormhole = {
+	entity = "wg_psi_storm_1_entity"
+	construction_entity = "construction_platform_entity"
+	portrait = "GFX_wsg_psi_wormhole_background"
+	place_entity_on_planet_plane = no
+	build_outside_gravity_well = yes
+	show_galactic_map_icon = no
+	show_in_outliner = no
+	construction_blocks_and_blocked_by = none
+	potential = {
+		always = no
+	}
+	bypass_type = wg_psionic_wormhole_bypass
+}
+
+wg_psi_dyson_sphere_base = {
+	entity = "wg_psi_storm_1_entity"
+	construction_entity = "wg_psi_storm_1_entity"
+	portrait = "GFX_wsg_psi_wormhole_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 1800
+	construction_blocks_and_blocked_by = none
+	potential = {
+		#has_authority = auth_united_fleet
+	}
+	resources = {
+		category = megastructures
+		cost = {
+			unity = 5000
+			sr_zro = 1000
+			energy = 10000
+		}
+		upkeep = {
+			energy = 20
+		}
+	}
+    prerequisites = { "tech_wg_psi_dyson_sphere" }
+
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}	
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_psi_dyson_sphere"
+			from = { NOT = { has_country_flag = wg_psi_dyson_sphere_built_flag } }
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_black_hole_neutron_star_pulsar"
+			NOT = {
+				is_star_class = sc_black_hole
+				is_star_class = sc_neutron_star
+				is_star_class = sc_pulsar
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_binary_trinary"
+			NOR = {
+				is_star_class = sc_binary_1
+				is_star_class = sc_binary_2
+				is_star_class = sc_binary_3
+				is_star_class = sc_binary_4
+				is_star_class = sc_binary_5
+				is_star_class = sc_binary_6
+				is_star_class = sc_binary_7
+				is_star_class = sc_binary_8
+				is_star_class = sc_binary_9
+				is_star_class = sc_binary_10
+				is_star_class = sc_trinary_1
+				is_star_class = sc_trinary_2
+				is_star_class = sc_trinary_3
+				is_star_class = sc_trinary_4
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_megastructure"
+			#NOT = { has_any_megastructure = yes }
+			has_no_non_gate_megastructure = yes
+		}
+	}
+	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "must_build_around_star"
+				is_star = yes
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+		}
+	}
+	
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		FROM = { if = {
+			limit = { NOT = { has_country_flag = wg_psi_dyson_sphere_built_flag }}
+			set_country_flag = wg_psi_dyson_sphere_built_flag
+			change_variable = { which = rankpts value = 10 }
+			country_event = { id = wsg.30251 }	
+		}}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+		}
+	}
+}
+

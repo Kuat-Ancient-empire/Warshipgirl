@@ -1,0 +1,354 @@
+animation = { name = "planetary_ship_idle_animation" file = "planetary_ship_idle.anim" }
+animation = { name = "planetary_ship_opening_animation" file = "planetary_ship_open.anim" }
+animation = { name = "planetary_ship_open_animation" file = "planetary_ship_opening.anim" }
+animation = { name = "planetary_ship_clossing_animation" file = "planetary_ship_clossing.anim" }
+
+entity = {
+	name = "planetary_ship_entity"
+	scale = 2
+	default_state = "idle"
+	state = { name = "idle" animation = "idle" looping = no next_state = "idle" animation_blend_time = 5
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"death" = 100
+				"working" = 100
+				"working_looping" = 0
+			}
+		}
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_01" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_02" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_03" } }
+	}
+	state = { name = "moving" animation = "idle" looping = yes next_state = "moving"
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"death" = 0
+				"working" = 100
+				"working_looping" = 0
+			}
+		}
+		event =  { trigger_once = yes sound = { soundeffect = "juggernaut_mammalian_move" } }
+	}
+	state = { name = "working_looping" animation = "open" animation_blend_time = 5
+		event = { time = 0	id = "beam_start" }
+	}
+	state = { name = "working" animation = "opening" looping = no next_state = "working_looping" 
+		event = { trigger_once = yes sound = { soundeffect = "mammalian_colossus_opening" stop_on_state_change = yes } }
+		event = { time = 1000 id = "beam_start" } 
+	}
+	state = { name = "moving" animation = "clossing" looping = no next_state = "moving"
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"death" = 0
+				"working" = 0
+				"working_looping" = 100
+			}
+		}
+		event = { trigger_once = yes sound = { soundeffect = "mammalian_colossus_closing" stop_on_state_change = yes } }
+	}
+	state = { name = "idle" animation = "clossing" looping = no next_state = "idle"  animation_blend_time = 5
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"death" = 0
+				"working" = 0
+				"working_looping" = 100
+			}
+		}
+		event = { trigger_once = yes sound = { soundeffect = "mammalian_colossus_closing" stop_on_state_change = yes } }
+	}
+	state = { name = "death" animation = "death" animation_blend_time = 0.0 looping = no
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"death" = 0
+				"working" = 0
+				"working_looping" = 0
+			}
+		}
+		event = { time = 13.2 node = "part1" particle = "juggernaut_explosion_particle" sound = { soundeffect = ship_destroyed } }
+	}
+	state = { name = "death" animation = "death" animation_blend_time = 0.0 looping = no
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"death" = 0
+				"working" = 100
+				"working_looping" = 100
+			}
+		}
+		event = { time = 13.2 node = "part1" particle = "juggernaut_explosion_particle" sound = { soundeffect = ship_destroyed } }
+	}
+}
+entity = {
+	name = "planetary_ship_section_entity"
+	pdxmesh = "planetary_ship_mesh"
+	scale = 2
+	default_state = "idle"
+	state = { name = "idle" animation = "idle" looping = no next_state = "idle" animation_blend_time = 5
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"death" = 100
+				"working" = 100
+				"working_looping" = 0
+			}
+		}
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_01" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_02" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_03" } }
+	}
+	state = { name = "moving" animation = "idle" looping = yes next_state = "moving"
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"death" = 0
+				"working" = 100
+				"working_looping" = 0
+			}
+		}
+		event =  { trigger_once = yes sound = { soundeffect = "juggernaut_mammalian_move" } }
+	}
+	state = { name = "working_looping" animation = "open" animation_blend_time = 5
+		event = { time = 0	id = "beam_start" }
+	}
+	state = { name = "working" animation = "opening" looping = no next_state = "working_looping" 
+		event = { trigger_once = yes sound = { soundeffect = "mammalian_colossus_opening" stop_on_state_change = yes } }
+		event = { time = 1000 id = "beam_start" } 
+	}
+	state = { name = "moving" animation = "clossing" looping = no next_state = "moving"
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"death" = 0
+				"working" = 0
+				"working_looping" = 100
+			}
+		}
+		event = { trigger_once = yes sound = { soundeffect = "mammalian_colossus_closing" stop_on_state_change = yes } }
+	}
+	state = { name = "idle" animation = "clossing" looping = no next_state = "idle"  animation_blend_time = 5
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"death" = 0
+				"working" = 0
+				"working_looping" = 100
+			}
+		}
+		event = { trigger_once = yes sound = { soundeffect = "mammalian_colossus_closing" stop_on_state_change = yes } }
+	}
+	state = { name = "death" animation = "death" animation_blend_time = 0.0 looping = no
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"death" = 0
+				"working" = 0
+				"working_looping" = 0
+			}
+		}
+		event = { time = 1.1 node = "explosion_locator_01" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 1.8 node = "explosion_locator_02" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 3.1 node = "explosion_locator_03" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 4.4 node = "explosion_locator_04" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 4.7 node = "explosion_locator_05" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 5.2 node = "explosion_locator_06" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 6.5 node = "explosion_locator_07" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 6.9 node = "explosion_locator_08" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+	
+		event = { time = 6.96 node = "big_explosion_locator" particle = "small_2_player_ship_explosion_particle" keep_particle = yes trigger_once = no }
+		event = { time = 6.96 node = "big_explosion_locator" particle = "juggernaut_burn_effect" keep_particle = yes trigger_once = no }
+	}
+	state = { name = "death" animation = "death" animation_blend_time = 0.0 looping = no
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"death" = 0
+				"working" = 100
+				"working_looping" = 100
+			}
+		}
+		event = { time = 1.1 node = "explosion_locator_01" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 1.8 node = "explosion_locator_02" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 3.1 node = "explosion_locator_03" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 4.4 node = "explosion_locator_04" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 4.7 node = "explosion_locator_05" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 5.2 node = "explosion_locator_06" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 6.5 node = "explosion_locator_07" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 6.9 node = "explosion_locator_08" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+	
+		event = { time = 6.96 node = "big_explosion_locator" particle = "small_2_player_ship_explosion_particle" keep_particle = yes trigger_once = no }
+		event = { time = 6.96 node = "big_explosion_locator" particle = "juggernaut_burn_effect" keep_particle = yes trigger_once = no }
+	}
+}
+entity = {
+	name = "planetary_ship_megastructure_ruin_entity"
+	locator = { name = "core"	position = { 0 40 0 } rotation = { 5 5 2 } }
+    scale = 2
+	attach = { core = "planetary_ship_ruin_entity" }
+}
+
+entity = {
+	name = "planetary_ship_full_ruin_entity"
+	locator = { name = "core"	position = { 0 0 0 } rotation = { 5 5 2 } }
+    scale = 2
+	attach = { core = "planetary_ship_ruin_entity" }
+}
+entity = {
+	name = "planetary_ship_ruin_entity"
+	pdxmesh = "planetary_ship_ruin_mesh"
+	scale = 2
+}
+entity = {
+	name = "planetary_ship_kind_cat_entity"
+	pdxmesh = "planetary_ship_kind_cat_mesh"
+	scale = 0.5
+}
+entity = {
+	name = "planetary_ship_2_entity"
+	scale = 2
+	default_state = "idle"
+	state = { name = "idle" animation = "idle" looping = no next_state = "idle" animation_blend_time = 5
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"death" = 100
+				"working" = 100
+				"working_looping" = 0
+			}
+		}
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_01" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_02" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_03" } }
+	}
+	state = { name = "moving" animation = "idle" looping = yes next_state = "moving"
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"death" = 0
+				"working" = 100
+				"working_looping" = 0
+			}
+		}
+		event =  { trigger_once = yes sound = { soundeffect = "juggernaut_mammalian_move" } }
+	}
+
+	state = { name = "death" animation = "death" animation_blend_time = 0.0 looping = no
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"death" = 0
+				"working" = 0
+				"working_looping" = 0
+			}
+		}
+		event = { time = 13.2 node = "part1" particle = "juggernaut_explosion_particle" sound = { soundeffect = ship_destroyed } }
+	}
+	state = { name = "death" animation = "death" animation_blend_time = 0.0 looping = no
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"death" = 0
+				"working" = 100
+				"working_looping" = 100
+			}
+		}
+		event = { time = 13.2 node = "part1" particle = "juggernaut_explosion_particle" sound = { soundeffect = ship_destroyed } }
+	}
+}
+entity = {
+	name = "planetary_ship_2_section_entity"
+	pdxmesh = "planetary_ship_mesh"
+	scale = 2
+	default_state = "idle"
+	state = { name = "idle" animation = "idle" looping = no next_state = "idle" animation_blend_time = 5
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"death" = 100
+				"working" = 100
+				"working_looping" = 0
+			}
+		}
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_01" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_02" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_03" } }
+	}
+	state = { name = "moving" animation = "idle" looping = yes next_state = "moving"
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"death" = 0
+				"working" = 100
+				"working_looping" = 0
+			}
+		}
+		event =  { trigger_once = yes sound = { soundeffect = "juggernaut_mammalian_move" } }
+	}
+
+	state = { name = "death" animation = "death" animation_blend_time = 0.0 looping = no
+		chance = {
+			if_current_state = {
+				"idle" = 100
+				"moving" = 100
+				"death" = 0
+				"working" = 0
+				"working_looping" = 0
+			}
+		}
+		event = { time = 1.1 node = "explosion_locator_01" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 1.8 node = "explosion_locator_02" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 3.1 node = "explosion_locator_03" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 4.4 node = "explosion_locator_04" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 4.7 node = "explosion_locator_05" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 5.2 node = "explosion_locator_06" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 6.5 node = "explosion_locator_07" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 6.9 node = "explosion_locator_08" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+	
+		event = { time = 6.96 node = "big_explosion_locator" particle = "small_2_player_ship_explosion_particle" keep_particle = yes trigger_once = no }
+		event = { time = 6.96 node = "big_explosion_locator" particle = "juggernaut_burn_effect" keep_particle = yes trigger_once = no }
+	}
+	state = { name = "death" animation = "death" animation_blend_time = 0.0 looping = no
+		chance = {
+			if_current_state = {
+				"idle" = 0
+				"moving" = 0
+				"death" = 0
+				"working" = 100
+				"working_looping" = 100
+			}
+		}
+		event = { time = 1.1 node = "explosion_locator_01" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 1.8 node = "explosion_locator_02" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 3.1 node = "explosion_locator_03" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 4.4 node = "explosion_locator_04" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 4.7 node = "explosion_locator_05" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 5.2 node = "explosion_locator_06" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 6.5 node = "explosion_locator_07" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+		event = { time = 6.9 node = "explosion_locator_08" particle = "juggernaut_hull_explosion_effect" keep_particle = yes trigger_once = no }
+	
+		event = { time = 6.96 node = "big_explosion_locator" particle = "small_2_player_ship_explosion_particle" keep_particle = yes trigger_once = no }
+		event = { time = 6.96 node = "big_explosion_locator" particle = "juggernaut_burn_effect" keep_particle = yes trigger_once = no }
+	}
+}

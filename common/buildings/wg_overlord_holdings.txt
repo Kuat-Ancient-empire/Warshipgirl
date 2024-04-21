@@ -1,0 +1,1152 @@
+holding_uf_genetic_assembly = {
+	base_buildtime = 540
+	owner_type = subject_holding
+	icon = holding_genetic_assembly
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			has_authority = auth_united_fleet 
+		}
+		planet.owner = {
+			OR = {
+				has_authority = auth_warshipgirls	
+				has_authority = auth_shenhai
+			}
+		}
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_uf_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = uf }
+			}
+		}
+	}
+
+
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 1000
+		}
+		upkeep = {
+			energy = 10
+		}
+	}
+
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 3
+		pop_growth_speed = 0.5
+		monthly_loyalty = 1.5
+	}
+
+}
+
+holding_uf_auto_foundry = {
+	base_buildtime = 720
+	owner_type = subject_holding
+	icon = holding_uf_auto_foundry
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			has_authority = auth_united_fleet 
+		}
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_uf_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = uf }
+			}
+		}
+	}
+	on_built = {
+		owner = {
+			remove_modifier = uf_overlord_alloy_modifier
+			change_variable = { which = num_uf_overlord_alloy_holdings value = 1 }
+			add_modifier = {
+				modifier = uf_overlord_alloy_modifier
+				days = -1
+				multiplier = num_uf_overlord_alloy_holdings
+			}	
+		}
+	}
+	on_destroy = {
+		owner = {
+			remove_modifier = uf_overlord_alloy_modifier
+			change_variable = { which = num_uf_overlord_alloy_holdings value = -1 }
+			add_modifier = {
+				modifier = uf_overlord_alloy_modifier
+				days = -1
+				multiplier = num_uf_overlord_alloy_holdings
+			}
+		}
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 1500
+		}
+		upkeep = {
+			energy = 300
+			minerals = 200
+		}
+		produces = {
+			alloys = 200
+		}
+	}
+    triggered_desc = {
+		text = holding_uf_auto_foundry_effect_desc
+	}
+    planet_modifier = {
+		planet_metallurgists_alloys_produces_add = 3
+		planet_metallurgists_alloys_produces_mult = 0.25
+		monthly_loyalty = 3
+	} 
+}
+
+holding_uf_research = {
+	base_buildtime = 720
+	owner_type = subject_holding
+	icon = holding_uf_research
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			has_authority = auth_united_fleet 
+		}
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_uf_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = uf }
+			}
+		}
+	}
+
+	resources = {
+		category = planet_holdings
+		produces = {
+			physics_research = 100
+			society_research = 100
+			engineering_research = 100
+		}
+		cost = {
+			minerals = 1500
+		}
+		upkeep = {
+			energy = 20
+		}
+	}
+	planet_modifier = {
+		planet_researchers_produces_mult = 0.35
+		monthly_loyalty = 1.5
+	}
+	country_modifier = {
+		planet_researchers_produces_mult = 0.02
+	}
+
+    triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_researcher_add = 15
+			job_head_researcher_add = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_brain_drone_add = 15
+			job_brain_drone_add = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {
+			job_calculator_add = 15
+			job_calculator_add = 5
+		}
+	}
+	
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		text = job_researcher_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		text = job_brain_drone_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		text = job_calculator_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		text = job_head_researcher_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		text = job_brain_drone_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		text = job_calculator_effect_desc
+	}
+}
+
+#####
+holding_wsg_recycle_center = {
+	base_buildtime = 720
+	owner_type = subject_holding
+	icon = holding_wsg_recycle_center
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			has_authority = auth_warshipgirls
+		}
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_wsg_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = wsg_jurisdiction }
+			}
+		}
+	}
+
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 800
+		}
+		upkeep = {
+			energy = 5
+		}
+	}
+	planet_modifier = {
+		pop_environment_tolerance = -0.20
+		pop_amenities_usage_mult = 0.10
+		job_wsg_recycel_worker_add = 5
+		monthly_loyalty = -1.5
+	}
+	country_modifier = {
+		pop_environment_tolerance = 0.05
+		pop_amenities_usage_mult = -0.05
+	}
+    triggered_desc = {
+		text = job_wsg_recycel_worker_desc
+	}
+}
+
+holding_wsg_knowledge_pillage = {
+	base_buildtime = 720
+	owner_type = subject_holding
+	icon = holding_wsg_knowledge_pillage
+	can_be_disabled = no
+	empire_limit = 1
+	
+	potential = {
+		owner.overlord = {
+			has_authority = auth_warshipgirls
+		}
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_wsg_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = wsg_jurisdiction }
+			}
+		}
+	}
+
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 800
+		}
+		produces = {
+			physics_research = 50
+			society_research = 50
+			engineering_research = 50
+		}
+		upkeep = {
+			energy = 20
+		}
+	}
+	planet_modifier = {
+		planet_researchers_produces_mult = -2.0
+		monthly_loyalty = -2
+	}
+	country_modifier = {
+		all_technology_research_speed = 0.05
+	}
+}
+
+holding_wsg_military_academy = {
+	base_buildtime = 720
+	owner_type = subject_holding
+	icon = holding_wsg_military_academy
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			has_authority = auth_warshipgirls
+		}
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_wsg_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = wsg_jurisdiction }
+			}
+		}
+	}
+    on_built = {
+		owner = {
+			remove_modifier = wsg_overlord_military_academy_modifier
+			change_variable = { which = num_wsg_overlord_military_academy_holdings value = 1 }
+			add_modifier = {
+				modifier = wsg_overlord_military_academy_modifier
+				days = -1
+				multiplier = num_wsg_overlord_military_academy_holdings
+			}	
+		}
+	}
+	on_destroy = {
+		owner = {
+			remove_modifier = wsg_overlord_military_academy_modifier
+			change_variable = { which = num_wsg_overlord_military_academy_holdings value = -1 }
+			add_modifier = {
+				modifier = wsg_overlord_military_academy_modifier
+				days = -1
+				multiplier = num_wsg_overlord_military_academy_holdings
+			}
+		}
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 800
+		}
+		upkeep = {
+			energy = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		modifier = {
+			job_soldier_add = 3
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_warrior_drone_add = 3
+		}
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_warrior_drone_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_soldier_effect_desc
+	}
+	army_modifier = {
+		army_starting_experience_add = 200
+	}
+	planet_modifier = {
+		planet_crime_add = -10
+		monthly_loyalty = 3
+	}
+    triggered_desc = {
+		text = holding_wsg_military_academy_effect_desc
+	}
+}
+
+holding_wsg_production_department = {
+	base_buildtime = 720
+	owner_type = subject_holding
+	icon = holding_wsg_production_department
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			has_authority = auth_warshipgirls
+		}
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_wsg_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = wsg_jurisdiction }
+			}
+		}
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 800
+		}
+		upkeep = {
+			energy = 5
+		}
+	}
+
+	planet_modifier = {
+		planet_jobs_worker_produces_mult = 0.15
+		planet_jobs_specialist_produces_mult = 0.1
+		trade_value_mult = 0.15
+		monthly_loyalty = 3
+	}
+}
+#深海建筑
+holding_sh_nerve = {
+	base_buildtime = 720
+	owner_type = subject_holding
+	icon = holding_sh_nerve
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			has_authority = auth_shenhai
+		}
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_sh_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = sh_jurisdiction }
+			}
+		}
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 800
+		}
+		upkeep = {
+			energy = 5
+		}
+	}
+    planet_modifier = {
+		planet_jobs_produces_mult = 0.15
+		planet_amenities_add = -20
+        monthly_loyalty = 1.5
+	}
+}
+
+holding_sh_servant_naval = {
+	base_buildtime = 720
+	owner_type = subject_holding
+	icon = holding_sh_servant_naval
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			has_authority = auth_shenhai
+		}
+	}
+	on_built = {
+		owner = {
+			remove_modifier = sh_overlord_servant_naval_modifier
+			change_variable = { which = num_sh_overlord_servant_naval_holdings value = 1 }
+			add_modifier = {
+				modifier = sh_overlord_servant_naval_modifier
+				days = -1
+				multiplier = num_sh_overlord_servant_naval_holdings
+			}
+		}
+	}
+	on_destroy = {
+		owner = {
+			remove_modifier = sh_overlord_servant_naval_modifier
+			change_variable = { which = num_sh_overlord_servant_naval_holdings value = -1 }
+			add_modifier = {
+				modifier = sh_overlord_servant_naval_modifier
+				days = -1
+				multiplier = num_sh_overlord_servant_naval_holdings
+			}
+		}
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_sh_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = sh_jurisdiction }
+			}
+		}
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 800
+		}
+		upkeep = {
+			energy = 5
+		}
+	}
+    planet_modifier = {
+        monthly_loyalty = -1
+	}
+	country_modifier = {
+		country_naval_cap_add = 30
+		country_naval_cap_mult = 0.05
+	}
+	triggered_desc = {
+		text = holding_sh_servant_naval_effect_desc
+	}
+}
+
+holding_sh_environment_transformation = {
+	base_buildtime = 720
+	owner_type = subject_holding
+	icon = holding_sh_environment_transformation
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			has_authority = auth_shenhai
+		}
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_sh_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = sh_jurisdiction }
+			}
+		}
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 800
+		}
+		upkeep = {
+			energy = 5
+		}
+	}
+    planet_modifier = {
+		planet_max_districts_add = 3
+		district_generator_max = 1
+		district_mining_max = 1
+		district_farming_max = 1
+        monthly_loyalty = 2
+	}
+}
+
+holding_alien_slicer = {
+	base_buildtime = 720
+	owner_type = subject_holding
+	icon = holding_alien_slicer
+	can_be_disabled = no
+	base_cap_amount = 1
+	empire_limit = 5 
+	
+	potential = {
+		owner.overlord = {
+			OR = {
+				has_authority = auth_shenhai
+				has_authority = auth_warshipgirls 
+			}	
+		}
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_wg_ptc_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = wg_ptc }
+			}
+		}
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 1000
+		}
+		upkeep = {
+			energy = 10
+		}
+	}
+	on_built = {
+	    if = {
+			limit = {
+				NOT = {
+					has_planet_flag = timed_kill_pop_ptc_flag
+				}
+			}
+			set_timed_planet_flag = { flag = timed_kill_pop_ptc_flag days = 720 }#刚刚造下去720天内不杀人口
+		}
+	}
+	on_destroy = {
+	}
+    planet_modifier = {
+		pop_happiness = -0.5
+		planet_stability_add = -10
+		monthly_loyalty = -3
+	}
+	triggered_desc = {
+		text = holding_alien_slicer_effect_desc
+	}
+}
+
+holding_resource_collector = {
+	base_buildtime = 360
+	owner_type = subject_holding
+	icon = holding_resource_collector
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			OR = {
+				has_authority = auth_shenhai
+				has_authority = auth_warshipgirls 
+			}	
+		}
+	}
+	on_built = {
+		if = {
+			limit = {
+				NOT = {
+					has_planet_flag = timed_kill_pop_ptc_flag
+				}
+				set_timed_planet_flag = { flag = timed_kill_pop_ptc_flag days = 720 }#刚刚造下去720天内不杀人口
+			}
+		}
+		set_planet_flag = timed_3_kill_pop_ptc_flag
+	}
+	on_destroy = {
+		remove_planet_flag = timed_3_kill_pop_ptc_flag
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_wg_ptc_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = wg_ptc }
+			}
+		}
+	}
+	planet_modifier = {
+		job_overlord_wg_ptc_collector_add = 3
+		pop_happiness = -0.5
+		pop_environment_tolerance = -0.1
+		monthly_loyalty = -3
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 500
+		}
+		produces = {
+			energy = 20
+			minerals = 20
+			alloys = 10
+			rare_crystals = 1
+			exotic_gases = 1
+			volatile_motes = 1
+		}
+	}
+    triggered_desc = {
+		text = job_overlord_wg_ptc_collector_effect_desc
+		#text = holding_resource_collector_effect_desc
+	}
+	triggered_desc = {
+		#text = job_overlord_wg_ptc_collector_effect_desc
+		text = holding_resource_collector_effect_desc
+	}
+}
+
+holding_alien_zoo = {
+	base_buildtime = 360
+	owner_type = subject_holding
+	icon = holding_alien_zoo
+	can_be_disabled = no
+	base_cap_amount = 1
+	empire_limit = 5 
+	
+	potential = {
+		owner.overlord = {
+			OR = {
+				has_authority = auth_shenhai
+				has_authority = auth_warshipgirls 
+			}	
+		}
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_wg_ptc_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = wg_ptc }
+			}
+		}
+	}
+	country_modifier = {
+		pop_happiness = 0.03
+		planet_amenities_add = 1
+	}
+	planet_modifier = {
+		job_overlord_wg_ptc_animals_add = 5
+		pop_happiness = -0.50
+		trade_value_mult = 0.10
+		monthly_loyalty = -1.5
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 500
+		}
+		upkeep = {
+			energy = 5
+		}
+	}
+    triggered_desc = {
+		text = job_overlord_wg_ptc_animals_effect_desc
+	}
+}
+
+holding_alien_research = {
+	base_buildtime = 540
+	owner_type = subject_holding
+	icon = holding_alien_research
+	can_be_disabled = no
+	base_cap_amount = 1
+	empire_limit = 5 
+	
+	potential = {
+		owner.overlord = {
+			OR = {
+				has_authority = auth_shenhai
+				has_authority = auth_warshipgirls 
+			}	
+		}
+	}
+    on_built = {
+		if = {
+			limit = {
+				NOT = {
+					has_planet_flag = timed_kill_pop_ptc_flag
+				}
+				set_timed_planet_flag = { flag = timed_kill_pop_ptc_flag days = 720 }#刚刚造下去720天内不杀人口
+			}
+		}
+		set_planet_flag = timed_3_2_kill_pop_ptc_flag
+	}
+	on_destroy = {
+		remove_planet_flag = timed_3_2_kill_pop_ptc_flag
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_wg_ptc_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = wg_ptc }
+			}
+		}
+	}
+	country_modifier = {
+		country_society_tech_research_speed = 0.02
+	}
+	planet_modifier = {
+		job_overlord_wg_ptc_researcher_add = 3
+		pop_happiness = -0.50
+		trade_value_mult = 0.10
+		monthly_loyalty = -3
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 800
+		}
+		upkeep = {
+			energy = 10
+		}
+		produces = {
+			society_research = 50
+		}
+	}
+    triggered_desc = {
+		text = holding_resource_collector_effect_desc
+	}
+}
+
+holding_alien_food = {
+	base_buildtime = 360
+	owner_type = subject_holding
+	icon = holding_alien_food
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			OR = {
+				has_authority = auth_shenhai
+				has_authority = auth_warshipgirls 
+			}	
+		}
+	}
+    on_built = {
+		if = {
+			limit = {
+				NOT = {
+					has_planet_flag = timed_kill_pop_ptc_flag
+				}
+				set_timed_planet_flag = { flag = timed_kill_pop_ptc_flag days = 720 }#刚刚造下去720天内不杀人口
+			}
+		}	
+		set_planet_flag = timed_1_kill_pop_ptc_flag
+	}
+	on_destroy = {
+		remove_planet_flag = timed_1_kill_pop_ptc_flag
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = subject_is_wg_ptc_subject
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = wg_ptc }
+			}
+		}
+	}
+
+	planet_modifier = {
+		pop_happiness = -0.50
+		monthly_loyalty = -3
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 500
+		}
+		upkeep = {
+			energy = 5
+		}
+		produces = {
+			food = 50
+		}
+	}
+    triggered_desc = {
+		text = holding_alien_food_effect_desc
+	}
+}
+
+#舰娘附庸胖次工厂
+holding_wsg_pantsu_maker = {
+	base_buildtime = 360
+	owner_type = subject_holding
+	icon = holding_wsg_pantsu_maker
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			OR = {
+				has_authority = auth_warshipgirls 
+			}	
+		}
+	}
+    allow = {
+		owner.overlord = {
+			has_technology = tech_wsg_pantsu
+		}
+	}
+	planet_modifier = {
+		monthly_loyalty = 1
+		job_overlord_wsg_pantsu_maker_add = 5
+		job_overlord_wsg_pantsu_maker_per_pop = 0.10
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 500
+		}
+		upkeep = {
+			energy = 10
+		}
+	}
+    triggered_desc = {
+		text = job_overlord_wsg_pantsu_maker_effect_desc
+	}
+}
+
+holding_wsg_neo_maker = {
+	base_buildtime = 1080
+	owner_type = subject_holding
+	icon = holding_wsg_neo_maker
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			OR = {
+				has_authority = auth_warshipgirls 
+			}
+			NOT = {
+				has_ascension_perk = ap_project_s
+			}
+		}
+	}
+    allow = {
+		owner.overlord = {
+			has_technology = tech_building_wsg_neo
+		}
+	}
+	planet_modifier = {
+		job_overlord_wsg_neo_maker_add = 4
+		job_overlord_wsg_neo_maker_per_pop = 0.04
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 1500
+		}
+		upkeep = {
+			energy = 10
+		}
+	}
+    triggered_desc = {
+		text = job_overlord_wsg_neo_maker_effect_desc
+	}
+}
+
+holding_wsg_alpha_maker = {
+	base_buildtime = 1080
+	owner_type = subject_holding
+	icon = holding_wsg_alpha_maker
+	can_be_disabled = no
+	
+	potential = {
+		owner.overlord = {
+			OR = {
+				has_authority = auth_warshipgirls 
+			}
+			NOT = {
+				has_ascension_perk = ap_project_s
+			}
+		}
+	}
+    allow = {
+		owner.overlord = {
+			has_technology = tech_building_wsg_alpha
+		}
+	}
+	planet_modifier = {
+		job_overlord_wsg_alpha_maker_add = 2
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 1500
+		}
+		upkeep = {
+			energy = 10
+			rare_crystals = 4
+			sr_neo = 2
+		}
+	}
+    triggered_desc = {
+		text = job_overlord_wsg_alpha_maker_effect_desc
+	}
+}
+
+holding_wsg_srse_maker = {
+	base_buildtime = 1080
+	owner_type = subject_holding
+	icon = holding_wsg_srse_maker
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			OR = {
+				has_authority = auth_warshipgirls 
+			}
+			NOT = {
+				has_ascension_perk = ap_mist
+			}
+		}
+	}
+    allow = {
+		owner.overlord = {
+			has_technology = tech_wsg_senergy
+		}
+	}
+	planet_modifier = {
+		job_overlord_wsg_srse_maker_add = 4
+		job_overlord_wsg_srse_maker_per_pop = 0.04
+		pop_environment_tolerance = -0.05
+		pop_amenities_usage_mult = 0.05
+		monthly_loyalty = -0.5
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 1500
+		}
+		upkeep = {
+			energy = 10
+			sr_pantsu = 2
+		}
+	}
+    triggered_desc = {
+		text = job_overlord_wsg_srse_maker_effect_desc
+	}
+}
+
+
+
+#深海附庸
+holding_sh_pantsu_maker = {
+	base_buildtime = 360
+	owner_type = subject_holding
+	icon = holding_sh_pantsu_maker
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			OR = {
+				has_authority = auth_shenhai
+			}	
+		}
+	}
+
+	planet_modifier = {
+		monthly_loyalty = 1
+		job_overlord_wsg_pantsu_maker_add = 6
+		job_overlord_wsg_pantsu_maker_per_pop = 0.10
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 500
+		}
+		upkeep = {
+			energy = 10
+		}
+	}
+    triggered_desc = {
+		text = job_overlord_wsg_pantsu_maker_effect_desc
+	}
+}
+
+holding_sh_srse_maker = {
+	base_buildtime = 1080
+	owner_type = subject_holding
+	icon = holding_sh_srse_maker
+	can_be_disabled = no
+	base_cap_amount = 1
+	
+	potential = {
+		owner.overlord = {
+			OR = {
+				has_authority = auth_shenhai 
+			}
+		}
+	}
+    allow = {
+		owner.overlord = {
+			has_technology = tech_sh_senergy
+		}
+	}
+	planet_modifier = {
+		job_overlord_wsg_srse_maker_add = 5
+		job_overlord_wsg_srse_maker_per_pop = 0.04
+		pop_environment_tolerance = -0.05
+		pop_amenities_usage_mult = 0.05
+		monthly_loyalty = -0.5
+	}
+	resources = {
+		category = planet_holdings
+		cost = {
+			minerals = 1500
+		}
+		upkeep = {
+			energy = 10
+			sr_pantsu = 3
+		}
+	}
+    triggered_desc = {
+		text = job_overlord_wsg_srse_maker_effect_desc
+	}
+}
+
+
+
+
+
+
+

@@ -1,0 +1,1329 @@
+namespace = ap_wg_crisis
+############################################################
+# 自制灾飞机制事件须知
+
+# 使用此自制界面前请让我们（舰R制作组 / KDC制作组）知悉
+
+# 如果想要复制此灾飞界面并更改天赋内容，请最好将整个ap_wg_crisis_window.gui复制一遍并更改图标
+# 天赋图标的psd文件已附在gfx/interface/ap_wg_crisis文件夹内
+
+# 事件编号1,2为显示自制灾飞界面的显示事件，title为显示灾飞分数的本地化，差别仅有desc显示的内容。
+# 事件编号3为教程界面
+# 事件编号4为确认打开教程界面的事件
+# 事件编号10~23为获得灾飞分数的事件，建议原封不动
+# on action或触发方式见各事件上方注释
+
+# 事件编号111-155为点击灾飞天赋（激活天赋）后弹出的二次确认事件
+# 事件gui wg_comfirmation_window 除了窗口大小外其余元素均建议不改变，需要复制请全套原封不动复制
+# 事件选项gui wg_comfirmation_AgreeButton为确认选项，可填自定义本地化
+# 事件选项gui wg_hiding_button为取消选项，不能填本地化，必须为default_hide_option
+# 取消选项按钮是隐藏的，原理为将退出按钮伪装成取消按钮，然后退出时自动执行隐藏的事件选项达致此双选界面效果
+# 以上事件均由button effects触发
+
+# 其他不涉及灾飞界面的剧情事件均写在了另一个事件文档内，若对这些事件不感兴趣可不参阅
+
+###########################################################
+
+# 焚飞界面显示事件（显示焚灭等级目标）
+country_event = {
+	id = ap_wg_crisis.1
+	title = ap_wg_crisis.1.name
+	desc = ap_wg_crisis.1.desc
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	diplomatic_title = "ap_wg_crisis_window_title"
+	custom_gui = "ap_wg_crisis_window"
+
+	immediate = {
+	}
+
+	option = {
+		custom_gui = "ap_wg_crisis_option"
+		name = ""
+		custom_tooltip = "ap_wg_crisis.1.tooltip"
+		hidden_effect = { country_event = { id = ap_wg_crisis.2 }}
+	}
+
+	option = {
+		custom_gui = "wg_hiding_button"
+		name = ""
+		default_hide_option = yes
+	}
+}
+
+# 焚飞界面显示事件（焚灭等级解锁目标列表）
+country_event = {
+	id = ap_wg_crisis.2
+	title = ap_wg_crisis.1.name
+	desc = ap_wg_crisis.2.desc
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	diplomatic_title = "ap_wg_crisis_window_title"
+	custom_gui = "ap_wg_crisis_window"
+
+	immediate = {
+	}
+
+	option = {
+		custom_gui = "ap_wg_crisis_option"
+		name = ""
+		custom_tooltip = "ap_wg_crisis.2.tooltip"
+		hidden_effect = { country_event = { id = ap_wg_crisis.1 }}
+	}
+
+	option = {
+		custom_gui = "wg_hiding_button"
+		name = ""
+		default_hide_option = yes
+	}
+}
+
+# 教程界面
+country_event = {
+	id = ap_wg_crisis.3
+	title = ap_wg_crisis.3.name
+	desc = ap_wg_crisis.3.desc
+	is_triggered_only = yes
+
+	diplomatic = yes
+	custom_gui = "ap_wg_crisis_window_tutorial"
+	custom_gui_option = "wg_hiding_button"
+
+	option = {
+		name = ""
+		default_hide_option = yes
+	}
+
+}
+
+# 询问是否要教程
+country_event = {
+	id = ap_wg_crisis.4
+	title = ap_wg_crisis.4.name
+	desc = ap_wg_crisis.4.desc
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	diplomatic = yes
+	custom_gui = wg_comfirmation_window
+
+	immediate = {
+		set_country_flag = ap_wg_crisis_country
+		save_global_event_target_as = ap_wg_crisis_country
+		set_global_flag = has_ap_wg_crisis_country
+		set_variable = { which = wg_crisis_points value = 0 }
+		set_variable = { which = wg_crisis_level value = 0 }
+	}
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		custom_tooltip = ap_wg_crisis.4.a.tooltip
+		hidden_effect = {
+			country_event = { id = ap_wg_crisis.3 }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+		custom_tooltip = ap_wg_crisis.4.b.tooltip
+		hidden_effect = {
+			country_event = { id = ap_wg_crisis.1 }
+		}
+	}
+}
+
+# lv1解锁
+country_event = {
+	id = ap_wg_crisis.5
+	title = ap_wg_crisis.5.name
+	desc = ap_wg_crisis.5.desc
+	is_triggered_only = yes
+
+	diplomatic = yes
+	custom_gui = wg_comfirmation_window
+
+	immediate = {
+		set_country_flag = wg_crisis_lv1_Obj_finish
+		set_variable = { which = wg_crisis_level value = 1 }
+		add_modifier = { modifier = wg_crisis_perk_lv1_1_passive_modifier }
+		add_modifier = { modifier = wg_crisis_perk_lv1_2_passive_modifier }
+	}
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		custom_tooltip = ap_wg_crisis.4.b.tooltip
+		hidden_effect = {
+			country_event = { id = ap_wg_crisis.1 }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# lv2解锁
+country_event = {
+	id = ap_wg_crisis.6
+	title = ap_wg_crisis.5.name
+	desc = ap_wg_crisis.6.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_comfirmation_window
+
+	immediate = {
+		set_variable = { which = wg_crisis_level value = 2 }
+		add_modifier = { modifier = wg_crisis_perk_lv2_2_passive_modifier }
+		add_modifier = { modifier = wg_crisis_perk_lv2_3_passive_modifier }
+	}
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		custom_tooltip = ap_wg_crisis.4.b.tooltip
+		hidden_effect = {
+			country_event = { id = ap_wg_crisis.1 }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# lv3解锁
+country_event = {
+	id = ap_wg_crisis.7
+	title = ap_wg_crisis.5.name
+	desc = ap_wg_crisis.7.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_comfirmation_window
+
+	immediate = {
+		set_variable = { which = wg_crisis_level value = 3 }
+		add_modifier = { modifier = wg_crisis_perk_lv3_2_passive_modifier }
+		add_modifier = { modifier = wg_crisis_perk_lv3_3_passive_modifier }
+		add_modifier = { modifier = wg_crisis_perk_lv3_4_passive_modifier }
+	}
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		custom_tooltip = ap_wg_crisis.4.b.tooltip
+		hidden_effect = {
+			country_event = { id = ap_wg_crisis.1 }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# lv4解锁
+country_event = {
+	id = ap_wg_crisis.8
+	title = ap_wg_crisis.5.name
+	desc = ap_wg_crisis.8.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_comfirmation_window
+
+	immediate = {
+		set_variable = { which = wg_crisis_level value = 4 }
+		add_modifier = { modifier = wg_crisis_perk_lv4_3_passive_modifier }
+		add_modifier = { modifier = wg_crisis_perk_lv4_4_passive_modifier }
+		give_technology = { tech = tech_wsg_fm_bc_2x message = no }
+	}
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		custom_tooltip = ap_wg_crisis.4.b.tooltip
+		hidden_effect = {
+			country_event = { id = ap_wg_crisis.1 }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# lv5解锁
+country_event = {
+	id = ap_wg_crisis.9
+	title = ap_wg_crisis.5.name
+	desc = ap_wg_crisis.9.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_comfirmation_window
+
+	immediate = {
+		set_variable = { which = wg_crisis_level value = 5 }
+		give_technology = { tech = tech_sh_sunkiller message = no }
+		give_technology = { tech = tech_btc_1 message = no }
+		add_modifier = { modifier = wg_crisis_perk_lv5_2_passive_modifier }
+		add_modifier = { modifier = wg_crisis_perk_lv5_3_passive_modifier }
+		add_modifier = { modifier = wg_crisis_perk_lv5_4_passive_modifier }
+		add_modifier = { modifier = wg_crisis_perk_lv5_5_passive_modifier }
+	}
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		custom_tooltip = ap_wg_crisis.4.b.tooltip
+		hidden_effect = {
+			country_event = { id = ap_wg_crisis.1 }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+
+# 炸恒星得分（每炸一个恒星系获得150分）
+planet_event = {
+	id = ap_wg_crisis.10
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		from.owner = {
+			OR = {
+				has_ascension_perk = ap_become_the_crisis
+				has_ascension_perk = ap_wg_crisis
+			}
+		}
+	}
+
+	immediate = {
+		from.owner = { 
+			add_victory_score = {
+				source = destroyed_stars_score
+				score = 10
+			}
+			switch = {
+				trigger = galaxy_size
+				huge = { add_resource = { sr_dark_matter = 1500 }}
+				large = { add_resource = { sr_dark_matter = 2000 }}
+				medium = { add_resource = { sr_dark_matter = 2500 }}
+				small = { add_resource = { sr_dark_matter = 3000 }}
+				tiny = { add_resource = { sr_dark_matter = 4000 }}
+			}
+			country_event = { id = ap_wg_crisis.1096 }
+			if = {
+				limit = { is_hostile = ROOT.owner }
+				if = {
+					limit = { has_ascension_perk = ap_become_the_crisis }
+					complete_crisis_objective = crisobj_destroy_worlds
+				}
+				if = {
+					limit = { has_ascension_perk = ap_wg_crisis }
+					add_wg_crisis_points = { POINTS = 150 }
+				}
+				ROOT.owner = { set_country_flag = gain_wg_crisis_point }
+			}
+			# 被炸之后没有其他殖民地导致国家毁灭，给国家毁灭的分数
+			if = {
+				limit = {
+					exists = owner
+					owner = {
+						NOT = { is_country_type = default_ev }
+						NOT = {
+							any_owned_planet = {
+								NOT = { is_same_value = root }
+							}
+						}
+					}
+				}
+				from.owner = {
+					if = {
+						limit = { has_ascension_perk = ap_become_the_crisis }
+						complete_crisis_objective = crisobj_destroy_empires
+					}
+					else_if = {
+						limit = { has_ascension_perk = ap_wg_crisis }
+						add_wg_crisis_points = { POINTS = 300 }
+					}
+					ROOT.owner = { set_country_flag = gain_wg_crisis_point }
+				}
+			}
+		}
+	}
+}
+
+# 炸球得分（每炸一个球获得50分）
+country_event = {
+	id = ap_wg_crisis.11
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_ascension_perk = ap_wg_crisis
+	}
+
+	immediate = {
+		add_wg_crisis_points = { POINTS = 50 }
+	}
+}
+# this = planet 被炸的球
+# from = fleet 炸球的巨神兵
+# 触发炸球得分事件（每炸一个球获得50分）
+planet_event = {
+	id = ap_wg_crisis.12
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		FROM.owner = {
+			if = {
+				limit = {
+					ROOT = {
+						exists = owner
+						owner = { NOT = { is_same_value = PREVPREV }}
+					}
+				}
+				if = {
+					limit = { has_ascension_perk = ap_wg_crisis }
+					country_event = { id = ap_wg_crisis.11 }
+				}
+			}
+		}
+		
+		# 被炸之后没有其他殖民地导致国家毁灭，给国家毁灭的分数
+		if = {
+			limit = {
+				exists = owner
+				owner = {
+					NOT = { is_country_type = default_ev }
+					NOT = {
+						any_owned_planet = {
+							NOT = { is_same_value = root }
+						}
+					}
+				}
+			}
+			from.owner = {
+				if = {
+					limit = { has_ascension_perk = ap_wg_crisis }
+					add_wg_crisis_points = { POINTS = 300 }
+				}
+				ROOT.owner = { set_country_flag = gain_wg_crisis_point }
+			}
+		}
+	}
+}
+
+# This = owner of fleet 1
+# From = owner of fleet 2
+# FromFrom = fleet 1
+# FromFromFrom = fleet 2
+# 判断舰队是否达到得分条件，并标记舰队
+country_event = {
+	id = ap_wg_crisis.13
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_ascension_perk = ap_wg_crisis
+			FROM = { has_ascension_perk = ap_wg_crisis }
+		}
+		NAND = {
+			FROMFROM = { has_fleet_flag = can_gain_wg_crisis_point }
+			FROMFROMFROM = { has_fleet_flag = can_gain_wg_crisis_point }
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = { has_ascension_perk = ap_wg_crisis }
+			if = {
+				limit = { FROM = { is_enemy_country = yes }}
+				# 野怪自动判断可获得点数
+				FROMFROMFROM = { set_fleet_flag = can_gain_wg_crisis_point }
+			} else_if = {
+				limit = { always = yes }
+				FROMFROMFROM = {
+					clear_variable = count_ship_num
+					remove_fleet_flag = can_gain_wg_crisis_point
+					if = {
+						limit = { NOT = { has_fleet_flag = can_gain_wg_crisis_point }}
+						every_owned_ship = {
+							if = {
+								limit = { 
+									fleet = { NOT = { has_fleet_flag = can_gain_wg_crisis_point }}
+									# 舰队拥有主力舰以上级别的船，达成得分条件
+									OR = {
+										is_main_ship_size = yes 
+										is_super_ship_size = yes
+									}
+								}
+								fleet = { set_fleet_flag = can_gain_wg_crisis_point }
+							}
+							PREV = { change_variable = { which = count_ship_num value = 1 }}
+						}
+					}
+					if = {
+						limit = { 
+							# 舰队没有主力舰以上级别的船，但有至少5艘船，达成得分条件
+							NOT = { has_fleet_flag = can_gain_wg_crisis_point }
+							check_variable = { which = count_ship_num value >= 5 }
+						}
+						set_fleet_flag = can_gain_wg_crisis_point
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { FROM = { has_ascension_perk = ap_wg_crisis }}
+			if = {
+				limit = { is_enemy_country = yes }
+				# 野怪自动判断可获得点数
+				FROMFROMFROM = { set_fleet_flag = can_gain_wg_crisis_point }
+			} else_if = {
+				limit = { always = yes }
+				FROMFROM = {
+					clear_variable = count_ship_num
+					remove_fleet_flag = can_gain_wg_crisis_point
+					if = {
+						limit = { NOT = { has_fleet_flag = can_gain_wg_crisis_point }}
+						every_owned_ship = {
+							if = {
+								limit = { 
+									fleet = { NOT = { has_fleet_flag = can_gain_wg_crisis_point }}
+									# 舰队拥有主力舰以上级别的船，达成得分条件
+									OR = {
+										is_main_ship_size = yes 
+										is_super_ship_size = yes
+									}
+								}
+								fleet = { set_fleet_flag = can_gain_wg_crisis_point }
+							}
+							PREV = { change_variable = { which = count_ship_num value = 1 }}
+						}
+					}
+					if = {
+						limit = { 
+							# 舰队没有主力舰以上级别的船，但有至少5艘船，达成得分条件
+							NOT = { has_fleet_flag = can_gain_wg_crisis_point }
+							check_variable = { which = count_ship_num value >= 5 }
+						}
+						set_fleet_flag = can_gain_wg_crisis_point
+					}
+				}
+			}
+		}
+	}
+}
+
+# on_fleet_destroyed_perp
+# 歼灭敌对舰队
+# 计分方式：
+# 舰队拥有5艘或以上船 / 有至少一艘主力舰/利维坦级别的舰队，歼灭该舰队获得15分
+country_event = {
+	id = ap_wg_crisis.14
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_ascension_perk = ap_wg_crisis
+		FROMFROMFROM = { has_fleet_flag = can_gain_wg_crisis_point }
+	}
+
+	immediate = {
+		add_wg_crisis_points = { POINTS = 15 }
+		FROMFROMFROM = { remove_fleet_flag = can_gain_wg_crisis_point }
+	}
+}
+
+# on_ship_destroyed_perp
+# 歼灭主力舰级舰船
+# 每歼灭一艘主力舰获得10分
+country_event = {
+	id = ap_wg_crisis.15
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_ascension_perk = ap_wg_crisis
+		FROMFROMFROM = { is_main_ship_size = yes }
+	}
+
+	immediate = {
+		add_wg_crisis_points = { POINTS = 10 }
+	}
+}
+
+# on_ship_destroyed_perp
+# 歼灭利维坦级舰船
+# 每歼灭一艘利维坦级舰船获得35分
+country_event = {
+	id = ap_wg_crisis.16
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_ascension_perk = ap_wg_crisis
+		FROMFROMFROM = { is_super_ship_size = yes }
+	}
+
+	immediate = {
+		add_wg_crisis_points = { POINTS = 35 }
+	}
+}
+
+# on_ship_destroyed_perp
+# 摧毁军事基地
+# 每摧毁一座军事基地获得5分
+country_event = {
+	id = ap_wg_crisis.17
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_ascension_perk = ap_wg_crisis
+		FROMFROMFROM = { is_ship_class = shipclass_military_station }
+	}
+
+	immediate = {
+		add_wg_crisis_points = { POINTS = 5 }
+	}
+}
+
+# on_starbase_destroyed
+# 摧毁恒星基地获得分数
+starbase_event = {
+	id = ap_wg_crisis.18
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		FROM.owner = { has_ascension_perk = ap_wg_crisis }
+	}
+
+	immediate = {
+		if = { # 哨站3分
+			limit = { has_starbase_size = starbase_outpost }
+			event_target:ap_wg_crisis_country = {
+				add_wg_crisis_points = { POINTS = 5 }
+			}
+		} else_if = { # 星港6分
+			limit = { has_starbase_size = starbase_starport }
+			event_target:ap_wg_crisis_country = {
+				add_wg_crisis_points = { POINTS = 8 }
+			}
+		} else = { # 其他级别
+			event_target:ap_wg_crisis_country = {
+				add_wg_crisis_points = { POINTS = 15 }
+			}
+		}
+	}
+}
+
+# on_starbase_transfer
+# 恒星基地转移所有权（被打下了）
+ship_event = {
+	id = ap_wg_crisis.10018
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { is_hostile = ROOT.owner }
+		owner = {
+			has_ascension_perk = ap_wg_crisis
+		}
+	}
+
+	immediate = {
+		fleet = {
+			starbase = {
+				if = { # 哨站3分
+					limit = { has_starbase_size = starbase_outpost }
+					event_target:ap_wg_crisis_country = {
+						add_wg_crisis_points = { POINTS = 5 }
+					}
+				} else_if = { # 星港6分
+					limit = { has_starbase_size = starbase_starport }
+					event_target:ap_wg_crisis_country = {
+						add_wg_crisis_points = { POINTS = 8 }
+					}
+				} else = { # 其他级别
+					event_target:ap_wg_crisis_country = {
+						add_wg_crisis_points = { POINTS = 15 }
+					}
+				}
+			}
+		}
+	}
+}
+
+# on_pop_purged
+# This = Planet scope
+# From = Country
+# FromFrom = Pop
+# 灭绝人口获得分数（每个人口3分）
+planet_event = {
+	id = ap_wg_crisis.19
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		from = {
+			has_ascension_perk = ap_wg_crisis
+		}
+	}
+
+	immediate = {
+		from = {
+			add_wg_crisis_points = { POINTS = 2 }
+		}
+	}
+}
+
+# on_planet_conquer
+# From = Country scope (new owner)
+# This = Planet scope
+# 征服一个球获得分数（35分）
+planet_event = {
+	id = ap_wg_crisis.20
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		from = {
+			has_ascension_perk = ap_wg_crisis
+		}
+		OR = {
+			is_colony = yes
+			AND = {
+				exists = owner
+				owner = { 
+					is_primitive = yes
+				}
+			}
+		}
+	}
+
+	immediate = {
+		from = {
+			add_wg_crisis_points = { POINTS = 35 }
+		}
+		if = {
+			limit = {
+				exists = owner
+				owner = {
+					NOT = { is_country_type = default_ev }
+					NOT = {
+						any_owned_planet = {
+							NOT = { is_same_value = root }
+						}
+					}
+				}
+			}
+			from = {
+				add_wg_crisis_points = { POINTS = 300 }
+				ROOT.owner = { set_country_flag = gain_wg_crisis_point }
+			}
+		}
+	}
+}
+
+# on_becoming_subject
+# This = subject
+# From = subject's overlord
+# 附庸一个国家（120分）
+country_event = {
+	id = ap_wg_crisis.21
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_subject = yes
+		NOT = { has_country_flag = has_become_crisis_vassal }
+		from = {
+			has_ascension_perk = ap_wg_crisis
+		}
+	}
+
+	immediate = {
+		from = {
+			add_wg_crisis_points = { POINTS = 100 }
+		}
+		set_country_flag = has_become_crisis_vassal
+	}
+}
+
+# on_yearly_pulse
+# 拥有附庸
+# 每年+10
+event = {
+	id = ap_wg_crisis.22
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_country = {
+			has_ascension_perk = ap_wg_crisis
+			vassals > 0
+		}
+	}
+
+	immediate = {
+		every_playable_country = {
+			if = {
+				limit = {
+					has_ascension_perk = ap_become_the_crisis
+					vassals > 0
+				}
+				every_subject = {
+					prev = {
+						add_wg_crisis_points = { POINTS = 10 }
+					}
+				}
+			}
+		}
+	}
+}
+
+# on_yearly_pulse
+# 违反银河法
+# 每年+50
+event = {
+	id = ap_wg_crisis.23
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_country = {
+			has_ascension_perk = ap_wg_crisis
+			is_in_breach_of_any = yes
+		}
+	}
+
+	immediate = {
+		every_playable_country = {
+			limit = {
+				has_ascension_perk = ap_wg_crisis
+				is_in_breach_of_any = yes
+			}
+			add_wg_crisis_points = { POINTS = 50 }
+		} 
+	}
+}
+
+# 国家被摧毁（额外检测）
+# on_country_destroyed
+country_event = {
+	id = ap_wg_crisis.24
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_country_flag = gain_wg_crisis_point }
+		exists = FROM
+		FROM = { OR = {
+			has_ascension_perk = ap_wg_crisis 
+			has_ascension_perk = ap_become_the_crisis
+		}}
+	}
+
+	immediate = {
+		set_country_flag = gain_wg_crisis_point
+		if = {
+			limit = { has_ascension_perk = ap_wg_crisis }
+			add_wg_crisis_points = { POINTS = 300 }
+		}
+	}
+}
+
+# 战争结束（国家摧毁的额外检测）
+# on_war_won
+# Root = Winner Warleader
+# From = Loser Warleader
+# FromFrom = War
+country_event = {
+	id = ap_wg_crisis.25
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_ascension_perk = ap_wg_crisis 
+			has_ascension_perk = ap_become_the_crisis
+		}
+	}
+
+	immediate = {
+		FROM = {
+			save_event_target_as = loser_warleader
+		}
+		FROMFROM = {
+			every_war_participant = {
+				limit = { 
+					is_war_participant = { 
+						war = PREV 
+						side = event_target:loser_warleader 
+					}
+					NOR = { 
+						has_country_flag = gain_wg_crisis_point 
+						is_country_type = default_ev 
+						any_owned_planet = {
+							NOT = { is_same_value = root }
+						}
+					}
+				}
+				ROOT = {
+					if = {
+						limit = { has_ascension_perk = ap_wg_crisis }
+						add_wg_crisis_points = { POINTS = 300 }
+					}
+				}
+			}
+		}
+	}
+
+}
+
+# 激活焚灭天赋确认窗口
+# 焚灭天赋lv1-1
+country_event = {
+	id = ap_wg_crisis.111
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv1 value = 1 }
+			add_modifier = { modifier = wg_crisis_perk_lv1_1_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv1-2
+country_event = {
+	id = ap_wg_crisis.112
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv1 value = 2 }
+			add_modifier = { modifier = wg_crisis_perk_lv1_2_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv2-1
+country_event = {
+	id = ap_wg_crisis.121
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv2 value = 1 }
+			add_modifier = { modifier = wg_crisis_perk_lv2_1_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv2-2
+country_event = {
+	id = ap_wg_crisis.122
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv2 value = 2 }
+			add_modifier = { modifier = wg_crisis_perk_lv2_2_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv2-3
+country_event = {
+	id = ap_wg_crisis.123
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv2 value = 3 }
+			give_technology = { tech = tech_wg_doom message = no }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv3-1
+country_event = {
+	id = ap_wg_crisis.131
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv3 value = 1 }
+			add_modifier = { modifier = wg_crisis_perk_lv3_1_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv3-2
+country_event = {
+	id = ap_wg_crisis.132
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv3 value = 2 }
+			add_modifier = { modifier = wg_crisis_perk_lv3_2_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv3-3
+country_event = {
+	id = ap_wg_crisis.133
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv3 value = 3 }
+			add_modifier = { modifier = wg_crisis_perk_lv3_3_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv3-4
+country_event = {
+	id = ap_wg_crisis.134
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv3 value = 4 }
+			add_modifier = { modifier = wg_crisis_perk_lv3_4_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv4-1
+country_event = {
+	id = ap_wg_crisis.141
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv4 value = 1 }
+			add_modifier = { modifier = wg_crisis_perk_lv4_1_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv4-2
+country_event = {
+	id = ap_wg_crisis.142
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv4 value = 2 }
+			add_modifier = { modifier = wg_crisis_perk_lv4_2_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv4-3
+country_event = {
+	id = ap_wg_crisis.143
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv4 value = 3 }
+			add_modifier = { modifier = wg_crisis_perk_lv4_3_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv4-4
+country_event = {
+	id = ap_wg_crisis.144
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv4 value = 4 }
+			add_modifier = { modifier = wg_crisis_perk_lv4_4_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv5-1
+country_event = {
+	id = ap_wg_crisis.151
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv5 value = 1 }
+			give_technology = { tech = tech_fm_sunkiller message = no }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv5-2
+country_event = {
+	id = ap_wg_crisis.152
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv5 value = 2 }
+			add_modifier = { modifier = wg_crisis_perk_lv5_2_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv5-3
+country_event = {
+	id = ap_wg_crisis.153
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv5 value = 3 }
+			add_modifier = { modifier = wg_crisis_perk_lv5_3_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv5-4
+country_event = {
+	id = ap_wg_crisis.154
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv5 value = 4 }
+			add_modifier = { modifier = wg_crisis_perk_lv5_4_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}
+# 焚灭天赋lv5-5
+country_event = {
+	id = ap_wg_crisis.155
+	title = "wg_crisis_perk_comfirmation_title"
+	desc = "wg_crisis_perk_comfirmation_desc"
+	is_triggered_only = yes
+	
+	diplomatic = yes 
+	custom_gui = wg_comfirmation_window
+
+	option = {
+		name = YES
+		custom_gui = wg_comfirmation_AgreeButton
+		hidden_effect = {
+			set_variable = { which = active_wg_crisis_perk_lv5 value = 5 }
+			add_modifier = { modifier = wg_crisis_perk_lv5_5_active_modifier }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+	}
+}

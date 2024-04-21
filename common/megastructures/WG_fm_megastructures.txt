@@ -1,0 +1,332 @@
+#深海爹家里的
+wg_fm_gateway_damaged = {
+	entity = "wsg_fm_gateway_damaged_entity"
+	construction_entity = "wsg_fm_gateway_damaged_entity"
+	portrait = "GFX_wsg_fm_gateway_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	show_in_outliner = no
+
+	potential = {
+		always = no
+	}
+}
+
+#第一阶段平台
+wg_fm_gateway_01 = {
+	entity = "molluscoid_01_corvette_entity"
+	construction_entity = "molluscoid_01_corvette_entity"
+	portrait = "GFX_megastructure_construction_background"
+	build_time = 900
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 20000
+			unity = 50000
+		}
+		upkeep = {
+			energy = 100
+			alloys = 100
+		}
+	}
+
+	country_modifier = {
+
+	}
+
+	potential = {
+		has_technology = tech_wg_fm_psionic_energy_hypersiphon
+	}
+
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_only_one_fm_gateway"
+			NOT = {
+				has_global_flag = wg_fm_gateway
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_black_hole_neutron_star_pulsar"
+			NOT = {
+				is_star_class = sc_black_hole
+				is_star_class = sc_neutron_star
+				is_star_class = sc_pulsar
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_megastructure"
+			has_no_non_gate_megastructure = yes
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_habitable_planets"
+			any_system_planet = {
+				is_colonizable = no
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_binary_trinary"
+			NOR = {
+				is_star_class = sc_binary_1
+				is_star_class = sc_binary_2
+				is_star_class = sc_binary_3
+				is_star_class = sc_binary_4
+				is_star_class = sc_binary_5
+				is_star_class = sc_binary_6
+				is_star_class = sc_binary_7
+				is_star_class = sc_binary_8
+				is_star_class = sc_binary_9
+				is_star_class = sc_binary_10
+				is_star_class = sc_trinary_1
+				is_star_class = sc_trinary_2
+				is_star_class = sc_trinary_3
+				is_star_class = sc_trinary_4
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "must_build_around_star"
+				is_star = yes
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+		}
+	}
+
+	on_build_cancel = {
+		remove_global_flag = wg_fm_gateway
+	}
+	on_build_complete = {
+		set_global_flag = wg_fm_gateway
+		fromfrom = {
+			set_megastructure_flag = wg_fm_gateway
+			planet = {
+				set_planet_flag = has_megastructure
+				if = {
+					limit = { has_orbital_station = yes }
+					orbital_station = {
+						dismantle = yes
+					}
+				}
+			}
+		}
+	}
+}
+#第二阶段
+wg_fm_gateway_02 = {
+	entity = "wsg_fm_deactivated_gateway_entity"
+	construction_entity = "wsg_fm_deactivated_gateway_entity"
+	portrait = "GFX_wsg_fm_gateway_02_background"
+	build_time = 1800
+	victory_score = 1000
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 50000
+		}
+		upkeep = {
+			energy = 150
+			alloys = 200
+		}
+	}
+	
+	country_modifier = {
+	}
+
+	possible = {
+		custom_tooltip = {
+			fail_text = "WG_FM_GATEWAY_NEED_TO_REPAIR"
+			FROM = { NOT = { has_country_flag = wg_gateway_broken }}
+		}
+	}
+	upgrade_from = {
+		wg_fm_gateway_01
+	}
+
+	on_build_complete = {
+		fromfrom = { }
+	}
+}
+#第三阶段激活（配套的ambient_objects：wsg_gateway_portal_crisis_object）
+wg_fm_gateway_03 = {
+	entity = "wsg_fm_reactivated_psi_gateway_entity"
+	construction_entity = "wsg_fm_reactivated_psi_gateway_entity"
+	portrait = "GFX_wsg_fm_gateway_03_background"
+	build_time = 1800
+	victory_score = 1000
+	resources = {
+		category = megastructures
+		cost = {
+			sr_dark_matter = 20000
+			energy = 100000
+		}
+		produces = {
+			energy = 500
+			minerals = 500
+		}
+		produces = {
+			energy = 500
+			minerals = 500
+			trigger = {
+				FROM = { NOT = { has_country_flag = wg_gateway_broken }}
+			}
+		}
+		upkeep = {
+			alloys = 300
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			fail_text = "NOT_FINISH_PEH_SPECIAL_PROJECT"
+			FROM = { has_country_flag = finish_adjust_psionic_energy_hypersiphon }
+		}
+		custom_tooltip = {
+			fail_text = "WG_FM_GATEWAY_NEED_TO_REPAIR"
+			FROM = { NOT = { has_country_flag = wg_gateway_broken }}
+		}
+	}
+	
+	country_modifier = {
+		country_naval_cap_add = 200
+	}
+
+	upgrade_from = {
+		wg_fm_gateway_02
+	}
+
+	on_build_complete = {
+		#fromfrom = { set_megastructure_flag = crisis_sphere }
+		from = {
+		}
+	}
+}
+#第四阶段维度之锚（配套的ambient_objects：wsg_gateway_psi_portal_crisis_object）
+wg_fm_gateway_04 = {
+	entity = "wsg_fm_reactivated_psi_gateway_entity"
+	construction_entity = "wsg_fm_reactivated_psi_gateway_entity"
+	portrait = "GFX_wsg_fm_gateway_04_background"
+	build_time = 3600
+	victory_score = 1000
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 50000
+			sr_dark_matter = 40000
+		}
+		produces = {
+			energy = 250
+			minerals = 500
+		}
+		produces = {
+			energy = 250
+			minerals = 500
+			trigger = {
+				FROM = { NOT = { has_country_flag = wg_gateway_broken }}
+			}
+		}
+		upkeep = {
+			alloys = 400
+		}
+	}
+
+	possible = {
+		FROM = { has_technology = tech_wg_fm_dimensional_anchor }
+		custom_tooltip = {
+			fail_text = "WG_FM_GATEWAY_NEED_TO_REPAIR2"
+			FROM = { NOT = { has_country_flag = wg_gateway_broken }}
+		}
+	}
+	
+	country_modifier = {
+		country_naval_cap_add = 250
+	}
+
+	upgrade_from = {
+		wg_fm_gateway_03
+	}
+
+	on_build_complete = {
+		#fromfrom = { set_megastructure_flag = crisis_sphere }
+		from = {
+		}
+	}
+}
+
+#第五阶段维度门
+wg_fm_gateway_05 = {
+	entity = "wsg_fm_reactivated_gateway_entity"
+	construction_entity = "wsg_fm_reactivated_gateway_entity"
+	portrait = "GFX_wsg_fm_gateway_05_background"
+	build_time = 3600
+	victory_score = 10000
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 50000
+			energy = 75000
+			sr_dark_matter = 60000
+		}
+		produces = {
+			energy = 1000
+			minerals = 2000
+		}
+		upkeep = {
+			alloys = 600
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			fail_text = "NOT_FINISH_NEUTRON_SHIELDER_SPECIAL_PROJECT"
+			FROM = { has_country_flag = finish_neutron_impact_shielder }
+		}
+		custom_tooltip = {
+			fail_text = "WG_FM_GATEWAY_NEED_TO_REPAIR2"
+			FROM = { NOT = { has_country_flag = wg_gateway_broken }}
+		}
+	}
+	
+	country_modifier = {
+		country_naval_cap_add = 350
+	}
+
+	upgrade_from = {
+		wg_fm_gateway_04
+	}
+
+	on_build_complete = {
+		#fromfrom = { set_megastructure_flag = crisis_sphere }
+		from = {
+		}
+	}
+}

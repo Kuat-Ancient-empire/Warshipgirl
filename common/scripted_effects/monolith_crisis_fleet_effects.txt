@@ -1,0 +1,147 @@
+# 创造舰队通用触发
+# scope = planet / system
+# 输入：NAME = 舰队名字
+# SMALL_SHIP_NUM = 小船数量
+# LARGE_SHIP_NUM = 大船数量
+# TITAN_NUM = 泰坦数量
+
+common_monolith_crisis_fleet_create_effect = {
+    create_fleet = {
+        [[NAME] name = $NAME$]
+        effect = {
+            set_owner = event_target:monolith_crisis_country
+            [[SMALL_SHIP_NUM] create_monolith_crisis_ship_small = { NUM = $SMALL_SHIP_NUM$ }]
+            [[LARGE_SHIP_NUM] create_monolith_crisis_ship_large = { NUM = $LARGE_SHIP_NUM$ }]
+            [[TITAN_NUM] create_monolith_crisis_titan = { NUM = $TITAN_NUM$ }]
+            set_location = {
+                target = PREV
+                distance = 5
+                angle = random
+            }
+            set_fleet_stance = aggressive
+            set_fleet_bombardment_stance = Galo
+            #assign_leader = last_created_leader
+            #set_aggro_range_measure_from = self
+            #set_aggro_range = 500
+            owner = { change_variable = { which = MonoC_fleet_id value = 1 }}
+            set_variable = { which = MonoC_fleet_id value = owner.MonoC_fleet_id }
+            fleet_event = { id = monolith_crisis.121 }
+        }	
+        settings = { 
+            can_upgrade = no 
+            uses_naval_capacity = yes
+            spawn_debris = no
+            is_boss = yes
+        }
+    }	
+}
+
+create_monolith_crisis_fleet = {#小石碑舰队
+    common_monolith_crisis_fleet_create_effect = {
+        NAME = "NAME_monolith_crisis_fleet"
+        SMALL_SHIP_NUM = 32
+        LARGE_SHIP_NUM = 10
+    }
+}
+
+create_monolith_crisis_large_fleet = {#大石碑舰队
+    common_monolith_crisis_fleet_create_effect = {
+        NAME = "NAME_monolith_crisis_large_fleet"
+        SMALL_SHIP_NUM = 25
+        LARGE_SHIP_NUM = 15
+        TITAN_NUM = 2
+    }
+}
+
+create_monolith_crisis_huge_fleet = {#超大大石碑舰队
+    common_monolith_crisis_fleet_create_effect = {
+        NAME = "NAME_monolith_crisis_large_fleet"
+        SMALL_SHIP_NUM = 20
+        LARGE_SHIP_NUM = 17
+        TITAN_NUM = 5
+    }			
+}
+create_monolith_crisis_defence_fleet = {#防守舰队
+    create_fleet = {
+        name = "NAME_monolith_crisis_defence_fleet"
+        effect = {
+            set_owner = event_target:monolith_crisis_country
+            create_monolith_crisis_ship_small = { NUM = 15 }
+            create_monolith_crisis_ship_large = { NUM = 22 }
+            create_monolith_crisis_titan = { NUM = 5 }
+            set_location = {
+                target = PREV
+                distance = 5
+                angle = random
+            }
+            set_fleet_stance = aggressive
+            set_fleet_bombardment_stance = Galo
+            #assign_leader = last_created_leader
+            set_aggro_range_measure_from = self
+            set_aggro_range = 500
+        }	
+        settings = { 
+            can_upgrade = no 
+            uses_naval_capacity = yes
+            spawn_debris = no
+            is_boss = yes
+        }
+    }			
+}
+create_monolith_crisis_starbase = {
+	create_starbase = {
+		size = "monolith_crisis_starbase"
+		owner = event_target:monolith_crisis_country
+		effect = {
+			while = {
+				count = 5
+				create_monolith_crisis_cannon = yes
+			}
+		}
+	}
+}
+
+create_monolith_crisis_cannon = {
+	create_ship = {
+		name = random
+		design = "NAME_monolith_crisis_cannon"
+		graphical_culture = owner
+	}
+}
+
+# scope = fleet
+# 输入：NUM = 数量（整数） 
+create_monolith_crisis_ship_small = {
+    while = {
+        count = $NUM$
+        create_ship = {
+            name = random
+            design = "NAME_monolith_crisis_small"
+            upgradable = no
+        }
+    }
+}
+# scope = fleet
+# 输入：NUM = 数量（整数） 
+create_monolith_crisis_ship_large = {
+    while = {
+        count = $NUM$
+        create_ship = {
+            name = random
+            design = "NAME_monolith_crisis_large"
+            upgradable = no
+        }
+    }
+}
+# scope = fleet
+# 输入：NUM = 数量（整数） 
+create_monolith_crisis_titan = {
+    while = {
+        count = $NUM$
+        create_ship = {
+            name = random
+            design = "NAME_monolith_crisis_titan"
+            upgradable = no
+        }
+    }
+}

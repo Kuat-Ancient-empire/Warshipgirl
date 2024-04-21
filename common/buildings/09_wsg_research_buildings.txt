@@ -1,0 +1,325 @@
+building_wsg_research = {
+	base_buildtime = 480
+
+	category = research
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_warshipgirls	
+			NOR = {
+				has_ascension_perk = ap_become_the_gray
+				has_ascension_perk = ap_project_s
+				has_country_flag = wg_ascension_path_project_s
+			}
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+
+	convert_to = {
+		"building_sep_research"
+		"building_gray_nano_research"
+	}
+		
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				has_country_flag = wg_ascension_path_project_s
+				has_ascension_perk = ap_project_s
+				has_ascension_perk = ap_become_the_gray
+				AND = {
+					is_ai = yes
+					buildings_no_sr_pantsu = yes
+					PREV = { free_building_slots = 0 }
+				}
+			}
+		}
+	}
+	planet_modifier = {
+		job_researcher_add = 2
+		job_wsg_researcher_add = 1
+	}	
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 450
+		}	
+		upkeep = {
+			energy = 5
+		}
+	}
+	upgrades = {
+		"building_wsg_research2"
+	}	
+	prerequisites = {
+		"tech_building_wsg_research"
+	}
+	
+	triggered_desc = {
+		text = job_researcher_effect_desc
+	}
+
+	ai_resource_production = {
+		physics_research = 2
+		society_research = 2
+		engineering_research = 2
+		trigger = { always = yes }
+	}
+}
+building_wsg_research2 = {
+	base_buildtime = 480
+	can_build = no
+
+	category = research
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_warshipgirls	
+			
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	allow = {
+		has_upgraded_capital = yes
+	}		
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				has_country_flag = wg_ascension_path_project_s
+				has_ascension_perk = ap_project_s
+				has_ascension_perk = ap_become_the_gray
+				AND = {
+					is_ai = yes
+					buildings_no_sr_pantsu = yes
+					PREV = { free_building_slots = 0 }
+				}
+			}
+		}
+	}
+	convert_to = {
+		"building_sep_research2"
+		"building_gray_nano_research2"
+	}
+	planet_modifier = {
+		planet_jobs_physics_research_produces_mult = 0.01
+		planet_jobs_society_research_produces_mult = 0.01
+		planet_jobs_engineering_research_produces_mult = 0.01
+		job_wsg_researcher_add = 4
+	}	
+	triggered_desc = {
+		text = job_wsg_researcher_effect_desc
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 450
+			sr_pantsu = 50
+		}	
+		upkeep = {
+			energy = 9
+			sr_pantsu = 1
+		}
+	}
+	prerequisites = {
+		"tech_building_wsg_research2"
+	}	
+			
+	upgrades = {
+		"building_wsg_research3"
+	}	
+	
+
+	ai_resource_production = {
+		physics_research = 4
+		society_research = 4
+		engineering_research = 4
+		trigger = { always = yes }
+	}
+}
+
+building_wsg_research3 = {
+	base_buildtime = 480
+	can_build = no
+
+	category = research
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_warshipgirls	
+			
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	allow = {
+		has_upgraded_capital = yes
+	}		
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				has_country_flag = wg_ascension_path_project_s
+				has_ascension_perk = ap_project_s
+				has_ascension_perk = ap_become_the_gray
+				AND = {
+					is_ai = yes
+					buildings_no_sr_pantsu = yes
+					PREV = { free_building_slots = 0 }
+				}
+			}
+		}
+	}
+	convert_to = {
+		"building_sep_research3"
+		"building_gray_nano_research3"
+	}
+	planet_modifier = {
+		planet_jobs_physics_research_produces_mult = 0.015
+		planet_jobs_society_research_produces_mult = 0.015
+		planet_jobs_engineering_research_produces_mult = 0.015
+		planet_researchers_upkeep_mult = -0.01
+	}	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }					
+		}
+		modifier = {
+			job_wsg_researcher_add = 6
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }					
+		}
+		modifier = {
+			job_researcher_add = 10
+		}
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 600
+			sr_pantsu = 50
+		}	
+		upkeep = {
+			energy = 12
+			sr_pantsu = 2
+		}
+	}
+	prerequisites = {
+		"tech_building_wsg_research3"
+	}	
+			
+
+	triggered_desc = {
+		text = job_wsg_researcher_effect_desc
+	}
+
+	ai_resource_production = {
+		physics_research = 6
+		society_research = 6
+		engineering_research = 6
+		trigger = { always = yes }
+	}
+}
+building_wsg_dark_alpha_experiment_field = {
+	base_buildtime = 300
+	can_build = yes
+	category = research
+
+	empire_limit = {
+		base = 1
+	}
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_warshipgirls	
+			has_country_flag = building_dark_alpha_experiment_unlock
+			NOT = { has_country_flag = built_dark_alpha_experiment_field }
+		}
+	}
+
+	planet_modifier = {
+		planet_orbital_bombardment_damage = -0.5
+	}	
+
+	on_built = {
+		owner = { 
+			set_country_flag = built_dark_alpha_experiment_field 
+		}
+		planet_event = { id = wsg.3018 }
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 450
+			alloys = 450
+		}	
+		upkeep = {
+			energy = 3
+		}
+	}		
+}
+building_wsg_dark_alpha_experiment_field_ruin = {
+	base_buildtime = 300
+	can_build = no
+	category = research
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_warshipgirls	
+			has_country_flag = building_dark_alpha_experiment_unlock
+		}
+	}
+	planet_modifier = {
+		planet_jobs_physics_research_produces_mult = 0.10
+		job_wsg_researcher_add = 2
+	}	
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 450
+			alloys = 450
+		}	
+		upkeep = {
+			energy = 3
+		}
+	}		
+}

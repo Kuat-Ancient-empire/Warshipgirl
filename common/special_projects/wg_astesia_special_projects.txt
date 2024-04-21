@@ -1,0 +1,87 @@
+# 	on_success = { 					# Effect happens when project completes
+# 		# Scopes:
+# 		# 	THIS = project scope (matches setting in "event_scope" i.e. ship/planet/country)
+# 		# 	FROM = location scope, if set (usually a planet)
+# 		# 	PREV = country
+# 	}
+	
+# 	on_start = { 					# Effect happens when you start researching the project
+# 		# Scopes: see on_success
+# 	}
+	
+# 	on_progress_25/50/75 = {  		# Effect happens when you have researched X% of the research costs
+# 		# Scopes: see on_success
+# 	}
+	
+# 	on_fail = { 					# Effect happens if you allow the timelimit to expire
+# 		# Scopes:
+# 		# 	THIS = country
+# 		# 	FROM = project scope (matches setting in "event_scope" i.e. ship/planet/country). Might not exist!
+# 		# 	FROMFROM = location scope, if set (usually a planet)
+# 	}
+
+# 	on_cancel = { 					# Effect happens if you choose to stop researching or if the abort_trigger returns true
+# 		# Scopes: See on_fail
+# 	}
+
+# 	abort_trigger = { 				# Trigger for aborting the project and removing it from the situation log. Fires on_cancel effect
+# 		# Scopes: See on_fail
+# 	}
+# }
+
+special_project = {
+	key = "wg_astesia_special_project_1"
+	cost = 50000
+	tech_department = engineering_technology
+	picture = GFX_evt_robot_assembly_plant
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = planet_event
+	
+	on_success = {
+		if = {
+			limit = {
+				exists = event_target:wg_fallen_empire
+				exists = event_target:sh_fallen_empire
+				NOR = {
+					has_ascension_perk = ap_shenhai_silent
+					has_ascension_perk = ap_wg_crisis
+					has_civic = civic_CM
+					has_civic = civic_wsg_super_harbor
+					has_origin = origin_wg_warhammer
+				}
+			}
+			prev = {
+				country_event = {
+					id = wg_astesia.128
+				}
+			}
+		}
+		else = {
+			prev = {
+				country_event = {
+					id = wg_astesia.127
+				}
+			}
+		}
+	}
+}
+
+special_project = {
+	key = "wg_astesia_special_project_2"
+	days_to_research = 907779277
+	tech_department = engineering_technology
+	picture = GFX_evt_robot_assembly_plant
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = planet_event
+	on_start = {
+		prev = {
+			country_event = {
+				id = wg_astesia.131 days = 720
+			}
+		}
+	}
+	on_success = {
+	}
+}

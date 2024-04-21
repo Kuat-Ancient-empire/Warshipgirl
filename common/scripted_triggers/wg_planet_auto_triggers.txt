@@ -1,0 +1,193 @@
+# 星球自动化用的脚本触发
+# 组装厂
+wsg_assembly_affordable = {
+	has_monthly_income = { resource = minerals value > 5 }
+	has_monthly_income = { resource = energy value > 5 }
+	if = {
+		limit = { owner_main_species = {
+			has_trait = wsg_trait_mass_assembly
+		}}
+		has_monthly_income = { resource = sr_se value > 15 }
+	}
+}
+sh_assembly_affordable = {
+	has_monthly_income = { resource = minerals value > 2 }
+	has_monthly_income = { resource = energy value > 2 }
+	if = {
+		limit = { owner_main_species = {
+			OR = {
+				has_trait = sh_trait_building2E
+				has_trait = sh_trait_building22E
+			}
+		}}
+		has_monthly_income = { resource = sr_se value > 15 }
+	}
+}
+sh_sex_affordable = {
+	has_monthly_income = { resource = energy value > 8 }
+	has_monthly_income = { resource = sr_pantsu value > 1 }
+}
+# 舰娘通用建筑
+wsg_luxury_affordable = {
+	has_monthly_income = { resource = energy value > 5 }
+}
+wsg_civic_buildings_affordable = {
+	has_monthly_income = { resource = energy value > 6 }
+}
+wsg_monument_affordable = {
+	has_monthly_income = { resource = energy value > 5 }
+	has_monthly_income = { resource = sr_pantsu value > 1 }
+}
+wsg_stage_affordable = {
+	has_monthly_income = { resource = energy value > 8 }
+}
+wsg_bathhouse_affordable = {
+	has_monthly_income = { resource = energy value > 15 }
+	has_monthly_income = { resource = sr_pantsu value > 1 }
+	has_monthly_income = { resource = exotic_gases value > 1 }
+}
+# 反重力电梯（S飞限定）
+wsg_elevator_affordable = {
+	has_monthly_income = { resource = energy value > 10 }
+	has_monthly_income = { resource = sr_pantsu value > 1 }
+}
+
+# 深海通用建筑
+sh_nerve_affordable = {
+	has_monthly_income = { resource = energy value > 8 }
+	has_monthly_income = { resource = sr_pantsu value > 2 }
+}
+sh_unity_affordable = {
+	has_monthly_income = { resource = energy value > 8 }
+	has_monthly_income = { resource = sr_pantsu value > 1 }
+}
+sh_resident_affordable = {
+	has_monthly_income = { resource = energy value > 6 }
+}
+
+# 合金/消费品
+wsg_foundry_affordable = {
+	has_monthly_income = { resource = energy value > 35 }
+}
+sh_foundry_affordable = {
+	has_monthly_income = { resource = energy value > 10 }
+	has_monthly_income = { resource = sr_pantsu value > 4 }
+}
+wsg_sep_foundry_affordable = {
+	has_monthly_income = { resource = energy value > 30 }
+	has_monthly_income = { resource = sr_se value > 5 }
+}
+wsg_sunflower_foundry_affordable = {
+	has_monthly_income = { resource = energy value > 5 }
+	has_monthly_income = { resource = food value > 3 }
+}
+
+# 研究所
+wsg_research_affordable = {
+	has_monthly_income = { resource = energy value > 5 }
+	has_monthly_income = { resource = sr_pantsu value > 1 }
+}
+sh_research_affordable = {
+	has_monthly_income = { resource = energy value > 5 }
+}
+
+# 资源判定
+wg_gas_require_trigger = {
+	if = {
+		limit = { OR = {
+			AND = {
+				has_authority = auth_warshipgirls
+				has_project_s_ascension_path = yes
+			}
+			has_authority = auth_shenhai
+		}}
+		has_monthly_income = { resource = exotic_gases value < 5 } # 胖次很吃气体，因此需要预留多点气体
+	} else = {
+		has_monthly_income = { resource = exotic_gases value < 0 } 
+	}
+}
+wg_mote_require_trigger = {
+	has_monthly_income = { resource = volatile_motes value < 0 }
+}
+wg_crystals_require_trigger = {
+	has_monthly_income = { resource = rare_crystals value < 0 }
+}
+wg_neo_require_trigger = {
+	has_monthly_income = { resource = sr_neo value < 10 } # 关键二产资源，需要预留多点
+}
+wg_alpha_require_trigger = {
+	has_monthly_income = { resource = sr_alpha value < 0 }
+}
+wg_pantsu_require_trigger = {
+	if = {
+		limit = { OR = {
+			AND = {
+				has_authority = auth_warshipgirls
+				has_project_s_ascension_path = yes
+			}
+			has_authority = auth_shenhai
+		}}
+		has_monthly_income = { resource = sr_pantsu value < 10 } # S飞或深海的深海能源很吃胖次，需要预留多点
+	} else = {
+		has_monthly_income = { resource = sr_pantsu value < 0 }
+	}
+}
+wg_se_require_trigger = {
+	has_monthly_income = { resource = sr_se value < 5 } # S飞或深海很吃深海能源，需要预留多点
+}
+wg_mist_resource_enough_trigger = {
+	has_monthly_income = { resource = sr_pantsu value > 15 }
+	has_monthly_income = { resource = sr_neo value > 15 }
+	has_monthly_income = { resource = sr_alpha value > 15 }
+}
+wg_sep_resource_enough_trigger = {
+	has_monthly_income = { resource = sr_pantsu value > 20 }
+	has_monthly_income = { resource = sr_se value > 15 }
+}
+# 特殊资源建筑
+wsg_refinery_mist_affordable = {
+	has_monthly_income = { resource = energy value > 15 }
+}
+wsg_neo_affordable = {
+	has_monthly_income = { resource = energy value > 15 }
+}
+wsg_alpha_affordable = {
+	has_monthly_income = { resource = energy value > 30 }
+}
+wsg_pantsu_affordable = {
+	has_monthly_income = { resource = energy value > 5 }
+	has_monthly_income = { resource = exotic_gases value > 1 }
+}
+sh_pantsu_affordable = {
+	has_monthly_income = { resource = energy value > 4 }
+}
+wsg_senergy_affordable = {
+	if = {
+		limit = { has_country_flag = senergy_produce_tradition_adopted }
+		has_monthly_income = { resource = energy value > 30 }
+		has_monthly_income = { resource = sr_pantsu value > 4 }
+	} else = {
+		has_monthly_income = { resource = energy value > 15 }
+		has_monthly_income = { resource = sr_pantsu value > 1 }
+	}
+}
+sh_senergy_affordable = {
+	if = {
+		limit = { has_country_flag = senergy_produce_tradition_adopted }
+		has_monthly_income = { resource = energy value > 15 }
+		has_monthly_income = { resource = sr_pantsu value > 3 }
+	}
+}
+rare_resource_factory_affordable = {
+	has_monthly_income = { resource = energy value > 15 }
+	has_monthly_income = { resource = sr_se value > 1 }
+}
+# 其他建筑
+wsg_military_affordable = {
+	has_monthly_income = { resource = energy value > 8 }
+	has_monthly_income = { resource = sr_pantsu value > 1 }
+}
+sh_fortress_affordable = {
+	has_monthly_income = { resource = energy value > 3 }
+	has_monthly_income = { resource = sr_pantsu value > 1 }
+}

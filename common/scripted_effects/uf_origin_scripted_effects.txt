@@ -1,0 +1,103 @@
+destroy_system_uf_origin = {
+	set_star_class = sc_black_hole
+	every_system_ambient_object = {
+		destroy_ambient_object = this
+	}
+	every_fleet_in_system = {
+		limit = { owner = { NOT = { has_authority = auth_united_fleet }}}
+		destroy_fleet = this
+	}
+	every_system_planet = {
+		limit = { is_star = yes }
+		create_ambient_object = {
+			type = "star_explosion"
+			location = this
+			use_3d_location = yes
+			entity_offset = 0
+			entity_offset_angle = 0
+			entity_offset_height = 0
+			entity_face_object = FROM
+		}
+		change_pc = "pc_black_hole"
+		random_list = {
+			20 = { change_planet_size = -1 }
+			20 = { change_planet_size = -2 }
+			20 = { change_planet_size = -3 }
+		}
+	}
+	every_system_planet = {
+		limit = {
+			OR = {
+				has_mining_station = yes
+				has_research_station = yes
+				has_observation_outpost = yes
+			}
+		}
+		if = {
+			limit = { has_mining_station = yes }
+			mining_station = { dismantle = yes }
+		}
+		if = {
+			limit = { has_research_station = yes }
+			research_station = { dismantle = yes } 
+		}
+		else = { 
+			observation_outpost = { dismantle = yes }
+		}
+	}
+	every_system_planet = {
+		limit = { 
+			is_star = no
+			is_asteroid = no
+		}
+		if = {
+			limit = { is_colony = yes }
+			remove_all_buildings = yes
+			destroy_colony = yes
+		}
+		else_if = {
+			limit = { is_ringworld_wg = yes }
+			spawn_ringworld_cracker_effect = yes
+			change_pc = pc_ringworld_habitable_damaged
+		}
+		else_if = {
+			limit = { is_planet_class = pc_ringworld_tech }
+			spawn_ringworld_cracker_effect = yes
+			change_pc = pc_ringworld_tech_damaged
+		}
+		else_if = {
+			limit = { is_planet_class = pc_ringworld_seam }
+			spawn_ringworld_cracker_effect = yes
+			change_pc = pc_ringworld_seam_damaged
+		}
+		remove_planet = yes
+	}
+	every_system_planet = { 
+		clear_deposits = yes
+		clear_planet_modifiers = yes
+		prevent_anomaly = yes
+	}
+	every_system_planet = {
+		limit = { is_asteroid = yes }
+		clear_deposits = yes
+	}
+	every_system_megastructure = {
+		remove_megastructure = this
+	}
+	star = {
+		create_ambient_object = {
+			type = "destroyed_system"
+			location = this
+			entity_offset = 0
+			entity_offset_angle = 0
+			entity_offset_height = 0
+			entity_face_object = FROM
+			use_3d_location = yes
+		}
+		last_created_ambient_object = {
+			set_ambient_object_flag = destroyed_system_effect
+		}
+	}
+	set_asteroid_belt = { radius = 0 }
+}
+

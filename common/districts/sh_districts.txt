@@ -1,0 +1,1175 @@
+@base_cost = 300
+@city_cost = 500
+
+district_rw_sh_city = {
+	base_buildtime = 360
+	is_capped_by_modifier = no
+	
+	show_on_uncolonized = {
+		exists = from
+		from = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = rw_sh_world
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = rw_sh_world
+		}
+	}
+
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = 1250
+		}
+		upkeep = {
+			energy = 7.5
+		}		
+	}	
+
+	planet_modifier = {
+		planet_housing_add = 40
+		job_sh_clerk_add = 10
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				has_valid_civic = civic_agrarian_idyll
+			}
+		}
+		modifier = {
+			planet_housing_add = -5
+		}
+	}	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				is_fallen_empire = yes
+			}
+		}
+		modifier = {
+			job_sh_clerk_add = -10
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				is_sh_fallen_empire = yes
+			}
+		}
+		modifier = {
+			job_sh_clerk_add = -10
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				is_regular_empire = yes
+				is_fallen_empire = no
+				is_sh_fallen_empire = no
+			}
+		}
+		modifier = {
+			job_clerk_add = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_active_tradition = tr_prosperity_public_works }
+		}
+		modifier = {
+			planet_housing_add = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				has_technology = tech_housing_1 
+			}
+		}
+		modifier = {
+			planet_housing_add = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				has_technology = tech_housing_2 
+				NOT = { has_valid_civic = civic_agrarian_idyll }
+			}
+		}
+		modifier = {
+			planet_housing_add = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_active_tradition = tr_prosperity_interstellar_franchising }
+		}
+		modifier = {
+			job_clerk_add = 5
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		text = job_clerk_effect_desc
+	}
+
+
+}
+
+district_rw_sh_alloys = {
+	base_buildtime = 360
+	is_capped_by_modifier = no
+	icon = district_arcology_arms_industry2
+	
+	show_on_uncolonized = {
+		exists = from
+		from = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = rw_sh_world
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = rw_sh_world
+		}
+	}	
+
+	
+	convert_to = {
+		district_rw_commercial
+	}
+	
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = 1500
+			sr_se = 50
+		}
+		upkeep = {
+			energy = 7.5
+			sr_pantsu = 1
+			sr_se = 0.5
+		}		
+	}
+	triggered_desc = {
+		text = job_sh_foundry_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			OR = {
+				has_active_building = building_sh_foundry
+				has_active_building = building_sh_foundryU
+				has_active_building = building_foundry_1 
+				has_active_building = building_foundry_2 
+				has_active_building = building_foundry_3 
+			}
+		}
+		text = pc_rw_sh_extra_sh_foundry_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			OR = {
+				has_active_building = building_factory_1
+				has_active_building = building_factory_2
+				has_active_building = building_factory_3
+			}
+		}
+		text = pc_rw_sh_extra_artisan_effect_desc
+	}
+	triggered_planet_modifier = {
+		planet_housing_add = 15
+		job_sh_foundry_add = 10
+	}
+	triggered_planet_modifier = {
+		potential = { 
+			OR = {
+				has_active_building = building_sh_foundry
+				has_active_building = building_sh_foundryU
+				has_active_building = building_foundry_1 
+				has_active_building = building_foundry_2 
+				has_active_building = building_foundry_3 
+			}
+		}
+		job_sh_foundry_add = 3
+	}
+	triggered_planet_modifier = {
+		potential = { 
+			colony_type = col_sh_ring_alloy
+		}
+		job_sh_foundry_add = 2
+	}
+	triggered_planet_modifier = {
+		potential = { 
+			colony_type = col_sh_ring_factory
+		}
+		job_artisan_add = 3
+	}
+	triggered_planet_modifier = {
+		potential = { 
+			OR = {
+				has_active_building = building_factory_1
+				has_active_building = building_factory_2
+				has_active_building = building_factory_3
+			}
+		}
+		job_artisan_add = 4
+	}
+	
+	ai_weight = {
+		weight = 0
+		
+		modifier = {
+			weight = 20000
+
+			owner = { 
+				has_monthly_income = {
+					resource = energy
+					value < 200
+				}
+			}
+		}
+
+		modifier = {
+			factor = 0.01
+			OR = { 
+				planet = { has_district = district_rw_farming }
+				planet = { has_district = district_rw_science } 
+				planet = { has_district = district_rw_commercial } 
+			}
+		}
+	}
+
+	ai_resource_production = {
+		alloys = 10
+		consumer_goods = 2
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+district_rw_sh_goods = {
+	base_buildtime = 360
+	is_capped_by_modifier = no
+	icon = district_rw_science2
+	
+	show_on_uncolonized = {
+		exists = from
+		from = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = rw_sh_world
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = rw_sh_world
+		}
+	}	
+	
+	convert_to = {
+		district_rw_commercial
+	}
+	
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = 1500
+			sr_se = 50
+		}
+		upkeep = {
+			energy = 10
+			sr_pantsu = 2
+			sr_se = 0.5
+		}		
+	}
+	triggered_desc = {
+		text = job_sh_researcher_effect_desc
+	}
+	triggered_planet_modifier = {
+		planet_housing_add = 15
+		job_sh_researcher_add = 6
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_ascension_perk = ap_shenhai_icebreaking }					
+		}
+		job_sh_researcher_add = 2
+	}
+	triggered_planet_modifier = {
+		potential = { 
+			colony_type = col_sh_ring_science
+		}
+		job_sh_researcher_add = 4
+	}
+	
+	ai_weight = {
+		weight = 0
+		
+		modifier = {
+			weight = 20000
+
+			owner = { 
+				has_monthly_income = {
+					resource = energy
+					value < 200
+				}
+			}
+		}
+
+		modifier = {
+			factor = 0.01
+			OR = { 
+				planet = { has_district = district_rw_farming }
+				planet = { has_district = district_rw_science } 
+				planet = { has_district = district_rw_commercial } 
+			}
+		}
+	}
+
+	ai_resource_production = {
+		physics_research = 5
+		society_research = 5
+		engineering_research = 5
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+district_rw_sh_soldier = {
+	base_buildtime = 360
+	is_capped_by_modifier = no
+	icon = district_arcology_civilian_soldier 
+	
+	show_on_uncolonized = {
+		exists = from
+		from = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = rw_sh_world
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = rw_sh_world
+		}
+	}	
+	
+	convert_to = {
+		district_rw_commercial
+	}
+	
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = 1500
+			sr_se = 50
+		}
+		upkeep = {
+			energy = 7.5
+			sr_pantsu = 1
+			sr_se = 0.5
+		}		
+	}
+	triggered_desc = {
+		text = job_sh_soldier_effect_desc
+	}
+	triggered_planet_modifier = {
+		planet_housing_add = 15
+		job_sh_soldier_add = 15
+	}
+	
+	ai_weight = {
+		weight = 0
+		
+		modifier = {
+			weight = 20000
+
+			owner = { 
+				has_monthly_income = {
+					resource = energy
+					value < 200
+				}
+			}
+		}
+
+		modifier = {
+			factor = 0.01
+			OR = { 
+				planet = { has_district = district_rw_farming }
+				planet = { has_district = district_rw_science } 
+				planet = { has_district = district_rw_commercial } 
+			}
+		}
+	}
+
+	ai_resource_production = {
+		energy = 10
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+
+#深海星球
+district_sh_city = {
+	base_buildtime = 480
+	is_capped_by_modifier = no
+
+	show_on_uncolonized = {
+		exists = from
+		from = { is_regular_empire = yes }
+		OR = {
+			is_planet_class = pc_shenhai
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = {
+			is_planet_class = pc_shenhai
+		}
+	}
+
+	allow = {
+		NOT = { has_modifier = resort_colony }
+		NOT = { has_modifier = slave_colony }
+	}
+	planet_modifier = {
+		planet_housing_add = 9
+		planet_max_buildings_add = 1
+	}
+
+	resources = {
+		category = planet_districts_cities
+		cost = {
+			minerals = @city_cost
+		}
+		upkeep = {
+			energy = 2
+		}
+	}
+
+
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire = no
+			}
+		}
+		modifier = {
+			job_clerk_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_active_tradition = tr_prosperity_public_works }
+		}
+		modifier = {
+			planet_housing_add = 1
+		}
+	}
+
+
+
+
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_active_tradition = tr_prosperity_interstellar_franchising }
+		}
+		modifier = {
+			job_clerk_add = 1
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		text = job_clerk_effect_desc
+	}
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = 100
+			planet = {
+				planet_devastation < 1
+				years_passed > 10
+				free_housing < 4
+			}
+		}
+		modifier = {
+			weight = 1
+			num_free_districts = { type = district_mining value = 0 }
+			num_free_districts = { type = district_generator value = 0 }
+			num_free_districts = { type = district_farming value = 0 }
+		}
+		modifier = {
+			factor = 0
+			NOT = {
+				num_free_districts = { type = district_mining value = 0 }
+				num_free_districts = { type = district_generator value = 0 }
+				num_free_districts = { type = district_farming value = 0 }
+			}
+			OR = {
+				num_free_districts = { type = district_mining value > 0 }
+				num_free_districts = { type = district_generator value > 0 }
+				num_free_districts = { type = district_farming value > 0 }
+			}
+			count_owned_pop = {
+				limit = {
+					is_unemployed = yes
+					NOR = {
+						is_pop_category = specialist
+						is_pop_category = ruler
+					}
+				}
+				count >= 1
+			}
+		}
+		modifier = {
+			factor = 0
+			NOT = {
+				num_free_districts = { type = district_mining value = 0 }
+				num_free_districts = { type = district_generator value = 0 }
+				num_free_districts = { type = district_farming value = 0 }
+			}
+			owner = {
+				has_resource = {
+					type = minerals
+					amount < 400
+				}
+			}
+		}
+		modifier = {
+			factor = 0
+			NOT = {
+				num_free_districts = { type = district_mining value = 0 }
+				num_free_districts = { type = district_generator value = 0 }
+				num_free_districts = { type = district_farming value = 0 }
+			}
+			free_jobs > 1
+			free_housing > 1
+		}
+	}
+}
+
+district_sh_generator_uncapped = {
+	base_buildtime = 240
+	icon = district_generator
+	is_capped_by_modifier = no
+
+	show_on_uncolonized = {
+		OR = {
+			is_planet_class = pc_shenhai
+		}
+	}
+
+	potential = {
+		OR = {
+			is_planet_class = pc_shenhai
+		}
+	}
+
+	allow = {
+		NOT = { has_modifier = resort_colony }
+	}
+
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = @base_cost
+		}
+		upkeep = {
+			energy = 1
+		}
+	}
+
+	planet_modifier = {
+		planet_housing_add = 3
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_valid_civic = civic_agrarian_idyll
+			}
+		}
+		modifier = {
+			planet_housing_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_technician_drone_add = 3
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {
+			job_technician_drone_add = 2
+			planet_housing_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
+		}
+		modifier = {
+			job_technician_add = 3
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_generator_add = 2
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_technician_drone_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
+		}
+		text = job_technician_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_generator_effect_desc
+	}
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = 250
+			OR = {
+				owner = {
+					has_monthly_income = {
+						resource = energy
+							value < 200
+					}
+				}
+				num_free_districts = { type = district_mining_uncapped value = 0 } #ring worlds
+			}
+		}
+		modifier = {
+			factor = 3
+			owner = {
+				has_monthly_income = {
+					resource = energy
+						value < 0
+				}
+			}
+		}
+		modifier = {
+			factor = 10
+			owner = {
+				has_deficit = energy
+			}
+		}
+	}
+
+	ai_resource_production = {
+		energy = 1
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+district_sh_mining_uncapped = {
+	base_buildtime = 240
+	icon = district_mining
+	is_capped_by_modifier = no
+
+	show_on_uncolonized = {
+		OR = {
+			is_planet_class = pc_shenhai
+		}
+	}
+
+	potential = {
+		OR = {
+			is_planet_class = pc_shenhai
+		}
+	}
+
+	allow = {
+		NOT = { has_modifier = resort_colony }
+	}
+
+
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = @base_cost
+		}
+		upkeep = {
+			energy = 1
+		}
+	}
+
+	planet_modifier = {
+		planet_housing_add = 3
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_valid_civic = civic_agrarian_idyll
+			}
+		}
+		modifier = {
+			planet_housing_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_mining_drone_add = 3
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {
+			job_mining_drone_add = 3
+			planet_housing_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
+		}
+		modifier = {
+			job_miner_add = 3
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_mine_add = 2
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_mining_drone_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
+		}
+		text = job_miner_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_mine_effect_desc
+	}
+
+	prerequisites = {
+	}
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = 300
+			owner = {
+				has_monthly_income = {
+					resource = food
+					value > 10
+				}
+				has_monthly_income = {
+					resource = energy
+					value > 200
+				}
+			}
+		}
+		modifier = {
+			weight = 250
+				any_owned_pop = {
+						is_unemployed = yes
+				NOT = { has_citizenship_type = { type = citizenship_organic_trophy } }
+			}
+		}
+		modifier = {
+			factor = 1.25
+			exists = owner
+			owner = {
+				is_lithoid_empire = yes
+			}
+		}
+		modifier = {
+			factor = 10
+			owner = {
+				has_deficit = minerals
+			}
+		}
+	}
+
+	ai_resource_production = {
+		minerals = 1
+		trigger = {
+			always = yes
+		}
+	}
+}
+district_sh_foundry_shpc = {
+	base_buildtime = 240
+	is_capped_by_modifier = no
+	icon = district_sh_foundry_shpc
+	
+	show_on_uncolonized = {
+		exists = from
+		from = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = sh_world
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = sh_world
+		}
+	}	
+	
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = 500
+		}
+		upkeep = {
+			energy = 8
+		}		
+	}
+	triggered_desc = {
+		text = job_sh_foundry_shpc_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			OR = {
+				has_active_building = building_sh_foundry
+				has_active_building = building_sh_foundryU
+				has_active_building = building_foundry_1 
+				has_active_building = building_foundry_2 
+				has_active_building = building_foundry_3 
+			}
+		}
+		text = pc_sh_extra_sh_foundry_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			OR = {
+				has_active_building = building_factory_1
+				has_active_building = building_factory_2
+				has_active_building = building_factory_3
+			}
+		}
+		text = pc_sh_extra_artisan_effect_desc
+	}
+	triggered_planet_modifier = {
+		planet_housing_add = 2
+		job_sh_foundry_shpc_add = 2
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				has_technology = tech_housing_1 
+			}
+		}
+		modifier = {
+			planet_housing_add = 1
+		}
+	}
+	triggered_planet_modifier = {
+		potential = { 
+			OR = {
+				has_active_building = building_sh_foundry
+				has_active_building = building_sh_foundryU
+				has_active_building = building_foundry_1 
+				has_active_building = building_foundry_2 
+				has_active_building = building_foundry_3 
+			}
+		}
+		job_sh_foundry_shpc_add = 1
+	}
+	triggered_planet_modifier = {
+		potential = { 
+			OR = {
+				has_active_building = building_factory_1
+				has_active_building = building_factory_2
+				has_active_building = building_factory_3
+			}
+		}
+		job_artisan_add = 1
+	}
+
+	ai_weight = {
+		weight = 1
+		
+		modifier = {
+			weight = 20000
+
+			owner = { 
+				has_monthly_income = {
+					resource = alloys
+					value < 50
+				}
+			}
+		}
+	}
+
+	ai_resource_production = {
+		alloys = 10
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+district_sh_pantsu_shpc = {
+	base_buildtime = 240
+	is_capped_by_modifier = no
+	icon = district_sh_pantsu_shpc
+	
+	show_on_uncolonized = {
+		exists = from
+		from = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = sh_world
+		}
+		has_modifier = planet_spc_upgrade
+		has_planet_flag = shpc_pantsu_flag
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = sh_world
+		}
+		has_modifier = planet_spc_upgrade
+		has_planet_flag = shpc_pantsu_flag
+	}	
+	
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = 1000
+		}
+		upkeep = {
+			energy = 15
+		}		
+	}
+	triggered_desc = {
+		text = sh_pantsu_effect_desc
+	}
+
+	triggered_planet_modifier = {
+		planet_housing_add = 2
+		job_sh_pantsu_maker_add = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		
+		modifier = {
+			weight = 20000
+
+			owner = { 
+				has_monthly_income = {
+					resource = sr_pantsu
+					value < 50
+				}
+			}
+		}
+	}
+
+	ai_resource_production = {
+		sr_pantsu = 10
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+district_sh_science_shpc = {
+	base_buildtime = 240
+	is_capped_by_modifier = no
+	icon = district_hab_science
+	
+	show_on_uncolonized = {
+		exists = from
+		from = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = sh_world
+		}
+		has_modifier = planet_spc_upgrade
+		has_planet_flag = shpc_science_flag
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = {
+			uses_district_set = sh_world
+		}
+		has_modifier = planet_spc_upgrade
+		has_planet_flag = shpc_science_flag
+	}	
+	
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = 1000
+			exotic_gases = 10
+		}
+		upkeep = {
+			energy = 15
+		}		
+	}
+	triggered_desc = {
+		text = job_sh_researcher_effect_desc
+	}
+
+	triggered_planet_modifier = {
+		planet_housing_add = 3
+		job_sh_researcher_add = 2
+	}
+	triggered_planet_modifier = {
+		potential = { 
+			colony_type = col_sh_science
+		}
+		job_sh_researcher_add = 1
+	}
+
+	ai_weight = {
+		weight = 1
+		
+		modifier = {
+			weight = 20000
+
+			owner = { 
+				has_monthly_income = {
+					resource = sr_pantsu
+					value < 50
+				}
+			}
+		}
+	}
+
+	ai_resource_production = {
+		physics_research = 5
+		society_research = 5
+		engineering_research = 5
+		trigger = {
+			always = yes
+		}
+	}
+}

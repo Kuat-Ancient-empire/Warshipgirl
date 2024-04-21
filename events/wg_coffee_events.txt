@@ -1,0 +1,836 @@
+namespace = wg_coffee
+
+# 咖啡厅——领袖选择窗口 初始化数据
+country_event = {
+	id = wg_coffee.16
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_owned_leader = {
+			limit = {
+				has_leader_flag = has_wg_affection
+			}
+			remove_leader_flag = wg_coffee_chosen
+		}
+		set_variable = { which = num_wg_coffee_chosen_leader value = 0 }
+		set_variable = { which = reminder value = 0 }
+		every_owned_leader = {
+			limit = {
+				has_leader_flag = has_wg_affection
+				NOR = { 
+					has_leader_flag = wg_astesia_leader 
+				}
+			}
+			set_leader_flag = wg_coffee_chosen
+			ROOT = { change_variable = { which = num_wg_coffee_chosen_leader value = 1 }}
+			set_variable = { which = num_wg_coffee_chosen_leader value = ROOT.num_wg_coffee_chosen_leader }
+			set_variable = { which = leader_id value = num_wg_coffee_chosen_leader }
+			set_variable = { which = num_wg_coffee_chosen_leader value = 0 }
+		}
+		set_variable = { which = leader_id value = 0 }
+		country_event = { id = wg_coffee.17 }
+	}
+}
+
+# 咖啡厅——领袖选择窗口 翻页
+country_event = {
+	id = wg_coffee.17
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		change_variable = { which = leader_id value = 1 }
+		if = {
+			limit = { check_variable = { which = leader_id value <= num_wg_coffee_chosen_leader }}
+			random_owned_leader = { # 这页的第一名领袖
+				limit = { 
+					has_leader_flag = wg_coffee_chosen
+					check_variable = { which = leader_id value = ROOT.leader_id }
+				}
+				save_event_target_as = leader_tobe_view_1
+			}
+		}
+		if = {
+			limit = { check_variable = { which = leader_id value = num_wg_coffee_chosen_leader }}
+			change_variable = { which = reminder value = 4 }
+			country_event = { id = wg_coffee.18 }
+			break = yes
+		}
+		else = { change_variable = { which = leader_id value = 1 }}
+		
+		if = {
+			limit = { check_variable = { which = leader_id value <= num_wg_coffee_chosen_leader }}
+			random_owned_leader = { # 这页的第二名领袖
+				limit = { 
+					has_leader_flag = wg_coffee_chosen
+					check_variable = { which = leader_id value = ROOT.leader_id }
+				}
+				save_event_target_as = leader_tobe_view_2
+			}
+		}
+		if = {
+			limit = { check_variable = { which = leader_id value = num_wg_coffee_chosen_leader }}
+			change_variable = { which = reminder value = 3 }
+			country_event = { id = wg_coffee.18 }
+			break = yes
+		}
+		else = { change_variable = { which = leader_id value = 1 }}
+
+		if = {
+			limit = { check_variable = { which = leader_id value <= num_wg_coffee_chosen_leader }}
+			random_owned_leader = { # 这页的第三名领袖
+				limit = { 
+					has_leader_flag = wg_coffee_chosen
+					check_variable = { which = leader_id value = ROOT.leader_id }
+				}
+				save_event_target_as = leader_tobe_view_3
+			}
+		}
+		if = {
+			limit = { check_variable = { which = leader_id value = num_wg_coffee_chosen_leader }}
+			change_variable = { which = reminder value = 2 }
+			country_event = { id = wg_coffee.18 }
+			break = yes
+		}
+		else = { change_variable = { which = leader_id value = 1 }}
+
+		if = {
+			limit = { check_variable = { which = leader_id value <= num_wg_coffee_chosen_leader }}
+			random_owned_leader = { # 这页的第四名领袖
+				limit = { 
+					has_leader_flag = wg_coffee_chosen
+					check_variable = { which = leader_id value = ROOT.leader_id }
+				}
+				save_event_target_as = leader_tobe_view_4
+			}
+		}
+		if = {
+			limit = { check_variable = { which = leader_id value = num_wg_coffee_chosen_leader }}
+			change_variable = { which = reminder value = 1 }
+			country_event = { id = wg_coffee.18 }
+			break = yes
+		}
+		else = { change_variable = { which = leader_id value = 1 }}
+
+		random_owned_leader = { # 这页的第五名领袖
+			limit = { 
+				has_leader_flag = wg_coffee_chosen
+				check_variable = { which = leader_id value = ROOT.leader_id }
+			}
+			save_event_target_as = leader_tobe_view_5
+		}
+		set_variable = { which = reminder value = 0 }
+		country_event = { id = wg_coffee.18 }
+	}
+}
+
+
+# 咖啡厅对象选择窗口
+country_event = {
+	id = wg_coffee.18
+	title = wg_coffee.18.name
+	desc = wg_coffee.18.desc
+	is_triggered_only = yes
+
+	diplomatic = yes
+    custom_gui = "enclave_caravaneer_window"
+	picture_event_data = {
+		room = caffee_bar_room
+	}
+
+	option = {
+		trigger = {
+			exists = event_target:leader_tobe_view_1
+			check_variable = { which = reminder value <= 4 }
+		}
+		custom_gui = "enclave_caravaneer_option"
+		name = wg_coffee.18.leader1
+		hidden_effect = {
+			event_target:leader_tobe_view_1 = {
+				save_event_target_as = coffee_leader
+			}
+			country_event = { id = wg_coffee.19 }
+		}
+	}
+	option = {
+		trigger = {
+			exists = event_target:leader_tobe_view_2
+			check_variable = { which = reminder value <= 3 }
+		}
+		custom_gui = "enclave_caravaneer_option"
+		name = wg_coffee.18.leader2
+		hidden_effect = {
+			event_target:leader_tobe_view_2 = {
+				save_event_target_as = coffee_leader
+			}
+			country_event = { id = wg_coffee.19 }
+		}
+	}
+	option = {
+		trigger = {
+			exists = event_target:leader_tobe_view_3
+			check_variable = { which = reminder value <= 2 }
+		}
+		custom_gui = "enclave_caravaneer_option"
+		name = wg_coffee.18.leader3
+		hidden_effect = {
+			event_target:leader_tobe_view_3 = {
+				save_event_target_as = coffee_leader
+			}
+			country_event = { id = wg_coffee.19 }
+		}
+	}
+	option = {
+		trigger = {
+			exists = event_target:leader_tobe_view_4
+			check_variable = { which = reminder value <= 1 }
+		}
+		custom_gui = "enclave_caravaneer_option"
+		name = wg_coffee.18.leader4
+		hidden_effect = {
+			event_target:leader_tobe_view_4 = {
+				save_event_target_as = coffee_leader
+			}
+			country_event = { id = wg_coffee.19 }
+		}
+	}
+	option = {
+		trigger = {
+			exists = event_target:leader_tobe_view_5
+			NOT = { check_variable = { which = reminder value > 0 }}
+		}
+		custom_gui = "enclave_caravaneer_option"
+		name = wg_coffee.18.leader5
+		hidden_effect = {
+			event_target:leader_tobe_view_5 = {
+				save_event_target_as = coffee_leader
+			}
+			country_event = { id = wg_coffee.19 }
+		}
+	}
+
+	option = {
+		trigger = {
+			check_variable = { which = leader_id value > 5 }
+		}
+		custom_gui = "enclave_caravaneer_option"
+		name = wg_coffee.18.a
+		hidden_effect = { 
+			if = {
+				limit = { check_variable = { which = leader_id value > 10 }}
+				change_variable = { which = leader_id value = -10 }
+				change_variable = { which = leader_id value = reminder } 
+			}
+			else = {
+				set_variable = { which = leader_id value = 0 }
+			}
+			country_event = { id = wg_coffee.17 }
+		} 
+	}
+	option = {
+		trigger = {
+			check_variable = { which = leader_id value < num_wg_coffee_chosen_leader }
+		}
+		name = wg_coffee.18.b
+		custom_gui = "enclave_caravaneer_option"
+		hidden_effect = { 
+			country_event = { id = wg_coffee.17 }
+		} 
+	}
+	option = {
+		name = wg_coffee.18.c
+		custom_gui = "enclave_caravaneer_option"
+		hidden_effect = { 
+			change_variable = { which = leader_id value = 0 }
+			every_owned_leader = {
+				change_variable = { which = leader_id value = 0 }
+			}
+		}
+		default_hide_option = yes
+	}
+}
+
+
+# 咖啡厅对象操作窗口
+country_event = {
+	id = wg_coffee.19
+	title = wg_coffee.19.name
+	desc = wg_coffee.19.desc
+	is_triggered_only = yes
+	
+	diplomatic = yes
+    custom_gui = "enclave_caravaneer_window"
+	picture_event_data = {
+		room = caffee_bar_2_room
+		portrait = event_target:coffee_leader
+	}
+
+	immediate = {
+		every_owned_leader = {
+			change_variable = { which = leader_id value = 0 }
+		}
+	}
+	option = {
+		custom_gui = "enclave_caravaneer_option"
+		name = wg_coffee.19.a
+		custom_tooltip = wg_coffee.19.a_tooltip
+		allow = {
+            resource_stockpile_compare = { resource = food value >= 500 }
+			resource_stockpile_compare = { resource = energy value >= 1000 }
+			custom_tooltip = {
+				check_variable = {
+					which = wg_coffee_ticket
+					value > 0
+				}
+				fail_text = wg_coffee_ticket_deficiency
+			}
+		}
+		add_resource = {
+            food = -500
+            energy = -1000
+        }
+		hidden_effect = {
+			country_event = {
+				id = wg_coffee.16
+			}
+			change_variable = {
+				which = wg_coffee_ticket
+				value = -1
+			}
+			event_target:coffee_leader = {
+				change_variable = { which = affection value = 5 }
+				if = {
+					limit = { has_leader_flag = has_wg_affection_wg_bubbles }
+					owner = { change_variable = { which = wg_bubbles_affection value = 5 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_dragon }
+					owner = { change_variable = { which = wg_dragon_affection value = 5 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_gray }
+					owner = { change_variable = { which = wg_gray_affection value = 5 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_lady }
+					owner = { change_variable = { which = wg_lady_affection value = 5 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_rbq_dragon }
+					owner = { change_variable = { which = wg_yukikaze_affection value = 5 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_shimakaze }
+					owner = { change_variable = { which = wg_shimakaze_affection value = 5 } }
+				}
+			}	
+		}
+	}
+	option = {
+		custom_gui = "enclave_caravaneer_option"
+		name = wg_coffee.19.b
+		custom_tooltip = wg_coffee.19.b_tooltip
+		allow = {
+            resource_stockpile_compare = { resource = food value >= 1000 }
+			resource_stockpile_compare = { resource = energy value >= 1000 }
+			custom_tooltip = {
+				check_variable = {
+					which = wg_coffee_ticket
+					value > 0
+				}
+				fail_text = wg_coffee_ticket_deficiency
+			}
+		}
+		add_resource = {
+            food = -1000
+            energy = -1000
+        }
+		hidden_effect = { 
+			country_event = {
+				id = wg_coffee.16
+			}
+			change_variable = {
+				which = wg_coffee_ticket
+				value = -1
+			}
+			event_target:coffee_leader = {
+				change_variable = { which = affection value = 5 }
+				add_experience = 200
+				if = {
+					limit = { has_leader_flag = has_wg_affection_wg_bubbles }
+					owner = { change_variable = { which = wg_bubbles_affection value = 5 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_dragon }
+					owner = { change_variable = { which = wg_dragon_affection value = 5 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_gray }
+					owner = { change_variable = { which = wg_gray_affection value = 5 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_lady }
+					owner = { change_variable = { which = wg_lady_affection value = 5 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_rbq_dragon }
+					owner = { change_variable = { which = wg_yukikaze_affection value = 5 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_shimakaze }
+					owner = { change_variable = { which = wg_shimakaze_affection value = 5 } }
+				}
+			}	
+		}
+	}
+	option = {
+		name = wg_coffee.19.c
+		custom_gui = "enclave_caravaneer_option"	
+		custom_tooltip = wg_coffee.19.c_tooltip
+		allow = {
+            resource_stockpile_compare = { resource = rare_crystals value >= 300 }
+			resource_stockpile_compare = { resource = energy value >= 4000 }
+			custom_tooltip = {
+				check_variable = {
+					which = wg_coffee_ticket
+					value > 0
+				}
+				fail_text = wg_coffee_ticket_deficiency
+			}
+		}
+		add_resource = {
+            rare_crystals = -300
+            energy = -4000
+        }
+		hidden_effect = { 
+			country_event = {
+				id = wg_coffee.16
+			}
+			change_variable = {
+				which = wg_coffee_ticket
+				value = -1
+			}
+			event_target:coffee_leader = {
+				change_variable = { which = affection value = 10 }
+				add_experience = 200
+				if = {
+					limit = { has_leader_flag = has_wg_affection_wg_bubbles }
+					owner = { change_variable = { which = wg_bubbles_affection value = 10 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_dragon }
+					owner = { change_variable = { which = wg_dragon_affection value = 10 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_gray }
+					owner = { change_variable = { which = wg_gray_affection value = 10 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_lady }
+					owner = { change_variable = { which = wg_lady_affection value = 10 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_rbq_dragon }
+					owner = { change_variable = { which = wg_yukikaze_affection value = 10 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_shimakaze }
+					owner = { change_variable = { which = wg_shimakaze_affection value = 10 } }
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_coffee.19.d
+		custom_gui = "enclave_caravaneer_option"
+		custom_tooltip = wg_coffee.19.d_tooltip
+		allow = {
+            resource_stockpile_compare = { resource = food value >= 4000 }
+			resource_stockpile_compare = { resource = energy value >= 6000 }
+			custom_tooltip = {
+				check_variable = {
+					which = wg_coffee_ticket
+					value > 0
+				}
+				fail_text = wg_coffee_ticket_deficiency
+			}
+		}
+		add_resource = {
+            food = -4000
+            energy = -6000
+        }
+		hidden_effect = { 
+			country_event = {
+				id = wg_coffee.16
+			}
+			change_variable = {
+				which = wg_coffee_ticket
+				value = -1
+			}
+			event_target:coffee_leader = {
+				change_variable = { which = affection value = 15 }
+				add_experience = 300
+				if = {
+					limit = { has_leader_flag = has_wg_affection_wg_bubbles }
+					owner = { change_variable = { which = wg_bubbles_affection value = 15 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_dragon }
+					owner = { change_variable = { which = wg_dragon_affection value = 15 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_gray }
+					owner = { change_variable = { which = wg_gray_affection value = 15 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_lady }
+					owner = { change_variable = { which = wg_lady_affection value = 15 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_rbq_dragon }
+					owner = { change_variable = { which = wg_yukikaze_affection value = 15 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_shimakaze }
+					owner = { change_variable = { which = wg_shimakaze_affection value = 15 } }
+				}
+			}	
+		}
+	}
+	option = {
+		name = wg_coffee.19.e
+		custom_gui = "enclave_caravaneer_option"
+		custom_tooltip = wg_coffee.19.e_tooltip
+		allow = {
+            resource_stockpile_compare = { resource = food value >= 5000 }
+			resource_stockpile_compare = { resource = energy value >= 6000 }
+			custom_tooltip = {
+				check_variable = {
+					which = wg_coffee_ticket
+					value > 0
+				}
+				fail_text = wg_coffee_ticket_deficiency
+			}
+		}
+		add_resource = {
+            food = -5000
+            energy = -6000
+        }
+		hidden_effect = { 
+			country_event = {
+				id = wg_coffee.16
+			}
+			change_variable = {
+				which = wg_coffee_ticket
+				value = -1
+			}
+			event_target:coffee_leader = {
+				change_variable = { which = affection value = 25 }
+				add_experience = 500
+				if = {
+					limit = { has_leader_flag = has_wg_affection_wg_bubbles }
+					owner = { change_variable = { which = wg_bubbles_affection value = 15 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_dragon }
+					owner = { change_variable = { which = wg_dragon_affection value = 15 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_gray }
+					owner = { change_variable = { which = wg_gray_affection value = 15 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_lady }
+					owner = { change_variable = { which = wg_lady_affection value = 15 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_rbq_dragon }
+					owner = { change_variable = { which = wg_yukikaze_affection value = 15 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_shimakaze }
+					owner = { change_variable = { which = wg_shimakaze_affection value = 15 } }
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_coffee.19.f
+		custom_gui = "enclave_caravaneer_option"
+		custom_tooltip = wg_coffee.19.f_tooltip
+		allow = {
+			resource_stockpile_compare = { resource = food value >= 8000 }
+			resource_stockpile_compare = { resource = sr_zro value >= 500 }
+			custom_tooltip = {
+				check_variable = {
+					which = wg_coffee_ticket
+					value > 0
+				}
+				fail_text = wg_coffee_ticket_deficiency
+			}
+		}
+		add_resource = {
+            food = -8000
+            sr_zro = -500
+        }
+		hidden_effect = { 
+			country_event = {
+				id = wg_coffee.16
+			}
+			change_variable = {
+				which = wg_coffee_ticket
+				value = -1
+			}
+			event_target:coffee_leader = {
+				change_variable = { which = affection value = 20 }
+				add_experience = 600
+				if = {
+					limit = { has_leader_flag = has_wg_affection_wg_bubbles }
+					owner = { change_variable = { which = wg_bubbles_affection value = 20 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_dragon }
+					owner = { change_variable = { which = wg_dragon_affection value = 20 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_gray }
+					owner = { change_variable = { which = wg_gray_affection value = 20 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_lady }
+					owner = { change_variable = { which = wg_lady_affection value = 20 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_rbq_dragon }
+					owner = { change_variable = { which = wg_yukikaze_affection value = 20 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_shimakaze }
+					owner = { change_variable = { which = wg_shimakaze_affection value = 20 } }
+				}
+			}	
+		}
+	}
+	option = {
+		name = wg_coffee.19.g
+		custom_gui = "enclave_caravaneer_option"
+		custom_tooltip = wg_coffee.19.g_tooltip
+		allow = {
+            resource_stockpile_compare = { resource = food value >= 10000 }
+			resource_stockpile_compare = { resource = energy value >= 15000 }
+			resource_stockpile_compare = { resource = exotic_gases value >= 800 }
+			custom_tooltip = {
+				check_variable = {
+					which = wg_coffee_ticket
+					value > 0
+				}
+				fail_text = wg_coffee_ticket_deficiency
+			}
+		}
+		add_resource = {
+            food = -10000
+            energy = -15000
+			exotic_gases = -800
+        }
+		hidden_effect = { 
+			country_event = {
+				id = wg_coffee.16
+			}
+			change_variable = {
+				which = wg_coffee_ticket
+				value = -1
+			}
+			event_target:coffee_leader = {
+				change_variable = { which = affection value = 25 }
+				add_experience = 600
+				if = {
+					limit = { has_leader_flag = has_wg_affection_wg_bubbles }
+					owner = { change_variable = { which = wg_bubbles_affection value = 25 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_dragon }
+					owner = { change_variable = { which = wg_dragon_affection value = 25 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_gray }
+					owner = { change_variable = { which = wg_gray_affection value = 25 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_lady }
+					owner = { change_variable = { which = wg_lady_affection value = 25 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_rbq_dragon }
+					owner = { change_variable = { which = wg_yukikaze_affection value = 25 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_shimakaze }
+					owner = { change_variable = { which = wg_shimakaze_affection value = 25 } }
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_coffee.19.h
+		custom_gui = "enclave_caravaneer_option"
+		custom_tooltip = wg_coffee.19.h_tooltip
+		allow = {
+            resource_stockpile_compare = { resource = food value >= 10000 }
+			resource_stockpile_compare = { resource = energy value >= 15000 }
+			resource_stockpile_compare = { resource = volatile_motes value >= 800 }
+			custom_tooltip = {
+				check_variable = {
+					which = wg_coffee_ticket
+					value > 0
+				}
+				fail_text = wg_coffee_ticket_deficiency
+			}
+		}
+		add_resource = {
+            food = -10000
+            energy = -15000
+			volatile_motes = -800
+        }
+		hidden_effect = { 
+			country_event = {
+				id = wg_coffee.16
+			}
+			change_variable = {
+				which = wg_coffee_ticket
+				value = -1
+			}
+			event_target:coffee_leader = {
+				change_variable = { which = affection value = 25 }
+				add_experience = 800
+				if = {
+					limit = { has_leader_flag = has_wg_affection_wg_bubbles }
+					owner = { change_variable = { which = wg_bubbles_affection value = 25 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_dragon }
+					owner = { change_variable = { which = wg_dragon_affection value = 25 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_gray }
+					owner = { change_variable = { which = wg_gray_affection value = 25 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_lady }
+					owner = { change_variable = { which = wg_lady_affection value = 25 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_rbq_dragon }
+					owner = { change_variable = { which = wg_yukikaze_affection value = 25 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_shimakaze }
+					owner = { change_variable = { which = wg_shimakaze_affection value = 25 } }
+				}
+			}
+		}
+	}
+	#美味女仆
+	option = {
+		name = wg_coffee.19.j
+		custom_gui = "enclave_caravaneer_option"
+		custom_tooltip = wg_coffee.19.j_tooltip
+		trigger = {
+            has_global_flag = ms_species_enabled
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value >= 40000 }
+			custom_tooltip = {
+				check_variable = {
+					which = wg_coffee_ticket
+					value > 0
+				}
+				fail_text = wg_coffee_ticket_deficiency
+			}
+		}
+		add_resource = {
+            energy = -40000
+        }
+		hidden_effect = { 
+			country_event = {
+				id = wg_coffee.16
+			}
+			change_variable = {
+				which = wg_coffee_ticket
+				value = -1
+			}
+			event_target:coffee_leader = {
+				change_variable = { which = affection value = 25 }
+				add_experience = 800
+				if = {
+					limit = { has_leader_flag = has_wg_affection_wg_bubbles }
+					owner = { change_variable = { which = wg_bubbles_affection value = 50 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_dragon }
+					owner = { change_variable = { which = wg_dragon_affection value = 50 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_gray }
+					owner = { change_variable = { which = wg_gray_affection value = 50 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_lady }
+					owner = { change_variable = { which = wg_lady_affection value = 50 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_rbq_dragon }
+					owner = { change_variable = { which = wg_yukikaze_affection value = 50 } }
+				}
+				else_if = {
+					limit = { has_leader_flag = has_wg_affection_wg_shimakaze }
+					owner = { change_variable = { which = wg_shimakaze_affection value = 50 } }
+				}
+			}
+		}
+	}
+	option = {
+		custom_gui = "enclave_caravaneer_option"
+		name = wg_coffee.19.k
+		custom_tooltip = wg_coffee.19.k_tooltip
+		allow = {
+			resource_stockpile_compare = { resource = energy value >= 100 }
+			custom_tooltip = {
+				check_variable = {
+					which = wg_coffee_ticket
+					value > 0
+				}
+				fail_text = wg_coffee_ticket_deficiency
+			}
+		}
+		add_resource = {
+            energy = -100
+        }
+		hidden_effect = {
+			country_event = {
+				id = wg_coffee.16
+			}
+			change_variable = {
+				which = wg_coffee_ticket
+				value = -1
+			}
+			event_target:coffee_leader = {
+				add_experience = 50
+			}
+		}
+	}
+	option = {
+		name = wg_coffee.19.i
+		custom_tooltip = wg_coffee.19.i_tooltip
+		custom_gui = "enclave_caravaneer_option"
+		default_hide_option = yes
+		hidden_effect = {
+			country_event = {
+				id = wg_coffee.16
+			}
+			event_target:coffee_leader = {
+				change_variable = { which = affection value = -5 }
+			}	
+		}
+	}
+}

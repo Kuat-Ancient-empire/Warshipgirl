@@ -1,0 +1,186 @@
+## Categories used in this file must have use_for_ai_budget = yes defined in economic_categories ##
+## It is possible to have multiple entries with the same category and resource ##
+
+#################
+## Expenditure ##
+#################
+
+neo_expenditure_edicts = {
+	resource = sr_neo
+	type = expenditure
+	category = edicts
+	
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+		}	
+	}
+	
+	weight = {
+		weight = 0.1
+	}
+}
+
+neo_expenditure_decisions = {
+	resource = sr_neo
+	type = expenditure
+	category = decisions
+	
+	potential = {
+		has_authority = auth_warshipgirls
+	}
+	
+	weight = {
+		weight = 0.1
+		modifier = {
+			add = 0.2
+			resource_income_compare = {
+				resource = sr_neo
+				value >= 30
+			}
+			resource_stockpile_compare = {
+				resource = sr_neo
+				value > 500
+			}
+			has_ascension_perk = ap_port_project
+		}
+	}
+}
+
+neo_expenditure_planets = {
+	resource = sr_neo
+	type = expenditure
+	category = planets
+	
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+		}	
+	}
+	
+	weight = {
+		weight = 0.2
+		modifier = {
+			add = -0.15
+			OR = {
+				is_at_war = yes
+				end_game_years_passed >= 0
+			}
+		}
+		modifier = {
+			add = 0.2
+			OR = {
+				resource_income_compare = {
+					resource = sr_neo
+					value < 30
+				}
+				resource_stockpile_compare = {
+					resource = sr_neo
+					value < 500
+				}
+				NOT = { has_ascension_perk = ap_port_project }
+			}
+		}
+	}	
+}
+
+neo_expenditure_ships = {
+	resource = sr_neo
+	type = expenditure
+	category = ships
+	
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+		}	
+	}
+	
+	weight = {
+		weight = 2
+	}
+}
+
+alpha_expenditure_upgrade = {
+	resource = sr_neo
+	type = expenditure
+	category = ship_upgrades
+	
+	potential = {
+		has_authority = auth_warshipgirls
+	}
+	
+	weight = {
+		weight = 2
+	}
+}
+
+
+# Upkeep --------------------------------------------------------
+
+neo_upkeep_planets = {
+	resource = sr_neo
+	type = upkeep
+	category = planets
+	
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+		}	
+	}
+	
+	weight = {
+		weight = 0.8
+		modifier = {
+			add = -0.1
+			OR = {
+				is_at_war = no
+				end_game_years_passed >= 0
+			}
+			OR = {
+				mid_game_years_passed >= 0
+				num_rivals >= 1
+			}
+		}
+		modifier = {
+			add = -0.2
+			OR = {
+				is_at_war = yes
+				end_game_years_passed >= 0
+			}
+		}
+	}	
+}
+
+neo_upkeep_ships = {
+	resource = sr_neo
+	type = upkeep
+	category = ships
+	
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+		}	
+	}
+	
+	weight = {
+		weight = 0.2
+		modifier = {
+			add = -0.1
+			OR = {
+				is_at_war = no
+				end_game_years_passed >= 0
+			}
+			OR = {
+				mid_game_years_passed >= 0
+				num_rivals >= 1
+			}
+		}
+		modifier = {
+			add = -0.2
+			OR = {
+				is_at_war = yes
+				end_game_years_passed >= 0
+			}
+		}
+	}	
+}

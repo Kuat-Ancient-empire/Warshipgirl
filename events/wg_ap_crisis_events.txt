@@ -1,0 +1,5846 @@
+namespace = ap_wg_crisis
+
+# 测试用，加1000点焚灭值
+country_event = {
+	id = ap_wg_crisis.997
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		add_wg_crisis_points = { POINTS = 1000 }
+	}
+}
+
+# 测试用，加10000点焚灭值
+country_event = {
+	id = ap_wg_crisis.998
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		add_wg_crisis_points = { POINTS = 10000 }
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.998
+	title = ap_wg_crisis.998.name
+	desc = ap_wg_crisis.998.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_no_video
+
+	trigger = {
+		has_global_flag = has_swgs_mod
+		is_multiplayer = yes
+	}
+
+	option = {
+		name = OK
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.999
+	title = ap_wg_crisis.999.name
+	desc = ap_wg_crisis.999.desc
+	is_triggered_only = yes
+	picture = GFX_evt_ap_wg_crisis_announce
+	show_sound = event_announcement
+
+	immediate = {
+		every_playable_country = {
+			limit = { is_ai = no }
+			country_event = { id = ap_wg_crisis.998 }
+		}
+	}
+
+	after = {
+		hidden_effect = {
+			country_event = { id = ap_wg_crisis.4 days = 1 }
+		}
+		begin_event_chain = { event_chain = ap_wg_crisis_chain }
+		capital_scope = {
+			enable_special_project = {
+				name = ap_wg_crisis_active
+				owner = owner
+				location = this
+			}
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.999.a
+	}
+}
+
+planet_event = {
+	id = ap_wg_crisis.1000
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		owner = { 
+			if = {
+				limit = { 
+					has_relic = r_wg_psionic_gem 
+					is_wg_exterminate_goverment = no
+				}
+				country_event = { id = ap_wg_crisis.1002 }
+			} else = {
+				country_event = { id = ap_wg_crisis.1001 }
+			}
+		}
+	}
+}
+# 焚飞激活项目完成（没有完成灵能舰娘事件）
+country_event = {
+	id = ap_wg_crisis.1001
+	title = ap_wg_crisis.1001.name
+	desc = ap_wg_crisis.1001.desc
+	is_triggered_only = yes
+	picture = GFX_evt_shrouded_planet
+	show_sound = event_mystic_reveal
+
+	option = {
+		name = EXCELLENT
+		custom_tooltip = ap_wg_crisis.1001.tooltip
+		hidden_effect = { 
+			country_event = { id = ap_wg_crisis.5 }
+			add_wg_crisis_points = { POINTS = 200 }
+		}
+		add_research_option = tech_wg_fm_hyper_dimensional_theory
+		add_tech_progress = {
+			tech = tech_wg_fm_hyper_dimensional_theory
+			progress = 0.01
+		}
+	}
+}
+
+# 焚飞激活项目完成（完成灵能舰娘事件）
+country_event = {
+	id = ap_wg_crisis.1002
+	title = ap_wg_crisis.1002.name
+	desc = ap_wg_crisis.1002.desc
+	is_triggered_only = yes
+	picture = GFX_evt_ap_wg_crisis_announce
+	show_sound = event_encrypted_comms
+
+	option = {
+		name = ONSCREEN
+		hidden_effect = {
+			if = {
+				limit = { any_country = { has_country_flag = wg_psi_country }}
+				country_event = { id = ap_wg_crisis.1004 }
+			} else = {
+				country_event = { id = ap_wg_crisis.1003 }
+			}
+		}
+	}
+}
+
+# 圣守港不存在
+country_event = {
+	id = ap_wg_crisis.1003
+	title = ap_wg_crisis.1003.name
+	desc = ap_wg_crisis.1003.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+	picture_event_data = {
+		portrait = wsg380
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root.capital_scope
+		room = root.ruler
+	}
+
+	option = {
+		name = ap_wg_crisis.1003.a
+		is_dialog_only = yes
+		response_text = ap_wg_crisis.1003.a.response
+	}
+	option = {
+		name = ap_wg_crisis.1003.b
+		is_dialog_only = yes
+		response_text = ap_wg_crisis.1003.b.response
+	}
+	option = {
+		name = ap_wg_crisis.1003.c
+		response_text = ap_wg_crisis.1003.c.response
+		default_hide_option = yes
+		custom_tooltip = ap_wg_crisis.1001.tooltip
+		hidden_effect = {
+			country_event = { id = ap_wg_crisis.5 }
+			add_wg_crisis_points = { POINTS = 200 }
+		}
+		add_research_option = tech_wg_fm_hyper_dimensional_theory
+		add_tech_progress = {
+			tech = tech_wg_fm_hyper_dimensional_theory
+			progress = 0.01
+		}
+	}
+}
+
+# 圣守港存在
+country_event = {
+	id = ap_wg_crisis.1004
+	title = ap_wg_crisis.1003.name
+	desc = ap_wg_crisis.1003.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+	picture_event_data = {
+		portrait = wsg380
+		planet_background = event_target:wg_psi_country
+		graphical_culture = event_target:wg_psi_country
+		city_level = event_target:wg_psi_country
+		room = event_target:wg_psi_country.ruler
+	}
+
+	option = {
+		name = ap_wg_crisis.1003.a
+		is_dialog_only = yes
+		response_text = ap_wg_crisis.1003.a.response
+	}
+	option = {
+		name = ap_wg_crisis.1003.b
+		is_dialog_only = yes
+		response_text = ap_wg_crisis.1003.b.response
+	}
+	option = {
+		name = ap_wg_crisis.1003.c
+		response_text = ap_wg_crisis.1003.c.response
+		default_hide_option = yes
+		custom_tooltip = ap_wg_crisis.1001.tooltip
+		hidden_effect = {
+			country_event = { id = ap_wg_crisis.5 }
+			add_wg_crisis_points = { POINTS = 200 }
+		}
+		add_research_option = tech_wg_fm_hyper_dimensional_theory
+		add_tech_progress = {
+			tech = tech_wg_fm_hyper_dimensional_theory
+			progress = 0.01
+		}
+	}
+}
+
+# 跳板计划
+country_event = {
+	id = ap_wg_crisis.1024
+	title = ap_wg_crisis.1004.name
+	desc = ap_wg_crisis.1004.desc
+	is_triggered_only = yes
+	picture = GFX_evt_vortex
+	show_sound = event_mystic_reveal
+
+	option = {
+		name = ap_wg_crisis.1004.a
+		hidden_effect = {
+			set_country_flag = ap_wg_crisis_shortcut_plan_started
+		}
+		capital_scope = {
+			enable_special_project = {
+				name = ap_wg_crisis_shortcut_plan
+				location = this
+				owner = root
+			}
+		}
+		begin_event_chain = {
+			event_chain = ap_wg_crisis_shortcut_plan_chain
+		}
+	}
+}
+
+# 触发跳板计划的事件
+country_event = {
+	id = ap_wg_crisis.1005
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		last_increased_tech = tech_wg_fm_hyper_dimensional_theory
+		check_variable = { which = wg_crisis_points value >= @wg_crisis_points_to_lv2 }
+		check_variable = { which = wg_crisis_level value = 1 }
+	}
+
+	immediate = {
+		country_event = { id = ap_wg_crisis.6 days = 5 }
+		country_event = { id = ap_wg_crisis.1024 days = 5 }
+	}
+}
+
+# 研究科技增加跳板计划进度
+country_event = {
+	id = ap_wg_crisis.1006
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		has_special_project = ap_wg_crisis_shortcut_plan
+		has_event_chain = ap_wg_crisis_shortcut_plan_chain
+		NOT = { has_completed_special_project_in_log = ap_wg_crisis_shortcut_plan }
+		OR = {
+			last_increased_tech = tech_wg_fm_hyper_dimensional_theory_repeatable
+			last_increased_tech = tech_wg_fm_psionic_theory_repeatable
+		}
+	}
+
+	immediate = {
+		random_list = {
+			20 = { 
+				add_event_chain_counter = {
+					event_chain = ap_wg_crisis_shortcut_plan_chain
+					counter = wg_shortcut_plan_complete_counter
+					amount = 3
+				} 
+			}
+			8 = { 
+				add_event_chain_counter = {
+					event_chain = ap_wg_crisis_shortcut_plan_chain
+					counter = wg_shortcut_plan_complete_counter
+					amount = 5
+				} 
+			}
+			4 = { 
+				add_event_chain_counter = {
+					event_chain = ap_wg_crisis_shortcut_plan_chain
+					counter = wg_shortcut_plan_complete_counter
+					amount = 7
+				} 
+			}
+		}
+		if = {
+			limit = { has_completed_event_chain_counter = {
+				event_chain = ap_wg_crisis_shortcut_plan_chain
+				counter = wg_shortcut_plan_complete_counter
+			}}
+			complete_special_project = { type = ap_wg_crisis_shortcut_plan }
+		}
+	}
+}
+
+# 开始研究跳板计划特殊项目
+country_event = {
+	id = ap_wg_crisis.1007
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		has_special_project = ap_wg_crisis_shortcut_plan
+		has_event_chain = ap_wg_crisis_shortcut_plan_chain
+		NOR = { 
+			has_country_flag = started_ap_wg_crisis_shortcut_plan 
+			has_country_flag = starting_ap_wg_crisis_shortcut_plan
+		}
+	}
+
+	immediate = {
+		set_country_flag = started_ap_wg_crisis_shortcut_plan
+		set_country_flag = starting_ap_wg_crisis_shortcut_plan
+		random_list = {
+			1 = {
+				country_event = { id = ap_wg_crisis.1008 days = 20 random = 20 }
+			}
+			1 = {
+				country_event = { id = ap_wg_crisis.1008 days = 20 random = 40 }
+			}
+			1 = {
+				country_event = { id = ap_wg_crisis.1008 days = 40 }
+			}
+			1 = {
+				country_event = { id = ap_wg_crisis.1008 days = 5 random = 60 }
+			}
+		}
+	}
+
+}
+
+# 研究特殊项目增加跳板计划进度
+country_event = {
+	id = ap_wg_crisis.1008
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		if = {
+			limit = { has_country_flag = started_ap_wg_crisis_shortcut_plan }
+			# 正常情况
+			if = {
+				limit = { has_country_flag = starting_ap_wg_crisis_shortcut_plan }
+				add_event_chain_counter = {
+					event_chain = ap_wg_crisis_shortcut_plan_chain
+					counter = wg_shortcut_plan_complete_counter
+					amount = 1
+				} 
+				if = {
+					limit = { has_completed_event_chain_counter = {
+						event_chain = ap_wg_crisis_shortcut_plan_chain
+						counter = wg_shortcut_plan_complete_counter
+					}}
+					complete_special_project = { type = ap_wg_crisis_shortcut_plan }
+					end_event_chain = ap_wg_crisis_shortcut_plan_chain
+				}
+			} else_if = {
+				limit = { always = yes }
+				# 非正常情况
+				set_country_flag = starting_ap_wg_crisis_shortcut_plan
+			}
+			random_list = {
+				1 = {
+					country_event = { id = ap_wg_crisis.1008 days = 20 random = 20 }
+				}
+				1 = {
+					country_event = { id = ap_wg_crisis.1008 days = 20 random = 40 }
+				}
+				1 = {
+					country_event = { id = ap_wg_crisis.1008 days = 40 }
+				}
+				1 = {
+					country_event = { id = ap_wg_crisis.1008 days = 5 random = 60 }
+				}
+			}
+		} else_if = {
+			limit = { always = yes }
+			if = {
+				limit = { has_country_flag = starting_ap_wg_crisis_shortcut_plan }
+				# 在事件递归触发前取消了特殊项目，并再次重开特殊项目
+				if = {
+					limit = { is_researching_special_project = ap_wg_crisis_shortcut_plan }
+					set_country_flag = started_ap_wg_crisis_shortcut_plan
+					random_list = {
+						1 = {
+							country_event = { id = ap_wg_crisis.1008 days = 20 random = 20 }
+						}
+						1 = {
+							country_event = { id = ap_wg_crisis.1008 days = 20 random = 40 }
+						}
+						1 = {
+							country_event = { id = ap_wg_crisis.1008 days = 40 }
+						}
+						1 = {
+							country_event = { id = ap_wg_crisis.1008 days = 5 random = 60 }
+						}
+					}
+				} else_if = {
+					limit = { always = yes }
+					# 在事件递归触发后取消了特殊项目，并没有重开特殊项目
+					remove_country_flag = starting_ap_wg_crisis_shortcut_plan
+				}
+			}
+		}
+	}
+}
+
+# 取消研究跳板计划特殊项目
+country_event = {
+	id = ap_wg_crisis.1009
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		remove_country_flag = started_ap_wg_crisis_shortcut_plan
+	}
+
+}
+
+country_event = {
+	id = ap_wg_crisis.1010
+	title = ap_wg_crisis.1010.name
+	desc = ap_wg_crisis.1010.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_psionic_energy_hypersiphon
+	show_sound = event_mystic_reveal_light
+
+	immediate = {
+		set_country_flag = wg_crisis_lv3_2ndObj_finish
+		# 焚灭等级3完成
+		end_event_chain = ap_wg_crisis_shortcut_plan_chain
+		capital_scope = {
+			enable_special_project = {
+				name = ap_wg_crisis_shortcut_plan_main_event_chain
+				location = this
+				owner = root
+			}
+		}
+		complete_special_project = { type = ap_wg_crisis_shortcut_plan_main_event_chain }
+	}
+
+	option = {
+		name = ap_wg_crisis.1010.a
+		custom_tooltip = ap_wg_crisis.1010.tooltip
+		hidden_effect = {
+			add_wg_crisis_points = { POINTS = 300 }
+		}
+		add_research_option = tech_wg_fm_psionic_energy_hypersiphon
+		add_tech_progress = {
+			tech = tech_wg_fm_psionic_energy_hypersiphon
+			progress = 0.01
+		}
+	}
+}
+
+# 研究完虚境能源抽取科技
+country_event = {
+	id = ap_wg_crisis.1011
+	title = ap_wg_crisis.1011.name
+	desc = ap_wg_crisis.1011.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_dimensional_anchor
+	show_sound = event_laboratory_sound
+
+	trigger = {
+		last_increased_tech = tech_wg_fm_psionic_energy_hypersiphon
+	}
+
+	immediate = {
+		set_country_flag = wg_crisis_lv4_2ndObj_finish
+		# 焚灭等级4完成
+		if = { 
+			limit = { 
+				check_variable = { which = wg_crisis_points value >= @wg_crisis_points_to_lv4 }
+				check_variable = { which = wg_crisis_level value = 3 }
+			}
+			country_event = { id = ap_wg_crisis.8 days = 1 }
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1011.a
+	}
+
+}
+
+# 开始建造维度之锚
+country_event = {
+	id = ap_wg_crisis.1012
+	title = ap_wg_crisis.1012.name
+	desc = ap_wg_crisis.1012.desc
+	is_triggered_only = yes
+	picture = GFX_evt_megastructure_construction
+	location = FROMFROM
+	show_sound = event_dyson_sphere_build_start
+
+	trigger = {
+		FROM = { is_megastructure_type = wg_fm_gateway_01 }
+	}
+
+	immediate = {
+		set_country_flag = wg_crisis_lv5_2ndObj_finish
+		# 焚灭等级5完成
+		if = { 
+			limit = { check_variable = { which = wg_crisis_points value >= @wg_crisis_points_to_lv5 }}
+			country_event = { id = ap_wg_crisis.9 days = 1 }
+		}
+		country_event = { id = ap_wg_crisis.1097 days = 90 random = 90 }
+		FROMFROM = {
+			star = {
+				set_planet_size = 25
+				create_ambient_object = {
+					type = wsg_construction_platform_object
+					location = this
+					entity_offset = 15
+					entity_offset_height = 10
+					entity_offset_angle = 135
+					entity_face_object = FROM
+					use_3d_location = yes
+				}
+				last_created_ambient_object = {
+					save_global_event_target_as = wg_gateway_object
+				}
+			}
+			set_star_flag = wg_gateway_construction_system
+			save_global_event_target_as = wg_gateway_construction_system
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1012.a
+		if = {
+			limit = { check_variable = { which = wg_crisis_points value < @wg_crisis_points_to_lv5 }}
+			custom_tooltip = ap_wg_crisis.1012.tooltip
+			hidden_effect = { add_wg_crisis_points = { POINTS = 300 }}
+		}
+	}
+
+}
+
+# 升级至虚境能源抽取机框架
+country_event = {
+	id = ap_wg_crisis.1013
+	title = ap_wg_crisis.1013.name
+	desc = ap_wg_crisis.1013.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_fm_gateway_02
+	location = FROMFROM
+	show_sound = event_dyson_sphere_build_upgrade_frame
+
+	trigger = {
+		FROM = { is_megastructure_type = wg_fm_gateway_02 }
+	}
+
+	immediate = {
+		event_target:wg_gateway_object = {
+			destroy_ambient_object = this
+			clear_global_event_target = wg_gateway_object
+		}
+		country_event = { id = ap_wg_crisis.1029 }
+		add_threat = { who = root amount = 1000 }
+		every_playable_country = {
+			limit = {
+				NOR = { 
+					is_same_value = root
+					has_country_flag = wg_psi_country 
+					has_country_flag = join_wgfm_alliance
+				}
+			}
+			establish_communications_no_message = root
+			if = {
+				limit = {
+					has_opinion_modifier = {
+                        who = root
+                        modifier = opinion_destroying_systems
+                    }
+				}
+				remove_opinion_modifier = {
+					who = root
+					modifier = opinion_destroying_systems
+				}
+			}
+			add_opinion_modifier = {
+				who = root
+				modifier = opinion_destroying_galaxy
+			}
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1013.a
+		if = {
+			limit = { check_variable = { which = wg_crisis_points value < @wg_crisis_points_to_lv5 }}
+			custom_tooltip = ap_wg_crisis.1013.tooltip
+			hidden_effect = { add_wg_crisis_points = { POINTS = 500 }}
+		}
+		FROMFROM.star = {
+			enable_special_project = {
+				name = adjust_psionic_energy_hypersiphon
+				location = this
+				owner = ROOT
+			}
+		}
+	}
+}
+
+# 虚境能源抽取机调试完成
+country_event = {
+	id = ap_wg_crisis.1020
+	title = ap_wg_crisis.1020.name
+	desc = ap_wg_crisis.1020.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_dimensional_anchor
+	show_sound = megastructure_gate_way_portal_hum
+
+	immediate = {
+		event_target:ap_wg_crisis_country = {
+			set_country_flag = finish_adjust_psionic_energy_hypersiphon
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+	}
+}
+
+# 升级至虚境能源抽取机
+country_event = {
+	id = ap_wg_crisis.1014
+	title = ap_wg_crisis.1014.name
+	desc = ap_wg_crisis.1014.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_fm_gateway_03
+	location = FROMFROM
+	show_sound = avian_colossus_dome_opening
+
+	trigger = {
+		FROM = { is_megastructure_type = wg_fm_gateway_03 }
+	}
+
+	immediate = {
+		set_country_flag = building_crisis_sphere
+		set_global_flag = wg_psi_invasion_events_happened
+		set_timed_global_flag = { 
+			flag = wg_psi_invasion_phase_1_end days = 1800
+		}
+		set_timed_global_flag = {
+			flag = wg_psi_invasion_phase_2_end days = 3600
+		}
+		set_timed_global_flag = {
+			flag = wg_psi_invasion_phase_3_end days = 5400
+		}
+		country_event = { id = ap_wg_crisis.1066 days = 30 random = 90 }
+		country_event = { id = ap_wg_crisis.1067 days = 540 random = 360 }
+		FROMFROM = {
+			star = {
+				create_ambient_object = {
+					type = wsg_gateway_psi_portal_crisis_object
+					location = this
+					entity_offset = 0
+					entity_offset_height = 15
+					entity_offset_angle = 90
+					use_3d_location = yes
+					entity_face_object = FROM
+				}
+				last_created_ambient_object = {
+					save_global_event_target_as = wg_gateway_object
+				}
+				change_pc = pc_black_hole
+				set_planet_size = 13
+			}
+			set_star_class = sc_black_hole
+		}
+		set_global_flag = upgraded_to_wg_fm_gateway_03
+		set_global_flag = wg_psi_invasion_happened
+		every_playable_country = {
+			limit = { NOT = { has_country_flag = wg_psi_country }}
+			if = {
+				limit = { is_ai = no }
+				country_event = { id = ap_wg_crisis.1061 days = 30 }
+			} else = {
+				add_modifier = { modifier = wg_shroud_country_modifiers_debuff }
+			}
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1014.a
+		if = {
+			limit = { check_variable = { which = wg_crisis_points value < @wg_crisis_points_to_lv5 }}
+			custom_tooltip = ap_wg_crisis.1014.tooltip
+			hidden_effect = { add_wg_crisis_points = { POINTS = 700 }}
+		}
+	}
+}
+# 升级至维度之锚
+country_event = {
+	id = ap_wg_crisis.1015
+	title = ap_wg_crisis.1015.name
+	desc = ap_wg_crisis.1015.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_fm_gateway_04
+	location = FROMFROM
+	show_sound = event_faceoff_in_space
+
+	trigger = {
+		FROM = { is_megastructure_type = wg_fm_gateway_04 }
+	}
+
+	immediate = {
+		set_global_flag = wg_shroud_invasion_end
+		every_system = {
+			limit = { has_star_flag = wg_psionic_energy_burst }
+			remove_star_flag = wg_psionic_energy_burst
+			remove_modifier = wg_shroud_system_modifiers
+			every_system_ambient_object = {
+				limit = { has_ambient_object_flag = psi_storm_object }
+				destroy_ambient_object = this
+			}
+			every_system_planet = {
+				limit = { has_modifier = wg_shroud_crisis_colony_debuff }
+				remove_modifier = wg_shroud_crisis_colony_debuff
+			}
+		}
+		every_playable_country = {
+			if = {
+				limit = { is_ai = no }
+				country_event = { id = ap_wg_crisis.1068 }
+			}
+			remove_modifier = wg_shroud_crisis_country_debuff
+		}
+		# 削弱虚境入侵
+		event_target:wg_shroud_crisis_country = {
+			remove_modifier = wg_shroud_country_modifiers_generic
+			add_modifier = { modifier = wg_shroud_country_modifiers_debuff }
+			if = {
+				limit = { OR = {
+					has_global_flag = wg_crisis_normal
+					has_global_flag = wg_crisis_hard
+					has_global_flag = wg_crisis_insane
+				}}
+				add_modifier = { modifier = wg_shroud_country_modifiers_debuff_hard }
+			}
+		}
+		event_target:wg_gateway_object = {
+			destroy_ambient_object = this
+			clear_global_event_target = wg_gateway_object
+		}
+		FROMFROM.star = {
+			create_ambient_object = {
+				type = wsg_gateway_portal_crisis_object
+				location = this
+				entity_offset = 0
+				entity_offset_height = 15
+				entity_offset_angle = 90
+				use_3d_location = yes
+				entity_face_object = FROM
+			}
+			last_created_ambient_object = {
+				save_global_event_target_as = wg_gateway_object
+			}
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1015.a
+		if = {
+			limit = { check_variable = { which = wg_crisis_points value < @wg_crisis_points_to_lv5 }}
+			custom_tooltip = ap_wg_crisis.1015.tooltip
+			hidden_effect = { add_wg_crisis_points = { POINTS = 1000 }}
+		}
+		capital_scope = {
+			enable_special_project = {
+				name = active_neutron_impact_shielder
+				location = this
+				owner = ROOT
+			}
+		}
+	}
+}
+
+# 开始建设中子波护盾特殊项目
+planet_event = {
+	id = ap_wg_crisis.1021
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		owner = {
+			every_owned_planet = {
+				add_modifier = { modifier = building_neutron_impact_shielder_modifier }
+			}
+		}
+	}
+}
+
+# 中止建设中子波护盾特殊项目
+country_event = {
+	id = ap_wg_crisis.1023
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_owned_planet = {
+			remove_modifier = building_neutron_impact_shielder_modifier
+		}
+	}
+}
+
+
+
+# 中子护盾特殊项目进行中殖民了一个球，补buff
+planet_event = {
+	id = ap_wg_crisis.1105
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			is_researching_special_project = active_neutron_impact_shielder
+		}
+	}
+
+	immediate = {
+		add_modifier = {
+			modifier = building_neutron_impact_shielder_modifier
+		}
+	}
+}
+
+# 中子护盾特殊项目完成后殖民了一个球，补buff
+planet_event = {
+	id = ap_wg_crisis.1106
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		owner = { has_country_flag = finish_neutron_impact_shielder }
+	}
+
+	immediate = {
+		add_modifier = {
+			modifier = neutron_impact_shielder_modifier
+		}
+	}
+}
+
+# 中子波护盾建造完成
+planet_event = {
+	id = ap_wg_crisis.1022
+	title = ap_wg_crisis.1022.name
+	desc = ap_wg_crisis.1022.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_neutron_impact_shielder
+	show_sound = event_energy_field
+
+	immediate = {
+		owner = {
+			set_country_flag = finish_neutron_impact_shielder
+			every_owned_planet = {
+				remove_modifier = building_neutron_impact_shielder_modifier
+				add_modifier = { modifier = neutron_impact_shielder_modifier }
+			}
+			if = {
+				limit = { exists = federation }
+				every_federation_ally = {
+					limit = { NOT = { is_at_war_with = PREV }}
+					every_owned_planet = {
+						add_modifier = { modifier = neutron_impact_shielder_modifier }
+					}
+				}
+			}
+			if = {
+				limit = { is_overlord = yes }
+				every_subject = {
+					limit = { NOT = { is_at_war_with = PREV }}
+					every_owned_planet = {
+						add_modifier = { modifier = neutron_impact_shielder_modifier }
+					}
+				}
+			}
+			every_country = {
+				limit = { has_country_flag = join_wgfm_alliance }
+				every_owned_planet = {
+					add_modifier = { modifier = neutron_impact_shielder_modifier }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+	}
+}
+
+# 最终结局：升级至维度之门
+# remove除了自己和小弟的一切玩意
+country_event = {
+	id = ap_wg_crisis.1016
+	title = ap_wg_crisis.1016.name
+	desc = ap_wg_crisis.1016.desc
+	is_triggered_only = yes
+	picture = GFX_evt_vortex
+	location = FROMFROM
+	show_sound = event_mystic_reveal
+
+	trigger = {
+		FROM = { is_megastructure_type = wg_fm_gateway_05 }
+	}
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		set_global_flag = wg_fm_end_game
+		event_target:wg_gateway_object = {
+			destroy_ambient_object = this
+			clear_global_event_target = wg_gateway_object
+		}
+		FROMFROM.star = {
+			create_ambient_object = {
+				type = "destroyed_system"
+				location = this
+			}
+			last_created_ambient_object = {
+				set_ambient_object_flag = destroyed_system_effect
+				set_location = {
+					target = prev
+					distance = 0
+					angle = random
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_global_flag = wg_invasion_happened
+				OR = {
+					AND = {
+						has_global_flag = wg_crisis_insane
+						NOT = { has_global_flag = all_portal_destroyed }
+					}
+					NOR = {
+						has_global_flag = wg_crisis_insane
+						has_global_flag = first_portal_destroyed
+					}
+				}
+			}
+			country_event = { id = ap_wg_crisis.1107 }
+		} else_if = {
+			limit = { 
+				NOR = { 
+					has_global_flag = wg_invasion_happened 
+					has_global_flag = wg_crisis_disabled
+				}
+			}
+			country_event = { id = ap_wg_crisis.1116 }
+		}
+		
+		# remove 正常国家
+		every_country = {
+			limit = {
+				exists = this
+				NOR = { 
+					is_same_value = ROOT 
+					ROOT = {
+						any_subject = {
+							is_same_value = PREVPREV
+							NOT = { is_at_war_with = PREV }
+						}
+						any_federation_ally = {
+							is_same_value = PREVPREV
+							NOT = { is_at_war_with = PREV }
+						}
+					}
+					has_country_flag = join_wgfm_alliance
+				}
+				OR = {
+					is_country_type = default
+					is_country_type = default_ev
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+					is_country_type = primitive
+				}
+			}
+			every_owned_fleet = {
+				destroy_fleet = this
+			}
+			every_owned_planet = {
+				planet_event = { id = ap_wg_crisis.1017 }
+			}
+		}
+		# 所有非己方星球中子灭杀
+		every_galaxy_planet = {
+			limit = {
+				OR = {
+					AND = {
+						is_colonizable = yes
+						has_owner = no
+					}
+					has_modifier = terraforming_candidate
+					NOT = { has_modifier = neutron_impact_shielder_modifier }
+				}
+			}
+			if = {
+				limit = { has_modifier = terraforming_candidate }
+				remove_modifier = terraforming_candidate
+			} else_if = {
+				limit = { always = yes }
+				if = {
+					limit = {
+						solar_system = {
+							space_owner = { NOR = {
+								is_same_value = ROOT 
+								ROOT = {
+									any_subject = {
+										is_same_value = PREVPREV
+										NOT = { is_at_war_with = PREV }
+									}
+									any_federation_ally = {
+										is_same_value = PREVPREV
+										NOT = { is_at_war_with = PREV }
+									}
+								}
+								has_country_flag = join_wgfm_alliance
+							}}
+						}
+					}
+					if = {
+						limit = {
+							is_habitat_wg = yes
+						}
+						spawn_habitat_neutron_effect = yes
+						remove_planet = yes
+					}
+					else_if = {
+						limit = {
+							is_ringworld_wg = yes
+						}
+						spawn_ringworld_neutron_effect = yes
+						change_pc = pc_ringworld_habitable_damaged
+					}
+				}
+			}
+			add_modifier = {
+				modifier = neutron_bombarded
+				days = 36000
+			}
+		}
+		# remove以太引擎，避免二次炸银河
+		every_megastructure = {
+			limit = { is_crisis_sphere = yes }
+			solar_system = {
+				spawn_megastructure = {
+					type = crisis_sphere_ruined
+					coords_from = prev
+					init_effect = {
+						random_country = {
+							limit = {
+								prev = { has_megastructure_flag = crisis_sphere_of@prev }
+							}
+							save_event_target_as = former_owner
+						}
+						set_megastructure_flag = crisis_sphere_of@event_target:former_owner
+					}
+				}
+			}
+    		remove_megastructure = this
+		}
+		every_country = {
+			limit = {
+				OR = {
+					is_country_type = ai_empire
+					is_country_type = swarm
+					is_country_type = extradimensional
+					is_country_type = extradimensional_2
+					is_country_type = extradimensional_3
+					is_country_type = awakened_marauders
+					is_country_type = wg_Khan_country_type
+					is_country_type = wg_Khan_country_type_auto_delete
+				}
+			}
+			every_owned_fleet = {
+				destroy_fleet = this
+			}
+			# remove 虫群
+			if = {
+				limit = { is_country_type = swarm }
+				every_galaxy_planet = {
+					limit = { is_planet_class = pc_infested }
+					change_pc = pc_barren_cold
+					add_modifier = { modifier = "terraforming_candidate" days = -1 }
+					add_modifier = {
+						modifier = neutron_bombarded
+						days = 36000
+					}
+					every_country = {
+						limit = { has_event_chain = "prethoryn_scourge_chain" }
+						add_event_chain_counter = {
+							event_chain = "prethoryn_scourge_chain"
+							counter = "infested_worlds"
+							amount = -1
+						}
+						add_event_chain_counter = {
+							event_chain = "prethoryn_scourge_chain"
+							counter = "infested_worlds_cleansed"
+							amount = 1
+						}
+					}
+				}
+				destroy_country = yes
+			}
+			# remove 肃正
+			if = {
+				limit = { is_country_type = ai_empire }
+				if = {
+					limit = { any_system = {
+						has_star_flag = AI_lair
+					}}
+					random_galaxy_planet = {
+						limit = {
+							is_planet_class = pc_ai
+							has_planet_flag = machine_lair
+						}
+						ROOT = { save_event_target_as = final_machine_world_destroyer }
+						stop_crisis_sound = yes
+						planet_event = { id = crisis.2046 }
+					}
+				} else_if = {
+					limit = { always = yes }
+					ROOT = { 
+						country_event = { id = ap_wg_crisis.1018 days = 1 }
+					}
+				}
+				every_galaxy_planet = {
+					limit = {
+						is_planet_class = pc_ai
+						NOT = { has_planet_flag = machine_lair }
+					}
+					destroy_machine_world = yes
+					planet_event = { id = crisis.2040 }
+				}
+			}
+			# remove 恶魔
+			if = {
+				limit = { OR = {
+					is_country_type = extradimensional
+					is_country_type = extradimensional_2
+					is_country_type = extradimensional_3
+				} }
+				ROOT = { country_event = { id = ap_wg_crisis.1019 }}
+			}
+			# remove 大可汗
+			if = {
+				limit = { 
+					is_country_type = awakened_marauders
+				}
+				set_global_flag = great_khan_defeated_once
+				set_global_flag = great_khan_dead
+				remove_global_flag = marauder_crisis_ongoing
+				ROOT = { 
+					save_event_target_as = khan_destroyer
+					set_country_flag = no_khan_do
+					country_event = { id = marauder.710 }
+				}
+				every_country = {
+					limit = { is_ai = no }
+					country_event = { id = marauder.510 }
+				}
+				if = {
+					limit = {
+						exists = event_target:great_khan_ruler
+					}
+					event_target:great_khan_ruler = {
+						kill_leader = { show_notification = no }
+					}
+				}
+				if = {
+					limit = {
+						exists = event_target:great_khan
+					}
+					event_target:great_khan = {
+						kill_leader = { show_notification = no }
+					}
+				}
+				destroy_country = yes
+			}
+		}
+		# remove 野怪
+		every_country = {
+			limit = { is_space_critter_country = yes }
+			every_owned_fleet = {
+				destroy_fleet = this
+			}
+			destroy_country = yes
+		}
+		win = yes
+		set_update_modifiers_batch = end
+	}
+
+	option = {
+		name = ap_wg_crisis.1016.a
+		add_relic = r_wg_fm
+	}
+}
+
+# 摧毁所有其他国家的球
+planet_event = {
+	id = ap_wg_crisis.1017
+	hide_window = yes
+	is_triggered_only = yes
+
+	pre_triggers = {
+		has_owner = yes
+	}
+	trigger = {
+	}
+
+	immediate = {
+		remove_all_buildings = yes
+		reset_planet = yes
+		destroy_colony = yes
+		add_modifier = {
+			modifier = neutron_bombarded
+			days = 36000
+		}
+		if = {
+			limit = {
+				is_habitat_wg = yes
+			}
+			spawn_habitat_neutron_effect = yes
+			remove_planet = yes
+		}
+		else_if = {
+			limit = {
+				is_ringworld_wg = yes
+			}
+			spawn_ringworld_neutron_effect = yes
+			change_pc = pc_ringworld_habitable_damaged
+		}
+	}
+}
+
+# 摧毁肃正主球
+country_event = {
+	id = ap_wg_crisis.1018
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_global_flag = destroyed_ai_crisis }
+	}
+
+	immediate = {
+		if = {
+			limit = { any_system = {
+				has_star_flag = AI_lair
+			}}
+			random_galaxy_planet = {
+				limit = {
+					is_planet_class = pc_ai
+					has_planet_flag = machine_lair
+				}
+				ROOT = { save_event_target_as = final_machine_world_destroyer }
+				stop_crisis_sound = yes
+				planet_event = { id = crisis.2046 }
+			}
+			set_global_flag = destroyed_ai_crisis
+		} else_if = {
+			limit = { always = yes }
+			country_event = { id = ap_wg_crisis.1018 days = 1 }
+		}
+	}
+}
+
+# 摧毁高维恶魔
+country_event = {
+	id = ap_wg_crisis.1019
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		any_country = { 
+			OR = {
+				is_country_type = extradimensional
+				is_country_type = extradimensional_2
+				is_country_type = extradimensional_3
+			}
+			exists = this
+		}
+	}
+
+	immediate = {
+		random_country = {
+			limit = {
+				is_country_type = extradimensional
+			}
+			destroy_country = yes
+		}
+		random_country = {
+			limit = {
+				is_country_type = extradimensional_2
+			}
+			destroy_country = yes
+		}
+		random_country = {
+			limit = {
+				is_country_type = extradimensional_3
+			}
+			destroy_country = yes
+		}
+		save_event_target_as = portal_killer
+		stop_crisis_sound = yes
+		every_playable_country = {
+			if = {
+				limit = { has_communications = ROOT }
+				add_opinion_modifier = {
+					who = ROOT
+					modifier = opinion_destroyed_portal
+				}
+			}
+			add_modifier = {
+				modifier = "extradimensionals_defeated"
+				days = 360
+			}
+			country_event = { id = crisis.1013 }
+		}
+		if = {
+			limit = {
+				NOT = { has_global_flag = extradimensional_second_portal } 
+			}
+			ROOT = { country_event = { id = crisis.1250 days = 10 random = 10 }}
+		} else_if = {
+			limit = {
+				has_global_flag = extradimensional_second_portal
+				NOT = { has_global_flag = extradimensional_third_portal }
+			}
+			set_global_flag = extradimensional_first_portal_destroyed
+			set_global_flag = extradimensional_second_portal_destroyed
+			set_global_flag = extradimensional_third_portal_destroyed
+			every_country = {
+				limit = {
+					is_country_type = default
+				}
+				country_event = { id = crisis.1116 }
+			}
+			country_event = { id = crisis.1250 }
+		} else_if = {
+			limit = {
+				has_global_flag = extradimensional_third_portal
+			}
+			set_global_flag = extradimensional_first_portal_destroyed
+			set_global_flag = extradimensional_second_portal_destroyed
+			set_global_flag = extradimensional_third_portal_destroyed
+			every_country = {
+				limit = {
+					is_country_type = default
+				}
+				country_event = { id = crisis.1216 }
+			}
+		}
+	}
+}
+
+# 触发堕落警告
+country_event = {
+	id = ap_wg_crisis.1029
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = { # 堕落妈警告
+			limit = { exists = event_target:wg_fallen_empire }
+			country_event = { id = ap_wg_crisis.1025 days = 180 random = 90 }
+		}
+		if = { # 深海爸警告
+			limit = { exists = event_target:sh_fallen_empire }
+			country_event = { id = ap_wg_crisis.1027 days = 90 random = 90 }
+		}
+		if = { # 奸商跑路
+			limit = { exists = event_target:pantsu_shop_country }
+			country_event = { id = ap_wg_crisis.10310 days = 360 random = 720 }
+		}
+	}
+}
+
+# 堕落妈警告
+country_event = {
+	id = ap_wg_crisis.1025
+	title = ap_wg_crisis.1025.name
+	desc = {
+		trigger = { 
+			NOT = { exists = event_target:sh_fallen_empire }
+		}
+		text = ap_wg_crisis.1025.desc
+	}
+	desc = {
+		trigger = { 
+			exists = event_target:sh_fallen_empire
+		}
+		text = ap_wg_crisis.1025.desc.b
+	}
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_no_video
+
+	trigger = {
+		exists = event_target:wg_fallen_empire
+	}
+
+	immediate = {
+		set_country_flag = wgfe_warning
+	}
+
+	option = {
+		name = ONSCREEN
+		hidden_effect = { country_event = { id = ap_wg_crisis.1026 }}
+	}
+
+	option = {
+		name = ap_wg_crisis.1025.a
+	}
+
+}
+
+# 堕落妈警告
+country_event = {
+	id = ap_wg_crisis.1026
+	title = TRANSMISSION_NAME
+	desc = ap_wg_crisis.1026.desc
+	is_triggered_only = yes
+
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+
+	trigger = {
+		exists = event_target:wg_fallen_empire
+	}
+
+	picture_event_data = {
+		portrait = event_target:wg_fallen_empire
+		planet_background = event_target:wg_fallen_empire
+		graphical_culture = event_target:wg_fallen_empire
+		city_level = event_target:wg_fallen_empire
+		room = event_target:wg_fallen_empire.ruler
+	}
+
+	option = {
+		name = ap_wg_crisis.1026.a
+		response_text = ap_wg_crisis.1026.a.response
+	}
+	option = {
+		trigger = { OR = {
+			has_ethic = ethic_fanatic_xenophobe
+			has_ethic = ethic_xenophobe
+		}}
+		name = ap_wg_crisis.1026.b
+		response_text = ap_wg_crisis.1026.b.response
+	}
+	option = {
+		trigger = {
+			is_wg_exterminate_goverment = yes
+		}
+		name = ap_wg_crisis.1026.c
+	}
+}
+
+# 深海爸警告
+country_event = {
+	id = ap_wg_crisis.1027
+	title = ap_wg_crisis.1027.name
+	desc = ap_wg_crisis.1027.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_no_video
+
+	trigger = {
+		exists = event_target:wg_fallen_empire
+	}
+
+	option = {
+		name = ONSCREEN
+		hidden_effect = { country_event = { id = ap_wg_crisis.1028 }}
+	}
+}
+
+# 深海爸警告
+country_event = {
+	id = ap_wg_crisis.1028
+	title = TRANSMISSION_NAME
+	desc = {
+		exclusive_trigger = {
+			has_origin = origin_parit
+		}
+		text = ap_wg_crisis.1028.desc.b
+	}
+	desc = ap_wg_crisis.1028.desc
+	is_triggered_only = yes
+
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+
+	trigger = {
+		exists = event_target:sh_fallen_empire
+	}
+
+	immediate = {
+		set_country_flag = shfe_warning
+	}
+
+	picture_event_data = {
+		portrait = event_target:sh_fallen_empire
+		planet_background = event_target:sh_fallen_empire
+		graphical_culture = event_target:sh_fallen_empire
+		city_level = event_target:sh_fallen_empire
+		room = event_target:sh_fallen_empire.ruler
+	}
+
+	option = {
+		name = ap_wg_crisis.1028.a
+	}
+	option = {
+		name = ap_wg_crisis.1028.b
+	}
+	option = {
+		trigger = {
+			is_wg_exterminate_goverment = yes
+		}
+		name = ap_wg_crisis.1028.c
+	}
+}
+
+# 给堕落爸补舰队（大）
+country_event = {
+	id = ap_wg_crisis.1030
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = this
+		is_same_value = event_target:sh_fallen_empire
+	}
+
+	immediate = {
+		capital_scope = {
+			create_sh_fe_capital_fleet_and_admiral = yes
+		}
+		if = {
+			limit = {
+				any_country = {
+					is_sh_fallen_empire = no
+					has_country_flag = awakened_fe_join_wgfm_war
+				}
+			}
+			every_country = {
+				limit = { 
+					is_sh_fallen_empire = no
+					has_country_flag = awakened_fe_join_wgfm_war
+				}
+				add_awakened_fallen_empire_fleet = yes
+				add_awakened_fallen_empire_fleet = yes
+			}
+		}
+		country_event = { id = ap_wg_crisis.1030 days = 1800 random = 360 }  # 深海爸补舰队
+	}
+}
+# 奸商跑路
+country_event = {
+	id = ap_wg_crisis.10310
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		event_target:ap_wg_crisis_country = {
+			NOT = { has_country_flag = pantsu_shop_origin }
+		}
+	}
+
+	immediate = {
+		set_global_flag = pantsu_shop_disabled
+		set_global_flag = pantsu_shop_leave
+		event_target:pantsu_shop_country = {
+			every_owned_fleet = {
+				delete_fleet = this
+			}
+			destroy_country = yes
+		}
+		if = {
+			limit = { exists = event_target:pantsu_shop_logo_titan_country }
+			event_target:pantsu_shop_logo_titan_country = {
+				every_owned_fleet = {
+					delete_fleet = this
+				}
+				destroy_country = yes
+			}
+		}
+		every_playable_country = {
+			country_event = { id = ap_wg_crisis.1031 }
+			country_event = { id = wsgranking.2005 }
+		}
+	}
+}
+
+# 奸商跑路通知事件
+country_event = {
+	id = ap_wg_crisis.1031
+	title = pantsu_shop_name
+	desc = ap_wg_crisis.1031.desc
+	is_triggered_only = yes
+	diplomatic = yes
+
+	picture_event_data = {
+		room = Ella_room
+	}
+	diplomatic_title = TRANSMISSION
+	custom_gui = enclave_caravaneer_window
+	custom_gui_option = enclave_caravaneer_option
+
+	trigger = {
+		exists = event_target:pantsu_shop_country
+	}
+
+	option = {
+		name = ap_wg_crisis.1031.a
+		trigger = { is_same_value = event_target:ap_wg_crisis_country }
+		country_event = { id = ap_wg_crisis.1032 days = 5 }
+	}
+	option = {
+		trigger = { NOT = { is_same_value = event_target:ap_wg_crisis_country }}
+		name = ap_wg_crisis.1031.a
+	}
+}
+
+# 奸商跑路后的通知（焚飞）
+country_event = {
+	id = ap_wg_crisis.1032
+	title = ap_wg_crisis.1032.name
+	desc = ap_wg_crisis.1032.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_no_video
+
+	trigger = {
+		exists = event_target:wg_fallen_empire
+	}
+
+	option = {
+		name = ONSCREEN
+	}
+}
+
+# 三级开始升级，触发深海爸觉醒以及齐宣王事件，以及堕妈跑路
+country_event = {
+	id = ap_wg_crisis.1036
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { is_megastructure_type = wg_fm_gateway_02 }
+	}
+
+	immediate = {
+		country_event = { id = wg_fe.27 days = 180 random = 180 } #堕妈跑路
+		country_event = { id = ap_wg_crisis.1040 days = 360 random = 720 }
+		country_event = { id = ap_wg_crisis.1092 days = 180 random = 180 }
+	}
+}
+
+# 觉醒及宣战玩家
+country_event = {
+	id = ap_wg_crisis.1040
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_same_value = event_target:ap_wg_crisis_country
+	}
+
+	immediate = {
+		event_target:ap_wg_crisis_country = {
+			set_country_flag = wg_fm_war
+		}
+		set_global_flag = wg_crisis_war_begin
+		if = { # 天堂之战不能齐宣王
+			limit = { 
+				NOT = { has_global_flag = war_in_heaven_ongoing }
+			}
+			set_global_flag = no_war_in_heaven
+			every_country = {
+				limit = { is_default_and_fallen_country = yes }
+				set_timed_country_flag = { flag = ai_no_wars days = 9999 }
+			}
+			if = {
+				limit = {
+					# 检查有没有任何一个国家不受焚飞玩家控制
+					any_country = {
+						is_ai = yes
+						is_default_country_wg = yes
+						NOT = { is_same_value = ROOT }
+						OR = {
+							ROOT = {
+								exists = federation
+								NOT = { any_federation_ally = {
+									is_same_value = PREVPREV
+								}}
+							}
+							ROOT = {
+								is_overlord = yes
+								NOT = { any_subject = {
+									is_same_value = PREVPREV
+								}}
+							}
+							ROOT = {
+								NOT = { exists = federation }
+								is_overlord = no
+							}
+						}
+					}
+				}
+				if = {
+					limit = { has_galactic_emperor = yes }
+					# 银河皇帝优先宣战
+					if = {
+						# 优先给玩家
+						limit = { any_country = {
+							is_ai = no
+							is_galactic_emperor = yes
+							NOT = { is_same_value = event_target:ap_wg_crisis_country } 
+						}}
+						random_country = {
+							limit = { 
+								is_ai = no 
+								is_galactic_emperor = yes
+							}
+							country_event = { id = ap_wg_crisis.1044 }
+						}
+					} else = {
+						random_country = {
+							limit = { 
+								is_ai = yes 
+								is_galactic_emperor = yes
+							}
+							country_event = { id = ap_wg_crisis.1041 days = 30 }
+						}
+					}
+				} else_if = {
+					limit = { has_galactic_custodian = yes }
+					# 如果没有银河皇帝，监管者宣战
+					if = {
+						# 优先给玩家
+						limit = { any_country = {
+							is_ai = no
+							is_galactic_custodian = yes
+							NOT = { is_same_value = event_target:ap_wg_crisis_country } 
+						}}
+						random_country = {
+							limit = { 
+								is_ai = no 
+								is_galactic_custodian = yes
+							}
+							country_event = { id = ap_wg_crisis.1044 }
+						}
+					} else = {
+						random_country = {
+							limit = { 
+								is_ai = yes 
+								is_galactic_custodian = yes
+							}
+							country_event = { id = ap_wg_crisis.1042 days = 30 }
+						}
+					}
+				} else_if = {
+					limit = { always = yes }
+					if = {
+						limit = {
+							any_country = {
+								is_ai = no
+								NOT = { is_same_value = event_target:ap_wg_crisis_country } 
+							}
+						}
+						# 以上都找不到，随便找个玩家组联盟
+						random_country = {
+							limit = { 
+								is_ai = no
+								NOT = { is_same_value = event_target:ap_wg_crisis_country } 
+							}
+							country_event = { id = ap_wg_crisis.1044 }
+						}
+					} else = {
+						# 以上都找不到，随便找个ai组联盟
+						random_country = {
+							limit = { 
+								is_ai = yes 
+								is_subject = no
+								is_country_type = default
+							}
+							weights = {
+								base = 10
+								modifier = {
+									is_rival = ROOT
+									factor = 10
+								}
+								modifier = {
+									any_federation = {
+										federation_leader = {
+											is_same_value = PREVPREV
+										}
+									}
+									factor = 1.5
+								}
+								modifier = {
+									OR = {
+										is_hostile_to = ROOT
+										is_angry_to = ROOT
+										is_domineering_to = ROOT
+									}
+									factor = 1.5
+								}
+								modifier = {
+									is_overlord = yes
+									factor = 1.2
+								}
+								modifier = {
+									OR = {
+										has_ethic = ethic_fanatic_militarist
+										has_ethic = ethic_militarist
+										has_ethic = ethic_fanatic_xenophile
+										has_ethic = ethic_xenophile
+									}
+									factor = 1.1
+								}
+							}
+							country_event = { id = ap_wg_crisis.1043 days = 30 }
+							event_target:ap_wg_crisis_country = {
+								country_event = { id = ap_wg_crisis.1050 days = 25 }
+							}
+						}
+					}
+				}
+			} else_if = {
+				limit = { always = yes }
+				if = {
+					limit = { exists = event_target:sh_fallen_empire }
+					country_event = { id = ap_wg_crisis.1070 }
+				}
+			}
+		} else_if = {
+			limit = { always = yes }
+			country_event = { id = ap_wg_crisis.1070 }
+		}
+	}
+}
+
+# 堕落爸宣战（在齐宣王之后）
+country_event = {
+	id = ap_wg_crisis.1070
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { 
+				exists = event_target:sh_fallen_empire 
+				event_target:sh_fallen_empire = {
+					NOT = { is_at_war_with = event_target:ap_wg_crisis_country }
+				}
+			}
+			country_event = { id = ap_wg_crisis.1033 } #深海爸觉醒
+			every_country = {
+				# 正义演说（误）
+				limit = { 
+					is_ai = no 
+					NOT = { is_same_value = ROOT }
+				} 
+				country_event = { id = ap_wg_crisis.1035 days = 5 }
+			}
+			# 对焚飞玩家宣战
+			country_event = { id = ap_wg_crisis.1034 }
+		}
+	}
+}
+
+# 觉醒（单独事件）
+country_event = {
+	id = ap_wg_crisis.1033
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		
+	}
+
+	immediate = {
+		set_global_flag = sh_fallen_empire_awakened
+		if = {
+			limit = { exists = event_target:sh_fallen_empire }
+			event_target:sh_fallen_empire = {
+				set_country_type = awakened_fallen_empire
+				set_empire_name = "沉默守卫者"
+				if = {
+					limit = { 
+						OR = {
+							has_global_flag = wg_crisis_very_easy
+							has_global_flag = wg_crisis_easy
+							has_global_flag = wg_crisis_normal
+						}
+					}
+					change_government = {
+						civics = {
+							civic = civic_sh_awakened_fe
+							civic = civic_ancient_caches_of_technology
+						}
+					}
+				}
+				else_if = {
+					limit = { 
+						OR = {
+							has_global_flag = wg_crisis_hard
+							has_global_flag = wg_crisis_insane
+						}
+					}
+					change_government = {
+						civics = {
+							civic = civic_sh_awakened_fe_advance
+							civic = civic_ancient_caches_of_technology
+						}
+					}
+				}
+				capital_scope = {
+					create_sh_fe_capital_fleet_and_admiral = yes
+				}
+				add_resource = {
+					minerals = 1000000
+					energy = 1000000
+					food = 1000000
+					alloys = 1000000
+					consumer_goods = 1000000
+					sr_pantsu = 1000000
+					sr_se = 1000000
+				}
+				country_event = { id = ap_wg_crisis.1057 days = 360 }  # 深海爸补舰队
+				country_event = { id = ap_wg_crisis.1030 days = 1080 } # 深海爸补舰队（大）
+			}
+		}
+	}
+}
+
+# 深海爸觉醒宣战
+country_event = {
+	id = ap_wg_crisis.1034
+	title = TRANSMISSION_NAME
+	desc = {
+		exclusive_trigger = {
+			has_origin = origin_parit
+		}
+		text = ap_wg_crisis.1034.desc.b
+	}
+	desc = ap_wg_crisis.1034.desc
+	is_triggered_only = yes
+
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+
+	trigger = {
+		exists = event_target:sh_fallen_empire
+	}
+
+	picture_event_data = {
+		portrait = event_target:sh_fallen_empire
+		planet_background = event_target:sh_fallen_empire
+		graphical_culture = event_target:sh_fallen_empire
+		city_level = event_target:sh_fallen_empire
+		room = event_target:sh_fallen_empire.ruler
+	}
+
+	immediate = {
+		set_global_flag = has_awakened_fe_join_wgfm_war
+		random_country = {
+			limit = { has_country_flag = wg_anti_crisis_leader }
+			save_event_target_as = wg_anti_crisis_leader
+		}
+		if = {
+			limit = { NOT = { exists = event_target:wg_anti_crisis_leader }}
+			set_country_flag = wg_anti_crisis_leader
+		}
+		if = {
+			limit = { any_war = {
+				any_defender = { is_same_value = ROOT }
+			}}
+			event_target:sh_fallen_empire = {
+				join_war = event_target:wg_anti_crisis_leader
+			}
+		} else = {
+			event_target:sh_fallen_empire = {
+				declare_war = {
+					target = ROOT
+					attacker_war_goal = wg_fm_war
+				}
+			}
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1034.a
+	}
+}
+
+# 堕落爸对其他人的正义演说（误）
+country_event = {
+	id = ap_wg_crisis.1035
+	title = TRANSMISSION_NAME
+	desc = ap_wg_crisis.1035.desc
+	is_triggered_only = yes
+
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+
+	trigger = {
+		exists = event_target:sh_fallen_empire
+	}
+
+	picture_event_data = {
+		portrait = event_target:sh_fallen_empire
+		planet_background = event_target:sh_fallen_empire
+		graphical_culture = event_target:sh_fallen_empire
+		city_level = event_target:sh_fallen_empire
+		room = event_target:sh_fallen_empire.ruler
+	}
+
+	option = {
+		name = ap_wg_crisis.1035.a
+		custom_tooltip = ap_wg_crisis.1035.a.tooltip
+		hidden_effect = { join_war = event_target:sh_fallen_empire }
+	}
+	option = {
+		name = ap_wg_crisis.1035.b
+	}
+	option = {
+		name = ap_wg_crisis.1035.c
+		custom_tooltip = ap_wg_crisis.1035.c.tooltip
+		hidden_effect = { join_war = event_target:ap_wg_crisis_country }
+	}
+}
+
+# 堕落妈跑路通知（焚飞国家）
+country_event = {
+	id = ap_wg_crisis.1037
+	title = ap_wg_crisis.1037.name
+	desc = ap_wg_crisis.1037.desc
+	picture = GFX_evt_ringworld
+	show_sound = event_ghost_town
+	location = event_target:wg_fe_home_system
+
+	is_triggered_only = yes
+
+	option = {
+		name = ap_wg_crisis.1037.a
+	}
+	option = {
+		trigger = {
+			is_wg_exterminate_goverment = yes
+		}
+		name = ap_wg_crisis.1037.b
+	}
+}
+
+# 堕落爸阻止战争
+country_event = {
+	id = ap_wg_crisis.1038
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_global_flag = wg_crisis_war_begin }
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				any_war = {
+					exists = this
+					# 没有玩家参与
+					NOT = { any_war_participant = {
+						is_ai = no
+						OR = {
+							is_country_type = fallen_empire
+							is_country_type = awakened_fallen_empire
+						}
+					}}
+				}
+			}
+			random_war = {
+				limit = {
+					# 没有玩家参与
+					NOT = { any_war_participant = {
+						is_ai = no
+						OR = {
+							is_country_type = fallen_empire
+							is_country_type = awakened_fallen_empire
+						}
+					}}
+				}
+				random_attacker = {
+					limit = { is_subject = no }
+					save_event_target_as = wg_stopped_war_attacker
+				}
+				random_defender = {
+					limit = { OR = {
+						is_subject = no 
+						PREV = { using_war_goal = {
+							type = wg_independence
+							owner = PREV
+						}}
+					}}
+					save_event_target_as = wg_stopped_war_defender
+				}
+				end_war_effect = yes
+			}
+			country_event = { id = ap_wg_crisis.1039 days = 1 }
+		} else = {
+			# country_event = { id = ap_wg_crisis.1038 days = 360 random = 180 }
+		}
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1039
+	title = ap_wg_crisis.1039.name
+	desc = ap_wg_crisis.1039.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_no_video
+
+	option = {
+		trigger = {
+			NOT = { is_same_value = event_target:ap_wg_crisis_country }
+		}
+		name = ap_wg_crisis.1039.a
+	}
+	option = {
+		trigger = {
+			is_same_value = event_target:ap_wg_crisis_country
+		}
+		name = ap_wg_crisis.1039.b
+	}
+	option = {
+		trigger = {
+			is_wg_exterminate_goverment = yes
+		}
+		name = ap_wg_crisis.1039.c
+	}
+}
+
+# 银河皇帝宣战
+country_event = {
+	id = ap_wg_crisis.1041
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		set_global_flag = gal_emperor_joined_wg_fm_war
+		rebellion_remove_from_wars = yes
+		random_country = {
+			limit = { is_galactic_emperor = yes }
+			set_country_flag = wg_anti_crisis_leader
+			save_event_target_as = gal_emperor
+			join_alliance = {
+				who = ROOT
+				override_requirements = yes
+				name = "NAME_anti_wg_fm_crisis_fed"
+			}
+			set_federation_leader = this
+			set_country_flag = wg_anti_crisis_leader
+			every_country = {
+				limit = { 
+					is_galactic_community_member = yes 
+					NOT = { is_same_value = event_target:ap_wg_crisis_country }
+					NOT = { has_country_flag = wg_psi_country }
+				}
+				join_alliance = { who = PREV override_requirements = yes }
+			}
+			federation = {
+				add_cohesion = 200
+				add_federation_experience = 200
+				set_federation_flag = wg_anti_crisis_federation
+				set_federation_type = imperial_loyalists_federation
+				set_federation_law = centralization_imperial_loyalists
+				set_federation_law = succession_type_none
+				set_federation_law = succession_term_perpetual
+				set_federation_law = fleet_contribution_none
+				set_federation_law = treaties_separate_no_imperial_loyalists
+				set_federation_law = declare_war_president_vote_imperial_loyalists
+				set_federation_law = invite_members_president_vote_imperial_loyalists
+				set_federation_law = kick_members_president_vote_imperial_loyalists
+				set_federation_law = vote_weight_diplomatic_imperial_loyalists
+				set_federation_law = allow_subjects_to_join_yes_imperial_loyalists
+			}
+		}
+		every_country = {
+			limit = { 
+				is_ai = no 
+				NOT = { is_same_value = event_target:ap_wg_crisis_country }
+			}
+			country_event = { id = ap_wg_crisis.1051 }
+		}
+		event_target:ap_wg_crisis_country = {
+			country_event = { id = ap_wg_crisis.1069 days = 1 }
+			country_event = { id = ap_wg_crisis.1070 days = 5 }
+		}
+	}
+}
+
+# 星系管理者宣战
+country_event = {
+	id = ap_wg_crisis.1042
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		set_global_flag = gal_custodian_joined_wg_fm_war
+		rebellion_remove_from_wars = yes
+		random_country = {
+			limit = { is_galactic_custodian = yes }
+			set_country_flag = wg_anti_crisis_leader
+			save_event_target_as = gal_custodian
+			join_alliance = {
+				who = ROOT
+				override_requirements = yes
+				name = "NAME_anti_wg_fm_crisis_fed"
+			}
+			set_federation_leader = this
+			set_country_flag = wg_anti_crisis_leader
+			every_country = {
+				limit = { 
+					is_galactic_community_member = yes 
+					NOT = { is_same_value = event_target:ap_wg_crisis_country }
+					NOT = { has_country_flag = wg_psi_country }
+				}
+				join_alliance = { who = PREV override_requirements = yes }
+			}
+			federation = {
+				add_cohesion = 200
+				add_federation_experience = 200
+				set_federation_flag = wg_anti_crisis_federation
+				set_federation_type = imperial_loyalists_federation
+				set_federation_law = centralization_imperial_loyalists
+				set_federation_law = succession_type_none
+				set_federation_law = succession_term_perpetual
+				set_federation_law = fleet_contribution_none
+				set_federation_law = treaties_separate_no_imperial_loyalists
+				set_federation_law = declare_war_president_vote_imperial_loyalists
+				set_federation_law = invite_members_president_vote_imperial_loyalists
+				set_federation_law = kick_members_president_vote_imperial_loyalists
+				set_federation_law = vote_weight_diplomatic_imperial_loyalists
+				set_federation_law = allow_subjects_to_join_yes_imperial_loyalists
+			}
+		}
+		every_country = {
+			limit = { 
+				is_ai = no 
+				NOT = { is_same_value = event_target:ap_wg_crisis_country }
+			}
+			country_event = { id = ap_wg_crisis.1052 }
+		}
+		event_target:ap_wg_crisis_country = {
+			country_event = { id = ap_wg_crisis.1069 }
+			country_event = { id = ap_wg_crisis.1070 days = 5 }
+		}
+	}
+}
+
+# 反危机联盟
+country_event = {
+	id = ap_wg_crisis.1043
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_global_flag = anti_crisis_alli_joined_wg_fm_war
+		rebellion_remove_from_wars = yes
+		every_federation = {
+			limit = { NOT = { any_member = {
+				is_same_value = event_target:ap_wg_crisis_country
+			}}}
+			every_member = {
+				limit = { 
+					is_ai = yes 
+				}
+				leave_alliance = { override_requirements = yes }
+				if = {
+					limit = { 
+						is_galactic_community_member = no 
+						is_galactic_community_formed = yes
+					}
+					add_to_galactic_community = yes
+				}
+			}
+		}
+		random_federation = {
+			limit = { any_member = {
+				is_same_value = event_target:ap_wg_crisis_country
+			}}
+			every_member = {
+				limit = {
+					is_ai = yes 
+					NOR = { 
+						has_country_flag = wg_psi_country 
+						has_country_flag = join_wgfm_alliance 
+					}
+				}
+				leave_alliance = { override_requirements = yes }
+				if = {
+					limit = { 
+						is_galactic_community_member = no 
+						is_galactic_community_formed = yes
+					}
+					add_to_galactic_community = yes
+				}
+			}
+		}
+		every_country = {
+			limit = {
+				is_ai = yes
+				OR = {
+					has_defensive_pact = ROOT
+					is_guaranteeing = ROOT
+				}
+				NOR = { 
+					has_country_flag = wg_psi_country 
+					has_country_flag = join_wgfm_alliance 
+				}
+			}
+			end_all_treaties_with = root
+			end_truce = ROOT
+		}
+		if = {
+			limit = { 
+				is_ai = no 
+				exists = federation
+			}
+			if = {
+				limit = { federation = { federation_leader = {
+					NOT = { is_same_value = ROOT }
+				}}}
+				set_federation_leader = root
+			}
+		} else_if = {
+			limit = { always = yes }
+			join_alliance = {
+				who = ROOT
+				override_requirements = yes
+				name = "NAME_anti_wg_fm_crisis_fed"
+			}
+			set_federation_leader = root
+			federation = {
+				add_cohesion = 200
+				add_federation_experience = 200
+			}
+		}
+		federation = {
+			set_federation_flag = wg_anti_crisis_federation
+			set_federation_type = imperial_loyalists_federation
+			set_federation_law = centralization_imperial_loyalists
+			set_federation_law = succession_type_none
+			set_federation_law = succession_term_perpetual
+			set_federation_law = fleet_contribution_none
+			set_federation_law = treaties_separate_no_imperial_loyalists
+			set_federation_law = declare_war_president_vote_imperial_loyalists
+			set_federation_law = invite_members_president_vote_imperial_loyalists
+			set_federation_law = kick_members_president_vote_imperial_loyalists
+			set_federation_law = vote_weight_diplomatic_imperial_loyalists
+			set_federation_law = allow_subjects_to_join_yes_imperial_loyalists
+		}
+		save_event_target_as = wg_anti_crisis_leader
+		set_country_flag = wg_anti_crisis_leader
+		every_playable_country = {
+			limit = { 
+				is_ai = yes 
+				is_subject = no
+				NOT = { has_country_flag = wg_psi_country }
+				NOT = { has_country_flag = join_wgfm_alliance }
+				is_galactic_community_member = yes
+			}
+			join_alliance = { who = root override_requirements = yes }
+		}
+		every_country = {
+			limit = { 
+				is_ai = no 
+				NOT = { is_same_value = event_target:ap_wg_crisis_country }
+			}
+			country_event = { id = ap_wg_crisis.1054 }
+		}
+		event_target:ap_wg_crisis_country = {
+			country_event = { id = ap_wg_crisis.1069 }
+			country_event = { id = ap_wg_crisis.1070 days = 5 }
+		}
+	}
+}
+
+# 某个联盟作为反危机联盟对焚飞国家宣战
+# country_event = {
+# 	id = ap_wg_crisis.1045
+# 	hide_window = yes
+# 	is_triggered_only = yes
+
+# 	immediate = {
+# 		set_global_flag = custom_alli_joined_wg_fm_war
+# 		save_event_target_as = wg_anti_crisis_leader
+# 		set_country_flag = wg_anti_crisis_leader
+# 		if = {
+# 			limit = { exists = event_target:sh_fallen_empire }
+# 			random_war = {
+# 				limit = { using_war_goal = {
+# 					type = wg_fm_war
+# 					owner = event_target:sh_fallen_empire
+# 				}}
+# 				save_event_target_as = wg_fm_war
+# 			}
+# 		} else = {
+# 			declare_war = {
+# 				target = event_target:ap_wg_crisis_country
+# 				attacker_war_goal = wg_fm_war
+# 			}
+# 			random_war = {
+# 				limit = { using_war_goal = {
+# 					type = wg_fm_war
+# 					owner = ROOT
+# 				}}
+# 				save_event_target_as = wg_fm_war
+# 			}
+# 		}
+# 		federation = {
+# 			set_name = "反危机联盟"
+# 			set_federation_flag = wg_anti_crisis_federation
+# 			set_federation_type = imperial_loyalists_federation
+# 			set_federation_law = centralization_imperial_loyalists
+# 			set_federation_law = succession_type_none
+# 			set_federation_law = succession_term_perpetual
+# 			set_federation_law = fleet_contribution_none
+# 			set_federation_law = treaties_separate_no_imperial_loyalists
+# 			set_federation_law = declare_war_president_vote_imperial_loyalists
+# 			set_federation_law = invite_members_president_vote_imperial_loyalists
+# 			set_federation_law = kick_members_president_vote_imperial_loyalists
+# 			set_federation_law = vote_weight_diplomatic_imperial_loyalists
+# 			set_federation_law = allow_subjects_to_join_yes_imperial_loyalists
+# 		}
+# 		every_federation_ally = {
+# 			limit = { NOT = { has_country_flag = wg_psi_country }}
+# 			join_war_on_side = {
+# 				war = event_target:wg_fm_war
+# 				side = attacker
+# 			}
+# 		}
+# 		every_federation = {
+# 			limit = { NOT = { has_federation_flag = wg_anti_crisis_federation }}
+# 			every_playable_country = {
+# 				limit = { 
+# 					federation = { is_same_value = PREVPREV }
+# 					is_subject = no
+# 					NOT = { has_country_flag = wg_psi_country }
+# 				}
+# 				if = {
+# 					limit = { exists = event_target:sh_fallen_empire }
+# 					join_war = event_target:sh_fallen_empire
+# 				} else = {
+# 					join_war = ROOT
+# 				}
+# 			}
+# 		}
+# 		every_country = {
+# 			limit = { 
+# 				is_ai = no 
+# 				NOT = { is_same_value = event_target:ap_wg_crisis_country }
+# 			}
+# 			country_event = { id = ap_wg_crisis.1053 }
+# 		}
+# 		event_target:ap_wg_crisis_country = {
+# 			country_event = { id = ap_wg_crisis.1069 }
+# 		}
+# 	}
+# }
+
+# 玩家选择对焚飞帝国宣战
+country_event = {
+	id = ap_wg_crisis.1044
+	title = TRANSMISSION
+	# desc = ap_wg_crisis.1044.desc
+	desc = {
+		trigger = { 
+			is_galactic_emperor = yes 
+			exists = event_target:sh_fallen_empire
+		}
+		text = ap_wg_crisis.1044.desc.a
+	}
+	desc = {
+		trigger = { 
+			is_galactic_custodian = yes 
+			exists = event_target:sh_fallen_empire
+		}
+		text = ap_wg_crisis.1044.desc.b
+	}
+	# desc = {
+	# 	trigger = { 
+	# 		is_galactic_emperor = no
+	# 		is_galactic_custodian = no
+	# 		is_federation_leader = yes 
+	# 		exists = event_target:sh_fallen_empire
+	# 	}
+	# 	text = ap_wg_crisis.1044.desc.c
+	# }
+	desc = {
+		trigger = { 
+			is_galactic_emperor = no
+			is_galactic_custodian = no
+			is_federation_leader = no 
+			exists = event_target:sh_fallen_empire
+		}
+		text = ap_wg_crisis.1044.desc.d
+	}
+
+	desc = {
+		trigger = { 
+			is_galactic_emperor = yes 
+			NOT = { exists = event_target:sh_fallen_empire }
+		}
+		text = ap_wg_crisis.1044.desc.e
+	}
+	desc = {
+		trigger = { 
+			is_galactic_custodian = yes 
+			NOT = { exists = event_target:sh_fallen_empire }
+		}
+		text = ap_wg_crisis.1044.desc.f
+	}
+	desc = {
+		trigger = { 
+			is_galactic_emperor = no
+			is_galactic_custodian = no
+			NOT = { exists = event_target:sh_fallen_empire }
+		}
+		text = ap_wg_crisis.1044.desc.g
+	}
+	is_triggered_only = yes
+	diplomatic = yes
+
+	picture_event_data = {
+		portrait = event_target:request_wg_fm_war_country
+		planet_background = event_target:request_wg_fm_war_country
+		graphical_culture = event_target:request_wg_fm_war_country
+		city_level = event_target:request_wg_fm_war_country
+		room = event_target:request_wg_fm_war_country.ruler
+	}
+
+	trigger = {
+		is_ai = no
+	}
+
+	immediate = {
+		if = {
+			limit = { exists = event_target:sh_fallen_empire }
+			# 堕落爸在则出面劝说玩家
+			save_event_target_as = request_wg_fm_war_country
+		} else = {
+			# 随便选一个ai诉苦
+			random_country = {
+				limit = { 
+					is_ai = yes 
+					is_galactic_community_member = yes
+				}
+				weights = {
+					base = 10
+					modifier = {
+						is_rival = event_target:ap_wg_crisis_country
+						factor = 10
+					}
+					modifier = {
+						OR = {
+							is_hostile_to = event_target:ap_wg_crisis_country
+							is_angry_to = event_target:ap_wg_crisis_country
+							is_domineering_to = event_target:ap_wg_crisis_country
+						}
+						factor = 1.5
+					}
+					modifier = {
+						OR = {
+							has_ethic = ethic_fanatic_militarist
+							has_ethic = ethic_militarist
+							has_ethic = ethic_fanatic_xenophile
+							has_ethic = ethic_xenophile
+						}
+						factor = 1.1
+					}
+				}
+				save_event_target_as = request_wg_fm_war_country
+			}
+		}
+	}
+
+	option = {
+		# 玩家作为银河皇帝宣战
+		name = {
+			text = ap_wg_crisis.1044.a
+			trigger = {
+				is_gestalt = no
+			}
+		}
+		name = {
+			text = ap_wg_crisis.1044.aa
+			trigger = {
+				is_machine_empire = yes
+			}
+		}
+		name = {
+			text = ap_wg_crisis.1044.ab
+			trigger = {
+				is_hive_empire = yes
+			}
+		}
+		trigger = {
+			is_galactic_emperor = yes
+		}
+		hidden_effect = { 
+			country_event = { id = ap_wg_crisis.1041 days = 30 }
+			event_target:ap_wg_crisis_country = {
+				country_event = { id = ap_wg_crisis.1047 days = 25 }
+			}
+		}
+	} 
+	option = {
+		# 玩家作为监督者宣战
+		name = {
+			text = ap_wg_crisis.1044.b
+			trigger = {
+				is_gestalt = no
+			}
+		}
+		name = {
+			text = ap_wg_crisis.1044.aa
+			trigger = {
+				is_machine_empire = yes
+			}
+		}
+		name = {
+			text = ap_wg_crisis.1044.ab
+			trigger = {
+				is_hive_empire = yes
+			}
+		}
+		trigger = {
+			is_galactic_custodian = yes
+			is_gestalt = no
+		}
+		hidden_effect = { 
+			country_event = { id = ap_wg_crisis.1042 days = 30 }
+			event_target:ap_wg_crisis_country = {
+				country_event = { id = ap_wg_crisis.1048 days = 25 }
+			}
+		}
+	} 
+	option = {
+		# 组建反危机联盟
+		name = {
+			text = ap_wg_crisis.1044.d
+			trigger = {
+				is_gestalt = no
+			}
+		}
+		name = {
+			text = ap_wg_crisis.1044.aa
+			trigger = {
+				is_machine_empire = yes
+			}
+		}
+		name = {
+			text = ap_wg_crisis.1044.ab
+			trigger = {
+				is_hive_empire = yes
+			}
+		}
+		trigger = {
+			is_galactic_emperor = no
+			is_galactic_custodian = no
+		}
+		hidden_effect = { 
+			country_event = { id = ap_wg_crisis.1043 days = 30 }
+			event_target:ap_wg_crisis_country = {
+				country_event = { id = ap_wg_crisis.1050 days = 25 }
+			}
+		}
+	}
+	option = {
+		# 问堕落爸如果不对抗会怎样
+		name = ap_wg_crisis.1044.e
+		trigger = {
+			event_target:request_wg_fm_war_country = {
+				is_same_value = event_target:sh_fallen_empire
+			}
+		}
+		is_dialog_only = yes
+		response_text = ap_wg_crisis.1044.e.response
+	}
+	option = {
+		# 拒绝对抗，另找他人
+		name = ap_wg_crisis.1044.f
+		default_hide_option = yes
+		hidden_effect = { 
+			set_country_flag = refuse_join_wg_fm_war
+			country_event = { id = ap_wg_crisis.1046 }
+		}
+	}
+}
+
+# 循环再选玩家/ai宣战
+country_event = {
+	id = ap_wg_crisis.1046
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		if = {
+			limit = { has_galactic_emperor = yes }
+			# 银河皇帝优先宣战
+			if = {
+				# 优先给玩家
+				limit = { any_country = {
+					is_ai = no
+					is_galactic_emperor = yes
+					NOT = { is_same_value = event_target:ap_wg_crisis_country } 
+					NOT = { has_country_flag = refuse_join_wg_fm_war }
+				}}
+				random_country = {
+					limit = { 
+						is_ai = no 
+						is_galactic_emperor = yes
+						NOT = { has_country_flag = refuse_join_wg_fm_war }
+					}
+					country_event = { id = ap_wg_crisis.1044 }
+				}
+			} else = {
+				random_country = {
+					limit = { 
+						is_ai = yes 
+						is_galactic_emperor = yes
+					}
+					country_event = { id = ap_wg_crisis.1041 days = 30 }
+				}
+				event_target:ap_wg_crisis_country = {
+					country_event = { id = ap_wg_crisis.1047 days = 25 }
+				}
+			}
+		} else_if = {
+			limit = { has_galactic_custodian = yes }
+			# 如果没有银河皇帝，监管者宣战
+			if = {
+				# 优先给玩家
+				limit = { any_country = {
+					is_ai = no
+					is_galactic_custodian = yes
+					NOT = { is_same_value = event_target:ap_wg_crisis_country } 
+				}}
+				random_country = {
+					limit = { 
+						is_ai = no 
+						is_galactic_custodian = yes
+						NOT = { has_country_flag = refuse_join_wg_fm_war }
+					}
+					country_event = { id = ap_wg_crisis.1044 }
+				}
+			} else = {
+				random_country = {
+					limit = { 
+						is_ai = yes 
+						is_galactic_custodian = yes
+					}
+					country_event = { id = ap_wg_crisis.1042 days = 30 }
+				}
+				event_target:ap_wg_crisis_country = {
+					country_event = { id = ap_wg_crisis.1048 days = 25 }
+				}
+			}
+		} else_if = {
+			limit = { always = yes }
+			if = {
+				limit = {
+					any_country = {
+						is_ai = no
+						NOT = { is_same_value = event_target:ap_wg_crisis_country } 
+					}
+				}
+				# 以上都找不到，随便找个玩家组联盟
+				random_country = {
+					limit = { 
+						is_ai = no
+						NOT = { is_same_value = event_target:ap_wg_crisis_country } 
+					}
+					country_event = { id = ap_wg_crisis.1044 }
+				}
+			} else = {
+				# 以上都找不到，随便找个ai组联盟
+				random_country = {
+					limit = { 
+						is_ai = yes 
+						is_at_war = no
+						is_subject = no
+						recently_lost_war = no
+						is_country_type = default
+					}
+					weights = {
+						base = 10
+						modifier = {
+							is_rival = ROOT
+							factor = 10
+						}
+						modifier = {
+							any_federation = {
+								federation_leader = {
+									is_same_value = PREVPREV
+								}
+							}
+							factor = 1.5
+						}
+						modifier = {
+							OR = {
+								is_hostile_to = ROOT
+								is_angry_to = ROOT
+								is_domineering_to = ROOT
+							}
+							factor = 1.5
+						}
+						modifier = {
+							is_overlord = yes
+							factor = 1.2
+						}
+						modifier = {
+							OR = {
+								has_ethic = ethic_fanatic_militarist
+								has_ethic = ethic_militarist
+								has_ethic = ethic_fanatic_xenophile
+								has_ethic = ethic_xenophile
+							}
+							factor = 1.1
+						}
+					}
+					country_event = { id = ap_wg_crisis.1043 days = 30 }
+					set_country_flag = wg_anti_crisis_leader
+				}
+				event_target:ap_wg_crisis_country = {
+					country_event = { id = ap_wg_crisis.1050 days = 25 }
+				}
+			}
+		}
+	}
+}
+
+# 焚飞玩家通知：银河帝国宣战
+country_event = {
+	id = ap_wg_crisis.1047
+	title = ap_wg_crisis.1047.name
+	desc = ap_wg_crisis.1047.desc
+	picture = GFX_evt_crisis_declared
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+	immediate = {
+		country_event = { id = ap_wg_crisis.1103 days = 1 }
+	}
+
+	option = {
+		name = ap_wg_crisis.1047.a
+	}
+}
+# 焚飞玩家通知：星海监管人宣战
+country_event = {
+	id = ap_wg_crisis.1048
+	title = ap_wg_crisis.1048.name
+	desc = ap_wg_crisis.1048.desc
+	picture = GFX_evt_crisis_declared
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+	immediate = {
+		country_event = { id = ap_wg_crisis.1103 days = 1 }
+	}
+
+	option = {
+		name = ap_wg_crisis.1047.a
+	}
+}
+# 焚飞玩家通知：反危机联盟组建
+country_event = {
+	id = ap_wg_crisis.1050
+	title = ap_wg_crisis.1050.name
+	desc = ap_wg_crisis.1050.desc
+	picture = GFX_evt_crisis_declared
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+	immediate = {
+		random_country = {
+			limit = { has_country_flag = wg_anti_crisis_leader }
+			save_event_target_as = wg_anti_crisis_leader
+		}
+		country_event = { id = ap_wg_crisis.1103 days = 1 }
+	}
+
+	option = {
+		name = ap_wg_crisis.1049.a
+	}
+}
+# 帝国皇帝（玩家）通知：银河帝国已对焚飞国家宣战
+country_event = {
+	id = ap_wg_crisis.1051
+	title = ap_wg_crisis.1051.name
+	desc = ap_wg_crisis.1051.desc
+	picture = GFX_evt_crisis_declared
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+	option = {
+		trigger = {
+			is_galactic_emperor = no
+			is_galactic_community_member = yes
+		}
+		name = ap_wg_crisis.1051.a
+	}
+	option = {
+		trigger = {
+			is_galactic_emperor = yes
+		}
+		name = ap_wg_crisis.1051.b
+	}
+	option = {
+		trigger = {
+			is_galactic_community_member = no
+		}
+		name = ap_wg_crisis.1051.c
+	}
+}
+# 星海监管人（玩家）通知：星海共同体已对焚飞国家宣战
+country_event = {
+	id = ap_wg_crisis.1052
+	title = ap_wg_crisis.1052.name
+	desc = ap_wg_crisis.1052.desc
+	picture = GFX_evt_crisis_declared
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+	option = {
+		trigger = {
+			is_galactic_custodian = no
+		}
+		name = ap_wg_crisis.1052.a
+	}
+	option = {
+		trigger = {
+			is_galactic_custodian = yes
+		}
+		name = ap_wg_crisis.1052.b
+	}
+	option = {
+		trigger = {
+			is_galactic_community_member = no
+		}
+		name = ap_wg_crisis.1051.c
+	}
+}
+# 联盟盟主（玩家）通知：联盟已对焚飞国家宣战
+country_event = {
+	id = ap_wg_crisis.1053
+	title = ap_wg_crisis.1053.name
+	desc = ap_wg_crisis.1053.desc
+	picture = GFX_evt_crisis_declared
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+	immediate = {
+		random_federation = {
+			limit = { has_federation_flag = wg_anti_crisis_federation }
+			save_event_target_as = anti_wg_fm_crisis_fed
+		}
+	}
+
+	option = {
+		trigger = {
+			federation = {
+				is_same_value = event_target:anti_wg_fm_crisis_fed
+			}
+		}
+		name = ap_wg_crisis.1053.a
+	}
+	option = {
+		trigger = {
+			federation = {
+				NOT = { is_same_value = event_target:anti_wg_fm_crisis_fed }
+			}
+		}
+		name = ap_wg_crisis.1053.b
+	}
+}
+# 玩家组建联盟通知：已组建反危机联盟对焚飞国家宣战
+country_event = {
+	id = ap_wg_crisis.1054
+	title = ap_wg_crisis.1054.name
+	desc = ap_wg_crisis.1054.desc
+	picture = GFX_evt_crisis_declared
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+	immediate = {
+		random_federation = {
+			limit = { has_federation_flag = wg_anti_crisis_federation }
+			save_event_target_as = anti_wg_fm_crisis_fed
+		}
+		random_country = {
+			limit = { has_country_flag = wg_anti_crisis_leader }
+			save_event_target_as = wg_anti_crisis_leader
+		}
+	}
+
+	option = {
+		trigger = {
+			federation = {
+				is_same_value = event_target:anti_wg_fm_crisis_fed
+			}
+		}
+		name = ap_wg_crisis.1053.a
+	}
+	option = {
+		trigger = {
+			federation = {
+				NOT = { is_same_value = event_target:anti_wg_fm_crisis_fed }
+			}
+		}
+		name = ap_wg_crisis.1053.b
+	}
+}
+
+# 齐宣王通知
+country_event = {
+	id = ap_wg_crisis.1069
+	title = TRANSMISSION
+	desc = ap_wg_crisis.1069.desc
+	is_triggered_only = yes
+	picture_event_data = {
+		portrait = event_target:wg_anti_crisis_leader
+		planet_background = event_target:wg_anti_crisis_leader
+		graphical_culture = event_target:wg_anti_crisis_leader
+		city_level = event_target:wg_anti_crisis_leader
+		room = event_target:wg_anti_crisis_leader.ruler
+	}
+	diplomatic = yes
+
+	immediate = {
+		if = {
+			limit = { has_global_flag = gal_emperor_joined_wg_fm_war }
+			random_country = {
+				limit = { is_galactic_emperor = yes }
+				save_event_target_as = wg_anti_crisis_leader
+			}
+		} else_if = {
+			limit = { has_global_flag = gal_custodian_joined_wg_fm_war }
+			random_country = {
+				limit = { is_galactic_custodian = yes }
+				save_event_target_as = wg_anti_crisis_leader
+			}
+		} else_if = {
+			limit = { NOR = {
+				has_global_flag = gal_custodian_joined_wg_fm_war
+				has_global_flag = gal_emperor_joined_wg_fm_war
+			}}
+			random_country = {
+				limit = { has_country_flag = wg_anti_crisis_leader }
+				save_event_target_as = wg_anti_crisis_leader
+			}
+		}
+		event_target:wg_anti_crisis_leader = {
+			declare_war = {
+				target = ROOT
+				attacker_war_goal = wg_fm_war
+			}
+		}
+		if = {
+			limit = { has_global_flag = wg_psi_country_join_wgfm_war }
+			event_target:wg_psi_country = {
+				join_war = ROOT
+			}
+		}
+		country_event = { id = ap_wg_crisis.10930 }
+	}
+
+	option = {
+		trigger = {
+			NOT = { has_global_flag = has_country_join_wgfm_alliance }
+		}
+		name = ap_wg_crisis.1068.a
+	}
+	option = {
+		trigger = {
+			has_global_flag = has_country_join_wgfm_alliance
+		}
+		name = ap_wg_crisis.1068.b
+		country_event = { id = ap_wg_crisis.1101 }
+	}
+}
+
+# 组建焚灭联盟
+country_event = {
+	id = ap_wg_crisis.1101
+	title = ap_wg_crisis.1101.name
+	desc = ap_wg_crisis.1101.desc
+	fire_only_once = yes
+	is_triggered_only = yes
+	picture = GFX_evt_coronation
+
+	immediate = {
+		every_country = {
+			limit = { 
+				is_ai = yes
+				is_default_country_wg = yes
+				is_subject = no
+				NOR = {
+					exists = federation
+					any_federation_ally = {
+						is_same_value = root
+					}
+				}
+				has_country_flag = join_wgfm_alliance
+			}
+			set_subject_of = {
+				who = ROOT
+				preset = preset_vassal
+				use_demanded_terms = no
+				allow_instant_negotiation = yes
+			}
+		}
+		if = {
+			limit = { is_multiplayer = yes }
+			every_playable_country = {
+				limit = { 
+					is_ai = no 
+					any_federation_ally = {
+						NOT = { is_same_value = root }
+					}
+					is_subject = no
+					NOT = { is_same_value = root }
+				}
+				country_event = { id = ap_wg_crisis.1102 }
+			}
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1101.a
+	}
+}
+
+# 未到齐宣王之前但已经焚飞了的时候向堕落爸宣战，堕落爸觉醒
+country_event = {
+	id = ap_wg_crisis.1055
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_authority = auth_sh_fe
+		FROM = {
+			has_ascension_perk = ap_wg_crisis
+		}
+		NOT = { has_global_flag = wg_crisis_war_begin }
+	}
+
+	immediate = {
+		country_event = { id = ap_wg_crisis.1033 days = 5 } #深海爸觉醒
+		event_target:ap_wg_crisis_country = {
+			country_event = { id = ap_wg_crisis.1056 days = 5 }
+		}
+	}
+}
+
+# 宣战堕落爸觉醒后对玩家通知
+country_event = {
+	id = ap_wg_crisis.1056
+	title = TRANSMISSION_NAME
+	desc = ap_wg_crisis.1056.desc
+	is_triggered_only = yes
+
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+
+	trigger = {
+		exists = event_target:sh_fallen_empire
+	}
+
+	picture_event_data = {
+		portrait = event_target:sh_fallen_empire
+		planet_background = event_target:sh_fallen_empire
+		graphical_culture = event_target:sh_fallen_empire
+		city_level = event_target:sh_fallen_empire
+		room = event_target:sh_fallen_empire.ruler
+	}
+
+	option = {
+		name = ap_wg_crisis.1056.a
+	}
+}
+
+# 给堕落爸补舰队
+country_event = {
+	id = ap_wg_crisis.1057
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = this
+		is_same_value = event_target:sh_fallen_empire
+	}
+
+	immediate = {
+		capital_scope = {
+			create_sh_fe_admiral = yes
+			random_list = {
+				1 = { 
+					create_sh_fe_fleet = yes 
+				}
+				3 = { 
+    				create_sh_fe_fleet2 = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				any_country = {
+					is_sh_fallen_empire = no
+					has_country_flag = awakened_fe_join_wgfm_war
+				}
+			}
+			every_country = {
+				limit = { 
+					is_sh_fallen_empire = no
+					has_country_flag = awakened_fe_join_wgfm_war
+				}
+				add_awakened_fallen_empire_fleet = yes
+			}
+		}
+		country_event = { id = ap_wg_crisis.1030 days = 360 random = 180 }  # 深海爸补舰队
+	}
+}
+
+# 虚境入侵（维度门附近）
+country_event = {
+	id = ap_wg_crisis.1058
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_global_flag = wg_shroud_invasion_end }
+	}
+
+	immediate = {
+		random_system = {
+			limit = {
+				OR = {
+					distance = {
+						source = event_target:wg_gateway_construction_system
+						type = hyperlane
+						min_jumps = 1
+						max_jumps = 10
+					}
+					NOT = { has_global_flag = wg_psi_invasion_phase_2_end }
+				}
+				NOR = { 
+					has_star_flag = wg_gateway_construction_system 
+					event_target:ap_wg_crisis_country = {
+						capital_scope = { solar_system = { is_same_value = PREVPREVPREV }}
+					}
+					has_star_flag = wg_psionic_energy_burst
+				}
+			}
+			weights = {
+				base = 10
+				modifier = {
+					factor = 0.1
+					has_star_flag = wg_psionic_energy_burst
+				}
+				modifier = {
+					add = 10
+					distance = {
+						source = event_target:wg_gateway_construction_system
+						type = hyperlane
+						min_jumps = 1
+						max_jumps = 8
+					}
+				}
+				modifier = {
+					add = 20
+					distance = {
+						source = event_target:wg_gateway_construction_system
+						type = hyperlane
+						min_jumps = 1
+						max_jumps = 6
+					}
+				}
+				modifier = {
+					add = 30
+					distance = {
+						source = event_target:wg_gateway_construction_system
+						type = hyperlane
+						min_jumps = 1
+						max_jumps = 4
+					}
+				}
+			}
+			system_event = { id = ap_wg_crisis.1060 }
+		}
+	}
+}
+
+# 虚境入侵（全河系）
+country_event = {
+	id = ap_wg_crisis.1059
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_global_flag = wg_shroud_invasion_end }
+	}
+
+	immediate = {
+		every_system = {
+			random_list = {
+				95 = {
+					modifier = {
+						add = -40
+						distance = {
+							source = event_target:wg_gateway_construction_system
+							type = hyperlane
+							min_jumps = 1
+							max_jumps = 10
+						}
+					}
+					modifier = {
+						add = -20
+						distance = {
+							source = event_target:wg_gateway_construction_system
+							type = hyperlane
+							min_jumps = 1
+							max_jumps = 7
+						}
+					}
+					modifier = {
+						add = -20
+						distance = {
+							source = event_target:wg_gateway_construction_system
+							type = hyperlane
+							min_jumps = 1
+							max_jumps = 4
+						}
+					}
+				}
+				5 = {
+					modifier = {
+						factor = 0
+						OR = {
+							has_star_flag = wg_gateway_construction_system
+							has_star_flag = wg_psionic_energy_burst
+							event_target:ap_wg_crisis_country = {
+								capital_scope = { solar_system = { is_same_value = PREVPREVPREV }}
+							}
+						}
+					}
+					modifier = {
+						add = 10
+						has_global_flag = wg_shroud_invasion_second_wave
+					}
+					system_event = { id = ap_wg_crisis.1060 }
+				}
+			}
+		}
+		every_playable_country = {
+			limit = { is_ai = no }
+			country_event = { id = ap_wg_crisis.1065 }
+		}
+	}
+}
+
+# 刷灵能实体（单个）
+system_event = {
+	id = ap_wg_crisis.1060
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { 
+				exists = space_owner 
+				space_owner = { is_ai = no }
+			}
+			save_event_target_as = wg_psi_crisis_invaded_system
+			if = {
+				limit = { space_owner = { NOT = { has_country_flag = wg_shroud_crisis_invaded }}}
+				# 刷怪的星系第一次被入侵
+				space_owner = { 
+					set_country_flag = wg_shroud_crisis_invaded
+					country_event = { id = ap_wg_crisis.1062 }
+				}
+			} else_if = {
+				limit = { 
+					any_system_planet = { 
+						has_owner = yes 
+						owner = { NOT = { is_country_type = primitive }}
+					}
+				}
+				# 刷怪的星系有殖民地
+				space_owner = { 
+					country_event = { id = ap_wg_crisis.1062 }
+					event_target:wg_psi_crisis_invaded_system = {
+						every_system_planet = {
+							limit = { 
+								has_owner = yes 
+								owner = { NOT = { is_country_type = primitive }}
+							}
+							if = {
+								limit = { owner = { OR = {
+									has_ascension_perk = ap_transcendence
+									has_country_flag = finish_wg_psi_events
+									has_relic = r_wg_psionic_gem
+								}}}
+								planet_event = { id = ap_wg_crisis.1063 days = 60 }
+							} else_if = {
+								limit = { always = yes }
+								planet_event = { id = ap_wg_crisis.1063 days = 150 }
+							}
+						}
+					}
+				}
+			}
+		} else_if = {
+			limit = { 
+				exists = space_owner 
+				space_owner = { is_ai = yes }
+				any_system_planet = { has_owner = yes }
+			}
+			every_system_planet = {
+				limit = { has_owner = yes }
+				add_modifier = { modifier = wg_shroud_crisis_colony_debuff }
+			}
+		}
+		if = {
+			limit = { NOT = { exists = event_target:wg_shroud_crisis_country }}
+			create_country = {
+				name = "NAME_Creatures_of_the_Shroud"
+				type = wg_shroud_spirits
+				flag = {
+					icon = {
+						category = "special"
+						file = "the_shroud.dds"
+					}
+					background= {
+						category = "backgrounds"
+						file = "00_solid.dds"
+					}
+					colors = {
+						"dark_purple"
+						"black"
+						"null"
+						"null"
+					}
+				}
+			}
+			last_created_country = {
+				save_global_event_target_as = wg_shroud_crisis_country
+				set_country_flag = wg_shroud_crisis_country
+				every_playable_country = {
+					establish_communications_no_message = PREV
+				}
+				add_modifier = { modifier = wg_shroud_country_modifiers_generic }
+				if = {
+					limit = { has_global_flag = wg_crisis_easy }
+					add_modifier = { modifier = wg_shroud_country_modifiers_easy }
+				} else_if = {
+					limit = { has_global_flag = wg_crisis_normal }
+					add_modifier = { modifier = wg_shroud_country_modifiers_normal }
+				} else_if = {
+					limit = { has_global_flag = wg_crisis_hard }
+					add_modifier = { modifier = wg_shroud_country_modifiers_hard }
+				} else_if = {
+					limit = { has_global_flag = wg_crisis_insane }
+					add_modifier = { modifier = wg_shroud_country_modifiers_insane }
+				}
+			}
+		}
+		create_fleet = {
+			name = "NAME_Psionic_Entity"
+			settings = {
+				spawn_debris = no
+				is_boss = yes
+			}
+			effect = {
+				set_owner = event_target:wg_shroud_crisis_country
+				set_fleet_flag = crisis_shroud_entity
+				create_ship = {
+					name = "NAME_Psionic_Entity"
+					design = "NAME_Corrupted_Avatar"
+				}
+				set_location = {
+					target = prev.star
+					distance = 100
+					angle = random
+				}
+				set_fleet_stance = aggressive
+				set_aggro_range_measure_from = return_point
+				set_aggro_range = 2000
+				set_fleet_flag = wg_psi_crisis_entity
+			}
+		}
+		if = {
+			limit = { NOT = { has_star_flag = wg_psionic_energy_burst }}
+			set_star_flag = wg_psionic_energy_burst
+			add_modifier = { modifier = wg_shroud_system_modifiers }
+			star = {
+				create_ambient_object = {
+					type = "psi_storm_1"
+					entity_offset = 0
+					entity_offset_angle = 90
+					entity_offset_height = 0
+					use_3d_location = yes
+					entity_face_object = from
+					location = this
+				}
+				last_created_ambient_object = {
+					set_ambient_object_flag = psi_storm_object
+				}
+			}
+		}
+	}
+}
+
+# 灵能入侵（给全体debuff）
+country_event = {
+	id = ap_wg_crisis.1061
+	title = ap_wg_crisis.1061.name
+	desc = {
+		trigger = {
+			is_same_value = event_target:ap_wg_crisis_country
+			OR = {
+				has_country_flag = finish_wg_psi_events
+				has_relic = r_wg_psionic_gem
+			}
+		}
+		text = ap_wg_crisis.1061.desc.a
+	}
+	desc = {
+		trigger = {
+			is_same_value = event_target:ap_wg_crisis_country
+			NOR = {
+				has_country_flag = finish_wg_psi_events
+				has_relic = r_wg_psionic_gem
+			}
+		}
+		text = ap_wg_crisis.1061.desc.b
+	}
+	desc = {
+		trigger = {
+			NOT = { is_same_value = event_target:ap_wg_crisis_country }
+			OR = {
+				has_country_flag = finish_wg_psi_events
+				has_relic = r_wg_psionic_gem
+			}
+		}
+		text = ap_wg_crisis.1061.desc.c
+	}
+	desc = {
+		trigger = {
+			NOT = { is_same_value = event_target:ap_wg_crisis_country }
+			NOR = {
+				has_ascension_perk = ap_transcendence
+				has_country_flag = finish_wg_psi_events
+				has_relic = r_wg_psionic_gem
+			}
+		}
+		text = ap_wg_crisis.1061.desc.d
+	}
+	desc = {
+		trigger = {
+			NOT = { is_same_value = event_target:ap_wg_crisis_country }
+			has_ascension_perk = ap_transcendence
+		}
+		text = ap_wg_crisis.1061.desc.e
+	}
+	is_triggered_only = yes
+	picture = GFX_evt_zro_3
+	show_sound = event_worrying_signal
+
+	option = {
+		name = ap_wg_crisis.1061.a
+		trigger = {
+			NOR = {
+				has_ascension_perk = ap_transcendence
+				has_country_flag = finish_wg_psi_events
+				has_relic = r_wg_psionic_gem
+			}
+		}
+		add_modifier = {
+			modifier = wg_shroud_crisis_country_debuff
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1061.b
+		trigger = {
+			OR = {
+				has_ascension_perk = ap_transcendence
+				has_country_flag = finish_wg_psi_events
+				has_relic = r_wg_psionic_gem
+			}
+		}
+	}
+}
+
+# 自己的星系刷怪了
+country_event = {
+	id = ap_wg_crisis.1062
+	title = ap_wg_crisis.1062.name
+	desc = {
+		trigger = {
+			is_same_value = event_target:ap_wg_crisis_country
+			NOT = { event_target:wg_psi_crisis_invaded_system = {
+				any_system_planet = { 
+					has_owner = yes 
+					owner = { is_same_value = root }
+				}
+			}}
+		}
+		text = ap_wg_crisis.1062.desc.a
+	}
+	desc = {
+		trigger = {
+			is_same_value = event_target:ap_wg_crisis_country
+			event_target:wg_psi_crisis_invaded_system = {
+				any_system_planet = { 
+					has_owner = yes 
+					owner = { is_same_value = root }
+				}
+			}
+		}
+		text = ap_wg_crisis.1062.desc.b
+	}
+	desc = {
+		trigger = {
+			is_same_value = event_target:ap_wg_crisis_country
+			OR = {
+				has_ascension_perk = ap_transcendence
+				has_country_flag = finish_wg_psi_events
+				has_relic = r_wg_psionic_gem
+			}
+			event_target:wg_psi_crisis_invaded_system = {
+				any_system_planet = { has_owner = yes }
+			}
+		}
+		text = ap_wg_crisis.1062.desc.c
+	}
+	desc = {
+		trigger = {
+			NOT = { is_same_value = event_target:ap_wg_crisis_country }
+			NOT = { event_target:wg_psi_crisis_invaded_system = {
+				any_system_planet = { has_owner = yes }
+			}}
+		}
+		text = ap_wg_crisis.1062.desc.d
+	}
+	desc = {
+		trigger = {
+			NOT = { is_same_value = event_target:ap_wg_crisis_country }
+			NOR = {
+				has_ascension_perk = ap_transcendence
+				has_country_flag = finish_wg_psi_events
+				has_relic = r_wg_psionic_gem
+			}
+			event_target:wg_psi_crisis_invaded_system = {
+				any_system_planet = { has_owner = yes }
+			}
+		}
+		text = ap_wg_crisis.1062.desc.e
+	}
+	desc = {
+		trigger = {
+			NOT = { is_same_value = event_target:ap_wg_crisis_country }
+			OR = {
+				has_ascension_perk = ap_transcendence
+				has_country_flag = finish_wg_psi_events
+				has_relic = r_wg_psionic_gem
+			}
+			event_target:wg_psi_crisis_invaded_system = {
+				any_system_planet = { has_owner = yes }
+			}
+		}
+		text = ap_wg_crisis.1062.desc.f
+	}
+	is_triggered_only = yes
+	picture = GFX_evt_zro_3
+	show_sound = event_air_raid_siren
+
+	option = {
+		name = BATTLESTATIONS
+		trigger = {
+			NOR = {
+				has_ascension_perk = ap_transcendence
+				has_country_flag = finish_wg_psi_events
+				has_relic = r_wg_psionic_gem
+			}
+		}
+	}
+	option = {
+		name = BATTLESTATIONS
+		trigger = {
+			OR = {
+				has_ascension_perk = ap_transcendence
+				has_country_flag = finish_wg_psi_events
+				has_relic = r_wg_psionic_gem
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = ap_wg_crisis.1063
+	title = ap_wg_crisis.1063.name
+	desc = ap_wg_crisis.1063.desc
+	is_triggered_only = yes
+	picture = GFX_evt_zro_3
+	show_sound = event_air_raid_siren
+
+	trigger = {
+		solar_system = {
+			has_star_flag = wg_psionic_energy_burst
+		}
+	}
+
+	option = {
+		name = GODDAMNIT
+		add_modifier = {
+			modifier = wg_shroud_crisis_colony_debuff
+		}
+	}
+}
+
+# 灵能实体被击破
+country_event = {
+	id = ap_wg_crisis.1064
+	title = ap_wg_crisis.1064.name
+	desc = {
+		exclusive_trigger = {
+			event_target:wg_psi_entity_defeated_system = {
+				any_system_planet = { 
+					has_owner = yes 
+					owner = { is_same_empire = root }
+				}
+			}
+		}
+		text = ap_wg_crisis.1064.desc.a
+	}
+	desc = ap_wg_crisis.1064.desc.b
+	is_triggered_only = yes
+	picture = GFX_evt_zro_3
+	show_sound = event_ship_thrusters
+
+	trigger = {
+		FROM = {
+			is_country_type = wg_shroud_spirits
+		}
+	}
+
+	immediate = {
+		FROMFROM.solar_system = {
+			save_event_target_as = wg_psi_entity_defeated_system
+			if = {
+				limit = {
+					any_ship_in_system = {
+						has_hp_percentage >= 0.01
+						owner = { is_country_type = wg_shroud_spirits }
+					}
+				}
+			} else = {
+				remove_star_flag = wg_psionic_energy_burst
+				remove_modifier = wg_shroud_system_modifiers
+				save_event_target_as = wg_psi_entity_defeated_system
+				every_system_ambient_object = {
+					limit = { has_ambient_object_flag = psi_storm_object }
+					destroy_ambient_object = this
+				}
+				if = {
+					limit = { 
+						any_system_planet = { 
+							has_modifier = wg_shroud_crisis_colony_debuff
+						}
+					}
+					every_system_planet = {
+						remove_modifier = wg_shroud_crisis_colony_debuff
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+		custom_tooltip = ap_wg_crisis.1064.tooltip
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1065
+	title = ap_wg_crisis.1065.name
+	desc = {
+		exclusive_trigger = {
+			is_same_value = event_target:ap_wg_crisis_country
+		}
+		text = ap_wg_crisis.1065.desc.a
+	}
+	desc = ap_wg_crisis.1065.desc.b
+	is_triggered_only = yes
+	picture = GFX_evt_zro_3
+	show_sound = event_air_raid_siren
+
+	immediate = {
+		
+	}
+
+	option = {
+		name = ap_wg_crisis.1065.a
+	}
+}
+
+# 定时随机刷灵能实体
+country_event = {
+	id = ap_wg_crisis.1066
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_global_flag = wg_shroud_invasion_end }
+	}
+
+	immediate = {
+		country_event = { id = ap_wg_crisis.1058 days = 90 random = 90 }
+		if = {
+			limit = { NOT = { has_global_flag = wg_psi_invasion_phase_1_end }}
+			country_event = { id = ap_wg_crisis.1058 days = 90 random = 90 }
+		}
+		if = {
+			limit = { NOT = { has_global_flag = wg_psi_invasion_phase_2_end }}
+			country_event = { id = ap_wg_crisis.1058 days = 90 random = 90 }
+			country_event = { id = ap_wg_crisis.1058 days = 90 random = 90 }
+		}
+		if = {
+			limit = { NOT = { has_global_flag = wg_psi_invasion_phase_3_end }}
+			country_event = { id = ap_wg_crisis.1058 days = 90 random = 90 }
+			country_event = { id = ap_wg_crisis.1058 days = 90 random = 90 }
+			country_event = { id = ap_wg_crisis.1058 days = 90 random = 90 }
+			country_event = { id = ap_wg_crisis.1058 days = 90 random = 90 }
+		}
+		country_event = { id = ap_wg_crisis.1066 days = 135 random = 90 }
+	}
+}
+
+# 全银河随机刷灵能实体
+country_event = {
+	id = ap_wg_crisis.1067
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_global_flag = wg_shroud_invasion_end }
+	}
+
+	immediate = {
+		country_event = { id = ap_wg_crisis.1059 }
+		country_event = { id = ap_wg_crisis.1067 days = 1350 random = 900 }
+		if = {
+			limit = { NOT = { has_global_flag = wg_shroud_invasion_second_wave }}
+			set_global_flag = wg_shroud_invasion_second_wave
+		}
+	}
+
+}
+
+# 维度之锚建成，虚境力量消失
+country_event = {
+	id = ap_wg_crisis.1068
+	title = ap_wg_crisis.1068.name
+	desc = {
+		trigger = {
+			is_same_value = event_target:ap_wg_crisis_country
+		}
+		text = ap_wg_crisis.1068.desc.a
+	}
+	desc = {
+		trigger = {
+			NOT = { is_same_value = event_target:ap_wg_crisis_country }
+		}
+		text = ap_wg_crisis.1068.desc.b
+	}
+	is_triggered_only = yes
+	picture = GFX_evt_zro_3
+	show_sound = event_celebration
+
+	immediate = {
+		
+	}
+
+	option = {
+		trigger = {
+			NOT = { is_hostile = event_target:ap_wg_crisis_country }
+		}
+		name = ap_wg_crisis.1068.a
+	}
+	option = {
+		trigger = {
+			is_hostile = event_target:ap_wg_crisis_country
+		}
+		name = ap_wg_crisis.1068.b
+	}
+}
+
+
+ship_event = {
+	id = ap_wg_crisis.1071
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		solar_system = {
+			has_star_flag = wg_gateway_construction_system
+		}
+		FROM = { has_ascension_perk = ap_wg_crisis }
+	}
+
+	immediate = {
+		owner = { 
+			set_country_flag = capture_wg_fm_gate_victim
+			save_event_target_as = capture_wg_fm_gate_victim 
+		}
+		event_target:capture_wg_fm_gate_victim = { 
+			country_event = { id = ap_wg_crisis.1072 }
+		}
+		
+		every_playable_country = {
+			limit = { is_ai = no }
+			country_event = { id = ap_wg_crisis.1076 }
+		}
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1072
+	title = ap_wg_crisis.1072.name
+	desc = ap_wg_crisis.1072.desc
+	is_triggered_only = yes
+	location = event_target:wg_gateway_construction_system
+	picture = GFX_evt_wg_dimensional_anchor
+	show_sound = event_power_down
+
+	immediate = {
+		change_variable = {
+			which = capture_wg_fm_gate_counter
+			value = 1
+		}
+		country_event = { id = ap_wg_crisis.1079 days = 180 }
+	}
+
+	option = {
+		name = GODDAMNIT
+	}
+}
+
+# 占领计数器
+# 如果被占领一次则次数+1，如果事件被执行则次数-1
+# 当次数为0时，如果星系控制权在焚飞国家手里则代表没有占领成功
+country_event = {
+	id = ap_wg_crisis.1079
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		change_variable = {
+			which = capture_wg_fm_gate_counter
+			value = -1
+		}
+		if = {
+			limit = { 
+				event_target:wg_gateway_construction_system = {
+					exists = space_owner
+					space_owner = { NOT = { is_same_value = event_target:ap_wg_crisis_country }}
+				} 
+				event_target:ap_wg_crisis_country = {
+					check_variable = { which = capture_wg_fm_gate_counter value = 0 }
+				}
+			}
+			event_target:ap_wg_crisis_country = {
+				country_event = { id = ap_wg_crisis.1073 }
+			}
+		}
+	}
+}
+
+# 维度之门被占领后摧毁
+country_event = {
+	id = ap_wg_crisis.1073
+	title = ap_wg_crisis.1073.name
+	desc = ap_wg_crisis.1073.desc
+	is_triggered_only = yes
+	location = event_target:wg_gateway_construction_system
+	picture = GFX_evt_wg_dimensional_anchor
+	show_sound = event_energy_field
+
+	trigger = {
+		has_country_flag = wg_gateway_captured_counter
+		NOT = { has_country_flag = reclaim_wg_gateway }
+	}
+
+	immediate = {
+		set_global_flag = wg_gateway_destroyed
+		random_megastructure = {
+			limit = { OR = {
+				is_megastructure_type = wg_fm_gateway_01
+				is_megastructure_type = wg_fm_gateway_02
+				is_megastructure_type = wg_fm_gateway_03
+				is_megastructure_type = wg_fm_gateway_04
+			}}
+			solar_system = { spawn_megastructure = {
+				type = wg_fm_gateway_damaged
+			}}
+			event_target:wg_gateway_object = {
+				destroy_ambient_object = this
+				clear_global_event_target = wg_gateway_object
+			}
+			remove_megastructure = this
+		}
+		if = {
+			limit = { 
+				NOT = { has_global_flag = wg_shroud_invasion_end }
+				has_global_flag = wg_psi_invasion_events_happened
+			}
+			set_global_flag = wg_shroud_invasion_end
+		}
+		every_playable_country = {
+			limit = {
+				NOR = { 
+					is_same_value = root
+					has_country_flag = wg_psi_country 
+				}
+			}
+			if = {
+				limit = {
+					has_opinion_modifier = {
+                        who = root
+                        modifier = opinion_destroying_galaxy
+                    }
+				}
+				remove_opinion_modifier = {
+					who = root
+					modifier = opinion_destroying_galaxy
+				}
+			}
+			add_opinion_modifier = {
+				who = root
+				modifier = opinion_tried_to_destroy_galaxy
+			}
+		}
+		if = {
+			limit = { exists = event_target:sh_fallen_empire }
+			country_event = { id = ap_wg_crisis.1074 }
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1073.a
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1074
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_war = {
+			limit = { any_war_participant = { is_same_value = ROOT }}
+			remove_war_participant = root
+		}
+		set_country_type = fallen_empire
+		change_government = {
+			civics = {
+				civic = civic_wg_fe
+			}
+		}
+		set_empire_name = "沉默舰队"
+		every_playable_country = {
+			limit = { is_ai = no }
+			country_event = { id = ap_wg_crisis.1075 }
+		}
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1075
+	title = TRANSMISSION
+	desc = ap_wg_crisis.1075.desc
+	is_triggered_only = yes
+	
+	diplomatic = yes
+	picture_event_data = {
+		portrait = event_target:sh_fallen_empire
+		planet_background = event_target:sh_fallen_empire
+		graphical_culture = event_target:sh_fallen_empire
+		city_level = event_target:sh_fallen_empire
+		room = event_target:sh_fallen_empire.ruler
+	}
+
+	option = {
+		name = GODDAMNIT
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1076
+	title = ap_wg_crisis.1072.name
+	desc = {
+		exclusive_trigger = { is_same_value = event_target:capture_wg_fm_gate_victim }
+		text = ap_wg_crisis.1076.desc.a
+	}
+	desc = {
+		text = ap_wg_crisis.1076.desc.b
+	}
+	is_triggered_only = yes
+	location = event_target:wg_gateway_construction_system
+	picture = GFX_evt_wg_dimensional_anchor
+	show_sound = event_power_down
+
+	option = {
+		name = EXCELLENT
+	}
+	option = {
+		name = ap_wg_crisis.1076.a
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1077
+	title = ap_wg_crisis.1073.name
+	desc = {
+		exclusive_trigger = { is_same_value = event_target:capture_wg_fm_gate_victim }
+		text = ap_wg_crisis.1077.desc.a
+	}
+	desc = {
+		text = ap_wg_crisis.1077.desc.b
+	}
+	is_triggered_only = yes
+	location = event_target:wg_gateway_construction_system
+	picture = GFX_evt_wg_dimensional_anchor
+
+	immediate = {
+		random_country = {
+			limit = { has_country_flag = capture_wg_fm_gate_victim }
+			save_event_target_as = capture_wg_fm_gate_victim 
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1077.a
+	}
+	option = {
+		name = ap_wg_crisis.1077.b
+		custom_tooltip = ap_wg_crisis.1077.b.tooltip
+		hidden_effect = {
+			random_war = {
+				limit = {
+					any_war_participant = {
+						is_same_value = event_target:ap_wg_crisis_country
+					}
+					any_war_participant = { is_same_value = ROOT }
+				}
+				remove_war_participant = ROOT
+			}
+		}
+	}
+}
+
+ship_event = {
+	id = ap_wg_crisis.1078
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		solar_system = {
+			has_star_flag = wg_gateway_construction_system
+		}
+		owner = { check_variable = {
+			which = capture_wg_fm_gate_counter
+			value > 0
+		}}
+	}
+
+	immediate = {
+		owner = { 
+			country_event = { id = ap_wg_crisis.1080 }
+			set_country_flag = reclaim_wg_gateway
+		}
+		every_playable_country = {
+			limit = { is_ai = no }
+			country_event = { id = ap_wg_crisis.1081 }
+		}
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1080
+	title = ap_wg_crisis.1080.name
+	desc = ap_wg_crisis.1080.desc
+	is_triggered_only = yes
+	location = event_target:wg_gateway_construction_system
+	picture = GFX_evt_wg_dimensional_anchor
+	show_sound = event_think_tank_build_start
+
+	immediate = {
+		set_country_flag = wg_gateway_broken
+	}
+
+	option = {
+		name = EXCELLENT
+		if = {
+			limit = { NOT = { has_special_project = repair_wg_fm_gate }}
+			event_target:wg_gateway_construction_system = {
+				enable_special_project = {
+					name = repair_wg_fm_gate
+					location = this
+					owner = ROOT
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1081
+	title = ap_wg_crisis.1080.name
+	desc = ap_wg_crisis.1081.desc
+	is_triggered_only = yes
+	location = event_target:wg_gateway_construction_system
+	picture = GFX_evt_wg_dimensional_anchor
+	show_sound = event_think_tank_build_start
+
+	option = {
+		name = GODDAMNIT
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1082
+	title = ap_wg_crisis.1082.name
+	desc = ap_wg_crisis.1082.desc
+	is_triggered_only = yes
+	location = event_target:wg_gateway_construction_system
+	picture = GFX_evt_wg_fm_gateway_02
+	show_sound = event_think_tank_build_complete
+
+	immediate = {
+		remove_country_flag = wg_gateway_broken
+		abort_special_project = { type = repair_wg_fm_gate }
+	}
+
+	option = {
+		name = EXCELLENT
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1083
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_ascension_perk = ap_wg_crisis
+	}
+
+	immediate = {
+		if = {
+			limit = { has_global_flag = wg_crisis_war_begin }
+			every_playable_country = {
+				limit = { is_ai = no }
+				country_event = { id = ap_wg_crisis.1084 }
+			}
+		}
+		if = {
+			limit = { exists = event_target:wg_gateway_construction_system }
+			random_megastructure = {
+				limit = { OR = {
+					is_megastructure_type = wg_fm_gateway_01
+					is_megastructure_type = wg_fm_gateway_02
+					is_megastructure_type = wg_fm_gateway_03
+					is_megastructure_type = wg_fm_gateway_04
+				}}
+				solar_system = { spawn_megastructure = {
+					type = wg_fm_gateway_damaged
+				}}
+				event_target:wg_gateway_object = {
+					destroy_ambient_object = this
+					clear_global_event_target = wg_gateway_object
+				}
+				remove_megastructure = this
+			}
+		}
+		if = {
+			limit = { 
+				NOT = { has_global_flag = wg_shroud_invasion_end }
+				has_global_flag = wg_psi_invasion_events_happened
+			}
+			set_global_flag = wg_shroud_invasion_end
+		}
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1084
+	title = ap_wg_crisis.1084.name
+	desc = {
+		exclusive_trigger = {
+			any_federation = {
+				has_federation_flag = wg_anti_crisis_federation
+			}
+		}
+		text = ap_wg_crisis.1084.desc.a
+	}
+	desc = {
+		text = ap_wg_crisis.1084.desc.b
+	}
+	is_triggered_only = yes
+	picture = GFX_evt_crisis_defeated
+	show_sound = event_celebration
+
+	immediate = {
+		if = {
+			limit = {
+				any_federation = {
+					has_federation_flag = wg_anti_crisis_federation
+				}
+			}
+			random_federation = {
+				limit = { has_federation_flag = wg_anti_crisis_federation }
+				every_member = {
+					leave_alliance = { override_requirements = yes }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1084.a
+	}
+}
+
+# 堕落觉醒
+country_event = {
+	id = ap_wg_crisis.1085
+	hide_window = yes
+
+	trigger = {
+		exists = this
+		is_country_type = fallen_empire
+		NOR = {
+			is_sh_fallen_empire = yes
+			is_wg_fallen_empire = yes
+			has_country_flag = awakened_fallen_empire
+			has_ethic = ethic_gestalt_consciousness
+			has_country_flag = awakened_fe_join_wgfm_war
+			has_global_flag = wg_fm_end_game
+		}
+		OR = {
+			has_country_flag = fallen_empire_1
+			has_country_flag = fallen_empire_2
+			has_country_flag = fallen_empire_3
+			has_country_flag = fallen_empire_4
+		}
+		has_global_flag = wg_crisis_war_begin
+	}
+
+	mean_time_to_happen = {
+		months = 18
+		modifier = {
+			factor = 2
+			event_target:ap_wg_crisis_country = {
+				check_variable = { which = awakened_fe_join_wgfm_war value > 1 }
+			}
+		}
+		modifier = {
+			factor = 1.5
+			event_target:ap_wg_crisis_country = {
+				check_variable = { which = awakened_fe_join_wgfm_war value > 2 }
+			}
+		}
+		modifier = {
+			factor = 1.33
+			event_target:ap_wg_crisis_country = {
+				check_variable = { which = awakened_fe_join_wgfm_war value > 3 }
+			}
+		}
+	}
+
+	immediate = {
+		set_timed_country_flag = { flag = ai_no_wars days = 9999 }
+		save_event_target_as = wgfm_war_awakened_fallen_empire
+		set_country_flag = awakened_fe_join_wgfm_war
+		set_global_flag = has_awakened_fe_join_wgfm_war
+		# Notify players
+		every_country = {
+			limit = {
+				is_ai = no
+				NOT = { is_same_value = event_target:ap_wg_crisis_country }
+			}
+			country_event = { id = ap_wg_crisis.1087 }
+		}
+		observer_event = { id = observer.73 }
+		country_event = { id = fallen_empires_awakening.3 }
+		random_country = {
+			limit = { has_country_flag = wg_anti_crisis_leader }
+			save_event_target_as = wg_anti_crisis_leader
+		}
+		event_target:ap_wg_crisis_country = {
+			change_variable = { which = awakened_fe_join_wgfm_war value = 1 }
+			country_event = { id = ap_wg_crisis.1088 }
+			country_event = { id = ap_wg_crisis.1086 days = 5 }
+		}
+	}
+}
+
+# 已堕落的觉醒宣战
+country_event = {
+	id = ap_wg_crisis.1085
+	hide_window = yes
+
+	trigger = {
+		exists = this
+		is_country_type = awakened_fallen_empire
+		NOR = {
+			is_sh_fallen_empire = yes
+			is_wg_fallen_empire = yes
+			has_ethic = ethic_gestalt_consciousness
+			has_country_flag = awakened_fe_join_wgfm_war
+			has_global_flag = wg_fm_end_game
+		}
+		OR = {
+			has_country_flag = fallen_empire_1
+			has_country_flag = fallen_empire_2
+			has_country_flag = fallen_empire_3
+			has_country_flag = fallen_empire_4
+		}
+		has_global_flag = wg_crisis_war_begin
+	}
+
+	mean_time_to_happen = {
+		months = 18
+		modifier = {
+			factor = 2
+			event_target:ap_wg_crisis_country = {
+				check_variable = { which = awakened_fe_join_wgfm_war value > 1 }
+			}
+		}
+		modifier = {
+			factor = 1.5
+			event_target:ap_wg_crisis_country = {
+				check_variable = { which = awakened_fe_join_wgfm_war value > 2 }
+			}
+		}
+		modifier = {
+			factor = 1.33
+			event_target:ap_wg_crisis_country = {
+				check_variable = { which = awakened_fe_join_wgfm_war value > 3 }
+			}
+		}
+	}
+
+	immediate = {
+		set_timed_country_flag = { flag = ai_no_wars days = 9999 }
+		# Notify players
+		every_country = {
+			limit = {
+				is_ai = no
+				NOT = { is_same_value = event_target:ap_wg_crisis_country }
+			}
+			country_event = { id = ap_wg_crisis.1087 }
+		}
+		observer_event = { id = observer.73 }
+		save_event_target_as = wgfm_war_awakened_fallen_empire
+		set_country_flag = awakened_fe_join_wgfm_war
+		set_global_flag = has_awakened_fe_join_wgfm_war
+		event_target:ap_wg_crisis_country = {
+			change_variable = { which = awakened_fe_join_wgfm_war value = 1 }
+			country_event = { id = ap_wg_crisis.1088 }
+			country_event = { id = ap_wg_crisis.1086 days = 5 }
+		}
+	}
+}
+
+# 堕落参战通知事件
+country_event = {
+	id = ap_wg_crisis.1086
+	title = ap_wg_crisis.1086.name
+	desc = {
+		trigger = {
+			event_target:wgfm_war_awakened_fallen_empire = {
+				has_ethic = ethic_fanatic_spiritualist
+			}
+		}
+		text = ap_wg_crisis.1086.desc.a
+	}
+	desc = {
+		trigger = {
+			event_target:wgfm_war_awakened_fallen_empire = {
+				has_ethic = ethic_fanatic_materialist
+			}
+		}
+		text = ap_wg_crisis.1086.desc.b
+	}
+	desc = {
+		trigger = {
+			event_target:wgfm_war_awakened_fallen_empire = {
+				has_ethic = ethic_fanatic_xenophile
+			}
+		}
+		text = ap_wg_crisis.1086.desc.c
+	}
+	desc = {
+		trigger = {
+			event_target:wgfm_war_awakened_fallen_empire = {
+				has_ethic = ethic_fanatic_xenophobe
+			}
+		}
+		text = ap_wg_crisis.1086.desc.d
+	}
+	is_triggered_only = yes
+	diplomatic = yes
+
+	picture_event_data = {
+		portrait = event_target:wgfm_war_awakened_fallen_empire
+		planet_background = event_target:wgfm_war_awakened_fallen_empire
+		graphical_culture = event_target:wgfm_war_awakened_fallen_empire
+		city_level = event_target:wgfm_war_awakened_fallen_empire
+		room = event_target:wgfm_war_awakened_fallen_empire.ruler
+	}
+
+	immediate = {
+		if = {
+			limit = { any_war = {
+				any_defender = { is_same_value = ROOT }
+			}}
+			event_target:wgfm_war_awakened_fallen_empire = {
+				join_war = event_target:wg_anti_crisis_leader
+			}
+		} else = {
+			event_target:wgfm_war_awakened_fallen_empire = {
+				declare_war = {
+					target = ROOT
+					attacker_war_goal = wg_fm_war
+				}
+			}
+		}
+	}
+
+	after = {
+		custom_tooltip = ap_wg_crisis.1086.tooltip
+	}
+
+	option = {
+		name = ap_wg_crisis.1086.a
+	}
+	option = {
+		name = ap_wg_crisis.1086.b
+	}
+}
+
+# 其他国家通知：堕落觉醒/参战
+country_event = {
+	id = ap_wg_crisis.1087
+	title = ap_wg_crisis.1087.name
+	desc = {
+		exclusive_trigger = {
+			event_target:ap_wg_crisis_country = {
+				check_variable = { which = awakened_fe_join_wgfm_war value <= 1 }
+			}
+		}
+		text = ap_wg_crisis.1087.desc
+	}
+	desc = ap_wg_crisis.1087.desc.b
+	is_triggered_only = yes
+	picture = GFX_evt_fallen_empire
+
+	option = {
+		name = ap_wg_crisis.1087.a
+	}
+}
+
+# 焚飞国家通知：堕落觉醒/参战
+country_event = {
+	id = ap_wg_crisis.1088
+	title = ap_wg_crisis.1087.name
+	desc = {
+		exclusive_trigger = {
+			event_target:ap_wg_crisis_country = {
+				check_variable = { which = awakened_fe_join_wgfm_war value <= 1 }
+			}
+		}
+		text = ap_wg_crisis.1088.desc
+	}
+	desc = ap_wg_crisis.1088.desc.b
+	is_triggered_only = yes
+	picture = GFX_evt_fallen_empire
+
+	option = {
+		name = ap_wg_crisis.1088.a
+	}
+}
+
+# 焚飞的小弟叛乱
+country_event = {
+	id = ap_wg_crisis.1089
+	hide_window = yes
+
+	trigger = {
+		is_ai = yes
+		is_default_country_wg = yes
+		OR = {
+			AND = {
+				is_subject = yes
+				overlord = { is_same_value = event_target:ap_wg_crisis_country }
+			}
+			AND = {
+				exists = federation
+				federation = {
+					count_member = {
+						count > 2
+					}
+					any_member = {
+						is_same_value = event_target:ap_wg_crisis_country
+					}
+				}
+			}
+		}
+		has_global_flag = has_awakened_fe_join_wgfm_war
+		any_war = {
+			using_war_goal = {
+				type = wg_fm_war2
+				owner = event_target:ap_wg_crisis_country
+			}
+			any_defender = { is_same_value = event_target:ap_wg_crisis_country }
+		}
+		NOR = { 
+			has_country_flag = wg_psi_country 
+			has_global_flag = wg_fm_end_game
+			is_same_value = event_target:ap_wg_crisis_country
+			is_loyal_to = event_target:ap_wg_crisis_country
+			has_country_flag = join_wgfm_alliance
+		}
+	}
+
+	mean_time_to_happen = {
+		years = 5
+		modifier = {
+			factor = 0.5
+			event_target:ap_wg_crisis_country = {
+				check_variable = { which = rebellious_subjects value > 1 }
+			}
+		}
+		modifier = {
+			factor = 0.5
+			event_target:ap_wg_crisis_country = {
+				check_variable = { which = rebellious_subjects value > 2 }
+			}
+		}
+		modifier = {
+			factor = 0.5
+			event_target:ap_wg_crisis_country = {
+				check_variable = { which = rebellious_subjects value > 4 }
+			}
+		}
+		modifier = {
+			factor = 0.2
+			is_disloyal_to = event_target:ap_wg_crisis_country
+		}
+		modifier = {
+			factor = 0.2
+			has_country_flag = reject_wgfm_alliance
+		}
+	}
+
+	immediate = {
+		# Notify players
+		every_country = {
+			limit = {
+				is_ai = no
+				NOT = { is_same_value = event_target:ap_wg_crisis_country }
+			}
+			country_event = { id = ap_wg_crisis.1090 }
+		}
+		save_event_target_as = wg_rebellious_subject_country
+		set_country_flag = wg_rebellious_subject_country
+		set_global_flag = wg_fm_has_rebel_country
+		event_target:ap_wg_crisis_country = {
+			change_variable = { which = rebellious_subjects value = 1 }
+			country_event = { id = ap_wg_crisis.1091 }
+		}
+		every_owned_planet = {
+			limit = { has_modifier = neutron_impact_shielder_modifier }
+			remove_modifier = neutron_impact_shielder_modifier
+		}
+	}
+}
+
+# 其他国家通知：有焚飞的小弟叛乱
+country_event = {
+	id = ap_wg_crisis.1090
+	title = ap_wg_crisis.1090.name
+	desc = {
+		exclusive_trigger = {
+			has_global_flag = wg_fm_has_rebel_country
+		}
+		text = ap_wg_crisis.1090.desc
+	}
+	desc = ap_wg_crisis.1090.desc.b
+	is_triggered_only = yes
+	picture = GFX_evt_fallen_empire
+
+	option = {
+		name = OK
+	}
+}
+
+# 附庸独立参战事件
+country_event = {
+	id = ap_wg_crisis.1091
+	title = ap_wg_crisis.1091.name
+	desc = ap_wg_crisis.1091.desc
+	is_triggered_only = yes
+	diplomatic = yes
+
+	picture_event_data = {
+		portrait = event_target:wg_rebellious_subject_country
+		planet_background = event_target:wg_rebellious_subject_country
+		graphical_culture = event_target:wg_rebellious_subject_country
+		city_level = event_target:wg_rebellious_subject_country
+		room = event_target:wg_rebellious_subject_country.ruler
+	}
+
+	immediate = {
+		random_war = {
+			limit = { any_defender = { is_same_value = event_target:ap_wg_crisis_country }}
+			remove_war_participant = event_target:wg_rebellious_subject_country
+			save_event_target_as = wg_fm_war
+		}
+		random_country = {
+			limit = { has_country_flag = wg_anti_crisis_leader }
+			save_event_target_as = wg_anti_crisis_leader
+		}
+		random_country = {
+			limit = { 
+				is_regular_empire = yes 
+				NOT = { is_country_type = fallen_empire }
+				is_subject = no 
+			}
+		}
+		event_target:wg_rebellious_subject_country = {
+			if = {
+				limit = { is_subject = yes }
+				set_subject_of = { who = none }
+				if = {
+					limit = { 
+						exists = event_target:wg_anti_crisis_leader
+						any_war = { any_defender = { is_same_value = event_target:ap_wg_crisis_country }}
+					}
+					join_war = event_target:wg_anti_crisis_leader
+				} else_if = {
+					limit = { always = yes }
+					declare_war = {
+						target = ROOT
+						attacker_war_goal = wg_fm_war
+					}
+					if = {
+						limit = { NOT = { any_country = {
+							has_country_flag = wg_anti_crisis_leader
+						}}}
+						set_country_flag = wg_anti_crisis_leader
+					}
+				}
+			} else_if = {
+				limit = { always = yes }
+				if = {
+					limit = { 
+						exists = federation 
+						federation = {
+							count_member = { count > 2 }
+							any_member = { is_same_value = event_target:ap_wg_crisis_country }
+						}
+					}
+					leave_alliance = { override_requirements = yes }
+				}
+				if = {
+					limit = {
+						any_federation = { 
+							has_federation_flag = wg_anti_crisis_federation 
+							exists = this
+						}
+					}
+					random_federation = {
+						limit = { has_federation_flag = wg_anti_crisis_federation }
+						federation_leader = {
+							ROOT = { join_alliance = {
+								who = PREV
+								override_requirements = yes
+							}}
+						}
+					}
+				}
+				if = {
+					limit = { 
+						exists = event_target:wg_anti_crisis_leader
+						any_war = { any_defender = { is_same_value = event_target:ap_wg_crisis_country }}
+					}
+					join_war = event_target:wg_anti_crisis_leader
+				} else_if = {
+					limit = { always = yes }
+					declare_war = {
+						target = ROOT
+						attacker_war_goal = wg_fm_war
+					}
+					if = {
+						limit = { NOT = { any_country = {
+							has_country_flag = wg_anti_crisis_leader
+						}}}
+						set_country_flag = wg_anti_crisis_leader
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1091.a
+	}
+}
+
+# 联盟解散，被踢出星海共同体的前置事件
+country_event = {
+	id = ap_wg_crisis.1092
+	title = ap_wg_crisis.1092.name
+	desc = ap_wg_crisis.1092.desc
+	is_triggered_only = yes
+	picture = GFX_evt_board_meeting
+	show_sound = event_conversation
+
+	immediate = {
+		country_event = { id = ap_wg_crisis.1093 days = 90 random = 90 }
+		if = {
+			limit = { is_multiplayer = yes }
+			every_playable_country = {
+				limit = { 
+					is_ai = no
+					NOT = { is_same_empire = root }
+				}
+				country_event = { id = ap_wg_crisis.1094 }
+			}
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1092.a
+	}
+}
+
+# 联盟解散，被踢出星海共同体
+country_event = {
+	id = ap_wg_crisis.1093
+	title = ap_wg_crisis.1093.name
+	desc = ap_wg_crisis.1093.desc
+	is_triggered_only = yes
+	picture = GFX_evt_announcement
+	show_sound = event_announcement
+
+	immediate = {
+		country_event = { id = ap_wg_crisis.10930 }
+		if = {
+			limit = { is_multiplayer = yes }
+			every_playable_country = {
+				limit = { 
+					is_ai = no
+					NOT = { is_same_empire = root }
+				}
+				country_event = { id = ap_wg_crisis.1094 }
+			}
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1093.a
+	}
+}
+
+# 踢出联邦/星海共同体（隐藏事件）
+country_event = {
+	id = ap_wg_crisis.10930
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		set_country_flag = wgfm_quit_community
+		if = {
+			limit = { exists = federation }
+			if = {
+				limit = { federation = {
+					count_member = {
+						count >= 3
+					}
+					any_member = { has_country_flag = wg_psi_country }
+					any_member = {
+						exists = this
+						NOR = { 
+							is_same_empire = root 
+							has_country_flag = wg_psi_country
+							has_country_flag = join_wgfm_alliance
+						}
+					}
+				}}
+				federation = {
+					set_federation_leader = ROOT
+					every_member = {
+						limit = { NOR = { 
+							is_same_empire = root 
+							has_country_flag = wg_psi_country
+							has_country_flag = join_wgfm_alliance
+						}}
+						leave_alliance = { override_requirements = yes }
+					}
+				}
+			} else_if = {
+				limit = { federation = {
+					count_member = {
+						count = 2
+					}
+					any_member = { OR = {
+						has_country_flag = wg_psi_country 
+						has_country_flag = join_wgfm_alliance
+						is_same_empire = root
+					}}
+				}}
+				# 联盟只有灵能舰娘和玩家，不踢
+			} else_if = {
+				limit = { always = yes }
+				federation = { every_member = {
+					leave_alliance = { override_requirements = yes }
+				}}
+			}
+		}
+		if = {
+			limit = { is_galactic_community_formed = yes }
+			remove_from_galactic_council = yes
+			remove_from_galactic_community = yes
+		}
+	}
+}
+
+# 玩家通知：准备将焚飞国家赶出共同体、联盟
+country_event = {
+	id = ap_wg_crisis.1094
+	title = ap_wg_crisis.1094.name
+	desc = ap_wg_crisis.1094.desc
+	is_triggered_only = yes
+	picture = GFX_evt_board_meeting
+	show_sound = event_conversation
+
+	option = {
+		name = ap_wg_crisis.1094.a
+	}
+}
+
+# 玩家通知：将焚飞国家赶出共同体、联盟
+country_event = {
+	id = ap_wg_crisis.1095
+	title = ap_wg_crisis.1095.name
+	desc = ap_wg_crisis.1095.desc
+	is_triggered_only = yes
+	picture = GFX_evt_announcement
+	show_sound = event_announcement
+
+	option = {
+		name = ap_wg_crisis.1095.a
+	}
+}
+
+# 灭日者获得暗物质通知
+country_event = {
+	id = ap_wg_crisis.1096
+	title = ap_wg_crisis.1096.name
+	desc = ap_wg_crisis.1096.desc
+	is_triggered_only = yes
+	picture = GFX_evt_black_hole
+	show_sound = event_lootbox_good
+	fire_only_once = yes
+
+	trigger = {
+		NOT = {
+			has_country_flag = ap_wg_crisis_1096
+		}
+	}
+
+	immediate = {
+		set_country_flag = ap_wg_crisis_1096
+	}
+
+	option = {
+		name = EXCELLENT
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1097
+	title = ap_wg_crisis.1097.name
+	desc = ap_wg_crisis.1097.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_master_plan
+	show_sound = event_conversation
+	fire_only_once = yes
+
+	trigger = {
+		NOT = { has_global_flag = ap_wg_crisis_1097 }
+		has_galactic_custodian = no
+		has_galactic_emperor = no
+		any_country = {
+			is_ai = yes
+			is_default_country_wg = yes
+			NOT = { has_country_flag = wg_psi_country }
+			OR = {
+				AND = {
+					is_subject = yes
+					overlord = { is_same_value = event_target:ap_wg_crisis_country }
+				}
+				AND = {
+					exists = federation
+					federation = {
+						count_member = {
+							count >= 2
+						}
+						any_member = {
+							is_same_value = event_target:ap_wg_crisis_country
+						}
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		set_global_flag = ap_wg_crisis_1097
+	}
+
+	option = {
+		name = ap_wg_crisis.1097.a
+		capital_scope = { 
+			enable_special_project = {
+				name = wg_fm_alliance_plan
+				location = this
+				owner = root
+			}
+		}
+	}
+	option = {
+		name = ap_wg_crisis.1097.b
+		add_resource = {
+			influence = 500
+			unity = 1000000
+		}
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1098
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_country = {
+			is_ai = yes
+			is_default_country_wg = yes
+			NOT = { has_country_flag = wg_psi_country }
+			NOR = {
+				has_country_flag = join_wgfm_alliance
+				has_country_flag = reject_wgfm_alliance
+			}
+			OR = {
+				AND = {
+					is_subject = yes
+					overlord = { is_same_value = event_target:ap_wg_crisis_country }
+				}
+				any_federation_ally = {
+					is_same_value = event_target:ap_wg_crisis_country
+				}
+			}
+		}
+	}
+
+	immediate = {
+		country_event = { id = ap_wg_crisis.1098 days = 1 random = 5 }
+		random_country = {
+			limit = {
+				is_ai = yes
+				is_default_country_wg = yes
+				NOT = { has_country_flag = wg_psi_country }
+				NOR = {
+					has_country_flag = join_wgfm_alliance
+					has_country_flag = reject_wgfm_alliance
+				}
+				OR = {
+					AND = {
+						is_subject = yes
+						overlord = { is_same_value = event_target:ap_wg_crisis_country }
+					}
+					AND = {
+						exists = federation
+						federation = {
+							count_member = {
+								count >= 2
+							}
+							any_member = {
+								is_same_value = event_target:ap_wg_crisis_country
+							}
+						}
+					}
+				}
+			}
+			random_list = {
+				100 = { # 同意加入玩家
+					modifier = {
+						factor = 1.5
+						opinion = {
+							who = event_target:ap_wg_crisis_country
+							value >= 150
+						}
+					}
+					modifier = {
+						factor = 2
+						opinion = {
+							who = event_target:ap_wg_crisis_country
+							value >= 350
+						}
+					}
+					modifier = {
+						factor = 0.7
+						opinion = {
+							who = event_target:ap_wg_crisis_country
+							value <= 0
+						}
+					}
+					modifier = {
+						factor = 0.3
+						opinion = {
+							who = event_target:ap_wg_crisis_country
+							value <= -150
+						}
+					}
+					modifier = {
+						factor = 0
+						opinion = {
+							who = event_target:ap_wg_crisis_country
+							value < -500
+						}
+					}
+					save_event_target_as = join_wgfm_alliance_country
+					set_global_flag = has_country_join_wgfm_alliance
+					if = {
+						limit = {
+							has_opinion_modifier = {
+								who = root
+								modifier = opinion_destroying_systems
+							}
+						}
+						remove_opinion_modifier = {
+							who = root
+							modifier = opinion_destroying_systems
+						}
+					}
+					if = {
+						limit = {
+							has_opinion_modifier = {
+								who = root
+								modifier = opinion_destroying_galaxy
+							}
+						}
+						remove_opinion_modifier = {
+							who = root
+							modifier = opinion_destroying_galaxy
+						}
+					}
+					root = { country_event = { id = ap_wg_crisis.1099 }}
+				}
+				100 = { # 不同意加入玩家
+					modifier = {
+						factor = 0
+						opinion = {
+							who = event_target:ap_wg_crisis_country
+							value >= 500
+						}
+					}
+					modifier = {
+						factor = 0.7
+						opinion = {
+							who = event_target:ap_wg_crisis_country
+							value >= 250
+						}
+					}
+					modifier = {
+						factor = 0.3
+						opinion = {
+							who = event_target:ap_wg_crisis_country
+							value >= 400
+						}
+					}
+					modifier = {
+						factor = 1.2
+						opinion = {
+							who = event_target:ap_wg_crisis_country
+							value <= 50
+						}
+					}
+					modifier = {
+						factor = 1.5
+						opinion = {
+							who = event_target:ap_wg_crisis_country
+							value <= -50
+						}
+					}
+					modifier = {
+						factor = 2
+						opinion = {
+							who = event_target:ap_wg_crisis_country
+							value <= -200
+						}
+					}
+					if = {
+						limit = {
+							has_opinion_modifier = {
+								who = root
+								modifier = opinion_destroying_system
+							}
+						}
+						remove_opinion_modifier = {
+							who = root
+							modifier = opinion_destroying_system
+						}
+					}
+					add_opinion_modifier = {
+						who = root
+						modifier = opinion_destroying_galaxy
+					}
+					save_event_target_as = reject_wgfm_alliance_country
+					root = { country_event = { id = ap_wg_crisis.1100 }}
+				}
+			}
+		}
+	}
+}
+
+# ai加入玩家
+country_event = {
+	id = ap_wg_crisis.1099
+	title = ap_wg_crisis.1099.name
+	desc = ap_wg_crisis.1099.desc
+	picture = GFX_evt_tradedeal
+	is_triggered_only = yes
+
+	trigger = {
+		event_target:join_wgfm_alliance_country = {	
+			NOT = { has_country_flag = reject_wgfm_alliance }
+		}
+	}
+
+	immediate = {
+		event_target:join_wgfm_alliance_country = {	
+			set_country_flag = join_wgfm_alliance
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+	}
+
+}
+
+# ai拒绝玩家
+country_event = {
+	id = ap_wg_crisis.1100
+	title = ap_wg_crisis.1100.name
+	desc = ap_wg_crisis.1100.desc
+	picture = GFX_evt_assembly_fight
+	is_triggered_only = yes
+
+	trigger = {
+		event_target:reject_wgfm_alliance_country = {	
+			NOT = { has_country_flag = reject_wgfm_alliance }
+		}
+	}
+
+	immediate = {
+		event_target:reject_wgfm_alliance_country = {	
+			set_country_flag = reject_wgfm_alliance
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1100.a
+	}
+}
+
+# 玩家通知：焚灭联盟成立
+country_event = {
+	id = ap_wg_crisis.1102
+	title = ap_wg_crisis.1101.name
+	desc = ap_wg_crisis.1102.desc
+	picture = GFX_evt_civil_action
+	is_triggered_only = yes
+
+	trigger = {
+		is_at_war = no
+	}
+
+	immediate = {
+		random_federation = {
+			federation_leader = {
+				save_event_target_as = anti_wg_fm_crisis_leader
+			}
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1102.a
+		custom_tooltip = ap_wg_crisis.1102.a.tooltip
+		hidden_effect = {
+			join_war = event_target:anti_wg_fm_crisis_leader
+		}
+	}
+	option = {
+		name = ap_wg_crisis.1102.b
+		custom_tooltip = ap_wg_crisis.1102.b.tooltip
+		hidden_effect = {
+			join_war = event_target:ap_wg_crisis_country
+		}
+	}
+	option = {
+		name = ap_wg_crisis.1102.c
+	}
+	option = {
+		name = ap_wg_crisis.1102.d
+		custom_tooltip = ap_wg_crisis.1102.d.tooltip
+		hidden_effect = {
+			set_country_flag = wg_fm_war_defeat_all
+			declare_war = {
+				target = event_target:anti_wg_fm_crisis_leader
+				attacker_war_goal = wg_fm_war3
+			}
+			declare_war = {
+				target = event_target:anti_wg_fm_crisis_leader
+				attacker_war_goal = wg_fm_war3
+			}
+		}
+	}
+}
+
+# 叫圣守港舰娘
+country_event = {
+	id = ap_wg_crisis.1103
+	title = ap_wg_crisis.1103.name
+	desc = ap_wg_crisis.1103.desc
+	picture = GFX_evt_assembly_fight
+	is_triggered_only = yes
+
+	trigger = {
+		has_relic = r_wg_psionic_gem
+		is_wg_exterminate_goverment = no
+		any_country = {
+			is_country_type = default
+			has_country_flag = wg_psi_country
+			is_subject = no
+			any_federation_ally = {
+				NOT = { is_same_value = root }
+			}
+		}
+	}
+
+	immediate = {
+		random_country = {
+			limit = {
+				is_country_type = default
+				has_country_flag = wg_psi_country
+			}
+			save_event_target_as = wg_psi_country
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1103.a
+	}
+	option = {
+		name = ap_wg_crisis.1103.b
+		add_resource = {
+			influence = 200
+		}
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1104
+	title = ap_wg_crisis.1104.name
+	desc = ap_wg_crisis.1104.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	diplomatic_title = TRANSMISSION
+	picture_event_data = {
+		portrait = wsg380
+		planet_background = event_target:wg_psi_country
+		graphical_culture = event_target:wg_psi_country
+		city_level = event_target:wg_psi_country
+		room = event_target:wg_psi_country.ruler
+	}
+
+	immediate = {
+		set_global_flag = wg_psi_country_join_wgfm_war
+		event_target:wg_psi_country = {
+			add_modifier = { modifier = wg_psi_country_cheat }
+			add_resource = {
+				energy = 50000
+				minerals = 50000
+				food = 50000
+				alloys = 50000
+				consumer_goods = 50000
+				sr_pantsu = 50000
+				sr_se = 50000
+			}
+		}
+	}
+
+	option = {
+		name = ap_wg_crisis.1104.a
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1107
+	title = ap_wg_crisis.1107.name
+	desc = ap_wg_crisis.1107.desc
+	is_triggered_only = yes
+	picture = GFX_evt_uf_portal
+
+	trigger = {
+		has_global_flag = wg_invasion_happened
+	}
+
+	immediate = {
+		country_event = { id = ap_wg_crisis.1108 days = 5 }
+	}
+
+	option = {
+		name = ap_wg_crisis.1107.a
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1108
+	title = ap_wg_crisis.1108.name
+	desc = ap_wg_crisis.1108.desc
+	is_triggered_only = yes
+	picture = GFX_evt_uf_portal
+
+	trigger = {
+		has_global_flag = wg_invasion_happened
+	}
+
+	option = {
+		name = ap_wg_crisis.1108.a
+		country_event = { id = ap_wg_crisis.1109 days = 5 }
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1109
+	title = ap_wg_crisis.1109.name
+	desc = ap_wg_crisis.1109.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_crisis
+
+	trigger = {
+		has_global_flag = wg_invasion_happened
+	}
+
+	option = {
+		name = ap_wg_crisis.1109.a
+		country_event = { id = ap_wg_crisis.1110 }
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1110
+	title = wg_crisis.1000.name
+	desc = ap_wg_crisis.1110.desc
+	location = fromfrom
+
+	diplomatic = yes
+	force_open = yes		
+	picture_event_data = {
+		room = "UF1_room"
+	}
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = ap_wg_crisis.1110.a
+		is_dialog_only = yes
+		response_text = ap_wg_crisis.1110.a.response
+	}
+	option = {
+		name = ap_wg_crisis.1110.b
+		is_dialog_only = yes
+		response_text = ap_wg_crisis.1110.b.response
+	}
+	option = {
+		name = ap_wg_crisis.1110.c
+		is_dialog_only = yes
+		response_text = ap_wg_crisis.1110.c.response
+	}
+	option = {
+		name = ap_wg_crisis.1110.d
+		hidden_effect = { country_event = { id = ap_wg_crisis.1111 }}
+		default_hide_option = yes
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1111
+	title = wg_crisis.1002.name
+	desc = ap_wg_crisis.1111.desc
+	location = fromfrom
+
+	diplomatic = yes
+	force_open = yes		
+	picture_event_data = {
+		room = "UF2_room"
+	}
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = wg_crisis.1002.b
+		is_dialog_only = yes
+		response_text = wg_crisis.1002.b.response
+	}
+	option = {
+		name = wg_crisis.1002.c
+		default_hide_option = yes
+		hidden_effect = { country_event = { id = ap_wg_crisis.1112 }}
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1112
+	title = wg_crisis.1003.name
+	desc = wg_crisis.1003.desc
+	location = fromfrom
+
+	diplomatic = yes
+	force_open = yes		
+	picture_event_data = {
+		room = "UF3_room"
+	}
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = wg_crisis.1003.a
+		response_text = wg_crisis.1003.a.response
+		hidden_effect = {
+			capital_scope = {
+				planet_event = { id = wg_crisis.1004 days = 5 }
+			}
+			country_event = { id = ap_wg_crisis.1113 }
+			set_country_flag = join_uf
+		}
+	}
+	option = {
+		name = wg_crisis.1003.b
+		response_text = ap_wg_crisis.1112.b.response
+		hidden_effect = { 
+			country_event = { id = ap_wg_crisis.1113 }
+			set_country_flag = fight_with_uf
+		}
+	}
+	option = {
+		name = ap_wg_crisis.1112.c
+		response_text = ap_wg_crisis.1112.c.response
+		hidden_effect = { 
+			country_event = { id = ap_wg_crisis.1113 }
+			set_country_flag = ignore_uf
+		}
+	}
+}
+
+# 联合舰队走人
+country_event = {
+	id = ap_wg_crisis.1113
+	title = ap_wg_crisis.1113.name
+	desc = ap_wg_crisis.1113.desc
+	is_triggered_only = yes
+	picture = GFX_evt_city_ruins
+	fire_only_once = yes
+	immediate = {
+		set_global_flag = first_portal_destroyed
+		set_global_flag = second_portal_destroyed
+		set_global_flag = third_portal_destroyed
+		set_global_flag = all_portal_destroyed
+		set_global_flag = wg_invasion_end
+		random_country = {
+			limit = {
+				is_country_type = wg_resistant_army
+			}
+			destroy_country = yes
+		}
+		event_target:wg_crisis_country = {
+			every_owned_fleet = {
+				delete_fleet = this
+			}
+			destroy_country = yes
+		}
+		stop_crisis_sound = yes
+		every_country = {
+			end_event_chain = wg_invasion_chain
+		}
+		hidden_effect = {
+			switch = {
+				trigger = has_modifier
+				ra_vip = { remove_modifier = ra_vip }
+				ra_vip_sh = { remove_modifier = ra_vip_sh }
+				ra_vip_swg = { remove_modifier = ra_vip_swg }
+			}
+			remove_modifier = pay_alloys_for_resistant_fleet_base
+			remove_modifier = pay_energy_for_resistant_fleet_base
+			remove_modifier = pay_rare_resources_for_resistant_fleet_base
+			remove_modifier = pay_sr_kyber_swgs_for_resistant_fleet_base
+			remove_modifier = pay_sr_pantsu_for_resistant_fleet_base
+			remove_modifier = pay_sr_tibanna_swgs_for_resistant_fleet_base
+		}
+	}
+
+	after = {
+		give_technology = { tech = tech_UNITEDFLEET2 }
+		hidden_effect = { country_event = { id = ap_wg_crisis.1115 days = 1 }}
+	}
+
+	option = {
+		name = ap_wg_crisis.1113.a
+		trigger = {
+			has_country_flag = join_uf
+		}
+		capital_scope = { enable_special_project = {
+			name = "join_uf_study_normal"
+			location = this
+			owner = root
+		}}	
+		hidden_effect = {
+			owner = {
+				country_event = { id = wg_crisis.1006 }
+			}
+		}	
+	}
+	option = {
+		name = ap_wg_crisis.1113.b
+		trigger = {
+			has_country_flag = fight_with_uf
+		}
+		capital_scope = { enable_special_project = {
+			name = "resistance_uf_study_wg_fm"
+			location = this
+			owner = root
+		}}
+	}
+	option = {
+		name = ap_wg_crisis.1113.c
+		trigger = {
+			has_country_flag = ignore_uf
+		}
+	}
+}
+
+#第二结局（焚灭）
+planet_event = {
+	id = ap_wg_crisis.1114
+	title = "wg_crisis.1008.name"
+	desc = "ap_wg_crisis.1114.desc"
+	picture = GFX_evt_federation_fleet
+	is_triggered_only = yes
+	
+	immediate = {
+		owner = {
+			every_owned_planet = {
+				remove_all_buildings = yes
+				reset_planet = yes
+				destroy_colony = yes
+			}
+			every_owned_fleet = {
+				delete_fleet = this
+			}
+			destroy_country = yes
+		}
+	}
+	option = {
+		name = wg_crisis.1008.a
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1115
+	title = "TRANSMISSION"
+    desc = "ap_wg_crisis.1115.desc"
+
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_global_flag = wg_resistant_army_arrived
+		has_global_flag = wg_invasion_end
+	}
+	diplomatic = yes
+	force_open = yes
+	picture_event_data = {
+		room = "resistant_army_room"
+	}
+
+	option = {
+		name = ap_wg_crisis.1115.a
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1116
+	title = ap_wg_crisis.1108.name
+	desc = ap_wg_crisis.1116.desc
+	is_triggered_only = yes
+	picture = GFX_evt_uf_portal
+
+	trigger = {
+		has_global_flag = wg_invasion_happened
+	}
+
+	after = { 
+		set_global_flag = wg_invasion_end 
+	}
+
+	option = {
+		name = ap_wg_crisis.1116.a
+		custom_tooltip = ap_wg_crisis.1116.tooltip
+		capital_scope = { enable_special_project = {
+			name = "resistance_uf_study_wg_fm"
+			location = this
+			owner = root
+		}}
+	}
+	option = {
+		name = ap_wg_crisis.1116.b
+		custom_tooltip = ap_wg_crisis.1116.tooltip
+	}
+}
+
+country_event = {
+	id = ap_wg_crisis.1117
+	title = "ap_wg_crisis.1117.name"
+	desc = "ap_wg_crisis.1117.desc"
+	picture = GFX_evt_VV4
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_authority = auth_warshipgirls
+	}
+
+	immediate = {
+		capital_scope = {
+			create_ambient_object = {
+				type = "bug_object"
+				entity_offset_height = { min = -0 max = -25 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_ambient_object_flag = bug_object_flag
+				set_location = {
+					target = prev
+					distance = 90
+					angle = random
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "ap_wg_crisis.1117.a"
+	}
+}

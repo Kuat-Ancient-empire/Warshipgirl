@@ -1,0 +1,828 @@
+decision_planet_kt = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_kt_resources
+	
+	resources = {
+		category = decisions
+		cost = {
+			minor_artifacts = 200
+		}
+	}	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_authority="auth_shenhai"
+		}		
+		NOR = {
+			is_artificial = yes
+			has_modifier = planet_kt
+			is_planet_class = pc_swim
+			is_planet_class = pc_habitat
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_ringworld_habitable_sh
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_swim
+			is_planet_class = pc_ringworld_habitable		
+		}
+	}
+	
+	allow = {
+		NOT = { has_modifier = planet_kt }
+	}
+	
+	effect = {
+		add_modifier = { modifier = "planet_kt" }
+	}
+}
+decision_planet_sh_clerk = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_sh_clerk
+	
+	resources = {
+		category = decisions
+		cost = {
+			influence = 50
+		}
+	}	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_authority="auth_shenhai"
+		}
+		NOR = {
+			has_modifier = planet_sh_clerk
+		}
+	}
+	
+	allow = {
+		NOT = { has_modifier = planet_sh_clerk }
+	}
+
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0
+			num_unemployed <= 0
+		}
+		modifier = {
+			add = 50
+			num_unemployed > 2
+		}
+		modifier = {
+			add = 1000
+			num_unemployed > 4
+		}
+		modifier = {
+			factor = 10
+			num_unemployed > 8
+		}
+	}
+	
+	effect = {
+		add_modifier = { modifier = "planet_sh_clerk" }
+		hidden_effect = {
+			if = { # 产业革命兼容
+				limit = { has_deposit = PR_D_core } # 产业革命核心地块
+				add_deposit = PR_D_MOD_sh_clerk
+			}
+		}
+	}
+}
+decision_planet_cancel_sh_clerk = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = P_cancel_sh_clerk
+	
+	resources = {
+		category = decisions
+		cost = {
+		}
+	}	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_authority="auth_shenhai"
+		}
+		has_modifier = planet_sh_clerk
+	}
+	
+	allow = {
+		has_modifier = planet_sh_clerk
+	}
+	
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0
+			num_unemployed > 0
+		}
+		modifier = {
+			add = 50
+			free_jobs >= 25
+		}
+		modifier = {
+			add = 1000
+			free_jobs >= 30
+		}
+		modifier = {
+			factor = 10
+			free_jobs >= 35
+		}
+	}
+	
+	effect = {
+		remove_modifier = "planet_sh_clerk"
+		hidden_effect = {
+			if = { # 产业革命兼容
+				limit = { has_deposit = PR_D_MOD_sh_clerk } # 产业革命核心地块
+				remove_deposit = PR_D_MOD_sh_clerk
+			}
+		}
+	}
+}
+decision_planet_machine_factory = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_machine_factory
+	
+	resources = {
+		category = decisions
+		cost = {
+			energy = 1000
+		}
+	}
+	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_authority="auth_shenhai"
+		}		
+		NOR = {
+			has_modifier = planet_growth_discouraged
+			has_modifier = planet_population_control
+		}
+	}
+	
+	allow = {
+		NOT = { has_modifier = planet_machine_factory }
+	}	
+	
+	effect = {
+		add_modifier = { modifier = "planet_machine_factory" days = 4800 }
+	}
+	
+	ai_weight = {
+		weight = 50
+		modifier = {
+			factor = 100
+			decision_has_resource = {
+				RESOURCE = energy
+				MIN_REQUIREMENT = 3000
+			}
+		}
+		modifier = {
+			factor = 0
+			owner = { has_deficit = energy }
+		}
+	}
+}
+################
+decision_shenhai_project = {
+	owned_planets_only = yes
+	icon = decision_shenhai_project
+
+	enactment_time = 2000
+	resources = {
+		category = decisions
+		cost = {
+			influence = 50
+			minerals = 5000
+			energy = 5000
+		}
+	}
+	
+	potential = {
+		owner = { 
+			is_regular_empire = yes 
+			has_authority="auth_shenhai"
+		}
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_swim
+			is_planet_class = pc_ringworld_habitable_sh
+			is_planet_class = pc_ringworld_habitable_wsg
+			is_planet_class = pc_ringworld_habitable_swim
+			is_planet_class = pc_dyson_ring
+			is_planet_class = pc_shenhai
+			is_planet_class = pc_relic
+			has_modifier = resort_colony
+			has_modifier = penal_colony
+			has_modifier = slave_colony
+		}
+		habitable_structure = no
+		exists = owner
+		owner = { has_ascension_perk = ap_shenhai_project }
+	}
+	
+	allow = {
+		num_uncleared_blockers < 1
+	}
+	
+	effect = {
+		# Make city-planet
+		custom_tooltip = decision_shenhai_project_effects
+		hidden_effect = {		
+			owner = { if = {
+				limit = { is_ai = yes }
+				change_variable = { which = sh_pc_count value = 1 }
+			}}
+			clear_deposits = yes
+			while = {
+				limit = { has_district = district_farming }
+				remove_district = district_farming
+			}
+			swap_districts_effect = {
+				DISTRICT1 = district_city
+				DISTRICT2 = district_sh_city
+			}
+			swap_districts_effect = {
+				DISTRICT1 = district_industrial
+				DISTRICT2 = district_sh_foundry_shpc
+			}
+			swap_districts_effect = {
+				DISTRICT1 = district_mining
+				DISTRICT2 = district_sh_mining_uncapped
+			}
+			swap_districts_effect = {
+				DISTRICT1 = district_generator
+				DISTRICT2 = district_sh_generator_uncapped
+			}
+			change_pc = pc_shenhai
+			set_planet_entity = {
+				entity = "sh_ocean_planet"
+				graphical_culture = owner
+			}
+			owner = {
+				country_event = { id = distar.201 } # port for living planet distar.197, triggers in event
+			}
+			planet_event = { id = sh.9 }
+		}
+	}
+	
+	ai_weight = {
+		weight = 10
+		modifier = {
+			add = 40
+			decision_has_resource = {
+				RESOURCE = energy
+				MIN_REQUIREMENT = 25000
+			}
+			decision_has_resource = {
+				RESOURCE = minerals
+				MIN_REQUIREMENT = 25000
+			}
+			decision_has_resource = {
+				RESOURCE = influence
+				MIN_REQUIREMENT = 200
+			}
+		}
+		modifier = {
+			factor = 1.5
+			OR = {
+				is_capital = yes
+				num_pops > 70
+			}
+		}
+		modifier = {
+			factor = 1.5
+			planet_size > 18
+		}
+		modifier = {
+			factor = 0.33
+			planet_size < 15
+		}
+		modifier = {
+			factor = 0.2
+			planet_size < 10
+		}
+	}
+}
+
+# decision_shenhai1 = {
+# 	owned_planets_only = yes
+# 	sound = event_administrative_work
+# 	icon = decision_shenhai_project
+	
+# 	resources = {
+# 		category = decisions
+# 		cost = {
+# 			influence = 30
+# 		}
+# 	}	
+# 	potential = {
+# 		is_planet_class = pc_shenhai
+# 		owner = { 
+# 			has_authority="auth_shenhai"
+# 		}
+# 		NOR = {
+# 			has_modifier = planet_shenhai1
+# 			has_modifier = planet_shenhai2
+# 			has_modifier = planet_shenhai3
+# 		}
+# 	}
+	
+# 	allow = {
+# 		NOR = {
+# 			has_modifier = planet_shenhai1
+# 			has_modifier = planet_shenhai2
+# 			has_modifier = planet_shenhai3
+# 		}
+# 	}
+
+# 	ai_weight = {
+# 		weight = 20
+# 		modifier = {
+# 			factor = 5
+# 			exists = owner
+# 			owner = {
+# 				resource_income_compare = {
+# 					resource = food
+# 					value < 100
+# 				}
+# 			}
+# 		}
+# 		modifier = {
+# 			factor = 10
+# 			num_unemployed >= 5
+# 		}
+# 	}
+	
+# 	effect = {
+# 		add_modifier = { modifier = "planet_shenhai1" }
+# 	}
+# }
+
+decision_shenhai2 = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_shenhai_project
+	
+	resources = {
+		category = decisions
+		cost = {
+			influence = 30
+		}
+	}	
+	potential = {
+		is_planet_class = pc_shenhai
+		owner = { 
+			has_authority="auth_shenhai"
+		}
+		NOR = {
+			has_modifier = planet_shenhai1
+			has_modifier = planet_shenhai2
+			has_modifier = planet_shenhai3
+		}
+	}
+	
+	allow = {
+		NOR = {
+			has_modifier = planet_shenhai1
+			has_modifier = planet_shenhai2
+			has_modifier = planet_shenhai3
+		}
+	}
+
+	ai_weight = {
+		weight = 20
+		modifier = {
+			factor = 5
+			exists = owner
+			owner = {
+				resource_income_compare = {
+					resource = energy
+					value < 100
+				}
+			}
+		}
+		modifier = {
+			factor = 10
+			num_unemployed >= 5
+		}
+	}
+	
+	effect = {
+		add_modifier = { modifier = "planet_shenhai2" }
+		hidden_effect = {
+			if = { # 产业革命兼容
+				limit = { has_deposit = PR_D_core } # 产业革命核心地块
+				add_deposit = PR_D_MOD_planet_shenhai2
+			}
+		}
+	}
+}
+
+decision_shenhai3 = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_shenhai_project
+	
+	resources = {
+		category = decisions
+		cost = {
+			influence = 30
+		}
+	}	
+	potential = {
+		is_planet_class = pc_shenhai
+		owner = { 
+			has_authority="auth_shenhai"
+		}
+		NOR = {
+			has_modifier = planet_shenhai1
+			has_modifier = planet_shenhai2
+			has_modifier = planet_shenhai3
+		}
+	}
+	
+	allow = {
+		NOR = {
+			has_modifier = planet_shenhai1
+			has_modifier = planet_shenhai2
+			has_modifier = planet_shenhai3
+		}
+	}
+
+	ai_weight = {
+		weight = 20
+		modifier = {
+			factor = 5
+			exists = owner
+			owner = {
+				resource_income_compare = {
+					resource = minerals
+					value < 100
+				}
+			}
+		}
+		modifier = {
+			factor = 10
+			num_unemployed >= 5
+		}
+	}
+	
+	effect = {
+		add_modifier = { modifier = "planet_shenhai3" }
+		hidden_effect = {
+			if = { # 产业革命兼容
+				limit = { has_deposit = PR_D_core } # 产业革命核心地块
+				add_deposit = PR_D_MOD_planet_shenhai3
+			}
+		}
+	}
+}
+#胖次深海球
+decision_shenhai4 = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_shenhai_upgrade_project
+	
+	enactment_time = 720
+	resources = {
+		category = decisions
+		cost = {
+			minerals = 1000
+			energy = 2000
+		}
+	}	
+	potential = {
+		is_planet_class = pc_shenhai
+		owner = { 
+			has_authority="auth_shenhai"
+			has_technology = tech_sh_planet_upgrade
+		}
+		NOR = {
+			has_modifier = planet_spc_upgrade
+		}
+	}
+	
+	allow = {
+		custom_tooltip = {
+			fail_text = "only_one_sh_planet_spc_upgrade"
+			NOT = { has_planet_flag = queued_decision_planet_spc_upgrade }
+		}
+	}
+
+	on_queued = {
+		set_planet_flag = queued_decision_planet_spc_upgrade
+	}
+	on_unqueued = {
+		remove_planet_flag = queued_decision_planet_spc_upgrade
+	}
+
+	ai_weight = {
+		weight = 5
+		modifier = {
+			factor = 10
+			OR = {
+				num_buildings = {
+					type = building_wsg_pantsu
+					value >= 2
+				}
+				num_buildings = {
+					type = building_wsg_pantsu2
+					value >= 2
+				}
+			}
+			decision_has_resource = {
+				RESOURCE = minerals
+				MIN_REQUIREMENT = 3000
+			}
+			decision_has_resource = {
+				RESOURCE = energy
+				MIN_REQUIREMENT = 5000
+			}
+		}
+		modifier = {
+			factor = 10
+			exists = owner
+			owner = {
+				resource_income_compare = {
+					resource = sr_pantsu
+					value < 25
+				}
+			}
+		}
+	}
+	
+	effect = {
+		hidden_effect = { remove_planet_flag = queued_decision_planet_spc_upgrade }
+		remove_modifier = planet_spc_upgrade
+		add_modifier = { modifier = "planet_spc_upgrade" }
+		set_planet_flag = shpc_pantsu_flag
+		remove_planet_flag = shpc_science_flag
+		remove_planet_flag = shpc_alloys_flag
+	}
+}
+#科研深海球
+decision_shenhai5 = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_shenhai_upgrade_project
+	
+	enactment_time = 720
+	resources = {
+		category = decisions
+		cost = {
+			minerals = 2000
+			energy = 2500
+		}
+		cost = {
+			trigger = {
+				owner = { is_ai = no }
+			}
+			exotic_gases = 100
+		}
+	}	
+	potential = {
+		is_planet_class = pc_shenhai
+		owner = { 
+			has_authority="auth_shenhai"
+			has_technology = tech_sh_planet_upgrade
+		}
+		NOR = {
+			has_modifier = planet_spc_upgrade
+		}
+	}
+	
+	allow = {
+		custom_tooltip = {
+			fail_text = "only_one_sh_planet_spc_upgrade"
+			NOT = { has_planet_flag = queued_decision_planet_spc_upgrade }
+		}
+	}
+
+	on_queued = {
+		set_planet_flag = queued_decision_planet_spc_upgrade
+	}
+	on_unqueued = {
+		remove_planet_flag = queued_decision_planet_spc_upgrade
+	}
+
+	ai_weight = {
+		weight = 5
+		modifier = {
+			factor = 10
+			decision_has_resource = {
+				RESOURCE = minerals
+				MIN_REQUIREMENT = 5000
+			}
+			decision_has_resource = {
+				RESOURCE = energy
+				MIN_REQUIREMENT = 5000
+			}
+			# decision_has_resource = {
+			# 	RESOURCE = exotic_gases
+			# 	MIN_REQUIREMENT = 200
+			# }
+		}
+	}
+	
+	effect = {
+		hidden_effect = { remove_planet_flag = queued_decision_planet_spc_upgrade }
+		remove_modifier = planet_spc_upgrade
+		add_modifier = { modifier = "planet_spc_upgrade" }
+		set_planet_flag = shpc_science_flag
+		custom_tooltip = decision_shenhai5_effects
+		remove_planet_flag = shpc_pantsu_flag
+		remove_planet_flag = shpc_alloys_flag
+	}
+}
+
+#工业深海球
+decision_shenhai6 = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_shenhai_upgrade_project
+	
+	enactment_time = 720
+	resources = {
+		category = decisions
+		cost = {
+			minerals = 3000
+			energy = 2000
+		}
+	}	
+	potential = {
+		is_planet_class = pc_shenhai
+		owner = { 
+			has_authority="auth_shenhai"
+			has_technology = tech_sh_planet_upgrade
+		}
+		NOR = {
+			has_modifier = planet_spc_upgrade
+		}
+	}
+	
+	allow = {
+		custom_tooltip = {
+			fail_text = "only_one_sh_planet_spc_upgrade"
+			NOT = { has_planet_flag = queued_decision_planet_spc_upgrade }
+		}
+	}
+
+	on_queued = {
+		set_planet_flag = queued_decision_planet_spc_upgrade
+	}
+	on_unqueued = {
+		remove_planet_flag = queued_decision_planet_spc_upgrade
+	}
+
+	ai_weight = {
+		weight = 5
+		modifier = {
+			factor = 10
+			num_districts = {
+				type = district_sh_foundry_shpc
+				value >= 5
+			}
+			decision_has_resource = {
+				RESOURCE = minerals
+				MIN_REQUIREMENT = 5000
+			}
+			decision_has_resource = {
+				RESOURCE = energy
+				MIN_REQUIREMENT = 5000
+			}
+		}
+		modifier = {
+			factor = 0.01
+			exists = owner
+			owner = {
+				# 铁完全溢出了，不改
+				resource_income_compare = {
+					resource = alloys
+					value > 2000
+				}
+				resource_stockpile_compare = {
+					resource = alloys
+					value > 100000
+				}
+			}
+		}
+	}
+	
+	effect = {
+		hidden_effect = { remove_planet_flag = queued_decision_planet_spc_upgrade }
+		remove_modifier = planet_spc_upgrade
+		add_modifier = { modifier = "planet_spc_upgrade" }
+		set_planet_flag = shpc_alloys_flag
+		custom_tooltip = decision_shenhai6_effects
+		remove_planet_flag = shpc_pantsu_flag
+		remove_planet_flag = shpc_science_flag
+	}
+}
+###############################
+decision_shenhai_rw_project = {
+	owned_planets_only = yes
+	icon = decision_shenhai_rw_project
+
+	enactment_time = 2400
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+			minerals = 20000
+			sr_se = 500
+		}
+	}
+	
+	potential = {
+		is_ringworld = yes
+		is_colony = yes
+		is_wg_upgraded_ringworld = no
+		exists = owner
+		owner = { 
+			is_regular_empire = yes 
+			has_authority = "auth_shenhai"
+		}
+	}
+	
+	allow = {
+		if = {
+			limit = { owner = { is_ai = no }}
+			custom_tooltip = {
+				fail_text = decision_sh_rw_project_requirements
+				free_district_slots < 1
+				num_districts = { type = district_rw_farming value < 1 }
+				num_districts = { type = district_rw_commercial value < 1 }
+			}
+		}
+		num_uncleared_blockers < 1
+	}
+
+	ai_weight = {
+		weight = 50
+		modifier = {
+			factor = 100
+			decision_has_resource = {
+				RESOURCE = minerals
+				MIN_REQUIREMENT = 40000
+			}
+			decision_has_resource = {
+				RESOURCE = sr_se
+				MIN_REQUIREMENT = 600
+			}
+			decision_has_resource = {
+				RESOURCE = influence
+				MIN_REQUIREMENT = 200
+			}
+		}
+		# modifier = {
+		# 	factor = 0
+		# 	has_active_wg_foundry_building = no
+		# }
+	}
+	
+	effect = {
+		# Make city-planet
+		if = {
+			limit = { owner = { is_ai = no }}
+			planet_event = { id = sh.10 }
+			custom_tooltip = decision_sh_rw_effects
+		} else = {
+			owner = { change_variable = { which = wg_modified_ringworld value = 1 }}
+		}
+		hidden_effect = {		
+			swap_districts_effect = {
+				DISTRICT1 = district_rw_city
+				DISTRICT2 = district_rw_sh_city
+			}
+			swap_districts_effect = {
+				DISTRICT1 = district_rw_industrial
+				DISTRICT2 = district_rw_sh_alloys
+			}
+			swap_districts_effect = {
+				DISTRICT1 = district_rw_science
+				DISTRICT2 = district_rw_sh_goods
+			}
+			change_pc = pc_ringworld_habitable_sh
+			while = {
+				limit = { has_district = district_rw_generator }
+				remove_district = district_rw_generator
+			}
+			while = {
+				limit = { has_district = district_rw_commercial }
+				remove_district = district_rw_commercial 
+			}
+			set_planet_entity = {
+				entity = "ringworld_habitable_sh"
+				graphical_culture = owner
+			}
+		}
+	}
+	
+}

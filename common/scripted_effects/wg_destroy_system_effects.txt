@@ -1,0 +1,398 @@
+destroy_system_wg = {
+	optimize_memory
+	set_star_flag = star_cracked
+	set_star_class = sc_black_hole
+	every_system_planet = {
+		limit = { is_star = yes }
+		create_ambient_object = {
+			type = "star_explosion"
+			play_animation_once = yes
+			location = this
+		}
+		last_created_ambient_object = {
+			set_location = {
+				target = prev
+				distance = 0
+				angle = random
+			}
+		}
+		change_pc = "pc_black_hole"
+		random_list = {
+			20 = { change_planet_size = +1 }
+			20 = { change_planet_size = +2 }
+			20 = { change_planet_size = +3 }
+			20 = { change_planet_size = +4 }
+			20 = { change_planet_size = +5 }
+		}
+		random_list = {
+			10 = { add_deposit = d_dark_matter_deposit_1 }
+			45 = { add_deposit = d_engineering_3  }
+			45 = { add_deposit = d_physics_3  }
+		}	
+	}
+	
+	every_fleet_in_system = {
+		limit = {
+			NOR = {
+				is_same_value = from
+				# except Extradimensionals
+				AND = {
+					exists = owner
+					owner = {
+						OR = {
+							is_country_type = portal_holder
+							is_country_type = extradimensional
+							is_country_type = extradimensional_2
+							is_country_type = extradimensional_3
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = event_target:crisis_country #i.e. not final destruction of all matter
+				is_mobile = yes
+			}
+			set_mia = mia_return_home
+		}
+		else = {
+			destroy_fleet = this
+		}
+	}
+	common_destroy_system_effect = yes
+}
+
+destroy_system_uf = {
+	optimize_memory
+	if = {
+		limit = { exists = event_target:crisis_country }
+		fire_on_action = {
+			on_action = on_destroy_star_system
+			scopes = { from = event_target:crisis_country }
+		}
+	}
+	else = {
+		fire_on_action = { on_action = on_destroy_star_system }
+	}
+	set_star_flag = star_cracked
+	set_star_class = sc_black_hole
+	every_system_ambient_object = {
+		destroy_ambient_object = this
+	}
+	every_fleet_in_system = {
+		limit = { owner = { NOT = { is_same_value = event_target:wg_crisis_country }}}
+		destroy_fleet = this
+	}
+	every_system_planet = {
+		limit = { is_star = yes }
+		create_ambient_object = {
+			type = "star_explosion"
+			play_animation_once = yes
+			location = this
+		}
+		last_created_ambient_object = {
+			set_location = {
+				target = prev
+				distance = 0
+				angle = random
+			}
+		}
+		change_pc = pc_black_hole
+		random_list = {
+			20 = { change_planet_size = -1 }
+			20 = { change_planet_size = -2 }
+			20 = { change_planet_size = -3 }
+		}
+	}
+	# Handle Contingency Machine Worlds
+	every_system_planet = {
+		limit = {
+			is_planet_class = pc_ai
+			NOT = { has_planet_flag = machine_lair }
+		}
+		destroy_machine_world = yes
+	}
+	random_system_planet = {
+		limit = {
+			is_planet_class = pc_ai
+			has_planet_flag = machine_lair
+		}
+		from.owner = { save_event_target_as = final_machine_world_destroyer }
+		stop_crisis_sound = yes
+		planet_event = { id = crisis.2046 }
+	}
+	every_system_planet = {
+		limit = { 
+			is_star = no
+			is_asteroid = no
+		}
+		if = {
+			limit = { is_colony = yes }
+			remove_all_buildings = yes
+			destroy_colony = yes
+			change_pc = pc_shattered
+		}
+		else_if = {
+			limit = { is_ringworld_wg = yes }
+			spawn_ringworld_cracker_effect = yes
+			change_pc = pc_ringworld_habitable_damaged
+		}
+		else_if = {
+			limit = { is_planet_class = pc_ringworld_tech }
+			spawn_ringworld_cracker_effect = yes
+			change_pc = pc_ringworld_tech_damaged
+		}
+		else_if = {
+			limit = { is_planet_class = pc_ringworld_seam }
+			spawn_ringworld_cracker_effect = yes
+			change_pc = pc_ringworld_seam_damaged
+		}
+	}
+	every_system_planet = {
+		limit = {
+			exists = orbital_station
+		}
+		orbital_station = { dismantle = yes }
+	}
+	every_system_planet = { 
+		clear_deposits = yes
+		clear_planet_modifiers = yes
+		prevent_anomaly = yes
+	}
+	every_system_planet = {
+		limit = { is_asteroid = yes }
+		clear_deposits = yes
+	}
+	every_system_megastructure = {
+		remove_megastructure = this
+	}
+	star = {
+		create_ambient_object = {
+			type = "destroyed_system"
+			location = this
+			entity_offset = 0
+			entity_offset_angle = 0
+			entity_offset_height = 0
+			entity_face_object = FROM
+			use_3d_location = yes
+		}
+		last_created_ambient_object = {
+			set_ambient_object_flag = destroyed_system_effect
+		}
+	}
+	set_asteroid_belt = { radius = 0 }
+}
+
+destroy_system_ufs = {
+	optimize_memory
+	set_star_flag = star_cracked
+	set_star_class = sc_uf_hm
+	if = {
+		limit = { NOR = {
+			has_star_flag = monolith_crisis_shield_system 
+			exists = starbase
+		}}
+		every_system_planet = {
+			limit = { is_star = yes }
+			random_list = {
+				20 = { change_planet_size = +1 }
+				20 = { change_planet_size = +2 }
+				20 = { change_planet_size = +3 }
+				20 = { change_planet_size = +4 }
+				20 = { change_planet_size = +5 }
+			}	
+			random_list = {
+				10 = { add_deposit = d_uf_hyperdimensional_matter_10 }
+				45 = { add_deposit = d_uf_hyperdimensional_matter_6  }
+				45 = { add_deposit = d_uf_hyperdimensional_matter_3  }
+			}	
+		}
+	} 
+	
+	every_system_planet = {
+		limit = { is_star = yes }
+		change_pc = "pc_uf_hm"
+		create_ambient_object = {
+			type = "star_explosion"
+			play_animation_once = yes
+			location = this
+		}
+		last_created_ambient_object = {
+			set_location = {
+				target = prev
+				distance = 0
+				angle = random
+			}
+		}
+	}
+	
+	every_fleet_in_system = {
+		limit = {
+			NOR = {
+				is_same_value = from
+				# except Extradimensionals
+				AND = {
+					exists = owner
+					owner = {
+						OR = {
+							is_country_type = portal_holder
+							is_country_type = extradimensional
+							is_country_type = extradimensional_2
+							is_country_type = extradimensional_3
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				is_mobile = yes
+				owner = { is_default_and_fallen_country = yes }
+			}
+			set_mia = mia_return_home
+		}
+		else = {
+			destroy_fleet = this
+		}
+	}
+	common_destroy_system_effect = yes
+}
+
+common_destroy_system_effect = {
+	optimize_memory
+	star = {
+		create_ambient_object = {
+			type = "destroyed_system"
+			location = this
+		}
+		last_created_ambient_object = {
+			set_ambient_object_flag = destroyed_system_effect
+			set_location = {
+				target = prev
+				distance = 0
+				angle = random
+			}
+		}
+	}
+	if = {
+		limit = { exists = event_target:crisis_country }
+		fire_on_action = {
+			on_action = on_destroy_star_system
+			scopes = { from = event_target:crisis_country }
+		}
+	}
+	else = {
+		fire_on_action = { on_action = on_destroy_star_system }
+	}
+	every_system_ambient_object = {
+		limit = {
+			# Preserve Unbidden crisis effects
+			NOR = {
+				has_ambient_object_flag = extradimensional_system_effect
+				has_ambient_object_flag = extradimensional_system_effect_2
+			}
+		}
+		destroy_ambient_object = this
+	}
+	# Handle Contingency Machine Worlds
+	every_system_planet = {
+		limit = {
+			is_planet_class = pc_ai
+			NOT = { has_planet_flag = machine_lair }
+		}
+		destroy_machine_world = yes
+	}
+	random_system_planet = {
+		limit = {
+			is_planet_class = pc_ai
+			has_planet_flag = machine_lair
+		}
+		from.owner = { save_event_target_as = final_machine_world_destroyer }
+		stop_crisis_sound = yes
+		planet_event = { id = crisis.2046 }
+	}
+	# destroy ringworld / habitat / normal planet
+	every_system_planet = {
+		limit = { 
+			is_star = no
+			is_asteroid = no
+			NOR = {
+				is_planet_class = pc_shattered
+				is_planet_class = pc_shattered_2
+				is_planet_class = pc_shielded
+				is_planet_class = pc_ringworld_habitable_damaged
+				is_planet_class = pc_ringworld_tech_damaged
+				is_planet_class = pc_ringworld_seam_damaged
+			}
+		}
+		if = {
+			limit = { is_habitat_wg = yes }
+			spawn_habitat_cracker_effect = yes
+			remove_planet = yes
+		}
+		if = {
+			limit = { is_colony = yes }
+			remove_all_buildings = yes
+			destroy_colony = yes
+			if = {
+				limit = { is_habitat_wg = yes }
+				spawn_habitat_cracker_effect = yes
+				remove_planet = yes
+			}
+			else_if = {
+				limit = { is_ringworld_wg = yes }
+				spawn_ringworld_cracker_effect = yes
+				change_pc = pc_ringworld_habitable_damaged
+			}
+			else = {
+				change_pc = pc_shattered
+			}
+		}
+		else_if = {
+			limit = { is_ringworld_wg = yes }
+			spawn_ringworld_cracker_effect = yes
+			change_pc = pc_ringworld_habitable_damaged
+		}
+		else_if = {
+			limit = { is_planet_class = pc_ringworld_tech }
+			spawn_ringworld_cracker_effect = yes
+			change_pc = pc_ringworld_tech_damaged
+		}
+		else_if = {
+			limit = { is_planet_class = pc_ringworld_seam }
+			spawn_ringworld_cracker_effect = yes
+			change_pc = pc_ringworld_seam_damaged
+		}
+		else = {
+			change_pc = pc_shattered
+		}
+	}
+	every_system_planet = {
+		limit = {
+			exists = orbital_station
+		}
+		orbital_station = { dismantle = yes }
+	}
+	every_system_planet = { 
+		clear_deposits = yes
+		clear_planet_modifiers = yes
+		prevent_anomaly = yes
+	}
+	every_system_planet = {
+		limit = { is_asteroid = yes }
+		clear_deposits = yes
+	}
+	# destroy megastructure (vanilla)
+	every_system_megastructure = {
+		limit = {
+			NOR = {
+				is_megastructure_type = monolith_crisis_gate_1
+				is_megastructure_type = monolith_crisis_gate_2
+				is_megastructure_type = monolith_crisis_gate_3
+			}
+		}
+		set_ruined_megastructure = yes
+	}
+	set_asteroid_belt = { radius = 0 }
+}

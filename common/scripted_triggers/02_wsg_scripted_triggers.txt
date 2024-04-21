@@ -1,0 +1,403 @@
+has_wg_special_authority = {
+	custom_tooltip = {
+		fail_text = "has_wg_special_authority_fail"
+		OR = {
+			has_authority = auth_shenhai
+			has_authority = auth_warshipgirls
+			has_authority = auth_starshipgirls
+		}
+	}
+}
+
+has_wg_and_uf_special_authority = {
+	OR = {
+		has_authority = auth_shenhai
+		has_authority = auth_warshipgirls
+		has_authority = auth_starshipgirls
+		has_authority = auth_united_fleet
+	}
+}
+
+is_wg_empire = {
+	OR = {
+		has_authority = auth_shenhai
+		has_authority = auth_warshipgirls
+	}
+}
+has_wg_and_uf_authority = {
+	OR = {
+		has_authority = auth_shenhai
+		has_authority = auth_warshipgirls
+		has_authority = auth_united_fleet
+	}
+}
+is_wg_exterminate_goverment = {
+	OR = {
+		has_civic = civic_CM
+		has_ascension_perk = ap_shenhai_silent
+	}
+}
+
+has_project_s_ascension_path = {
+	OR = {
+		has_country_flag = wg_ascension_path_project_s
+		has_ascension_perk = ap_project_s
+	}
+}
+
+uses_sr_senergy_country = {
+	OR = {
+		AND = {
+			has_authority = auth_warshipgirls
+			has_project_s_ascension_path = yes
+		}
+		has_authority = auth_shenhai
+	}
+}
+
+# 不符合以下条件的话，则除了获取情报的间谍行动外，所有ai对玩家国家无法使用所有原版的间谍行动
+ban_spy_operation_triggers = {
+	OR = {
+		has_wg_special_authority = yes
+		is_nirvana_empire = yes
+	}
+}
+
+# 检测有无舰R合金厂建筑
+has_active_wg_foundry_building = {
+	OR = {
+		has_active_building = building_sep_foundry
+		has_active_building = building_sep_foundry2
+		has_active_building = building_wsg_foundry
+		has_active_building = building_sh_foundry
+		has_active_building = building_sh_foundryU
+		has_active_building = building_foundry_1 
+		has_active_building = building_foundry_2 
+		has_active_building = building_foundry_3
+		has_active_building = building_gray_nano_foundry
+		has_active_building = building_gray_nano_foundry2
+	}
+}
+has_active_wg_foundry_building_lv_low = {
+	OR = {
+		has_active_building = building_sep_foundry
+		has_active_building = building_wsg_foundry
+		has_active_building = building_sh_foundry
+		has_active_building = building_foundry_1 
+		has_active_building = building_foundry_2
+		has_active_building = building_gray_nano_foundry
+	}
+}
+has_active_wg_foundry_building_lv_high = {
+	OR = {
+		has_active_building = building_sep_foundry2
+		has_active_building = building_wsg_foundry
+		has_active_building = building_sh_foundryU
+		has_active_building = building_foundry_3
+		has_active_building = building_gray_nano_foundry2
+	}
+}
+# 检测有无舰R消费品建筑
+has_active_wg_factory_building = {
+	OR = {
+		has_active_building = building_sep_foundry
+		has_active_building = building_gray_nano_factory
+		has_active_building = building_factory_1
+		has_active_building = building_factory_2
+		has_active_building = building_factory_3
+	}
+}
+
+colonizable_planet = {
+	OR = {
+		is_planet_class = pc_city
+		is_planet_class = pc_wsg_port
+		is_planet_class = pc_shenhai
+		is_planet_class = pc_relic
+		is_planet_class = pc_nuked
+		is_planet_class = pc_hive
+		is_planet_class = pc_machine
+		habitable_structure = yes
+		habitable_planet = yes
+	}
+}
+
+habitable_planet = {
+	OR = {
+		is_planet_class = pc_desert
+		is_planet_class = pc_tropical
+		is_planet_class = pc_arid
+		is_planet_class = pc_continental
+		is_planet_class = pc_ocean
+		is_planet_class = pc_tundra
+		is_planet_class = pc_arctic
+		is_planet_class = pc_alpine
+		is_planet_class = pc_savannah
+		is_planet_class = pc_gaia
+		is_planet_class = pc_city
+		is_planet_class = pc_wsg_port
+		is_planet_class = pc_shenhai
+		is_planet_class = pc_relic
+	}
+}
+
+has_UR_admiral = {
+	OR = {
+		has_country_flag = ra_admiral_101
+		has_country_flag = ra_admiral_102
+		has_country_flag = ra_admiral_103
+		has_country_flag = ra_admiral_104
+		has_country_flag = ra_admiral_105
+		has_country_flag = ra_admiral_106
+		has_country_flag = ra_admiral_107
+		has_country_flag = ra_admiral_108
+		has_country_flag = ra_admiral_109
+		has_country_flag = ra_admiral_110
+		has_country_flag = ra_admiral_201
+		has_country_flag = ra_admiral_202
+		has_country_flag = ra_admiral_203
+		has_country_flag = ra_admiral_204
+		has_country_flag = ra_admiral_205
+		has_country_flag = ra_admiral_1001
+		has_country_flag = ra_admiral_1002
+		has_country_flag = ra_admiral_1003
+		has_country_flag = ra_admiral_1004
+	}
+}
+
+is_wg_fallen_empire = {
+	is_fallen_empire = yes
+	has_authority = auth_wg_fe
+}
+is_sh_fallen_empire = {
+	is_fallen_empire = yes
+	has_authority = auth_sh_fe
+}
+
+has_enough_consumer_goods = {
+	OR = {
+		AND = {
+			years_passed < 40
+			resource_stockpile_compare = { resource = consumer_goods value >= 375 }
+		}
+		AND = {
+			years_passed >= 40
+			years_passed < 80
+			resource_stockpile_compare = { resource = consumer_goods value >= 1500 }
+		}
+		AND = {
+			years_passed >= 80
+			years_passed < 120
+			resource_stockpile_compare = { resource = consumer_goods value >= 2625 }
+		}
+		AND = {
+			years_passed >= 120
+			years_passed < 160
+			resource_stockpile_compare = { resource = consumer_goods value >= 4500 }
+		}
+		AND = {
+			years_passed >= 160
+			resource_stockpile_compare = { resource = consumer_goods value >= 9900 }
+		}
+	}
+}
+
+has_wg_traits = {
+	OR = {
+		has_trait = wsg_trait_warshipgirls
+		has_trait = wsg_trait_warshipgirls1
+		has_trait = wsg_trait_warshipgirls2
+		has_trait = wsg_trait_mist
+		has_trait = sh_trait_shenhai
+		has_trait = sh_trait_shenhai1
+		has_trait = sh_trait_shenhai2
+		has_trait = sh_trait_shenhai3
+		has_trait = uf_trait_united_fleet
+		has_trait = uf_trait_united_fleet_1
+		has_trait = uf_trait_united_fleet_2
+	}
+}
+
+has_sh_species_traits = {
+	OR = {
+		has_trait = sh_trait_shenhai
+		has_trait = sh_trait_shenhai1
+		has_trait = sh_trait_shenhai2
+		has_trait = sh_trait_shenhai3
+	}
+}
+
+has_wsg_species_traits = {
+	OR = {
+		has_trait = wsg_trait_warshipgirls
+		has_trait = wsg_trait_warshipgirls1
+		has_trait = wsg_trait_warshipgirls2
+		has_trait = wsg_trait_mist
+	}
+}
+
+has_uf_species_traits = {
+	OR = {
+		has_trait = uf_trait_united_fleet
+		has_trait = uf_trait_united_fleet_1
+		has_trait = uf_trait_united_fleet_2
+	}
+}
+
+has_sh_leader_traits = {
+	OR = {
+		has_trait = leader_trait_shenhai
+		has_trait = leader_trait_shenhai1
+		has_trait = leader_trait_shenhai2
+	}
+}
+
+has_sr_se_upkeep_trait = {
+	OR = {
+		has_trait = wsg_trait_self_assembly 
+		has_trait = wsg_trait_extreme_efficient 
+		has_trait = wsg_trait_galatic_engineer 
+		has_trait = wsg_trait_knowledgeable2 
+		has_trait = sh_trait_gear2E 
+		has_trait = sh_trait_gear22E 
+		has_trait = sh_trait_knowledgeable 
+		has_trait = sh_trait_knowledgeable2
+	}
+}
+
+# scope: country
+is_vaild_gray_owner = {
+	OR = {
+		is_same_value = event_target:gray_owner 
+		has_country_flag = gray_owner
+	}
+}
+
+# scope: country
+bubbles_available = {
+	NOR = { 
+		has_country_flag = bubbles_depressed 
+		has_country_flag = ban_commu_with_bubbles
+		has_country_flag = bubbles_become_enemy
+	}
+}
+
+is_wg_pod_army_type = {
+	OR = {
+		army_type = 381_cannon_army_pod
+		army_type = WSG_army_pod
+		army_type = WSG_kodiak_pod
+		army_type = WSG_galodam_pod
+		army_type = SH_army_pod
+		army_type = SH_BOSS_pod
+		army_type = YAMATO_executioner_pod
+	}
+}
+
+is_wg_pod_ship_size = {
+	OR = {
+		is_ship_size = wg_pod
+		is_ship_size = parit_carrier
+	}
+}
+# 狡猾人的星系
+ag_is_kuat_system = {
+	OR = {
+		has_star_flag = Kuat_system
+		has_star_flag = Kuat_system_1
+		has_star_flag = Kuat_system_2
+		has_star_flag = Kuat_system_3
+		has_star_flag = kuat_initial_system
+		has_star_flag = Kuat_system_int
+		has_star_flag = Kuat_system_int_1
+		has_star_flag = Kuat_system_int_2
+		has_star_flag = Kuat_system_int_3
+		has_star_flag = Kuat_system_int_4
+	}
+}
+
+gray_origin_transform_unlock_trigger = {
+	OR = {
+		NOT = { has_country_flag = origin_mwsge_gray_country }
+		AND = {
+			has_country_flag = origin_mwsge_gray_country
+			has_country_flag = unlock_gray_transform
+		}
+	}
+}	
+# scope = planet
+has_first_level_wsg_assembly_plant = {
+	OR = {
+		has_building = building_warshipgirl_assembly_plant
+		has_building = building_warshipgirl_senergy_assembly_plant
+		has_building = building_sh_assembly_plant
+	}
+}
+# scope = planet
+has_second_level_wsg_assembly_plant = {
+	OR = {
+		has_building = building_warshipgirl_assembly_plantU
+		has_building = building_warshipgirl_senergy_assembly_plantU
+		has_building = building_sh_assembly_plantU
+	}
+}
+# scope = planet
+has_third_level_wsg_assembly_plant = {
+	OR = {
+		has_building = building_warshipgirl_assembly_plantF
+		# has_building = building_warshipgirl_senergy_assembly_plantF
+		has_building = building_sh_assembly_plantF
+	}
+}
+
+is_nirvana_empire_dragon = {
+	has_valid_civic = civic_nirvana_empire_dragon
+	has_country_flag = dragon
+}
+
+is_nirvana_empire_council = {
+	has_valid_civic = civic_nirvana_empire_council
+	has_country_flag = council
+}
+
+has_gate_megastructure = {
+	OR = {
+		has_any_megastructure = no
+		NOT = { any_system_megastructure = { NOR = {
+			is_megastructure_type = gateway_0
+			is_megastructure_type = gateway_final
+			is_megastructure_type = gateway_restored
+			is_megastructure_type = gateway_ruined
+			is_megastructure_type = hyper_relay 
+			is_megastructure_type = hyper_relay_ruined 
+			is_megastructure_type = hyper_relay_restored  
+			is_megastructure_type = monolith_crisis_gate_1
+			is_megastructure_type = monolith_crisis_gate_2
+			is_megastructure_type = monolith_crisis_gate_3
+			is_megastructure_type = uf_mobile_portal
+			is_megastructure_type = uf_mobile_portal2
+			is_megastructure_type = uf_mobile_portal_temp
+			is_megastructure_type = wg_psionic_wormhole
+			is_megastructure_type = wg_khan_outer_gate
+		}}}
+	}
+}
+
+has_wsg_genemodding_tech = {
+	OR = {
+		has_technology = tech_wsg_genetic_resequencing
+		has_technology = tech_wsg_genetic_resequencing_s
+		has_technology = tech_sh_genetic_resequencing
+		has_technology = tech_sh_genetic_resequencing2
+		has_technology = tech_uf_genetic_resequencing
+		has_technology = tech_gray_genetic_resequencing
+	}
+}
+
+trait_can_add_before_game = {
+	custom_tooltip = {
+		fail_text = "trait_can_add_before_game"
+		NOT = { has_global_flag = has_wsg_mod }
+	}
+}
+

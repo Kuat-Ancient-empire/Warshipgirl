@@ -1,0 +1,393 @@
+strike_craft_component_template = {
+	key = "RA_weapen_H"
+	size = LARGE
+	entity = "bomber_entity"
+	power = -100
+	hidden = yes
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 50
+		}
+		upkeep = {
+			energy = 3
+		}
+	}
+	ship_modifier = {
+		ship_orbital_bombardment_mult = 0.20
+	}
+	count = 1
+	regeneration_per_day = 1
+	launch_time = 2.5
+	
+	damage = { min = 250 max = 350 }
+	cooldown = 3
+	range = 50
+	engagement_range = 180
+	accuracy = 1.0
+	tracking = 0.4
+	
+	health = 100
+	armor = 50
+	shield = 150
+	evasion = 0.6
+	
+	speed = 1250
+	rotation_speed = 0.15
+	acceleration = 0.8
+	
+	shield_penetration = 1.0
+	armor_penetration = 1.0
+	hull_damage = 2.0
+	
+	ship_behavior = "bombers_behavior"
+	
+	weapon_type = point_defence
+	projectile_gfx = "sh_pd_01"
+	
+	component_set = "RA_weapen_H"
+	prerequisites = { "tech_UNITEDFLEET" }
+	
+	icon = "GFX_RA_weapen_H"
+	icon_frame = 1
+	tags = { weapon_type_strike_craft }
+	ai_tags = { weapon_role_anti_shield }
+}
+
+utility_component_template = {
+	key = "RA_weapen_IA"
+	size = large
+	icon = "GFX_RA_weapen_IA"
+	icon_frame = 1
+	power = -180
+	modifier = {
+		ship_armor_add = 4000
+		ship_hull_add = 4000
+		ship_shield_add = 4000
+		ship_hull_regen_add_static = 200
+		ship_armor_regen_add_static = 200
+		ship_shield_regen_add_static = 200
+	}
+	ship_modifier = {
+		ship_shield_hardening_add = 0.10
+		ship_armor_hardening_add = 0.10
+	}
+	hidden = yes	
+	prerequisites = { "tech_UNITEDFLEET" }
+	component_set = "RA_weapen_IA"
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 35
+		}		
+		upkeep = {
+			energy = 3.5
+			alloys = 1.0
+		}
+	}
+}
+utility_component_template = {
+	key = "RA_weapen_IA_S"
+	size = small
+	icon = "GFX_RA_weapen_IA"
+	icon_frame = 1
+	power = -20
+	modifier = {
+		ship_armor_add = 1200
+		ship_hull_add = 1200
+		ship_shield_add = 1200
+		ship_hull_regen_add_static = 50
+		ship_armor_regen_add_static = 50
+		ship_shield_regen_add_static = 50
+	}
+	ship_modifier = {
+		ship_shield_hardening_add = 0.10
+		ship_armor_hardening_add = 0.10
+	}
+	hidden = yes	
+	prerequisites = { "tech_UNITEDFLEET" }
+	component_set = "RA_weapen_IA"
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 5
+		}		
+		upkeep = {
+			energy = 1
+			alloys = 0.2
+		}
+	}
+}
+weapon_component_template = {
+	type = point_defence
+	
+	key = "RA_weapen_P"
+	size = point_defence
+	entity = "turret_point_defence_entity"
+	
+	damage = { min = 12 max = 25 }
+	windup = { min = 0.5 max = 2 }
+	total_fire_time = 6
+	range = 60.0
+	shield_damage = 1.50
+	armor_damage = 1.5
+	accuracy = 1.0
+	tracking = 1.0
+	power = -25
+	hidden = yes	
+	icon = "GFX_RA_weapen_P"
+	icon_frame = 1
+	
+	prerequisites = { "tech_UNITEDFLEET" }
+	component_set = "RA_weapen_P"
+	projectile_gfx = "stormfire_auto_cannons_s"
+	tags = { weapon_type_point_defense weapon_type_energy weapon_type_kinetic }
+	ai_tags = { weapon_role_point_defense }
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 20
+		}
+		upkeep = {
+			energy = 0.3
+			alloys = 0.05
+		}
+	}
+}
+weapon_component_template = {
+	key = "RA_weapen_G"
+	size = torpedo
+	entity = "turret_torpedo_entity"
+	
+	icon = "GFX_RA_weapen_G"
+	icon_frame = 1
+	type = missile
+	hidden = yes	
+	component_set = "RA_weapen_G"
+	projectile_gfx = "large_torpedo_03"
+	tags = { weapon_type_energy weapon_type_explosive g_slot }
+	ai_tags = { weapon_role_anti_shield }
+
+	damage = { min = 1500 max = 2500 }
+	windup = { min = 2 max = 20 }
+	total_fire_time = 180
+	range = 200.0
+	accuracy = 1.0
+	tracking = 0.2
+	power = -150
+	
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 10
+		}		
+		upkeep = {
+			energy = 5
+			alloys = 1
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0.0
+			has_monthly_income = { resource = volatile_motes value <= 0 }
+		}
+	}
+
+	missile_speed = 40
+	missile_evasion = 0.20
+	missile_shield = 50
+	missile_armor = 10
+	missile_health = 50
+	missile_retarget_range = 100
+	
+	shield_penetration = 1.0
+	armor_penetration = 1.0
+	hull_damage = 1.5
+
+	prerequisites = { "tech_UNITEDFLEET" }
+	size_damage_factor = 1
+}
+
+weapon_component_template = {
+	key = "RA_weapen_S"
+	size = small
+	entity = "small_laser_gun_entity"
+	type = instant
+	
+	icon = "GFX_RA_weapen_S"
+	icon_frame = 1
+	hidden = yes	
+	use_ship_kill_target = no
+	
+	damage = { min = 120 max = 250 }
+	windup = { min = 1 max = 5 }
+	total_fire_time = 50
+	range = 100.0
+	accuracy = 1.0
+	shield_penetration = 1.0
+	armor_penetration = 1.0
+	tracking = 0.5
+	power = -15
+	
+	prerequisites = { "tech_UNITEDFLEET" }
+	component_set = "RA_weapen_S"
+	projectile_gfx = "wsg_medium_turbolaser_l_r"
+	tags = { weapon_type_energy weapon_type_kinetic s_slot }
+	ai_tags = { weapon_role_anti_armor }
+	ai_tag_weight = 3
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 30
+		}		
+		upkeep = {
+			energy = 0.8
+		}
+	}
+}
+
+weapon_component_template = {
+	key = "RA_weapen_L"
+	size = large
+	entity = "large_laser_gun_entity"
+	type = instant
+	
+	icon = "GFX_RA_weapen_L"
+	icon_frame = 1
+	hidden = yes	
+	min_range = 5.0
+	use_ship_kill_target = no
+	
+	damage = { min = 1000 max = 2000 }
+	windup = { min = 5 max = 15 }
+	total_fire_time = 80
+	range = 160.0
+	accuracy = 1.0
+	shield_penetration = 1.0
+	armor_penetration = 1.0
+	tracking = 0.30
+	power = -250
+	
+	prerequisites = { "tech_UNITEDFLEET" }
+	component_set = "RA_weapen_L"
+	projectile_gfx = "wsg_heavy_turbo_l_r"
+	tags = { weapon_type_kinetic }
+	tags = { weapon_type_energy }
+	ai_tags = { weapon_role_artillery l_slot }
+	ai_tag_weight = 0
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 100
+		}		
+		upkeep = {
+			energy = 2.5
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0.0
+			has_monthly_income = { resource = rare_crystals value <= 0 }
+		}
+	}
+}
+weapon_component_template = {
+	key = "RA_weapen_X"
+	size = extra_large
+	entity = "invisible_turret_entity"
+	type = instant
+	
+	icon = "GFX_RA_weapen_X"
+	icon_frame = 1
+	
+	firing_arc = 20.0
+	min_range = 30.0
+	use_ship_kill_target = no
+	hidden = yes	
+	damage = { min = 6000 max = 12000 }
+	windup = { min = 30 max = 45 }
+	total_fire_time = 130
+	range = 210.0
+	accuracy = 0.9
+	shield_penetration = 1.0
+	armor_penetration = 1.0
+	tracking = 0.15
+	power = -600
+	
+	prerequisites = { "tech_UNITEDFLEET" }
+	component_set = "RA_weapen_X"
+	projectile_gfx = "wsg_huge_turbolaser_l_r"
+	tags = { weapon_type_energy weapon_type_kinetic weapon_role_artillery x_slot }
+	ai_tags = { weapon_role_artillery }
+	ai_tag_weight = 0
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 350
+		}		
+		upkeep = {
+			energy = 15
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0.0
+			has_monthly_income = { resource = rare_crystals value <= 0 }
+		}
+	}
+}
+
+weapon_component_template = {
+	key = "RA_weapen_T"
+	size = titanic
+	entity = "invisible_turret_entity"
+	type = instant
+	
+	icon = "GFX_RA_weapen_T"
+	icon_frame = 1
+	
+	firing_arc = 20.0
+	min_range = 40.0
+	use_ship_kill_target = no
+	hidden = yes	
+	damage = { min = 50000 max = 200000 }
+	windup = { min = 30 max = 45 }
+	total_fire_time = 270
+	range = 350.0
+	accuracy = 0.9
+	shield_penetration = 1.0
+	armor_penetration = 1.0
+	tracking = 0.1
+	power = -1200
+	
+	prerequisites = { "tech_UNITEDFLEET" }
+	component_set = "RA_weapen_T"
+	projectile_gfx = "ra_lance_381"
+	tags = { weapon_type_energy weapon_type_kinetic weapon_role_artillery t_slot }
+	ai_tags = { weapon_role_artillery }
+	ai_tag_weight = 0
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 1000
+		}		
+		upkeep = {
+			energy = 25
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0.0
+			has_monthly_income = { resource = rare_crystals value <= 0 }
+		}
+	}
+}

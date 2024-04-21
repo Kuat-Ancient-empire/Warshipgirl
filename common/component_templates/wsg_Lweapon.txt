@@ -1,0 +1,114 @@
+weapon_component_template = {
+	key = "wsg_weapen_L_203"
+	size = large
+	entity = "large_kinetic_gun_entity"
+	type = instant
+	
+	icon = "GFX_wsg_weapen_L_203"
+	icon_frame = 1
+	
+	
+	use_ship_kill_target = no
+	min_range = 25.0
+	damage = { min = 300 max = 900 }
+	windup = { min = 15 max = 25 }
+	total_fire_time = 75
+	range = 135.0
+	accuracy = 0.9
+	shield_penetration = 0.3
+	armor_damage = 2.5
+	hull_damage = 1.8
+	tracking = 0.20
+	power = -130
+	
+	prerequisites = { "tech_wsg_203" }
+	component_set = "wsg_weapen_L_203"
+	projectile_gfx = "wsg_heavy_turbo_l_b"
+	upgrades_to = "wsg_weapen_L_203EX"
+	tags = { weapon_type_energy l_slot }
+	ai_tags = { weapon_role_artillery }
+	ai_tag_weight = 0
+	resources = {
+		category = ship_components
+		cost = {
+			sr_neo = 5
+			sr_alpha = 0.5
+			alloys = 60
+		}		
+		upkeep = {
+			energy = 1.0
+		}
+	}
+	ai_weight = {
+		weight = 200
+		modifier = {
+			factor = 5
+			is_wg_empire = yes
+		}
+		modifier = {
+			factor = 0.0
+			OR = {
+				component_no_resource = { RESOURCE = sr_neo MIN_REQUIREMENT = 300 }
+				component_no_resource = { RESOURCE = sr_alpha MIN_REQUIREMENT = 100 }
+			}
+		}
+	}
+}
+weapon_component_template = {
+	key = "wsg_weapen_L_203EX"
+	size = large
+	entity = "large_kinetic_gun_entity"
+	type = instant
+	
+	icon = "GFX_wsg_weapen_L_203EX"
+	icon_frame = 1
+	
+	min_range = 25.0
+	
+	use_ship_kill_target = no
+	
+	damage = { min = 400 max = 1200 }
+	windup = { min = 10 max = 25 }
+	total_fire_time = 75
+	range = 140.0
+	accuracy = 0.90
+	shield_penetration = 1.0
+	armor_penetration = 1.0
+	tracking = 0.30
+	power = -250
+	
+	prerequisites = { "tech_wsg_203EX" }
+	component_set = "wsg_weapen_L_203EX"
+	projectile_gfx = "wsg_heavy_turbo_l_g"
+	tags = { weapon_type_energy weapon_type_explosive l_slot }
+	ai_tags = { weapon_role_artillery }
+	ai_tag_weight = 0
+	resources = {
+		category = ship_components
+		cost = {
+			sr_neo = 10
+			sr_alpha = 1
+			sr_dark_matter = 1
+			alloys = 80
+		}		
+		upkeep = {
+			energy = 1.5
+		}
+	}
+	ai_weight = {
+		weight = 250
+		modifier = {
+			factor = 5
+			is_wg_empire = yes
+		}
+		modifier = {
+			factor = 0.0
+			OR = {
+				component_no_resource = { RESOURCE = sr_neo MIN_REQUIREMENT = 400 }
+				component_no_resource = { RESOURCE = sr_alpha MIN_REQUIREMENT = 150 }
+				component_no_resource = { RESOURCE = sr_dark_matter MIN_REQUIREMENT = 100 }
+			}
+		}
+	}
+	size_damage_factor = 0.05
+}

@@ -1,0 +1,86 @@
+hm_jammer_build_situation = {
+	picture = GFX_evt_monolith_crisis_16
+
+	complete_icon = GFX_situation_outcome_monolith
+	complete_icon_frame = GFX_situation_outcome_frame_blue
+
+	category = positive
+	complete_category = positive
+
+	on_progress_complete = {	#Effects when Situation's progress has reached 100
+		destroy_situation = this
+		situation_event = { id = monolith_crisis.337 }
+	}
+
+	stages = {
+		hm_jammer_build_50 = {
+			icon = GFX_situation_stage_1
+			icon_background = GFX_situation_stage_frame_blue
+			end = 49
+			custom_tooltip = hm_jammer_build_0_effects
+		}
+		hm_jammer_build_100 = {
+			icon = GFX_situation_stage_2
+			icon_background = GFX_situation_stage_frame_blue
+			end = 100
+			on_first_enter = {
+				situation_event = { id = monolith_crisis.336 }
+			}
+			custom_tooltip = hm_jammer_build_50_effects
+		}
+	}
+	approach = {
+		name = situation_hm_jammer_normal
+		icon = GFX_situation_approach_research
+		icon_background = GFX_situation_approach_bg_yellow
+		default = yes
+		on_select = {
+			custom_tooltip = situation_hm_jammer_normal_tooltip
+		}
+	}
+
+	approach = {
+		name = situation_hm_jammer_speed_up
+		icon = GFX_situation_approach_energy_credits
+		icon_background = GFX_situation_approach_bg_green
+		on_select = {
+			custom_tooltip = situation_hm_jammer_speed_up_tooltip
+		}
+		allow = {
+			owner = {
+				resource_stockpile_compare = { resource = energy value >= 50000 }
+				resource_stockpile_compare = { resource = minerals value >= 50000 }
+				resource_stockpile_compare = { resource = alloys value >= 20000 }
+				resource_stockpile_compare = { resource = sr_uf value >= 20000 }
+			}
+		}
+		resources = {
+			category = situations
+			upkeep = {
+				energy = 50000
+				minerals = 50000
+				alloys = 20000
+				sr_uf = 20000
+			}
+		}
+		modifier = {
+			country_produces_mult = -0.5
+		}
+	}
+
+	on_monthly = {
+		events = {
+			monolith_crisis.339
+		}
+	}
+	monthly_progress = {
+		base = 0.833 # 1 / 120个月
+		modifier = {
+			add = 0.167 # 1 / 120个月 * 0.2
+			desc = situation_hm_jammer_speed_up_tooltip
+			current_situation_approach = situation_hm_jammer_speed_up
+		}
+	}
+	abort_trigger = { has_global_flag = monolith_crisis_end } 
+		
+}

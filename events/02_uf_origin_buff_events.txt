@@ -1,0 +1,489 @@
+namespace = uf_buff
+
+# 主触发，判断舰队里的船是否有某部件
+country_event = {
+	id = uf_buff.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		# 关掉所有buff的触发
+		NOT = { has_global_flag = uf_buff_disabled }
+		FROMFROM = { 
+            NOT = { has_fleet_flag = drones }
+        }
+	}
+
+	immediate = {
+		fromfrom = {
+			if = {
+				limit = { any_owned_ship = {
+					has_component = UF_AURA_C
+				}}
+				from = {
+					every_combatant_fleet = {
+						limit = { NOT = { has_fleet_flag = uf_buff_C }}
+						add_modifier = { modifier = uf_buff_C }
+						set_fleet_flag = uf_buff_C
+					}	
+				}
+			}
+		    if = {
+				limit = { any_owned_ship = {
+					has_component = UF_AURA_D
+				}}
+				from = {
+					every_combatant_fleet = {
+						limit = { NOT = { has_fleet_flag = uf_buff_D }}
+						add_modifier = { modifier = uf_buff_D days = 10 }
+						set_fleet_flag = uf_buff_D
+					}	
+				}
+			}
+			if = {
+				limit = { any_owned_ship = {
+					has_component = UF_AURA_E
+				}}
+				if = {
+					limit = { NOT = { has_fleet_flag = uf_buff_E }}
+					set_fleet_flag = uf_buff_E
+				}
+				fleet_event = { id = uf_buff.100 }
+			}
+			if = {
+				limit = { any_owned_ship = {
+					has_component = UF_AURA_F
+				}}
+				if = {
+					limit = { NOT = { has_fleet_flag = uf_debuff_F }}
+					set_fleet_flag = uf_debuff_F
+				}
+
+				every_combatant_fleet = {
+					limit = { NOT = { has_fleet_flag = uf_debuff_F }}
+					add_modifier = { modifier = uf_debuff_F days = 10 }
+					set_fleet_flag = uf_debuff_F
+				}
+			}
+			if = {
+				limit = { any_owned_ship = {
+					has_component = UF_AURA_Glory
+				}}
+				if = {
+					limit = { NOT = { has_fleet_flag = uf_buff_Glory }}
+					set_fleet_flag = uf_buff_Glory
+				}
+				fleet_event = { id = uf_buff.101 }
+			}
+			if = {
+				limit = {
+					exists = leader
+					leader = { has_leader_flag = uf_vv_admiral }
+				}
+				if = {
+					limit = { NOT = { has_fleet_flag = uf_buff_vv_fleet }}
+					set_fleet_flag = uf_buff_vv_fleet
+				}
+				fleet_event = { id = uf_buff.102 }
+			}
+			if = {#超大和
+				limit = {
+					exists = leader
+					leader = { has_leader_flag = wg_a150_admiral }
+				}
+				if = {
+					limit = { NOT = { has_fleet_flag = wg_a150_admiral_fleet }}
+					set_fleet_flag = wg_a150_admiral_fleet
+				}
+				fleet_event = { id = uf_buff.103 }
+			}
+		}
+	}
+}
+
+# 移除buff的事件
+# 带判断舰队是否仍然交战状态
+fleet_event = {
+    id = uf_buff.3
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = { 
+        exists = this
+        NOT = { has_global_flag = uf_buff_disabled }
+    }
+
+	immediate = {
+		if = {
+			limit = { has_fleet_flag = uf_buff_C }
+			remove_fleet_flag = uf_buff_C
+			remove_modifier = uf_buff_C
+		}
+		if = {
+			limit = { has_fleet_flag = uf_buff_D }
+			remove_fleet_flag = uf_buff_D
+			remove_modifier = uf_buff_D
+		}
+		if = {
+			limit = { has_fleet_flag = uf_buff_E }
+			remove_fleet_flag = uf_buff_E
+			remove_modifier = uf_buff_E
+		}
+		if = {
+			limit = { has_fleet_flag = uf_debuff_F }
+			remove_fleet_flag = uf_debuff_F
+			remove_modifier = uf_debuff_F
+		}
+		if = {
+			limit = { has_fleet_flag = uf_buff_Glory }
+			remove_fleet_flag = uf_buff_Glory
+			remove_modifier = uf_buff_Glory
+		}
+		if = {
+			limit = { has_fleet_flag = uf_buff_vv_fleet }
+			remove_fleet_flag = uf_buff_vv_fleet
+		}
+		if = {
+			limit = { has_fleet_flag = wg_a150_admiral_fleet }
+			remove_fleet_flag = wg_a150_admiral_fleet
+		}
+	}
+}
+
+# This = owner of ship 1 (destroyed)
+# From = owner of ship 2 (combatant)
+# FromFrom = ship 1
+# FromFromFrom = ship 2
+#联合大家伙打爆留残骸
+country_event = {
+    id = uf_buff.4
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+		FromFrom = {
+			OR = {
+				is_ship_size = uf_glory_o
+				is_ship_size = uf_star_fortress
+				is_ship_size = uf_star_fortress_2
+				is_ship_size = sh_planetary_ship
+			}
+		}
+    }
+
+	immediate = {
+		if = {
+			limit = { FromFrom = {is_ship_size = uf_glory_o }}
+			FromFrom = {
+				solar_system = {
+					save_event_target_as = uf_glory_ruin_system
+					spawn_megastructure = { 
+						type = "uf_glory_megastructure_ruin" 
+						coords_from = prev
+						init_effect = {
+							save_event_target_as = uf_glory_ruin_megastructure
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -25 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:uf_glory_ruin_megastructure
+							distance = 15
+							angle = random
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -20 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:uf_glory_ruin_megastructure
+							distance = 15
+							angle = random
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -25 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:uf_glory_ruin_megastructure
+							distance = 25
+							angle = random
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = 0 max = -20 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:uf_glory_ruin_megastructure
+							distance = 5
+							angle = random
+						}
+					}
+				}
+			}
+			if = {
+				limit = { NOT = { has_country_flag = uf_glory_o_stop_notice } }
+				country_event = {
+					id = uf_buff.401
+					#弹窗提示
+				}
+			}
+		}
+		if = {
+			limit = { 
+				FromFrom = {
+					OR = { 
+						is_ship_size = uf_star_fortress
+						is_ship_size = uf_star_fortress_2
+					}
+				}
+			}
+			FromFrom = {
+				solar_system = {
+					save_event_target_as = uf_star_fortress_ruin_system
+					spawn_megastructure = { 
+						type = "uf_star_fortress_megastructure_ruin" 
+						coords_from = prev
+						init_effect = {
+							save_event_target_as = uf_star_fortress_ruin_megastructure
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -25 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:uf_star_fortress_ruin_megastructure
+							distance = 15
+							angle = random
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -20 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:uf_star_fortress_ruin_megastructure
+							distance = 15
+							angle = random
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -25 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:uf_star_fortress_ruin_megastructure
+							distance = 25
+							angle = random
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = 0 max = -20 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:uf_star_fortress_ruin_megastructure
+							distance = 5
+							angle = random
+						}
+					}
+				}
+			}
+			if = {
+				limit = { NOT = { has_country_flag = uf_star_fortress_stop_notice } }
+				country_event = {
+					id = uf_buff.402
+					#弹窗提示
+				}
+			}
+		}
+		if = {
+			limit = { 
+				FromFrom = {
+					OR = { 
+						is_ship_size = sh_planetary_ship
+					}
+				}
+			}
+			FromFrom = {
+				solar_system = {
+					save_global_event_target_as = sh_planetary_ship_system
+					spawn_megastructure = { 
+						type = "sh_planetary_ship_megastructure_ruin" 
+						coords_from = prev
+						init_effect = {
+							save_global_event_target_as = sh_planetary_ship_ruin_megastructure
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -20 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:sh_planetary_ship_ruin_megastructure
+							distance = 0
+							angle = random
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -20 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:sh_planetary_ship_ruin_megastructure
+							distance = 5
+							angle = random
+						}
+					}
+				}
+			}
+			From = {
+				country_event = {
+					id = sh_fe.28
+				}
+			}
+		}
+		####以此类推
+	}
+}
+country_event = {
+	id = uf_buff.401
+	title = uf_buff.401.name
+	is_triggered_only = yes
+	picture = GFX_evt_uf_glory_ruin
+	desc = "uf_buff.401.desc"
+	location = event_target:uf_glory_ruin_system
+	trigger = {
+		NOT = {
+			has_country_flag = uf_glory_o_stop_notice
+		}
+    }
+	option = {
+		name = uf_buff.401.a
+	}
+	option = {
+		name = uf_buff.401.b
+		custom_tooltip = uf_buff.401_tooltip
+		set_country_flag = uf_glory_o_stop_notice
+	}
+}
+
+country_event = {
+	id = uf_buff.402
+	title = uf_buff.402.name
+	is_triggered_only = yes
+	picture = GFX_evt_uf_star_fortress_ruins
+	desc = "uf_buff.402.desc"
+	location = event_target:uf_star_fortress_ruin_system
+	trigger = {
+		NOT = {
+			has_country_flag = uf_star_fortress_stop_notice
+		}
+    }
+	option = {
+		name = uf_buff.402.a
+	}
+	option = {
+		name = uf_buff.401.b
+		custom_tooltip = uf_buff.402_tooltip
+		set_country_flag = uf_star_fortress_stop_notice
+	}
+}
+# 特殊情况，需要对舰队进行一些操作
+fleet_event = {
+	id = uf_buff.100
+    hide_window = yes
+    is_triggered_only = yes
+
+	trigger = {
+        is_in_combat = yes
+    }
+
+	immediate = {
+		# 舰队铁幕，一段时间无敌
+		every_owned_ship = {
+            limit = { NOT = { has_ship_flag = invincible }}
+			set_timed_ship_flag = { flag = invincible days = 10 }
+			#临时加生命避免一击秒杀
+			add_many_hp = { DAYS = 10 }
+			# 将船回满血
+			ship_event = { id = raa_skill.2021 }
+        }
+	}
+}
+
+fleet_event = {
+	id = uf_buff.101
+    hide_window = yes
+    is_triggered_only = yes
+
+	trigger = {
+        is_in_combat = yes
+    }
+
+	immediate = {
+		# 舰队铁幕，一段时间无敌
+		every_owned_ship = {
+            limit = { NOT = { has_ship_flag = invincible }}
+			set_timed_ship_flag = { flag = invincible days = 30 }
+			#临时加生命避免一击秒杀
+			add_many_hp = { DAYS = 30 }
+			# 将船回满血
+			ship_event = { id = raa_skill.2021 }
+        }
+	}
+}
+fleet_event = {
+	id = uf_buff.102
+    hide_window = yes
+    is_triggered_only = yes
+
+	trigger = {
+        is_in_combat = yes
+    }
+
+	immediate = {
+		# 舰队铁幕，一段时间无敌
+		every_owned_ship = {
+            limit = { NOT = { has_ship_flag = invincible }}
+			set_timed_ship_flag = { flag = invincible days = 5 }
+			#临时加生命避免一击秒杀
+			add_many_hp = { DAYS = 5 }
+			# 将船回满血
+			ship_event = { id = raa_skill.2021 }
+        }
+	}
+}
+
+fleet_event = {
+	id = uf_buff.103
+    hide_window = yes
+    is_triggered_only = yes
+
+	trigger = {
+        is_in_combat = yes
+    }
+
+	immediate = {
+		# 舰队铁幕，一段时间无敌
+		every_owned_ship = {
+            add_modifier = { modifier = wg_a150_modifier days = 5 }
+        }
+	}
+}

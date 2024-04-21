@@ -1,0 +1,241 @@
+#Perks Example
+#<perk_name>={
+#	Modifier for federation scope
+#	federation_modifier = {}
+#	Modifier for all members (leader included)
+#	members_modifier = {}
+#	Modifier for exclusevely leader
+#	leader_modifier = {}
+#	On activate effect in federation scope
+#	on_activate = {}
+#	On deactivate effect in federation scope
+#}
+
+
+wsg_lv1_1 = {#LV1经济
+	members_modifier = {
+		country_trust_growth = 0.05
+		trade_value_mult = 0.15
+		trade_routes_produces_mult = 0.15
+	}
+	federation_modifier = {
+		federation_cohesion_add = 2 #蠢驴没实装效果 #TODO
+	}
+}
+
+wsg_lv1_2 = {#军事建设，联邦舰队
+	members_modifier = {
+		country_naval_cap_add = 20
+	}
+	federation_modifier = {
+		federation_fleet_contribution_factor = 0.2
+		federation_fleet_cap_add = 50
+	}
+}
+
+wsg_lv1_3 = {
+	federation_modifier = {
+		description = research_federation_passive_effect
+		federation_research_sharing_mult = 0.25
+	}
+	on_activate = {
+		set_federation_settings = {
+			research_sharing = yes
+		}
+	}
+	on_deactivate = {
+		set_federation_settings = {
+			research_sharing = no
+		}
+	}
+}
+
+wsg_lv2_1 = {#LV2经济，外交
+	members_modifier = {
+		branch_office_value_mult = 0.20
+	}
+	members_modifier = {
+		description = wsg_federation_lv2_1_effect
+	}
+	member_triggered_modifier = {
+		key = wsg_lv2_1
+		potential = {
+			owner = { is_ai = yes }
+		}
+		planet_jobs_produces_mult = 0.2
+	}
+	leader_modifier = {
+		envoys_add = 2
+	}
+	federation_modifier = {
+		federation_join_malus_mult = -0.5
+		federation_cohesion_ethics_penalty_mult = -0.5 #蠢驴没实装效果 #TODO
+	}
+}
+
+wsg_lv2_2 = {#LV2军事建设
+	members_modifier = {
+		description = wsg_federation_lv2_2_effect
+		federation_naval_cap_contribution_mult = 0.25
+	}
+	members_modifier = {
+		ship_starting_experience_add = 50
+		army_starting_experience_add = 50
+	}
+	federation_modifier = {
+		federation_fleet_cap_add = 250
+	}
+}
+wsg_lv2_3 = {#LV2科技
+	members_modifier = {
+		all_technology_research_speed = 0.05
+	}
+}
+
+wsg_lv3_1 = {#LV3经济
+	members_modifier = {
+		planet_jobs_produces_mult = 0.1
+	}
+	leader_modifier = {
+		country_energy_produces_mult = 0.1
+	}
+
+}
+
+wsg_lv3_2 = {#LV3军事
+	members_modifier = {
+		description = wsg_federation_lv3_2_effect
+		federation_naval_cap_contribution_mult = 0.25
+	}
+	members_modifier = {
+		ship_fire_rate_mult = 0.10
+		starbase_shipyard_build_speed_mult = 0.25
+	}
+	member_triggered_modifier = {
+		key = wsg_lv3_2
+		potential = {
+			owner = { is_ai = yes }
+		}
+		ship_weapon_damage = 0.20
+	}
+	federation_modifier = {
+		federation_fleet_cap_add = 500
+	}
+}
+
+wsg_lv3_3 = {#LV3科技
+    members_modifier = {
+		planet_researchers_upkeep_mult = -0.1
+	}
+	leader_modifier = {
+		country_physics_research_produces_mult = 0.1
+	}
+}
+
+wsg_lv4_1 = {#LV4经济
+	members_modifier = {
+		planet_crime_add = -10
+		planet_stability_add = 5
+		planet_amenities_mult = 0.10
+		planet_pop_assembly_organic_mult = 0.10
+		pop_growth_speed = 0.1
+	}
+}
+
+wsg_lv4_2 = {#LV4军事
+	members_modifier = {
+		description = wsg_federation_lv4_2_effect
+		federation_naval_cap_contribution_mult = 0.25
+	}
+	members_modifier = {
+		starbase_shipyard_build_speed_mult = 0.30
+	}
+	federation_modifier = {
+		federation_fleet_cap_add = 1000
+	}
+}
+
+wsg_lv4_3 = {#LV4科技
+    members_modifier = {
+		all_technology_research_speed = 0.10
+		num_tech_alternatives_add = 1
+		species_leader_exp_gain = 0.25
+	}
+	members_modifier = {
+		description = wsg_federation_lv4_3_effect
+	}
+	member_triggered_modifier = {
+		key = wsg_lv4_3
+		potential = {
+			owner = { is_ai = yes }
+		}
+		all_technology_research_speed = 0.20
+	}
+}
+wsg_lv5_1 = {#LV5危机经济
+	members_modifier = {
+		megastructures_produces_mult = 0.10
+		megastructure_build_speed_mult = 0.25
+	}
+	members_modifier = {
+		description = crisis_wg_produces_effect
+	}
+	member_triggered_modifier = {
+		key = wsg_lv5_1
+		potential = {
+			OR = {
+				has_crisis = yes
+				has_global_flag = wg_invasion_happened
+				has_global_flag = set_allied_ag_kuat
+				has_global_flag = is_enemy_ag_kuat
+			}
+		}
+		planet_jobs_produces_mult = 0.15
+	}
+}
+wsg_lv5_2 = {#LV5危机军事
+ 	members_modifier = {
+		description = federation_fleet_size_effect
+		federation_naval_cap_contribution_mult = 0.25
+	}
+	members_modifier = {
+		description = crisis_wg_military_effect
+	}
+	member_triggered_modifier = {
+		key = wsg_lv5_2
+		potential = {
+			OR = {
+				has_crisis = yes
+				has_global_flag = wg_invasion_happened
+				has_global_flag = set_allied_ag_kuat
+				has_global_flag = is_enemy_ag_kuat
+			}
+		}
+		starbase_shipyard_build_speed_mult = 0.50
+	}
+	federation_modifier = {
+		federation_fleet_cap_add = 2500
+	}
+}
+wsg_lv5_3 = {#LV5危机科研
+ 	members_modifier = {
+		planet_jobs_engineering_research_produces_mult = 0.25
+		planet_jobs_physics_research_produces_mult = 0.25
+		planet_jobs_society_research_produces_mult = 0.25
+	}
+	members_modifier = {
+		description = crisis_wg_research_effect
+	}
+	member_triggered_modifier = {
+		key = wsg_lv5_3
+		potential = {
+			OR = {
+				has_crisis = yes
+				has_global_flag = wg_invasion_happened
+				has_global_flag = set_allied_ag_kuat
+				has_global_flag = is_enemy_ag_kuat
+			}
+		}
+		all_technology_research_speed = 0.20
+	}
+}

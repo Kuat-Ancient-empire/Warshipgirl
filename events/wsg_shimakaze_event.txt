@@ -1,0 +1,1090 @@
+namespace = wg_shimakaze
+
+country_event = {
+	id = wg_shimakaze.1
+	title = wg_shimakaze.1.title
+	desc = wg_shimakaze.1.desc
+	picture = GFX_evt_mist_yubari
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	trigger = {
+		NOT = { has_country_flag = get_wg_shimakaze }
+	}
+	immediate = {
+		
+		if = {
+			limit = { NOT = { any_country = { has_country_flag = get_wg_shimakaze }}}
+			create_species = {
+				name = MIST_LEADER
+				plural = MIST_LEADER
+				class = "Warship_Girls"
+				portrait = wsg11
+				name_list = WSG
+				effect = {
+					save_global_event_target_as = wg_shimakaze_species
+				}
+			}
+			create_country = {
+				name = "Name_mist_leader_wg_shimakaze"
+				species = event_target:wg_shimakaze_species
+				type = wg_shimakaze
+				flag = {
+					icon = {
+						category = "warshipgirls"
+						file = "wg_flags_02.dds"
+					}
+					background={
+						category="backgrounds"
+						file="stripes.dds"
+					}
+					colors={
+						"blue"
+						"indigo"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					save_global_event_target_as = wg_shimakaze_country
+					set_country_flag = wg_shimakaze_country	
+				}
+			}
+		}
+		set_country_flag = get_wg_shimakaze
+		event_target:wg_shimakaze_country = {
+			establish_communications_no_message = root
+		}
+		save_global_event_target_as = wg_shimakaze_own_country
+		set_variable = { which = wg_shimakaze_affection value = 1 }
+		set_variable = { which = wg_shimakaze_affection_level value = 1 }
+		set_variable = { which = wg_shimakaze_level value = 10 }
+		set_variable = { which = wg_shimakaze_cloth value = 0 }
+	}
+
+	option = {
+		name = wg_shimakaze.1.a
+		hidden_effect = {
+			country_event = { id = wg_shimakaze.2 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_shimakaze.2
+	title = "TRANSMISSION"
+	desc = wg_shimakaze.2.desc
+	show_sound = event_wg_shimakaze_first_meet
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = wg_shimakaze.2.a
+		change_variable = { which = rankpts value = 3 }
+	}
+}
+
+#对话界面
+country_event = {
+	id = wg_shimakaze.3
+	title = wg_shimakaze
+	desc = wg_shimakaze.3.desc
+	is_triggered_only = yes
+	show_sound = event_wg_shimakaze_contact
+	diplomatic = yes
+	
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	trigger = {
+		from = { OR = {
+			is_country_type = wg_shimakaze 
+			is_same_value = ROOT
+		}}
+		OR = {
+			wg_shimakaze_active_diplo = no
+			NOT = { has_country_flag = wg_shimakaze_engaged }
+		}
+		OR = {
+			has_country_flag = get_wg_shimakaze
+			is_same_value = event_target:wg_shimakaze_own_country
+		}
+		NOT = {
+			has_country_flag = wg_shimakaze_hurt
+		}
+	}
+
+	immediate = {
+		set_country_flag = wg_shimakaze_engaged
+	}
+	
+	after = {
+		hidden_effect = { 
+			remove_country_flag = wg_shimakaze_engaged 
+			random_owned_leader = {
+				limit = { has_leader_flag = wg_shimakaze_leader } 
+				change_wg_shimakaze_portrait = yes
+			}
+		}
+	}
+
+	option = {
+		name = wg_shimakaze.3.a
+		trigger = {
+			NOT = {
+				has_country_flag = wg_shimakaze_official_active
+			}
+		}
+		hidden_effect = {
+			country_event = {
+				id = wg_shimakaze.30010
+			}
+		}
+	}
+	option = {
+		name = wg_shimakaze.3.b
+		trigger = {
+			NOT = {
+				has_country_flag = wg_shimakaze_scientist_active
+			}
+		}
+		hidden_effect = {
+			country_event = {
+				id = wg_shimakaze.30011
+			}
+		}
+	}
+	option = {
+		name = wg_shimakaze.3.c
+		trigger = {
+			NOT = {
+				has_country_flag = wg_shimakaze_admiral_active
+			}
+		}
+		hidden_effect = {
+			country_event = {
+				id = wg_shimakaze.30012
+			}
+		}
+	}
+	option = {
+		name = wg_shimakaze.3.d
+		trigger = {
+			NOT = {
+				has_country_flag = wg_shimakaze_general_active
+			}
+		}
+		hidden_effect = {
+			country_event = {
+				id = wg_shimakaze.30013
+			}
+		}
+	}
+	option = {
+		name = wg_shimakaze.3.e
+		hidden_effect = {
+			random_list = {
+				1 = { country_event = { id = wg_shimakaze.30001 }}
+				1 = { country_event = { id = wg_shimakaze.30002 }}
+				1 = { country_event = { id = wg_shimakaze.30003 }}
+				0 = {
+					modifier = {
+						has_country_flag = married_wg_shimakaze
+						add = 2
+					}
+					country_event = { id = wg_shimakaze.30004 }
+				}
+				0 = {
+					modifier = {
+						has_country_flag = married_wg_shimakaze
+						add = 2
+					}
+					country_event = { id = wg_shimakaze.30005 }
+				}
+				0 = {
+					modifier = {
+						has_country_flag = married_wg_shimakaze
+						add = 2
+					}
+					country_event = { id = wg_shimakaze.30006 }
+				}
+				0 = {
+					modifier = {
+						has_country_flag = married_wg_shimakaze
+						add = 2
+					}
+					country_event = { id = wg_shimakaze.30007 }
+				}
+				0 = {
+					modifier = {
+						has_country_flag = married_wg_shimakaze
+						add = 2
+					}
+					country_event = { id = wg_shimakaze.30008 }
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_shimakaze.3.f
+		trigger = {
+			has_country_flag = can_marry_wg_shimakaze
+			NOT = {
+				has_country_flag = married_wg_shimakaze
+			}
+		}
+		allow = {
+			custom_tooltip = {
+				check_variable = {
+					which = wsg_rings
+					value >= 1 
+				}
+				fail_text = not_enough_engagement_rings
+			}
+		}
+		hidden_effect = {
+			change_variable = {
+				which = wsg_rings
+				value = -1
+			}
+			country_event = { id = wg_shimakaze.30102 }
+		}
+	}
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+#大破界面
+country_event = {
+	id = wg_shimakaze.5
+	desc = wg_shimakaze.5.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	show_sound = event_wg_shimakaze_contact_hurt
+
+	trigger = {
+		from = { OR = {
+			is_country_type = wg_shimakaze 
+			is_same_value = ROOT
+		}}
+		wg_shimakaze_active_diplo = no
+		has_country_flag = wg_shimakaze_hurt
+		OR = {
+			has_country_flag = get_wg_shimakaze
+			is_same_value = event_target:wg_shimakaze_own_country
+		}
+	}
+
+	immediate = {
+		set_country_flag = wg_shimakaze_engaged
+	}
+	
+	after = {
+		hidden_effect = { 
+			remove_country_flag = wg_shimakaze_engaged 
+			random_owned_leader = {
+				limit = { has_leader_flag = wg_shimakaze_leader } 
+				change_wg_shimakaze_portrait = yes
+			}
+		}
+	}
+
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+#大破界面返回
+country_event = {
+	id = wg_shimakaze.4
+	desc = wg_shimakaze.5.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	immediate = {
+		set_country_flag = wg_shimakaze_engaged
+	}
+	
+	after = {
+		hidden_effect = { 
+			remove_country_flag = wg_shimakaze_engaged 
+		}
+	}
+
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+#对话1界面
+country_event = {
+	id = wg_shimakaze.30001
+	title = wg_shimakaze
+	desc = wg_shimakaze.30001.desc
+	show_sound = event_wg_shimakaze_talk1
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	immediate = {
+		set_country_flag = wg_shimakaze_engaged
+	}
+	option = {
+		name = wg_shimakaze_talk_return
+		hidden_effect = { country_event = { id = wg_old_leader_diplo.3020 }}
+	}
+	option = {
+		name = wg_shimakaze_talk_exit
+		default_hide_option = yes
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged 
+		}
+	}
+}
+
+#对话2界面
+country_event = {
+	id = wg_shimakaze.30002
+	title = wg_shimakaze
+	desc = wg_shimakaze.30002.desc
+	show_sound = event_wg_shimakaze_talk2
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_country_flag = wg_shimakaze_engaged
+	}
+	option = {
+		name = wg_shimakaze_talk_return
+		hidden_effect = { country_event = { id = wg_old_leader_diplo.3020 }}
+	}
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged 
+		}
+		default_hide_option = yes
+	}
+}
+
+#对话3界面
+country_event = {
+	id = wg_shimakaze.30003
+	title = wg_shimakaze
+	desc = wg_shimakaze.30003.desc
+	show_sound = event_wg_shimakaze_talk3
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	immediate = {
+		set_country_flag = wg_shimakaze_engaged
+	}
+	option = {
+		name = wg_shimakaze_talk_return
+		hidden_effect = { 
+			country_event = {
+				id = wg_shimakaze.3
+			}
+		}
+	}
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+#誓约对话1界面
+country_event = {
+	id = wg_shimakaze.30004
+	title = wg_shimakaze
+	desc = wg_shimakaze.30004.desc
+	show_sound = event_wg_shimakaze_marry_talk1
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_country_flag = wg_shimakaze_engaged
+	}
+	option = {
+		name = wg_shimakaze_talk_return
+		hidden_effect = { country_event = { id = wg_old_leader_diplo.3020 }}
+	}
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+#誓约对话2界面
+country_event = {
+	id = wg_shimakaze.30005
+	title = wg_shimakaze
+	desc = wg_shimakaze.30005.desc
+	show_sound = event_wg_shimakaze_marry_talk2
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_country_flag = wg_shimakaze_engaged
+	}
+	option = {
+		name = wg_shimakaze_talk_return
+		hidden_effect = { country_event = { id = wg_old_leader_diplo.3020 }}
+	}
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+#誓约对话3界面
+country_event = {
+	id = wg_shimakaze.30006
+	title = wg_shimakaze
+	desc = wg_shimakaze.30006.desc
+	show_sound = event_wg_shimakaze_marry_talk3
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_country_flag = wg_shimakaze_engaged
+	}
+	option = {
+		name = wg_shimakaze_talk_return
+		hidden_effect = { country_event = { id = wg_old_leader_diplo.3020 }}
+	}
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+#誓约对话4界面
+country_event = {
+	id = wg_shimakaze.30007
+	title = wg_shimakaze
+	desc = wg_shimakaze.30007.desc
+	show_sound = event_wg_shimakaze_marry_talk4
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_country_flag = wg_shimakaze_engaged
+	}
+	option = {
+		name = wg_shimakaze_talk_return
+		hidden_effect = { country_event = { id = wg_old_leader_diplo.3020 }}
+	}
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+#誓约对话5界面
+country_event = {
+	id = wg_shimakaze.30008
+	title = wg_shimakaze
+	desc = wg_shimakaze.30008.desc
+	show_sound = event_wg_shimakaze_marry_talk5
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_country_flag = wg_shimakaze_engaged
+	}
+	option = {
+		name = wg_shimakaze_talk_return
+		hidden_effect = { country_event = { id = wg_old_leader_diplo.3020 }}
+	}
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+#总督
+country_event = {
+	id = wg_shimakaze.30010
+	title = wg_shimakaze
+	desc = wg_shimakaze.30010.desc
+	is_triggered_only = yes
+	show_sound = event_wg_shimakaze_official
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_country_flag = wg_shimakaze_change #标识是更改领袖时的kill
+		create_wg_shimakaze_official = yes
+	}
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged 
+			remove_country_flag = wg_shimakaze_change
+		}
+		default_hide_option = yes
+	}
+}
+
+#科学家
+country_event = {
+	id = wg_shimakaze.30011
+	title = wg_shimakaze
+	desc = wg_shimakaze.30011.desc
+	is_triggered_only = yes
+	show_sound = event_wg_shimakaze_scientist
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_country_flag = wg_shimakaze_change #标识是更改领袖时的kill
+		create_wg_shimakaze_scientist = yes
+	}
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged 
+			remove_country_flag = wg_shimakaze_change
+		}
+		default_hide_option = yes
+	}
+}
+
+#海军上将
+country_event = {
+	id = wg_shimakaze.30012
+	title = wg_shimakaze
+	desc = wg_shimakaze.30012.desc
+	is_triggered_only = yes
+	show_sound = event_wg_shimakaze_admiral
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_country_flag = wg_shimakaze_change #标识是更改领袖时的kill
+		create_wg_shimakaze_admiral = yes
+	}
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged 
+			remove_country_flag = wg_shimakaze_change
+		}
+		default_hide_option = yes
+	}
+}
+
+#陆军
+country_event = {
+	id = wg_shimakaze.30013
+	title = wg_shimakaze
+	desc = wg_shimakaze.30013.desc
+	is_triggered_only = yes
+	show_sound = event_wg_shimakaze_general
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_country_flag = wg_shimakaze_change #标识是更改领袖时的kill
+		create_wg_shimakaze_general = yes
+	}
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged 
+			remove_country_flag = wg_shimakaze_change
+		}
+		default_hide_option = yes
+	}
+}
+
+#满好感检查
+country_event = {
+	id = wg_shimakaze.30100
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		has_country_flag = get_wg_shimakaze
+		check_variable = { which = wg_shimakaze_affection value >= @wg_shimakaze_affection_to_lv4 }
+		NOR = { 
+			has_country_flag = can_marry_wg_shimakaze 
+			has_country_flag = married_wg_shimakaze
+		}
+	}
+
+	immediate = {
+		country_event = {
+			id = wg_shimakaze.30101
+			days = 43
+		}
+	}
+}
+
+#情人节事件
+country_event = {
+	id = wg_shimakaze.30101
+	desc = wg_shimakaze.30101.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	fire_only_once = yes
+	show_sound = event_wg_shimakaze_affection_max
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	
+	trigger = {
+		NOT = { has_country_flag = married_wg_shimakaze }
+	}
+
+	immediate = {
+		set_country_flag = can_marry_wg_shimakaze
+	}
+
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged 
+		}
+		default_hide_option = yes
+	}
+}
+
+#誓约事件
+country_event = {
+	id = wg_shimakaze.30102
+	desc = wg_shimakaze.30102.desc
+	is_triggered_only = yes 
+	fire_only_once = yes
+	diplomatic = yes
+	show_sound = event_wg_shimakaze_marry
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		play_sound = event_wg_wedding
+		set_country_flag = married_wg_shimakaze
+		remove_country_flag = can_marry_wg_shimakaze
+	}
+
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged 
+		}
+		default_hide_option = yes
+	}
+}
+
+#二级好感度事件触发器
+event = {
+	id = wg_shimakaze.30200
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		exists = event_target:wg_shimakaze_own_country
+		event_target:wg_shimakaze_own_country = {
+			has_country_flag = get_wg_shimakaze
+			check_variable = { which = wg_shimakaze_affection value >= @wg_shimakaze_affection_to_lv2 }
+			check_variable = { which = wg_shimakaze_affection_event_triggered value < 3 }
+		}
+	}
+	
+	immediate = {
+		event_target:wg_shimakaze_own_country = {
+			if = {
+				limit = { 
+					check_variable = { which = wg_shimakaze_affection value >= @wg_shimakaze_affection_to_lv2 }
+					check_variable = { which = wg_shimakaze_affection_event_triggered value < 1 }
+				}
+				change_variable = { which = wg_shimakaze_affection_event_triggered value = 1 }
+				country_event = { id = wg_shimakaze.30201 random = 359 }
+			} else_if = {
+				limit = { 
+					check_variable = { which = wg_shimakaze_affection value >= @wg_shimakaze_affection_to_lv3 }
+					check_variable = { which = wg_shimakaze_affection_event_triggered value < 2 }
+				}
+				change_variable = { which = wg_shimakaze_affection_event_triggered value = 1 }
+				country_event = { id = wg_shimakaze.30203 random = 359 }
+			} else_if = {
+				limit = { 
+					check_variable = { which = wg_shimakaze_affection value >= @wg_shimakaze_affection_to_lv4 }
+					check_variable = { which = wg_shimakaze_affection_event_triggered value < 3 }
+				}
+				change_variable = { which = wg_shimakaze_affection_event_triggered value = 1 }
+				country_event = { id = wg_shimakaze.30205 random = 359 }
+			}
+		}
+	}
+}
+
+#二级好感度事件
+country_event = {
+	id = wg_shimakaze.30201
+	desc = wg_shimakaze.30201.desc
+	is_triggered_only = yes
+	fire_only_once = yes
+	show_sound = event_wg_shimakaze_affection_level_2
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = wg_shimakaze.30201.a
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged 
+			change_variable = {
+				which = wg_shimakaze_affection
+				value = 3
+			}
+		}
+		default_hide_option = yes
+	}
+}
+
+#三级好感度事件
+country_event = {
+	id = wg_shimakaze.30203
+	desc = wg_shimakaze.30203.desc
+	is_triggered_only = yes
+	fire_only_once = yes
+	show_sound = event_wg_shimakaze_affection_level_3
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	diplomatic = yes
+
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged 
+			change_variable = {
+				which = wg_shimakaze_affection
+				value = 5
+			}
+		}
+		default_hide_option = yes
+	}
+}
+
+#四级好感度事件
+country_event = {
+	id = wg_shimakaze.30205
+	desc = wg_shimakaze.30205.desc
+	is_triggered_only = yes
+	fire_only_once = yes
+	diplomatic = yes
+	show_sound = event_wg_shimakaze_affection_level_4
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = wg_shimakaze_talk_exit
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged 
+			change_variable = {
+				which = wg_shimakaze_affection
+				value = 5
+			}
+		}
+		default_hide_option = yes
+	}
+}
+
+#大破事件触发器
+country_event = {
+	id = wg_shimakaze.7
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		from = {
+			has_leader_flag = wg_shimakaze_leader
+		}
+		NOT = {
+			has_country_flag = wg_shimakaze_change
+		}
+	}
+
+	immediate = {
+		set_country_flag = wg_shimakaze_hurt
+		if = {
+			limit = { 
+				from = {
+					has_leader_flag = wg_shimakaze_official
+				}
+			}
+			remove_country_flag = wg_shimakaze_official_active
+		}
+		if = {
+			limit = { 
+				from = {
+					has_leader_flag = wg_shimakaze_scientist
+				}
+			}
+			remove_country_flag = wg_shimakaze_scientist_active
+		}
+		if = {
+			limit = { 
+				from = {
+					has_leader_flag = wg_shimakaze_admiral
+				}
+			}
+			remove_country_flag = wg_shimakaze_admiral_active
+		}
+		if = {
+			limit = { 
+				from = {
+					has_leader_flag = wg_shimakaze_general
+				}
+			}
+			remove_country_flag = wg_shimakaze_general_active
+		}
+		country_event = {
+			id = wg_shimakaze.8
+		}
+	}
+}
+
+#大破通讯
+country_event = {
+	id = wg_shimakaze.8
+	desc = wg_shimakaze.8.desc
+	is_triggered_only = yes
+	show_sound = event_wg_shimakaze_hurt
+	diplomatic = yes
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		subtract_variable = {
+			which = wg_shimakaze_affection
+			value = @wg_shimakaze_affection_reduce
+		}
+		add_modifier = { modifier = wg_shimakaze_recovery_cd days = 360 }
+		country_event = {
+			id = wg_shimakaze.9
+			days = 360
+		}
+	}
+
+	option = {
+		name = wg_shimakaze_talk_exit
+		custom_tooltip = wg_shimakaze.8.tooltip
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged 
+		}
+		default_hide_option = yes
+	}
+}
+
+#泡澡完成通讯
+country_event = {
+	id = wg_shimakaze.9
+	desc = wg_shimakaze.9.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_shimakaze_recovered
+	custom_gui = wg_shimakaze_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		remove_country_flag = wg_shimakaze_hurt
+	}
+
+	option = {
+		name = wg_shimakaze_talk_exit
+		custom_tooltip = wg_shimakaze.9.tooltip
+		hidden_effect = {
+			remove_country_flag = wg_shimakaze_engaged 
+		}
+		default_hide_option = yes
+	}
+}
+
+# 外部通讯触发器
+country_event = {
+	id = wg_old_leader_diplo.3020
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		if = {
+			limit = { has_country_flag = wg_shimakaze_hurt }
+			country_event = { id = wg_shimakaze.5 }
+		} else = {
+			country_event = { id = wg_shimakaze.3 }
+		}
+	}
+}
+
+#debug使用，岛风好感上升至2级
+country_event = {
+	id = wg_shimakaze.23333
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		set_variable = {
+			which = wg_shimakaze_affection
+			value = @wg_shimakaze_affection_to_lv2
+		}
+	}
+}
+
+#debug使用，岛风好感上升至3级
+country_event = {
+	id = wg_shimakaze.23334
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		set_variable = {
+			which = wg_shimakaze_affection
+			value = @wg_shimakaze_affection_to_lv3
+		}
+	}
+}
+
+#debug使用，岛风好感上升至4级
+country_event = {
+	id = wg_shimakaze.23335
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		set_variable = {
+			which = wg_shimakaze_affection
+			value = @wg_shimakaze_affection_to_lv4
+		}
+	}
+}
+
+#debug使用，岛风好感上升至5级
+country_event = {
+	id = wg_shimakaze.23336
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		set_variable = {
+			which = wg_shimakaze_affection
+			value = @wg_shimakaze_affection_to_lv5
+		}
+	}
+}
+
+#debug使用，获取一枚戒指
+country_event = {
+	id = wg_shimakaze.23337
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		hidden_effect = {
+			change_variable = {
+				which = wsg_rings
+				value = 1
+			}
+		}
+		
+	}
+}
+
+country_event = {
+	id = wg_shimakaze.23338
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		switch = {
+			trigger = has_country_flag
+			wg_shimakaze_official_active = {
+				event_target:wg_shimakaze_official = { add_experience = 500 }
+			}
+			wg_shimakaze_scientist_active = {
+				event_target:wg_shimakaze_scientist = { add_experience = 500 }
+			}
+			wg_shimakaze_admiral_active = {
+				event_target:wg_shimakaze_admiral = { add_experience = 500 }
+			}
+			wg_shimakaze_general_active = {
+				event_target:wg_shimakaze_general = { add_experience = 500 }
+			}
+		}
+	}
+}

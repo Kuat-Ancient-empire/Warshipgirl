@@ -1,0 +1,694 @@
+create_wg_resistance_admiral = {
+	random_list = {
+        50 = {
+            create_leader = {
+                class = commander
+                species = event_target:wg_crisis_species
+                name = random
+                skill = 5
+                gender = female
+                traits = {
+                    trait = leader_trait_admiral_resistant_fleet2
+                }
+            }
+        }
+        40 = {
+            create_leader = {
+                class = commander
+                species = event_target:wg_crisis_species_sh
+                name = random
+                skill = 7
+                gender = female
+                traits = {
+                    trait = leader_trait_admiral_resistant_fleet2
+                }
+            }
+        }
+        10 = {
+            create_leader = {
+                class = commander
+                species = event_target:wg_crisis_species
+                name = random
+                skill = 10
+                gender = female
+                traits = {
+                    trait = leader_trait_admiral_resistant_fleet4
+                }
+                effect = {
+                    change_leader_portrait = wsg112
+                    set_leader_flag = legendary_leader
+                }
+            }
+        }
+    }
+}
+
+create_wg_resistance_greater_admiral = {
+	create_leader = {
+		class = commander
+        species = event_target:wg_crisis_species
+        name = random
+        skill = 10
+        gender = female
+        traits = {
+            trait = leader_trait_admiral_resistant_fleet2
+        }
+        effect = {
+            change_leader_portrait = wsg112
+        }
+    }
+}
+
+create_wg_resistance_flagfleet = {
+    create_fleet = {
+        name = "NAME_Resistance_Flagfleet"
+        effect = {
+            set_owner = PREV
+            while = {
+                count = 15
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_TITAN"
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+            while = {
+                count = 60
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_BB"
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+            while = {
+                count = 80
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_DD"  
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+            while = {
+                count = 1
+                create_ship = {
+                    name = random
+                    design = "NAME_uf_buffer"  
+                }
+            }								
+            set_location = {
+                target = event_target:spawn_resistance_fleet_location
+                distance = 5
+                angle = random
+            }
+            set_fleet_stance = aggressive
+            set_aggro_range_measure_from = self
+            set_aggro_range = 500
+            assign_leader = last_created_leader
+        }
+		settings = { 
+			can_upgrade = no 
+			uses_naval_capacity = no
+		}
+    }
+}
+
+create_wg_resistance_fleet = {
+    create_fleet = {
+        name = "NAME_Resistance_Fleet"
+        effect = {
+            set_owner = PREV
+            while = {
+                count = 5
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_TITAN"
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+            while = {
+                count = 45
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_BB"
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+            while = {
+                count = 70
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_DD"  
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+			while = {
+                count = 1
+                create_ship = {
+                    name = random
+                    design = "NAME_uf_buffer"  
+                }
+            }
+            set_location = {
+                target = event_target:spawn_resistance_fleet_location
+                distance = 5
+                angle = random
+            }
+            set_fleet_stance = aggressive
+            set_aggro_range_measure_from = self
+            set_aggro_range = 500
+            assign_leader = last_created_leader
+            add_modifier = { modifier = reduce_fleet_maintenance_95pc days = -1 }
+        }
+		settings = { 
+			can_upgrade = no 
+			can_change_composition = no 
+			uses_naval_capacity = yes
+		}
+    }
+}
+
+create_wg_resistance_fleet_for_player = {
+    create_fleet = {
+        name = "NAME_Resistance_Fleet"
+        effect = {
+            set_owner = PREV
+            while = {
+                count = 3
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_TITAN"
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+            while = {
+                count = 20
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_BB"
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+            while = {
+                count = 30
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_DD"  
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }								
+            set_location = {
+                target = event_target:spawn_resistance_fleet_location
+                distance = 5
+                angle = random
+            }
+            set_fleet_stance = aggressive
+            set_aggro_range_measure_from = self
+            set_aggro_range = 500
+            add_modifier = { modifier = reduce_fleet_maintenance_95pc days = -1 }
+            set_fleet_flag = fleet_bought_from_resistance
+            set_variable = { which = "titan_count" value = 3 }
+            set_variable = { which = "bb_count" value = 20 }
+            set_variable = { which = "dd_count" value = 30 }
+            if = {
+                limit = { has_global_flag = wg_crisis_easy }
+                add_modifier = { modifier = uf_easy_debuff days = -1 }
+            }
+        }
+		settings = { 
+			can_upgrade = no 
+			can_change_composition = no 
+			uses_naval_capacity = yes
+		}
+    }
+}
+
+create_wg_resistance_fleet_test = {
+    create_fleet = {
+        name = "NAME_Resistance_Fleet"
+        effect = {
+            set_owner = ROOT
+            while = {
+                count = 1
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_TITAN"
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+            while = {
+                count = 3
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_BB"
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+            while = {
+                count = 5
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_DD"  
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }								
+            set_location = {
+                target = root.capital_scope
+                distance = 5
+                angle = random
+            }
+            set_fleet_stance = aggressive
+            set_aggro_range_measure_from = self
+            set_aggro_range = 500
+            add_modifier = { modifier = reduce_fleet_maintenance_95pc days = -1 }
+            set_fleet_flag = fleet_bought_from_resistance
+            set_variable = { which = "titan_count" value = 1 }
+            set_variable = { which = "bb_count" value = 3 }
+            set_variable = { which = "dd_count" value = 5 }
+        }
+		settings = { 
+			can_upgrade = no 
+			can_change_composition = no 
+			uses_naval_capacity = yes
+		}
+    }
+}
+
+create_wg_resistance_weaker_flagfleet = {
+    create_fleet = {
+        name = "NAME_Resistance_Flagfleet"
+        effect = {
+            set_owner = PREV
+            while = {
+                count = 5
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_TITAN"
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+            while = {
+                count = 30
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_BB"
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+            while = {
+                count = 50
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_DD"  
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }							
+            set_location = {
+                target = event_target:spawn_resistance_fleet_location
+                distance = 5
+                angle = random
+            }
+            set_fleet_stance = aggressive
+            set_aggro_range_measure_from = self
+            set_aggro_range = 500
+            assign_leader = last_created_leader
+        }
+		settings = { 
+			can_upgrade = no 
+			uses_naval_capacity = no
+		}
+    }
+}
+
+create_wg_resistance_weaker_fleet = {
+    create_fleet = {
+        name = "NAME_Resistance_Fleet"
+        effect = {
+            set_owner = PREV
+            while = {
+                count = 4
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_TITAN"
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+            while = {
+                count = 25
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_BB"
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }
+            while = {
+                count = 35
+                create_ship = {
+                    name = random
+                    design = "NAME_WG_RA_DD"  
+                    graphical_culture = "wsg_03"
+					upgradable = no
+                }
+            }								
+            set_location = {
+                target = event_target:spawn_resistance_fleet_location
+                distance = 5
+                angle = random
+            }
+            set_fleet_stance = aggressive
+            set_aggro_range_measure_from = self
+            set_aggro_range = 500
+            assign_leader = last_created_leader
+            add_modifier = { modifier = reduce_fleet_maintenance_95pc days = -1 }
+        }
+		settings = { 
+			can_upgrade = no 
+			can_change_composition = no 
+			uses_naval_capacity = no
+		}
+    }
+}
+
+create_random_ship_sukhbaatar = {
+    random_list = {
+        80 = {
+            modifier = { 
+                factor = 0
+                NOR = { owner = {
+                    has_technology = tech_uav 
+                    has_technology = tech_destroyers
+                    has_technology = tech_cruisers
+                }}
+            }
+            random_list = {
+                1 = {
+                    modifier = { 
+                        factor = 0
+                        NOT = { owner = { has_technology = tech_uav }}
+                    }
+                    create_ship = {
+                        name = random
+                        design = random_existing_design
+                        random_existing_design = scout_UAV
+                    }
+                }
+                1 = {
+                    modifier = { 
+                        factor = 0
+                        NOT = { owner = { has_technology = tech_destroyers }}
+                    }
+                    create_ship = {
+                        name = random
+                        design = random_existing_design
+                        random_existing_design = destroyer
+                    }
+                }
+                1 = {
+                    modifier = { 
+                        factor = 0
+                        NOT = { owner = { has_technology = tech_cruisers }}
+                    }
+                    create_ship = {
+                        name = random
+                        design = random_existing_design
+                        random_existing_design = cruiser
+                    }
+                }
+            }
+        }
+        15 = {
+            random_list = {
+                1 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_WG_RA_DD"  
+                        graphical_culture = "wsg_03"
+                        upgradable = no
+                    }
+                }
+                1 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_WG_EG_DD"  
+                        graphical_culture = "wsg_01"
+                        upgradable = no
+                    }
+                }
+                1 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_WG_EG_CA"  
+                        graphical_culture = "wsg_01"
+                        upgradable = no
+                    }
+                }
+                1 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_WG_FE_ESCORTE"
+                        graphical_culture = "wsg_04"
+                        upgradable = no
+                    }
+                }
+                1 = {
+                    modifier = { 
+                        factor = 0
+                        NOT = { owner = { has_technology = tech_battleships }}
+                    }
+                    create_ship = {
+                        name = random
+                        design = random_existing_design
+                        random_existing_design = battleship
+                    }
+                }
+            }
+        }
+        4 = {
+            random_list = {
+                1 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_WG_EG_BB"
+                        graphical_culture = "wsg_01"
+                        upgradable = no
+                    }
+                }
+                1 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_WG_RA_BB"
+                        graphical_culture = "wsg_03"
+                        upgradable = no
+                    }
+                }
+                1 = {
+                    modifier = { 
+                        factor = 0
+                        NOT = { owner = { has_technology = tech_titans }}
+                    }
+                    create_ship = {
+                        name = random
+                        design = random_existing_design
+                        random_existing_design = titan
+                    }
+                }
+                1 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_WG_CARRIER"
+                        graphical_culture = "wsg_01"
+                        upgradable = no
+                    }
+                }
+                1 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_WG_FE_BATTLE_CRUISE"
+                        graphical_culture = "wsg_04"
+                        upgradable = no
+                    }
+                }
+            }
+        }
+        1 = {
+            random_list = {
+                3 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_uf_buffer"
+                        upgradable = no
+                    }
+                }
+                5 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_WG_EG_TITAN"
+                        graphical_culture = "wsg_01"
+                        upgradable = no
+                    }
+                }
+                5 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_WG_FE_TITAN"
+                        graphical_culture = "wsg_04"
+                        upgradable = no
+                    }
+                }
+                5 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_WG_RA_TITAN"
+                        graphical_culture = "wsg_03"
+                        upgradable = no
+                    }
+                }
+                1 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_wsg_dreadnought"
+                        graphical_culture = "npf_01"
+                    }
+                }
+                1 = {
+                    create_ship = {
+                        name = random
+                        design = "NAME_uf_Juggernaut"
+                        graphical_culture = "wsg_01"
+                    }
+                }
+            }
+        }
+    }
+}
+
+# scope = country
+update_ra_fleet_count = {
+    set_variable = { which = "ra_fleet_count" value = 0 }
+    every_controlled_fleet = {
+        limit = { 
+            exists = this
+            has_fleet_flag = fleet_bought_from_resistance
+            NOT = { has_fleet_flag = removed_fleet }
+        }
+        ROOT = { change_variable = { which = "ra_fleet_count" value = 1 }}
+    }
+}
+
+# scope = country
+reset_ra_variables = {
+    clear_variable = "new_titan_count" 
+    clear_variable = "new_bb_count" 
+    clear_variable = "new_dd_count" 
+    clear_variable = "new_fleet_size" 
+    clear_variable = "titan_count" 
+    clear_variable = "bb_count" 
+    clear_variable = "dd_count" 
+    remove_country_flag = first_fleet_chosen
+    clear_variable = "ra_fleet_id" 
+    every_controlled_fleet = {
+        remove_fleet_flag = first_chosen_fleet
+        remove_fleet_flag = second_chosen_fleet
+        clear_variable = "ra_fleet_id" 
+    }
+}
+
+# scope = country
+# inside option
+set_ra_admiral_datas = {
+    hidden_effect = {
+        clear_all_admiral_flags = yes
+        remove_country_flag = remain_admiral_list
+        remove_country_flag = ra_diplo_engaged
+        set_timed_country_flag = { flag = recruited_resistant_leader days = 360 }
+        set_variable = { which = "recruit_leader_cd" value = 360 }
+        set_variable = { which = "refresh_days" value = 0 }
+        change_variable = { which = "buy_ra_leader_count" value = 1 }
+    }
+}
+
+# scope = fleet
+count_ra_fleet_ships = {
+    set_variable = { which = "titan_count" value = 0 }
+    set_variable = { which = "bb_count" value = 0 }
+    set_variable = { which = "dd_count" value = 0 }
+    owner = { every_owned_ship = {
+        limit = { Fleet = { is_same_value = PREVPREVPREV }}
+        switch = {
+            trigger = is_ship_size
+            titan = {
+                PREVPREV = {
+                    change_variable = { which = "titan_count" value = 1 }
+                }
+            }
+            battleship = {
+                PREVPREV = {
+                    change_variable = { which = "bb_count" value = 1 }
+                }
+            }
+            destroyer = {
+                PREVPREV = {
+                    change_variable = { which = "dd_count" value = 1 }
+                }
+            }
+        }
+    }} 
+}
+
+# 设置买船资源
+set_buy_ra_fleet_resource = {
+    # 买船所需资源 = 基础 + 买船次数 * 涨幅
+    set_variable = {
+        which = ra_fleet_$RESOURCE$_cost
+        value = @ra_fleet_addition_$RESOURCE$_cost_$COUNTRY_TYPE$_country
+    }
+    multiply_variable = {
+        which = ra_fleet_$RESOURCE$_cost
+        value = buy_ra_fleet_count
+    }
+    change_variable = {
+        which = ra_fleet_$RESOURCE$_cost
+        value = @ra_fleet_base_$RESOURCE$_cost_$COUNTRY_TYPE$_country
+    }
+    # 超过最大资源值则强行设置为最大值
+    if = {
+        limit = {
+            check_variable = {
+                which = ra_fleet_$RESOURCE$_cost
+                value > @ra_fleet_$RESOURCE$_cost_max_$COUNTRY_TYPE$_country
+            }
+        }
+        set_variable = {
+            which = ra_fleet_$RESOURCE$_cost
+            value = @ra_fleet_$RESOURCE$_cost_max_$COUNTRY_TYPE$_country
+        }
+    }
+}
+
+set_ra_fleet_monthly_cost = {
+    set_variable = {
+        which = ra_fleet_$RESOURCE$_monthly_cost
+        value = ra_fleet_$RESOURCE$_cost
+    }
+    divide_variable = {
+        which = ra_fleet_$RESOURCE$_monthly_cost
+        value = $MONTHS$
+    }
+    round_variable = ra_fleet_$RESOURCE$_monthly_cost
+}

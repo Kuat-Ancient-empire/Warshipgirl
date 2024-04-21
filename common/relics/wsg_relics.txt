@@ -1,0 +1,387 @@
+r_xh_boss = {
+	activation_duration = @triumph_duration
+	portrait = "GFX_relic_xh_boss"
+	sound = "relic_activation_ether_drake_trophy"
+
+	resources = {
+		category = relics
+		# Activation cost
+		cost = {
+			energy = 2000
+		}
+	}
+	
+	ai_weight = {
+		weight = 100
+	}
+	
+	triggered_country_modifier = {
+		potential = {
+			always = yes
+		}
+		weapon_type_strike_craft_weapon_fire_rate_mult = 0.25
+		weapon_type_strike_craft_weapon_damage_mult = 0.25
+	}
+
+	score = 1000
+
+	active_effect = {
+		add_modifier = {
+			modifier = "wsg_modifier_xh" 
+			days = 3600
+		}
+		custom_tooltip = relic_triumph_cooldown
+		hidden_effect = {
+			add_modifier = {
+				modifier = "relic_activation_cooldown" 
+				days = 3600
+			}		
+		}
+	}
+
+	possible = {
+		inline_script = {
+			script = relics/activation_checks
+			RELIC = r_xh_boss
+		}
+	}
+}
+
+r_ck2 = {
+	activation_duration = @triumph_duration
+	portrait = "GFX_relic_ck2"
+	sound = "relic_activation_ether_drake_trophy"
+
+	resources = {
+		category = relics
+		# Activation cost
+		cost = {
+			influence = 150
+		}
+	}
+	
+	ai_weight = {
+		weight = 100
+	}
+	
+	triggered_country_modifier = {
+		potential = {
+			always = yes
+		}
+		country_unity_produces_mult = 0.20
+	}
+
+	score = 1000
+
+	active_effect = {
+		add_modifier = {
+			modifier = "wsg_modifier_ck2" 
+			days = 3600
+		}
+		custom_tooltip = relic_triumph_cooldown
+		hidden_effect = {
+			add_modifier = {
+				modifier = "relic_activation_cooldown" 
+				days = 3600
+			}		
+		}
+	}
+
+	possible = {
+		inline_script = {
+			script = relics/activation_checks
+			RELIC = r_ck2
+		}
+	}
+}
+
+r_eila_throne = {
+	activation_duration = @triumph_duration
+	portrait = "GFX_relic_eila_throne"
+	sound = "relic_activation_khans_throne"
+
+	resources = {
+		category = relics
+		# Activation cost
+		cost = {
+			influence = @activation_cost
+		}
+	}
+
+	ai_weight = {
+		weight = 100
+		modifier = {
+			factor = 2
+			is_militarist = yes
+		}
+		modifier = {
+			factor = 3
+			is_at_war = yes
+		}
+	}
+
+	triggered_country_modifier = {
+		potential = {
+			always = yes
+		}
+		country_claim_influence_cost_mult = -0.10
+	}
+
+	score = 3000
+
+	active_effect = {
+		add_modifier = {
+			modifier = "drums_of_war2"
+			days = @triumph_duration
+		}
+		custom_tooltip = relic_triumph_cooldown
+		hidden_effect = {
+			add_modifier = {
+				modifier = "relic_activation_cooldown"
+				days = @triumph_duration
+			}
+		}
+	}
+
+	possible = {
+		inline_script = {
+			script = relics/activation_checks
+			RELIC = r_eila_throne
+		}
+	}
+}
+##########
+r_united_fleet = {
+	activation_duration = @triumph_duration
+	portrait = "GFX_relic_uf"
+	sound = "relic_activation_ether_drake_trophy"
+
+	resources = {
+		category = relics
+		# Activation cost
+		cost = {
+			influence = 200
+		}
+	}
+	
+	ai_weight = {
+		weight = 100
+	}
+	
+	triggered_country_modifier = {
+		potential = {
+			always = yes
+		}
+		all_technology_research_speed = 1.00
+	}
+
+	score = 1000
+
+	active_effect = {
+		custom_tooltip = r_united_fleet_active
+		custom_tooltip = relic_triumph_cooldown
+		hidden_effect = {
+			add_modifier = {
+				modifier = "relic_activation_cooldown" 
+				days = 3600
+			}
+			country_event = { id = wg_crisis.999 }			
+		}
+	}
+
+	possible = {
+		inline_script = {
+			script = relics/activation_checks
+			RELIC = r_united_fleet
+		}
+	}
+}
+
+r_uf = {
+	activation_duration = @triumph_duration
+	portrait = "GFX_relic_united_fleet"
+	sound = "relic_activation_ether_drake_trophy"
+
+	resources = {
+		category = relics
+		# Activation cost
+		cost = {
+			influence = 10
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}
+	
+	triggered_country_modifier = {
+		potential = {
+			always = yes
+		}
+		ship_weapon_damage = 0.05
+	}
+
+	score = 1000
+
+	active_effect = {
+		custom_tooltip = r_uf_active
+		hidden_effect = {
+			country_event = { id = wg_parit.2333 }	
+		    set_global_flag = uf_hidden_actived	
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_uf_hidden_actived"
+			NOT = { has_global_flag = uf_hidden_actived }
+		}
+		custom_tooltip = {
+			fail_text = "requires_uf_insane"
+			has_global_flag = wg_crisis_insane
+			has_global_flag = wg_invasion_happened
+		}		
+	}	
+}
+
+
+r_wg_god = {
+	activation_duration = @triumph_duration
+	portrait = "GFX_relic_god"
+	sound = "relic_activation_ether_drake_trophy"
+
+	resources = {
+		category = relics
+		# Activation cost
+		cost = {
+			influence = 100
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}
+	
+	triggered_country_modifier = {
+		potential = {
+			always = yes
+		}
+	}
+
+	score = 1000
+
+	active_effect = {
+		custom_tooltip = relic_r_wg_god
+		hidden_effect = {
+			country_event = { id = wg_crisis.3 }	
+		}
+	}
+
+	# Possible check for activation
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_uf_invasion_happened"
+			NOT = { has_global_flag = wg_invasion_happened }
+		}
+	}
+}
+r_wg_fm = {
+	activation_duration = @triumph_duration
+	portrait = "GFX_relic_wg_fm"
+	sound = "relic_activation_ether_drake_trophy"
+
+	resources = {
+		category = relics
+		# Activation cost
+		cost = {
+			influence = 150
+		}
+	}
+	
+	ai_weight = {
+		weight = 100
+	}
+	
+	triggered_country_modifier = {
+		potential = {
+			always = yes
+		}
+		country_unity_produces_mult = 0.20
+		all_technology_research_speed = 0.20
+	}
+
+	score = 5000
+
+	active_effect = {
+		add_modifier = {
+			modifier = "wsg_modifier_fm" 
+			days = 3600
+		}
+		custom_tooltip = relic_triumph_cooldown
+		hidden_effect = {
+			add_modifier = {
+				modifier = "relic_activation_cooldown" 
+				days = 3600
+			}		
+		}
+		hidden_effect = {
+			country_event = { id = ap_wg_crisis.1117 }	
+		}
+	}
+
+	possible = {
+		inline_script = {
+			script = relics/activation_checks
+			RELIC = r_wg_fm
+		}
+	}
+}
+
+
+r_wg_stc = {
+	activation_duration = @triumph_duration
+	portrait = "GFX_relic_wg_stc"
+	sound = "relic_activation_ether_drake_trophy"
+
+	resources = {
+		category = relics
+		# Activation cost
+		cost = {
+			unity = 1000
+			energy = 2000
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}
+	
+	triggered_country_modifier = {
+		potential = {
+			always = yes
+		}
+	}
+
+	score = 1000
+
+	active_effect = {
+		custom_tooltip = relic_r_wg_stc
+		hidden_effect = {
+			country_event = { id = wg_origin.126 }	
+		}
+		custom_tooltip = relic_wg_stc_cooldown
+		hidden_effect = {
+			add_modifier = {
+				modifier = "relic_STC_activation_cooldown" 
+				days = 1800
+			}		
+		}
+	}
+
+	# Possible check for activation
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_relic_stc_no_cooldown"
+			NOT = { has_modifier = relic_STC_activation_cooldown }
+		}
+	}
+}

@@ -1,0 +1,2933 @@
+namespace = wg_paragon
+#奈拉
+country_event = { 
+	id = wg_paragon.1
+	title = "wg_paragon.1.name"
+	desc = "wg_paragon.1.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_13_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = NAILA
+            plural = NAILA
+            class = WG_NAILA
+            portrait = cts9998
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = Naila_species
+            }
+		}
+		create_leader = {
+			class = official
+			species = event_target:Naila_species
+			name = "NAME_NAILA"
+			set_age = 9
+			gender = female
+			event_leader = yes 
+			background_ethic = ethic_pacifist
+			skip_background_generation = yes
+			custom_description = Naila_desc
+			custom_catch_phrase = Naila_catch_phrase
+            traits = {
+			    trait = leader_trait_official_naila
+			    trait = leader_trait_official_chairman
+			    #trait = leader_trait_wg_normal_affection 坐等地砖新好感度上线
+			}
+			effect = {
+				add_skill_without_trait_selection = 5
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+				change_leader_portrait = cts9998
+			}
+		}
+		last_created_leader = {
+			wg_affection_normal_system_launch = yes
+			set_variable = { which = affection value = 15 }
+		}
+		
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+
+	option = {
+		name = wg_paragon.1.a
+		response_text = wg_paragon.1.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_paragon.1.b
+		response_text = wg_paragon.1.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.1.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+#联合24工程
+country_event = {
+	id = wg_paragon.2
+	title = "wg_paragon.2.name"
+	desc = "wg_paragon.2.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_recruitment_bg_renowned
+	auto_opens = no
+	event_window_type = leader_recruit
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	immediate = {
+		create_species = {
+            name = NAME_uf_24
+            plural = NAME_uf_24
+            class = WG_uf_24
+            portrait = WG_uf_24
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = uf_24_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:uf_24_species
+			name = "NAME_uf_24"
+			set_age = 18
+			gender = female
+			event_leader = yes 
+			background_ethic = ethic_materialist
+			skip_background_generation = yes
+			custom_description = uf_24_desc
+			custom_catch_phrase = uf_24_catch_phrase
+            traits = {
+			    trait = subclass_commander_admiral
+			    trait = leader_trait_uf_24_admiral
+				trait = leader_trait_uf_1
+				trait = leader_trait_admiral_uf_cannoneer
+				trait = leader_trait_admiral_uf_firepower
+			}
+			effect = {
+				add_skill_without_trait_selection = 5
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+				change_leader_portrait = WG_uf_24
+			}
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+	
+	option = {
+		name = DISMISS
+		tag = dismiss_leader
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+	option = {
+		name = wg_paragon.2.a
+		response_text = wg_paragon.2.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.2.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+#老罗
+country_event = { 
+	id = wg_paragon.3
+	title = "wg_paragon.3.name"
+	desc = "wg_paragon.3.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_01_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_Rodney
+            plural = WG_Rodney
+            class = WG_Rodney
+            portrait = wsg9997
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = Rodney_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:Rodney_species
+			name = "Rodney"
+			immortal = yes
+			gender = female
+			custom_description = wsg_rodney_desc
+			custom_catch_phrase = rodney_catch_phrase
+			traits = {
+				trait = leader_trait_admiral_Rodney
+				trait = leader_trait_admiral_Rodney2
+				# trait = leader_trait_admiral_affection
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				set_leader_flag = wsg_event_leader
+				set_leader_flag = event_Rodney
+				set_leader_flag = legendary_leader
+				set_variable = { which = affection value = 5 }
+				save_event_target_as = wsg_rodney_leader
+				add_skill_without_trait_selection = 7
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+			}
+		}
+		last_created_leader = {
+			if = {
+				limit = { owner = { has_country_flag = wsg_mist }}
+				add_trait_no_notify = leader_trait_mist
+			} else_if = {
+				limit = { owner = { has_country_flag = project_s_finish }}
+				add_trait_no_notify = leader_trait_warshipgirls2
+			} else_if = {
+				limit = { owner = { has_country_flag = wsg_project_r }}
+				add_trait_no_notify = leader_trait_warshipgirls
+			}
+			set_variable = { which = affection value = 15 }
+			wg_affection_normal_system_launch = yes
+		}
+		
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.3.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+			country_event = { id = wsg.30272 days = 1 }
+		}
+	}
+}
+
+#大和
+country_event = { 
+	id = wg_paragon.4
+	title = "wg_paragon.4.name"
+	desc = "wg_paragon.4.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_12_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = OVERTIMEMAN
+            plural = OVERTIMEMAN
+            class = OVERTIMEMAN
+            portrait = sh65_1
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = yamato_species
+            }
+		}
+		create_leader = {
+			class = official
+			species = event_target:yamato_species
+			name = "Yamato XXIII"
+			set_age = 23
+			immortal = yes
+			gender = female
+			custom_description = wsg_yamato_desc
+			custom_catch_phrase = wsg_yamato_catch_phrase
+			traits = {
+				trait = leader_trait_official_yamatoman
+				trait = leader_trait_official_neversleep
+				# trait = leader_trait_official_affection
+				trait = leader_trait_shenhai2
+				trait = leader_trait_legend_sh
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				set_leader_flag = overtime_yamato
+				set_leader_flag = wsg_event_leader
+				set_leader_flag = married
+				set_leader_flag = legendary_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+				add_skill_without_trait_selection = 10
+			}				
+		}
+		last_created_leader = {
+			wg_affection_normal_system_launch = yes
+			set_variable = { which = affection value = 50 }
+		}
+		
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wg_paragon.4.a
+		response_text = wg_paragon.4.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_paragon.4.b
+		response_text = wg_paragon.4.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.4.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#俾斯麦
+country_event = { 
+	id = wg_paragon.5
+	title = "wg_paragon.5.name"
+	desc = "wg_paragon.5.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_11_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+			name = Bismark_sh
+			plural = Bismark_sh
+			class = Bismark_sh
+			portrait = sh31
+			namelist = ART1
+			effect = {
+				save_global_event_target_as = Bismark_sh_species
+			}
+		}	
+		create_leader = {
+			class = commander
+			species = event_target:Bismark_sh_species
+			name = "Bismark"
+			set_age = 24
+			gender = female
+			custom_description = wsg_bismark_desc
+			custom_catch_phrase = wsg_bismark_catch_phrase
+			traits = {
+				trait = leader_trait_admiral_Bismark
+				trait = leader_trait_shenhai1
+				# trait = leader_trait_admiral_affection
+				trait = leader_trait_legend_sh
+			}
+			immortal = yes
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				set_leader_flag = Bismark_sh_flag
+				set_leader_flag = wsg_event_leader
+				set_leader_flag = unlimited_revive
+				set_leader_flag = legendary_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+				add_skill_without_trait_selection = 10
+			}				
+		}
+		
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.5.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#秘书
+country_event = { 
+	id = wg_paragon.6
+	title = "wg_paragon.6.name"
+	desc = "wg_paragon.6.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_08_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_Missouri
+            plural = WG_Missouri
+            class = WG_Missouri
+            portrait = wsg9984
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = Missouri_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:Missouri_species
+			name = "RA_ADMIRAL_1002"
+			set_age = 114
+			immortal = yes
+			gender = female
+			custom_description = wsg_missouri_desc
+			custom_catch_phrase = wsg_Missouri_catch_phrase
+			traits = {
+				trait = leader_trait_warshipgirls2
+				trait = leader_trait_admiral_projectS_missouri
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				change_leader_portrait = wsg9984
+				set_leader_flag = wsg_event_leader
+				set_leader_flag = projectS_missouri
+				set_leader_flag = unlimited_revive
+				set_leader_flag = legendary_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+				add_skill_without_trait_selection = 10
+			}
+		}
+		last_created_leader = {
+			wg_affection_normal_system_launch = yes
+			set_variable = { which = affection value = 15 }
+		}
+		
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.6.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#反击
+country_event = { 
+	id = wg_paragon.7
+	title = "wg_paragon.7.name"
+	desc = "wg_paragon.7.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_04_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_Repulse
+            plural = WG_Repulse
+            class = WG_Repulse
+            portrait = wsg11
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = Repulse_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:Repulse_species
+			name = "NAME_repulse"
+			set_age = 18
+			immortal = yes
+			gender = female
+			custom_description = wsg_repulse_desc
+			custom_catch_phrase = wsg_repulse_catch_phrase
+			skip_background_generation = yes
+			traits = {
+				trait = leader_trait_mist
+				trait = leader_trait_admiral_mist_repulse
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				change_leader_portrait = nf263
+				set_leader_flag = wsg_event_leader
+				set_leader_flag = mist_Repulse
+				set_leader_flag = unlimited_revive
+				set_leader_flag = legendary_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+				add_skill_without_trait_selection = 5
+			}
+		}
+		last_created_leader = {
+			wg_affection_normal_system_launch = yes
+			set_variable = { which = affection value = 15 }
+		}
+		
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.7.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#声望
+country_event = { 
+	id = wg_paragon.8
+	title = "wg_paragon.8.name"
+	desc = "wg_paragon.8.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_04_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_Renown
+            plural = WG_Renown
+            class = WG_Renown
+            portrait = wsg11
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = Renown_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:Renown_species
+			name = "RA_ADMIRAL_103"
+			set_age = 19
+			immortal = yes
+			gender = female
+			custom_description = wsg_renown_desc
+			custom_catch_phrase = wsg_renown_catch_phrase
+			skip_background_generation = yes
+			traits = {
+				trait = leader_trait_mist
+				trait = leader_trait_admiral_mist_renown
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				change_leader_portrait = nf262
+				set_leader_flag = wsg_event_leader
+				set_leader_flag = mist_Renown
+				set_leader_flag = unlimited_revive
+				set_leader_flag = legendary_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+				add_skill_without_trait_selection = 8
+			}
+		}
+		last_created_leader = {
+			wg_affection_normal_system_launch = yes
+			set_variable = { which = affection value = 15 }
+		}
+		
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.8.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#花生
+country_event = { 
+	id = wg_paragon.9
+	title = "wg_paragon.9.name"
+	desc = "wg_paragon.9.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_01_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_Washington
+            plural = WG_Washington
+            class = WG_Washington
+            portrait = wsg111_3
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = Washington_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:Washington_species
+			immortal = yes
+			name = "Peanut"
+			set_age = 25
+			gender = female
+			custom_description = wsg_washington_desc
+			custom_catch_phrase = wsg_washington_catch_phrase
+			traits = {
+				trait = leader_trait_general_washington_axe
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				set_leader_flag = wsg_event_leader
+				set_leader_flag = event_Washington_flag
+				set_leader_flag = unlimited_revive
+				set_leader_flag = legendary_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+				add_skill_without_trait_selection = 6
+				
+			}
+		}
+		last_created_leader = {
+			change_leader_portrait = wsg111_3
+			if = {
+				limit = { owner = { has_country_flag = wsg_mist }}
+				add_trait_no_notify = leader_trait_mist
+			} else_if = {
+				limit = { owner = { has_country_flag = wsg_project_r }}
+				add_trait_no_notify = leader_trait_warshipgirls
+			}
+			wg_affection_normal_system_launch = yes
+			set_variable = { which = affection value = 15 }
+		}
+		
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wg_paragon.9.a
+		response_text = wg_paragon.9.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_paragon.9.b
+		response_text = wg_paragon.9.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.9.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#红galo
+country_event = { 
+	id = wg_paragon.10
+	title = "wg_paragon.10.name"
+	desc = "wg_paragon.10.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_05_bg_renowned
+	auto_opens = no
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_Redgalo
+            plural = WG_Redgalo
+            class = WG_Redgalo
+            portrait = wsg9976
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = Redgalo_species
+            }
+		}
+		create_leader = {
+			class = general
+			species = event_target:Redgalo_species
+			immortal = yes
+			name = "WG_Redgalo"
+			set_age = 32
+			gender = female
+			custom_description = wsg_red_galo_desc
+			custom_catch_phrase = wsg_red_galo_catch_phrase
+			skip_background_generation = yes
+			traits = {
+				trait = leader_trait_general_galo
+				trait = leader_trait_scientist_wsg_experienced_2
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				set_leader_flag = unlimited_revive
+				set_leader_flag = legendary_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+				add_skill_without_trait_selection = 5
+			}
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wg_paragon.10.a
+		response_text = wg_paragon.10.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_paragon.10.b
+		response_text = wg_paragon.10.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = DISMISS
+		tag = dismiss_leader
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.10.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#桑提
+country_event = { 
+	id = wg_paragon.11
+	title = "wg_paragon.11.name"
+	desc = "wg_paragon.11.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_02_bg_renowned
+	auto_opens = no
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = CAPITALISMMAN
+            plural = CAPITALISMMAN
+            class = CAPITALISMMAN
+            portrait = wsg9998
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = Santee_species
+            }
+		}
+		create_leader = {
+			class = official
+			species = event_target:Santee_species
+			immortal = yes
+			name = "NAME_Santee"
+			set_age = 24
+			gender = female
+			custom_description = wsg_santee_desc
+			custom_catch_phrase = wsg_santee_catch_phrase
+			traits = {
+				trait = leader_trait_official_santee
+				trait = leader_trait_capitalist_2
+				trait = leader_trait_excessive
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				set_leader_flag = santee_flag
+				save_global_event_target_as = santee_leader
+				set_leader_flag = wsg_event_leader
+				set_leader_flag = legendary_leader
+				set_leader_flag = unlimited_revive
+				set_leader_flag = legendary_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+				add_skill_without_trait_selection = 5
+				
+			}
+		}
+		last_created_leader = {
+			if = {
+				limit = { owner = { has_country_flag = wsg_mist }}
+				add_trait_no_notify = leader_trait_mist
+			} else_if = {
+				limit = { owner = { has_country_flag = project_s_finish }}
+				add_trait_no_notify = leader_trait_warshipgirls2
+			} else_if = {
+				limit = { owner = { has_country_flag = wsg_project_r }}
+				add_trait_no_notify = leader_trait_warshipgirls
+			}
+			wg_affection_normal_system_launch = yes
+			set_variable = { which = affection value = 15 }
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wg_paragon.11.a
+		response_text = wg_paragon.11.a.response
+		is_dialog_only = yes
+	}
+
+	option = {
+		name = DISMISS
+		tag = dismiss_leader
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.11.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#OVO
+country_event = { 
+	id = wg_paragon.12
+	title = "wg_paragon.12.name"
+	desc = "wg_paragon.12.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_05_bg_renowned
+	auto_opens = no
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_QUINCY
+            plural = WG_QUINCY
+            class = WG_QUINCY
+            portrait = wsg9975
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = Quincy_species
+            }
+		}
+		create_leader = {
+			class = scientist
+			species = event_target:Quincy_species
+			immortal = yes
+			name = "NAME_Quincy"
+			set_age = 8
+			gender = female
+			custom_description = wsg_quincy_desc
+			custom_catch_phrase = wsg_quincy_catch_phrase
+			traits = {
+				trait = leader_trait_scientist_wsg_ovo_paragon
+				trait = leader_trait_scientist_wsg_ovo_food
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				set_leader_flag = legendary_leader
+				set_leader_flag = unlimited_revive
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+				add_skill_without_trait_selection = 4
+				
+			}
+		}
+		last_created_leader = {
+			if = {
+				limit = { owner = { has_country_flag = wsg_mist }}
+				add_trait_no_notify = leader_trait_mist
+			} else_if = {
+				limit = { owner = { has_country_flag = project_s_finish }}
+				add_trait_no_notify = leader_trait_warshipgirls2
+			} else_if = {
+				limit = { owner = { has_country_flag = wsg_project_r }}
+				add_trait_no_notify = leader_trait_warshipgirls
+			}
+			wg_affection_normal_system_launch = yes
+			set_variable = { which = affection value = 35 }
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wg_paragon.12.a
+		response_text = wg_paragon.12.a.response
+		is_dialog_only = yes
+	}
+
+	option = {
+		name = DISMISS
+		tag = dismiss_leader
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.12.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+
+#美味女仆
+country_event = {
+	id = wg_paragon.13
+	title = "wg_paragon.13.name"
+	desc = "wg_paragon.13.desc"
+	is_triggered_only = yes
+	picture = GFX_leader_wg_05_bg_renowned
+	auto_opens = yes
+	event_window_type = leader_recruit
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	immediate = {
+		create_species = {
+            name = Delicious_maid
+            plural = Delicious_maid
+            class = MS_MAID_ROBOTIC
+            portrait = ms_robotic_02_1
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = Delicious_maid_species
+            }
+		}
+		create_leader = {
+			class = official
+			species = event_target:Delicious_maid_species
+			name = "NAME_Delicious_maid"
+			set_age = 1800
+			immortal = yes
+			gender = female
+			event_leader = yes 
+			background_ethic = ethic_gestalt_consciousness
+			skip_background_generation = yes
+			custom_description = Delicious_maid_desc
+			custom_catch_phrase = Delicious_maid_catch_phrase
+            traits = {
+				trait = leader_trait_synthetic
+				trait = leader_trait_wg_delicious_maid
+			}
+			effect = {
+				add_skill_without_trait_selection = 7
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+			}
+		}
+		last_created_leader = {
+			if = {
+				limit = { 
+					owner = { 
+						NOR = {
+							has_ascension_perk = ap_shenhai_silent
+							has_civic = civic_CM
+						} 
+						OR = {
+							has_authority = auth_warshipgirls
+							has_authority = auth_shenhai
+						}
+					}
+				}
+				wg_affection_normal_system_launch = yes
+				set_variable = { which = affection value = 15 }
+			} 
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+	
+	option = {
+		name = DISMISS
+		tag = dismiss_leader
+		trigger = {
+			NOR = {
+				has_origin = origin_wg_warhammer
+			}
+		}
+		hidden_effect = {
+			ethic_leader_kill_effect = yes
+		}
+	}
+	option = {
+		name = wg_paragon.13.a
+		response_text = wg_paragon.13.a.response
+		trigger = {
+			NOR = {
+				has_origin = origin_wg_warhammer
+			}
+		}
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_paragon.13.b
+		response_text = wg_paragon.13.b.response
+		trigger = {
+			NOR = {
+				has_origin = origin_wg_warhammer
+			}
+		}
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_paragon.13.c
+		response_text = wg_paragon.13.c.response
+		trigger = {
+			has_origin = origin_wg_warhammer
+		}
+		is_dialog_only = yes
+	}
+	
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.13.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_warhammer_hire
+		tag = hire_leader
+		custom_tooltip = wg_paragon.13.2.hire_custom_tooltip
+		trigger = {
+			has_origin = origin_wg_warhammer
+		}
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+}
+
+#CA62
+country_event = {
+	id = wg_paragon.14
+	title = "wg_paragon.14.name"
+	desc = "wg_paragon.14.desc"
+	is_triggered_only = yes
+	picture = GFX_leader_wg_12_bg_renowned
+	auto_opens = yes
+	event_window_type = leader_recruit
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	immediate = {
+		create_species = {
+            name = WG_CA62
+            plural = WG_CA62
+            class = WG_CA62
+            portrait = sh21
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = sh_ca62_species
+            }
+		}
+		create_leader = {
+			class = official
+			species = event_target:sh_ca62_species
+			name = "CA62"
+			set_age = 28
+			immortal = yes
+			gender = female
+			event_leader = yes 
+			skip_background_generation = yes
+			custom_description = sh_ca62_desc
+			custom_catch_phrase = sh_ca62_catch_phrase
+            traits = {
+				trait = leader_trait_shenhai
+				trait = leader_trait_sh_ca62
+			}
+			effect = {
+				add_skill_without_trait_selection = 5
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+			}
+		}
+		last_created_leader = {
+			change_leader_portrait = sh21
+			#wg_affection_normal_system_launch = yes
+			#set_variable = { which = affection value = 15 } 
+			if = {
+				limit = { owner = { 
+					OR = {
+						has_ascension_perk = ap_shenhai_silent
+						has_civic = civic_CM
+					} 
+				}}
+				add_trait_no_notify = leader_trait_shenhai1
+				remove_trait = leader_trait_shenhai
+				fire_on_action = {
+					on_action = on_wg_affection_system_end
+				}
+			}
+			else_if = {
+				limit = { owner = { has_ascension_perk = ap_shenhai_icebreaking }}
+				add_trait_no_notify = leader_trait_shenhai2
+				remove_trait = leader_trait_shenhai
+				set_variable = { which = affection value = 35 }
+			}
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+	
+	option = {
+		name = DISMISS
+		tag = dismiss_leader
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.14.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+
+#女灶神
+country_event = {
+	id = wg_paragon.15
+	title = "wg_paragon.15.name"
+	desc = "wg_paragon.15.desc"
+	is_triggered_only = yes
+	picture = GFX_leader_wg_06_bg_renowned
+	auto_opens = no
+	event_window_type = leader_recruit
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	immediate = {
+		create_species = {
+            name = WG_VESTA
+            plural = WG_VESTA
+            class = WG_VESTA
+            portrait = wsg9970
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = wsg_vesta_species
+            }
+		}
+		create_leader = {
+			class = official
+			species = event_target:wsg_vesta_species
+			name = "WG_VESTA"
+			set_age = 26
+			immortal = yes
+			gender = female
+			event_leader = yes 
+			skip_background_generation = yes
+			custom_description = wg_vesta_desc
+			custom_catch_phrase = wg_vesta_catch_phrase
+            traits = {
+			}
+			effect = {
+				add_skill_without_trait_selection = 4
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_leader_flag = wsg_event_leader
+			}
+		}
+		last_created_leader = {
+			if = {
+				limit = { owner = { has_country_flag = wsg_mist }}
+				add_trait_no_notify = leader_trait_mist
+				add_trait_no_notify = leader_trait_wsg_vesta_councilor
+				add_trait_no_notify = leader_trait_wsg_vesta
+				set_variable = { which = affection value = 15 }
+				wg_affection_normal_system_launch = yes
+			} else_if = {
+				limit = { owner = { has_country_flag = project_s_finish }}
+				add_trait_no_notify = leader_trait_warshipgirls2
+				add_trait_no_notify = leader_trait_wsg_vesta_councilor
+				add_trait_no_notify = leader_trait_wsg_vesta
+				set_variable = { which = affection value = 15 }
+				wg_affection_normal_system_launch = yes
+			} else_if = {
+				limit = { owner = { has_country_flag = wsg_project_r }}
+				add_trait_no_notify = leader_trait_warshipgirls
+				add_trait_no_notify = leader_trait_wsg_vesta_councilor
+				add_trait_no_notify = leader_trait_wsg_vesta
+				set_variable = { which = affection value = 15 }
+				wg_affection_normal_system_launch = yes
+			}
+			else_if = {
+				limit = { 
+					owner = { 
+						has_ascension_perk = ap_shenhai_upgrade 
+						NOR = {
+							has_ascension_perk = ap_shenhai_silent
+							has_ascension_perk = ap_shenhai_icebreaking
+						}
+					}
+				}
+				change_leader_portrait = sh85
+				add_trait_no_notify = leader_trait_shenhai
+				add_trait_no_notify = leader_trait_sh_vesta_councilor
+				add_trait_no_notify = leader_trait_sh_vesta
+				set_variable = { which = affection value = 15 }
+				wg_affection_normal_system_launch = yes
+			}
+			else_if = {
+				limit = { owner = { has_ascension_perk = ap_shenhai_silent }}
+				change_leader_portrait = sh85
+				add_trait_no_notify = leader_trait_shenhai1
+				add_trait_no_notify = leader_trait_sh_vesta_councilor
+				add_trait_no_notify = leader_trait_sh_vesta
+				remove_trait = leader_trait_shenhai
+				fire_on_action = {
+					on_action = on_wg_affection_system_end
+				}
+			}
+			else_if = {
+				limit = { owner = { has_ascension_perk = ap_shenhai_icebreaking }}
+				change_leader_portrait = sh85
+				add_trait_no_notify = leader_trait_shenhai2
+				add_trait_no_notify = leader_trait_sh_vesta_councilor
+				add_trait_no_notify = leader_trait_sh_vesta
+				remove_trait = leader_trait_shenhai
+				set_variable = { which = affection value = 35 }
+			}
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+	option = {
+		name = wg_paragon.15.a
+		response_text = wg_paragon.15.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = DISMISS
+		tag = dismiss_leader
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.15.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+
+#蠢驴抽象领袖
+country_event = {
+	id = wg_paragon.16
+	title = "wg_paragon.16.name"
+	desc = "wg_paragon.16.desc"
+	is_triggered_only = yes
+	picture = GFX_leader_wg_09_bg_renowned
+	auto_opens = yes
+	event_window_type = leader_recruit
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	immediate = {
+		create_species = {
+            name = WG_PARADOX_LEADER
+            plural = WG_PARADOX_LEADER
+            class = WG_PARADOX_LEADER
+            portrait = wg_paradox_1
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = wg_paradox_leader_species
+            }
+		}
+		create_leader = {
+			class = official
+			species = event_target:wg_paradox_leader_species
+			name = "WG_PARADOX_LEADER"
+			set_age = 114514
+			gender = female
+			event_leader = yes 
+			background_ethic = ethic_xenophobe
+			skip_background_generation = yes
+			custom_description = wg_paradox_leader_desc
+			custom_catch_phrase = wg_paradox_leader_catch_phrase
+            traits = {
+			}
+			effect = {
+				set_skill = 3
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+			}
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+	
+	option = {
+		name = DISMISS
+		tag = dismiss_leader
+		trigger = {
+			NOR = {
+				has_origin = origin_wg_warhammer
+			}
+		}
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+	option = {
+		name = wg_paragon.16.a
+		response_text = wg_paragon.16.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = DISMISS
+		tag = dismiss_leader
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.16.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#无敌
+country_event = {
+	id = wg_paragon.17
+	title = "wg_paragon.17.name"
+	desc = "wg_paragon.17.desc"
+	is_triggered_only = yes
+	picture = GFX_leader_recruitment_bg_legendary_keides
+	auto_opens = yes
+	event_window_type = leader_recruit
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	immediate = {
+		create_species = {
+            name = WG_INVINCIBLE
+            plural = WG_INVINCIBLE
+            class = WG_INVINCIBLE
+            portrait = wsg461
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = wg_invincible_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:wg_invincible_species
+			name = "WG_INVINCIBLE"
+			set_age = 42
+			gender = female
+			event_leader = yes 
+			skip_background_generation = yes
+			custom_description = wg_invincible_desc
+			custom_catch_phrase = wg_invincible_catch_phrase
+            traits = {
+				trait = leader_trait_wg_invincible
+				trait = leader_trait_warshipgirls2
+				trait = leader_trait_admiral_mind_wipe_02
+			}
+			effect = {
+				add_skill_without_trait_selection = 5
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+			}
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+	
+
+	option = {
+		name = DISMISS
+		tag = dismiss_leader
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.17.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_paragon.18
+	title = "wg_paragon.18.name"
+	desc = "wg_paragon.18.desc"
+	is_triggered_only = yes
+	picture = GFX_leader_wg_01_bg_renowned
+	auto_opens = yes
+	event_window_type = leader_recruit
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	immediate = {
+		create_species = {
+            name = WG_U1405
+            plural = WG_U1405
+            class = WG_U1405
+            portrait = wsg351
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = wg_u1405_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:wg_u1405_species
+			name = "U-1405"
+			set_age = 14 
+			gender = female
+			event_leader = yes 
+			skip_background_generation = yes
+			custom_description = wg_u1405_desc
+			custom_catch_phrase = wg_u1405_catch_phrase
+            traits = {
+				trait = leader_trait_wg_u1405
+				trait = leader_trait_wg_u1405_paragon
+			}
+			effect = {
+				add_skill_without_trait_selection = 2
+				set_leader_flag = wsg_event_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+			}
+		}
+		last_created_leader = {
+			if = {
+				limit = { owner = { has_country_flag = wsg_mist }}
+				add_trait_no_notify = leader_trait_mist
+			} else_if = {
+				limit = { owner = { has_country_flag = project_s_finish }}
+				add_trait_no_notify = leader_trait_warshipgirls2
+			} else_if = {
+				limit = { owner = { has_country_flag = wsg_project_r }}
+				add_trait_no_notify = leader_trait_warshipgirls
+			}
+			set_variable = { which = affection value = 15 }
+			wg_affection_normal_system_launch = yes
+		}
+	}
+    option = {
+		name = wg_paragon.18.a
+		response_text = wg_paragon.18.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_paragon.18.b
+		response_text = wg_paragon.18.b.response
+		is_dialog_only = yes
+	}
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+	
+
+	option = {
+		name = DISMISS
+		tag = dismiss_leader
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.18.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+country_event = { 
+	id = wg_paragon.19
+	title = "wg_paragon.19.name"
+	desc = "wg_paragon.19.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_12_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = SH_AP
+            plural = SH_AP
+            class = SH_AP
+            portrait = sh75
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = sh_ap_species
+            }
+		}
+		create_leader = {
+			class = official
+			species = event_target:sh_ap_species
+			name = "Name_SH_AP"
+			set_age = 27
+			immortal = yes
+			gender = female
+			custom_description = sh_ap_desc
+			custom_catch_phrase = sh_ap_catch_phrase
+			traits = {
+				trait = leader_trait_shenhai
+				trait = leader_trait_sh_ap_paragon
+				trait = leader_trait_sh_ap
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				set_leader_flag = wsg_event_leader
+				set_leader_flag = legendary_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+				add_skill_without_trait_selection = 5
+			}				
+		}
+		last_created_leader = {
+			if = {
+				limit = { owner = { 
+					OR = {
+						has_ascension_perk = ap_shenhai_silent
+						has_civic = civic_CM
+					} 
+				}}
+				add_trait_no_notify = leader_trait_shenhai1
+				remove_trait = leader_trait_shenhai
+				fire_on_action = {
+					on_action = on_wg_affection_system_end
+				}
+			}
+			else_if = {
+				limit = { owner = { has_ascension_perk = ap_shenhai_icebreaking }}
+				add_trait_no_notify = leader_trait_shenhai2
+				remove_trait = leader_trait_shenhai
+				set_variable = { which = affection value = 35 }
+			}
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+	option = {
+		name = DISMISS
+		tag = dismiss_leader
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+    option = {
+		name = wg_paragon.19.a
+		response_text = wg_paragon.19.a.response
+		is_dialog_only = yes
+	}
+
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.19.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+country_event = { 
+	id = wg_paragon.20
+	title = "wg_paragon.20.name"
+	desc = "wg_paragon.20.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_01_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_FORMIDABLE
+            plural = WG_FORMIDABLE
+            class = WG_FORMIDABLE
+            portrait = wsg224
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = wg_formidable_species
+            }
+		}
+		create_leader = {
+			class = official
+			species = event_target:wg_formidable_species
+			name = "WG_FORMIDABLE"
+			set_age = 34
+			immortal = yes
+			gender = female
+			custom_catch_phrase = wg_formidable_catch_phrase
+			custom_description = wg_formidable_desc
+			traits = {
+				trait = leader_trait_wg_formidable
+			}
+			effect = {
+				add_skill_without_trait_selection = 2
+				set_leader_flag = wsg_event_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+			}
+		}
+		last_created_leader = {
+			if = {
+				limit = { owner = { has_country_flag = wsg_mist }}
+				add_trait_no_notify = leader_trait_mist
+			} else_if = {
+				limit = { owner = { has_country_flag = project_s_finish }}
+				add_trait_no_notify = leader_trait_warshipgirls2
+			} else_if = {
+				limit = { owner = { has_country_flag = wsg_project_r }}
+				add_trait_no_notify = leader_trait_warshipgirls
+			}
+			set_variable = { which = affection value = 5 }
+			wg_affection_normal_system_launch = yes
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wg_paragon.20.a
+		response_text = wg_paragon.20.a.response
+		is_dialog_only = yes
+	}
+    option = {
+		name = DISMISS
+		tag = dismiss_leader
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.20.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+country_event = { 
+	id = wg_paragon.21
+	title = "wg_paragon.21.name"
+	desc = "wg_paragon.21.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_01_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_A150
+            plural = WG_A150
+            class = WG_A150
+            portrait = wsg9967
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = wg_a150_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:wg_a150_species
+			name = "WG_A150"
+			set_age = 247
+			immortal = yes
+			gender = female
+			custom_catch_phrase = wg_a150_catch_phrase
+			custom_description = wg_a150_desc
+			traits = {
+			}
+			effect = {
+				add_skill_without_trait_selection = 10
+				set_leader_flag = wsg_event_leader
+				set_leader_flag = wg_a150_admiral
+				set_leader_flag = legendary_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = is_in_recruit_window
+			}
+		}
+		last_created_leader = {
+			if = {
+				limit = { owner = { has_country_flag = wsg_mist }}
+				add_trait_no_notify = leader_trait_mist
+				add_trait_no_notify = leader_trait_wg_mist_a510
+				add_trait_no_notify = leader_trait_wg_mist_a510_legendary
+			} else_if = {
+				limit = { owner = { has_country_flag = project_s_finish }}
+				add_trait_no_notify = leader_trait_warshipgirls2
+				add_trait_no_notify = leader_trait_wg_sep_a510
+				add_trait_no_notify = leader_trait_wg_sep_a510_legendary
+			}
+			set_variable = { which = affection value = 10 }
+			wg_affection_normal_system_launch = yes
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wg_paragon.21.a
+		response_text = wg_paragon.21.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_paragon.21.b
+		response_text = wg_paragon.21.b.response
+		is_dialog_only = yes
+	}
+
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.21.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#CV16
+country_event = { 
+	id = wg_paragon.22
+	title = "wg_paragon.22.name"
+	desc = "wg_paragon.22.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_06_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_CV16
+            plural = WG_CV16
+            class = WG_CV16
+            portrait = wsg9966
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = uf_cv16_species
+            }
+		}
+		create_leader = {
+			class = official
+			species = event_target:uf_cv16_species
+			immortal = yes
+			name = "NAME_WG_CV16"
+			set_age = 64
+			gender = female
+			custom_description = uf_cv16_desc
+			custom_catch_phrase = uf_cv16_catch_phrase
+			traits = {
+				trait = leader_trait_uf_1
+				trait = leader_trait_uf_cv16_1
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				add_skill_without_trait_selection = 3
+				
+			}
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wg_paragon.22.a
+		response_text = wg_paragon.22.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_paragon.22.b
+		response_text = wg_paragon.22.b.response
+		is_dialog_only = yes
+	}
+
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.22.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#不惧
+country_event = { 
+	id = wg_paragon.23
+	title = "wg_paragon.23.name"
+	desc = "wg_paragon.23.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_01_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_IMPAVIDO
+            plural = WG_IMPAVIDO
+            class = WG_IMPAVIDO
+            portrait = wsg9965
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = wg_impavido_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:wg_impavido_species
+			immortal = yes
+			name = "NAME_WG_IMPAVIDO"
+			set_age = 18
+			gender = female
+			custom_description = wg_impavido_desc
+			custom_catch_phrase = wg_impavido_catch_phrase
+			traits = {
+				trait = leader_trait_warshipgirls
+				trait = leader_trait_general_impavido
+				trait = leader_trait_general_impavido2
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				add_skill_without_trait_selection = 4
+			}
+		}
+		last_created_leader = {
+			if = {
+				limit = { owner = { has_country_flag = wsg_mist }}
+				add_trait_no_notify = leader_trait_mist
+			} else_if = {
+				limit = { owner = { has_country_flag = project_s_finish }}
+				add_trait_no_notify = leader_trait_warshipgirls2
+			}
+			set_variable = { which = affection value = 15 }
+			wg_affection_normal_system_launch = yes
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wg_paragon.23.a
+		response_text = wg_paragon.23.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.23.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#北卡
+country_event = { 
+	id = wg_paragon.24
+	title = "wg_paragon.24.name"
+	desc = "wg_paragon.24.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_01_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_NORTH_CAROLINA
+            plural = WG_NORTH_CAROLINA
+            class = WG_NORTH_CAROLINA
+            portrait = wsg206_1
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = wg_north_carolina_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:wg_north_carolina_species
+			immortal = yes
+			name = "NAME_WG_NORTH_CAROLINA"
+			set_age = 18
+			gender = female
+			hide_age = yes
+			background_ethic = ethic_militarist
+			custom_description = wg_north_carolina_desc
+			custom_catch_phrase = wg_north_carolina_catch_phrase
+			traits = {
+				trait = subclass_commander_admiral
+				trait = leader_trait_warshipgirls
+				trait = leader_trait_commander_north_carolina
+				trait = leader_trait_cautious_2
+				trait = leader_trait_master_gunner
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				save_event_target_as = ethic_leader
+				set_leader_flag = legendary_leader
+				set_leader_flag = is_in_recruit_window
+				add_skill_without_trait_selection = 8
+			}
+		}
+		last_created_leader = {
+			if = {
+				limit = { owner = { has_country_flag = wsg_mist }}
+				add_trait_no_notify = leader_trait_mist
+			} else_if = {
+				limit = { owner = { has_country_flag = project_s_finish }}
+				add_trait_no_notify = leader_trait_warshipgirls2
+			}
+			set_variable = { which = affection value = 15 }
+			wg_affection_normal_system_launch = yes
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wg_paragon.24.a
+		response_text = wg_paragon.24.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.24.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+####典范获得事件
+country_event = {
+	id = wg_paragon.1000
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		last_increased_tech = tech_galodam
+	}
+
+	immediate = {
+		random_list = {
+			50 = { country_event = { id = wg_paragon.1001 days = 10 } }#随机获得galo队长
+			50 = {}
+		}
+	}
+}
+
+country_event = {
+	id = wg_paragon.1001
+	title = "wg_paragon.1001.name"
+	desc = "wg_paragon.1001.desc"
+	picture = GFX_evt_wg_galofall
+
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_paragon.1001.a"
+		custom_tooltip = wg_paragon.1001.a.tooltip
+		hidden_effect = { 
+			country_event = { id = wg_paragon.10 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_paragon.1002
+	title = "wg_paragon.1002.name"
+	desc = "wg_paragon.1002.desc"
+	picture = GFX_evt_PK_OVO
+
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_paragon.1002.a"
+		custom_tooltip = wg_paragon.1002.a.tooltip
+		hidden_effect = { 
+			country_event = { id = wg_paragon.12 }
+		}
+	}
+}
+#铁罐侍女技能
+planet_event = {
+	id = wg_paragon.1003
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = leader
+		leader = {
+			has_trait = leader_trait_wg_delicious_maid 
+		}
+	}
+
+	immediate = {
+		owner = {
+			add_monthly_resource_mult = {
+				resource = unity
+				value = 0.3
+			}
+		}
+	}
+}
+
+ship_event = {
+	id = wg_paragon.1004
+	title = "wg_paragon.1004.name"
+	desc = "wg_paragon.1004.desc"
+	picture = GFX_evt_space_hangar
+
+	is_triggered_only = yes
+	option = {
+		name = "wg_paragon.1004.a"
+		custom_tooltip = wg_paragon.1004.a.tooltip
+		hidden_effect = { 
+			owner = { country_event = { id = wg_paragon.13 }}
+		}
+	}
+}
+
+country_event = {
+	id = wg_paragon.1005
+	title = "wg_paragon.1005.name"
+	desc = "wg_paragon.1005.desc"
+	picture = GFX_evt_space_hangar
+
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_paragon.1005.a"
+		custom_tooltip = wg_paragon.1005.a.tooltip
+		hidden_effect = { 
+			country_event = { id = wg_paragon.15 }
+		}
+	}
+}
+#深海一飞随机领袖
+country_event = {
+	id = wg_paragon.1006
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = wg_paragon.1005 } }
+			random = {
+				chance = 50
+				set_country_flag = wg_paragon.1005
+				country_event = { id = wg_paragon.1005 days = 360 random = 360  }#随机拿女灶神
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wg_paragon.1009 } }
+			random = {
+				chance = 80
+				set_country_flag = wg_paragon.1009
+				country_event = { id = wg_paragon.1009 days = 360 random = 360  }#随机拿大头目
+			}
+		}
+		if = {
+			limit = { is_ai = no }
+			country_event = { id = wg_paragon.1006 days = 7200 }
+		}
+	}
+}
+
+
+country_event = {
+	id = wg_paragon.1008
+	title = "wg_paragon.1008.name"
+	desc = "wg_paragon.1008.desc"
+	picture = GFX_evt_wsg_rank3
+
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_paragon.1008.a"
+		custom_tooltip = wg_paragon.1008.a.tooltip
+		hidden_effect = { 
+			country_event = { id = wg_paragon.18 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_paragon.1009
+	title = "wg_paragon.1009.name"
+	desc = "wg_paragon.1009.desc"
+	picture = GFX_evt_AP
+
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_paragon.1009.a"
+		custom_tooltip = wg_paragon.1009.a.tooltip
+		hidden_effect = { 
+			country_event = { id = wg_paragon.19 }
+		}
+	}
+}
+
+
+country_event = {
+	id = wg_paragon.1011
+	title = "wg_paragon.1011.name"
+	desc = "wg_paragon.1011.desc"
+	picture = GFX_evt_wg_formidable
+
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_paragon.1011.a"
+		custom_tooltip = wg_paragon.1011.a.tooltip
+		hidden_effect = { 
+			country_event = { id = wg_paragon.20 }
+		}
+	}
+}
+#可怜的超大和
+country_event = {
+	id = wg_paragon.1012
+	title = "wg_paragon.1012.name"
+	desc = "wg_paragon.1012.desc"
+	picture = GFX_evt_in_the_dark
+
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_paragon.1012.a"
+		custom_tooltip = wg_paragon.1012.a.tooltip
+		hidden_effect = { 
+			country_event = { id = wg_paragon.1013 days = 15 }
+		}
+	}
+	option = {
+		name = "wg_paragon.1012.b"
+		custom_tooltip = wg_paragon.1012.b.tooltip
+	}
+}
+
+country_event = {
+	id = wg_paragon.1013
+	title = "wg_paragon.1013.name"
+	desc = "wg_paragon.1013.desc"
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = a150_room
+	}
+
+	option = {
+		name = wg_paragon.1013.a
+		hidden_effect = { 
+			country_event = { id = wg_paragon.1014 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_paragon.1014
+	title = "wg_paragon.1014.name"
+	desc = "wg_paragon.1014.desc"
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = sh64
+		room = a150_room
+	}
+    option = {
+		name = wg_paragon.1014.a
+		response_text = wg_paragon.1014.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_paragon.1014.b
+		response_text = wg_paragon.1014.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_paragon.1014.c
+		response_text = wg_paragon.1014.c.response
+		hidden_effect = { 
+			country_event = { id = wg_paragon.1015 days = 1 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_paragon.1015
+	title = "wg_paragon.1015.name"
+	desc = "wg_paragon.1015.desc"
+	picture = GFX_evt_wg_a150
+
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_paragon.1015.a"
+		#custom_tooltip = wg_paragon.1015.a.tooltip
+		capital_scope = {
+			enable_special_project = {
+				name = SPECIAL_PROJECT_WG_A150_PROJECT
+				owner = ROOT
+				location = this
+			}
+		}
+	}
+	option = {
+		name = "wg_paragon.1015.b"
+		custom_tooltip = wg_paragon.1015.b.tooltip
+	}
+}
+
+country_event = {
+	id = wg_paragon.1016
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { owner = { has_country_flag = wsg_mist }}
+			add_modifier = {
+				modifier = wg_a150_modifier_mist
+				days = -1
+			}
+		} 
+		else_if = {
+			limit = { owner = { has_country_flag = project_s_finish }}
+			add_modifier = {
+				modifier = wg_a150_modifier_sep
+				days = -1
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_paragon.1017
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		remove_modifier = wg_a150_modifier_mist
+		remove_modifier = wg_a150_modifier_sep
+	}
+}
+
+country_event = {
+	id = wg_paragon.1018
+	title = "wg_paragon.1018.name"
+	desc = "wg_paragon.1018.desc"
+	picture = GFX_evt_wg_a150
+
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_paragon.1018.a"
+		hidden_effect = { 
+			country_event = { id = wg_paragon.21 }
+		}
+	}
+}
+
+#不惧技能
+planet_event = {
+	id = wg_paragon.1019
+	hide_window = yes
+	is_triggered_only = yes
+
+	# Prevent duplicate events
+	trigger = {
+		not = { has_planet_flag = checking_wg_impavido }
+	}
+
+	immediate = {
+		set_planet_flag = checking_wg_impavido # Prevent duplicate events
+		planet_event = {
+			id = wg_paragon.1020
+			days = 10
+		}
+	}
+}
+
+planet_event = {
+	id = wg_paragon.1020
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_ground_combat = no }
+			remove_planet_flag = checking_wg_impavido
+		}
+		else = {
+			# Handle both sides of the ground combat
+			random_kill_army_if_IMPAVIDO = { SIDE_A = attacker SIDE_B = defender }
+			random_kill_army_if_IMPAVIDO = { SIDE_A = defender SIDE_B = attacker }
+	
+			# Do the same check again in X days
+			planet_event = { id = wg_paragon.1020 days = 10 } # NOTE: Update custom loc for effect when changing days
+		}
+	}
+}
+#舰娘一飞随机领袖
+country_event = {
+	id = wg_paragon.1021
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = wg_paragon.1005 } }
+			random = {
+				chance = 50
+				set_country_flag = wg_paragon.1005
+				country_event = { id = wg_paragon.1005 days = 360 random = 360  }#随机拿女灶神
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wg_paragon.1022 } }
+			random = {
+				chance = 50
+				set_country_flag = wg_paragon.1022
+				country_event = { id = wg_paragon.1022 days = 360 random = 360  }#随机拿大头目
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wg_paragon.1008 } }
+			random = {
+				chance = 50
+				set_country_flag = wg_paragon.1008
+				country_event = { id = wg_paragon.1008 days = 360 random = 360  }#随机拿大头目
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wg_paragon.1023 } }
+			random = {
+				chance = 30
+				set_country_flag = wg_paragon.1023
+				country_event = { id = wg_paragon.1023 days = 360 random = 360  }#随机拿大头目
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wg_paragon.1011 } }
+			random = {
+				chance = 40
+				set_country_flag = wg_paragon.1011
+				country_event = { id = wg_paragon.1011 days = 360 random = 360  }#随机拿大头目
+			}
+		}
+		if = {
+			limit = { is_ai = no }
+			country_event = { id = wg_paragon.1021 days = 7200 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_paragon.1022
+	title = "wg_paragon.1022.name"
+	desc = "wg_paragon.1022.desc"
+	picture = GFX_evt_ground_combat
+
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_paragon.1022.a"
+		custom_tooltip = wg_paragon.1022.a.tooltip
+		hidden_effect = { 
+			country_event = { id = wg_paragon.23 }
+		}
+	}
+	option = {
+		name = "wg_paragon.1022.b"
+	}
+}
+country_event = {
+	id = wg_paragon.1023
+	title = "wg_paragon.1023.name"
+	desc = "wg_paragon.1023.desc"
+	picture = GFX_evt_wsg_rank4
+
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_paragon.1023.a"
+		custom_tooltip = wg_paragon.1023.a.tooltip
+		hidden_effect = { 
+			country_event = { id = wg_paragon.24 }
+		}
+	}
+	option = {
+		name = "wg_paragon.1023.b"
+	}
+}

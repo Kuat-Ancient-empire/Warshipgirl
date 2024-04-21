@@ -1,0 +1,123 @@
+wg_space_mine_0 = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = -12 y = -12 }
+	build_time = 360
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 unity = 200 }
+		upkeep = { 
+			energy = 5 
+		}
+	}
+
+	prerequisites = { "tech_wsg_mine" }
+	
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_only_one_space_mine"
+			from = { NOT = { 
+				has_country_flag = built_wg_space_mine
+			}}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_habitable_planets"
+			NOT = {
+				any_system_planet = {
+					OR = {
+						is_colony = yes
+						colonizable_planet = yes
+					}
+				}
+			}
+		}		
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_megastructure"
+			#NOT = { has_any_megastructure = yes }
+			has_no_non_gate_megastructure = yes
+		}
+	}
+	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "must_build_around_star"
+				is_star = yes
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+		}
+	}
+	
+	# root = system
+	# from = country	
+	ai_weight = {
+		factor = 0	
+	}
+	
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			set_country_flag = built_wg_space_mine
+			country_event = { id = wsg.3062 }
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+		}
+	}
+}
+wg_space_mine_1 = {
+	entity = "wg_mine_entity"
+	construction_entity = "wg_mine_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = -12 y = -12 }
+	build_time = 360
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 }
+	}
+	upgrade_from = {
+		wg_space_mine_0
+	}
+	prerequisites = { "tech_wsg_mine" }
+	
+	
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		solar_system = { 
+			set_timed_star_flag = { flag = wg_space_mine_in_system@from days = 1800 }
+		}
+		
+		from = { 
+			country_event = { id = wsg.3063 }
+		}
+	}
+}

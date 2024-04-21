@@ -1,0 +1,260 @@
+building_sh_research = {
+	base_buildtime = 480
+
+	category = research
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai	
+			NOT = { has_ascension_perk = ap_become_the_gray } 
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+
+	destroy_trigger = {
+		exists = owner
+		owner = { OR = {
+			has_ascension_perk = ap_become_the_gray
+			AND = {
+				is_ai = yes
+				buildings_no_sr_se = yes
+			}
+		}}
+	}
+
+	convert_to = {
+		"building_gray_nano_research"
+	}
+	
+	allow = {
+		has_upgraded_capital = yes
+	}
+	
+	planet_modifier = {
+		job_researcher_add = 2
+		job_sh_researcher_add = 1
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 450
+		}	
+		upkeep = {
+			energy = 5
+		}
+	}	
+	upgrades = {
+		"building_sh_research2"
+	}	
+	prerequisites = {
+		"tech_sh_research"
+	}
+	
+	triggered_desc = {
+		text = job_researcher_effect_desc
+	}
+    triggered_desc = {
+		text = job_sh_researcher_effect_desc
+	}
+	ai_resource_production = {
+		physics_research = 2
+		society_research = 2
+		engineering_research = 2
+		trigger = { always = yes }
+	}
+}
+
+building_sh_research2 = {
+	base_buildtime = 480
+	can_build = no
+
+	category = research
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai	
+			NOT = { has_ascension_perk = ap_become_the_gray }
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	allow = {
+		has_upgraded_capital = yes
+	}
+	
+	destroy_trigger = {
+		exists = owner
+		owner = { OR = {
+			has_ascension_perk = ap_become_the_gray
+			AND = {
+				is_ai = yes
+				buildings_no_sr_se = yes
+			}
+		}}
+	}
+
+	convert_to = {
+		"building_gray_nano_research2"
+	}
+
+	planet_modifier = {
+		job_sh_researcher_add = 4
+		planet_jobs_physics_research_produces_mult = 0.008
+		planet_jobs_society_research_produces_mult = 0.008
+		planet_jobs_engineering_research_produces_mult = 0.008
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 400
+			sr_pantsu = 80
+		}	
+		upkeep = {
+			energy = 6
+			sr_pantsu = 1
+		}
+	}	
+	upgrades = {
+		"building_sh_research3"
+	}	
+	prerequisites = {
+		"tech_sh_research2"
+	}
+	
+	triggered_desc = {
+		text = job_sh_researcher_effect_desc
+	}
+
+	ai_resource_production = {
+		physics_research = 4
+		society_research = 4
+		engineering_research = 4
+		trigger = { always = yes }
+	}
+}
+
+building_sh_research3 = {
+	base_buildtime = 500
+	can_build = no
+
+	category = research
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai	
+			NOT = { has_ascension_perk = ap_become_the_gray }
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	allow = {
+		has_upgraded_capital = yes
+	}
+	
+	destroy_trigger = {
+		exists = owner
+		owner = { OR = {
+			has_ascension_perk = ap_become_the_gray
+			AND = {
+				is_ai = yes
+				buildings_no_sr_se = yes
+			}
+		}}
+	}
+
+	convert_to = {
+		"building_gray_nano_research3"
+	}
+
+
+	planet_modifier = {
+		job_sh_researcher_add = 6
+		planet_jobs_physics_research_produces_mult = 0.015
+		planet_jobs_society_research_produces_mult = 0.015
+		planet_jobs_engineering_research_produces_mult = 0.02
+		planet_researchers_upkeep_mult = -0.01
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_ascension_perk = ap_shenhai_icebreaking }					
+		}
+		job_sh_researcher_add = 1
+		planet_jobs_physics_research_produces_mult = 0.005
+		planet_jobs_society_research_produces_mult = 0.005
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 500
+			sr_se = 150
+		}	
+		upkeep = {
+			sr_se = 1
+		}
+	}		
+	prerequisites = {
+		"tech_sh_research3"
+	}
+	
+	triggered_desc = {
+		text = job_sh_researcher_effect_desc
+	}
+	ai_resource_production = {
+		physics_research = 6
+		society_research = 6
+		engineering_research = 6
+		trigger = { always = yes }
+	}
+}
+
+building_sh_data_centre = {
+    icon = building_wsg_historical_library
+
+	category = amenity
+	potential = {
+		exists = owner
+		owner = {
+			is_fallen_empire = yes
+			is_sh_fallen_empire = yes
+		}
+	}
+	destroy_trigger = {
+		always = no
+	}
+	allow = {
+		always = no
+	}
+	
+	resources = {
+		category = planet_buildings
+		produces = {
+			physics_research = 40
+			society_research = 40
+			engineering_research = 40
+		}
+		upkeep = {
+			energy = 5
+		}
+	}	
+}

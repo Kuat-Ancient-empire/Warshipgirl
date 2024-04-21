@@ -1,0 +1,3506 @@
+namespace = wg_great_ming
+
+ship_event = {
+	id = wg_great_ming.1
+	title = wg_great_ming.1.name
+	desc = wg_great_ming.1.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_great_ming_1
+	immediate = {
+		solar_system = {
+			save_global_event_target_as = wg_great_ming_neighbour_system
+		}
+	}
+	option = {
+		name = "wg_great_ming.1.a"
+		owner = {
+			capital_scope = {
+				enable_special_project = {
+					name = WG_GREAT_MING_HOME_SYSTEM
+					location = this
+					owner = root
+				}
+			}
+		}	
+	}
+	option = {
+		name = "wg_great_ming.1.b"
+		custom_tooltip = wg_great_ming.1.b.tooltip
+	}
+}
+
+country_event = {
+	id = wg_great_ming.2
+	title = wg_great_ming.2.name
+	desc = wg_great_ming.2.desc
+	is_triggered_only = yes
+	picture = GFX_evt_glitchy_matrix
+    immediate = {
+		set_spawn_system_batch = begin
+		event_target:wg_great_ming_neighbour_system = {
+			closest_system = {
+				min_steps = 2
+			}
+			spawn_system = {
+				min_distance = 10
+				max_distance = 30
+				min_jumps = 2
+				max_jumps = 2
+				initializer = Great_ming_sol_system
+			}
+		}
+		set_spawn_system_batch = end
+	}
+	option = {
+		name = "wg_great_ming.2.a"
+		custom_tooltip = wg_great_ming.2.a.tooltip
+		create_point_of_interest = {
+			id = wg_great_ming_poi
+			name = "wg_great_ming_poi"
+			desc = "wg_great_ming_poi_desc"
+			location = event_target:great_ming_system
+		}
+	}
+}
+
+fleet_event = {
+	id = wg_great_ming.3
+	title = wg_great_ming.3.name
+	desc = wg_great_ming.3.desc
+	picture = GFX_evt_wg_great_ming_2
+	show_sound = event_ship_bridge
+	location = root
+    fire_only_once = yes
+	is_triggered_only = yes
+
+	trigger = {
+		from = { 
+			has_star_flag = Great_ming_sol 	
+		}
+		owner = { NOT = { has_country_flag = great_ming_country }}
+	}
+	immediate = {
+		owner = { set_country_flag = wg_great_ming_first_discoverer }
+		every_playable_country = {
+			establish_communications_no_message = event_target:great_ming_country
+			remove_point_of_interest = wg_great_ming_poi
+			event_target:great_ming_system = {
+				set_surveyed = {
+					surveyed = yes
+					surveyor = root
+				}
+			}
+		}
+    }
+
+	option = {
+		name = wg_great_ming.3.a
+		hidden_effect = { 
+			owner = {
+				country_event = { id = wg_great_ming.4 }
+			}	
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.4
+	title = "wg_great_ming.4.title"
+	desc = "wg_great_ming.4.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+    immediate = {
+		event_target:great_ming_country = {
+			every_country = {
+				prev = {
+					set_closed_borders = {
+						who = prev
+						status = yes
+					}
+				}
+			}
+		}	
+    }
+	picture_event_data = {
+		room = wg_great_ming_01_room
+	}
+	option = {
+		name = "wg_great_ming.4.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.5 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.5
+	title = "wg_great_ming.4.title"
+	desc = "wg_great_ming.5.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = wg_great_ming_01_room
+	}
+    #option = {
+		#name = wg_great_ming.5.a
+		#response_text = wg_great_ming.5.a.response
+		#is_dialog_only = yes
+	#}
+	option = {
+		name = "wg_great_ming.5.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.6 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.6
+	title = "wg_great_ming.4.title"
+	desc = "wg_great_ming.6.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = wg_great_ming_01_room
+	}
+	immediate = {
+		set_global_flag = great_ming_show_show_you
+		every_playable_country = {
+			limit = {
+				is_ai = no
+			}
+			country_event = { id = wg_great_ming.7 days = 2 }
+		}
+    }
+	option = {
+		name = "wg_great_ming.6.a"
+	}
+}
+
+country_event = {
+	id = wg_great_ming.7
+	title = "wg_great_ming.4.title"
+	desc = "wg_great_ming.7.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+    trigger = {
+		has_global_flag = great_ming_show_show_you
+	}
+	picture_event_data = {
+		room = wg_great_ming_01_room
+	}
+    option = {
+		name = "wg_great_ming.7.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.8 days = 360 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.8
+	title = wg_great_ming.8.name
+	desc = wg_great_ming.8.desc
+	is_triggered_only = yes
+	picture = GFX_evt_star_chart
+
+	option = {
+		name = "wg_great_ming.8.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.9 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.9
+	title = "wg_great_ming.4.title"
+	desc = "wg_great_ming.9.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = wg_great_ming_01_room
+	}
+	option = {
+		name = "wg_great_ming.9.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.10 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.10
+	title = "wg_great_ming.4.title"
+	desc = "wg_great_ming.10.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = wg_great_ming_01_room
+	}
+	option = {
+		name = "wg_great_ming.10.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.11 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.11
+	title = "wg_great_ming.4.title"
+	desc = "wg_great_ming.11.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = wg_great_ming_01_room
+	}
+	option = {
+		name = "wg_great_ming.11.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.12 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.12
+	title = "wg_great_ming.4.title"
+	desc = "wg_great_ming.12.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = wg_great_ming_01_room
+	}
+	option = {
+		name = "wg_great_ming.12.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.13 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.13
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.13.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+
+	option = {
+		name = wg_great_ming.13.a
+		response_text = wg_great_ming.13.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_great_ming.13.b
+		response_text = wg_great_ming.13.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = "wg_great_ming.13.c"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.14 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.14
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.14.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+
+	option = {
+		name = wg_great_ming.14.a
+		response_text = wg_great_ming.14.a.response
+		hidden_effect = {
+			country_event = { id = wg_great_ming.15 days = 20 }
+		}
+	}
+	option = {
+		name = wg_great_ming.14.b
+		custom_tooltip = wg_great_ming.14.b.tooltip
+		response_text = wg_great_ming.14.b.response
+		hidden_effect = {
+			country_event = { id = wg_great_ming.21 days = 5 }#拒绝大明朝贡
+		}
+	}
+}
+#玩家首都建立办事处
+country_event = {
+	id = wg_great_ming.15
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.15.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+    immediate = {
+		random_owned_planet = {
+			limit = {
+				is_capital = yes
+			}
+			save_event_target_as = wg_great_ming_vassal_country_capital
+		}
+		if = {
+			limit = { 
+				NOT = { exists = event_target:great_ming_trade_country }
+			}
+			create_country = {
+            	name = "wg_great_ming_trade_spacestation"
+            	authority = auth_great_ming
+
+            	flag = {
+                	icon = {
+                    	category = "wg_event_flags"
+                    	file = "wge_flags_11.dds"
+                	}
+                	background= {
+                    	category = "backgrounds"
+                    	file = "circle.dds"
+                	}
+                	colors={
+                    	"red"
+                    	"white"
+                    	"null"
+                    	"null"
+					}
+            	}
+				name_list = "WSG2"
+            	type = primitive_trade_great_ming
+				effect = {
+					save_global_event_target_as = great_ming_trade_country
+					set_country_flag = great_ming_trade_country_flag
+					establish_communications_no_message = root.owner
+				}
+        	}
+		}
+		event_target:great_ming_trade_country = {
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
+				settings = {
+					spawn_debris = no
+					is_boss = yes
+				}
+				effect = {
+					set_owner = event_target:great_ming_trade_country
+					create_ship = {
+						design = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
+					}
+					set_event_locked = yes
+					set_location = {
+						target = event_target:wg_great_ming_vassal_country_capital
+						distance = 60
+						angle = random
+					}
+					set_fleet_flag = wg_great_ming_trade_station_flag
+					set_fleet_stance = passive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 100
+				 }
+			}
+		}
+		country_event = { id = wg_great_ming.27 }
+		country_event = { id = wg_great_ming.61 }#随机几个AI国家伪装成大明的上贡国
+		set_timed_country_flag = { flag = wg_great_ming_vassal_cd days = 720 }
+    }
+	option = {
+		name = wg_great_ming.15.a
+		response_text = wg_great_ming.15.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_great_ming.15.b
+		response_text = wg_great_ming.15.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_great_ming.15.c
+		response_text = wg_great_ming.15.c.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_great_ming.15.d
+		set_country_flag = wg_has_tributed
+		hidden_effect = {
+			change_variable = { which = great_ming_affection value = 10 }#大明好感度
+		}
+		add_modifier = {
+			modifier = wg_great_ming_vassal_country
+			days = -1
+		}
+	}
+}
+
+
+country_event = {
+	id = wg_great_ming.16
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.16.desc"
+    trigger = {
+        has_country_flag = wg_has_tributed
+        exists = event_target:great_ming_country
+		has_communications = event_target:great_ming_country
+        event_target:great_ming_country = {
+            NOT = { is_hostile = root }
+        }
+        OR = { 
+            #防止视窗多开
+            NOT = { has_country_flag = engaged_with_great_ming }
+		}
+        from = { OR = {
+            is_country_type = primitive_trade_great_ming
+            is_same_value = root # returned from menu
+        }}
+        is_ai = no
+        NOR = { 
+			has_global_flag = wg_great_ming_defeated 
+			has_country_flag = wg_has_war_with_great_ming
+		}
+    }
+
+
+    diplomatic = yes
+	is_triggered_only = yes
+
+	picture_event_data = {
+		room = wg_great_ming_03_room
+    }
+    
+    immediate = {
+        set_country_flag = engaged_with_great_ming
+    }
+
+    #额外送礼
+    option = { 
+        name = wg_great_ming.16.a
+		allow = {
+            resource_stockpile_compare = { resource = food value >= 3000 }
+            resource_stockpile_compare = { resource = consumer_goods value >= 3000 }
+        }
+		add_resource = {
+            food = -3000
+            consumer_goods = -3000
+        }
+		custom_tooltip = wg_great_ming.16.a.tooltip
+        response_text = wg_great_ming.16.a.response
+		hidden_effect = {
+			change_variable = { which = great_ming_affection value = 1 }
+		}
+		remove_country_flag = engaged_with_great_ming
+    }
+
+    #要求停止朝贡
+    option = { 
+        name = wg_great_ming.16.b
+		custom_tooltip = wg_great_ming.16.b.tooltip
+		allow = {
+			custom_tooltip = {
+				fail_text = wg_great_ming_vassal_cd
+				NOT = { has_country_flag = wg_great_ming_vassal_cd }#当了狗不能立刻宣战
+			}
+		}
+		hidden_effect = {
+			country_event = { id = wg_great_ming.17 }
+		}
+    }
+	#宣战
+    option = { 
+        name = wg_great_ming.16.c
+		custom_tooltip = wg_great_ming.16.c.tooltip
+		allow = {
+			custom_tooltip = {
+				fail_text = wg_great_ming_vassal_cd
+				NOT = { has_country_flag = wg_great_ming_vassal_cd }#当了狗不能立刻宣战
+			}
+		}
+		hidden_effect = {
+			country_event = { id = wg_great_ming.18 }
+		}
+    }
+    # 退出
+    option = { 
+        name = wg_great_ming.16.d
+		response_text = wg_great_ming.16.d.response
+        remove_country_flag = engaged_with_great_ming
+    }
+}
+
+country_event = {
+	id = wg_great_ming.17
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.17.desc"
+
+
+    diplomatic = yes
+	is_triggered_only = yes
+
+	picture_event_data = {
+		room = wg_great_ming_03_room
+    }
+
+    #要求停止朝贡
+    option = { 
+        name = wg_great_ming.17.a
+		custom_tooltip = wg_great_ming.17.a.tooltip
+		response_text = wg_great_ming.17.a.response
+		
+		remove_country_flag = engaged_with_great_ming
+		remove_modifier = wg_great_ming_vassal_country#停止朝贡
+		remove_country_flag = wg_has_tributed
+		set_country_flag = wg_has_war_with_great_ming#与大明打停止朝贡战争
+		set_timed_country_flag = { flag = wg_great_ming_surrender_cd days = 360 }
+		hidden_effect = {
+			set_variable = { which = great_ming_affection value = 0 }#好感清零
+			country_event = { id = wg_great_ming.33 days = 30 }#锦衣卫进攻
+			abort_special_project = { type = "WG_GREAT_MING_DRG_MISSION" }
+		}
+    }
+    # 退出
+    option = { 
+        name = wg_great_ming.17.b
+		custom_tooltip = wg_great_ming.17.b.tooltip
+		response_text = wg_great_ming.17.b.response
+        remove_country_flag = engaged_with_great_ming
+		hidden_effect = {
+			change_variable = { which = great_ming_affection value = -1 }
+		}
+    }
+}
+
+country_event = {
+	id = wg_great_ming.18
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.18.desc"
+
+
+    diplomatic = yes
+	is_triggered_only = yes
+
+	picture_event_data = {
+		room = wg_great_ming_03_room
+    }
+
+    #要求宣战
+    option = { 
+        name = wg_great_ming.18.a
+		custom_tooltip = wg_great_ming.18.a.tooltip
+		response_text = wg_great_ming.18.a.response
+		
+		remove_country_flag = engaged_with_great_ming
+		remove_modifier = wg_great_ming_vassal_country #停止朝贡
+		remove_modifier = wg_great_ming_vassal_country_2 #停止惩罚
+		remove_country_flag = wg_has_tributed
+		set_country_flag = wg_has_war_with_great_ming #与大明打全面战争
+		set_country_flag = wg_true_war_with_great_ming #与大明打全面战争
+		set_timed_country_flag = { flag = wg_great_ming_surrender_cd days = 360 }
+		hidden_effect = {
+			set_variable = { which = great_ming_affection value = 0 } #好感清零
+			event_target:great_ming_country = { declare_war = {
+				target = ROOT
+				attacker_war_goal = wg_humiliation
+			}}
+			country_event = { id = wg_great_ming.39 days = 30 } #大明联合部队进攻
+			abort_special_project = { type = "WG_GREAT_MING_DRG_MISSION" }
+		}
+    }
+    # 退出
+    option = { 
+        name = wg_great_ming.18.b
+		custom_tooltip = wg_great_ming.17.b.tooltip
+		response_text = wg_great_ming.18.b.response
+        remove_country_flag = engaged_with_great_ming
+		hidden_effect = {
+			change_variable = { which = great_ming_affection value = -2 }
+		}
+    }
+}
+#大明亡了
+country_event = {
+	id = wg_great_ming.19
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = wg_great_ming_age
+	}
+
+	immediate = {
+		every_playable_country = {
+			limit = {
+				is_ai = no
+				has_country_flag = wg_has_war_with_great_ming
+			}
+			set_country_flag = wg_great_ming_murderer
+			country_event = { id = wg_great_ming.20 days = 1 }
+		}
+		every_playable_country = {
+			limit = {
+				is_ai = no
+				NOT = { has_country_flag = wg_has_war_with_great_ming }
+			}
+			country_event = { id = wg_great_ming.38 days = 1 }
+		}
+		every_country = {
+			limit = {
+				OR = {
+					has_country_flag = great_ming_trade_country_flag
+					has_country_flag = great_ming_jinyiwei_country_flag
+					has_country_flag = great_ming_attack_fleet_country_flag
+				}
+			}
+			destroy_country = yes
+		}
+		every_country = {
+			remove_modifier = wg_great_ming_vassal_country
+			remove_modifier = wg_great_ming_vassal_country_reward_1
+			remove_modifier = wg_great_ming_vassal_country_reward_2
+			remove_modifier = wg_great_ming_vassal_country_reward_3
+			remove_modifier = wg_great_ming_vassal_country_reward_4
+			remove_modifier = wg_great_ming_vassal_country_reward_5
+			remove_modifier = wg_great_ming_vassal_country_reward_6
+			remove_modifier = wg_great_ming_vassal_country_reward_7
+			remove_modifier = wg_great_ming_vassal_country_reward_8
+			abort_special_project = { type = "WG_GREAT_MING_DRG_MISSION" }
+		}
+		set_global_flag = wg_great_ming_defeated 
+	}
+}
+
+country_event = {
+	id = wg_great_ming.20
+	title = "wg_great_ming.4.title"
+	desc = "wg_great_ming.20.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = wg_great_ming_02_room
+	}
+	option = {
+		name = "wg_great_ming.20.a"
+		add_relic = "r_wg_great_ming_old_tree" 
+		hidden_effect = {
+			country_event = { id = wg_great_ming.35 days = 90 random = 30 }#小明帝国
+		}
+	}
+}
+
+#大明入侵
+country_event = {
+	id = wg_great_ming.21
+	title = wg_great_ming.21.name
+	desc = wg_great_ming.21.desc
+	is_triggered_only = yes
+	picture = GFX_evt_spymaster
+
+	option = {
+		name = "wg_great_ming.21.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.22 days = 180 random = 90 }
+		}
+	}
+	option = {
+		name = "wg_great_ming.21.b"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.22 days = 180 random = 90 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.22
+	title = wg_great_ming.22.name
+	desc = wg_great_ming.22.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_great_ming_3
+	show_sound = event_red_alert
+    immediate = {
+		if = {
+			limit = { 
+				NOT = { exists = event_target:great_ming_jinyiwei_country }
+			}
+			create_country = {
+            	name = "great_ming_jinyiwei"
+            	authority = auth_great_ming
+	
+            	flag = {
+                	icon = {
+                    	category = "wg_event_flags"
+                    	file = "wge_flags_11.dds"
+                	}
+                	background= {
+                    	category = "backgrounds"
+                    	file = "circle.dds"
+                	}
+                	colors={
+                    	"red"
+                    	"white"
+                    	"null"
+                    	"null"
+					}
+            	}
+				name_list = "WSG2"
+           	    type = faction
+				effect = {
+					save_global_event_target_as = great_ming_jinyiwei_country
+					set_country_flag = great_ming_jinyiwei_country_flag
+					establish_communications_no_message = root.owner
+				}
+			}
+		}
+		random_owned_planet = {
+			limit = { 
+				is_capital = yes
+			}
+			save_event_target_as = jinyiwei_invading_planet_1
+		}
+		
+		reroll_random = yes
+		random_owned_planet = {
+			limit = { 
+				is_colony = yes
+				is_capital = no
+			}
+			save_event_target_as = jinyiwei_invading_planet_2
+		}
+		reroll_random = yes
+		
+		random_owned_planet = {
+		    limit = { 
+				is_colony = yes
+				is_capital = no
+			}
+			save_event_target_as = jinyiwei_invading_planet_3
+		}
+		reroll_random = yes
+		
+		random_owned_planet = {
+		    limit = { 
+				is_colony = yes
+			}
+			save_event_target_as = jinyiwei_invading_planet_4
+		}
+		event_target:jinyiwei_invading_planet_1 = {
+			while = { count = 8
+				create_army = {
+					name = "great_ming_jinyiwei"
+					owner = event_target:great_ming_jinyiwei_country
+					type = "great_ming_jinyiwei"
+					#land_army = yes
+				}
+			}
+		}
+		event_target:jinyiwei_invading_planet_2 = {
+			while = { count = 5
+				create_army = {
+					name = "great_ming_jinyiwei"
+					owner = event_target:great_ming_jinyiwei_country
+					type = "great_ming_jinyiwei"
+					#land_army = yes
+				}
+			}
+		}
+		event_target:jinyiwei_invading_planet_3 = {
+			while = { count = 5
+				create_army = {
+					name = "great_ming_jinyiwei"
+					owner = event_target:great_ming_jinyiwei_country
+					type = "great_ming_jinyiwei"
+					#land_army = yes
+				}
+			}
+		}
+		event_target:jinyiwei_invading_planet_4 = {
+			while = { count = 5
+				create_army = {
+					name = "great_ming_jinyiwei"
+					owner = event_target:great_ming_jinyiwei_country
+					type = "great_ming_jinyiwei"
+					#land_army = yes
+				}
+			}
+		}
+		country_event = { id = wg_great_ming.23 days = 30 }
+    }
+	option = {
+		name = "wg_great_ming.22.a"
+		set_country_flag = wg_has_war_with_great_ming#与大明交战
+	}
+}
+
+#月检是否有大明陆军交战直到战斗停止
+country_event = { 
+	id = wg_great_ming.23
+	hide_window = yes
+
+	is_triggered_only = yes
+    trigger = {
+		NOT = {
+			has_global_flag = wg_great_ming_defeated
+		}
+	}
+	immediate = {
+		if = {
+			limit = { 
+				any_owned_planet = {
+					controller = { is_same_value = event_target:great_ming_jinyiwei_country }
+				}
+			}
+			country_event = { id = wg_great_ming.24 days = 30 }#任何球被大明占领
+		}
+		else_if = {
+			limit = { 
+				any_owned_planet = {
+					has_ground_combat = yes 
+				}
+			}
+			country_event = { id = wg_great_ming.23 days = 30 }#还在打就继续检
+		}
+		else_if = {
+			limit = { 
+				any_owned_planet = {
+					has_ground_combat = no 
+				}
+			}
+			country_event = { id = wg_great_ming.29 }#打赢了
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.24
+	title = wg_great_ming.24.name
+	desc = wg_great_ming.24.desc
+	is_triggered_only = yes
+	picture = GFX_evt_burning_city
+
+	option = {
+		name = "wg_great_ming.24.a"
+		add_modifier = {
+			modifier = wg_great_ming_humiliate_country
+			days = 3600
+		}
+		hidden_effect = {
+			country_event = { id = wg_great_ming.25 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.25
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.25.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+
+	option = {
+		name = wg_great_ming.25.a
+		response_text = wg_great_ming.25.a.response
+		hidden_effect = {
+			country_event = { id = wg_great_ming.15 days = 60 }
+			country_event = { id = wg_great_ming.26 }
+		}
+	}
+	option = {
+		name = wg_great_ming.25.b
+		response_text = wg_great_ming.25.b.response
+		hidden_effect = {
+			country_event = { id = wg_great_ming.28 days = 180 }#拒绝投降，开始半年检测
+			country_event = { id = wg_great_ming.30 days = 5 }
+			country_event = { id = wg_great_ming.27 }#建立办事处用于投降
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.26
+	title = wg_great_ming.26.name
+	desc = wg_great_ming.26.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_great_ming_3
+    trigger = {
+		NOT = {
+			has_country_flag = wg_true_war_with_great_ming
+		}
+	}
+    immediate = {
+		every_owned_planet = {
+			every_planet_army = {
+				limit = {
+					is_owned_by = event_target:great_ming_jinyiwei_country
+				}
+				remove_army = yes
+			}
+		}
+		remove_country_flag = wg_has_war_with_great_ming
+	}
+	option = {
+		name = "wg_great_ming.26.a"
+	}
+}
+#大明老家建立办事处
+country_event = { 
+	id = wg_great_ming.27
+	hide_window = yes
+	fire_only_once = yes
+
+	is_triggered_only = yes
+    trigger = {
+		event_target:great_ming_system = {
+			NOT = {
+				any_ship_in_system = {
+					is_ship_size = wg_great_ming_trade_spacestation
+				}
+			}
+		}
+	}
+	immediate = {
+		country_event = { id = wg_great_ming.44 }#检测大明的狗
+		country_event = { id = wg_great_ming.61 }#随机几个AI国家伪装成大明的上贡国
+		if = {
+			limit = { 
+				NOT = { exists = event_target:great_ming_trade_country }
+			}
+			create_country = {
+            	name = "wg_great_ming_trade_spacestation"
+            	authority = auth_great_ming
+            	type = primitive_trade_great_ming
+            	flag = {
+                	icon = {
+                    	category = "wg_event_flags"
+                    	file = "wge_flags_11.dds"
+                	}
+                	background= {
+                    	category = "backgrounds"
+                    	file = "circle.dds"
+                	}
+                	colors={
+                    	"red"
+                    	"white"
+                    	"null"
+                    	"null"
+					}
+            	}
+				name_list = "WSG2"
+				effect = {
+					save_global_event_target_as = great_ming_trade_country
+					set_country_flag = great_ming_trade_country_flag
+					establish_communications_no_message = root.owner
+				}
+        	}
+		}
+		event_target:great_ming_system = {
+		    random_system_planet = {
+				limit = { is_star = yes }
+				save_event_target_as = great_ming_star
+			}
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
+				settings = {
+					spawn_debris = no
+					is_boss = yes
+				}
+				effect = {
+					set_owner = event_target:great_ming_trade_country
+					create_ship = {
+						design = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
+					}
+					set_event_locked = yes
+					set_location = {
+						target = event_target:great_ming_star
+						distance = 60
+						angle = random
+					}
+					set_fleet_flag = wg_great_ming_trade_station_flag
+					set_fleet_stance = passive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 100
+				 }
+			}
+		}	
+	}
+}
+
+#半年检是否有大明陆军交战直到所有星球被解放或者投降
+country_event = { 
+	id = wg_great_ming.28
+	hide_window = yes
+
+	is_triggered_only = yes
+    trigger = {
+		NOT = {
+			has_global_flag = wg_great_ming_defeated
+		}
+	}
+	immediate = {
+		if = {
+			limit = { 
+				any_owned_planet = {
+					controller = { is_same_value = event_target:great_ming_jinyiwei_country }
+				}
+			}
+			country_event = { id = wg_great_ming.28 days = 180 }#没有获胜，继续检测
+		}
+		else_if = {
+			limit = { 
+				NOT = { 
+					any_owned_planet = {
+						controller = { is_same_value = event_target:great_ming_jinyiwei_country }
+					}
+				}	
+			}
+			country_event = { id = wg_great_ming.29 }#打下来了宣布获胜，不再需要朝贡
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.29
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.29.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+	trigger = {
+		has_country_flag = wg_has_war_with_great_ming
+	}
+    immediate = {
+		remove_country_flag = wg_has_war_with_great_ming
+		every_system_within_border = {
+			every_fleet_in_system = {
+				limit = {
+					has_fleet_flag = wg_great_ming_trade_station_flag
+				}
+				delete_fleet = this
+			}
+		}
+	}
+	option = {
+		name = wg_great_ming.29.a
+	}
+	option = {
+		name = wg_great_ming.29.b
+		response_text = wg_great_ming.29.b.response
+	}
+}
+
+country_event = {
+	id = wg_great_ming.30
+	title = wg_great_ming.30.name
+	desc = wg_great_ming.30.desc
+	is_triggered_only = yes
+	picture = GFX_evt_burning_city
+
+    immediate = {
+		random_owned_planet = {
+			limit = { 
+				is_capital = yes
+			}
+			save_event_target_as = jinyiwei_invading_planet_1
+		}
+		event_target:jinyiwei_invading_planet_1 = {
+			while = { count = 10
+				create_army = {
+					name = "great_ming_jinyiwei"
+					owner = event_target:great_ming_jinyiwei_country
+					type = "great_ming_jinyiwei"
+					#land_army = yes
+				}
+			}
+		}
+	}
+	option = {
+		name = "wg_great_ming.30.a"
+		add_modifier = {
+			modifier = wg_great_ming_humiliate_country_2
+			days = 3600
+		}
+	}
+}
+#用于请求朝贡与投降或者宣战用
+country_event = {
+	id = wg_great_ming.31
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.31.desc"
+    trigger = {
+        exists = event_target:great_ming_country
+		has_communications = event_target:great_ming_country
+        OR = { 
+            #防止视窗多开
+            NOT = { has_country_flag = engaged_with_great_ming }
+			NOT = { has_country_flag = wg_has_tributed }#未朝贡
+			has_country_flag = wg_has_war_with_great_ming#交战中
+		}
+        from = { OR = {
+            is_country_type = primitive_trade_great_ming
+            is_same_value = root # returned from menu
+        }}
+        is_ai = no
+        NOT = { #大明被击败
+			has_global_flag = wg_great_ming_defeated 
+		}
+    }
+
+
+    diplomatic = yes
+	is_triggered_only = yes
+
+	picture_event_data = {
+		room = wg_great_ming_03_room
+    }
+    
+    immediate = {
+        set_country_flag = engaged_with_great_ming
+    }
+
+    #要求成为朝贡国
+    option = { 
+        name = wg_great_ming.31.a
+		custom_tooltip = wg_great_ming.31.a.tooltip
+        response_text = wg_great_ming.31.a.response
+		trigger = {
+			NOT = {	has_country_flag = wg_has_war_with_great_ming }
+		}
+		hidden_effect = {
+			change_variable = { which = great_ming_affection value = 1 }
+			country_event = { id = wg_great_ming.15 days = 30 }#建立朝贡站
+		}
+		remove_country_flag = engaged_with_great_ming
+		set_country_flag = wg_has_tributed
+		set_timed_country_flag = { flag = wg_great_ming_vassal_cd days = 720 }
+    }
+
+    #请求投降
+    option = { 
+        name = wg_great_ming.31.b
+		response_text = wg_great_ming.31.b.response
+		trigger = {
+			has_country_flag = wg_has_war_with_great_ming
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = has_ground_combat_with_great_ming
+				NOT = {	
+					any_owned_planet = {
+						has_ground_combat = yes	
+					}
+				}
+			}
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = wg_great_ming_surrender_cd
+				NOT = { has_country_flag = wg_great_ming_surrender_cd }
+			}
+		}
+		hidden_effect = {
+			country_event = { id = wg_great_ming.26 }#锦衣卫撤军
+			country_event = { id = wg_great_ming.43 }#宣战撤军
+			country_event = { id = wg_great_ming.32 }#如果首都没有办事处就建立一个
+			set_country_flag = wg_has_tributed
+			change_variable = { which = great_ming_affection value = 5 }#大明好感度
+		}
+		add_modifier = {
+			modifier = wg_great_ming_vassal_country
+			days = -1
+		}
+		add_modifier = {
+			modifier = wg_great_ming_vassal_country_2
+			days = 1800
+		}
+		remove_country_flag = engaged_with_great_ming
+		set_timed_country_flag = { flag = wg_great_ming_vassal_cd days = 720 }#投降后2年后才能再次宣战
+    }
+	#宣战
+    option = { 
+        name = wg_great_ming.16.c
+		custom_tooltip = wg_great_ming.16.c.tooltip
+		trigger = {
+			NOT = {	has_country_flag = wg_has_war_with_great_ming }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = wg_great_ming_vassal_cd
+				NOT = { has_country_flag = wg_great_ming_vassal_cd }#当了狗不能立刻宣战
+			}
+		}
+		hidden_effect = {
+			country_event = { id = wg_great_ming.18 }
+		}
+    }
+    # 退出
+    option = { 
+        name = wg_great_ming.16.d
+		trigger = {
+			NOT = {	has_country_flag = wg_has_war_with_great_ming }
+		}
+		response_text = wg_great_ming.16.d.response
+        remove_country_flag = engaged_with_great_ming
+    }
+	# 退出
+    option = { 
+        name = wg_great_ming.31.e
+		trigger = {
+			has_country_flag = wg_has_war_with_great_ming 
+		}
+		response_text = wg_great_ming.31.e.response
+        remove_country_flag = engaged_with_great_ming
+    }
+}
+
+country_event = {
+	id = wg_great_ming.32
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		capital_scope.solar_system = {
+			NOT = {
+				any_ship_in_system = {
+					is_ship_size = wg_great_ming_trade_spacestation
+				}
+			}
+		}
+	}
+    immediate = {
+		random_owned_planet = {
+			limit = {
+				is_capital = yes
+			}
+			save_event_target_as = wg_great_ming_vassal_country_capital
+		}
+		create_fleet = {
+			name = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
+			settings = {
+				spawn_debris = no
+				is_boss = yes
+			}
+			effect = {
+				set_owner = event_target:great_ming_trade_country
+				create_ship = {
+					design = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
+				}
+				set_event_locked = yes
+				set_location = {
+					target = event_target:wg_great_ming_vassal_country_capital
+					distance = 60
+					angle = random
+				}
+				set_fleet_flag = wg_great_ming_trade_station_flag
+				set_fleet_stance = passive
+				set_aggro_range_measure_from = self
+				set_aggro_range = 100
+			}
+		}
+    }
+}
+
+country_event = {
+	id = wg_great_ming.33
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.33.desc"
+	show_sound = event_red_alert
+	diplomatic = yes
+	is_triggered_only = yes
+
+	picture_event_data = {
+		room = wg_great_ming_03_room
+    }
+	
+    immediate = {
+	    if = {
+			limit = { 
+				NOT = { exists = event_target:great_ming_jinyiwei_country }
+			}
+			create_country = {
+            	name = "great_ming_jinyiwei"
+            	authority = auth_great_ming
+	
+            	flag = {
+                	icon = {
+                    	category = "wg_event_flags"
+                    	file = "wge_flags_11.dds"
+                	}
+                	background= {
+                    	category = "backgrounds"
+                    	file = "circle.dds"
+                	}
+                	colors={
+                    	"red"
+                    	"white"
+                    	"null"
+                    	"null"
+					}
+            	}
+				name_list = "WSG2"
+           	    type = faction
+				effect = {
+					save_global_event_target_as = great_ming_jinyiwei_country
+					set_country_flag = great_ming_jinyiwei_country_flag
+					establish_communications_no_message = root.owner
+				}
+			}
+		}
+		random_owned_planet = {
+			limit = { 
+				is_capital = yes
+			}
+			save_event_target_as = jinyiwei_invading_planet_1
+		}
+		
+		reroll_random = yes
+		random_owned_planet = {
+			limit = { 
+				is_colony = yes
+				is_capital = no
+			}
+			save_event_target_as = jinyiwei_invading_planet_2
+		}
+		reroll_random = yes
+		
+		random_owned_planet = {
+		    limit = { 
+				is_colony = yes
+				is_capital = no
+			}
+			save_event_target_as = jinyiwei_invading_planet_3
+		}
+		reroll_random = yes
+		
+		random_owned_planet = {
+		    limit = { 
+				is_colony = yes
+			}
+			save_event_target_as = jinyiwei_invading_planet_4
+		}
+		event_target:jinyiwei_invading_planet_1 = {
+			while = { count = 10
+				create_army = {
+					name = "great_ming_jinyiwei"
+					owner = event_target:great_ming_jinyiwei_country
+					type = "great_ming_jinyiwei"
+					#land_army = yes
+				}
+			}
+		}
+		event_target:jinyiwei_invading_planet_2 = {
+			while = { count = 5
+				create_army = {
+					name = "great_ming_jinyiwei"
+					owner = event_target:great_ming_jinyiwei_country
+					type = "great_ming_jinyiwei"
+					#land_army = yes
+				}
+			}
+		}
+		event_target:jinyiwei_invading_planet_3 = {
+			while = { count = 5
+				create_army = {
+					name = "great_ming_jinyiwei"
+					owner = event_target:great_ming_jinyiwei_country
+					type = "great_ming_jinyiwei"
+					#land_army = yes
+				}
+			}
+		}
+		event_target:jinyiwei_invading_planet_4 = {
+			while = { count = 5
+				create_army = {
+					name = "great_ming_jinyiwei"
+					owner = event_target:great_ming_jinyiwei_country
+					type = "great_ming_jinyiwei"
+					#land_army = yes
+				}
+			}
+		}
+    }
+	option = {
+		name = "wg_great_ming.33.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.34 days = 20 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.34
+	title = wg_great_ming.34.name
+	desc = wg_great_ming.34.desc
+	is_triggered_only = yes
+	picture = GFX_evt_ground_combat
+    trigger = {
+		has_country_flag = wg_has_war_with_great_ming
+	}
+    immediate = {
+		random_owned_planet = {
+			limit = { 
+				is_capital = yes
+			}
+			save_event_target_as = jinyiwei_invading_planet_1
+		}
+		
+		reroll_random = yes
+		random_owned_planet = {
+			limit = { 
+				is_colony = yes
+				is_capital = no
+			}
+			save_event_target_as = jinyiwei_invading_planet_2
+		}
+		reroll_random = yes
+		
+		random_owned_planet = {
+		    limit = { 
+				is_colony = yes
+				is_capital = no
+			}
+			save_event_target_as = jinyiwei_invading_planet_3
+		}
+		reroll_random = yes
+		random_owned_planet = {
+		    limit = { 
+				NOT = { 
+					controller = { is_same_value = event_target:great_ming_jinyiwei_country }
+				}
+			}
+			save_event_target_as = jinyiwei_invading_planet_4
+		}
+		
+		event_target:jinyiwei_invading_planet_1 = {
+			while = { count = 5
+				create_army = {
+					name = "great_ming_jinyiwei"
+					owner = event_target:great_ming_jinyiwei_country
+					type = "great_ming_jinyiwei"
+					#land_army = yes
+				}
+			}
+		}
+		event_target:jinyiwei_invading_planet_2 = {
+			while = { count = 5
+				create_army = {
+					name = "great_ming_jinyiwei"
+					owner = event_target:great_ming_jinyiwei_country
+					type = "great_ming_jinyiwei"
+					#land_army = yes
+				}
+			}
+		}
+		event_target:jinyiwei_invading_planet_3 = {
+			while = { count = 5
+				create_army = {
+					name = "great_ming_jinyiwei"
+					owner = event_target:great_ming_jinyiwei_country
+					type = "great_ming_jinyiwei"
+					#land_army = yes
+				}
+			}
+		}
+		event_target:jinyiwei_invading_planet_4 = {
+			while = { count = 5
+				create_army = {
+					name = "great_ming_jinyiwei"
+					owner = event_target:great_ming_jinyiwei_country
+					type = "great_ming_jinyiwei"
+					#land_army = yes
+				}
+			}
+		}
+    }
+	option = {
+		name = "wg_great_ming.34.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.28 days = 180 }#拒绝投降，开始半年检测
+		}
+	}
+}
+
+##大明亡了之后建立小明帝国
+country_event = {
+	id = wg_great_ming.35
+	hide_window = yes
+	is_triggered_only = yes
+    fire_only_once = yes
+	immediate = {
+		random_system = {
+			limit = {
+				NOR = {
+					exists = space_owner
+					any_fleet_in_system = {
+						owner = {
+							is_hostile = root.owner
+						}
+					}	
+				}
+				any_system_planet = {
+					is_colonizable = yes
+					has_owner = no
+				}
+			}
+			random_system_planet = {
+				limit = {
+					is_colonizable = yes
+					has_owner = no
+				}
+				save_global_event_target_as = second_great_ming_capital
+			}
+		}
+		create_country = {
+			name = "NAME_second_great_ming_country"
+			name_list = "WSG2"
+			type = default
+			ship_prefix = ""
+			authority = auth_warshipgirls
+			civics = {
+                civic = civic_wsg_second_great_ming
+				civic = civic_wgelves
+            }
+			species = event_target:great_ming_wsg_species
+			origin = origin_wg_second_great_ming
+			flag = {
+                icon = {
+                    category = "wg_event_flags"
+                    file = "wge_flags_11.dds"
+                }
+                background= {
+                   category = "backgrounds"
+                   file = "flag_BG_21.dds"
+                }
+                colors={
+                    "yellow"
+                    "white"
+                    "null"
+                    "null"
+                }
+            }
+			ethos = { 
+				ethic = "ethic_authoritarian"
+				ethic = "ethic_fanatic_xenophobe"
+			}
+			day_zero_contact = yes
+			effect = { 
+				establish_communications_no_message = root.owner
+				save_global_event_target_as = second_great_ming_country
+				set_graphical_culture = china_01
+				set_country_flag = second_great_ming_country_flag
+				set_country_flag = great_ming_country
+				room_name_override = "wg07_room"
+			}
+		}
+		last_created_country = {
+            room_name_override = "wg07_room"
+        }
+		event_target:second_great_ming_country = {
+			room_name_override = "wg07_room"#老子写3个，看你蠢驴换不换room
+			set_male_ruler_title = "great_ming_wsg_emperor_title"
+			set_female_ruler_title = "great_ming_wsg_emperor_title"
+			set_closed_borders = { who = ROOT status = no }
+			ROOT = { set_closed_borders = { who = PREV status = no }}
+			add_modifier = {
+				modifier = khan_buff_after_50_years
+				days = -1
+			}
+			add_modifier = {
+				modifier = wg_second_great_ming
+				days = -1
+			}
+			# 不至于饿死的资源
+			add_resource = {
+				energy = 10000
+				minerals = 10000
+				food = 10000
+				consumer_goods = 10000
+				alloys = 10000
+			}
+			# 初始领袖，船等
+			create_leader = {
+				class = random_ruler
+				species = event_target:great_ming_wsg_species.owner_main_species
+				gender = female
+				name = NAME_second_great_ming_emperor
+				skill = 3
+				effect = {
+					change_leader_portrait = wsg9968
+				}
+			}
+			set_leader = last_created_leader
+			create_leader = {
+				class = official
+				species = event_target:great_ming_wsg_species.owner_main_species
+				gender = female
+				name = NAME_WG_GREAT_MING_TRADE_SPACESTATION
+				skill = 2
+				effect = {
+					change_leader_portrait = wsg9969
+				}
+			}
+			while = {
+				count = 2
+				create_leader = {
+					class = scientist
+					species = event_target:great_ming_wsg_species.owner_main_species
+					gender = female
+					name = random
+					skill = 1
+				}
+			}
+			create_fleet = {
+				name = "Science ship"
+				effect = {
+					set_owner = prev
+					prev = { create_leader = {
+						class = scientist
+						species = event_target:great_ming_wsg_species.owner_main_species
+						gender = female
+						name = random
+						skill = 1
+						sub_type = survey
+					}}
+					create_ship = {
+						name = random
+						design = random_existing_design
+						random_existing_design = science
+						graphical_culture = wsg_02
+					}
+					set_fleet_stance = evasive
+					set_location = event_target:second_great_ming_capital
+					set_leader = last_created_leader
+				}
+			}
+			give_technology = { tech = tech_ftl_inhibitor message = no }
+			give_technology = { tech = "tech_society_1" message = no }
+			give_technology = { tech = "tech_engineering_1" message = no }
+			give_technology = { tech = "tech_physics_1" message = no }
+			give_technology = { tech = "tech_planetary_unification" message = no }
+			give_technology = { tech = tech_corvettes }
+			give_technology = { tech = tech_uav }
+			give_technology = { tech = tech_warshipgirl_assembly_plant }
+			give_technology = { tech = tech_basic_science_lab_1 }
+			give_technology = { tech = tech_administrative_ai }
+			give_technology = { tech = tech_combat_computers_1 }
+			give_technology = { tech = tech_luxuries_1 }
+			give_technology = { tech = tech_consumer_good_refinement_1 }
+			give_technology = { tech = tech_colonial_bureaucracy }
+			give_technology = { tech = tech_fusion_power }
+			give_technology = { tech = tech_shields_2 }
+			give_technology = { tech = tech_powered_exoskeletons }
+			give_technology = { tech = tech_space_mining_1 }
+			give_technology = { tech = tech_mining_1 }
+			give_technology = { tech = tech_alloys_1 }
+			give_technology = { tech = tech_eco_simulation }
+			give_technology = { tech = tech_doctrine_fleet_size_1 }
+			give_technology = { tech = tech_interstellar_fleet_traditions }
+			give_technology = { tech = tech_doctrine_navy_size_1 }
+			give_technology = { tech = tech_centralized_command }
+			give_technology = { tech = tech_combat_training }
+			give_technology = { tech = tech_planetary_infrastructure_1 }
+			give_technology = { tech = tech_centralized_command }
+		}
+		
+		create_fleet = {
+			name = "NAME_Seaborn_Flotilla"
+			settings = {
+				spawn_debris = no
+			}				
+			effect = {
+				set_owner = event_target:second_great_ming_country
+				create_ship_design = {
+					design = "NAME_Sword"
+				}
+				create_ship = {
+					name = "NAME_Seafallen_Cruiser"
+					design = last_created_design
+					upgradable = no
+				}
+				set_location = {
+					target = event_target:second_great_ming_capital
+					distance = 10
+					angle = random
+				}
+			}
+		}
+		create_fleet = {
+			name = "NAME_WG_SECOND_GREAT_MING_FLEET"
+			effect = {
+				set_owner = event_target:second_great_ming_country
+				while = {
+					count = 10
+					create_ship = {
+					name = random
+					random_existing_design = corvette
+					}
+				}
+				set_location = {
+					target = event_target:second_great_ming_capital
+					distance = 10
+					angle = random
+				}
+			}
+		}
+		event_target:second_great_ming_capital = {
+			prevent_anomaly = yes
+			
+			set_owner = event_target:second_great_ming_country
+			set_capital = yes
+			set_name = NAME_ming_capital
+			while = {
+				count = 2
+				add_district_and_planet_size_if_needed_effect = {
+					district = district_city
+				}
+			}
+			while = {
+				count = 1
+				add_district_and_planet_size_if_needed_effect = {
+					district = district_industrial
+				}
+			}
+			while = {
+				count = 1
+				add_district_and_planet_size_if_needed_effect = {
+					district = district_generator
+				}
+			}
+			while = {
+				count = 1
+				add_district_and_planet_size_if_needed_effect = {
+					district = district_farming
+				}
+			}
+			add_building = building_capital
+			add_building = building_warshipgirl_assembly_plant
+			add_building = building_wsg_elves_dormitory
+			add_building = building_research_lab_1
+			while = {
+				count = 5
+				create_pop = {
+					species = event_target:second_great_ming_country.owner_main_species
+					ethos = random
+				}
+			}
+			create_army = {
+				name = random
+				owner = event_target:second_great_ming_country
+				species = event_target:second_great_ming_country.owner_main_species
+				type = "defense_army"
+				#land_army = yes
+			}
+			solar_system = {
+				if = {
+					limit = { exists = starbase }
+					starbase.fleet = {
+						delete_fleet = this
+					}
+				}
+				create_starbase = {
+					owner = event_target:second_great_ming_country
+					size = starbase_starport
+					module = shipyard
+					module = trading_hub
+					building = crew_quarters
+				}
+				every_system_planet = {
+					set_surveyed = {
+						surveyed = yes
+						surveyor = event_target:second_great_ming_country
+					}
+					if = {
+						limit = {
+							has_deposit_for = shipclass_mining_station
+						}
+						if = {
+							limit = { has_mining_station = yes }
+							mining_station.fleet = {
+								delete_fleet = this
+							}
+						}
+						create_mining_station = { owner = event_target:second_great_ming_country }
+					}
+					if = {
+						limit = {
+							has_deposit_for = shipclass_research_station
+						}
+						if = {
+							limit = { has_research_station = yes }
+							research_station.fleet = {
+								delete_fleet = this
+							}
+						}
+						create_research_station = { owner = event_target:second_great_ming_country }
+					}
+				}
+			}
+		}
+		every_playable_country = {
+			limit = {
+				is_ai = no
+				has_country_flag = wg_great_ming_murderer
+			}
+			country_event = { id = wg_great_ming.36 }#通讯
+		}
+	}
+}
+
+#亲切问候
+country_event = {
+	id = wg_great_ming.36
+	title = wg_great_ming.36.name
+	desc = wg_great_ming.36.desc
+	is_triggered_only = yes
+	picture = GFX_evt_crisis_declared
+    location = event_target:second_great_ming_capital
+	trigger = {
+		exists = event_target:second_great_ming_country
+	}
+	option = {
+		name = "wg_great_ming.36.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.37 }
+		}
+	}
+}
+
+
+country_event = {
+	id = wg_great_ming.37
+	title = "NAME_second_great_ming_emperor"
+	desc = "wg_great_ming.37.desc"
+
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		portrait = event_target:second_great_ming_country.ruler
+		planet_background = event_target:second_great_ming_country
+		graphical_culture = event_target:second_great_ming_country
+		city_level = event_target:second_great_ming_country
+		room = wg07_room
+	}
+
+	option = {
+		name = wg_great_ming.37.a
+	}
+	option = {
+		name = wg_great_ming.37.b
+	}
+}
+
+country_event = {
+	id = wg_great_ming.38
+	title = wg_great_ming.38.name
+	desc = wg_great_ming.38.desc
+	is_triggered_only = yes
+	picture = GFX_evt_city_ruins
+	
+	option = {
+		name = "wg_great_ming.38.a"
+	}
+}
+
+country_event = {
+	id = wg_great_ming.39
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.39.desc"
+	show_sound = event_red_alert
+	diplomatic = yes
+	is_triggered_only = yes
+
+	picture_event_data = {
+		room = wg_great_ming_03_room
+    }
+	trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_war_with_great_ming
+    }
+	
+    immediate = {
+	    reroll_random = yes
+		random_owned_planet = {
+			limit = { 
+				is_capital = yes
+			}
+			save_global_event_target_as = great_ming_invading_planet_1
+		}
+		reroll_random = yes
+		random_owned_planet = {
+			limit = { 
+				is_colony = yes
+				is_capital = no
+			}
+			save_global_event_target_as = great_ming_invading_planet_2
+		}
+		reroll_random = yes
+		
+		random_owned_planet = {
+		    limit = { 
+				is_colony = yes
+				is_capital = no
+			}
+			save_global_event_target_as = great_ming_invading_planet_3
+		}
+		reroll_random = yes
+		
+		random_owned_planet = {
+		    limit = { 
+				is_colony = yes
+			}
+			save_global_event_target_as = great_ming_invading_planet_4
+		}
+		event_target:great_ming_invading_planet_1 = {
+			while = { count = 15
+				create_army = {
+					name = "great_ming_attack_army"
+					owner = event_target:great_ming_country
+					type = "great_ming_attack_army"
+					#land_army = yes
+					effect = {
+						set_army_flag = great_attack_army
+					}	
+				}
+			}
+		}
+		event_target:great_ming_invading_planet_2 = {
+			while = { count = 15
+				create_army = {
+					name = "great_ming_attack_army"
+					owner = event_target:great_ming_country
+					type = "great_ming_attack_army"
+					#land_army = yes
+					effect = {
+						set_army_flag = great_attack_army
+					}	
+				}
+			}
+		}
+		event_target:great_ming_invading_planet_3 = {
+			while = { count = 15
+				create_army = {
+					name = "great_ming_attack_army"
+					owner = event_target:great_ming_country
+					type = "great_ming_attack_army"
+					#land_army = yes
+					effect = {
+						set_army_flag = great_attack_army
+					}	
+				}
+			}
+		}
+		event_target:great_ming_invading_planet_4 = {
+			while = { count = 15
+				create_army = {
+					name = "great_ming_attack_army"
+					owner = event_target:great_ming_country
+					type = "great_ming_attack_army"
+					#land_army = yes
+					effect = {
+						set_army_flag = great_attack_army
+					}	
+				}
+			}
+		}
+		clear_global_event_target = great_ming_invading_planet_1
+		clear_global_event_target = great_ming_invading_planet_2
+		clear_global_event_target = great_ming_invading_planet_3
+		clear_global_event_target = great_ming_invading_planet_4
+    }
+	option = {
+		name = "wg_great_ming.39.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.40 days = 30 }#大明水师出动
+			country_event = { id = wg_great_ming.41 days = 180 random = 360 }#循环陆军进攻直到投降或大明战败
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.40
+	title = wg_great_ming.40.name
+	desc = wg_great_ming.40.desc
+	is_triggered_only = yes
+	picture = GFX_evt_small_space_battle
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_war_with_great_ming
+    }
+	
+    immediate = {
+		if = {
+			limit = { 
+				NOT = { exists = event_target:great_ming_attack_fleet_country }
+			}
+			create_country = {
+            	name = "NAME_WG_GREAT_MING_FLEET_COUNTRY"
+            	authority = auth_great_ming
+
+            	flag = {
+                	icon = {
+                    	category = "wg_event_flags"
+                    	file = "wge_flags_11.dds"
+                	}
+                	background= {
+                    	category = "backgrounds"
+                    	file = "circle.dds"
+                	}
+                	colors={
+                    	"blue"
+                    	"white"
+                    	"null"
+                    	"null"
+					}
+            	}
+				name_list = "WSG2"
+            	type = primitive_attack_fleet_great_ming
+				effect = {
+					save_global_event_target_as = great_ming_attack_fleet_country
+					set_country_flag = great_ming_attack_fleet_country_flag
+					establish_communications_no_message = root.owner
+				}
+        	}
+		}
+		event_target:great_ming_attack_fleet_country = {
+			set_faction_hostility = {
+				target = root.owner
+				set_hostile = yes
+			}
+		}
+	    reroll_random = yes
+		random_owned_planet = {
+			limit = { 
+				is_capital = yes
+			}
+			save_global_event_target_as = great_ming_fleet_invading_planet_1
+		}
+		
+		reroll_random = yes
+		random_owned_planet = {
+			limit = { 
+				is_colony = yes
+				is_capital = no
+			}
+			save_global_event_target_as = great_ming_fleet_invading_planet_2
+		}
+		reroll_random = yes
+		
+		random_owned_planet = {
+		    limit = { 
+				is_capital = no
+				is_colony = no
+			}
+			save_global_event_target_as = great_ming_fleet_invading_planet_3
+		}
+		reroll_random = yes
+		random_owned_planet = {
+		    limit = { 
+				is_star = yes
+			}
+			save_global_event_target_as = great_ming_fleet_invading_planet_4
+		}
+
+		event_target:great_ming_fleet_invading_planet_1 = {
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET2"
+				effect = {
+					set_owner = event_target:great_ming_attack_fleet_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 15
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_fleet_flag = great_ming_attack_fleet
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+		}
+		event_target:great_ming_fleet_invading_planet_2 = {
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET2"
+				effect = {
+					set_owner = event_target:great_ming_attack_fleet_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 10
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_fleet_flag = great_ming_attack_fleet
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+		}
+		event_target:great_ming_fleet_invading_planet_3 = {
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET2"
+				effect = {
+					set_owner = event_target:great_ming_attack_fleet_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 10
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_fleet_flag = great_ming_attack_fleet
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+		}
+		event_target:great_ming_fleet_invading_planet_4 = {
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET2"
+				effect = {
+					set_owner = event_target:great_ming_attack_fleet_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 10
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_fleet_flag = great_ming_attack_fleet
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+		}
+		clear_global_event_target = great_ming_fleet_invading_planet_1
+		clear_global_event_target = great_ming_fleet_invading_planet_2
+		clear_global_event_target = great_ming_fleet_invading_planet_3
+		clear_global_event_target = great_ming_fleet_invading_planet_4
+    }
+	option = {
+		name = "wg_great_ming.40.a"
+		hidden_effect = {
+			country_event = { id = wg_great_ming.42 days = 240 random = 480 }#循环舰队进攻
+		}
+	}
+}
+#循环陆军进攻
+country_event = {
+	id = wg_great_ming.41
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_war_with_great_ming
+    }
+	immediate = {
+		country_event = { id = wg_great_ming.41 days = 720 random = 360 }#循环陆军进攻直到投降或大明战败
+		reroll_random = yes
+		capital_scope = {
+			while = { count = 10
+				create_army = {
+					name = "great_ming_attack_army"
+					owner = event_target:great_ming_country
+					type = "great_ming_attack_army"
+					#land_army = yes
+					effect = {
+						set_army_flag = great_attack_army
+					}	
+				}
+			}
+		}
+		random_owned_planet = {
+			limit = { is_colony = yes }
+			weights = { base = 1 modifier = { factor = 1.5 is_sector_capital = yes } modifier = { factor = 1.5 is_capital = yes } }
+			while = { count = 5
+				create_army = {
+					name = "great_ming_attack_army"
+					owner = event_target:great_ming_country
+					type = "great_ming_attack_army"
+					#land_army = yes
+					effect = {
+						set_army_flag = great_attack_army
+					}	
+				}
+			}
+		}
+    }
+}
+	
+country_event = {
+	id = wg_great_ming.42
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_war_with_great_ming
+    }
+	immediate = {
+		country_event = { id = wg_great_ming.42 days = 360 random = 480 }#循环舰队进攻直到投降或大明战败
+		reroll_random = yes
+		capital_scope = {
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET2"
+				effect = {
+					set_owner = event_target:great_ming_attack_fleet_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 15
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_fleet_flag = great_ming_attack_fleet
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+		}
+		random_planet_within_border = {
+			weights = {
+				base = 1
+				modifier = { factor = 2 is_colony = no }
+				modifier = { factor = 2 OR = { has_planet_flag = megastructure has_planet_flag = has_megastructure } }
+			}
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET2"
+				effect = {
+					set_owner = event_target:great_ming_attack_fleet_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 10
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_fleet_flag = great_ming_attack_fleet
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+		}
+		random_planet_within_border = {
+			weights = {
+				base = 1
+				modifier = { factor = 2 is_colony = yes }
+				modifier = { factor = 2 OR = { has_planet_flag = megastructure has_planet_flag = has_megastructure } }
+			}
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET2"
+				effect = {
+					set_owner = event_target:great_ming_attack_fleet_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 10
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_fleet_flag = great_ming_attack_fleet
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+		}
+		random_planet_within_border = {
+			weights = {
+				base = 1
+				modifier = { factor = 2 is_colony = no }
+				modifier = { factor = 2 OR = { has_planet_flag = megastructure has_planet_flag = has_megastructure } }
+			}
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_FLEET2"
+				effect = {
+					set_owner = event_target:great_ming_attack_fleet_country
+					create_ship = {
+						name = random
+						design = "NAME_WG_GREAT_MING_TITAN"
+					}
+					while = {
+						count = 10
+						create_ship = {
+							name = random
+							design = "NAME_WG_GREAT_MING_SMALL_SHIP"
+						}
+					}
+					set_fleet_flag = great_ming_attack_fleet
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = prev
+						distance = 20
+						angle = random
+					}
+				}
+				settings = {
+					garrison = yes
+					spawn_debris = no
+					uses_naval_capacity = no
+				}
+			}
+		}
+    }
+}
+	
+country_event = {
+	id = wg_great_ming.43
+	title = wg_great_ming.43.name
+	desc = wg_great_ming.43.desc
+	is_triggered_only = yes
+	picture = GFX_evt_announcement
+    trigger = {
+		has_country_flag = wg_true_war_with_great_ming
+	}
+    immediate = {
+		every_owned_planet = {
+			every_planet_army = {
+				limit = {
+					has_army_flag = great_ming_attack_army
+				}
+				remove_army = yes
+			}
+		}
+		every_system = {
+			every_fleet_in_system = {
+				limit = {
+					has_fleet_flag = great_ming_attack_fleet
+				}
+				delete_fleet = this
+			}
+		}
+		remove_country_flag = wg_has_war_with_great_ming
+		remove_country_flag = wg_true_war_with_great_ming
+		every_war = {
+			limit = {
+				any_war_participant = {
+					prev = {
+						using_war_goal = {
+							type = wg_humiliation
+							owner = prev
+						}
+					}
+				}
+			}
+			end_war_effect = yes
+		}
+		event_target:great_ming_country = {
+			set_faction_hostility = {
+				target = root.owner
+				set_hostile = no
+				set_neutral = yes
+			}
+		}
+	}
+	option = {
+		name = "wg_great_ming.43.a"
+	}
+}    
+#大明的萝卜（3年一检） 
+country_event = {
+	id = wg_great_ming.44
+	hide_window = yes
+	is_triggered_only = yes
+
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+    }
+
+	immediate = {
+		country_event = { id = wg_great_ming.44 days = 1080 }
+		every_playable_country = {
+			limit = {
+				is_ai = no
+				has_country_flag = wg_has_tributed
+				NOT = {
+					has_country_flag = wg_has_war_with_great_ming
+				}
+			}
+			change_variable = { which = great_ming_affection value = 2 }
+			random_list = {
+				30 = {
+					modifier = {
+						add = 5
+						check_variable = { which = great_ming_affection value > 15 }
+					}
+					modifier = {
+						add = 10
+						check_variable = { which = great_ming_affection value > 20 }
+					}
+					modifier = {
+						add = 15
+						check_variable = { which = great_ming_affection value > 30 }
+					}
+					modifier = {
+						add = 20
+						check_variable = { which = great_ming_affection value > 40 }
+					}
+					modifier = {
+						add = 25
+						check_variable = { which = great_ming_affection value > 50 }
+					}
+					modifier = {
+						factor = 0
+						check_variable = { which = great_ming_affection value <= 20 }
+					}
+					country_event = { id = wg_great_ming.45 }#奖励事件
+				}
+				40 = { 
+				}
+				30 = { 
+					modifier = {
+						add = -5
+						check_variable = { which = great_ming_affection value > 40 }
+					}
+					country_event = { id = wg_great_ming.53 }#好感事件
+				}
+			}
+		}
+    }
+}
+
+country_event = {
+	id = wg_great_ming.45
+	hide_window = yes
+	is_triggered_only = yes
+
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+    }
+
+	immediate = {
+		random_list = {
+		    30 = {
+				country_event = { id = wg_great_ming.47 }#给点资源
+			}#喵喵喵？？老子不把47号事件放在第一个就随机不了？？？什么玄学代码
+			30 = {
+				country_event = { id = wg_great_ming.46 }#给点修正
+			}
+			20 = {
+				country_event = { id = wg_great_ming.48 }#给点科技
+			}
+			20 = {
+				country_event = { id = wg_great_ming.49 }#给点战舰
+			}
+			80 = {
+				modifier = {
+					factor = 0
+					has_global_flag = triggered_great_ming_abandoned_world
+				}
+				country_event = { id = wg_great_ming.50 }
+			}
+		}
+    }
+}
+
+country_event = {
+	id = wg_great_ming.46
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.46.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_tributed
+    }
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+
+	option = {
+		name = wg_great_ming.46.a
+		random_list = {
+			1 = {
+				add_modifier = {
+					modifier = wg_great_ming_vassal_country_reward_1
+					days = 3600
+				}
+			}
+			1 = {
+				add_modifier = {
+					modifier = wg_great_ming_vassal_country_reward_2
+					days = 3600
+				}
+			}
+			1 = {
+				add_modifier = {
+					modifier = wg_great_ming_vassal_country_reward_3
+					days = 3600
+				}
+			}
+			1 = {
+				add_modifier = {
+					modifier = wg_great_ming_vassal_country_reward_4
+					days = 3600
+				}
+			}
+			1 = {
+				add_modifier = {
+					modifier = wg_great_ming_vassal_country_reward_5
+					days = 3600
+				}
+			}
+			1 = {
+				add_modifier = {
+					modifier = wg_great_ming_vassal_country_reward_7
+					days = 3600
+				}
+			}
+			1 = {
+				add_modifier = {
+					modifier = wg_great_ming_vassal_country_reward_8
+					days = 3600
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.47
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.47.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_tributed
+    }
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+
+	option = {
+		name = wg_great_ming.47.a
+		random_list = {
+			1 = {
+				add_monthly_resource_mult = {
+					resource = alloys
+					value = 6
+				}
+				add_monthly_resource_mult = {
+					resource = consumer_goods
+					value = 6
+				}
+			}
+			1 = {
+				add_monthly_resource_mult = {
+					resource = energy
+					value = 6
+				}
+				add_monthly_resource_mult = {
+					resource = minerals
+					value = 6
+				}
+				add_monthly_resource_mult = {
+					resource = food
+					value = 6
+				}
+			}
+			1 = {
+				add_monthly_resource_mult = {
+					resource = unity
+					value = 6
+				}
+			}
+			1 = {
+				add_resource = { influence = 300 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.48
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.48.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_tributed
+    }
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+
+	option = {
+		name = wg_great_ming.48.a
+		random_list = {
+			1 = {
+				modifier = {
+					factor = 0
+					has_technology = tech_wg_great_ming_reward_technology_1
+				}
+				give_technology = { tech = tech_wg_great_ming_reward_technology_1 }
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					has_technology = tech_wg_great_ming_reward_technology_2
+				}
+				give_technology = { tech = tech_wg_great_ming_reward_technology_2 }
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					has_technology = tech_wg_great_ming_reward_technology_3
+				}
+				give_technology = { tech = tech_wg_great_ming_reward_technology_3 }
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					has_technology = tech_wg_great_ming_reward_technology_4
+				}
+				give_technology = { tech = tech_wg_great_ming_reward_technology_4 }
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					has_technology = tech_wg_great_ming_reward_technology_5
+				}
+				give_technology = { tech = tech_wg_great_ming_reward_technology_5 }
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					has_technology = tech_wg_great_ming_reward_technology_6
+				}
+				give_technology = { tech = tech_wg_great_ming_reward_technology_6 }
+			}
+			1 = {
+				add_modifier = {
+					modifier = wg_great_ming_vassal_country_reward_6
+					days = 3600
+				}
+			}
+
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.49
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.49.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_tributed
+    }
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+    option = {
+		name = wg_great_ming.49.a
+		response_text = wg_great_ming.49.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_great_ming.49.b
+		response_text = wg_great_ming.49.b.response
+	}
+	option = {
+		name = wg_great_ming.49.c
+		allow = {
+            resource_stockpile_compare = { resource = alloys value >= 500 }
+        }
+		add_resource = {
+            alloys = -500
+        }
+		hidden_effect = {
+			random_list = { 
+				20 = {
+					create_fleet = {
+						name = "NAME_WG_GREAT_MING_REWARD_FLEET"
+						effect = {
+							set_owner = root
+							while = {
+								count = 1
+								create_ship = {
+									name = random
+									design = "NAME_WG_GREAT_MING_TITAN_REWARD"
+								}
+							}
+							while = {
+								count = 10
+								create_ship = {
+									name = random
+									design = "NAME_WG_GREAT_MING_SMALL_SHIP_REWARD"
+								}
+							}
+							set_location = {
+								target = root.capital_scope
+								distance = 5
+								angle = random
+							}
+						}	
+					}		
+				}
+				40 = {
+					create_fleet = {
+						name = "NAME_WG_GREAT_MING_REWARD_FLEET"
+						effect = {
+							set_owner = root
+							while = {
+								count = 1
+								create_ship = {
+									name = random
+									design = "NAME_WG_GREAT_MING_TITAN_REWARD"
+								}
+							}
+							while = {
+								count = 5
+								create_ship = {
+									name = random
+									design = "NAME_WG_GREAT_MING_SMALL_SHIP_REWARD"
+								}
+							}
+							set_location = {
+								target = root.capital_scope
+								distance = 5
+								angle = random
+							}
+						}	
+					}		
+				}
+				40 = {#非洲泪	
+					create_fleet = {
+						name = "NAME_WG_GREAT_MING_REWARD_FLEET"
+						effect = {
+							set_owner = root
+							while = {
+								count = 10
+								create_ship = {
+									name = random
+									design = "NAME_WG_GREAT_MING_SMALL_SHIP_REWARD"
+								}
+							}
+							set_location = {
+								target = root.capital_scope
+								distance = 5
+								angle = random
+							}
+						}	
+					}				
+				}				
+			}
+		}	
+	}
+}
+
+country_event = {
+	id = wg_great_ming.50
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.50.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+    trigger = {
+        NOT = {
+			has_global_flag = triggered_great_ming_abandoned_world
+		}
+    }
+	immediate = {
+		set_global_flag = triggered_great_ming_abandoned_world
+    }
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+    option = {
+		name = wg_great_ming.50.a
+		response_text = wg_great_ming.50.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_great_ming.50.b
+		response_text = wg_great_ming.50.b.response
+		is_dialog_only = yes 
+	}
+	option = {
+		name = wg_great_ming.50.c
+		custom_tooltip = wg_great_ming.50.c.tooltip
+		hidden_effect = {
+			capital_scope = {
+				closest_system = {
+					min_steps = 1
+				}
+				spawn_system = {
+					min_distance = 10
+					max_distance = 30
+					min_jumps = 1
+					max_jumps = 1
+					initializer = wg_great_ming_abandoned_system
+				}
+			}
+		}	
+	}
+}
+
+planet_event = {
+	id = wg_great_ming.51
+	title = "wg_great_ming.51.name"
+	desc = "wg_great_ming.51.desc"
+	picture = GFX_evt_alien_ruins
+	is_triggered_only = yes
+	location = event_target:wg_great_ming_abandoned_world_target
+
+	trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				is_wg_empire = yes
+			}
+		}
+        has_planet_flag	= wg_great_ming_abandoned_world 	
+	}
+
+	option = {
+		name = "wg_great_ming.51.a"
+		trigger = {
+			owner = {
+				NOR = {
+					is_xenophile = yes
+					has_authority = auth_shenhai
+				}
+			}
+		}
+	}
+	option = {
+		name = "wg_great_ming.51.b"
+		hidden_effect = {
+			owner = {
+				country_event = { id = wg_great_ming.52 days = 1 }
+			}	
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.52
+	title = wg_great_ming.52.name
+	desc = wg_great_ming.52.desc
+	is_triggered_only = yes
+	picture = GFX_evt_surrender
+
+	option = {
+		name = "wg_great_ming.51.a"
+		trigger = {
+			NOR = {
+				is_xenophile = yes
+				has_authority = auth_shenhai
+			}
+		}
+	}
+	option = {
+		name = "wg_great_ming.52.a"
+		trigger = {
+			NOT = {
+				has_authority = auth_shenhai
+			}
+		}
+	}
+	option = {
+		name = "wg_great_ming.52.b"
+		custom_tooltip = wg_great_ming.52.b.tooltip
+		hidden_effect = {
+			event_target:wg_great_ming_abandoned_world_target = {	
+				while = {
+					count = 3
+					create_pop = {
+						species = event_target:great_ming_sh_species
+					}
+				}
+			}	
+		}
+	}
+	
+}  
+#大明好感度任务
+country_event = {
+	id = wg_great_ming.53
+	hide_window = yes
+	is_triggered_only = yes
+
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+    }
+
+	immediate = {
+		random_list = {
+		    1 = {
+				country_event = { id = wg_great_ming.54 }
+			} 
+		    1 = {
+				country_event = { id = wg_great_ming.55 }
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					has_global_flag = triggered_great_ming_drg_mission
+				}
+				country_event = { id = wg_great_ming.58 }
+			}
+		}
+    }
+}
+
+country_event = {
+	id = wg_great_ming.54
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.54.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_tributed
+    }
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+
+	option = {
+		name = wg_great_ming.54.a
+		custom_tooltip = wg_great_ming.54.a.tooltip
+		allow = {
+            resource_stockpile_compare = { resource = consumer_goods value >= 5000 }
+        }
+		add_resource = { consumer_goods = -5000 }
+		hidden_effect = {
+			change_variable = { which = great_ming_affection value = 2 }#大明好感度
+		}
+	}
+	option = {
+		name = wg_great_ming.54.b
+		response_text = wg_great_ming.54.b.response
+		custom_tooltip = wg_great_ming.54.b.tooltip
+		hidden_effect = {
+			change_variable = { which = great_ming_affection value = -1 }#大明好感度
+			random_list = {
+				1 = {
+					country_event = { id = wg_great_ming.56 days = 30 }#随机赈灾
+				}
+				2 = {
+				}
+			}	
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.55
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.55.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_tributed
+    }
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+
+	option = {
+		name = wg_great_ming.55.a
+		custom_tooltip = wg_great_ming.54.a.tooltip
+		allow = {
+            resource_stockpile_compare = { resource = food value >= 8000 }
+        }
+		add_resource = { food = -8000 }
+		hidden_effect = {
+			change_variable = { which = great_ming_affection value = 2 }#大明好感度
+		}
+	}
+	option = {
+		name = wg_great_ming.55.b
+		response_text = wg_great_ming.55.b.response
+		custom_tooltip = wg_great_ming.54.b.tooltip
+		hidden_effect = {
+			change_variable = { which = great_ming_affection value = -1 }#大明好感度
+			random_list = {
+				1 = {
+					country_event = { id = wg_great_ming.57 days = 30 }#随机赈灾
+				}
+				1 = {
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.56
+	title = wg_great_ming.56.name
+	desc = wg_great_ming.56.desc
+	is_triggered_only = yes
+	picture = GFX_evt_ship_offloading_cargo
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_tributed
+    }
+	option = {
+		name = "wg_great_ming.56.a"
+		add_monthly_resource_mult = {
+			resource = consumer_goods
+			value = 8
+		}
+	}
+	option = {
+		name = "wg_great_ming.56.b"
+		add_monthly_resource_mult = {
+			resource = consumer_goods
+			value = 8
+		}
+	}
+}  
+
+country_event = {
+	id = wg_great_ming.57
+	title = wg_great_ming.56.name
+	desc = wg_great_ming.57.desc
+	is_triggered_only = yes
+	picture = GFX_evt_ship_offloading_cargo
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_tributed
+    }
+	option = {
+		name = "wg_great_ming.57.a"
+		add_monthly_resource_mult = {
+			resource = food
+			value = 8
+		}
+	}
+	option = {
+		name = "wg_great_ming.57.b"
+		add_monthly_resource_mult = {
+			resource = food
+			value = 8
+		}
+	}
+}  
+
+country_event = {
+	id = wg_great_ming.58
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.58.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+    trigger = {
+        NOR = {
+			has_global_flag = wg_great_ming_defeated 
+			has_global_flag = triggered_great_ming_drg_mission 
+		}
+		has_country_flag = wg_has_tributed
+    }
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+    immediate = {
+		set_global_flag = triggered_great_ming_drg_mission 
+		random_owned_planet = {
+			limit = {
+				is_capital = no
+			}
+			save_event_target_as = wg_great_ming_drg_mission_target
+		}
+    }
+	option = {
+		name = wg_great_ming.58.a
+		response_text = wg_great_ming.58.a.response
+		custom_tooltip = wg_great_ming.54.a.tooltip
+		event_target:wg_great_ming_drg_mission_target = {
+			enable_special_project = {
+				name = WG_GREAT_MING_DRG_MISSION
+				owner = owner
+				location = this
+			}
+		}
+		hidden_effect = {
+			change_variable = { which = great_ming_affection value = 2 }#大明好感度
+		}
+	}
+	option = {
+		name = wg_great_ming.58.b
+		custom_tooltip = wg_great_ming.54.b.tooltip
+		hidden_effect = {
+			change_variable = { which = great_ming_affection value = -2 }#大明好感度
+		}
+	}
+}
+
+
+country_event = {
+	id = wg_great_ming.59
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.59.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_tributed
+    }
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+
+	option = {
+		name = wg_great_ming.59.a
+		custom_tooltip = wg_great_ming.59.a.tooltip
+		hidden_effect = {
+			change_variable = { which = great_ming_affection value = 10 }#大明好感度
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.60
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.60.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+    trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+		has_country_flag = wg_has_tributed
+    }
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+
+	option = {
+		name = wg_great_ming.60.a
+		custom_tooltip = wg_great_ming.60.a.tooltip
+		hidden_effect = {
+			change_variable = { which = great_ming_affection value = -12 }#大明好感度
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.61
+	hide_window = yes
+	fire_only_once = yes
+	is_triggered_only = yes
+	trigger = {
+        NOT = {
+			has_global_flag = wg_great_ming_defeated 
+		}
+    }
+    immediate = {
+		random_country = {
+			limit = {
+				is_ai = yes
+				OR = {
+					is_country_type = default
+					is_country_type = fallen_empire #堕落当狗很喜感
+				}
+				NOT = {
+					has_country_flag = wg_great_ming_tributed_ai
+				}
+			}
+			save_event_target_as = wg_great_ming_tributed_ai_country_1
+		}
+		event_target:wg_great_ming_tributed_ai_country_1 = {
+			capital_scope = {
+				save_event_target_as = wg_great_ming_tributed_ai_country_capital_1
+			}
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
+				settings = {
+					spawn_debris = no
+					is_boss = yes
+				}
+				effect = {
+					set_owner = event_target:great_ming_trade_country
+					create_ship = {
+						design = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
+					}
+					set_event_locked = yes
+					set_location = {
+						target = event_target:wg_great_ming_tributed_ai_country_capital_1
+						distance = 60
+						angle = random
+					}
+					set_fleet_flag = wg_great_ming_trade_station_flag
+					set_fleet_stance = passive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 100
+				}
+			}
+		}
+		random_country = {
+			limit = {
+				is_ai = yes
+				is_country_type = default
+				NOT = {
+					has_country_flag = wg_great_ming_tributed_ai
+				}
+			}
+			save_event_target_as = wg_great_ming_tributed_ai_country_2
+			set_country_flag = wg_great_ming_tributed_ai
+		}
+		event_target:wg_great_ming_tributed_ai_country_2 = {
+			capital_scope = {
+				save_event_target_as = wg_great_ming_tributed_ai_country_capital_2
+			}
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
+				settings = {
+					spawn_debris = no
+					is_boss = yes
+				}
+				effect = {
+					set_owner = event_target:great_ming_trade_country
+					create_ship = {
+						design = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
+					}
+					set_event_locked = yes
+					set_location = {
+						target = event_target:wg_great_ming_tributed_ai_country_capital_2
+						distance = 60
+						angle = random
+					}
+					set_fleet_flag = wg_great_ming_trade_station_flag
+					set_fleet_stance = passive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 100
+				 }
+			}
+		}
+		random_country = {
+			limit = {
+				is_ai = yes
+				is_country_type = default
+				NOT = {
+					has_country_flag = wg_great_ming_tributed_ai
+				}
+			}
+			save_event_target_as = wg_great_ming_tributed_ai_country_3
+			set_country_flag = wg_great_ming_tributed_ai
+		}
+		event_target:wg_great_ming_tributed_ai_country_3 = {
+			capital_scope = {
+				save_event_target_as = wg_great_ming_tributed_ai_country_capital_3
+			}
+			create_fleet = {
+				name = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
+				settings = {
+					spawn_debris = no
+					is_boss = yes
+				}
+				effect = {
+					set_owner = event_target:great_ming_trade_country
+					create_ship = {
+						design = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
+					}
+					set_event_locked = yes
+					set_location = {
+						target = event_target:wg_great_ming_tributed_ai_country_capital_3
+						distance = 60
+						angle = random
+					}
+					set_fleet_flag = wg_great_ming_trade_station_flag
+					set_fleet_stance = passive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 100
+				 }
+			}
+		}
+    }
+}

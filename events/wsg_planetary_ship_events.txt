@@ -1,0 +1,411 @@
+namespace = planetary_ship
+
+country_event = {
+	id = planetary_ship.1
+	title = planetary_ship.1.name
+	desc = planetary_ship.1.desc
+	picture = GFX_evt_planetary_ship_megastructures
+	location = fromfromfrom
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = planetary_ship_system }
+	}
+
+	option = {
+		name = planetary_ship.1.a
+	}
+}
+
+country_event = {
+	id = planetary_ship.2
+	title = planetary_ship.2.name
+	desc = planetary_ship.2.desc
+	picture = GFX_evt_planetary_ship_megastructures_1
+	location = fromfromfrom
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = planetary_ship_system }
+	}
+
+	option = {
+		name = planetary_ship.2.a
+	}
+}
+
+country_event = {
+	id = planetary_ship.3
+	title = planetary_ship.3.name
+	desc = planetary_ship.3.desc
+	picture = GFX_evt_planetary_ship_megastructures_2
+	location = fromfromfrom
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = planetary_ship_system }
+	}
+
+	option = {
+		name = planetary_ship.3.a
+	}
+}
+
+country_event = {
+	id = planetary_ship.4
+	title = planetary_ship.4.name
+	desc = planetary_ship.4.desc
+	picture = GFX_evt_planetary_ship_megastructures_3
+	location = fromfromfrom
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = planetary_ship_system }
+	}
+
+	option = {
+		name = planetary_ship.4.a
+	}
+}
+
+country_event = {
+	id = planetary_ship.5
+	title = planetary_ship.5.name
+	desc = planetary_ship.5.desc
+	picture = GFX_evt_planetary_ship_megastructures
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = planetary_ship_system }
+	}
+
+	option = {
+		name = planetary_ship.5.a
+		if = {
+			limit = {
+				NOT = {
+					has_country_flag = planetary_ship_built
+				}
+			}
+			set_country_flag = planetary_ship_built
+		}
+	}
+}
+
+country_event = {
+	id = planetary_ship.6
+	title = planetary_ship.6.name
+	desc = planetary_ship.6.desc
+	picture = GFX_evt_planetary_ship_megastructures
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+		from = { save_event_target_as = planetary_ship_system }
+	}
+
+	option = {
+		name = planetary_ship.6.a
+		if = {
+			limit = {
+				NOT = {
+					has_country_flag = planetary_ship_built
+				}
+			}
+			set_country_flag = planetary_ship_built
+		}
+	}
+}
+
+# This = owner of ship 1 (destroyed)
+# From = owner of ship 2 (combatant)
+# FromFrom = ship 1
+# FromFromFrom = ship 2
+#打爆留残骸
+country_event = {
+    id = planetary_ship.7
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+		FromFrom = {
+			OR = {
+				is_ship_size = planetary_ship_1
+				is_ship_size = planetary_ship_2
+			}
+		}
+    }
+
+	immediate = {
+		if = {
+			limit = { 
+				FromFrom = {
+					OR = { 
+						is_ship_size = planetary_ship_1
+						is_ship_size = planetary_ship_2
+					}
+				}
+			}
+			FromFrom = {
+				solar_system = {
+					save_event_target_as = planetary_ship_ruin_target_system
+					spawn_megastructure = { 
+						type = "planetary_ship_megastructures_ruin" 
+						coords_from = prev
+						init_effect = {
+							save_event_target_as = planetary_ship_ruin_megastructure
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -25 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:planetary_ship_ruin_megastructure
+							distance = 15
+							angle = random
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -20 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:planetary_ship_ruin_megastructure
+							distance = 15
+							angle = random
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -25 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:planetary_ship_ruin_megastructure
+							distance = 25
+							angle = random
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = 0 max = -20 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:planetary_ship_ruin_megastructure
+							distance = 5
+							angle = random
+						}
+					}
+				}
+			}
+			if = {
+				limit = { NOT = { has_country_flag = planetary_ship_stop_notice } }
+				country_event = {
+					id = planetary_ship.8
+					#弹窗提示
+				}
+			}
+		}
+	}
+}
+country_event = {
+	id = planetary_ship.8
+	title = planetary_ship.8.name
+	is_triggered_only = yes
+	picture = GFX_evt_sh_planetary_ship_ruins
+	desc = "planetary_ship.8.desc"
+	location = event_target:planetary_ship_ruin_target_system
+	trigger = {
+		NOT = {
+			has_country_flag = planetary_ship_stop_notice
+		}
+    }
+	option = {
+		name = planetary_ship.8.a
+	}
+	option = {
+		name = planetary_ship.8.b
+		custom_tooltip = planetary_ship.8_tooltip
+		set_country_flag = planetary_ship_stop_notice
+	}
+}
+
+country_event = {
+	id = planetary_ship.9
+	title = planetary_ship.9.name
+	is_triggered_only = yes
+	picture = GFX_evt_planetary_ship_megastructures
+	desc = "planetary_ship.9.desc"
+	location = from
+	option = {
+		name = planetary_ship.9.a
+	}
+}
+country_event = {
+	id = planetary_ship.10
+	title = planetary_ship.10.name
+	is_triggered_only = yes
+	picture = GFX_evt_planetary_ship_megastructures
+	desc = "planetary_ship.10.desc"
+
+	trigger = {
+		last_increased_tech = tech_planetary_ship
+	}
+	option = {
+		name = planetary_ship.10.a
+        add_resource = { unity = 5000 }
+	}
+}
+
+
+######################################################
+## 巨像武器事件 ## 直接引用原版触发器
+######################################################
+planet_event = {
+	id = planetary_ship.1000
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fire_on_action = {
+			on_action = on_destroy_planet_with_PLANET_KILLER_CRACKER
+			scopes = { from = root.from }
+		}
+	}
+}
+planet_event = {
+	id = planetary_ship.1010
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fire_on_action = {
+			on_action = on_destroy_planet_with_PLANET_KILLER_CRACKER_queued
+			scopes = { from = root.from }
+		}
+	}
+}
+planet_event = {
+	id = planetary_ship.2000
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fire_on_action = {
+			on_action = on_destroy_planet_with_PLANET_KILLER_SHIELDER
+			scopes = { from = root.from }
+		}
+	}
+}
+planet_event = {
+	id = planetary_ship.2010
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fire_on_action = {
+			on_action = on_destroy_planet_with_PLANET_KILLER_SHIELDER_queued
+			scopes = { from = root.from }
+		}
+	}
+}
+planet_event = {
+	id = planetary_ship.3000
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fire_on_action = {
+			on_action = on_destroy_planet_with_PLANET_KILLER_NEUTRON
+			scopes = { from = root.from }
+		}
+	}
+}
+planet_event = {
+	id = planetary_ship.3010
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fire_on_action = {
+			on_action = on_destroy_planet_with_PLANET_KILLER_NEUTRON_queued
+			scopes = { from = root.from }
+		}
+	}
+}
+planet_event = {
+	id = planetary_ship.4000
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fire_on_action = {
+			on_action = on_destroy_planet_with_PLANET_KILLER_GODRAY
+			scopes = { from = root.from }
+		}
+	}
+}
+planet_event = {
+	id = planetary_ship.4010
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fire_on_action = {
+			on_action = on_destroy_planet_with_PLANET_KILLER_GODRAY_queued
+			scopes = { from = root.from }
+		}
+	}
+}
+planet_event = {
+	id = planetary_ship.5000
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fire_on_action = {
+			on_action = on_destroy_planet_with_PLANET_KILLER_NANOBOTS
+			scopes = { from = root.from }
+		}
+	}
+}
+planet_event = {
+	id = planetary_ship.5010
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fire_on_action = {
+			on_action = on_destroy_planet_with_PLANET_KILLER_NANOBOTS_queued
+			scopes = { from = root.from }
+		}
+	}
+}
+planet_event = {
+	id = planetary_ship.6000
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fire_on_action = {
+			on_action = on_destroy_planet_with_PLANET_KILLER_DELUGE
+			scopes = { from = root.from }
+		}
+	}
+}
+planet_event = {
+	id = planetary_ship.6010
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fire_on_action = {
+			on_action = on_destroy_planet_with_PLANET_KILLER_DELUGE_queued
+			scopes = { from = root.from }
+		}
+	}
+}
+planet_event = {
+	id = planetary_ship.7000
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fire_on_action = {
+			on_action = on_destroy_planet_with_PLANET_KILLER_DEVOLUTION
+			scopes = { from = root.from }
+		}
+	}
+}

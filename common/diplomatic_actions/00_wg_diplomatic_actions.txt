@@ -1,0 +1,175 @@
+# Form a research agreement with another empire
+action_form_research_agreement = {
+	icon = "GFX_diplomacy_status_research_agreement"
+	diplo_view_acceptance_icon = yes
+	should_notify_all_communications = yes
+	requires_actor_independence = no
+	AI_acceptance_base_value = -50
+	action_type = positive
+	potential = {
+		is_country_type = default
+		from = { is_country_type = default }
+	}
+
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_actor_not_fanatic_purifiers"
+			OR = {
+				is_same_species = from
+				NOT = { has_valid_civic = civic_fanatic_purifiers	}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_recipient_not_fanatic_purifiers"
+			OR = {
+				is_same_species = from
+				from = { NOT = { has_valid_civic = civic_fanatic_purifiers } }
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_actor_not_devouring_swarm"
+			NOT = { has_valid_civic = civic_hive_devouring_swarm	}
+		}
+		custom_tooltip = {
+			fail_text = "requires_recipient_not_devouring_swarm"
+			from = { NOT = { has_valid_civic = civic_hive_devouring_swarm } }
+		}
+		if = {
+			limit = { from = { has_valid_civic = civic_inwards_perfection } }
+			if = {
+				limit = {
+					has_intel = {
+						who = from
+						intel = civics
+					}
+				}
+				custom_tooltip = {
+					fail_text = requires_recipient_not_inward_perfection
+					always = no
+				}
+			}
+			else = {
+				custom_tooltip = {
+					fail_text = diplo_action_no_low_intel
+					always = no
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_actor_not_inward_perfection"
+			NOT = { has_valid_civic = civic_inwards_perfection }
+		}
+		custom_tooltip = {
+			fail_text = "requires_actor_not_machine_terminator"
+			OR = {
+				is_same_species = from
+				NOT = { has_civic = civic_machine_terminator }
+				AND = {
+					has_civic = civic_machine_terminator
+					from = {
+						OR = {
+							has_country_flag = synthetic_empire
+							has_authority = auth_machine_intelligence
+						}
+					}
+				}
+			}
+		}
+		# When actor is organic, requires target is not exterminator
+		custom_tooltip = {
+			fail_text = "requires_recipient_not_machine_terminator"
+			OR = {
+				is_same_species = from
+				from = { NOT = { has_civic = civic_machine_terminator } }
+				AND = {
+					from = { has_civic = civic_machine_terminator }
+					OR = {
+						has_country_flag = synthetic_empire
+						has_authority = auth_machine_intelligence
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "federation_actor_no_separate_treaties"
+			NOT = {
+				AND = {
+					has_federation = yes
+					federation = { has_federation_law = treaties_separate_no }
+					NOT = { federation = { any_member = { is_same_value = root.from } } }
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "federation_recipient_no_separate_treaties"
+			from = {
+				NOT = {
+					AND = {
+						has_federation = yes
+						federation = {
+							has_federation_law = treaties_separate_no
+						}
+						NOT = { federation = { any_member = { is_same_value = root } } }
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "federation_automatic_research"
+			NOT = {
+				AND = {
+					has_federation = yes
+					federation = { any_member = { is_same_value = root.from } }
+					federation = { has_federation_perk = wsg_lv1_3 }
+				}
+			}
+		}
+		if = {
+			limit = {
+				from = { has_valid_civic = civic_pompous_purists }
+				NOT = { root = { is_overlord_to = from } }
+			}
+			if = {
+				limit = {
+					has_intel = {
+						who = from
+						intel = civics
+					}
+				}
+				custom_tooltip = {
+					fail_text = requires_recipient_not_pompous
+					always = no
+				}
+			}
+			else = {
+				custom_tooltip = {
+					fail_text = diplo_action_no_low_intel
+					always = no
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = not_allowed_for_protectorate
+			NOT = {
+				OR = {
+					FROM = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_protectorate }
+					}
+					AND = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_protectorate }
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_good_or_better_opinion"
+
+			OR = {
+				opinion_level = { who = from level >= good }
+				is_improving_relations_with = from
+			}
+		}
+	}
+}

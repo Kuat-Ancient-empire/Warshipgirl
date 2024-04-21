@@ -1,0 +1,2024 @@
+namespace = uf_sword
+country_event = {
+	id = uf_sword.1
+	title = ""
+	desc = ""
+	diplomatic = yes 
+	is_triggered_only = yes
+	show_sound = event_uf_windows
+	
+	
+	custom_gui = "uf_sword_window_1"
+
+	trigger = {
+		from = { OR = {
+			is_megastructure_type = uf_galaxy_gun_7
+			is_same_value = root
+		}}
+	}
+
+	immediate = {
+		set_variable = { which = ufs_interface_page value = 0 }
+		set_variable = { which = selected_ufs_system value = 0 }
+		set_country_flag = ufs_window_active
+	}
+	option = {
+		name = ""
+		custom_gui = "uf_sword_interface1_button_comfirm"
+		hidden_effect = {
+			set_variable = { which = ufs_fliter_mod value = 4 }
+			country_event = { id = uf_sword.100 }
+			country_event = { id = uf_sword.1000 }
+			country_event = { id = uf_sword.2 }
+		}
+	}
+	option = {
+		name = ""
+		custom_gui = "uf_sword_interface1_button_cancel"
+		default_hide_option = yes
+		hidden_effect = {
+			country_event = { id = uf_sword.1001 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_sword.4
+	title = uf_sword.4.name
+	desc = uf_sword.4.desc
+	picture = GFX_evt_uf_sword_4
+	is_triggered_only = yes
+
+	option = {
+		name = EXCELLENT
+	}
+	# 打开联合之剑
+	option = {
+		name = uf_sword.4.a
+		country_event = { id = uf_sword.1 }
+	}
+}
+
+# 发射界面
+country_event = {
+	id = uf_sword.3
+	title = ""
+	desc = {
+		exclusive_trigger = {
+			has_global_flag = destroy_all_monolith_nodes
+			check_variable = { which = ufs_fliter_mod value = 3 }
+		}
+		text = ufs_fire_mode_PowerOverwhelming
+	}
+	desc = {
+		# 天灾模式
+		exclusive_trigger = {
+			NOT = { has_global_flag = destroy_all_monolith_nodes }
+			check_variable = { which = ufs_fliter_mod value = 3 }
+		}
+		text = ufs_fire_mode_crisis_ready
+	}
+	desc = {
+		# 信标
+		exclusive_trigger = {
+			check_variable = { which = ufs_fliter_mod value = 6 }
+		}
+		text = ufs_fire_mode_1_ready
+	}
+	desc = {
+		# 单发
+		trigger = {
+			NOT = { has_country_flag = ufs_fire_mode_all }
+		}
+		text = ufs_fire_mode_2_ready
+	}
+	desc = {
+		# 多发
+		trigger = {
+			has_country_flag = ufs_fire_mode_all
+		}
+		text = ufs_fire_mode_3_ready
+	}
+	diplomatic = yes 
+	is_triggered_only = yes
+	
+	custom_gui = "uf_sword_window_3"
+
+	immediate = {
+		set_variable = { which = locked_systems value = 0 }
+		if = {
+			limit = { check_variable = { which = ufs_fliter_mod value = 6 }}
+			if = {
+				limit = { has_country_flag = locked_ufs_beacon_1 }
+				random_system = {
+					limit = { has_star_flag = ufs_beacon_1_system }
+					save_event_target_as = first_selected_ufs_system
+				}
+				change_variable = { which = locked_systems value = 1 }
+			}
+			if = {
+				limit = { has_country_flag = locked_ufs_beacon_2 }
+				random_system = {
+					limit = { has_star_flag = ufs_beacon_2_system }
+					save_event_target_as = second_selected_ufs_system
+				}
+				change_variable = { which = locked_systems value = 1 }
+			}
+			if = {
+				limit = { has_country_flag = locked_ufs_beacon_3 }
+				random_system = {
+					limit = { has_star_flag = ufs_beacon_3_system }
+					save_event_target_as = third_selected_ufs_system
+				}
+				change_variable = { which = locked_systems value = 1 }
+			}
+		} else = {
+			if = {
+				limit = { has_country_flag = select_first_ufs_system }
+				change_variable = { which = locked_systems value = 1 }
+			}
+			if = {
+				limit = { has_country_flag = select_second_ufs_system }
+				change_variable = { which = locked_systems value = 1 }
+			}
+			if = {
+				limit = { has_country_flag = select_third_ufs_system }
+				change_variable = { which = locked_systems value = 1 }
+			}
+		}
+		if = {
+			limit = { check_variable = { which = locked_systems value = 1 }}
+			set_variable = { which = cooldown value = 1 }
+		} else_if = {
+			limit = { check_variable = { which = locked_systems value = 2 }}
+			set_variable = { which = cooldown value = 2.5 }
+		} else_if = {
+			limit = { check_variable = { which = locked_systems value = 3 }}
+			set_variable = { which = cooldown value = 4 }
+		}
+		set_variable = { which = cooldown_days value = cooldown }
+		multiply_variable = { which = cooldown_days value = 180 }
+	}
+	option = {
+		name = ""
+		custom_gui = "uf_sword_interface3_button_fire"
+		trigger = {
+			OR = {
+				NOT = { check_variable = { which = ufs_fliter_mod value = 3 }}
+				AND = {
+					check_variable = { which = ufs_fliter_mod value = 3 }
+					NOT = { has_global_flag = destroy_all_monolith_nodes }
+				}
+			}
+		}
+		allow = {
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 3 }}
+				resource_stockpile_compare = {
+					resource = sr_uf
+					value >= 10000
+				}
+			} else = {
+				resource_stockpile_compare = {
+					resource = sr_uf
+					value >= 5000
+				}
+			}
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 6 }}
+				custom_tooltip = {
+					fail_text = "locked_any_beacon"
+					OR = {
+						has_country_flag = locked_ufs_beacon_1
+						has_country_flag = locked_ufs_beacon_2
+						has_country_flag = locked_ufs_beacon_3
+					}
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { which = ufs_fliter_mod value = 3 }}
+			add_resource = { sr_uf = -10000 }
+		} else = {
+			add_resource = { sr_uf = -5000 }
+		}
+		hidden_effect = { country_event = { id = uf_sword.5 }}
+	}
+	option = {
+		name = ""
+		custom_gui = "uf_sword_interface3_button_poweroverwhelming_fire"
+		trigger = {
+			check_variable = { which = ufs_fliter_mod value = 3 }
+			has_global_flag = destroy_all_monolith_nodes
+		}
+		allow = {
+			resource_stockpile_compare = {
+				resource = sr_uf
+				value >= 10000
+			}
+		}
+		add_resource = { sr_uf = -10000 }
+		hidden_effect = { country_event = { id = uf_sword.5 }}
+	}
+	option = {
+		name = ""
+		custom_gui = "uf_sword_interface1_button_cancel"
+		default_hide_option = yes
+		hidden_effect = {
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 6 }}
+				country_event = { id = uf_sword.2 }
+			} else = {
+				if = {
+					limit = { has_country_flag = ufs_fire_mode_all }
+					set_variable = { which = ufs_fliter_mod value = 10 }
+					set_variable = { which = ufs_target_count value = 4 }
+					country_event = { id = uf_sword.2 }
+				} else = {
+					remove_country_flag = select_first_ufs_system
+					event_target:first_selected_ufs_system = {
+						remove_star_flag = first_selected_ufs_system
+					}
+					clear_global_event_target = first_selected_ufs_system
+					clear_ufs_fliter_data = yes
+					default_ufs_return_effect = yes
+				}
+			}
+		}
+	}
+}
+# 点击发射后的效果
+country_event = {
+	id = uf_sword.5
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_owned_megastructure = {
+			limit = { is_megastructure_type = uf_galaxy_gun_4 }
+			remove_megastructure = this
+		}
+		random_system = {
+			limit = { has_star_flag = uf_galaxy_gun_system }
+			solar_system = {
+				spawn_megastructure = {
+					type = uf_galaxy_gun_5
+					planet = star
+					owner = root
+					orbit_distance = 0
+					orbit_angle = 0
+				}
+			}
+		}
+		# 充能时间
+		country_event = { id = uf_sword.9998 days = 30 }
+		if = {
+			limit = { check_variable = { which = ufs_fliter_mod value = 6 }}
+			if = {
+				limit = { has_country_flag = locked_ufs_beacon_1 }
+				set_country_flag = select_first_ufs_system
+				random_system = {
+					limit = { has_star_flag = ufs_beacon_1_system }
+					save_global_event_target_as = first_selected_ufs_system
+					remove_star_flag = ufs_beacon_1_system
+				}
+				if = {
+					limit = { exists = event_target:ufs_beacon_1 }
+					delete_fleet = {
+						target = event_target:ufs_beacon_1
+						destroy_template = yes
+					}
+				}
+			} else = {
+				remove_country_flag = select_first_ufs_system
+			}
+			if = {
+				limit = { has_country_flag = locked_ufs_beacon_2 }
+				set_country_flag = select_second_ufs_system
+				random_system = {
+					limit = { has_star_flag = ufs_beacon_2_system }
+					save_global_event_target_as = second_selected_ufs_system
+					remove_star_flag = ufs_beacon_2_system
+				}
+				if = {
+					limit = { exists = event_target:ufs_beacon_2 }
+					delete_fleet = {
+						target = event_target:ufs_beacon_2
+						destroy_template = yes
+					}
+				}
+			} else = {
+				remove_country_flag = select_second_ufs_system
+			}
+			if = {
+				limit = { has_country_flag = locked_ufs_beacon_3 }
+				set_country_flag = select_third_ufs_system
+				random_system = {
+					limit = { has_star_flag = ufs_beacon_3_system }
+					save_global_event_target_as = third_selected_ufs_system
+					remove_star_flag = ufs_beacon_3_system
+				}
+				if = {
+					limit = { exists = event_target:ufs_beacon_3 }
+					delete_fleet = {
+						target = event_target:ufs_beacon_3
+						destroy_template = yes
+					}
+				}
+			} else = {
+				remove_country_flag = select_third_ufs_system
+			}
+		}
+		remove_country_flag = ufs_window_active
+		if = {
+			limit = { check_variable = { which = ufs_fliter_mod value = 3 }}
+			set_variable = { which = cooldown value = 4 }
+			country_event = { id = uf_sword.4 days = 720 }
+		} else = {
+			if = {
+				limit = { check_variable = { which = cooldown value = 1 }}
+				country_event = { id = uf_sword.4 days = 180 }
+			} else_if = {
+				limit = { check_variable = { which = cooldown value = 2.5 }}
+				country_event = { id = uf_sword.4 days = 450 }
+			} else_if = {
+				limit = { check_variable = { which = cooldown value = 4 }}
+				country_event = { id = uf_sword.4 days = 720 }
+			}
+		}
+		set_country_flag = comfirm_ufs_fire
+		add_modifier = { modifier = ufs_recover_cd days = 180 time_multiplier = cooldown }
+	}
+}
+country_event = {
+	id = uf_sword.2
+	title = ""
+	desc = {
+		exclusive_trigger = {
+			has_global_flag = destroy_all_monolith_nodes
+			check_variable = { which = ufs_fliter_mod value = 3 }
+		}
+		text = ufs_fire_mode_PowerOverwhelming
+	}
+	desc = {
+		# 天灾模式
+		exclusive_trigger = {
+			NOT = { has_global_flag = destroy_all_monolith_nodes }
+			check_variable = { which = ufs_fliter_mod value = 3 }
+		}
+		text = ufs_fire_mode_crisis
+	}
+	desc = {
+		# 信标
+		exclusive_trigger = {
+			check_variable = { which = ufs_fliter_mod value = 6 }
+		}
+		text = ufs_fire_mode_1
+	}
+	desc = {
+		# 从发射（第三阶段）返回到界面时，如果有多个目标则需要选一个重置
+		exclusive_trigger = {
+			check_variable = { which = ufs_fliter_mod value = 10 }
+		}
+		text = ufs_return_from_mult
+	}
+	desc = {
+		# 多发转单发
+		exclusive_trigger = {
+			check_variable = { which = ufs_fliter_mod value = 9 }
+		}
+		text = ufs_mult_to_single
+	}
+	desc = {
+		# 单发
+		trigger = {
+			NOT = { has_country_flag = ufs_fire_mode_all }
+		}
+		text = ufs_fire_mode_2
+	}
+	desc = {
+		# 多发
+		trigger = {
+			has_country_flag = ufs_fire_mode_all
+		}
+		text = ufs_fire_mode_3
+	}
+	diplomatic = yes 
+	is_triggered_only = yes
+	
+	custom_gui = "uf_sword_window_2"
+	custom_gui_option = "uf_sword_interface2_option"
+
+	immediate = {
+		
+	}
+	option = {
+		name = ""
+		allow = {
+			custom_tooltip = {
+				fail_text = "option_not_exists"
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					value < ufs_target_count
+				}
+			}
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 2 }}
+				hidden_trigger = { exists = event_target:ufs_target_country_1 }
+				hidden:event_target:ufs_target_country_1 = {
+					default_ufs_target_country_allow = yes
+				}
+			}
+			else_if = {
+				limit = { 
+					check_variable = { which = ufs_fliter_mod value = 3 }
+					check_variable = { which = ufs_interface_page value = 0 }
+					NOT = { has_global_flag = destroy_all_monolith_nodes }
+				}
+				hidden_trigger = {
+					has_global_flag = first_monolith_node_spawned
+				}
+				custom_tooltip_fail = {
+					text = "shield_system_not_destroyed"
+					event_target:monolith_crisis_1_system = {
+						has_star_flag = ufs_can_fire
+					}
+				}
+			}
+			else_if = {
+				limit = { 
+					check_variable = { which = ufs_fliter_mod value = 3 }
+					check_variable = { which = ufs_interface_page value = 1 }
+					NOT = { has_global_flag = destroy_all_monolith_nodes }
+				}
+				hidden_trigger = {
+					has_global_flag = third_monolith_node_spawned
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+				hidden_trigger = { exists = event_target:ufs_target_system_1 }
+				hidden:event_target:ufs_target_system_1 = {
+					default_ufs_system_allow = yes
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 6 }}
+				custom_tooltip = {
+					fail_text = "beacon_not_exists"
+					exists = event_target:ufs_beacon_1
+				}
+				hidden:event_target:ufs_beacon_1 = {
+					hidden:solar_system = {
+						default_ufs_system_allow = yes
+						custom_tooltip = {
+							fail_text = "beacon_duplicated"
+							OR = {
+								ROOT = { has_country_flag = locked_ufs_beacon_1 }
+								NOR = {
+									has_star_flag = ufs_beacon_3_system
+									has_star_flag = ufs_beacon_2_system
+								}
+							}
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = { OR = {
+					check_variable = { which = ufs_fliter_mod value = 9 }
+					check_variable = { which = ufs_fliter_mod value = 10 }
+				}}
+				custom_tooltip = {
+					fail_text = "option_not_exists"
+					has_country_flag = select_first_ufs_system
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 1 }}
+				set_ufs_choose_variable = { OPTION = 1 }
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 2 }}
+				event_target:ufs_target_country_1 = {
+					save_global_event_target_as = ufs_target_country
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 3 }}
+				if = {
+					limit = { has_global_flag = destroy_all_monolith_nodes }
+					event_target:monolith_crisis_core_system = {
+						save_global_event_target_as = first_selected_ufs_system
+					}
+				} else_if = {
+					limit = { check_variable = { which = ufs_interface_page value = 0 }}
+					event_target:monolith_crisis_1_system = {
+						save_global_event_target_as = first_selected_ufs_system
+					}
+				} else = {
+					event_target:monolith_crisis_3_shield_system = {
+						save_global_event_target_as = first_selected_ufs_system
+					}
+				}
+				set_country_flag = select_first_ufs_system
+				country_event = { id = uf_sword.3 }
+				break = yes
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+				event_target:ufs_target_system_1 = {
+					save_global_event_target_as = selected_ufs_system
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 9 }}
+				clear_second_third_ufs_system_data = yes
+				country_event = { id = uf_sword.3 }
+				break = yes
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 10 }}
+				clear_global_event_target = first_selected_ufs_system
+				remove_country_flag = select_first_ufs_system
+				change_variable = { which = selected_ufs_system value = -1 }
+			}
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 6 }}
+				if = {
+					limit = { has_country_flag = locked_ufs_beacon_1 }
+					event_target:ufs_beacon_1 = { 
+						solar_system = { remove_star_flag = ufs_beacon_1_system }
+						set_event_locked = no
+					}
+					remove_country_flag = locked_ufs_beacon_1
+				} else = {
+					event_target:ufs_beacon_1 = { 
+						solar_system = { set_star_flag = ufs_beacon_1_system }
+						set_event_locked = yes
+					}
+					set_country_flag = locked_ufs_beacon_1
+				}
+				country_event = { id = uf_sword.2 }
+			} else = {
+				country_event = { id = uf_sword.999 }
+			}
+		}
+	}
+	option = {
+		name = ""
+		allow = {
+			custom_tooltip = {
+				fail_text = "option_not_exists"
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 1
+					value < ufs_target_count
+				}
+			}
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 2 }}
+				exists = event_target:ufs_target_country_2
+				hidden:event_target:ufs_target_country_2 = {
+					default_ufs_target_country_allow = yes
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 3 }}
+				hidden_trigger = {
+					has_global_flag = first_monolith_node_spawned
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+				exists = event_target:ufs_target_system_2
+				hidden:event_target:ufs_target_system_2 = {
+					default_ufs_system_allow = yes
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 6 }}
+				custom_tooltip = {
+					fail_text = "beacon_not_exists"
+					exists = event_target:ufs_beacon_2
+				}
+				hidden:event_target:ufs_beacon_2 = {
+					hidden:solar_system = {
+						default_ufs_system_allow = yes
+						custom_tooltip = {
+							fail_text = "beacon_duplicated"
+							OR = {
+								ROOT = { has_country_flag = locked_ufs_beacon_2 }
+								NOR = {
+									has_star_flag = ufs_beacon_3_system
+									has_star_flag = ufs_beacon_1_system
+								}
+							}
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = { OR = {
+					check_variable = { which = ufs_fliter_mod value = 9 }
+					check_variable = { which = ufs_fliter_mod value = 10 }
+				}}
+				custom_tooltip = {
+					fail_text = "option_not_exists"
+					has_country_flag = select_second_ufs_system
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 1 }}
+				set_ufs_choose_variable = { OPTION = 2 }
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 2 }}
+				event_target:ufs_target_country_2 = {
+					save_global_event_target_as = ufs_target_country
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 3 }}
+				set_country_flag = select_first_ufs_system
+				event_target:monolith_crisis_1_shield_system = {
+					save_global_event_target_as = first_selected_ufs_system
+				}
+				country_event = { id = uf_sword.3 }
+				break = yes
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+				event_target:ufs_target_system_2 = {
+					save_global_event_target_as = selected_ufs_system
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 9 }}
+				event_target:second_selected_ufs_system = {
+					save_global_event_target_as = selected_ufs_system
+				}
+				clear_second_third_ufs_system_data = yes
+				country_event = { id = uf_sword.3 }
+				break = yes
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 10 }}
+				clear_global_event_target = second_selected_ufs_system
+				remove_country_flag = select_second_ufs_system
+				change_variable = { which = selected_ufs_system value = -1 }
+			}
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 6 }}
+				if = {
+					limit = { has_country_flag = locked_ufs_beacon_2 }
+					event_target:ufs_beacon_2 = { 
+						solar_system = { remove_star_flag = ufs_beacon_2_system }
+						set_event_locked = no
+					}
+					remove_country_flag = locked_ufs_beacon_2
+				} else = {
+					event_target:ufs_beacon_2 = { 
+						solar_system = { set_star_flag = ufs_beacon_2_system }
+						set_event_locked = yes
+					}
+					set_country_flag = locked_ufs_beacon_2
+				}
+				country_event = { id = uf_sword.2 }
+			} else = {
+				country_event = { id = uf_sword.999 }
+			}
+		}
+	}
+	option = {
+		name = ""
+		allow = {
+			custom_tooltip = {
+				fail_text = "option_not_exists"
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 2
+					value < ufs_target_count
+				}
+			}
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 2 }}
+				exists = event_target:ufs_target_country_3
+				hidden:event_target:ufs_target_country_3 = {
+					default_ufs_target_country_allow = yes
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 3 }}
+				hidden_trigger = {
+					has_global_flag = second_monolith_node_spawned
+				}
+				custom_tooltip_fail = {
+					text = "shield_system_not_destroyed"
+					event_target:monolith_crisis_2_system = {
+						has_star_flag = ufs_can_fire
+					}
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+				exists = event_target:ufs_target_system_3
+				hidden:event_target:ufs_target_system_3 = {
+					default_ufs_system_allow = yes
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 6 }}
+				custom_tooltip = {
+					fail_text = "beacon_not_exists"
+					exists = event_target:ufs_beacon_3
+				}
+				hidden:event_target:ufs_beacon_3 = {
+					hidden:solar_system = {
+						default_ufs_system_allow = yes
+						custom_tooltip = {
+							fail_text = "beacon_duplicated"
+							OR = {
+								ROOT = { has_country_flag = locked_ufs_beacon_3 }
+								NOR = {
+									has_star_flag = ufs_beacon_1_system
+									has_star_flag = ufs_beacon_2_system
+								}
+							}
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = { OR = {
+					check_variable = { which = ufs_fliter_mod value = 9 }
+					check_variable = { which = ufs_fliter_mod value = 10 }
+				}}
+				custom_tooltip = {
+					fail_text = "option_not_exists"
+					has_country_flag = select_third_ufs_system
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 1 }}
+				set_ufs_choose_variable = { OPTION = 3 }
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 2 }}
+				event_target:ufs_target_country_3 = {
+					save_global_event_target_as = ufs_target_country
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 3 }}
+				set_country_flag = select_first_ufs_system
+				event_target:monolith_crisis_2_system = {
+					save_global_event_target_as = first_selected_ufs_system
+				}
+				country_event = { id = uf_sword.3 }
+				break = yes
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+				event_target:ufs_target_system_3 = {
+					save_global_event_target_as = selected_ufs_system
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 9 }}
+				event_target:third_selected_ufs_system = {
+					save_global_event_target_as = first_selected_ufs_system
+				}
+				clear_second_third_ufs_system_data = yes
+				country_event = { id = uf_sword.3 }
+				break = yes
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 10 }}
+				clear_global_event_target = third_selected_ufs_system
+				remove_country_flag = select_third_ufs_system
+				change_variable = { which = selected_ufs_system value = -1 }
+			}
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 6 }}
+				if = {
+					limit = { has_country_flag = locked_ufs_beacon_3 }
+					event_target:ufs_beacon_3 = { 
+						solar_system = { remove_star_flag = ufs_beacon_3_system }
+						set_event_locked = no
+					}
+					remove_country_flag = locked_ufs_beacon_3
+				} else = {
+					event_target:ufs_beacon_3 = { 
+						solar_system = { set_star_flag = ufs_beacon_3_system }
+						set_event_locked = yes
+					}
+					set_country_flag = locked_ufs_beacon_3
+				}
+				country_event = { id = uf_sword.2 }
+			} else = {
+				country_event = { id = uf_sword.999 }
+			}
+		}
+	}
+	option = {
+		name = ""
+		allow = {
+			custom_tooltip = {
+				fail_text = "option_not_exists"
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 3
+					value < ufs_target_count
+				}
+			}
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 1 }}
+				if = {
+					limit = { check_variable = { which = ufs_interface_page value = 3 }}
+					has_global_flag = has_non_vanilla_star_class
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 2 }}
+				exists = event_target:ufs_target_country_4
+				hidden:event_target:ufs_target_country_4 = {
+					default_ufs_target_country_allow = yes
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 3 }}
+				hidden_trigger = {
+					has_global_flag = second_monolith_node_spawned
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+				exists = event_target:ufs_target_system_4
+				hidden:event_target:ufs_target_system_4 = {
+					default_ufs_system_allow = yes
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 6 }}
+				custom_tooltip = {
+					fail_text = "locked_any_beacon"
+					OR = {
+						has_country_flag = locked_ufs_beacon_1
+						has_country_flag = locked_ufs_beacon_2
+						has_country_flag = locked_ufs_beacon_3
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 1 }}
+				set_ufs_choose_variable = { OPTION = 4 }
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 2 }}
+				event_target:ufs_target_country_4 = {
+					save_global_event_target_as = ufs_target_country
+				}
+			} 
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 3 }}
+				set_country_flag = select_first_ufs_system
+				event_target:monolith_crisis_2_shield_system = {
+					save_global_event_target_as = first_selected_ufs_system
+				}
+				country_event = { id = uf_sword.3 }
+				break = yes
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+				event_target:ufs_target_system_4 = {
+					save_global_event_target_as = selected_ufs_system
+				}
+			}
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 9 }}
+				# 多发转单发——返回
+				set_country_flag = ufs_fire_mode_all
+				default_ufs_return_effect = yes
+			} else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 10 }}
+				# 确认界面返回后，点击再进入确认界面
+				country_event = { id = uf_sword.3 }
+			} else = {
+				country_event = { id = uf_sword.999 }
+			}
+		}
+	}
+	option = {
+		name = ""
+		allow = {
+			custom_tooltip = {
+				fail_text = "option_not_exists"
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 4
+					value < ufs_target_count
+				}
+			}
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 2 }}
+				exists = event_target:ufs_target_country_5
+				hidden:event_target:ufs_target_country_5 = {
+					default_ufs_target_country_allow = yes
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 3 }}
+				hidden_trigger = {
+					has_global_flag = third_monolith_node_spawned
+				}
+				custom_tooltip_fail = {
+					text = "shield_system_not_destroyed"
+					event_target:monolith_crisis_3_system = {
+						has_star_flag = ufs_can_fire
+					}
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+				exists = event_target:ufs_target_system_5
+				hidden:event_target:ufs_target_system_5 = {
+					default_ufs_system_allow = yes
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 1 }}
+				set_ufs_choose_variable = { OPTION = 5 }
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 2 }}
+				event_target:ufs_target_country_5 = {
+					save_global_event_target_as = ufs_target_country
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 3 }}
+				set_country_flag = select_first_ufs_system
+				event_target:monolith_crisis_3_system = {
+					save_global_event_target_as = first_selected_ufs_system
+				}
+				country_event = { id = uf_sword.3 }
+				break = yes
+			}
+			else_if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+				event_target:ufs_target_system_5 = {
+					save_global_event_target_as = selected_ufs_system
+				}
+			}
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 6 }}
+				# 信标模式——返回
+				default_ufs_return_effect = yes
+			} else = {
+				country_event = { id = uf_sword.999 }
+			}
+		}
+	}
+	option = {
+		name = "last_page"
+		allow = {
+			custom_tooltip = {
+				fail_text = "not_exist_last_page"
+				check_variable = { which = ufs_interface_page value > 0 }
+			}
+		}
+		hidden_effect = {
+			change_variable = { which = ufs_interface_page value = -1 }
+			country_event = { id = uf_sword.101 }
+		}
+	}
+	option = {
+		name = "next_page"
+		allow = {
+			custom_tooltip = {
+				fail_text = "not_exist_next_page"
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					add = 1
+					multiply = 5
+					value < ufs_target_count
+				}
+			}
+		}
+		hidden_effect = {
+			change_variable = { which = ufs_interface_page value = 1 }
+			country_event = { id = uf_sword.101 }
+		}
+	}
+	# 退出
+	option = {
+		name = ""
+		custom_gui = wg_hiding_button
+		default_hide_option = yes
+		hidden_effect = {
+			country_event = { id = uf_sword.1001 }
+		}
+	}
+}
+# 遍历星系
+country_event = {
+	id = uf_sword.100
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_system = {
+			limit = { 
+				exists = space_owner 
+				space_owner = { is_default_and_fallen_empire_country = yes }
+			}
+			switch = {
+				trigger = is_star_class
+				sc_b = { set_star_flag = ufs_sc_b@space_owner }
+				sc_a = { set_star_flag = ufs_sc_a@space_owner }
+				sc_f = { set_star_flag = ufs_sc_f@space_owner }
+				sc_g = { set_star_flag = ufs_sc_g@space_owner }
+				sc_k = { set_star_flag = ufs_sc_k@space_owner }
+				sc_m = { set_star_flag = ufs_sc_m@space_owner }
+				sc_m_giant = { set_star_flag = ufs_sc_m_giant@space_owner }
+				sc_t = { set_star_flag = ufs_sc_t@space_owner }
+				sc_black_hole = { set_star_flag = ufs_sc_black_hole@space_owner }
+				sc_neutron_star = { set_star_flag = ufs_sc_neutron_star@space_owner }
+				sc_pulsar = { set_star_flag = ufs_sc_pulsar@space_owner }
+				sc_binary_1 = { set_star_flag = ufs_sc_binary@space_owner }
+				sc_binary_2 = { set_star_flag = ufs_sc_binary@space_owner }
+				sc_binary_3 = { set_star_flag = ufs_sc_binary@space_owner }
+				sc_binary_4 = { set_star_flag = ufs_sc_binary@space_owner }
+				sc_binary_5 = { set_star_flag = ufs_sc_binary@space_owner }
+				sc_binary_6 = { set_star_flag = ufs_sc_binary@space_owner }
+				sc_binary_7 = { set_star_flag = ufs_sc_binary@space_owner }
+				sc_binary_8 = { set_star_flag = ufs_sc_binary@space_owner }
+				sc_binary_9 = { set_star_flag = ufs_sc_binary@space_owner }
+				sc_binary_10 = { set_star_flag = ufs_sc_binary@space_owner }
+				sc_trinary_1 = { set_star_flag = ufs_sc_trinary@space_owner }
+				sc_trinary_2 = { set_star_flag = ufs_sc_trinary@space_owner }
+				sc_trinary_3 = { set_star_flag = ufs_sc_trinary@space_owner }
+				sc_trinary_4 = { set_star_flag = ufs_sc_trinary@space_owner }
+				default = { 
+					set_star_flag = ufs_sc_others@space_owner 
+					set_global_flag = has_non_vanilla_star_class
+				}
+			}
+		}
+		every_system = {
+			limit = { any_system_planet = {
+				is_colony = yes
+				exists = owner
+				owner = { is_default_and_fallen_empire_country = yes }
+			}}
+			set_star_flag = ufs_system_has_colony
+		}
+		every_system = {
+			limit = { has_any_megastructure = yes }
+			set_star_flag = ufs_system_has_megastructure
+		}
+		every_system = {
+			limit = {
+				exists = space_owner
+				space_owner = { is_ufs_crisis_faction = yes }
+			}
+			set_star_flag = ufs_crisis_system
+		}
+	}
+}
+
+# 设定上一页的数据
+country_event = {
+	id = uf_sword.101
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { check_variable = { which = ufs_fliter_mod value = 2 }}
+			country_event = { id = uf_sword.111 }
+		} else_if = {
+			limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+			country_event = { id = uf_sword.129 }
+		}
+		country_event = { id = uf_sword.2 }
+	}
+}
+# 设定下一页的数据
+country_event = {
+	id = uf_sword.102
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		country_event = { id = uf_sword.2 }
+	}
+}
+# 初始化遍历国家
+country_event = {
+	id = uf_sword.110
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_variable = { which = ufs_target_count value = 0 }
+		every_country = { clear_variable = ufs_country_id }
+		every_country = {
+			limit = { 
+				# is_default_and_fallen_empire_country = yes
+				default_vaild_country = yes 
+			}
+			root = { change_variable = { which = ufs_target_count value = 1 }}
+			set_variable = { which = ufs_country_id value = root.ufs_target_count }
+		}
+		country_event = { id = uf_sword.111 }
+	}
+}
+
+# 翻页——国家
+country_event = {
+	id = uf_sword.111
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		remove_ufs_country_found_flags = yes
+		if = {
+			limit = {
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 1
+					value <= ufs_target_count
+				}
+			}
+			random_country = {
+				limit = {
+					root = { check_variable_arithmetic = {
+						which = ufs_interface_page
+						multiply = 5
+						add = 1
+						value = prev.ufs_country_id
+					}}
+				}
+				save_global_event_target_as = ufs_target_country_1
+				root = { set_country_flag = found_ufs_target_country_1 }
+			}
+		}
+		if = {
+			limit = {
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 2
+					value <= ufs_target_count
+				}
+			}
+			random_country = {
+				limit = {
+					root = { check_variable_arithmetic = {
+						which = ufs_interface_page
+						multiply = 5
+						add = 2
+						value = prev.ufs_country_id
+					}}
+				}
+				save_global_event_target_as = ufs_target_country_2
+				root = { set_country_flag = found_ufs_target_country_2 }
+			}
+		}
+		if = {
+			limit = {
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 3
+					value <= ufs_target_count
+				}
+			}
+			random_country = {
+				limit = {
+					root = { check_variable_arithmetic = {
+						which = ufs_interface_page
+						multiply = 5
+						add = 3
+						value = prev.ufs_country_id
+					}}
+				}
+				save_global_event_target_as = ufs_target_country_3
+				root = { set_country_flag = found_ufs_target_country_3 }
+			}
+		}
+		if = {
+			limit = {
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 4
+					value <= ufs_target_count
+				}
+			}
+			random_country = {
+				limit = {
+					root = { check_variable_arithmetic = {
+						which = ufs_interface_page
+						multiply = 5
+						add = 4
+						value = prev.ufs_country_id
+					}}
+				}
+				save_global_event_target_as = ufs_target_country_4
+				root = { set_country_flag = found_ufs_target_country_4 }
+			}
+		}
+		if = {
+			limit = {
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 5
+					value <= ufs_target_count
+				}
+			}
+			random_country = {
+				limit = {
+					root = { check_variable_arithmetic = {
+						which = ufs_interface_page
+						multiply = 5
+						add = 5
+						value = prev.ufs_country_id
+					}}
+				}
+				save_global_event_target_as = ufs_target_country_5
+				root = { set_country_flag = found_ufs_target_country_5 }
+			}
+		}
+	}
+}
+
+# 遍历星系
+country_event = {
+	id = uf_sword.121
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_variable = { which = ufs_target_count value = 0 }
+		every_system = { clear_variable = ufs_system_id }
+		every_system = {
+			limit = { 
+				ufs_system_fliter_country_sc = yes
+				ufs_system_fliter_others = yes
+				ufs_selected_systems = no
+			}
+			root = { change_variable = { which = ufs_target_count value = 1 }}
+			set_variable = { which = ufs_system_id value = root.ufs_target_count }
+		}
+		country_event = { id = uf_sword.129 }
+	}
+}
+
+# 翻页——星系
+country_event = {
+	id = uf_sword.129
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		remove_ufs_system_found_flags = yes
+		if = {
+			limit = {
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 1
+					value <= ufs_target_count
+				}
+			}
+			random_system = {
+				limit = {
+					root = { check_variable_arithmetic = {
+						which = ufs_interface_page
+						multiply = 5
+						add = 1
+						value = prev.ufs_system_id
+					}}
+				}
+				save_global_event_target_as = ufs_target_system_1
+				root = { set_country_flag = found_ufs_target_system_1 }
+			}
+		}
+		if = {
+			limit = {
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 2
+					value <= ufs_target_count
+				}
+			}
+			random_system = {
+				limit = {
+					root = { check_variable_arithmetic = {
+						which = ufs_interface_page
+						multiply = 5
+						add = 2
+						value = prev.ufs_system_id
+					}}
+				}
+				save_global_event_target_as = ufs_target_system_2
+				root = { set_country_flag = found_ufs_target_system_2 }
+			}
+		}
+		if = {
+			limit = {
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 3
+					value <= ufs_target_count
+				}
+			}
+			random_system = {
+				limit = {
+					root = { check_variable_arithmetic = {
+						which = ufs_interface_page
+						multiply = 5
+						add = 3
+						value = prev.ufs_system_id
+					}}
+				}
+				save_global_event_target_as = ufs_target_system_3
+				root = { set_country_flag = found_ufs_target_system_3 }
+			}
+		}
+		if = {
+			limit = {
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 4
+					value <= ufs_target_count
+				}
+			}
+			random_system = {
+				limit = {
+					root = { check_variable_arithmetic = {
+						which = ufs_interface_page
+						multiply = 5
+						add = 4
+						value = prev.ufs_system_id
+					}}
+				}
+				save_global_event_target_as = ufs_target_system_4
+				root = { set_country_flag = found_ufs_target_system_4 }
+			}
+		}
+		if = {
+			limit = {
+				check_variable_arithmetic = {
+					which = ufs_interface_page
+					multiply = 5
+					add = 5
+					value <= ufs_target_count
+				}
+			}
+			random_system = {
+				limit = {
+					root = { check_variable_arithmetic = {
+						which = ufs_interface_page
+						multiply = 5
+						add = 5
+						value = prev.ufs_system_id
+					}}
+				}
+				save_global_event_target_as = ufs_target_system_5
+				root = { set_country_flag = found_ufs_target_system_5 }
+			}
+		}
+	}
+}
+
+# 确认取消选择星系
+country_event = {
+	id = uf_sword.200
+	title = uf_sword.200.name
+	desc = uf_sword.200.desc
+	picture = GFX_evt_star_chart
+	is_triggered_only = yes
+	location = event_target:selected_ufs_system
+
+	after = { hidden_effect = {
+		clear_variable = selected_cancel_system
+	}}
+
+	option = {
+		name = uf_sword.200.a
+		hidden_effect = {
+			if = {
+				limit = { check_variable = { which = selected_cancel_system value = 1 }}
+				remove_country_flag = select_first_ufs_system
+				clear_global_event_target = first_selected_ufs_system
+			} else_if = {
+				limit = { check_variable = { which = selected_cancel_system value = 2 }}
+				remove_country_flag = select_second_ufs_system
+				clear_global_event_target = second_selected_ufs_system
+			} else_if = {
+				limit = { check_variable = { which = selected_cancel_system value = 3 }}
+				remove_country_flag = select_third_ufs_system
+				clear_global_event_target = third_selected_ufs_system
+			}
+			change_variable = { which = selected_ufs_system value = -1 }
+		}
+	}
+	option = {
+		name = uf_sword.200.b
+	}
+}
+# 选择选项
+country_event = {
+	id = uf_sword.999
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_variable = { which = ufs_interface_page value = 0 }
+		if = {
+			limit = { OR = {
+				check_variable = { which = ufs_fliter_mod value = 6 }
+				check_variable = { which = ufs_fliter_mod value = 9 }
+			}}
+			country_event = { id = uf_sword.3 }
+			break = yes
+		}
+		if = {
+			limit = { check_variable = { which = ufs_fliter_mod value = 2 }}
+			set_country_flag = selected_ufs_country_target
+		}
+		if = {
+			limit = { NOT = { check_variable = { which = ufs_fliter_mod value = 4 }}}
+			default_ufs_return_effect = yes
+		} else = {
+			country_event = { id = uf_sword.1000 }
+			# 是否射三发
+			if = {
+				limit = { has_country_flag = ufs_fire_mode_all }
+				# 转存选择星系
+				if = {
+					limit = { NOT = { has_country_flag = select_first_ufs_system }}
+					set_country_flag = select_first_ufs_system
+					event_target:selected_ufs_system = { 
+						set_star_flag = first_selected_ufs_system
+						save_global_event_target_as = first_selected_ufs_system 
+					}
+				}
+				else_if = {
+					limit = { NOT = { has_country_flag = select_second_ufs_system }}
+					set_country_flag = select_second_ufs_system
+					event_target:selected_ufs_system = { 
+						set_star_flag = second_selected_ufs_system
+						save_global_event_target_as = second_selected_ufs_system 
+					}
+				}
+				else_if = {
+					limit = { NOT = { has_country_flag = select_third_ufs_system }}
+					set_country_flag = select_third_ufs_system
+					event_target:selected_ufs_system = { 
+						set_star_flag = second_selected_ufs_system
+						save_global_event_target_as = third_selected_ufs_system 
+					}
+				}
+				change_variable = { which = selected_ufs_system value = 1 }
+				if = {
+					limit = { check_variable = { which = selected_ufs_system value < 3 }}
+					country_event = { id = uf_sword.2 }
+				} else = {
+					country_event = { id = uf_sword.3 }
+				}
+			} else = {
+				set_country_flag = select_first_ufs_system
+				event_target:selected_ufs_system = { 
+					set_star_flag = first_selected_ufs_system
+					save_global_event_target_as = first_selected_ufs_system 
+				}
+				country_event = { id = uf_sword.3 }
+			}
+		}
+	}
+}
+
+# 生成标记船
+country_event = {
+	id = uf_sword.300
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		from = { is_megastructure_type = uf_galaxy_gun_8 }
+	}
+
+	immediate = {
+		fromfrom.star = { 
+			if = {
+				limit = { NOT = { exists = event_target:ufs_beacon_1 }}
+				create_ufs_beacon_fleet = yes
+				last_created_fleet = {
+					save_global_event_target_as = ufs_beacon_1
+				}
+			}
+			if = {
+				limit = { NOT = { exists = event_target:ufs_beacon_2 }}
+				create_ufs_beacon_fleet = yes
+				last_created_fleet = {
+					save_global_event_target_as = ufs_beacon_2
+				}
+			}
+			if = {
+				limit = { NOT = { exists = event_target:ufs_beacon_3 }}
+				create_ufs_beacon_fleet = yes
+				last_created_fleet = {
+					save_global_event_target_as = ufs_beacon_3
+				}
+			}
+		}
+		remove_megastructure = from
+		fromfrom = { spawn_megastructure = {
+			type = uf_galaxy_gun_4
+			planet = event_target:beacon_fleet_location
+			owner = root
+			orbit_distance = 0
+			orbit_angle = 0
+		}}
+	}
+}
+
+# 清除筛选器数据
+country_event = {
+	id = uf_sword.1000
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		clear_ufs_fliter_data = yes
+		country_event = { id = uf_sword.121 }
+	}
+}
+
+# 清除所有数据
+country_event = {
+	id = uf_sword.1001
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		remove_country_flag = ufs_window_active
+		clear_ufs_all_data = yes
+		clear_global_event_target = second_selected_ufs_system
+		clear_global_event_target = first_selected_ufs_system
+		clear_global_event_target = third_selected_ufs_system
+		random_system = {
+			limit = { has_star_flag = ufs_beacon_1_system }
+			remove_star_flag = ufs_beacon_1_system
+		}
+		random_system = {
+			limit = { has_star_flag = ufs_beacon_2_system }
+			remove_star_flag = ufs_beacon_2_system
+		}
+		random_system = {
+			limit = { has_star_flag = ufs_beacon_3_system }
+			remove_star_flag = ufs_beacon_3_system
+		}
+		if = {
+			limit = { exists = event_target:ufs_beacon_1 }
+			event_target:ufs_beacon_1 = { set_event_locked = no }
+		}
+		if = {
+			limit = { exists = event_target:ufs_beacon_2 }
+			event_target:ufs_beacon_2 = { set_event_locked = no }
+		}
+		if = {
+			limit = { exists = event_target:ufs_beacon_3 }
+			event_target:ufs_beacon_3 = { set_event_locked = no }
+		}
+		
+	}
+}
+
+country_event = {
+	id = uf_sword.9998
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_owned_megastructure = {
+			limit = { is_megastructure_type = uf_galaxy_gun_5 }
+			remove_megastructure = this
+		}
+		random_system = {
+			limit = { has_star_flag = uf_galaxy_gun_system }
+			solar_system = {
+				spawn_megastructure = {
+					type = uf_galaxy_gun_6
+					planet = star
+					owner = root
+					orbit_distance = 0
+					orbit_angle = 0
+				}
+			}
+		}
+		# 发射时间
+		country_event = { id = uf_sword.9999 days = 10 }
+		if = {
+			limit = { has_country_flag = select_first_ufs_system }
+			event_target:first_selected_ufs_system = { star = {
+				create_ufs_hit_effect = yes
+			}}
+		}
+		if = {
+			limit = { has_country_flag = select_second_ufs_system }
+			event_target:second_selected_ufs_system = { star = {
+				create_ufs_hit_effect = yes
+			}}
+		}
+		if = {
+			limit = { has_country_flag = select_third_ufs_system }
+			event_target:third_selected_ufs_system = { star = {
+				create_ufs_hit_effect = yes
+			}}
+		}
+	}
+}
+# 摧毁星系
+country_event = {
+	id = uf_sword.9999
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		remove_country_flag = comfirm_ufs_fire
+		country_event = { id = uf_sword.10000 }
+		every_ambient_object = {
+			limit = { has_ambient_object_flag = ufs_hit_effect }
+			destroy_ambient_object = this
+		}
+		every_owned_megastructure = {
+			limit = { is_megastructure_type = uf_galaxy_gun_6 }
+			remove_megastructure = this
+		}
+		random_system = {
+			limit = { has_star_flag = uf_galaxy_gun_system }
+			solar_system = {
+				spawn_megastructure = {
+					type = uf_galaxy_gun_4
+					planet = star
+					owner = root
+					orbit_distance = 0
+					orbit_angle = 0
+				}
+			}
+		}
+	}
+}
+# boom
+country_event = {
+	id = uf_sword.10000
+	title = "uf_sword.10000.title"
+	desc = uf_sword.10000.desc
+	picture = GFX_evt_uf_star_killer
+	is_triggered_only = yes
+	location = event_target:first_selected_ufs_system
+
+	immediate = {
+		if = {
+			limit = { has_country_flag = select_first_ufs_system }
+			event_target:first_selected_ufs_system = {
+				if = {
+					limit = { 
+						NOT = { has_star_flag = monolith_crisis_shield_system }
+						has_any_monolith_bypass_flag = yes
+					}
+					random_system_megastructure = {
+						limit = { OR = {
+							is_megastructure_type = monolith_crisis_gate_1
+							is_megastructure_type = monolith_crisis_gate_2
+							is_megastructure_type = monolith_crisis_gate_3
+						}}
+						root = { 
+							if = {
+								limit = { 
+									# 判定是否有人在研究破解项目，没有则摧毁星门
+									prevprev.solar_system = {
+										NOT = { any_ship_in_system = {
+											is_ship_size = science
+											exists = leader
+											leader = { OR = {
+												is_researching_special_project = hack_monolith_gate_red 
+												is_researching_special_project = hack_monolith_gate_blue 
+												is_researching_special_project = hack_monolith_gate_yellow 
+											}}
+										}}
+									}
+								}
+								country_event = { id = monolith_crisis.308 scopes = { from = prev }}
+							}
+						}
+					}
+				}
+				# 摧毁星系效果
+				if = {
+					limit = { has_star_flag = monolith_crisis_shield_system }
+					set_star_flag = comfirm_destroyed
+					root = { 
+						set_country_flag = monolith_shield_system_destroyer 
+						set_country_flag = destroy_shield_system_by_ufs
+					}
+					if = {
+						limit = { has_star_flag = monolith_crisis_shield_1_system_flag }
+						system_event = { id = monolith_crisis.221 days = 720 }
+						event_target:monolith_crisis_1_system = {
+							every_system_ambient_object = {
+								limit = { has_ambient_object_flag = shield_effect }
+								destroy_ambient_object = this
+							}
+							set_star_flag = ufs_can_fire
+						}
+						every_playable_country = { country_event = { id = monolith_crisis.315 }}
+					} else_if = {
+						limit = { has_star_flag = monolith_crisis_shield_2_system_flag }
+						system_event = { id = monolith_crisis.221 days = 720 }
+						event_target:monolith_crisis_2_system = {
+							every_system_ambient_object = {
+								limit = { has_ambient_object_flag = shield_effect }
+								destroy_ambient_object = this
+							}
+							set_star_flag = ufs_can_fire
+						}
+						every_playable_country = { country_event = { id = monolith_crisis.316 }}
+					} else_if = {
+						limit = { has_star_flag = monolith_crisis_shield_3_system_flag }
+						system_event = { id = monolith_crisis.221 days = 720 }
+						event_target:monolith_crisis_3_system = {
+							every_system_ambient_object = {
+								limit = { has_ambient_object_flag = shield_effect }
+								destroy_ambient_object = this
+							}
+							set_star_flag = ufs_can_fire
+						}
+						every_playable_country = { country_event = { id = monolith_crisis.317 }}
+					}
+				} else_if = {
+					limit = { 
+						has_star_flag = monolith_crisis_systems 
+						NOT = { has_star_flag = monolith_crisis_4_system_flag }
+					}
+					set_star_flag = comfirm_destroyed
+					remove_star_flag = monolith_crisis_systems
+					root = { set_country_flag = monolith_system_destroyer }
+					event_target:monolith_crisis_data_store = {
+						change_variable = { which = num_monolith_crisis_system value = -1 }
+						change_variable = { which = destroyed_monolith_crisis_system value = 1 }
+						if = {
+							limit = { check_variable = { which = destroyed_monolith_crisis_system value = 3 }}
+							set_global_flag = destroy_all_monolith_nodes
+							root = { 
+								country_event = { id = monolith_crisis.115 }
+								country_event = { id = monolith_crisis.332 days = 10 }
+								country_event = { id = monolith_crisis.222 days = 15 }
+							}
+						}
+					}
+					if = {
+						limit = { has_star_flag = monolith_crisis_1_system_flag }
+						set_global_flag = first_monolith_node_destroyed
+						root = { every_megastructure = {
+							limit = { is_megastructure_type = monolith_crisis_gate_1 }
+							remove_megastructure = this
+						}}
+						event_target:monolith_crisis_1_shield_system = {
+							every_fleet_in_system = {
+								set_mia = mia_return_home
+							}
+						}
+						every_playable_country = { country_event = { id = monolith_crisis.323 }}
+					} else_if = {
+						limit = { has_star_flag = monolith_crisis_2_system_flag }
+						set_global_flag = second_monolith_node_destroyed
+						root = { every_megastructure = {
+							limit = { is_megastructure_type = monolith_crisis_gate_2 }
+							remove_megastructure = this
+						}}
+						event_target:monolith_crisis_2_shield_system = {
+							every_fleet_in_system = {
+								set_mia = mia_return_home
+							}
+						}
+						every_playable_country = { country_event = { id = monolith_crisis.324 }}
+					} else_if = {
+						limit = { has_star_flag = monolith_crisis_3_system_flag }
+						set_global_flag = third_monolith_node_destroyed
+						root = { every_megastructure = {
+							limit = { is_megastructure_type = monolith_crisis_gate_3 }
+							remove_megastructure = this
+						}}
+						event_target:monolith_crisis_3_shield_system = {
+							every_fleet_in_system = {
+								set_mia = mia_return_home
+							}
+						}
+						every_playable_country = { country_event = { id = monolith_crisis.325 }}
+					}
+				} else_if = {
+					limit = { has_star_flag = monolith_crisis_4_system_flag }
+					set_global_flag = monolith_crisis_end
+					every_playable_country = { 
+						limit = { NOT = { is_same_value = root }}
+						country_event = { id = monolith_crisis.329 }
+					}
+					root = { 
+						country_event = { id = monolith_crisis.330 }
+						# 狡猾超载
+						country_event = { id = monolith_crisis.338 }
+					}
+				}
+				system_event = { 
+					id = uf_sword.10001
+					scopes = { from = ROOT }
+				}
+			}
+		}
+		if = {
+			limit = { has_country_flag = select_second_ufs_system }
+			event_target:second_selected_ufs_system = {
+				# 摧毁星系效果
+				system_event = { 
+					id = uf_sword.10001
+					scopes = { from = ROOT }
+				}
+			}
+		}
+		if = {
+			limit = { has_country_flag = select_third_ufs_system }
+			event_target:third_selected_ufs_system = {
+				# 摧毁星系效果
+				system_event = { 
+					id = uf_sword.10001
+					scopes = { from = ROOT }
+				}
+			}
+		}
+		clear_ufs_all_data = yes
+	}
+
+	after = { }
+
+	option = {
+		name = OK
+	}
+}
+
+system_event = {
+	id = uf_sword.10001
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		from = { 
+			save_event_target_as = sun_killer
+		}
+		if = {
+			limit = { exists = space_owner }
+			space_owner = { save_event_target_as = space_owner }
+		}
+		if = {
+			limit = { 
+				any_system_planet = {
+					has_owner = yes
+					owner = { NOT = { is_country_type = default_ev }}
+				}
+			}
+			random_system_planet = {
+				limit = { has_owner = yes }
+				save_event_target_as = destroyed_colony
+				owner = { save_event_target_as = colony_pre_owner }
+			}
+		}
+		if = {
+			limit = {
+				exists = space_owner
+				space_owner = {
+					NOT = { is_same_value = event_target:sun_killer }
+					OR = {
+						is_country_type = default
+						is_country_type = fallen_empire
+						is_country_type = awakened_fallen_empire
+					}
+				}
+			}
+			# Generate threat
+			add_threat = { who = event_target:sun_killer amount = 3 }
+			# modifier for allies + those upset by robots
+			every_country = {
+				limit = {
+					NOR = {
+						is_same_value = event_target:sun_killer
+						is_same_value = event_target:space_owner
+						AND = {
+							has_federation = yes
+							is_in_federation_with = event_target:sun_killer
+						}
+					}
+					OR = {
+						has_communications = event_target:sun_killer
+						has_communications = event_target:space_owner
+					}
+					OR = {
+						AND = {
+							has_federation = yes
+							is_in_federation_with = event_target:space_owner
+						}
+						has_ai_personality = awakened_fallen_empire_spiritualist
+						AND = {
+							is_country_type = default
+							OR = {
+								is_egalitarian = yes
+								is_spiritualist = yes
+							}
+						}
+					}
+				}
+				add_opinion_modifier = {
+					modifier = opinion_destroyed_a_system
+					who = event_target:sun_killer
+				}
+			}
+			# modifiers for victim
+			space_owner = {
+				add_opinion_modifier = {
+					modifier = opinion_destroyed_my_system
+					who = event_target:sun_killer
+				}
+				if = {
+					limit = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+					add_modifier = {
+						modifier = colossus_victim
+						days = 10800 # 30 years
+					}
+				}
+			} 
+		}	
+		set_star_flag = ring_world_built
+		every_system_planet = {
+			limit = { exists = owner }
+			owner = {
+				if = {
+					limit = { #isn't the case when the crisis bombards planets, for instance
+						is_at_war_with = event_target:sun_killer
+					}
+					add_static_war_exhaustion = {
+						attacker = event_target:sun_killer
+						location = prev
+						value_for_planet_destruction = 1.0
+					}
+				}
+			}
+		}
+		destroy_system_ufs = yes
+		remove_star_flag = ring_world_built
+		# 补充摧毁国家触发
+		event_target:colony_pre_owner = {
+			if = {
+				limit = { NOT = { any_owned_planet = {
+					NOT = { is_same_value = event_target:destroyed_colony }
+				}}}
+				# empire destruction menace reward
+				event_target:sun_killer = {
+					if = {
+						limit = { has_ascension_perk = ap_become_the_crisis }
+						complete_crisis_objective = crisobj_destroy_empires
+					}
+					if = {
+						limit = { has_ascension_perk = ap_wg_crisis }
+						add_wg_crisis_points = { POINTS = 300 }
+					}
+				}
+				destroy_country = yes
+			}
+		}
+	}
+}

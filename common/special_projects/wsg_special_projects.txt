@@ -1,0 +1,1872 @@
+# 	on_success = { 					# Effect happens when project completes
+# 		# Scopes:
+# 		# 	THIS = project scope (matches setting in "event_scope" i.e. ship/planet/country)
+# 		# 	FROM = location scope, if set (usually a planet)
+# 		# 	PREV = country
+# 	}
+	
+# 	on_start = { 					# Effect happens when you start researching the project
+# 		# Scopes: see on_success
+# 	}
+	
+# 	on_progress_25/50/75 = {  		# Effect happens when you have researched X% of the research costs
+# 		# Scopes: see on_success
+# 	}
+	
+# 	on_fail = { 					# Effect happens if you allow the timelimit to expire
+# 		# Scopes:
+# 		# 	THIS = country
+# 		# 	FROM = project scope (matches setting in "event_scope" i.e. ship/planet/country). Might not exist!
+# 		# 	FROMFROM = location scope, if set (usually a planet)
+# 	}
+
+# 	on_cancel = { 					# Effect happens if you choose to stop researching or if the abort_trigger returns true
+# 		# Scopes: See on_fail
+# 	}
+
+# 	abort_trigger = { 				# Trigger for aborting the project and removing it from the situation log. Fires on_cancel effect
+# 		# Scopes: See on_fail
+# 	}
+# }
+
+special_project = {
+	key = "ovo_watching_study_normal"
+	event_chain = ovo_chain
+	days_to_research = 480
+	tech_department = society_technology
+	picture = GFX_evt_ship_in_orbit
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = planet_event
+	
+	on_success = {
+		planet_event = { id = wsg.3038 }
+	}
+}
+
+special_project = {
+	key = "join_uf_study_normal"
+	days_to_research = 720
+	tech_department = society_technology
+	picture = GFX_evt_ship_in_orbit
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = planet_event
+	
+	on_success = {
+		planet_event = { id = wg_crisis.1007 }
+	}
+}
+
+
+special_project = {
+	key = "resistance_uf_study_normal"
+	days_to_research = 720
+	tech_department = society_technology
+	picture = GFX_evt_ship_in_orbit
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = planet_event
+	
+	on_success = {
+		planet_event = { id = wg_crisis.1008 }
+	}
+}
+
+special_project = {
+	key = "THINK_TANK_FTL_PROJECT"
+	cost = 0
+	days_to_research = 1800
+	tech_department = engineering_technology
+	picture = GFX_evt_think_tank
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_constructor = 1
+	}
+	on_start = {
+		from.owner = {
+			country_event = { id = wg_boss.13 }
+		}
+	}
+	on_cancel = {
+		from.owner = {
+			country_event = { id = wg_boss.14 }
+		}
+	}	
+	on_success = {
+		owner = {
+			country_event = { id = wg_boss.9 }
+		}
+	}
+}
+
+special_project = {
+	key = "THINK_TANK_FTL_PROJECT2"
+	cost = 0
+	days_to_research = 720
+	tech_department = engineering_technology
+	picture = GFX_evt_think_tank
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_constructor = 1
+	}	
+	on_success = {
+		owner = {
+			country_event = { id = wg_boss.8 }
+		}
+	}
+}
+
+special_project = {
+	key = "WG_FIX_BUG_PROJECT"
+	cost = 0
+	days_to_research = 3600
+	picture = GFX_evt_wg_bugv
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+		skill = 7
+	}
+	on_progress_25 = {
+		owner = {
+			fire_on_action = { on_action = wg_boss_bugv_event_list }
+		}
+	}
+	on_progress_50 = {
+		owner = {
+			fire_on_action = { on_action = wg_boss_bugv_event_list }
+		}
+	}
+	on_progress_75 = {
+		owner = {
+			fire_on_action = { on_action = wg_boss_bugv_event_list }
+		}
+	}	
+	on_success = {
+		owner = {
+			random_list = {
+				30 = { country_event = { id = wg_boss.61 }}
+				70 = { country_event = { id = wg_boss.62 }}
+				5 = { country_event = { id = wg_boss.63 }}
+				10 = {
+					modifier = {
+						NOT = { any_owned_leader = {
+							has_leader_flag = badseal_flag
+						}}
+						factor = 0
+					}
+					country_event = { id = wg_boss.66 }
+				}
+			}
+		}
+	}
+}
+
+special_project = {
+	key = "WG_BOARD_LIVESTAR"
+	cost = 0
+	days_to_research = 60
+	tech_department = engineering_technology
+	picture = GFX_evt_wg_livestar
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_transport = 30
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wg_boss.79 }
+		}	
+	}
+	
+	on_fail = {
+	}
+}
+
+special_project = {
+	key = "WG_FIX_LIVESTAR"
+	cost = 150000
+	#days_to_research = 360
+	tech_department = engineering_technology
+	picture = GFX_evt_wg_livestar
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_constructor = 1
+	}
+
+	abort_trigger = {
+	}
+	
+	on_success = {
+		owner = { country_event = { id = wg_boss.80 } }
+	}
+	
+	on_fail = {
+	}
+}
+
+special_project = {
+	key = "WG_JUGGERNAUT_PROJECT"
+	cost = 0
+	days_to_research = 360
+	tech_department = engineering_technology
+	picture = GFX_evt_juggernaut
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_constructor = 1
+	}	
+	on_success = {
+		owner = {
+			country_event = { id = sh.3050 }
+		}
+	}
+}
+
+special_project = {
+	key = "WG_JUGGERNAUT_PROJECT2"
+	cost = 0
+	days_to_research = 360
+	tech_department = engineering_technology
+	picture = GFX_evt_juggernaut
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}	
+	on_success = {
+		owner = {
+			country_event = { id = sh.3051 }
+		}
+	}
+}
+
+special_project = {
+	key = "sh_eweapon_project"
+	cost = 120000
+	tech_department = physics_technology
+	picture = GFX_evt_sh_eweapon
+
+	event_scope = planet_event
+	
+	on_success = {
+		owner = {
+			country_event = { id = sh.3053 }
+		}
+	}
+}
+
+# 泡泡大改造
+special_project = {
+	key = "MODIFY_BUBBLES"
+	cost = 3000
+	tech_department = society_technology
+	picture = GFX_evt_genetic_modification
+
+	event_scope = planet_event
+	
+	on_success = {
+		owner = { country_event = { id = wg_bubbles.3 }}
+	}
+}
+special_project = {
+	key = "MODIFY_BUBBLES2"
+	cost = 3000
+	tech_department = society_technology
+	picture = GFX_evt_genetic_modification
+
+	event_scope = ship_event
+	
+	on_success = {
+		owner = { country_event = { id = wg_bubbles.3 }}
+	}
+}
+
+# 泡泡领袖
+special_project = {
+	key = "MODIFY_BUBBLES_SECOND"
+	cost = 8000
+	tech_department = society_technology
+	picture = GFX_evt_friendly_amoeba
+
+	event_scope = planet_event
+	
+	on_success = {
+		owner = { country_event = { id = wg_bubbles.5 }}
+	}
+}
+special_project = {
+	key = "MODIFY_BUBBLES_SECOND2"
+	cost = 8000
+	tech_department = society_technology
+	picture = GFX_evt_friendly_amoeba
+
+	event_scope = ship_event
+	
+	on_success = {
+		owner = { country_event = { id = wg_bubbles.5 }}
+	}
+}
+#登陆仙女龙
+special_project = {
+	key = "WG_FD_PROJECT"
+	cost = 0
+	days_to_research = 60
+	tech_department = engineering_technology
+	picture = GFX_evt_wg_fairy_dragon
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+		skill = 3
+	}
+	on_progress_25 = {
+		owner = {
+			country_event = { id = wg_boss.99 }
+		}
+	}
+	on_progress_50 = {
+		owner = {
+			country_event = { id = wg_boss.100 }
+		}
+	}	
+	on_success = {
+		owner = {
+			country_event = { id = wg_boss.101 }
+		}	
+	}
+	
+	on_fail = {
+	}
+}
+
+special_project = {
+	key = "WG_PARIT_PROJECT"
+	days_to_research = 150
+	tech_department = society_technology
+	picture = GFX_evt_alien_nature
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = planet_event
+	
+	on_success = {
+		random_list = {
+			50 = { planet_event = { id = wg_parit.24 }}
+			40 = { planet_event = { id = wg_parit.25 }}
+			10 = { planet_event = { id = wg_parit.26 }}
+		}
+	}
+}
+
+
+special_project = {
+	key = "WG_PARIT_PROJECT2"
+	cost = 10000
+	tech_department = engineering_technology
+	picture = GFX_evt_ancient_databank
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = planet_event
+	
+	on_success = {
+		owner = {
+			country_event = { id = wg_parit.30 }
+		}
+	}
+}
+
+special_project = {
+	key = "WG_PARIT_PROJECT3"
+	cost = 2000
+	days_to_research = 720
+	tech_department = engineering_technology
+	picture = GFX_evt_wg_parit2
+	
+	event_scope = planet_event
+	
+	
+	on_success = {
+		owner = {
+			country_event = { id = wg_parit.37 }
+		}	
+	}
+	
+	on_fail = {
+	}
+}
+
+
+#恩多迪亚号
+special_project = {
+	key = "WG_PARIT_HOME"
+	event_chain = "parit_chain"
+	cost = 0
+	days_to_research = 180
+	tech_department = society_technology
+	picture = GFX_evt_space_debris
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+		#skill = 3
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wg_parit.39 }
+		}
+	}
+	on_fail = {
+	}
+}
+
+special_project = {
+	key = "WG_PARIT_HOME2"
+	event_chain = "parit_chain"
+	cost = 0
+	days_to_research = 180
+	tech_department = society_technology
+	picture = GFX_evt_space_debris
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+		#skill = 3
+	}
+	
+	on_success = {
+		owner = {
+			random_list = {
+				40 = { country_event = { id = wg_parit.40 }}
+				40 = { country_event = { id = wg_parit.41 }}
+				20 = { country_event = { id = wg_parit.42 }}
+			}
+		}
+	}
+	
+	on_fail = {
+	}
+}
+
+special_project = {
+	key = "WG_PARIT_HOME3"
+	event_chain = "parit_chain"
+	cost = 0
+	days_to_research = 180
+	tech_department = society_technology
+	picture = GFX_evt_cold_barren
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+		#skill = 3
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wg_parit.43 }
+		}
+	}
+	
+	on_fail = {
+	}
+}
+
+special_project = {
+	key = "WG_PARIT_HOME4"
+	event_chain = "parit_chain"
+	cost = 0
+	days_to_research = 180
+	tech_department = society_technology
+	picture = GFX_evt_gas_giant
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+		#skill = 3
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wg_parit.44 }
+		}
+	}
+	
+	on_fail = {
+	}
+}
+
+
+#修复恩多迪亚号
+special_project = {
+	key = "WG_PARIT_EXECTOR"
+	cost = 0
+	days_to_research = 720
+	tech_department = physics_technology
+	picture = GFX_evt_wsg_executor
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+		skill = 5
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wg_parit.59 }
+		}
+	}
+	on_fail = {
+	}
+}
+
+# 分析灵能信号
+special_project = {
+	key = "ANALISE_WG_PHIONIC_SIGNAL"
+	cost = 10000
+	tech_department = society_technology
+	event_scope = planet_event
+	picture = GFX_evt_surreal_visions
+
+	on_success = {
+		owner = {
+			country_event = { id = wg_boss.115 }
+		}
+	}
+}
+
+special_project = {
+	key = "RESEARCH_PSIONIC_WORMHOLE"
+	cost = 0
+	days_to_research = 90
+	tech_department = physics_technology
+	event_scope = ship_event
+	picture = GFX_evt_wormhole
+
+	same_option_group_as = { RESEARCH_PSIONIC_WORMHOLE_FROM_HOME }
+
+	requirements = {
+		shipclass_science_ship = 1
+	}
+
+	on_success = {
+		owner = { 
+			abort_special_project = {
+				type = RESEARCH_PSIONIC_WORMHOLE_FROM_HOME
+			}
+			country_event = { id = wg_boss.126 }
+		}
+	}
+}
+
+special_project = {
+	key = "RESEARCH_PSIONIC_WORMHOLE_FROM_HOME"
+	cost = 0
+	days_to_research = 1080
+	tech_department = physics_technology
+	event_scope = planet_event
+	picture = GFX_evt_wormhole
+
+	same_option_group_as = { RESEARCH_PSIONIC_WORMHOLE }
+
+	on_success = {
+		owner = { 
+			abort_special_project = {
+				type = RESEARCH_PSIONIC_WORMHOLE
+			}
+			country_event = { id = wg_boss.126 }
+		}
+	}
+}
+
+special_project = {
+	key = "ONBOARD_PSI_DREADOUGHT"
+	cost = 0
+	days_to_research = 30
+	event_scope = ship_event
+	picture = GFX_evt_wormhole
+
+	requirements = {
+		shipclass_transport = 2
+	}
+
+	on_success = {
+		owner = {
+			country_event = { id = wg_boss.130 }
+		}
+	}
+}
+
+special_project = {
+	key = "RESEARCH_WG_SHROUDED_PLANET"
+	cost = 5000
+	event_chain = wg_psi_chain
+	tech_department = physics_technology
+	event_scope = ship_event
+	picture = GFX_evt_shrouded
+
+	requirements = {
+		shipclass_science_ship = 1
+	}
+
+	on_success = {
+		ship_event = { id = wg_boss.138 }
+	}
+}
+
+special_project = {
+	key = "INSTALL_SPACETIME_ANCHOR"
+	event_chain = wg_psi_chain
+	cost = 0
+	days_to_research = 180
+	event_scope = ship_event
+	picture = GFX_evt_shrouded
+
+	requirements = {
+		shipclass_constructor = 1
+	}
+
+	on_success = {
+		ship_event = { id = wg_boss.139 }
+	}
+}
+
+special_project = {
+	key = "ACTIVATE_PSYCHIC_ENTITY_HYPERSIPHON"
+	cost = 0
+	days_to_research = 120
+	event_chain = wg_psi_chain
+	event_scope = planet_event
+	picture = GFX_evt_wsg_psi_anchor
+
+	on_success = {
+		owner = { 
+			country_event = { id = wg_boss.142 }
+		}
+	}
+}
+
+special_project = {
+	key = "SPECIAL_PROJECT_WSG_PROJECT_S"
+	cost = {
+		base = 1000
+		scaled_modifier = {
+			limit = {
+				species = {
+					has_trait = wsg_trait_warshipgirls1
+				}
+			}
+			scope = this
+			add = 150
+			calc = pop_count
+		}
+	}
+	tech_department = society_technology
+	icon = "gfx/interface/icons/situation_log/situation_log_main_quest.dds"
+	picture = GFX_evt_wsg_project_s
+	event_chain = wsg_project_s
+
+	event_scope = planet_event
+
+	requirements = {
+		
+	}
+	
+	on_start = {
+		from.owner = {
+			country_event = { id = wsg.2102 }
+		}
+	}
+
+	on_success = {
+		owner = { country_event = { id = wsg.2101 }}
+	}
+
+	on_fail = {
+	}
+}
+
+special_project = {
+	key = "REVERSE_ENGINEERING_SERENGY_CORE"
+	cost = 4000
+	tech_department = physics_technology
+	icon = "gfx/interface/icons/situation_log/situation_log_main_quest.dds"
+	picture = GFX_evt_senergy_research
+	event_scope = planet_event
+
+	on_success = {
+		owner = { country_event = { id = wsg.1105 }}
+	}
+}
+
+# Dragon Incubation
+special_project = {
+	key = "WG_DRAGON_INCUBATION_PROJECT"
+	cost = 100000
+	tech_department = society_technology
+	timelimit = 1800
+	picture = GFX_evt_space_dragon
+	
+	event_scope = planet_event
+
+	requirements = {
+	}
+	
+	on_success = {
+		owner = { country_event = { id = wg_dragon.1 }}
+	}
+	
+}
+
+special_project = {
+	key = "WG_RESEARCH_MIST_PORTAL"
+	days_to_research = 1800
+	picture = GFX_evt_mist_yubari
+	event_scope = planet_event
+	timelimit = 180
+
+	on_success = {
+		owner = { country_event = { id = wsg.1101 }}
+	}
+
+	on_fail = {
+		country_event = { id = wsg.1106 }
+	}
+}
+
+# 暗物质阿尔法
+special_project = {
+	key = "WG_DARK_ALPHA_EXPERIMENT"
+	days_to_research = 360
+	picture = GFX_evt_alpha
+	event_scope = planet_event
+	event_chain = wsg_dark_alpha_chain
+
+	on_success = {
+		planet_event = { id = wsg.3017 }
+	}
+}
+
+special_project = {
+	key = "WSG_SENERGY_DREADNOUGHT_PROJECT"
+	cost = 100000
+	tech_department = engineering_technology
+	icon = "gfx/interface/icons/situation_log/situation_log_main_quest.dds"
+	picture = GFX_evt_wsg_dreadnought
+	event_scope = country_event
+
+	on_success = {
+		country_event = { id = wsg.3121 }
+	}
+}
+#苍青无畏
+special_project = {
+	key = "WSG_ALPHA_DREADNOUGHT_PROJECT"
+	cost = 100000
+	tech_department = engineering_technology
+	icon = "gfx/interface/icons/situation_log/situation_log_main_quest.dds"
+	picture = GFX_evt_wsg_dreadnought
+	event_scope = planet_event
+
+	on_success = {
+		owner = { country_event = { id = wsg.30341 }}
+	}
+}
+
+# 大小姐换巨像武器
+special_project = {
+	key = "WG_LADY_CHANGE_COLOSSUS_WEAPON"
+	days_to_research = 100
+	icon = "gfx/interface/icons/situation_log/situation_log_main_quest.dds"
+	picture = GFX_evt_planet_beam
+
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_military = 1
+		leader = commander
+		has_trait = leader_trait_admiral_wsg_lady
+	}
+
+	on_start = {
+		PREV = { country_event = { id = wg_lady.63 }}
+	}
+	on_cancel = {
+		country_event = { id = wg_lady.65 }
+	}
+
+	on_success = {
+        fleet = {
+            set_event_locked = no
+        }
+		owner = {
+			country_event = { id = wg_lady.64 }
+		}
+	}
+}
+
+#变慢
+special_project = {
+	key = "DYSON_RING_1_PROJECT"
+	cost = 0
+	days_to_research = 720
+	tech_department = engineering_technology
+	picture = GFX_evt_wsg_dyson_ring_system
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+		skill = 3
+	}
+
+	on_success = {
+		owner = {
+			country_event = { id = wsgancrel.205 }
+			country_event = { id = wsgancrel.207 }
+		}	
+	}
+	
+	on_fail = {
+	}
+}
+
+#变快
+special_project = {
+	key = "DYSON_RING_2_PROJECT"
+	cost = 0
+	days_to_research = 720
+	tech_department = engineering_technology
+	picture = GFX_evt_wsg_dyson_ring_system
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+		skill = 3
+	}
+
+	on_success = {
+		owner = {
+			country_event = { id = wsgancrel.206 }
+			country_event = { id = wsgancrel.209 }
+		}	
+	}
+	
+	on_fail = {
+	}
+}
+
+special_project = {
+	key = "COMMUNICATE_LLY"
+	event_scope = ship_event
+	cost = 0
+	tech_department = society_technology
+	days_to_research = 360
+	picture = GFX_evt_mysterious_signal
+
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+
+	on_success = { 
+		ship_event = { id = wg_boss.212 }
+	}
+}
+
+#寻找护盾门关闭的方法
+special_project = {
+	key = "SH_SHIELD_SYSTEM"
+	cost = 0
+	days_to_research = 540
+	tech_department = physics_technology
+	picture = GFX_evt_wg_under_the_shield
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+		skill = 2
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = sh.3060 }
+		}
+	}
+	on_fail = {
+	}
+}
+
+#寻找护盾门关闭的方法2
+special_project = {
+	key = "SH_SHIELD_SYSTEM2"
+	cost = 0
+	days_to_research = 1080
+	tech_department = physics_technology
+	picture = GFX_evt_wg_under_the_shield
+	
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+		skill = 2
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = sh.3061 }
+		}
+	}
+	on_fail = {
+	}
+}
+
+special_project = {
+	key = "wg_precursor_1"
+	event_chain = wg_precursors
+	days_to_research = 180
+	picture = GFX_evt_ancient_databank
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = planet_event
+	
+	on_success = {
+		owner = {
+			country_event = { id = wsgancrel.101 }
+		}
+	}
+}
+
+special_project = {
+	key = "wg_precursor_2"
+	event_chain = wg_precursors
+	days_to_research = 180
+	picture = GFX_evt_alien_ruins
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wsgancrel.104 }
+		}
+	}
+}
+
+special_project = {
+	key = "wg_precursor_3"
+	event_chain = wg_precursors
+	days_to_research = 180
+	picture = GFX_evt_relic_world_street
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wsgancrel.107 }
+		}
+	}
+}
+
+special_project = {
+	key = "wg_precursor_4"
+	event_chain = wg_precursors
+	days_to_research = 180
+	picture = GFX_evt_tomb_world
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wsgancrel.111 }
+		}
+	}
+}
+
+special_project = {
+	key = "wg_precursor_6"
+	event_chain = wg_precursors
+	days_to_research = 180
+	picture = GFX_evt_underground_civilization
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wsgancrel.137 }
+		}
+	}
+}
+
+special_project = {
+	key = "observe_wg_rbq_dragon_water"
+	days_to_research = 90
+	picture = GFX_evt_wg_big_water_B
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wg_origin.80 }
+		}
+	}
+}
+# Dragon Incubation
+special_project = {
+	key = "wg_rbq_dragon_INCUBATION_PROJECT"
+	cost = 100000
+	tech_department = society_technology
+	picture = GFX_evt_space_dragon_blue
+	
+	event_scope = planet_event
+	
+	on_success = {
+		owner = { country_event = { id = wg_yukikaze.1 }}
+	}
+	
+}
+
+special_project = {
+	key = "explore_waterb_planet"
+	days_to_research = 90
+	picture = GFX_evt_wg_big_water_B
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			fire_on_action = {
+				on_action = on_waterb_planet_terraform_project_finish
+				scopes = {
+					from = prev.from
+				}
+			}
+		}
+	}
+}
+
+special_project = {
+	key = "WG_HEYED_EXTERMINATUS"
+	days_to_research = 100
+	icon = "gfx/interface/icons/situation_log/situation_log_main_quest.dds"
+	picture = GFX_evt_nuclear_explosion
+    event_chain = wg_heyed_chain
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_military = 10
+	}
+
+	on_success = {
+		owner = {
+			country_event = { id = wg_boss.302 }
+		}
+	}
+}
+
+special_project = {
+	key = "WG_HEYED_REPRODUCTION"
+	days_to_research = 360
+	icon = "gfx/interface/icons/situation_log/situation_log_main_quest.dds"
+	picture = GFX_evt_microscopic_life
+    event_chain = wg_heyed_chain
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+
+	on_success = {
+		owner = {
+			country_event = { id = wg_boss.316 }
+		}
+	}
+}
+
+special_project = {
+	key = "WG_HEYED_REPRODUCTION_2"
+	days_to_research = 1080
+	icon = "gfx/interface/icons/situation_log/situation_log_main_quest.dds"
+	picture = GFX_evt_wg_heyed_4
+    event_chain = wg_heyed_chain
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+
+	on_success = {
+		owner = {
+			country_event = { id = wg_boss.319 }
+		}
+	}
+}
+
+special_project = {
+	key = "WG_HEYED_FAMILY_ISSUE"
+	days_to_research = 60
+	icon = "gfx/interface/icons/situation_log/situation_log_main_quest.dds"
+	picture = GFX_evt_burning_city
+    event_chain = wg_heyed_chain
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_military = 5
+	}
+
+	on_success = {
+		owner = {
+			country_event = { id = wg_boss.327 }
+		}
+	}
+}
+
+special_project = {
+	key = "WG_HEYED_STARCHARSER"
+	cost = 3000
+	tech_department = society_technology
+	icon = "gfx/interface/icons/situation_log/situation_log_main_quest.dds"
+	picture = GFX_evt_circuitry_modification
+    event_chain = wg_heyed_chain
+	event_scope = ship_event
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+		skill = 3
+	}
+	
+
+	on_success = {
+		owner = {
+			country_event = { id = wg_boss.338 }
+		}
+	}
+}
+special_project = {
+	key = "WSG_MIST_PROJECT"
+	cost = 150000
+	tech_department = physics_technology
+	picture = GFX_evt_mist_core
+
+	event_scope = country_event
+	
+	on_success = {
+		country_event = { id = wsg.3325 }
+	}
+}
+
+special_project = {
+	key = "OLD_PROJECT_PROJECT"
+	days_to_research = 1080
+	tech_department = society_technology
+	picture = GFX_evt_alien_ruins
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = planet_event
+	
+	on_success = {
+		planet_event = { id = wg_boss.354 }
+	}
+}
+
+special_project = {
+	key = "OLD_PROJECT_PROJECT_2"
+	days_to_research = 360
+	tech_department = society_technology
+	picture = GFX_evt_society_cache
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = planet_event
+	
+	on_success = {
+		planet_event = { id = wg_boss.355 }
+	}
+}
+
+
+special_project = {
+	key = "WG_GOD_T_SPEAKER"
+	days_to_research = 30
+	tech_department = society_technology
+	picture = GFX_evt_wg_40k_god_t
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	
+	event_scope = country_event
+	
+	on_success = {
+		country_event = { id = wg_origin.113 }
+	}
+}
+
+
+special_project = {
+	key = "WG_STC_1_PROJECT"
+	days_to_research = 180
+	picture = GFX_evt_intelligence_report
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+	event_chain = warhammer_stc_chain
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+
+	
+	on_success = {
+		owner = {
+			random_list = {
+				50 = {
+					modifier = {
+						factor = 0
+						have_all_stc_tech = yes
+					}
+					country_event = { id = wg_origin.127 }#科技
+				}
+				30 = { give_random_stc_modifier = yes }#buff
+				15 = { country_event = { id = wg_origin.131 } }#失效
+				4 = { root = { ship_event = { id = wg_origin.135 }}}#腐化STC导致科学家debuff
+				1 = { 
+					modifier = {
+						factor = 0
+						root = { leader = { has_leader_flag = wsg_event_leader}}
+					}
+					root = { ship_event = { id = wg_origin.136 }}
+				}#科学家死亡
+			}
+		}
+		random_list = {
+			1 = { ship_event = { id = wg_origin.132 } }
+			1 = { ship_event = { id = wg_origin.133 } }
+			1 = { ship_event = { id = wg_origin.134 } }
+		}
+	}
+}
+
+
+special_project = {
+	key = "WG_STC_2_PROJECT"
+	days_to_research = 180
+	picture = GFX_evt_archaeological_dig
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+	event_chain = warhammer_stc_chain
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			random_list = {
+				50 = {
+					modifier = {
+						factor = 0
+						have_all_stc_tech = yes
+					}
+					country_event = { id = wg_origin.127 }#科技
+				}
+				30 = { give_random_stc_modifier = yes }#buff
+				15 = { country_event = { id = wg_origin.131 } }#失效
+				4 = { root = { ship_event = { id = wg_origin.135 }}}#腐化STC导致科学家debuff
+				1 = { 
+					modifier = {
+						factor = 0
+						root = { leader = { has_leader_flag = wsg_event_leader}}
+					}
+					root = { ship_event = { id = wg_origin.136 }}
+				}#科学家死亡
+			}
+		}
+		random_list = {
+			1 = { ship_event = { id = wg_origin.132 } }
+			1 = { ship_event = { id = wg_origin.133 } }
+			1 = { ship_event = { id = wg_origin.134 } }
+		}
+	}
+}
+
+special_project = {
+	key = "WG_STC_3_PROJECT"
+	days_to_research = 180
+	picture = GFX_evt_discovered_hidden_door
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+	event_chain = warhammer_stc_chain
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			random_list = {
+				50 = {
+					modifier = {
+						factor = 0
+						have_all_stc_tech = yes
+					}
+					country_event = { id = wg_origin.127 }#科技
+				}
+				30 = { give_random_stc_modifier = yes }#buff
+				15 = { country_event = { id = wg_origin.131 } }#失效
+				4 = { root = { ship_event = { id = wg_origin.135 }}}#腐化STC导致科学家debuff
+				1 = { 
+					modifier = {
+						factor = 0
+						root = { leader = { has_leader_flag = wsg_event_leader}}
+					}
+					root = { ship_event = { id = wg_origin.136 }}
+				}#科学家死亡
+			}
+		}
+		random_list = {
+			1 = { ship_event = { id = wg_origin.132 } }
+			1 = { ship_event = { id = wg_origin.133 } }
+			1 = { ship_event = { id = wg_origin.134 } }
+		}
+	}
+}
+
+special_project = {
+	key = "WG_STC_4_PROJECT"
+	days_to_research = 180
+	picture = GFX_evt_hidden_door
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+	event_chain = warhammer_stc_chain
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			random_list = {
+				50 = {
+					modifier = {
+						factor = 0
+						have_all_stc_tech = yes
+					}
+					country_event = { id = wg_origin.127 }#科技
+				}
+				30 = { give_random_stc_modifier = yes }#buff
+				10 = { country_event = { id = wg_origin.131 } }#失效
+				9 = { root = { ship_event = { id = wg_origin.135 }}}#腐化STC导致科学家debuff
+				1 = { 
+					modifier = {
+						factor = 0
+						root = { leader = { has_leader_flag = wsg_event_leader}}
+					}
+					root = { ship_event = { id = wg_origin.136 }}
+				}#科学家死亡
+			}
+		}
+		random_list = {
+			1 = { ship_event = { id = wg_origin.132 } }
+			1 = { ship_event = { id = wg_origin.133 } }
+			1 = { ship_event = { id = wg_origin.134 } }
+		}
+	}
+}
+special_project = {
+	key = "WG_STC_5_PROJECT"
+	days_to_research = 180
+	picture = GFX_evt_uf_rebuilding_homeworld
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+	event_chain = warhammer_stc_chain
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			random_list = {
+				45 = {
+					modifier = {
+						factor = 0
+						have_all_stc_tech = yes
+					}
+					country_event = { id = wg_origin.127 }#科技
+				}
+				25 = { give_random_stc_modifier = yes }#buff
+				15 = { country_event = { id = wg_origin.131 } }#失效
+				9 = { root = { ship_event = { id = wg_origin.135 }}}#腐化STC导致科学家debuff
+				6 = { 
+					modifier = {
+						factor = 0
+						root = { leader = { has_leader_flag = wsg_event_leader}}
+					}
+					root = { ship_event = { id = wg_origin.136 }}
+				}#科学家死亡
+			}
+		}
+		random_list = {
+			1 = { ship_event = { id = wg_origin.132 } }
+			1 = { ship_event = { id = wg_origin.133 } }
+			1 = { ship_event = { id = wg_origin.134 } }
+		}
+	}
+}
+special_project = {
+	key = "WG_STC_6_PROJECT"
+	days_to_research = 180
+	picture = GFX_evt_uf_archaeological_13
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+	event_chain = warhammer_stc_chain
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			random_list = {
+				50 = {
+					modifier = {
+						factor = 0
+						have_all_stc_tech = yes
+					}
+					country_event = { id = wg_origin.127 }#科技
+				}
+				30 = { give_random_stc_modifier = yes }#buff
+				5 = { country_event = { id = wg_origin.131 } }#失效
+				14 = { root = { ship_event = { id = wg_origin.135 }}}#腐化STC导致科学家debuff
+				1 = { 
+					modifier = {
+						factor = 0
+						root = { leader = { has_leader_flag = wsg_event_leader}}
+					}
+					root = { ship_event = { id = wg_origin.136 }}
+				}#科学家死亡
+			}
+		}
+		random_list = {
+			1 = { ship_event = { id = wg_origin.132 } }
+			1 = { ship_event = { id = wg_origin.133 } }
+			1 = { ship_event = { id = wg_origin.134 } }
+		}
+	}
+}
+special_project = {
+	key = "WG_STC_7_PROJECT"
+	days_to_research = 180
+	picture = GFX_evt_monolith_crisis_11
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+	event_chain = warhammer_stc_chain
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			random_list = {
+				40 = {
+					modifier = {
+						factor = 0
+						have_all_stc_tech = yes
+					}
+					country_event = { id = wg_origin.127 }#科技
+				}
+				40 = { give_random_stc_modifier = yes }#buff
+				15 = { country_event = { id = wg_origin.131 } }#失效
+				4 = { root = { ship_event = { id = wg_origin.135 }}}#腐化STC导致科学家debuff
+				1 = { 
+					modifier = {
+						factor = 0
+						root = { leader = { has_leader_flag = wsg_event_leader}}
+					}
+					root = { ship_event = { id = wg_origin.136 }}
+				}#科学家死亡
+			}
+		}
+		random_list = {
+			1 = { ship_event = { id = wg_origin.132 } }
+			1 = { ship_event = { id = wg_origin.133 } }
+			1 = { ship_event = { id = wg_origin.134 } }
+		}
+	}
+}
+special_project = {
+	key = "WG_STC_8_PROJECT"
+	days_to_research = 180
+	picture = GFX_evt_alien_ruins
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+	event_chain = warhammer_stc_chain
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			random_list = {
+				30 = {
+					modifier = {
+						factor = 0
+						have_all_stc_tech = yes
+					}
+					country_event = { id = wg_origin.127 }#科技
+				}
+				30 = { give_random_stc_modifier = yes }#buff
+				25 = { country_event = { id = wg_origin.131 } }#失效
+				14 = { root = { ship_event = { id = wg_origin.135 }}}#腐化STC导致科学家debuff
+				1 = { 
+					modifier = {
+						factor = 0
+						root = { leader = { has_leader_flag = wsg_event_leader}}
+					}
+					root = { ship_event = { id = wg_origin.136 }}
+				}#科学家死亡
+			}
+		}
+		random_list = {
+			1 = { ship_event = { id = wg_origin.132 } }
+			1 = { ship_event = { id = wg_origin.133 } }
+			1 = { ship_event = { id = wg_origin.134 } }
+		}
+	}
+}
+special_project = {
+	key = "WG_STC_9_PROJECT"
+	days_to_research = 180
+	picture = GFX_evt_archaeology_camp
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+	event_chain = warhammer_stc_chain
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			random_list = {
+				30 = {
+					modifier = {
+						factor = 0
+						have_all_stc_tech = yes
+					}
+					country_event = { id = wg_origin.127 }#科技
+				}
+				50 = { give_random_stc_modifier = yes }#buff
+				15 = { country_event = { id = wg_origin.131 } }#失效
+				4 = { root = { ship_event = { id = wg_origin.135 }}}#腐化STC导致科学家debuff
+				1 = { 
+					modifier = {
+						factor = 0
+						root = { leader = { has_leader_flag = wsg_event_leader}}
+					}
+					root = { ship_event = { id = wg_origin.136 }}
+				}#科学家死亡
+			}
+		}
+		random_list = {
+			1 = { ship_event = { id = wg_origin.132 } }
+			1 = { ship_event = { id = wg_origin.133 } }
+			1 = { ship_event = { id = wg_origin.134 } }
+		}
+	}
+}
+special_project = {
+	key = "WG_STC_10_PROJECT"
+	days_to_research = 180
+	picture = GFX_evt_city_ruins
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+	event_chain = warhammer_stc_chain
+	
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = {
+			random_list = {
+				40 = {
+					modifier = {
+						factor = 0
+						have_all_stc_tech = yes
+					}
+					country_event = { id = wg_origin.127 }#科技
+				}
+				40 = { give_random_stc_modifier = yes }#buff
+				10 = { country_event = { id = wg_origin.131 } }#失效
+				4 = { root = { ship_event = { id = wg_origin.135 }}}#腐化STC导致科学家debuff
+				6 = { 
+					modifier = {
+						factor = 0
+						root = { leader = { has_leader_flag = wsg_event_leader}}
+					}
+					root = { ship_event = { id = wg_origin.136 }}
+				}#科学家死亡
+			}
+		}
+		random_list = {
+			1 = { ship_event = { id = wg_origin.132 } }
+			1 = { ship_event = { id = wg_origin.133 } }
+			1 = { ship_event = { id = wg_origin.134 } }
+		}
+	}
+}
+special_project = {
+	key = "WG_STC_11_PROJECT"
+	days_to_research = 0
+	picture = GFX_evt_wg_40k_mechanicum
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = country_event
+	event_chain = warhammer_stc_chain
+	
+	on_success = {
+		end_event_chain = "warhammer_stc_chain"
+	}
+}
+
+special_project = {
+	key = "WG_ork_planetary_ship_PROJECT"
+	days_to_research = 720
+	picture = GFX_evt_planetary_ship_megastructures_3
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		owner = { 
+			country_event = { id = wg_origin.219 }
+		}
+	}
+}
+
+special_project = {
+	key = "WG_40k_secret"
+	days_to_research = 30
+	picture = GFX_evt_wg_40k_mechanicum
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		ship_event = { id = wg_origin.229 }
+	}
+}
+
+special_project = {
+	key = "WG_40K_SAVE_BAAL"
+	cost = 0
+	days_to_research = 1
+	picture = GFX_evt_wg_40k_won
+	event_scope = ship_event
+	event_chain = warhammer_great_expedition
+	
+	requirements = {
+		shipclass_transport = 10 
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wg_origin.248 }
+		}
+		ship_event = { id = wg_origin.249 }
+	}
+	
+	on_fail = {
+	}
+}
+special_project = {
+	key = "WG_40K_SAVE_BAAL2"
+	cost = 0
+	days_to_research = 1
+	picture = GFX_evt_wg_40k_swarm2
+	event_scope = ship_event
+	event_chain = warhammer_great_expedition
+	
+	requirements = {
+		shipclass_transport = 10 
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wg_origin.251 days = 10 }
+		}
+		ship_event = { id = wg_origin.249 }
+	}
+	
+	on_fail = {
+	}
+}
+special_project = {
+	key = "WG_40K_SAVE_BAAL3"
+	cost = 0
+	days_to_research = 30
+	picture = GFX_evt_wg_40k_exterminatus
+	event_scope = ship_event
+	event_chain = warhammer_great_expedition
+	
+	requirements = {
+		shipclass_military = 30
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wg_origin.252 }
+		}
+	}
+	
+	on_fail = {
+	}
+}
+
+
+special_project = {
+	key = "WG_40K_SAVE_KRIEG"
+	cost = 0
+	days_to_research = 3
+	picture = GFX_evt_ship_in_orbit
+	event_scope = ship_event
+	event_chain = warhammer_great_expedition
+	
+	requirements = {
+		shipclass_transport = 1
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wg_origin.266 }
+		}
+		ship_event = { id = wg_origin.249 }
+	}
+	
+	on_fail = {
+	}
+}
+
+
+special_project = {
+	key = "WG_40k_chaos_gate"
+	days_to_research = 30
+	picture = GFX_evt_wsg_psi_storm
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	on_success = {
+		owner = {
+			country_event = { id = wg_origin.282 }
+		}
+		ship_event = { id = wg_origin.249 }
+	}
+}
+
+special_project = {
+	key = "WG_40k_chaos_gate_2"
+	days_to_research = 5
+	picture = GFX_evt_wg_40k_Krieg
+	icon = "gfx/interface/icons/situation_log/situation_log_debris.dds"
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_transport = 25 
+	}
+	
+	on_success = {
+		owner = {
+			country_event = { id = wg_origin.283 }
+		}
+		ship_event = { id = wg_origin.249 }
+	}
+}

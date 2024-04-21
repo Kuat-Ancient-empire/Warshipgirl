@@ -1,0 +1,634 @@
+wg_menu_check_affection_button = {
+	potential = { always = yes }
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = wg_already_open_interface
+			NOR = {
+				has_country_flag = engaged_with_pantsu_shop
+				pantsu_shop_active_diplo = yes
+			}
+		}
+		custom_tooltip = {
+			fail_text = pantsu_shop_not_exists
+			exists = event_target:pantsu_shop_country
+		}
+		custom_tooltip = {
+			fail_text = no_communication_pantsu_shop
+			has_communications = event_target:pantsu_shop_country
+		}
+		has_wg_special_authority = yes
+	}}
+	effect = { FROM = {
+		custom_tooltip = edict_check_affection_desc
+		hidden_effect = {
+			country_event = { id = wg_coffee.16 }
+		}
+	}}
+}
+
+wg_menu_wedding_button = {
+	potential = { always = yes }
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = wg_already_open_interface
+			NOT = { has_active_event = { wg_affection.18 }}
+		}
+		custom_tooltip = {
+			fail_text = "no_available_wedding_leader"
+			any_owned_leader = {
+				is_wg_leader_normal = yes
+				#NOT = { has_leader_flag = married }
+				check_variable = { which = affection value >= wg_normal_affection_to_lv4 }
+			}
+		}
+		has_wg_special_authority = yes
+	}}
+	effect = { FROM = {
+		custom_tooltip = edict_wg_wedding_desc
+		hidden_effect = {
+			country_event = { id = wg_affection.16 }
+		}
+	}}
+}
+
+wg_menu_crisis_diff_button = {
+	potential = { 
+		OR = { # 反抗军来的时候替换成反抗军
+			has_global_flag = wg_invasion_end
+			NOR = {
+				has_global_flag = wg_crisis_triggered 
+				has_global_flag = wg_invasion_happened
+			}
+			AND = {
+				OR = { 
+					has_global_flag = wg_crisis_triggered 
+					has_global_flag = wg_invasion_happened
+				}
+				NOT = { has_global_flag = wg_resistant_army_arrived }
+			}
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = wg_already_open_interface
+			NOT = { has_active_event = { wg_crisis.10000 }}
+		}
+		custom_tooltip = { # 炼狱难度
+			fail_text = "activated_uf_hidden_diff"
+			NOT = { has_global_flag = activated_uf_hidden_diff }
+		}
+		custom_tooltip = { # 天灾事件不能已发生
+			fail_text = "wg_crisis_already_triggered"
+			OR = { # 联合
+				has_global_flag = wg_invasion_end
+				NOR = { 
+					has_global_flag = wg_crisis_triggered 
+					has_global_flag = wg_invasion_happened
+				}
+			}
+			OR = { # 大可汗
+				has_global_flag = wg_khan_main_fleet_defeated
+				NOT = { has_global_flag = wg_khan_crisis_active }
+			}	
+			OR = { # 虚境入侵事件
+				NOT = { has_global_flag = wg_psi_invasion_events_happened }
+				has_global_flag = wg_shroud_invasion_end
+			}
+		}
+		custom_tooltip = { 
+			fail_text = "is_not_player_or_wg_empire"
+			is_ai = no
+			OR = {
+				has_wg_special_authority = yes
+				has_country_flag = can_adjust_wg_crisis_diff
+			}
+		}
+	}}
+	effect = { FROM = {
+		custom_tooltip = edict_wg_readjust_crisis_desc
+		hidden_effect = {
+			country_event = { id = wg_crisis.10000 }
+		}
+	}}
+}
+
+wg_menu_button_resistant_army = {
+	potential = { 
+		# 反抗军来的时候替换成反抗军
+		OR = { 
+			has_global_flag = wg_crisis_triggered 
+			has_global_flag = wg_invasion_happened
+		}
+		NOT = { has_global_flag = wg_invasion_end }
+		has_global_flag = wg_resistant_army_arrived
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = wg_already_open_interface
+			OR = { 
+				#防止视窗多开
+				NOT = { has_country_flag = ra_diplo_engaged }
+				ra_active_diplo = no
+			}
+		}
+	}}
+	effect = { FROM = {
+		custom_tooltip = wg_menu_button_resistant_army_desc
+		hidden_effect = {
+			country_event = { id = wg_crisis.23 }
+		}
+	}}
+}
+
+wg_menu_crisis_diff_title = {
+	potential = { 
+		OR = { # 反抗军来的时候替换成反抗军
+			has_global_flag = wg_invasion_end
+			NOR = {
+				has_global_flag = wg_crisis_triggered 
+				has_global_flag = wg_invasion_happened
+			}
+			AND = {
+				OR = { 
+					has_global_flag = wg_crisis_triggered 
+					has_global_flag = wg_invasion_happened
+				}
+				NOT = { has_global_flag = wg_resistant_army_arrived }
+			}
+		}
+	}
+	allow = {
+		always = yes
+	}
+	effect = { }
+}
+
+wg_menu_resistant_army_title = {
+	potential = { 
+		# 反抗军来的时候替换成反抗军
+		OR = { 
+			has_global_flag = wg_crisis_triggered 
+			has_global_flag = wg_invasion_happened
+		}
+		NOT = { has_global_flag = wg_invasion_end }
+		has_global_flag = wg_resistant_army_arrived
+	}
+	allow = {
+		always = yes
+	}
+	effect = { }
+}
+
+wg_menu_ap_wg_crisis_button = {
+	potential = { always = yes }
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = wg_already_open_interface
+			NOT = { has_active_event = { 
+				ap_wg_crisis.1
+				ap_wg_crisis.2
+			}}
+		}
+		has_ascension_perk = ap_wg_crisis
+	}}
+	effect = { FROM = {
+		custom_tooltip = edict_ap_wg_crisis_window_desc
+		hidden_effect = {
+			country_event = { id = ap_wg_crisis.1 }
+		}
+	}}
+}
+
+wg_menu_pantsu_shop_button = {
+	potential = { always = yes }
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = wg_already_open_interface
+			NOR = {
+				has_country_flag = engaged_with_pantsu_shop
+				pantsu_shop_active_diplo = yes
+			}
+		}
+		custom_tooltip = {
+			fail_text = pantsu_shop_not_exists
+			exists = event_target:pantsu_shop_country
+		}
+		custom_tooltip = {
+			fail_text = no_communication_pantsu_shop
+			has_communications = event_target:pantsu_shop_country
+		}
+		has_wg_special_authority = yes
+	}}
+	effect = { FROM = {
+		custom_tooltip = wg_menu_pantsu_shop_button_desc
+		hidden_effect = {
+			country_event = { id = wsgranking.1001 }
+		}
+	}}
+}
+
+wg_menu_kuat_button = {
+	potential = { always = yes }
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = not_install_mod_kuat
+			has_global_flag = install_kuat_mod
+		}
+	}}
+	effect = { FROM = {
+		custom_tooltip = wg_menu_kuat_button_desc
+		hidden_effect = {
+			initial_kuat_shipyard = yes
+		}
+	}}
+}
+
+wg_menu_lady_commu_button = {
+	potential = { 
+		exists = event_target:wsg_lady_own_country
+		exists = from
+		FROM = { is_same_value = event_target:wsg_lady_own_country }
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = cannot_commu_with_wg_lady
+			NOR = { 
+				has_country_flag = ban_commu_with_wsg_lady 
+				has_country_flag = modifing_wsg_lady
+				has_country_flag = wsg_lady_changing
+			}
+		}
+		custom_tooltip = {
+			fail_text = already_has_wsg_lady_diplo
+			OR = {
+				has_wsg_lady_active_diplo = no
+				NOT = { has_country_flag = talking_to_wsg_lady }
+			}
+		}
+	}}
+	effect = {
+		custom_tooltip = wg_menu_lady_commu_button_tooltip
+		FROM = {
+			hidden_effect = { country_event = { id = wg_lady.998 }}
+		}
+	}
+}
+
+wg_menu_gray_commu_button = {
+	potential = { 
+		exists = event_target:gray_owner
+		exists = from
+		FROM = { is_same_value = event_target:gray_owner }
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = cannot_commu_with_gray
+			NOT = { has_country_flag = ban_commu_with_gray }
+		}
+		custom_tooltip = {
+			fail_text = already_has_wsg_gray_diplo
+			NAND = {
+				has_country_flag = gray_diplomacy_engaged 
+				has_active_event = { 
+					graygoo.500 wg_old_leader_diplo.2001 
+					graygoo.501 wg_old_leader_diplo.2002 
+					graygoo.502 wg_old_leader_diplo.2003 
+					graygoo.503 wg_old_leader_diplo.2004
+				}
+			}
+		}
+	}}
+	effect = {
+		custom_tooltip = wg_menu_gray_commu_button_tooltip
+		FROM = {
+			hidden_effect = { country_event = { id = wg_old_leader_diplo.2006 }}
+		}
+	}
+}
+
+wg_menu_bubbles_commu_button = {
+	potential = { 
+		exists = event_target:wg_bubbles_own_country
+		exists = from
+		FROM = { is_same_value = event_target:wg_bubbles_own_country }
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = cannot_commu_with_bubbles
+			bubbles_available = yes
+		}
+		custom_tooltip = {
+			fail_text = already_has_wsg_bubbles_diplo
+			NAND = {
+				has_country_flag = engaged_with_bubbles
+				has_active_event = { wg_bubbles.6 wg_old_leader_diplo.4000 }
+			}
+		}
+	}}
+	effect = { 
+		custom_tooltip = wg_menu_bubbles_commu_button_tooltip
+		FROM = {
+			hidden_effect = { country_event = { id = wg_old_leader_diplo.4000 }}
+		}
+	}
+}
+
+wg_menu_wg_shimakaze_commu_button = {
+	potential = { 
+		exists = event_target:wg_shimakaze_own_country
+		exists = from
+		FROM = { is_same_value = event_target:wg_shimakaze_own_country }
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = cannot_commu_with_bubbles
+			bubbles_available = yes
+		}
+		custom_tooltip = {
+			fail_text = already_has_wg_shimakaze_diplo
+			OR = {
+				wg_shimakaze_active_diplo = no
+				NOT = { has_country_flag = wg_shimakaze_engaged }
+			}
+		}
+	}}
+	effect = { 
+		custom_tooltip = wg_menu_wg_shimakaze_commu_button_tooltip
+		FROM = {
+			hidden_effect = { country_event = { id = wg_old_leader_diplo.3000 }}
+		}
+	}
+}
+
+wg_menu_wg_dragon_commu_button = {
+	potential = { 
+		exists = event_target:wg_dragon_own_country
+		exists = from
+		FROM = { is_same_value = event_target:wg_dragon_own_country }
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = already_has_wg_dragon_diplo
+			NAND = {
+				has_country_flag = talking_to_wg_dragon
+				has_active_event = { 
+					wg_dragon.2 wg_old_leader_diplo.5001
+					wg_dragon.3 wg_old_leader_diplo.5002
+					wg_dragon.4 wg_old_leader_diplo.5003
+					wg_dragon.5 wg_old_leader_diplo.5004
+					wg_dragon.6 wg_old_leader_diplo.5005
+				}
+			}
+		}
+	}}
+	effect = { 
+		custom_tooltip = wg_menu_wg_dragon_commu_button_tooltip
+		FROM = {
+			hidden_effect = { country_event = { id = wg_old_leader_diplo.5000 }}
+		}
+	}
+}
+
+wg_menu_wg_yukikaze_commu_button = {
+	potential = { 
+		exists = from
+		FROM = { has_country_flag = get_wg_yukikaze }
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = already_has_wg_yukikaze_diplo
+			NOT = {
+				has_country_flag = wg_yukikaze_diplo_active
+			}
+		}
+	}}
+	effect = { 
+		custom_tooltip = wg_menu_wg_yukikaze_commu_button_tooltip
+		FROM = {
+			hidden_effect = { country_event = { id = wg_old_leader_diplo.6000 }}
+		}
+	}
+}
+
+wg_menu_wg_worm_commu_button = {
+	potential = { 
+		exists = event_target:wg_worm_country
+		FROM = { has_country_flag = owned_wg_worm_country }
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = already_has_wg_worm_diplo
+			NOT = { has_active_event = { 
+				wg_worm.99
+				wg_worm.100
+			}}
+		}
+	}}
+	effect = { 
+		custom_tooltip = wg_menu_wg_worm_commu_button_tooltip
+		FROM = {
+			hidden_effect = { country_event = { id = wg_worm.2 }}
+		}
+	}
+}
+
+wg_menu_wg_astesia_commu_button = {
+	potential = { 
+		exists = from
+		FROM = { has_country_flag = get_wg_astesia }
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = already_has_wg_astesia_diplo
+			wg_astesia_active_diplo = no
+		}
+	}}
+	effect = { 
+		custom_tooltip = wg_menu_wg_astesia_commu_button_tooltip
+		FROM = {
+			hidden_effect = { country_event = { id = wg_astesia.3 }}
+		}
+	}
+}
+
+wg_menu_sub_button_auto_buffing = {
+	potential = { 
+		is_wg_empire = yes
+		NOR = {
+			has_country_flag = wsg_auto_buffing
+			has_country_flag = sh_auto_buffing
+		}
+	}
+	allow = { FROM = {
+		OR = {
+			AND = {
+				has_authority = auth_warshipgirls
+				has_technology = tech_warshipgirl_assembly_plant
+			}
+			has_authority = auth_shenhai
+		}
+	}}
+	effect = { FROM = {
+		if = {
+			limit = { has_authority = auth_warshipgirls }
+			custom_tooltip = edict_wsg_auto_buffing_desc
+			hidden_effect = {
+				set_country_flag = wsg_auto_buffing
+				country_event = { id = wsg.9990 }
+			}
+		} else = {
+			custom_tooltip = edict_sh_auto_buffing_desc
+			hidden_effect = {
+				set_country_flag = sh_auto_buffing
+				country_event = { id = wsg.9992 }
+			}
+		}
+	}}
+}
+wg_menu_sub_button_cancel_auto_buffing = {
+	potential = { 
+		is_wg_empire = yes
+		OR = {
+			has_country_flag = wsg_auto_buffing
+			has_country_flag = sh_auto_buffing
+		}
+	}
+	allow = { 
+		always = yes
+	}
+	effect = { FROM = {
+		hidden_effect = { 
+			remove_country_flag = wsg_auto_buffing
+			remove_country_flag = sh_auto_buffing
+		}
+	}}
+}
+
+wg_menu_sub_button_remove_robots = {
+	potential = { 
+		is_wg_empire = yes
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = wg_removing_robots
+			NOT = { has_country_flag = wg_remove_robots }
+		}
+	}}
+	effect = { FROM = {
+		custom_tooltip = edict_wg_menu_sub_button_remove_robots_desc
+		hidden_effect = { 
+			country_event = { id = wsg.12007 }
+			set_timed_country_flag = { flag = wg_remove_robots days = 1 }
+		}
+	}}
+}
+
+wg_menu_sub_button_lady_modification = {
+	potential = { 
+		FROM = { has_country_flag = delay_wsg_lady_modification_project }
+	}
+	allow = { FROM = {
+		NOR = {
+			has_modifier = wsg_lady_recover_cd
+			has_special_project = WSG_LADY_MODIFICATION
+			has_modifier = retry_modify_wsg_lady_cd
+		}
+		custom_tooltip = {
+			fail_text = wg_already_open_interface
+			NOT = { has_active_event = { wg_lady.52 }}
+		}
+		custom_tooltip = {
+			text = give_up_modify_wsg_lady
+			NOT = { has_country_flag = give_up_modify_wsg_lady }
+		}
+	}}
+	effect = { FROM = {
+		hidden_effect = { 
+			country_event = { id = wg_lady.52 }
+		}
+	}}
+}
+
+wg_menu_sub_button_recall_lady_modification = {
+	potential = { 
+		OR = {
+			has_special_project = WSG_LADY_MODIFICATION1
+			has_special_project = WSG_LADY_MODIFICATION2
+			has_special_project = WSG_LADY_MODIFICATION3
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = wg_already_open_interface
+			NOT = { has_active_event = { wg_lady.52 }}
+		}
+	}}
+	effect = { FROM = {
+		hidden_effect = { 
+			country_event = { id = wg_lady.50 }
+		}
+	}}
+}
+
+wg_menu_sub_button_merge_ra_fleets = {
+	potential = { 
+		has_global_flag = wg_resistant_army_arrived
+		is_ai = no
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = wg_already_open_interface
+			NOT = { has_active_event = { wg_crisis.64 }}
+		}
+		custom_tooltip = {
+			text = exists_at_least_two_ra_fleet
+			check_variable = { which = "ra_fleet_count" value > 1 }
+		}
+	}}
+	effect = { FROM = {
+		custom_tooltip = edict_wg_merge_ra_fleets_desc
+		hidden_effect = { 
+			country_event = { id = wg_crisis.64 }
+		}
+	}}
+}
+
+wg_menu_sub_button_debug_pantsu_shop = {
+	potential = { 
+		FROM = {
+			OR = {
+				AND = {
+					has_country_flag = engaged_with_pantsu_shop
+					pantsu_shop_active_diplo = no 
+				}
+				AND = {
+					NOT = { has_country_flag = engaged_with_pantsu_shop }
+					pantsu_shop_active_diplo = yes
+				}
+			}
+		}
+	}
+	allow = { FROM = {
+		always = yes
+	}}
+	effect = { FROM = {
+		custom_tooltip = edict_debug_pantsu_shop_interface_desc
+		hidden_effect = { 
+			remove_country_flag = engaged_with_pantsu_shop
+		}
+	}}
+}
+
+wg_menu_sub_button_switch_leader_diplo = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = {
+		custom_tooltip = switch_wg_leader_diplo_tooltip
+		if = {
+			limit = { has_country_flag = old_commu_window }
+			remove_country_flag = old_commu_window
+		} else = {
+			set_country_flag = old_commu_window
+		}
+	}
+}

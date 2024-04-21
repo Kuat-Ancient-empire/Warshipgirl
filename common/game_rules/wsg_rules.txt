@@ -1,0 +1,1233 @@
+#######################################################
+# wsg 修改版通用游戏规则，请勿直接引用此版本的game rules 
+# 详见小伞自己的通用游戏规则mod
+#######################################################
+###_++++ z fw universial 游戏规则 范用兼容框架	######################################################
+
+###_[teif/wsg/umd/ptep]	##################
+# Root = Species
+# From = Country
+# This = Species
+species_has_happiness = {
+	NOR = {
+		has_trait = trait_machine_unit
+		has_trait = trait_hive_mind
+		can_think = no
+		has_trait = trait_nerve_stapled
+		has_trait = sh_trait_shenhai	#_WSG
+		has_trait = sh_trait_shenhai1	#_WSG
+		has_trait = sh_trait_shenhai2	#_WSG
+		has_trait = sh_trait_silent		#_WSG
+		has_trait = sh_trait_silent1	#_WSG
+		has_trait = trait_plentiful_traditions_cocoon	#_ptep
+		has_trait = trait_protoss_probe	#_[无言]
+		
+		#_	+teif
+		AND = {
+			has_trait = trait_mechanical
+			OR = {
+				has_trait = trait_mechanical
+				OR = {
+					NOT = { exists = from }
+					from = { has_authority = auth_machine_intelligence }
+					from = { NOT = { has_technology = tech_synthetic_workers } }
+					from = { has_policy_flag = ai_outlawed }
+				}
+				NOT = { exists = from }
+			}
+		}
+		AND = {
+			has_trait = trait_cybernetic
+			exists = from
+			from = {
+				has_authority = auth_machine_intelligence
+				has_civic = civic_machine_assimilator # Assimilator empire
+			}
+		}
+	}
+}
+# 物种组装
+# This = Species
+# Root = Planet
+can_species_be_assembled = {
+	root.owner = { NOT = { has_modifier = modifier_ban_assemble }}
+	OR = {
+		is_archetype = WARSHIPGIRL
+		is_archetype = SHENHAI
+		is_archetype = NANITES_CROP
+		is_archetype = UNITED_FLEET
+		is_archetype = STARSHIPGIRLS
+		is_archetype = KANMUSU
+		is_archetype = DATEALIVE
+		is_archetype = NYTO
+		is_archetype = Dolls
+		is_archetype = KANMUSU
+		AND = {
+			is_sapient = yes
+			OR = {
+				AND = {
+					is_robotic = yes
+					root = {
+						check_modifier_value = {
+							modifier = planet_pop_assembly_add
+							value > 0
+						}
+					}
+				}
+				AND = {
+					is_organic_species = yes
+					if = {
+						limit = {
+							root.owner = { is_hive_empire = yes }
+						}
+						has_trait = trait_hive_mind
+					}
+					else_if = {
+						limit = { has_budding_trait = yes }
+						root = {
+							any_owned_species = { is_exact_same_species = prevprev }
+						}
+					}
+					else_if = {
+						limit = { has_trait = trait_tiyanki }
+						root = {
+							any_owned_species = { is_exact_same_species = prevprev }
+						}
+					}
+					else_if = {
+						limit = {
+							root.owner = {
+								has_tradition = tr_cybernetics_assembly_standards
+								has_policy_flag = roboticist_output_build_cyborgs
+							}
+						}
+						has_trait = trait_cybernetic
+					}
+					else_if = {
+						limit = {
+							OR = {
+								has_trait = trait_clone_soldier_infertile
+								has_trait = trait_clone_soldier_infertile_full_potential
+							}
+						}
+						root = {
+							# Event 'clones.3' should cover this, but extra safety check.
+							has_building = building_clone_army_clone_vat
+							NOT = {
+								check_variable = {
+									which = clone_pops_missing
+									value = 0
+								}
+							}
+						}
+					}
+					else = {
+						root = {
+							OR = {
+								has_building = building_clone_vats
+								has_modifier = tiyanki_trophy
+								owner = { has_modifier = syamelles_curse }
+								AND = {
+									has_building = building_posthumous_employment_center
+									owner = { has_civic = civic_permanent_employment }
+								}
+								has_planet_flag = can_organic_assemble_flag #for mod compatibility
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	has_population_control = {
+		type = no
+		country = root.owner
+	}
+}
+###_[轨道轰炸]	FW/AUP/ev/wsg/swg/阿夸/古代帝国/失落帝国历史/多彩/精灵/TAC/SRA	/ACOT/SOFE/bwm/HFE/Giga/Ehof/RSnf/MEM/SSNI/久远/thl	#########
+#This rule is a condition for bombarding planets
+#Root = fleet, potential attacker
+#From = planet, potential target
+can_orbital_bombard = {
+	exists = FROM.OWNER
+	###_|禁止条件|	+RSnf/阿夸/精灵
+	NOT = {
+		any_controlled_ship = {
+			is_ship_size = colossus
+		}
+	}
+	###_|基本条件|
+	OR = {
+		AND = {
+			ROOT.CONTROLLER = {
+				NOT = { has_communications = FROM.OWNER }
+			}
+			FROM.OWNER = {
+				NOT = { is_country_type = primitive }
+			}
+		}
+		AND = {
+			ROOT.CONTROLLER = {
+				NOR = {
+					has_policy_flag = interference_not_allowed
+					has_policy_flag = interference_subtle
+				}
+			}
+			FROM.OWNER = { is_country_type = primitive }
+		}
+		ROOT.CONTROLLER = { is_at_war_with = FROM.CONTROLLER }
+		#	AUP/HFE
+		ROOT.CONTROLLER = { is_hostile = FROM.CONTROLLER }
+		#_|V可随意轰炸|	+bwm
+		FROM = {
+			OR = {
+				is_planet_class = pc_infested
+				has_planet_flag = bwm_ancestor_world			# bwm
+			}
+		}
+		#	TAC		---禁用|高能耗|
+	#	ROOT = { has_component = AI_MATRICES }
+		##_|可被轰炸|	+古代帝国/SOFE/bwm/Giga/Ehof/阿夸/多彩
+		FROM.CONTROLLER = {
+			OR = {
+				#	VANILLA
+				is_country_type = swarm
+				is_country_type = ai_empire
+				is_country_type = cybrex_empire
+				AND = {
+					is_country_type = awakened_marauders
+					ROOT.CONTROLLER = { is_hostile = prev }
+				}
+				#	UGRC
+				has_country_flag = UGRC_flg_cntr_RULE_can_be_bombed
+
+				is_country_type = mem_ancestor_guardian			# bwm
+				is_country_type = original_empire				# SOFE
+				is_country_type = compound_empire				# Giga/Ehof
+				is_country_type = void_lifeforms_1				# Giga/ACOT
+				is_country_type = void_lifeforms_2				# Giga/ACOT
+				is_country_type = katzenartig_imperium			# Giga/ACOT
+				ag_can_be_orbital_bombardment_country = yes		# 古代帝国	安装=|has_ancient_empire_mod|
+				kuat_can_be_orbital_bombarment_country = yes	# 阿夸		安装=|install_kuat_mod|
+				is_country_type = ten_crisis_empire				# 多彩
+			}
+		}
+		##_|可以轰炸|	+ev/wsg/swg/阿夸/古代帝国/失落帝国历史	/bwm/ACOT/SOFE/MEM/SRA/SSNI/久远/多彩/精灵/thl
+		ROOT.CONTROLLER = {
+			OR = {
+				#	VANILLA
+				is_country_type = extradimensional
+				is_country_type = extradimensional_2
+				is_country_type = extradimensional_3
+				is_country_type = swarm
+				is_country_type = ai_empire
+				is_country_type = cybrex_empire					# <aup去除了此项>
+				is_country_type = dormant_marauders
+				is_country_type = marauder_raiders
+				is_country_type = ruined_marauders
+				is_country_type = debt_collectors
+				is_country_type = gray_goo
+				is_country_type = vol
+				AND = {
+					OR = {
+						is_country_type = awakened_marauders
+						is_country_type = formless
+					}
+					FROM.CONTROLLER = { is_hostile = prev }
+				}
+				#	UGRC
+				has_country_flag = UGRC_flg_cntr_RULE_can_bomb
+
+				is_country_type = ev_leviathans_crisis			# ev
+				is_country_type = afk_crisis_country			# swg
+				is_country_type = LsE_fallen_empire				# 失落帝国历史
+				#	wsg
+				is_country_type = wg_crisis_country
+				is_khan_country_type = yes
+				#	古代帝国
+				ag_can_do_orbital_bombardment_country = yes
+				#	阿夸
+				kuat_can_do_bombarment_country = yes
+				
+				is_country_type = mem_ancestor_guardian			# bwm
+				is_country_type = original_empire				# SOFE
+				#	ACOT
+				is_country_type = compound_empire
+				is_country_type = katzenartig_imperium
+				is_country_type = void_lifeforms_1
+				is_country_type = void_lifeforms_2
+				is_country_type = acot_crazed_stellarite
+				#	MEM
+				is_country_type = mem_surveyor_country_red		# 瓦祖兰
+				is_country_type = mem_vazurans
+				#	SRA
+				SRA_can_do_orbital_bombardment_country = yes
+				#	SSNI
+				is_country_type = sentinel_hostile_expansion
+				#	久远
+				KZ_VOY_can_unconditional_bombarment_country = yes
+				#	多彩
+				is_country_type = ten_crisis_empire
+				#	精灵
+				is_ELF_can_orbital_bombard_country_type = yes
+				#	thl
+				is_country_type = koishi_berserk_fleet
+			}
+		}
+		#_星球所有者轰炸被其他阵营占据的星球	-SOFE<去掉了此项>
+		AND = {
+			from.controller = {
+				is_country_type = faction
+				NOT = { is_same_value = ROOT.CONTROLLER }
+			}
+			from.owner = {
+				is_same_value = ROOT.CONTROLLER
+			}
+		}
+	}
+}
+###_[z_fw/z_cm/teif/ev/wsg/swg/zofe/sofe/fq/tk_a]	##################
+#_glbl_flg	[z_fw_flg_glbl_tech_overwhelm]	科技壁垒
+# this = ship
+# root = country that kills ship
+can_spawn_debris = {
+	root = { 
+		OR = {
+			is_country_type = default
+			is_country_type = default_ev		#_EV
+			is_country_type = teif_primitive	#_TEIF
+			is_country_type = ascended_empire	#_ZOFE
+			is_country_type = lost_empire		#_ZOFE
+		}
+	}
+	exists = owner
+	owner = {
+		NAND = {#_科技限制
+			OR = {
+				has_global_flag = z_fw_flg_glbl_tech_overwhelm	#_[z_fw]科技壁垒
+				has_global_flag = stability_MOD_installed		#_[teif]
+			}
+			relative_power = { who = root category = technology value >= superior }		#_[z_fw/teif]神一般的科技	superior
+		}
+		NAND = {#_[z_cm]无法获取堕落科技
+			OR = {
+				is_country_type = fallen_empire
+				is_country_type = awakened_fallen_empire
+			}
+			has_global_flag = z_cm_fallen_technology
+		}
+		#_+teif/wsg/ev/sofe/fq
+		NOR = {#_阵营限制
+			has_ascension_perk = ap_enigmatic_engineering
+			has_ethic = ethic_fanatic_communism				#_TEIF
+			has_country_flag = fallen_empire_6_human_2		#_TEIF
+			is_country_type = default_ev					#_EV
+			is_country_type = wg_crisis_country				#_WSG
+			AND = { #_WSG
+				has_global_flag = has_wsg_mod
+				is_khan_country_type = yes	
+			}			
+			has_government = "gov_eternal_continuum"		#_SOFE
+			has_valid_civic = civic_sofe_pursuit_answer		#_SOFE
+			is_country_type = original_empire				#_SOFE
+			is_country_type = original_empire_passive		#_SOFE
+			has_civic = civic_hive_strong_connection		#_fq
+			is_country_type = afk_crisis_country			#_swg
+			has_civic = civic_tw_atlantis					#_tk_a
+		}
+	}
+}
+
+###_[z_fw/z_lctr/wsg/teif/ag/ws/smco/s_tnatc]	##################
+#_sys_trgr	ws_[is_ws_system]
+# this = system
+# root = country
+system_blocks_sensors = {
+	#_z_fw/z_lctr
+	root = {
+		NOR = {
+			has_modifier = z_lctr_mod_cntr_sensor			#_[z_lctr]
+		}
+	}
+	OR = {
+		is_inside_nebula = yes
+		has_modifier = space_storm
+		has_modifier = zroni_storm
+		has_star_flag = lcluster
+		has_star_flag = sealed_system
+		has_star_flag = wg_sealed_system			#_wsg
+		has_star_flag = wg_psionic_systems			#_wsg
+		has_star_flag = fallen_sol_system			#_teif
+		root = { is_country_type = teif_primitive }	#_teif
+		has_star_flag = ag_no_sensor_system			#_ag
+		has_star_flag = bok_globules					#_smco
+		has_star_flag = star_flag_GAPS_sealed_system	#_smco
+		is_ws_system = yes			#_ws
+		AND = {#_s_tnatc
+			exists = owner
+			owner = { has_relic = r_invisibility_rune }
+			NOT = { root = { is_same_empire = prev.owner } }
+		}
+	}
+}
+
+
+###_[z_fw/teif/ag/wsg/kuat/sofe/giga/ehof/seooc]	##################
+# Root = country attempting to target system for movement
+# This = system being targeted
+can_enter_system_by_jump = {
+	custom_tooltip = {
+		success_text = "debug: can jump"
+		fail_text = cannot_jump_to_system
+		OR = {
+			#_绝对通行
+			root = { has_country_flag = z_fw_r_celestial_orrey_activited }		#_[z_fw]璀璨星图
+			root = { has_country_flag = z_fw_r_cheat_quantum_beacon_activited }	#_[z_fw]永恒星炬
+			#_基础条件
+			AND = {
+				#_ugrc禁用条件
+				NOT = {
+					root = { is_country_type = teif_primitive }	#_teif
+				}
+				
+				#_Sealed system
+				OR = {
+					#_+[teif]
+					NOR = {
+						has_star_flag = sealed_system
+						has_star_flag = fallen_sol_system	#_teif
+					}
+					#_[teif]
+					AND = {
+						root = { has_country_flag = entered_fallen_sol_system }
+						has_star_flag = fallen_sol_system
+					}
+					#_[teif]
+					AND = {
+						root = { has_country_flag = entered_sealed_system }
+						has_star_flag = sealed_system
+					}
+				}
+				#_wsg
+				OR = {
+					NOT = { exists = space_owner }
+					AND = {
+						exists = space_owner
+						space_owner = { NOT = { is_country_type = monolith_crisis_country }}
+					}
+				}
+				#_特殊星系	+[wsg/ag/kuat/sofe/giga/ehof]
+				NOR = {
+					has_star_flag = lcluster
+					has_star_flag = wg_sealed_system			#_wsg
+					has_star_flag = wg_psionic_systems			#_wsg
+					has_star_flag = ag_no_jump_in_system		#_ag
+					ag_is_kuat_system = yes						#_狡猾人
+					has_star_flag = outercluster				#_SOFE	外星门
+					has_star_flag = ehof_compound_system		#_[giga]
+					has_star_flag = giga_core_03				#_[giga]
+					cohesive_system = yes						#_[giga]
+					urmazin_system = yes						#_[giga]
+					everchanging_system = yes					#_[giga]
+					katzen_jump_blocked_system = yes			#_[giga]
+					has_star_flag = nep_Krahen_cluster			#_seooc
+					has_star_flag = nep_Scrus_cluster			#_seooc
+					AND = {#_[kuat]
+						has_global_flag = starkillerbase_not_passed
+						has_star_flag = starkiller_system	
+					}
+					AND = {#_seooc
+						has_global_flag = nep_not_pass_Aemethms 
+						OR = {
+							has_star_flag = nep_dragon_system
+							has_star_flag = nep_heptagram_cluster
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+###_[teif][wsg][swg][ptep]	##################
+###_teif/wsg/swg/ptep/kc/adf	##################
+# This = pop
+pop_generates_crime = {
+	OR = {
+		#_+wsg/swg/kc/adf
+		AND = {
+			is_sapient = yes
+			is_non_sapient_robot = no
+			is_being_assimilated = no
+			NOR = {
+				#_[wsg]
+				has_wg_traits = yes
+				has_trait = trait_intelligent_galo
+				#_[kc]
+				has_trait = kancolle_trait_kanmusu
+				has_trait = kancolle_trait_kanmusu1
+				has_trait = kancolle_trait_kanmusu2
+				#_[adf]
+				has_trait = adf_trait_dolls
+				#_[ptep]
+				has_trait = trait_plentiful_traditions_cocoon
+			}
+		}
+		AND = {#_teif
+			exists = owner
+			has_trait = trait_machine_unit
+			owner = {
+				NOR = {
+					has_country_flag = machine_computer_repressed_completed
+					has_country_flag = machine_computer_release_completed
+				}
+			}
+		}
+		AND = {#_teif
+			exists = owner
+			has_trait = trait_hive_mind
+			owner = {
+				NOR = {
+					has_country_flag = hive_mind_repressed_completed
+					has_country_flag = hive_mind_release_completed
+				}
+			}
+		}
+	}
+	#_ptep
+	NOT = { has_trait = trait_plentiful_traditions_cocoon }
+}
+
+is_criminal_syndicate_rule = {
+	OR = {
+		AND = {
+			OR = {
+				has_authority = auth_corporate
+				has_valid_civic = civic_galactic_sovereign_megacorp
+			}
+			has_valid_civic = civic_criminal_heritage
+		}
+		has_civic = civic_sh_criminal_syndicate
+	}	
+}
+
+###_[swg][gsf][fq]	##################
+###_[swg/gsf/azl/fq]	##################
+# This = country
+can_build_branch_offices = {
+	custom_tooltip = {
+		fail_text = BRANCH_OFFICE_NOT_MEGACORP
+		#_+wsg/gsf/fq/ark
+		OR = {
+			has_authority = auth_corporate
+			has_civic = civic_galactic_sovereign_megacorp
+			has_authority = auth_warshipgirls	#_wsg
+			AND = {
+				has_authority = auth_shenhai
+				OR = {
+					has_country_flag = pantsu_shop_origin
+					has_civic = civic_sh_criminal_syndicate
+				}
+			}
+			has_civic = civic_gk				#_gsf
+			has_authority = auth_azur_lane_0	#_azl
+			has_authority = auth_azur_lane_1	#_azl
+			has_authority = auth_azur_lane_2	#_azl
+            has_valid_civic = civic_mutualistic_behavior	#_fq
+			has_civic = civic_business_union	#_ark
+		}
+	}
+}
+
+
+###_[swg/gsf/azl/zofe/sofe]	##################
+# This = country
+can_support_branch_offices = {
+	#_+[azlx]
+	custom_tooltip = {
+		fail_text = BRANCH_OFFICE_NOT_FALLEN_EMPIRES
+		NOR = {
+			is_country_type = fallen_empire
+			is_country_type = awakened_fallen_empire
+			has_authority = auth_azur_dictatorial		#_azlx
+		}
+	}
+	#_+[wsg/gsf/azl/ark/sofe]
+	custom_tooltip = {
+		fail_text = BRANCH_OFFICE_NOT_ON_MEGACORP_PLANET
+		NOR = {
+			has_authority = auth_corporate
+			has_civic = civic_galactic_sovereign_megacorp
+			has_authority = auth_warshipgirls			#_wsg
+			AND = {
+				has_authority = auth_shenhai
+				OR = {
+					has_country_flag = pantsu_shop_origin
+					has_civic = civic_sh_criminal_syndicate
+				}
+			}
+			has_civic = civic_gk						#_gsf
+			has_authority = auth_azur_lane_1			#_azl
+			has_valid_civic = civic_sofe_inner_strength	#_SOFE
+			has_civic = civic_business_union			#_ark
+		}
+	}
+	#_+[zofe]
+	custom_tooltip = {
+		fail_text = BRANCH_OFFICE_NOT_REGULAR_EMPIRE
+		OR = {
+			is_regular_empire = yes
+			AND = {
+				is_gestalt = no
+				is_country_type = ascended_empire		#_ZOFE
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = BRANCH_OFFICE_NOT_ADVANCED_PRE_FTL
+		if = {
+			limit = {
+				is_primitive = yes
+				is_gestalt = no
+			}
+			OR = {
+				has_pre_ftl_age = atomic_age
+				has_pre_ftl_age = early_space_age
+			}
+		}
+	}
+}
+
+###_[swg/azl/hfe/fq]	##################
+# This = planet
+# Root = country
+can_build_branch_office_on_planet = {
+	#_swg
+	custom_tooltip = {
+		fail_text = requires_recipient_not_warshipgirls
+		exists = owner
+		owner = {
+			NOR = {
+				has_authority = auth_warshipgirls 
+				AND = {
+					has_authority = auth_shenhai
+					OR = {
+						has_country_flag = pantsu_shop_origin
+						has_civic = civic_sh_criminal_syndicate
+					}
+				}
+			}
+		}
+	}	
+	custom_tooltip = {
+		fail_text = requires_recipient_not_fanatic_purifiers
+		exists = owner
+		owner = {
+			OR = {
+				is_same_species = root
+				NOT = { has_civic = civic_fanatic_purifiers }
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = BRANCH_OFFICE_NO_OBSERVATION_OUTPOST
+		if = {
+			limit = {
+				root = { is_criminal_syndicate = yes }
+				owner = { is_primitive = yes }
+			}
+			has_observation_outpost = yes
+			observation_outpost_owner = {
+				is_same_value = root
+			}
+		}
+	}
+	#_+[fq/swg/azl]
+	custom_tooltip = {
+		fail_text = BRANCH_OFFICE_NOT_COMMERCIAL_PACT
+		exists = owner
+		OR = {
+			root = { is_criminal_syndicate = yes }
+			owner = { has_commercial_pact = root }
+			owner = { is_in_federation_with = root }
+			root = { has_valid_civic = civic_mutualistic_behavior }	#_fq
+			root = { has_authority = auth_azur_lane_1 }		#_azl
+			root = { has_civic = civic_sh_criminal_syndicate }
+			AND = {
+				has_observation_outpost = yes
+				observation_outpost = {
+					has_modifier = preftl_action_trade_pact
+				}
+			}
+			AND = {
+				owner = {
+					has_country_flag = lose_wg_shop_war
+				}
+				root = {
+					has_country_flag = pantsu_shop_origin
+				}
+			}
+			# allow branch offices in subsidiaries and vice versa
+			root = {
+				is_subject = yes
+				OR = {
+					has_authority = auth_corporate
+					has_civic = civic_galactic_sovereign_megacorp
+				}
+				overlord = {
+					OR = {
+						is_same_value = prevprev.owner
+						is_same_value = prevprev.owner.overlord
+					}
+				}
+			}
+			owner = {
+				is_subject = yes
+				overlord = {
+					OR = {
+						is_same_value = root
+						is_same_value = root.overlord
+					}
+					OR = {
+						has_authority = auth_corporate
+						has_civic = civic_galactic_sovereign_megacorp
+						has_authority = auth_warshipgirls
+					}
+				}
+			}
+			AND = {
+				root = { has_civic = civic_galactic_sovereign_megacorp }
+				owner = { is_galactic_community_member = yes }
+			}
+			AND = {
+				root = { has_modifier = imperial_charter }
+				owner = { is_galactic_community_member = yes }
+			}
+			#_[hfe]
+			AND = {
+				has_global_flag = hfe_installed
+				root = { overlord = { is_country = prevprev.owner } }	#_this的owner
+			}
+			#_[azl]
+			owner = {
+				AND = {
+					OR = {
+						has_authority = auth_azur_lane_2
+						has_authority = auth_azur_lane_0
+					}
+					is_same_value = root
+				}
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = BRANCH_OFFICE_MEGACORP_OVERLORD
+		exists = owner
+		# failure message for having a corporate overlord
+
+		if = {
+			limit = {
+				OR = {
+					# Not valid if you aren't a subject.
+					root = {
+						is_subject = no
+					}
+					# Or if your overlord isn't a megacorp.
+					root = {
+						is_subject = yes
+						overlord = {
+							NOR = {
+								has_authority = auth_corporate
+								has_civic = civic_galactic_sovereign_megacorp
+							}
+						}
+					}
+				}
+			}
+			always = yes
+		}
+		else = {
+			AND = {
+				root = {
+					is_subject = yes
+					overlord = {
+						OR = {
+							has_authority = auth_corporate
+							has_civic = civic_galactic_sovereign_megacorp
+						}
+					}
+				}
+				owner = {
+					OR = {
+						is_subject = no
+						AND = {
+							is_subject = yes
+							overlord = { NOT = { is_same_value = root.overlord } }
+						}
+					}
+				}
+			}
+		}
+	}
+	#_	+azl
+	custom_tooltip = {
+		fail_text = BRANCH_OFFICE_CRIMINAL_HERITAGE_HAS_TRUCE
+		exists = owner
+		OR = {
+			root = { 
+				is_criminal_syndicate = no 
+				NOT = { has_civic = civic_sh_criminal_syndicate }
+				NOT = { has_authority = auth_azur_lane_1 }
+			}
+			owner = {
+				NOR = {
+					has_truce = root
+					is_at_war_with = root
+				}
+			}
+			owner = { has_civic = civic_sh_criminal_syndicate }
+			AND = {
+				owner = { has_country_flag = lose_wg_shop_war }
+				root = { OR = {
+					has_country_flag = pantsu_shop_origin
+				}}
+			}
+		}
+	}
+	#_	+azl
+	custom_tooltip = {
+		fail_text = BRANCH_OFFICE_CRIMINAL_COOLDOWN
+		exists = owner
+		OR = {
+			root = {
+				is_criminal_syndicate = no
+				NOT = { has_authority = auth_azur_lane_1 }	#_azl
+			}
+			AND = {
+				owner = { has_country_flag = lose_wg_shop_war }
+				root = { OR = {
+					has_country_flag = pantsu_shop_origin
+				}}
+			}
+			AND = {
+				root = { OR = {
+					is_criminal_syndicate = yes 
+					owner = { has_civic = civic_sh_criminal_syndicate }
+				}}
+				NOT = { has_planet_flag = criminal_branch_closed_cooldown_planet@root }
+			}
+		}
+	}
+}
+# Can the country have robot pop
+# root: country
+can_have_robot_pops = {
+	exists = this
+	NOT = { has_authority = auth_hive_mind }
+	NOT = { has_policy_flag = robots_outlawed }
+	has_wg_and_uf_special_authority = no
+}
+###_[z_pf2/fq]	##################
+# This = planet
+can_crossbreed_species_on_planet = {
+	exists = owner
+	#_	z_pf2
+	NAND = {
+		owner = { is_ai = yes }
+		has_global_flag = z_pf2_no_ai_hybird
+	}
+	#_wsg 禁止ntr
+	any_owned_species = { NOR = {
+		is_archetype = WARSHIPGIRL
+		is_archetype = NANITES_CROP
+		is_archetype = SHENHAI
+		is_archetype = UNITED_FLEET 
+	}}
+	AND = {
+		owner = { has_ascension_perk = ap_xeno_compatibility }
+		count_species = {
+			limit = { is_crossbreeding_possible = yes }
+			count >= 2
+		}
+	}
+}
+
+# This = species one
+# Root = species two
+can_crossbreed_species = {
+	is_crossbreeding_possible = yes
+	root = { is_crossbreeding_possible = yes }
+	NOR = {
+		is_subspecies = root
+		root = { is_subspecies = prev }
+	}
+	#_wsg 禁止ntr
+	NOR = {
+		is_archetype = WARSHIPGIRL
+		is_archetype = NANITES_CROP
+		is_archetype = SHENHAI
+		is_archetype = UNITED_FLEET
+	}
+	root = { NOR = {
+		is_archetype = WARSHIPGIRL
+		is_archetype = NANITES_CROP
+		is_archetype = SHENHAI
+		is_archetype = UNITED_FLEET
+	}}
+}
+###_[aup/ptep]	如果有问题就恢复vanilla
+#_pop_trgr	[ariphaos_patch_slaves_expel]
+# ROOT = country
+# THIS = pop
+can_be_sold_on_slave_market = {
+	OR = {
+		is_enslaved = yes
+		is_non_sapient_robot = yes
+		is_shackled_robot = yes
+	}
+	#_wsg 禁止ntr
+	species = { NOR = {
+		is_archetype = WARSHIPGIRL
+		is_archetype = NANITES_CROP
+		is_archetype = SHENHAI
+		is_archetype = UNITED_FLEET
+	}}
+	NOT = {
+		#_[ptep]
+		has_trait = trait_plentiful_traditions_cocoon
+	}
+	#_	+[aup]
+	OR ={
+		ariphaos_patch_slaves_expel = yes	#_aup
+		ROOT = { is_ai = no }
+		has_citizenship_rights = no
+		#_+aup
+		AND = {
+			# is_being_assimilated = no		#_aup
+			is_unemployed = yes
+			planet = {
+				num_unemployed > 3
+			}
+			#_aup
+			OR = {
+				NOT = { has_trait = trait_syncretic_proles }
+				ROOT = { NOT = { has_origin = origin_syncretic_evolution } }
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_global_flag = organic_slave_trade_banned_flag
+		}
+		is_organic_species = no
+	}
+	if = {
+		limit = {
+			has_global_flag = sentient_slave_trade_banned_flag
+		}
+		is_sapient = no
+	}
+	NOR = {
+		# Since they can't reproduce, they die out too fast for anyone to want to buy them.
+		has_trait = trait_clone_soldier_infertile
+		has_trait = trait_clone_soldier_infertile_full_potential
+	}
+	#_ptep
+	NOT = { has_trait = trait_plentiful_traditions_cocoon }
+}
+
+
+###_[ev/zofe/sofe/ur]	##################
+# This = country
+can_be_part_of_galactic_community = {
+	custom_tooltip = {
+		fail_text = "community_default_failtext"
+		OR = {
+			is_country_type = default
+			is_country_type = default_ev		#_ev
+			is_country_type = ascended_empire	#_ZOFE
+			is_country_type = original_empire_active	#_SOFE
+		}
+	}
+	custom_tooltip = {
+		fail_text = "community_homicidal_failtext"
+		NOR = {
+			has_civic = civic_fanatic_purifiers
+			has_civic = civic_hive_devouring_swarm
+			has_civic = civic_machine_terminator
+			has_country_flag = dark_side		#_ur
+		}
+	}
+	custom_tooltip = {
+		fail_text = "community_declared_crisis_failtext"
+		has_been_declared_crisis = no
+	}
+	custom_tooltip = {
+		fail_text = "community_declared_crisis_failtext"
+		#fail_text = "community_overlord_declared_crisis_failtext"
+		OR = {
+			NOT = { exists = overlord }
+			overlord = { has_been_declared_crisis = no }
+		}
+	}
+	
+	#_[wsg]
+	custom_tooltip = { #焚飞齐宣王被踢出共同体
+		fail_text = "community_declared_crisis_failtext"
+		NOT = { has_country_flag = wgfm_quit_community }
+	}
+}
+
+
+###_[teif/zofe/sofe/ur]	##################
+# This = country
+can_see_galactic_community = {
+	NOT = { is_country_type = teif_primitive }	#_teif
+	OR = {
+		has_country_flag = galcom_form_aye
+		has_country_flag = galcom_form_nay
+		is_galactic_community_member = yes
+		is_country_type = lost_empire		#_[ZOFE]
+        is_country_type = original_empire_active	#_SOFE
+		has_country_flag = dark_side		#_ur
+	}
+	
+	#_[wsg]
+	custom_tooltip = { #焚飞齐宣王被踢出共同体
+		fail_text = "community_declared_crisis_failtext"
+		NOT = { has_country_flag = wgfm_quit_community }
+	}
+}
+
+# This = country
+can_be_part_of_galactic_empire = {
+	#_+[ev/zofe/sofe]
+	custom_tooltip = {
+		fail_text = "community_default_failtext"
+		OR = {
+			is_country_type = default
+			is_country_type = default_ev		#_ev
+			is_country_type = ascended_empire	#_ZOFE
+			is_country_type = original_empire_active	#_SOFE
+		}
+	}
+	#_+[ur]
+	custom_tooltip = {
+		fail_text = "community_homicidal_failtext"
+		NOR = {
+			has_civic = civic_fanatic_purifiers
+			has_civic = civic_hive_devouring_swarm
+			has_civic = civic_machine_terminator
+			has_country_flag = dark_side		#_[ur]
+		}
+	}
+	custom_tooltip = {
+		fail_text = "community_declared_crisis_failtext"
+		has_been_declared_crisis = no
+	}
+	custom_tooltip = {
+		fail_text = "community_declared_crisis_failtext"
+		#fail_text = "community_overlord_declared_crisis_failtext"
+		OR = {
+			NOT = { exists = overlord }
+			overlord = { has_been_declared_crisis = no }
+		}
+	}
+	
+	#_[wsg]
+	custom_tooltip = { #焚飞齐宣王被踢出共同体
+		fail_text = "community_declared_crisis_failtext"
+		NOT = { has_country_flag = wgfm_quit_community }
+	}
+}
+
+###_[ev/zofe/sofe/ur]	##################
+# This = country
+can_be_part_of_galactic_council = {
+	OR = {
+		is_country_type = default
+		is_country_type = default_ev		#_ev
+		is_country_type = ascended_empire	#_ZOFE
+        is_country_type = original_empire_active	#_SOFE
+	}
+	NOR = {
+		has_civic = civic_fanatic_purifiers
+		has_civic = civic_hive_devouring_swarm
+		has_civic = civic_machine_terminator
+		has_country_flag = dark_side		#_[ur]
+	}
+	
+	#_[wsg]
+	custom_tooltip = { #焚飞齐宣王被踢出共同体
+		fail_text = "community_declared_crisis_failtext"
+		NOT = { has_country_flag = wgfm_quit_community }
+	}
+}
+
+# this = leader
+can_dismiss_leader = {
+	if = {
+		limit = {
+			leader_class = commander
+			is_idle = no
+			# Rulers and heirs can't be dismissed any way and can be non-idle
+			is_ruler = no
+			is_heir = no
+		}
+		custom_tooltip = {
+			fail_text = "requires_fleet_control"
+			exists = fleet
+			fleet = {
+				controller = {
+					is_same_value = prev.owner
+					is_same_value = prevprev.owner
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				is_heir = yes
+				is_ruler = yes
+			}
+		}
+		custom_tooltip = {
+			always = no
+			fail_text = "can_not_dismiss_rulers"
+		}
+	}
+	# custom_tooltip = {
+	# 	fail_text = "jiaohua_seal"
+	# 	NOT = { has_leader_flag = badseal_flag }
+	# }
+	custom_tooltip = {
+		fail_text = "cannot_fire_wg_leader"
+		NOT = { has_leader_flag = wsg_event_leader }
+		is_special_affection_leader = no
+	}
+}
+
+# This = leader, leader we'd like to trade
+# Root = country, country that owns the leader currently
+# From = country, country that would receive the leader
+can_trade_leader = {
+	custom_tooltip = {
+		fail_text = "cannot_sold_wg_leader"
+		is_special_affection_leader = no
+		is_wg_event_leader = no
+	}
+	# The leader must have a trait from a specialist subject type.
+	this = { has_specialist_subject_leader_trait = yes }
+	# The subject and overlord must both be regular empires, machine intelligences or hive-minds.
+	OR = {
+		AND = {
+			ROOT = {
+				is_regular_empire = yes
+			}
+			FROM = {
+				is_regular_empire = yes
+			}
+		}
+		AND = {
+			ROOT = {
+				has_authority = auth_machine_intelligence
+			}
+			FROM = {
+				has_authority = auth_machine_intelligence
+			}
+		}
+		AND = {
+			ROOT = {
+				has_authority = auth_hive_mind
+			}
+			FROM = {
+				has_authority = auth_hive_mind
+			}
+		}
+	}
+	# The overlord can't be a fallen or awakened empire.
+	ROOT = {
+		NAND = {
+			is_overlord = yes
+			OR = {
+				is_country_type = fallen_empire
+				is_country_type = awakened_fallen_empire
+			}
+		}
+	}
+	NOR = { 
+		has_trait = leader_trait_fotd_scientist
+		has_trait = leader_trait_fotd_admiral
+	}
+}
+
+# This = fleet, fleet we'd like to trade
+# Root = country, country that owns the fleet currently
+# From = country, country that would receive the fleet
+can_trade_fleet = {
+	custom_tooltip = {
+		fail_text = "cannot_sold_wg_fleet"
+		any_owned_ship = {
+			is_wg_event_limit_ships = no
+		}
+	}
+	ROOT = {
+		NAND = {
+			is_overlord = yes
+			OR = {
+				is_country_type = fallen_empire
+				is_country_type = awakened_fallen_empire
+			}
+		}
+	}
+}
+
+#This, root = country
+can_add_advanced_traits = {
+	has_utopia = yes
+	OR = {
+		has_tradition = tr_genetics_creation
+		has_wsg_genemodding_tech = yes
+	}
+}
+
+#This, root = country
+can_add_negative_traits_organic = {
+	has_utopia = yes
+	OR = {
+		has_tradition = tr_genetics_resequencing
+		has_tradition = tr_cybernetics_integrated_anatomy
+		has_tradition = tr_cybernetics_assimilator_integrated_anatomy
+		has_wsg_genemodding_tech = yes
+	}
+}
+
+#This, root = country
+can_remove_positive_traits_organic = {
+	OR = {
+		AND = {
+			has_utopia = yes
+			OR = {
+				has_tradition = tr_genetics_resequencing
+				has_tradition = tr_cybernetics_integrated_anatomy
+				has_tradition = tr_cybernetics_assimilator_integrated_anatomy
+				has_wsg_genemodding_tech = yes
+			}
+		}
+		AND = {
+			has_toxoids = yes
+			has_origin = origin_overtuned
+		}
+		has_technology = tech_epigenetic_triggers
+	}
+}
+
+#This, root = country
+can_modify_organic_portraits = {
+	has_utopia = yes
+	OR = {
+		has_tradition = tr_genetics_enhanced_expression
+		has_wsg_genemodding_tech = yes
+	}
+}

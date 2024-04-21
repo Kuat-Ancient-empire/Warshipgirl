@@ -1,0 +1,499 @@
+create_wg_dragon_admiral = {
+	set_country_flag = wg_dragon_changing
+	remove_wg_dragon_leader = yes
+	set_variable = { which = wg_dragon_active_type value = 1 }
+	every_owned_army = {
+		limit = { is_wg_dragon_army = yes }
+		if = {
+			limit = { exists = leader }
+			unassign_leader = leader
+		}
+		remove_army = yes
+	}
+	every_owned_fleet = {
+		limit = { has_fleet_flag = wg_dragon_fleet }
+		delete_fleet = this
+	}
+	create_leader = {
+		class = commander
+		species = event_target:wg_dragon_species
+		name = "Name_wg_dragon"
+		event_leader = yes
+		gender = female
+		immortal = yes
+		custom_description = wsg_dragon_desc
+		skill = 1
+		set_age = 14
+		traits = {
+			trait = leader_trait_admiral_wg_dragon
+		}
+		effect = {
+			change_leader_portrait = wg_dragon
+			set_leader_flag = not_has_wg_affection_normal
+			set_leader_flag = immune_to_negative_traits
+			set_leader_flag = has_gained_level_trait
+			set_leader_flag = has_gained_trait
+			set_leader_flag = wg_dragon_leader
+			set_leader_flag = wg_dragon_admiral
+			set_leader_flag = legendary_leader
+			save_global_event_target_as = wg_dragon_admiral
+		}
+	}
+	event_target:wg_dragon_admiral = {
+		add_skill_without_trait_selection = owner.wg_dragon_level
+		leader_event = {
+			id = wg_affection.8 days = 1
+		}
+	}
+}
+
+create_wg_dragon_fleet = {
+	set_country_flag = wg_dragon_changing
+	if = {
+		limit = { check_variable = { which = wg_dragon_active_type value = 1 }}
+		if = {
+			limit = {
+				any_controlled_fleet = {
+					exists = leader
+					leader = { has_leader_flag = wg_dragon_leader }
+				}
+			}
+			random_controlled_fleet = {
+				limit = { leader = { has_leader_flag = wg_dragon_leader }}
+				save_event_target_as = wg_dragon_warship_location
+			}
+		} else_if = {
+			limit = { always = yes }
+			capital_scope = {
+				save_event_target_as = wg_dragon_warship_location
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { which = wg_dragon_active_type value = 3 }}
+		if = {
+			limit = {
+				any_owned_army = {
+					is_wg_dragon_army = yes
+					exists = planet
+				}
+			}
+			random_owned_army = {
+				limit = { is_wg_dragon_army = yes }
+				planet = { save_event_target_as = wg_dragon_warship_location }
+			}
+		}
+		else = {
+			random_owned_army = {
+				limit = { is_wg_dragon_army = yes }
+				fleet = { save_event_target_as = wg_dragon_warship_location }
+			}
+		}
+	}
+	else_if = {
+		limit = { always = yes }
+		capital_scope = {
+			save_event_target_as = wg_dragon_warship_location
+		}
+	}
+	create_fleet = {
+		name = "NAME_wg_dragon"	
+		effect = {
+			set_owner = prev
+			set_fleet_flag = wg_event_limit_fleet
+			if = {
+				limit = { 
+					has_global_flag = nirvana_empire_start 
+					owner = { has_technology = tech_god_of_nirvana }
+				}
+				create_ship = {
+					design = "NAME_str_Eternity"
+					name = "NAME_wg_dragon"
+					prefix = no
+					upgradable = no
+				}
+			} else_if = {
+				limit = { 
+					has_global_flag = nirvana_empire_start 
+					owner = { has_technology = tech_aurora_dragon }
+				}
+				create_ship = {
+					design = "NAME_str_Aurora"
+					name = "NAME_wg_dragon"
+					prefix = no
+					upgradable = no
+				}
+			} else_if = {
+				limit = { always = yes }
+				create_ship = {
+					design = "NAME_Dragonspawn"
+					name = "NAME_wg_dragon"
+					prefix = no
+					upgradable = no
+				}
+			}
+			set_location = event_target:wg_dragon_warship_location
+			set_fleet_flag = wg_dragon_fleet
+			save_global_event_target_as = wg_dragon_fleet
+		}
+		settings = { 
+			can_disband = no
+			can_upgrade = no 
+			can_change_composition = no 
+			can_change_leader = no 
+			uses_naval_capacity = no
+			spawn_debris = no
+		}	
+	}
+	every_owned_army = {
+		limit = { is_wg_dragon_army = yes }
+		if = {
+			limit = { exists = leader }
+			unassign_leader = leader
+		}
+		remove_army = yes
+	}
+	set_variable = { which = wg_dragon_active_type value = 2 }
+	remove_wg_dragon_leader = yes
+	create_leader = {
+		class = commander
+		species = event_target:wg_dragon_species
+		name = "NAME_wg_dragon"
+		event_leader = yes
+		gender = female
+		immortal = yes
+		custom_description = wsg_dragon_desc
+		skill = 1
+		set_age = 16
+		traits = {
+			trait = leader_trait_warship_wg_dragon
+		}
+		effect = {
+			change_leader_portrait = wg_dragon
+			set_leader_flag = not_has_wg_affection_normal
+			set_leader_flag = immune_to_negative_traits
+			set_leader_flag = has_gained_level_trait
+			set_leader_flag = has_gained_trait
+			set_leader_flag = wg_dragon_leader
+			set_leader_flag = wg_dragon_warship
+			set_leader_flag = legendary_leader
+			save_global_event_target_as = wg_dragon_warship
+			event_target:wg_dragon_fleet = { assign_leader = PREV }
+		}
+	}
+	event_target:wg_dragon_warship = {
+		if = {
+			limit = {
+				has_global_flag = nirvana_empire_start
+				owner = { OR = {
+					has_technology = tech_aurora_dragon
+					has_technology = tech_god_of_nirvana
+				}}
+			}
+			add_trait_no_notify = leader_trait_warship_wg_dragon_nirvana
+			remove_trait = leader_trait_warship_wg_dragon
+		}
+		add_skill_without_trait_selection = owner.wg_dragon_level
+		add_trait_no_notify = leader_trait_warship_wg_dragon_affection
+	}
+}
+
+create_wg_dragon_army = {
+	set_country_flag = wg_dragon_changing
+	if = {
+		limit = { check_variable = { which = wg_dragon_active_type value = 1 }}
+		if = {
+			limit = {
+				any_controlled_fleet = {
+					exists = leader
+					leader = { has_leader_flag = wg_dragon_leader }
+				}
+			}
+			random_controlled_fleet = {
+				limit = { leader = { has_leader_flag = wg_dragon_leader }}
+				save_event_target_as = wg_dragon_transport_location
+			}
+		} else_if = {
+			limit = { always = yes }
+			capital_scope = {
+				save_event_target_as = wg_dragon_transport_location
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { which = wg_dragon_active_type value = 2 }}
+		if = {
+			limit = { exists = event_target:wg_dragon_fleet }
+			event_target:wg_dragon_fleet = {
+				save_event_target_as = wg_dragon_transport_location
+			}
+		} else = {
+			random_controlled_fleet = {
+				limit = { has_fleet_flag = wg_dragon_fleet }
+				save_event_target_as = wg_dragon_transport_location
+			}
+		}
+	}
+	else_if = {
+		limit = { always = yes }
+		capital_scope = {
+			save_event_target_as = wg_dragon_transport_location
+		}
+	}
+	create_fleet = {
+		name = "NAME_Ether_Hatchling"
+		effect = {
+			set_owner = prev
+			set_location = {
+				target = event_target:wg_dragon_transport_location
+				distance = 0
+				angle = random 
+			}
+			create_wg_dragon_army_transport = yes
+		}
+	}
+	remove_wg_dragon_leader = yes
+	set_variable = { which = wg_dragon_active_type value = 3 }
+	every_owned_fleet = {
+		limit = { has_fleet_flag = wg_dragon_fleet }
+		delete_fleet = this
+	}
+}
+
+remove_wg_dragon_leader = {
+	every_owned_leader = {
+		limit = { has_leader_flag = wg_dragon_leader }
+		kill_leader = { show_notification = no }
+	}
+}
+
+create_wg_dragon_army_transport = {
+	random_country = {
+		limit = { has_country_flag = wg_dragon_owner }
+		save_event_target_as = wg_dragon_own_country
+	}
+	if = {
+		limit = { 
+			event_target:wg_dragon_own_country = { 
+				check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv5 }
+				has_country_flag = married_wg_dragon
+			}
+		}
+		create_army_transport = {
+			species = event_target:wg_dragon_own_country
+			ship_name = "NAME_wg_dragon"
+			army_name = "NAME_wg_dragon"
+			army_type = "wg_dragon_army_affection_5"
+		}
+	}
+	else_if = {
+		limit = { event_target:wg_dragon_own_country = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}}
+		create_army_transport = {
+			species = event_target:wg_dragon_own_country
+			ship_name = "NAME_wg_dragon"
+			army_name = "NAME_wg_dragon"
+			army_type = "wg_dragon_army_affection_3"
+		}
+	} 
+	else_if = { 
+		limit = { always = yes }
+		create_army_transport = {
+			species = event_target:wg_dragon_own_country
+			ship_name = "NAME_wg_dragon"
+			army_name = "NAME_wg_dragon"
+			army_type = "wg_dragon_army"
+		}
+	}
+	remove_wg_dragon_army = yes
+}
+
+create_wg_dragon_army_troop = {
+	random_country = {
+		limit = { has_country_flag = wg_dragon_owner }
+		save_event_target_as = wg_dragon_own_country
+	}
+	if = {
+		limit = { 
+			event_target:wg_dragon_own_country = { 
+				check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv5 }
+				has_country_flag = married_wg_dragon
+			}
+		}
+		create_army = {
+			species = event_target:wg_dragon_own_country
+			owner = event_target:wg_dragon_own_country
+			type = wg_dragon_army_affection_5
+		}
+	}
+	else_if = {
+		limit = { event_target:wg_dragon_own_country = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}}
+		create_army = {
+			species = event_target:wg_dragon_own_country
+			owner = event_target:wg_dragon_own_country
+			type = wg_dragon_army_affection_3
+		}
+	} 
+	else_if = { 
+		limit = { always = yes }
+		create_army = {
+			species = event_target:wg_dragon_own_country
+			owner = event_target:wg_dragon_own_country
+			type = wg_dragon_army
+		}
+	}
+	remove_wg_dragon_army = yes
+}
+
+remove_wg_dragon_army = {
+	last_created_army = { save_event_target_as = new_wg_dragon_army }
+	random_country = {
+		limit = { has_country_flag = wg_dragon_owner }
+		save_event_target_as = wg_dragon_own_country
+	}
+	event_target:wg_dragon_own_country = {
+		every_owned_army = {
+			limit = { 
+				NOT = { is_same_value = event_target:new_wg_dragon_army }
+				is_wg_dragon_army = yes
+			}
+			remove_army = yes
+		}
+	}
+}
+
+#####################################################################
+#  以太龙好感度
+#####################################################################
+reset_wg_dragon_affection_level = {
+	optimize_memory
+	if = {
+		limit = { ruler = { has_leader_flag = wg_dragon_leader }}
+		ruler = {
+			remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander } 
+			remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
+			remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = ruler }
+			add_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = ruler }
+		}
+	} else = {
+		if = {
+			limit = { check_variable = { which = wg_dragon_active_type value = 1 }}
+			if = {
+				limit = { NOT = { exists = event_target:wg_dragon_admiral }}
+				random_owned_leader = {
+					limit = { has_leader_flag = wg_dragon_admiral }
+					save_global_event_target_as = wg_dragon_admiral
+				}
+			}
+			event_target:wg_dragon_admiral = {
+				remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander } 
+				remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
+				add_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander }
+			}
+		} else_if = {
+			limit = { check_variable = { which = wg_dragon_active_type value = 2 }}
+			if = {
+				limit = { NOT = { exists = event_target:wg_dragon_warship }}
+				random_owned_leader = {
+					limit = { has_leader_flag = wg_dragon_warship }
+					save_global_event_target_as = wg_dragon_warship
+				}
+			}
+			event_target:wg_dragon_warship = {
+				remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
+				remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander } 
+				add_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
+			}
+		}
+		
+		if = {
+			limit = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv5 }}
+			if = {
+				limit = { has_country_flag = married_wg_dragon }
+				if = {
+					limit = { 
+						check_variable = { which = wg_dragon_active_type value = 3 }
+					}
+					country_event = { id = wg_dragon.15 }
+				}
+			}
+			else = { 
+				set_country_flag = wg_dragon_affection_max
+			}
+		} else = { 
+			remove_country_flag = wg_dragon_affection_max 
+			if = {
+				limit = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv4 }}
+			}
+			else_if = {
+				limit = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}
+				if = {
+					limit = { 
+						check_variable = { which = wg_dragon_active_type value = 3 }
+					}
+					country_event = { id = wg_dragon.15 }
+				}
+			}
+			else_if = {
+				limit = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv2 }}
+			}
+			else_if = {
+				limit = { check_variable = { which = wg_dragon_affection value < @wg_dragon_affection_to_lv2 }}
+				if = {
+					limit = { 
+						check_variable = { which = wg_dragon_active_type value = 3 }
+					}
+					country_event = { id = wg_dragon.15 }
+				}
+				if = {
+					limit = { check_variable = { which = wg_dragon_affection value < 1 }}
+					set_variable = { which = wg_dragon_affection value = 1 }
+				}
+			}
+		}
+	}
+}
+
+# 增加好感度（陆军状态下用）
+# scope: country
+add_wg_dragon_army_affection = {
+	change_variable = { which = wg_dragon_affection value = 1 }
+	if = {
+		limit = { 
+			OR = { 
+				has_country_flag = wg_dragon_affection_max
+				check_variable = { which = wg_dragon_affection_level value >= 5 }
+			}
+		}
+		country_event = { id = wg_dragon.15 days = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { which = wg_dragon_affection value = @wg_dragon_affection_to_lv2 }}
+		set_variable = { which = wg_dragon_affection_level value = 2 }
+		country_event = { id = wg_dragon.15 days = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { which = wg_dragon_affection value = @wg_dragon_affection_to_lv3 }}
+		set_variable = { which = wg_dragon_affection_level value = 3 }
+		country_event = { id = wg_dragon.15 days = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { which = wg_dragon_affection value = @wg_dragon_affection_to_lv4 }}
+		set_variable = { which = wg_dragon_affection_level value = 4 }
+		country_event = { id = wg_dragon.15 days = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { which = wg_dragon_affection value = @wg_dragon_affection_to_lv5 }}
+		set_country_flag = wg_dragon_affection_max
+		if = {
+			limit = { has_country_flag = married_wg_dragon }
+			country_event = { id = wg_dragon.15 days = 1 }
+		}
+	}
+}
+
+wg_dragon_after_effects = {
+	hidden_effect = { 
+		remove_country_flag = talking_to_wg_dragon 
+		remove_country_flag = wg_dragon_changing
+	}
+}

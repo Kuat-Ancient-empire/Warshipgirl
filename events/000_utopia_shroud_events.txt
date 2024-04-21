@@ -1,0 +1,162 @@
+
+############################
+#
+# Shroud Events
+#
+# Written by Henrik Thyrwall
+#
+############################
+
+# ID 3000 - 3999
+
+namespace = utopia
+
+# Chosen One becomes ruler
+country_event = {
+	id = utopia.3400
+	title = "utopia.3400.name"
+	desc = "utopia.3400.desc"
+	picture = GFX_evt_psionics
+	show_sound = event_mystic_reveal
+
+	trigger = {
+		is_country_type = default
+		NOT = { has_country_flag = chosen_one_ruler_event }
+		OR = {
+			# Either you've not Imperial and have a Chosen One
+			AND = {
+				OR = {
+					has_authority = auth_democratic
+					has_authority = auth_oligarchic
+					has_authority = auth_dictatorial
+					# MegaCorps deliberately excluded.
+				}
+				any_owned_leader = {
+					has_chosen_one_leader_trait = yes
+				}
+			}
+			# Or you're Imperial and the Chosen One is your current ruler or heir.
+			AND = {
+				has_authority = auth_imperial
+				any_owned_leader = {
+					has_chosen_one_leader_trait = yes
+					has_trait = trait_imperial_heir
+				}
+			}
+		}
+	}
+
+	mean_time_to_happen = {
+		months = 120
+	}
+
+	immediate = {
+		set_country_flag = chosen_one_ruler_event
+		if = {
+			limit = {
+				OR = {
+					has_authority = auth_democratic
+					has_authority = auth_oligarchic
+					has_authority = auth_dictatorial
+					# MegaCorps deliberately excluded.
+				}
+			}
+			random_owned_leader = {
+				limit = {
+					has_chosen_one_leader_trait = yes
+				}
+				save_event_target_as = chosen_one
+				species = { save_event_target_as = chosen_one_species }
+			}
+		}
+		else = {
+			random_owned_leader = {
+				limit = {
+					has_chosen_one_leader_trait = yes
+					has_trait = trait_imperial_heir
+				}
+				save_event_target_as = chosen_one
+				species = { save_event_target_as = chosen_one_species }
+			}
+		}
+	}
+
+	option = {
+		name = "utopia.3400.a"
+		ai_chance = {
+			factor = 100
+			modifier = {
+				factor = 40
+				has_ethic = ethic_egalitarian
+			}
+				modifier = {
+				factor = 80
+				has_ethic = ethic_fanatic_egalitarian
+			}
+		}
+		custom_tooltip = reject_god_emperor
+	}
+	option = {
+		name = "utopia.3400.b"
+		if = {
+			limit = {
+				has_wg_and_uf_authority = yes
+			}
+			custom_tooltip = utopia.3400.b.wg.tooltip
+		}
+		ai_chance = {
+			factor = 150
+			modifier = {
+				factor = 40
+				has_ethic = ethic_authoritarian
+			}
+				modifier = {
+				factor = 80
+				has_ethic = ethic_fanatic_authoritarian
+			}
+		}
+		if = {
+			limit = {
+				has_origin = origin_legendary_leader_dictatorial
+			}
+			set_origin = origin_legendary_leader_imperial
+		}
+		if = {
+			limit = { has_wg_and_uf_authority = no }
+			shift_ethic = "ethic_fanatic_authoritarian"
+			shift_ethic = "ethic_spiritualist"
+			change_government = {
+				authority = auth_imperial
+				cooldown = no
+				remove_invalid_civics = yes
+			}
+		}
+		force_add_civic = civic_psionic_sovereign
+		set_government_cooldown = no
+		# The ruler doesn't need to abdicate if they're being crowned.
+		if = {
+			limit = {
+				ruler = {
+					NOT = {
+						is_same_value = event_target:chosen_one
+					}
+				}
+			}
+			ruler = {
+				exile_leader_as = destituted_ruler_chosen_one
+			}
+			set_leader = event_target:chosen_one
+		}
+		hidden_effect = {
+			every_country = {
+				limit = {
+					is_ai = no
+					NOT = { is_same_value = root }
+					has_communications = root
+				}
+				country_event = { id = utopia.3401 days = 4 }
+			}
+			country_event = { id = utopia.3402 days = 5 }
+		}
+	}
+}

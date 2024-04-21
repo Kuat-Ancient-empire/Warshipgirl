@@ -1,0 +1,169 @@
+guiTypes = {
+	
+	containerWindowType = {
+		name = "wg_comfirmation_AgreeButton"
+		position = { x=0 y=0 }
+		size = { width = 142 height = 999 }
+		moveable = no
+		
+		buttonType = {
+			name = "option_button"
+			quadTextureSprite = "GFX_standard_button_142_34_button"
+			position = { x=0 y=0 }
+			font = "malgun_goth_24"
+			text = "OPTION_TEXT"
+			clicksound = "confirm_click"
+		}
+
+		OverlappingElementsBoxType = {
+			name = "trigger_icons"
+			position = { x = 0  y = 10 }
+			size = { x=65 y= 28 }
+		}
+	}
+	containerWindowType = {
+		name = "wg_hiding_button"
+		position = { x = 0 y = 0 }
+		size = { width = 142 height = 34 }
+		moveable = no
+		
+		buttonType = {
+			name = "option_button"
+			quadTextureSprite = ""
+			position = { x = 0 y = 0 }
+			font = "malgun_goth_24"
+			text = "OPTION_TEXT"
+			clicksound = "confirm_click"
+		}
+
+		OverlappingElementsBoxType = {
+			name = "trigger_icons"
+			position = { x = 0  y = 10 }
+			size = { x=65 y= 28 }
+		}
+	}
+
+	##################################################################
+	# 二选一确认窗口
+	# 除了下方containerWindowType的size（窗口大小）之外，其余不建议改动
+	# 改动size后需要改动下方EVENT_DIPLO里的option_list位置
+	# 
+	# 窗口原理是将第二个选项（什么效果也不触发的）隐藏起来，其中第二选项为default_hide_option
+	# 然后将取消按钮伪装成退出按钮，点击退出时自动执行隐藏的事件选项达到双选界面效果
+	##################################################################
+
+	containerWindowType = {
+		name = "wg_comfirmation_window"
+		position = { x=-200 y=-116 }
+		size = { width = 450 height = 250 }
+		moveable = yes
+		Orientation = center
+		
+		background = {
+			name = "background"
+			quadTextureSprite ="GFX_tile_outliner_bg"
+		}
+
+		iconType = {
+			name = "hex_bg"
+			spriteType = "GFX_hex_center_bg"
+			position = { x = -275 y = 0 }
+			alwaysTransparent = yes
+			Orientation = "CENTER_UP"
+		}
+		
+		instantTextBoxType = {
+			name = "alien_message"
+			font = "cg_16b"
+			format = center
+			orientation = center_up
+			maxWidth = 380
+			maxHeight = 0
+			position = { x = -190 y = 50 }
+			alwaysTransparent = yes
+			scrollbartype = "standardtext_slider"
+		}
+
+		buttonType = {
+			name = "close"
+			quadTextureSprite = "GFX_standard_button_142_34_button"
+			position = { x = 270 y = -60 }
+			orientation = "LOWER_LEFT"
+			buttonText = "NO"
+			buttonFont = "cg_16b"
+			shortcut = "ESCAPE"
+			clicksound = "back_click"
+		}
+		### EVENT DIPLO ###
+		
+		containerWindowType = {
+			name = "EVENT_DIPLO"
+			position = { x = 0 y = 0 }
+			orientation = "UPPER_RIGHT"
+			size = { width = 142 height = 34 }
+			moveable = no
+			
+			instantTextBoxType={
+				name = "action_title"
+				font = "malgun_goth_24"
+				position = { x = 0 y = 10 }
+				maxWidth = 450
+				maxHeight = 30
+				format = center
+				fixedSize = yes
+				alwaysTransparent = yes
+			}
+			instantTextBoxType={ name = "action_desc" font = "malgun_goth_24" position = { x = -1453 y = -12450 } } # hidden
+			
+			listboxType = {
+				name = "option_list"
+				position = { x = 15 y = 190 }
+				backGround=""
+				size = { width = 142 height = 999 }
+				scrollbartype = "standardlistbox_slider"
+				spacing = 20
+				borderSize = { x = 0 y = 0 }
+				Orientation = "UPPER_LEFT"
+			}
+		}
+		############################################
+		### ALL OF THIS IS HIDDEN OR DISPLACED ! ###
+		############################################
+		instantTextBoxType = { name = "heading" font = "malgun_goth_24" position = { x = -1453 y = -12450 }} # hidden
+		iconType = { name = "empire_header_line" quadTextureSprite = "GFX_line_long_caravaneer" position = { x = -1453 y = -12450 } }
+		buttonType = { name = "focus_button" position = { x = -1453 y = -12450 } spriteType = "GFX_fleetview_focus" }
+		buttonType = { name = "alien_message_background" size = { x = 0 y = 0 } position = { x = -1453 y = -12450 } spriteType = "GFX_tiles_dark_area_cut_8" } # hidden
+		buttonType = { name = "confirm_button" quadTextureSprite = "GFX_standard_button_142_34_button" } # hidden
+		containerWindowType = {
+			name = "portrait"
+			position = { x = -1453 y = -12450 }
+			size = { width = 0 height = 0 } # hide portrait window
+			iconType = { name = "portrait" spriteType = "GFX_portrait_gamesetup_mask"  } # hidden
+			iconType = { name = "black_frame" spriteType = "GFX_diplomacy_portrait_shadow_frame" } # hidden
+			iconType = { name = "stripes_1" spriteType = "GFX_diplomacy_stripes_2" } # hidden
+			iconType = { name = "city_frame" spriteType = "GFX_diplomacy_portrait_frame" } # hidden
+		}
+		iconType = { name = "empire_info_bg" spriteType = "GFX_diplomacy_dark_fade_bg" } # hidden
+		instantTextBoxType={ name = "empire_name" font = "malgun_goth_24" } # hidden 
+		instantTextBoxType={ name = "empire_government_type" font = "cg_16b" } # hidden
+		instantTextBoxType={ name = "empire_personality_type" font = "cg_16b" } # hidden
+		OverlappingElementsBoxType = { name = "empire_ethics_icons" position = { x = -1453 y = -12450 } } # hidden
+		buttonType = { name = "empire_flag" spriteType = "GFX_empire_flag_128" position = { x = -1453 y = -12450 } } # hidden
+		containerWindowType = {
+			name = "leader_details"
+			position = { x = -1453 y = -12450 }
+			containerWindowType = { name = "empire_traits_box" } # hidden
+			instantTextBoxType = { name = "empire_traits_label" font = "cg_16b" } # hidden
+			overlappingElementsBoxType = { name = "leader_traits" } # hidden
+			instantTextBoxType = { name = "leader_name" font = "cg_16b" } # hidden
+			instantTextBoxType = { name = "leader_species" font = "cg_16b" } # hidden
+		}
+		containerWindowType = {
+			name = "opinion_window"
+			position = { x = -1453 y = -12450 }
+			size = { width = 94 height = 30 }
+			iconType = { name = "their_opinion_icon" spriteType = "GFX_diplomacy_opinion" } # hidden
+			instantTextBoxType = { name = "their_opinion" font = "cg_16b" }
+		}	
+	}
+}

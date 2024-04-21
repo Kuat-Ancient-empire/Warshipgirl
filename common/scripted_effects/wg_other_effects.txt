@@ -1,0 +1,86 @@
+wg_pod_create_army_effects = {
+	set_timed_ship_flag = { flag = drop_troops_cooldown days = $cooldown$ }
+	if = {
+		limit = { NOT = { has_ship_flag = recruiting_army }}
+		# 重新恢复一个陆军的事件
+		set_ship_flag = recruiting_army
+		add_modifier = {
+			modifier = standard_wg_pod_$rebuilt_resource$_maintain_modifier
+			multiplier = 1
+		}
+		ship_event = { id = wg_pod.99 days = $rebuilt_time$ }
+		if = {
+			limit = { check_variable = { which = wg_pod_army_num value < $ARMY_NUM$ }}
+			while = { count = wg_pod_army_num
+				from = { create_army = {
+					owner = root.owner
+					type = $ARMY$
+					species = root.owner
+				}}
+			}
+		} else_if = {
+			limit = { always = yes }
+			while = { count = $ARMY_NUM$
+				from = { create_army = {
+					owner = root.owner
+					type = $ARMY$
+					species = root.owner
+				}}
+			}
+		}
+		subtract_variable = { which = wg_pod_army_num value = $ARMY_NUM$ }
+		from = { 
+			set_planet_flag = wg_pod_bombarded_planet
+		}
+	}
+}
+
+wg_relic_world_get_variable_effect = {
+	export_trigger_value_to_variable = {
+		trigger = num_districts
+		parameters = {
+			type = $DISTRICT$
+		}
+		variable = $VARIABLE$
+	}
+	divide_variable = { which = $VARIABLE$ value = 2 }
+	floor_variable = $VARIABLE$
+}
+
+# scope: planet
+# 将星球上所有建筑替换成另一个
+# 被替换的建筑：BUILDING1
+# 替换为建筑：BUILDING2
+wg_change_building_effect = {
+	while = {
+		limit = { has_building = $BUILDING1$ }
+		remove_building = $BUILDING1$
+		add_building = $BUILDING2$
+	}
+}
+
+remove_all_wg_knight_modifier = {
+	remove_modifier = wg_knight_modifier_keyboard
+	remove_modifier = wg_knight_modifier_alloys
+	remove_modifier = wg_knight_modifier_consumer_goods
+	remove_modifier = wg_knight_modifier_pantsu
+	remove_modifier = wg_knight_modifier_fish
+	remove_modifier = wg_knight_modifier_hospital
+	remove_modifier = wg_knight_modifier_dragon
+	remove_modifier = wg_knight_modifier_dc
+}
+
+# scope = country
+wg_waifu_create_effect = {
+	if = {
+		limit = { NOT = { is_variable_set = num_wg_waifu }}
+		set_variable = { which = num_wg_waifu value = 0 }
+	}
+	remove_modifier = mod_wg_waifu_cap_add
+	change_variable = { which = num_wg_waifu value = 1 }
+	add_modifier = {
+		modifier = mod_wg_waifu_cap_add
+		multiplier = num_wg_waifu
+		days = -1
+	}
+}

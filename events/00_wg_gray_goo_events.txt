@@ -1,0 +1,1488 @@
+namespace = graygoo
+
+# Set up Empire
+country_event = {
+	id = graygoo.100
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		every_megastructure = {
+			limit = {
+				is_megastructure_type = lgate_base
+			}
+			activate_gateway = this
+			set_megastructure_flag = lgate_activated
+		}
+		set_update_modifiers_batch = begin
+		event_target:graygoo_factory_system = {
+			random_system_planet = {
+				limit = { has_planet_flag = main_star }
+				save_event_target_as = main_star
+			}
+			# 防止出现舰娘种族
+			create_species = {
+				name = "NAME_Dessanu"
+				class = MAM
+				portrait = random
+				traits = random
+				immortal = yes
+			}
+			create_country = {
+				name = "NAME_Dessanu_Consonance"
+				type = "gate_builders"
+				ignore_initial_colony_error = yes
+				authority = "auth_democratic"
+				civics = {
+					civic = civic_meritocracy
+					civic = civic_environmentalist
+				}
+				species = last_created_species
+				ethos = {
+					ethic = "ethic_fanatic_xenophile"
+					ethic = "ethic_egalitarian"
+				}
+				effect = {
+					save_event_target_as = graygoo_country
+					add_resource = { minerals = 5000 }
+					add_resource = { energy = 5000 }
+					add_resource = { influence = 5000 }
+				}
+			}
+			create_fleet = {
+				effect = {
+					set_owner = event_target:graygoo_country
+					create_ship = {
+						name = random
+						design = "NAME_Nanite_Factory"
+						graphical_culture = "pirate_01"
+					}
+					set_location = {
+						target = event_target:main_star
+						distance = 55
+						angle = 270
+					}
+					save_event_target_as = nanite_factory
+				}
+			}
+			every_country = { establish_communications_no_message = event_target:graygoo_country }
+
+
+			event_target:graygoo_country = {
+				create_ship_design = { design = "NAME_Gatebuilder_Starbase" }
+				add_ship_design = last_created_design
+				create_leader = {
+					class = commander
+					species = owner_main_species
+					name = random
+					skill = 3
+					leader_age_min = 25
+					leader_age_max = 45
+					traits = {
+						trait = random_trait
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_Dessanu_Fleet"
+				effect = {
+					set_owner = event_target:graygoo_country
+					create_dessanu_ships_1 = yes
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = event_target:nanite_factory
+						distance = 80
+						angle = 0
+					}
+					assign_leader = last_created_leader
+				}
+				settings = {
+					garrison = yes
+					uses_naval_capacity = no
+				}
+			}
+			event_target:graygoo_country = {
+				create_leader = {
+					class = commander
+					species = owner_main_species
+					name = random
+					skill = 3
+					leader_age_min = 25
+					leader_age_max = 45
+					traits = {
+						trait = random_trait
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_Dessanu_Fleet"
+				effect = {
+					set_owner = event_target:graygoo_country
+					create_dessanu_ships_1 = yes
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = event_target:nanite_factory
+						distance = 80
+						angle = 90
+					}
+					assign_leader = last_created_leader
+				}
+				settings = {
+					garrison = yes
+					uses_naval_capacity = no
+				}
+			}
+			event_target:graygoo_country = {
+				create_leader = {
+					class = commander
+					species = owner_main_species
+					name = random
+					skill = 3
+					leader_age_min = 25
+					leader_age_max = 45
+					traits = {
+						trait = random_trait
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_Dessanu_Fleet"
+				effect = {
+					set_owner = event_target:graygoo_country
+					create_dessanu_ships_1 = yes
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = event_target:nanite_factory
+						distance = 80
+						angle = 180
+					}
+					assign_leader = last_created_leader
+				}
+				settings = {
+					garrison = yes
+					uses_naval_capacity = no
+				}
+			}
+			event_target:graygoo_country = {
+				create_leader = {
+					class = commander
+					species = owner_main_species
+					name = random
+					skill = 3
+					leader_age_min = 25
+					leader_age_max = 45
+					traits = {
+						trait = random_trait
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_Dessanu_Fleet"
+				effect = {
+					set_owner = event_target:graygoo_country
+					create_dessanu_ships_1 = yes
+					set_formation_scale = 2
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 250
+					set_location = {
+						target = event_target:nanite_factory
+						distance = 80
+						angle = 270
+					}
+					assign_leader = last_created_leader
+				}
+				settings = {
+					garrison = yes
+					uses_naval_capacity = no
+				}
+			}
+			every_system = {
+				limit = { has_star_flag = lcluster }
+				every_system_planet = {
+					limit = { is_planet_class = pc_gray_goo }
+					event_target:graygoo_country = {
+						create_leader = {
+							class = commander
+							species = owner_main_species
+							name = random
+							skill = 3
+							leader_age_min = 25
+							leader_age_max = 45
+							traits = {
+								trait = random_trait
+							}
+						}
+					}
+					create_fleet = {
+						name = "NAME_Dessanu_Fleet"
+						effect = {
+							set_owner = event_target:graygoo_country
+							create_dessanu_ships_1 = yes
+							set_formation_scale = 2
+							set_fleet_stance = aggressive
+							set_aggro_range_measure_from = self
+							set_aggro_range = 250
+							set_location = {
+								target = prev
+								distance = 15
+								angle = random
+							}
+							assign_leader = last_created_leader
+						}
+						settings = {
+							garrison = yes
+							uses_naval_capacity = no
+						}
+					}
+				}
+			}
+			event_target:lcluster1 = {
+				random_system_planet = {
+					limit = { is_planet_class = pc_gray_goo }
+					save_event_target_as = start_1
+				}
+			}
+			event_target:lcluster2 = {
+				random_system_planet = {
+					limit = { is_planet_class = pc_gray_goo }
+					save_event_target_as = start_2
+				}
+			}
+			event_target:lcluster3 = {
+				random_system_planet = {
+					limit = { is_planet_class = pc_gray_goo }
+					save_event_target_as = start_3
+				}
+			}
+			event_target:lcluster4 = {
+				random_system_planet = {
+					limit = { is_planet_class = pc_gray_goo }
+					save_event_target_as = start_4
+				}
+			}
+			event_target:lcluster5 = {
+				random_system_planet = {
+					limit = { is_planet_class = pc_gray_goo }
+					save_event_target_as = start_5
+				}
+			}
+			event_target:lcluster1b = {
+				random_system_planet = {
+					limit = { is_planet_class = pc_gray_goo }
+					save_event_target_as = start_6
+				}
+			}
+			create_dessanu_roamers_1 = yes
+			create_dessanu_roamers_2 = yes
+			create_dessanu_roamers_3 = yes
+			create_dessanu_roamers_4 = yes
+			create_dessanu_roamers_5 = yes
+			create_dessanu_roamers_6 = yes
+			create_dessanu_roamers_7 = yes
+
+			every_system = {
+				limit = { has_star_flag = lcluster }
+				create_starbase = {
+					size = "starbase_gatebuilders"
+					owner = event_target:graygoo_country
+				}
+				every_system_planet = {
+					limit = {
+						has_deposit_for = shipclass_mining_station
+					}
+					create_mining_station = { owner = event_target:graygoo_country }
+				}
+				every_system_planet = {
+					limit = {
+						has_deposit_for = shipclass_research_station
+					}
+					create_research_station = { owner = event_target:graygoo_country }
+				}
+				every_system_planet = {
+					limit = { is_planet_class = pc_gray_goo }
+					change_pc = pc_gaia
+					reset_planet = yes
+					set_planet_flag = hidden_nanite_world
+					prevent_anomaly = yes
+					set_owner = event_target:graygoo_country
+					
+					while = {
+						count = 30
+						create_pop = {
+							species = owner_main_species
+						}
+					}
+					while = {
+						count = 2
+						add_district_and_planet_size_if_needed_effect = {
+							district = district_city
+						}
+					}
+					while = {
+						count = 3
+						add_district_and_planet_size_if_needed_effect = {
+							district = district_mining
+						}
+					}
+					while = {
+						count = 4
+						add_district_and_planet_size_if_needed_effect = {
+							district = district_generator
+						}
+					}
+					if = {
+						limit = {
+							event_target:graygoo_country.species = {
+								is_lithoid = yes
+							}
+						}
+						while = {
+							count = 2
+							add_district_and_planet_size_if_needed_effect = {
+								district = district_mining
+							}
+						}
+						add_district_and_planet_size_if_needed_effect = {
+							district = district_generator
+						}
+					}
+					else = {
+						while = {
+							count = 3
+							add_district_and_planet_size_if_needed_effect = {
+								district = district_farming
+							}
+						}
+					}
+					add_building = building_capital
+					add_building = building_mineral_purification_hub
+					add_building = building_energy_grid
+					add_building = building_stronghold
+					add_building = building_factory_1
+					add_building = building_holo_theatres
+					add_building = building_foundry_1
+				}
+			}
+		}
+		set_update_modifiers_batch = end
+		country_event = { id = graygoo.110 }
+		observer_event = { id = observer.66 }
+	}
+}
+
+# Gray 2
+country_event = {
+	id = graygoo.402
+	title = graygoo.402.title
+	desc = {
+		trigger = { NOT = { has_authority = auth_machine_intelligence } }
+		text = "graygoo.402.a.desc"
+	}
+	desc = {
+		trigger = { has_authority = auth_machine_intelligence }
+		text = "graygoo.402.b.desc"
+	}
+
+	diplomatic = yes
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	is_triggered_only = yes
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 3 }
+		set_variable = { which = wg_dialogue_character value = 1 }
+	}
+
+	option = {
+		name = graygoo.402.a
+		hidden_effect = {
+			country_event = { id = graygoo.403 }
+		}
+	}
+}
+
+# Gray 3
+country_event = {
+	id = graygoo.403
+	title = graygoo.402.title
+	desc = "graygoo.403.desc"
+
+	diplomatic = yes
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	is_triggered_only = yes
+
+	option = {
+		name = graygoo.403.a
+		hidden_effect = {
+			country_event = { id = graygoo.404 }
+		}
+	}
+}
+
+# Gray 4
+country_event = {
+	id = graygoo.404
+	title = graygoo.402.title
+	desc = "graygoo.404.desc"
+
+	diplomatic = yes
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	is_triggered_only = yes
+
+	option = {
+		name = graygoo.404.a
+		hidden_effect = {
+			country_event = { id = graygoo.405 }
+		}
+	}
+}
+
+# Gray 5
+country_event = {
+	id = graygoo.405
+	title = graygoo.402.title
+	desc = "graygoo.405.desc"
+
+	diplomatic = yes
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	is_triggered_only = yes
+
+	option = {
+		name = graygoo.405.a
+		hidden_effect = {
+			country_event = { id = graygoo.406 }
+		}
+	}
+	option = {
+		name = graygoo.405.b
+		response_text = graygoo.405.b.response
+	}
+}
+
+# Gray 6
+country_event = {
+	id = graygoo.406
+	title = graygoo.406.title
+	desc = "graygoo.406.desc"
+
+	diplomatic = yes
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	is_triggered_only = yes
+
+	option = {
+		name = graygoo.406.a
+		response_text = graygoo.406.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = graygoo.406.b
+		response_text = graygoo.406.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = graygoo.406.c
+		default_hide_option = yes
+		hidden_effect = {
+			country_event = { id = graygoo.499 }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_authority = auth_shenhai
+					has_authority = auth_warshipgirls
+				}
+			}
+			change_variable = { which = rankpts value = 3 }
+		}
+	}
+}
+
+# Create Gray
+country_event = {
+	id = graygoo.499
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { exists = event_target:gray_owner }
+		is_ai = no
+	}
+
+	immediate = {
+		clear_variable = wg_dialogue_bg
+		clear_variable = wg_dialogue_character
+		
+		create_country = {
+			name = "NAME_Gray"
+			type = gray
+			flag = {
+				icon= {
+					category = "special"
+					file = "gray_goo.dds"
+				}
+				background= {
+					category = "backgrounds"
+					file = "sinus.dds"
+				}
+				colors={
+					"grey"
+					"dark_grey"
+					"null"
+					"null"
+				}
+			}
+		}
+		create_species = {
+			name = GRAY_SPECIES
+			plural = GRAY_SPECIES
+			class = ART
+			portrait = art13
+			namelist = ART1
+			effect = {
+				save_global_event_target_as = gray_species
+			}
+		}
+		last_created_country = {
+			establish_communications_no_message = root
+		}
+		save_global_event_target_as = gray_owner
+		set_country_flag = gray_owner
+		set_variable = { which = wg_gray_affection value = 1 }
+		set_variable = { which = wg_gray_affection_level value = 1 }
+		set_variable = { which = wg_gray_cloth value = 1 }
+		if = {
+			limit = { has_country_flag = origin_gray_country }
+			set_variable = { which = gray_level value = 1 }
+		} else = {
+			set_variable = { which = gray_level value = 10 }
+		}
+	}
+}
+
+# Main Menu (Initial)
+country_event = {
+	id = graygoo.500
+	title = "graygoo.500.title"
+	desc = "graygoo.500.a.desc"
+	desc = "graygoo.500.b.desc"
+	desc = "graygoo.500.c.desc"
+	desc = "graygoo.500.d.desc"
+
+	diplomatic = yes
+	custom_gui = wg_gray_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	is_triggered_only = yes
+	
+	immediate = {
+		set_country_flag = gray_diplomacy_engaged
+	}
+
+	after = {
+		hidden_effect = { 
+			remove_country_flag = gray_diplomacy_engaged 
+			reset_gray_cloth = yes
+		}
+	}
+
+	trigger = {
+		from = { OR = {
+			is_country_type = gray 
+			is_same_value = ROOT
+		}}
+		is_same_value = event_target:gray_owner
+		NOR = {
+			has_country_flag = gray_official_active
+			has_country_flag = gray_warship_active
+			has_country_flag = gray_army_active
+			has_country_flag = gray_reforming
+			has_country_flag = ban_commu_with_gray
+			has_country_flag = gray_diplomacy_engaged
+			has_country_flag = old_commu_window
+		}
+	}
+
+	option = { # official
+		name = graygoo.500.a
+		response_text = graygoo.500.a.response
+		trigger = {
+			NOT = { has_country_flag = gray_official_active }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = gray_become_ruler
+				NOT = { ruler = { has_leader_flag = "gray_leader" }}
+			}
+		}
+		hidden_effect = {
+			create_gray_official = yes
+		}
+	}
+	option = { # Warship
+		name = graygoo.500.b
+		response_text = graygoo.500.b.response
+		trigger = {
+			NOT = { has_country_flag = gray_warship_active }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = gray_become_ruler
+				NOT = { ruler = { has_leader_flag = "gray_leader" }}
+			}
+		}
+		hidden_effect = {
+			create_gray_warship = yes
+		}
+	}
+	option = { # Army
+		name = graygoo.500.c
+		response_text = graygoo.500.c.response
+		trigger = {
+			NOT = { has_country_flag = gray_army_active }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = gray_become_ruler
+				NOT = { ruler = { has_leader_flag = "gray_leader" }}
+			}
+		}
+		hidden_effect = {
+			create_gray_army = yes
+		}
+	}
+	option = {
+		name = marry_gray
+		trigger = {
+			check_variable = { which = wg_gray_affection value > @wg_gray_affection_to_lv4 }
+			NOT = { has_country_flag = married_gray }
+		}
+		allow = {
+			OR = {
+				AND = {
+					has_wg_special_authority = no
+					resource_stockpile_compare = {
+						resource = sr_living_metal
+						value >= 100
+					}
+					resource_stockpile_compare = {
+						resource = rare_crystals
+						value >= 1000
+					}
+				}
+				custom_tooltip = {
+					check_variable = { which = wsg_rings value >= 1 }
+					fail_text = not_enough_engagement_rings
+				}
+			}
+			custom_tooltip = {
+				fail_text = gray_become_ruler
+				NOT = { ruler = { has_leader_flag = "gray_leader" }}
+			}
+		}
+		if = {
+			limit = { has_wg_special_authority = yes }
+			subtract_variable = { which = wsg_rings value = 1 }
+		} else = {
+			add_resource = {
+				sr_living_metal = -100
+				rare_crystals = -1000
+			}
+		}
+		hidden_effect = { country_event = { id = wg_affection.30000 }}
+	}
+	option = {
+		name = graygoo.500.d
+		default_hide_option = yes
+	}
+}
+
+# Main Menu (official)
+country_event = {
+	id = graygoo.501
+	title = "graygoo.500.title"
+	desc = "graygoo.501.a.desc"
+	desc = "graygoo.501.b.desc"
+	desc = "graygoo.501.c.desc"
+	desc = "graygoo.501.d.desc"
+
+	diplomatic = yes
+	custom_gui = wg_gray_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	is_triggered_only = yes
+
+	trigger = {
+		from = { OR = {
+			is_country_type = gray 
+			is_same_value = ROOT
+		}}
+		is_same_value = event_target:gray_owner
+		has_country_flag = gray_official_active
+		NOR = { 
+			has_country_flag = gray_reforming 
+			has_country_flag = gray_diplomacy_engaged 
+			has_country_flag = ban_commu_with_gray
+			has_country_flag = old_commu_window
+		}
+		exists = event_target:gray_official
+	}
+
+	immediate = {
+		set_country_flag = gray_diplomacy_engaged
+	}
+
+	after = {
+		hidden_effect = { 
+			remove_country_flag = gray_diplomacy_engaged 
+			reset_gray_cloth = yes
+		}
+	}
+
+	option = { # Warship
+		name = graygoo.500.b
+		response_text = graygoo.501.b.response
+		allow = {
+			hidden_trigger = { exists = event_target:gray_official } # To prevent exploit
+			custom_tooltip = {
+				fail_text = gray_become_ruler
+				NOT = { ruler = { has_leader_flag = "gray_leader" }}
+			}
+		}
+		hidden_effect = {
+			create_gray_warship = yes
+		}
+	}
+	option = { # Army
+		name = graygoo.500.c
+		response_text = graygoo.501.c.response
+		allow = {
+			hidden_trigger = { exists = event_target:gray_official }
+			custom_tooltip = {
+				fail_text = gray_become_ruler
+				NOT = { ruler = { has_leader_flag = "gray_leader" }}
+			}
+		}
+		hidden_effect = {
+			create_gray_army = yes
+		}
+	}
+	option = {
+		name = marry_gray
+		trigger = {
+			check_variable = { which = wg_gray_affection value > @wg_gray_affection_to_lv4 }
+			NOT = { has_country_flag = married_gray }
+		}
+		allow = {
+			OR = {
+				AND = {
+					has_wg_special_authority = no
+					resource_stockpile_compare = {
+						resource = sr_living_metal
+						value >= 100
+					}
+					resource_stockpile_compare = {
+						resource = rare_crystals
+						value >= 1000
+					}
+				}
+				custom_tooltip = {
+					check_variable = { which = wsg_rings value >= 1 }
+					fail_text = not_enough_engagement_rings
+				}
+			}
+		}
+		if = {
+			limit = { has_wg_special_authority = yes }
+			subtract_variable = { which = wsg_rings value = 1 }
+		} else = {
+			add_resource = {
+				sr_living_metal = -100
+				rare_crystals = -1000
+			}
+		}
+		hidden_effect = { country_event = { id = wg_affection.30000 }}
+	}
+	option = {
+		name = graygoo.500.d
+		default_hide_option = yes
+	}
+}
+
+# Main Menu (Warship)
+country_event = {
+	id = graygoo.502
+	title = "graygoo.500.title"
+	desc = "graygoo.502.a.desc"
+	desc = "graygoo.502.b.desc"
+	desc = "graygoo.502.c.desc"
+	desc = "graygoo.502.d.desc"
+
+	diplomatic = yes
+	custom_gui = wg_gray_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	is_triggered_only = yes
+
+	trigger = {
+		from = { OR = {
+			is_country_type = gray 
+			is_same_value = ROOT
+		}}
+		is_same_value = event_target:gray_owner
+		has_country_flag = gray_warship_active
+		NOR = { 
+			has_country_flag = gray_reforming 
+			has_country_flag = gray_diplomacy_engaged
+			has_country_flag = ban_commu_with_gray
+			has_country_flag = old_commu_window
+		}
+		exists = event_target:gray_warship
+		any_controlled_fleet = { is_same_value = event_target:gray_warship }
+		event_target:gray_warship = { num_ships > 0 }
+	}
+
+	immediate = {
+		set_country_flag = gray_diplomacy_engaged
+	}
+
+	after = {
+		hidden_effect = { 
+			remove_country_flag = gray_diplomacy_engaged 
+			reset_gray_cloth = yes
+		}
+	}
+
+	option = { # official
+		name = graygoo.500.a
+		response_text = graygoo.502.a.response
+		allow = {
+			hidden_trigger = { # To prevent exploit
+				event_target:gray_warship = { num_ships > 0 }
+			}
+			custom_tooltip = {
+				fail_text = graygoo.500.allow.a
+				event_target:gray_warship = { is_in_combat = no }
+			}
+			custom_tooltip = {
+				fail_text = graygoo.500.allow.b
+				event_target:gray_warship = { NOT = { has_hp_percentage < 0.97 } }
+			}
+			custom_tooltip = {
+				fail_text = gray_become_ruler
+				NOT = { ruler = { has_leader_flag = "gray_leader" }}
+			}
+		}
+		hidden_effect = {
+			create_gray_official = yes
+		}
+	}
+	option = { # Army
+		name = graygoo.500.c
+		response_text = graygoo.502.c.response
+		allow = {
+			hidden_trigger = {
+				event_target:gray_warship = { num_ships > 0 }
+			}
+			custom_tooltip = {
+				fail_text = graygoo.500.allow.a
+				event_target:gray_warship = { is_in_combat = no }
+			}
+			custom_tooltip = {
+				fail_text = graygoo.500.allow.b
+				event_target:gray_warship = { NOT = { has_hp_percentage < 0.97 } }
+			}
+			custom_tooltip = {
+				fail_text = gray_become_ruler
+				NOT = { ruler = { has_leader_flag = "gray_leader" }}
+			}
+		}
+		hidden_effect = {
+			create_gray_army = yes
+		}
+	}
+	option = {
+		name = marry_gray
+		trigger = {
+			check_variable = { which = wg_gray_affection value > @wg_gray_affection_to_lv4 }
+			NOT = { has_country_flag = married_gray }
+		}
+		allow = {
+			OR = {
+				AND = {
+					has_wg_special_authority = no
+					resource_stockpile_compare = {
+						resource = sr_living_metal
+						value >= 100
+					}
+					resource_stockpile_compare = {
+						resource = rare_crystals
+						value >= 1000
+					}
+				}
+				custom_tooltip = {
+					check_variable = { which = wsg_rings value >= 1 }
+					fail_text = not_enough_engagement_rings
+				}
+			}
+		}
+		if = {
+			limit = { has_wg_special_authority = yes }
+			subtract_variable = { which = wsg_rings value = 1 }
+		} else = {
+			add_resource = {
+				sr_living_metal = -100
+				rare_crystals = -1000
+			}
+		}
+		hidden_effect = { country_event = { id = wg_affection.30000 }}
+	}
+	option = {
+		name = graygoo.500.d
+		default_hide_option = yes
+	}
+}
+
+# Main Menu (Army)
+country_event = {
+	id = graygoo.503
+	title = "graygoo.500.title"
+	desc = "graygoo.503.a.desc"
+	desc = "graygoo.503.b.desc"
+	desc = "graygoo.503.c.desc"
+	desc = "graygoo.503.d.desc"
+
+	diplomatic = yes
+	custom_gui = wg_gray_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	is_triggered_only = yes
+
+	trigger = {
+		from = { OR = {
+			is_country_type = gray 
+			is_same_value = ROOT
+		}}
+		has_country_flag = gray_army_active
+		NOR = { 
+			has_country_flag = gray_reforming 
+			has_country_flag = gray_diplomacy_engaged 
+			has_country_flag = ban_commu_with_gray
+			has_country_flag = old_commu_window
+		}
+		is_same_value = event_target:gray_owner
+		any_owned_army = {
+			army_type = gray_army
+			OR = {
+				exists = planet
+				AND = {
+					exists = fleet
+					fleet = { num_ships > 0 }
+				}
+			}
+		}
+	}
+
+	immediate = {
+		set_country_flag = gray_diplomacy_engaged
+	}
+
+	after = {
+		hidden_effect = { 
+			remove_country_flag = gray_diplomacy_engaged 
+			reset_gray_cloth = yes
+		}
+	}
+
+	option = { # official
+		name = graygoo.500.a
+		response_text = graygoo.503.a.response
+		allow = {
+			hidden_trigger = {  # To prevent exploit
+				any_owned_army = {
+					army_type = gray_army
+					OR = {
+						exists = planet
+						AND = {
+							exists = fleet
+							fleet = { num_ships > 0 }
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				fail_text = graygoo.500.allow.a
+				any_owned_army = {
+					army_type = gray_army
+					if = {
+						limit = { exists = planet }
+						planet = { has_ground_combat = no }
+					}
+				}
+			}
+		}
+		allow = {
+			hidden_trigger = {
+				any_owned_army = {
+					army_type = gray_army
+					OR = {
+						exists = planet
+						AND = {
+							exists = fleet
+							fleet = { num_ships > 0 }
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				fail_text = graygoo.500.allow.a
+				any_owned_army = {
+					army_type = gray_army
+					if = {
+						limit = { exists = fleet }
+						fleet = { is_in_combat = no }
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			create_gray_official = yes
+		}
+	}
+	option = { # Warship
+		name = graygoo.500.b
+		response_text = graygoo.503.b.response
+		allow = {
+			hidden_trigger = {
+				any_owned_army = {
+					army_type = gray_army
+					OR = {
+						exists = planet
+						AND = {
+							exists = fleet
+							fleet = { num_ships > 0 }
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				fail_text = graygoo.500.allow.a
+				any_owned_army = {
+					army_type = gray_army
+					if = {
+						limit = { exists = planet }
+						planet = { has_ground_combat = no }
+					}
+				}
+			}
+		}
+		allow = {
+			hidden_trigger = {
+				any_owned_army = {
+					army_type = gray_army
+					OR = {
+						exists = planet
+						AND = {
+							exists = fleet
+							fleet = { num_ships > 0 }
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				fail_text = graygoo.500.allow.a
+				any_owned_army = {
+					army_type = gray_army
+					if = {
+						limit = { exists = fleet }
+						fleet = { is_in_combat = no }
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			create_gray_warship = yes
+		}
+	}
+	option = {
+		name = marry_gray
+		trigger = {
+			check_variable = { which = wg_gray_affection value > @wg_gray_affection_to_lv4 }
+			NOT = { has_country_flag = married_gray }
+		}
+		allow = {
+			OR = {
+				AND = {
+					has_wg_special_authority = no
+					resource_stockpile_compare = {
+						resource = sr_living_metal
+						value >= 100
+					}
+					resource_stockpile_compare = {
+						resource = rare_crystals
+						value >= 1000
+					}
+				}
+				custom_tooltip = {
+					check_variable = { which = wsg_rings value >= 1 }
+					fail_text = not_enough_engagement_rings
+				}
+			}
+		}
+		if = {
+			limit = { has_wg_special_authority = yes }
+			subtract_variable = { which = wsg_rings value = 1 }
+		} else = {
+			add_resource = {
+				sr_living_metal = -100
+				rare_crystals = -1000
+			}
+		}
+		hidden_effect = { country_event = { id = wg_affection.30000 }}
+	}
+	option = {
+		name = graygoo.500.d
+		default_hide_option = yes
+	}
+}
+
+# Main Menu (Gray Reforming)
+country_event = {
+	id = graygoo.504
+	title = "graygoo.500.title"
+	desc = "graygoo.504.desc"
+
+	diplomatic = yes
+	custom_gui = wg_gray_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	is_triggered_only = yes
+
+	trigger = {
+		from = { OR = {
+			is_country_type = gray 
+			is_same_value = ROOT
+		}}
+		is_same_value = event_target:gray_owner
+		has_country_flag = gray_reforming
+		NOR = { 
+			has_country_flag = ban_commu_with_gray 
+			has_country_flag = old_commu_window
+		}
+	}
+
+	option = {
+		name = marry_gray
+		trigger = {
+			check_variable = { which = wg_gray_affection value > @wg_gray_affection_to_lv4 }
+			NOT = { has_country_flag = married_gray }
+		}
+		allow = {
+			OR = {
+				has_wg_special_authority = no
+				custom_tooltip = {
+					check_variable = { which = wsg_rings value >= 1 }
+					fail_text = not_enough_engagement_rings
+				}
+			}
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		hidden_effect = { country_event = { id = wg_affection.30000 }}
+	}
+
+	option = {
+		name = OK
+	}
+}
+
+# Gray Returns
+country_event = {
+	id = graygoo.512
+	title = "graygoo.500.title"
+	desc = "graygoo.512.a.desc"
+	desc = "graygoo.512.b.desc"
+	desc = "graygoo.512.c.desc"
+
+	diplomatic = yes
+	custom_gui = wg_gray_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	is_triggered_only = yes
+
+	immediate = {
+		remove_country_flag = gray_reforming
+	}
+
+	option = {
+		name = graygoo.512.a
+	}
+}
+
+# 纳米灾疫巨像效果
+# from = 发射的舰队
+planet_event = {
+	id = graygoo.10000
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		# 炸球后摧毁国家
+		if = {
+			limit = {
+				exists = owner
+				owner = {
+					NOT = { is_country_type = default_ev }
+					NOT = {
+						any_owned_planet = {
+							NOT = { is_same_value = root }
+						}
+					}
+				}
+			}
+			# empire destruction menace reward
+			from.owner = { 
+				if = {
+					limit = { has_ascension_perk = ap_become_the_crisis }
+					complete_crisis_objective = crisobj_destroy_empires
+				}
+				if = {
+					limit = { has_ascension_perk = ap_wg_crisis }
+					add_wg_crisis_points = { POINTS = 300 }
+				}
+			}
+			owner = { destroy_country = yes }
+		}
+		from = {
+			random_owned_ship = {
+				save_event_target_as = colossus_ship
+			}
+		}
+		from.owner = {
+			country_event = { 
+				id = graygoo.10001
+				scopes = {
+					from = root
+					fromfrom = event_target:colossus_ship
+				}
+			}
+		}
+		# Contingency Machine World
+		if = {
+			limit = { 
+				is_planet_class = pc_ai 
+				NOT = { has_planet_flag = machine_lair }
+			}
+			set_planet_flag = destroyed_by_colossus
+			set_planet_flag = planet_cracked
+			planet_event = { id = crisis.2040 }
+		}
+
+		# Contingency Final Machine World
+		if = {
+			limit = { 
+				is_planet_class = pc_ai 
+				has_planet_flag = machine_lair
+			}
+			set_planet_flag = destroyed_by_colossus
+			set_planet_flag = planet_cracked
+			from.owner = { save_event_target_as = final_machine_world_destroyer }
+			planet_event = { id = crisis.2043 }
+		}
+
+		# Swarm Situation Log counter
+		if = {
+			limit = {
+				owner = { is_country_type = swarm }
+			}
+			every_country = {
+				limit = { has_event_chain = "prethoryn_scourge_chain" }
+				add_event_chain_counter = {
+					event_chain = "prethoryn_scourge_chain"
+					counter = "infested_worlds"
+					amount = -1 
+				}
+				add_event_chain_counter = {
+					event_chain = "prethoryn_scourge_chain"
+					counter = "infested_worlds_cleansed"
+					amount = 1 
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = owner
+				owner = {
+					NOT = { is_same_value = from.owner }
+					OR = {
+						is_country_type = default
+						is_country_type = fallen_empire
+						is_country_type = awakened_fallen_empire
+					}
+				}
+			}
+			# Generate threat
+			if = {
+				limit = {
+					is_colony = yes
+				}
+				add_threat = { who = from.owner amount = 3 }
+				# modifier for allies + those upset by genocide
+				every_country = {
+					limit = {
+						NOR = {
+							is_same_value = from.owner
+							is_same_value = root.owner
+							AND = {
+								has_federation = yes
+								is_in_federation_with = from.owner
+							}
+						}
+						OR = {
+							has_communications = from.owner
+							has_communications = root.owner
+						}
+						OR = {
+							AND = {
+								has_federation = yes
+								is_in_federation_with = root.owner
+							}
+							has_ai_personality = awakened_fallen_empire_xenophile
+							AND = {
+								is_country_type = default
+								OR = {
+									is_egalitarian = yes
+									is_xenophile = yes
+								}
+							}
+						}
+					}
+					if = {
+						limit = { root = { is_colony = no } }
+						add_opinion_modifier = {
+							modifier = opinion_cracked_an_uninhabited_world
+							who = from.owner
+						}
+					}
+					else = {
+						add_opinion_modifier = {
+							modifier = opinion_cracked_my_uninhabited_world
+							who = from.owner
+						}
+					}
+				}
+			}
+			else = {
+				add_threat = { who = from.owner amount = 1 }
+			}
+			# modifiers for victim
+			owner = {
+				if = {
+					limit = { root = { is_colony = no } }
+					add_opinion_modifier = {
+						modifier = opinion_cracked_my_uninhabited_world
+						who = from.owner
+					}
+				}
+				else = {
+					add_opinion_modifier = {
+						modifier = opinion_cracked_my_uninhabited_world
+						who = from.owner
+					}
+				}
+				if = {
+					limit = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+					add_modifier = {
+						modifier = colossus_victim
+						days = 10800 # 30 years
+					}
+				}
+			}
+		}
+		if = {
+			limit = { exists = owner }
+			owner = {
+				if = {
+					limit = { #isn't the case when the crisis bombards planets, for instance
+						is_at_war_with = from.fleet.owner
+					}
+					add_static_war_exhaustion = {
+						attacker = from.fleet.owner
+						location = root
+						value_for_planet_destruction = 1.0
+					}
+				}
+			}
+		}
+		every_owned_pop = {
+			kill_pop = yes
+		}	
+		if = {
+			limit = {
+				is_ringworld_wg = yes
+			}
+			spawn_ringworld_cracker_effect = yes
+			change_pc = pc_ringworld_habitable_damaged
+			clear_deposits = yes
+			clear_planet_modifiers = yes
+		}
+		else_if = {
+			limit = { OR = {
+				is_habitat_wg = yes
+			}}
+			spawn_habitat_cracker_effect = yes
+			remove_planet = yes
+		}	
+		else = {
+			change_pc = pc_gray_goo
+			clear_deposits = yes		
+			add_deposit = d_nanites_deposit
+			random_list = {
+				2 = { add_deposit = d_nanites_deposit }
+				1 = { 
+					add_deposit = d_nanites_deposit 
+					add_deposit = d_nanites_deposit 
+				}
+				3 = {}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = graygoo.10001
+	title = graygoo.10001.name
+	desc = graygoo.10001.desc
+	is_triggered_only = yes
+	picture = GFX_evt_gray_gooed_planet
+
+	trigger = {
+		NOT = { has_country_flag = triggered_graygoo_10001 }
+	}
+
+	immediate = {
+		set_country_flag = triggered_graygoo_10001
+	}
+	option = {
+		name = ACKNOWLEDGED
+	}
+}

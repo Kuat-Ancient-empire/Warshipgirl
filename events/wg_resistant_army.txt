@@ -1,0 +1,4720 @@
+namespace = wg_crisis
+
+# 触发反抗军出现事件
+country_event = {
+    id = wg_crisis.10021
+    hide_window = yes
+    is_triggered_only = yes
+    fire_only_once = yes
+
+    trigger = {
+        NOR = {
+            has_global_flag = wg_resistant_army_arrived
+            has_global_flag = wg_crisis_very_easy
+            has_global_flag = wg_crisis_disabled
+        }
+        end_game_years_passed >= 0
+        any_country = {
+            has_wg_special_authority = yes
+        }
+    }
+
+    immediate = {
+        random_country = {
+            limit = { is_ai = no }
+            country_event = { id = wg_crisis.21 random = 359 }
+        }
+        every_playable_country = {
+            limit = { is_ai = no }
+            country_event = { id = wg_crisis.74 days = 3600 }
+        }
+    }
+}
+
+country_event = {
+    id = wg_crisis.21
+    hide_window = yes
+    fire_only_once = yes
+    is_triggered_only = yes
+
+    trigger = {
+        NOR = {
+            has_global_flag = wg_resistant_army_arrived
+            has_global_flag = wg_crisis_very_easy
+        }
+    }
+
+    immediate = {
+        set_global_flag = wg_resistant_army_arrived
+        set_global_flag = changed_ra_leader_flag
+        set_global_flag = wg_crisis_triggered
+        create_country = {
+            name = "NAME_WG_resistant_army_country"
+            type = "wg_resistant_army"
+            species = event_target:wg_crisis_species
+            name_list = "WSG"
+            flag = {
+                icon= {
+                    category="warshipgirls"
+                    file="wg_flags_07.dds"
+                }
+                background= {
+                    category = "backgrounds"
+                    file = "v.dds"
+                }
+                colors={
+                    "red"
+                    "black"
+                    "null"
+                    "null"
+                }
+            }
+            effect = {
+                save_global_event_target_as = wg_resistant_country
+                set_graphical_culture = mammalian_01
+                add_modifier = { modifier = ra_regen_buff days = -1 }
+                if = {
+                    limit = { has_global_flag = wg_crisis_easy }
+                    add_modifier = { modifier = uf_easy_debuff days = -1 }
+                }
+                if = {
+                    limit = { 
+                        OR = {
+                            has_global_flag = wg_crisis_normal
+                            has_global_flag = wg_crisis_hard
+                            has_global_flag = wg_crisis_insane
+                        }
+                    }
+                    add_modifier = { modifier = ra_normal_buff days = -1 }
+                }
+                if = {
+                    limit = { 
+                        OR = {
+                            has_global_flag = wg_crisis_hard
+                            has_global_flag = wg_crisis_insane
+                        }
+                    }
+                    add_modifier = { modifier = ra_hard_buff days = -1 }
+                }
+                set_country_flag = has_set_variables
+                switch = {
+                    trigger = has_global_flag
+                    wg_crisis_normal = { #困难难度
+                        set_variable = { which = "ra_leader_limit" value = @ra_leader_limit_normal } 
+                        set_variable = { which = "ra_leader_limit_vip" value = @ra_leader_limit_normal_vip } 
+                        set_variable = { which = "ra_fleet_buy_limit" value = @ra_fleet_buy_limit_normal } 
+                        set_variable = { which = "ra_fleet_buy_limit_vip" value = @ra_fleet_buy_limit_normal_vip }
+                        set_variable = { which = "ra_fleet_own_limit" value = @ra_fleet_own_limit_normal } 
+                        set_variable = { which = "ra_fleet_own_limit_vip" value = @ra_fleet_own_limit_normal_vip }
+                    }
+                    wg_crisis_hard = { #萌新难度
+                        set_variable = { which = "ra_leader_limit" value = @ra_leader_limit_hard } 
+                        set_variable = { which = "ra_leader_limit_vip" value = @ra_leader_limit_hard_vip } 
+                        set_variable = { which = "ra_fleet_buy_limit" value = @ra_fleet_buy_limit_hard }
+                        set_variable = { which = "ra_fleet_buy_limit_vip" value = @ra_fleet_buy_limit_hard_vip }
+                        set_variable = { which = "ra_fleet_own_limit" value = @ra_fleet_own_limit_hard }
+                        set_variable = { which = "ra_fleet_own_limit_vip" value = @ra_fleet_own_limit_hard_vip }
+                    }
+                    wg_crisis_insane = { #天灾难度
+                        set_variable = { which = "ra_leader_limit" value = @ra_leader_limit_insane }
+                        set_variable = { which = "ra_leader_limit_vip" value = @ra_leader_limit_insane_vip }
+                        set_variable = { which = "ra_fleet_buy_limit" value = @ra_fleet_buy_limit_insane }
+                        set_variable = { which = "ra_fleet_buy_limit_vip" value = @ra_fleet_buy_limit_insane_vip }
+                        set_variable = { which = "ra_fleet_own_limit" value = @ra_fleet_own_limit_insane }
+                        set_variable = { which = "ra_fleet_own_limit_vip" value = @ra_fleet_own_limit_insane_vip }
+                    }
+                }
+            }
+        }
+        every_playable_country = {
+            limit = { 
+                NOR = { 
+                    is_country_type = wg_crisis_country
+                    is_country_type = wg_resistant_army
+                }
+            }
+            set_faction_hostility = { 
+                target = event_target:wg_resistant_country
+                set_hostile = no
+                set_neutral = no
+                set_friendly = yes
+            }
+        }
+        every_playable_country = {
+            limit = { 
+                NOR = { 
+                    is_country_type = wg_crisis_country
+                    is_country_type = wg_resistant_army
+                }
+                is_ai = no
+            }
+            set_variable = { which = "reflesh_count" value = 10 } # 刷新将领次数
+            establish_communications_no_message = event_target:wg_resistant_country
+            country_event = { id = wg_crisis.22 } # 开场白
+            country_event = { id = wg_crisis.26 days = 1 } # CD显示时间刷新
+            country_event = { id = wg_crisis.69 days = 3600 } # 刷新将领次数重置CD
+        }
+    }
+}
+
+# 开场介绍
+country_event = {
+	id = wg_crisis.22
+	title = "wg_crisis.22.name"
+
+    desc = {
+        # 普通帝国
+        text = wg_crisis.22.desc.a
+        trigger = {
+			has_wg_special_authority = no
+		}
+    }
+    desc = {
+        # 舰娘政体 / 深海政体
+        text = wg_crisis.22.desc.b
+        trigger = {
+			has_wg_special_authority = yes
+		}
+    }
+
+    is_triggered_only = yes
+	diplomatic = yes
+
+	picture_event_data = {
+		room = "resistant_army_room"
+	}
+
+    option = {
+		name = wg_crisis.22.a
+        response_text = wg_crisis.22.a.response
+        is_dialog_only = yes
+	}
+
+	option = {
+		name = wg_crisis.22.b
+        response_text = wg_crisis.22.b.response
+        is_dialog_only = yes
+	}
+
+    option = {
+		name = wg_crisis.22.c
+        response_text = wg_crisis.22.c.response
+	}
+
+}
+country_event = {
+	id = wg_crisis.74
+	title = "wg_crisis.22.name"
+    desc = wg_crisis.74.desc
+    is_triggered_only = yes
+	diplomatic = yes
+
+	picture_event_data = {
+		room = "resistant_army_room"
+	}
+
+    option = {
+        name = OK
+    }
+}
+country_event = {
+	id = wg_crisis.75
+	title = "wg_crisis.22.name"
+    desc = wg_crisis.75.desc
+    is_triggered_only = yes
+	diplomatic = yes
+
+	picture_event_data = {
+		room = "resistant_army_room"
+	}
+
+    option = {
+        name = OK
+    }
+}
+# 通讯界面
+country_event = {
+	id = wg_crisis.23
+	title = "TRANSMISSION"
+
+    desc = {
+        # 普通帝国
+        text = wg_crisis.23.desc.a
+        trigger = {
+			has_wg_special_authority = no
+		}
+    }
+    desc = {
+        # 舰娘政体 / 深海政体
+        text = wg_crisis.23.desc.b
+        trigger = {
+			has_wg_special_authority = yes
+		}
+    }
+
+    is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = "resistant_army_room"
+	}
+
+    trigger = {
+        exists = event_target:wg_resistant_country
+        FROM = { OR = { 
+            is_country_type = wg_resistant_army 
+            is_same_value = ROOT
+        }}
+        OR = { 
+            #防止视窗多开
+            NOT = { has_country_flag = ra_diplo_engaged }
+            ra_active_diplo = no
+		    FROM = { is_same_value = root }
+        }
+        is_ai = no
+    }
+    immediate = {
+        set_country_flag = ra_diplo_engaged
+    }
+
+    # 普通帝国买船
+    option = {
+        trigger = {
+            has_wg_special_authority = no
+            NOR = { 
+                check_variable = { which = "ra_fleet_cd1" value < 1 }
+                has_country_flag = fail_to_pay_fees
+            }
+        }
+        allow = {
+            custom_tooltip = {
+                is_reach_ra_fleet_buy_limit = no
+                fail_text = reach_ra_fleet_buy_limit
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_own_limit = no
+                fail_text = reach_ra_fleet_own_limit
+            }
+        }
+        name = wg_crisis.23.a_1
+        hidden_effect = {
+            country_event = { id = wg_crisis.24 }
+        }
+    }
+
+    # 舰娘/深海买船
+    option = {
+        trigger = {
+            has_wg_special_authority = yes
+            OR = {
+                check_variable = { which = "ra_fleet_cd1" value < 1 }
+                AND = {
+                    has_country_flag = ra_vip
+                    check_variable = { which = "ra_fleet_cd2" value < 1 }
+                }
+            }
+        }
+        allow = {
+            custom_tooltip = {
+                is_reach_ra_fleet_buy_limit = no
+                fail_text = reach_ra_fleet_buy_limit
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_own_limit = no
+                fail_text = reach_ra_fleet_own_limit
+            }
+        }
+        name = wg_crisis.23.a_2
+        hidden_effect = {
+            country_event = { id = wg_crisis.24 }
+        }
+    }
+
+    # 普通帝国买船CD
+    option = {
+        trigger = {
+            has_wg_special_authority = no
+            check_variable = { which = "ra_fleet_cd1" value < 1 }
+            NOT = { has_country_flag = fail_to_pay_fees }
+            is_reach_ra_fleet_buy_limit = no
+            is_reach_ra_fleet_own_limit = no
+		}
+        name = wg_crisis.23.a_1
+        response_text = wg_crisis.23.a.response_1
+        is_dialog_only = yes
+    }
+
+    # 不能买船
+    option = {
+        trigger = {
+            has_wg_special_authority = no
+            has_country_flag = fail_to_pay_fees
+            is_reach_ra_fleet_buy_limit = no
+            is_reach_ra_fleet_own_limit = no
+		}
+        name = wg_crisis.23.a_1
+        response_text = wg_crisis.23.a.response_5
+        is_dialog_only = yes
+    }
+
+    # 舰娘/深海买船CD
+    option = {
+        trigger = {
+            has_wg_special_authority = yes
+            check_variable = { which = "ra_fleet_cd1" value > 0 }
+            OR = {
+                NOT = { has_country_flag = ra_vip }
+                AND = {
+                    has_country_flag = ra_vip
+                    check_variable = { which = "ra_fleet_cd1" value < "ra_fleet_cd2" }
+                }
+            }
+		}
+        name = wg_crisis.23.a_2
+        response_text = wg_crisis.23.a.response_1
+        is_dialog_only = yes
+    }
+
+    # 舰娘/深海买船CD2
+    option = {
+        trigger = {
+            has_wg_special_authority = yes
+            check_variable = { which = "ra_fleet_cd2" value > 0 }
+            check_variable = { which = "ra_fleet_cd2" value < "ra_fleet_cd1" }
+		}
+        name = wg_crisis.23.a_2
+        response_text = wg_crisis.23.a.response_2
+        is_dialog_only = yes
+    }
+
+    # 查询舰队交付日期
+    option = {
+        trigger = {
+            OR = {
+                AND = {
+                    NOT = { has_country_flag = ra_vip }
+                    check_variable = { which = "ra_construct_cd1" value > 0 }
+                }
+                AND = {
+                    has_country_flag = ra_vip
+                    check_variable = { which = "ra_construct_cd1" value > 0 }
+                    check_variable = { which = "ra_construct_cd2" value < 1 }
+                }
+            }
+		}
+        name = wg_crisis.23.b
+        
+        response_text = wg_crisis.23.b.response_1
+        is_dialog_only = yes
+    }
+
+    # 查询舰队交付日期2
+    option = {
+        trigger = {
+            has_country_flag = ra_vip
+            check_variable = { which = "ra_construct_cd1" value < 1 }
+            check_variable = { which = "ra_construct_cd2" value > 0 }
+		}
+        name = wg_crisis.23.b
+        response_text = wg_crisis.23.b.response_2
+        is_dialog_only = yes
+    }
+
+    # 查询舰队交付日期(订单1+2)
+    option = {
+        trigger = {
+            has_country_flag = ra_vip
+            check_variable = { which = "ra_construct_cd1" value > 0 }
+            check_variable = { which = "ra_construct_cd2" value > 0 }
+		}
+        name = wg_crisis.23.b
+        response_text = wg_crisis.23.b.response_3
+        is_dialog_only = yes
+    }
+
+    # 问情报
+    option = {
+        trigger = {
+            OR = {
+                NOT = { has_modifier = buff_vs_uf }
+                has_wg_special_authority = yes
+            }
+        }
+        name = wg_crisis.23.c
+		hidden_effect = {
+			country_event = { id = wg_crisis.59 }
+		}
+    }
+
+    # 不可问情报
+    option = {
+        trigger = {
+            has_wg_special_authority = no
+            has_modifier = buff_vs_uf
+        }
+        name = wg_crisis.23.c
+        response_text = wg_crisis.59.d.response
+        is_dialog_only = yes
+    }
+
+    # 抽领袖
+    option = {
+        trigger = {
+            NOT = { has_country_flag = recruited_resistant_leader }
+            is_reach_ra_leader_limit = no
+        }
+        name = wg_crisis.23.d
+        hidden_effect = {
+            country_event = { id = wg_crisis.60 }
+        }
+    }
+
+    # 抽领袖CD
+    option = {
+        trigger = {
+            has_country_flag = recruited_resistant_leader
+            NOT = {
+                is_reach_ra_leader_limit = yes
+            }
+        }
+        name = wg_crisis.23.d
+        response_text = wg_crisis.23.d.response_1
+        is_dialog_only = yes
+    }
+
+    # 不能抽领袖（已购买vip或非舰娘国家）
+    option = {
+        trigger = {
+            is_reach_ra_leader_limit = yes
+            OR = {
+                has_country_flag = ra_vip
+                has_wg_special_authority = no
+            }
+        }
+        name = wg_crisis.23.d
+        response_text = wg_crisis.23.d.response_2
+        is_dialog_only = yes
+    }
+
+    # 不能抽领袖（未购买vip）
+    option = {
+        trigger = {
+            is_reach_ra_leader_limit = yes
+            NOT = { has_country_flag = ra_vip }
+            has_wg_special_authority = yes
+        }
+        name = wg_crisis.23.d
+        response_text = wg_crisis.23.d.response_3
+        is_dialog_only = yes
+    }
+
+    # 赞助成为vip
+    option = {
+        trigger = {
+            NOR = { 
+                has_country_flag = ra_vip
+                has_country_flag = fail_to_pay_vip
+            }
+            has_wg_special_authority = yes
+        }
+        name = wg_crisis.23.e
+        hidden_effect = {
+            country_event = { id = wg_crisis.38 }
+        }
+    }
+
+    # 取消成为vip (舰娘)
+    option = {
+        trigger = {
+            has_country_flag = ra_vip
+            NOT = { has_country_flag = cancel_vip_cd }
+            has_authority = auth_warshipgirls
+            NOR = {
+                has_technology = tech_wsg_senergy
+                has_country_flag = wg_ascension_path_project_s
+            }
+        }
+        name = wg_crisis.23.f
+        response_text = wg_crisis.23.f.response
+        add_resource = {
+            energy = 10000
+            alloys = 10000
+            consumer_goods = 7500
+            sr_alpha = 1000
+        }
+        hidden_effect = {
+            remove_country_flag = ra_vip
+            remove_modifier = ra_vip
+            remove_country_flag = ra_diplo_engaged
+        }
+        
+    }
+
+    # 取消成为vip (深海)
+    option = {
+        trigger = {
+            has_country_flag = ra_vip
+            NOT = { has_country_flag = cancel_vip_cd }
+            OR = {
+                has_authority = auth_shenhai
+                AND = {
+                    has_authority = auth_warshipgirls
+                    OR = {
+                        has_technology = tech_wsg_senergy
+                        has_country_flag = wg_ascension_path_project_s
+                    }
+                }
+            }
+        }
+        name = wg_crisis.23.f
+        response_text = wg_crisis.23.f.response
+        add_resource = {
+            energy = 10000
+            alloys = 10000
+            consumer_goods = 7500
+            sr_se = 1000
+        }
+        hidden_effect = {
+            remove_country_flag = ra_vip
+            remove_modifier = ra_vip_sh
+            remove_country_flag = ra_diplo_engaged
+        }
+    }
+
+    # 取消成为vip (星战舰娘)
+    option = {
+        trigger = {
+            has_country_flag = ra_vip
+            NOT = { has_country_flag = cancel_vip_cd }
+            has_authority = auth_starshipgirls
+        }
+        name = wg_crisis.23.f
+        response_text = wg_crisis.23.f.response
+        add_resource = {
+            energy = 10000
+            alloys = 10000
+            consumer_goods = 7500
+            sr_tibanna_swgs = -1500
+            sr_kyber_swgs = -500
+        }
+        hidden_effect = {
+            remove_country_flag = ra_vip
+            remove_modifier = ra_vip_swg
+            remove_country_flag = ra_diplo_engaged
+        }
+    }
+
+    option = {
+        name = wg_crisis.23.g
+        default_hide_option = yes
+        hidden_effect = { remove_country_flag = ra_diplo_engaged }
+    }
+}
+
+# 向反抗军买船
+country_event = {
+	id = wg_crisis.24
+	title = "TRANSMISSION"
+    is_triggered_only = yes
+
+    diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = "resistant_army_room"
+    }
+    # 非舰娘 普通难度
+    desc = {
+        trigger = {
+            has_wg_special_authority = no
+            has_global_flag = wg_crisis_easy
+        }
+        text = wg_crisis.24.desc.a.easy
+    }
+    # 普通以上难度
+    desc = {
+        trigger = {
+            has_wg_special_authority = no
+            NOR = {
+                has_global_flag = wg_crisis_easy
+            }
+            check_variable = { which = "ra_fleet_count" value > 0 }
+            check_variable = { which = "buy_ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.a
+    }
+    desc = { # 购买数0
+        trigger = {
+            has_wg_special_authority = no
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                check_variable = { which = "buy_ra_fleet_count" value > 0 }
+            }
+            check_variable = { which = "ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.a_buy0
+    }
+    desc = { # 持有数0
+        trigger = {
+            has_wg_special_authority = no
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                check_variable = { which = "ra_fleet_count" value > 0 }
+            }
+            check_variable = { which = "buy_ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.a_own0
+    }
+    desc = { # 购买数0 持有数0
+        trigger = {
+            has_wg_special_authority = no
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                check_variable = { which = "ra_fleet_count" value > 0 }
+                check_variable = { which = "buy_ra_fleet_count" value > 0 }
+            }
+        }
+        text = wg_crisis.24.desc.a_buy0_own0
+    }
+    # 舰娘非vip 普通难度
+    desc = {
+        trigger = {
+            OR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+            has_global_flag = wg_crisis_easy
+        }
+        text = wg_crisis.24.desc.b.easy
+    }
+    # 舰娘非vip 普通以上难度
+    desc = {
+        trigger = {
+            OR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                has_country_flag = ra_vip 
+            }
+            check_variable = { which = "ra_fleet_count" value > 0 }
+            check_variable = { which = "buy_ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.b
+    }
+    desc = { # 购买数0
+        trigger = {
+            OR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                has_country_flag = ra_vip 
+                check_variable = { which = "buy_ra_fleet_count" value > 0 }
+            }
+            check_variable = { which = "ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.b_buy0
+    }
+    desc = { # 持有数0
+        trigger = {
+            OR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                has_country_flag = ra_vip 
+                check_variable = { which = "ra_fleet_count" value > 0 }
+            }
+            check_variable = { which = "buy_ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.b_own0
+    }
+    desc = { # 购买数0 持有数0
+        trigger = {
+            OR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                has_country_flag = ra_vip 
+                check_variable = { which = "ra_fleet_count" value > 0 }
+                check_variable = { which = "buy_ra_fleet_count" value > 0 }
+            }
+        }
+        text = wg_crisis.24.desc.b_buy0_own0
+    }
+    # vip
+    desc = {
+        trigger = {
+            OR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+            NOT = { has_global_flag = wg_crisis_easy }
+            has_country_flag = ra_vip
+            check_variable = { which = "ra_fleet_count" value > 0 }
+            check_variable = { which = "buy_ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.b_vip
+    }
+    desc = { # 购买数0
+        trigger = {
+            OR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                check_variable = { which = "buy_ra_fleet_count" value > 0 }
+            }
+            has_country_flag = ra_vip
+            check_variable = { which = "ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.b_vip_buy0
+    }
+    desc = { # 持有数0
+        trigger = {
+            OR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                check_variable = { which = "ra_fleet_count" value > 0 }
+            }
+            has_country_flag = ra_vip
+            check_variable = { which = "buy_ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.b_vip_own0
+    }
+    desc = { # 购买数0 持有数0
+        trigger = {
+            OR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                check_variable = { which = "ra_fleet_count" value > 0 }
+                check_variable = { which = "buy_ra_fleet_count" value > 0 }
+            }
+            has_country_flag = ra_vip
+        }
+        text = wg_crisis.24.desc.b_vip_buy0_own0
+    }
+    # 星战舰娘非vip 普通难度
+    desc = {
+        trigger = {
+            has_authority = auth_starshipgirls
+            has_global_flag = wg_crisis_easy
+        }
+        text = wg_crisis.24.desc.c.easy
+    }
+    # 星战舰娘非vip 普通以上难度
+    desc = {
+        trigger = {
+            has_authority = auth_starshipgirls
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                has_country_flag = ra_vip 
+            }
+            check_variable = { which = "ra_fleet_count" value > 0 }
+            check_variable = { which = "buy_ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.c
+    }
+    desc = { # 星战舰娘购买数0
+        trigger = {
+            has_authority = auth_starshipgirls
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                has_country_flag = ra_vip 
+                check_variable = { which = "buy_ra_fleet_count" value > 0 }
+            }
+            check_variable = { which = "ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.c_buy0
+    }
+    desc = { # 星战舰娘持有数0
+        trigger = {
+            has_authority = auth_starshipgirls
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                has_country_flag = ra_vip 
+                check_variable = { which = "ra_fleet_count" value > 0 }
+            }
+            check_variable = { which = "buy_ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.c_own0
+    }
+    desc = { # 星战舰娘购买数0 持有数0
+        trigger = {
+            has_authority = auth_starshipgirls
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                has_country_flag = ra_vip 
+                check_variable = { which = "ra_fleet_count" value > 0 }
+                check_variable = { which = "buy_ra_fleet_count" value > 0 }
+            }
+        }
+        text = wg_crisis.24.desc.c_buy0_own0
+    }
+    # 星战舰娘vip
+    desc = {
+        trigger = {
+            has_authority = auth_starshipgirls
+            NOT = { has_global_flag = wg_crisis_easy }
+            has_country_flag = ra_vip
+            check_variable = { which = "ra_fleet_count" value > 0 }
+            check_variable = { which = "buy_ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.c_vip
+    }
+    desc = { # 星战舰娘购买数0
+        trigger = {
+            has_authority = auth_starshipgirls
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                check_variable = { which = "buy_ra_fleet_count" value > 0 }
+            }
+            has_country_flag = ra_vip
+            check_variable = { which = "ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.c_vip_buy0
+    }
+    desc = { # 星战舰娘持有数0
+        trigger = {
+            has_authority = auth_starshipgirls
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                check_variable = { which = "ra_fleet_count" value > 0 }
+            }
+            has_country_flag = ra_vip
+            check_variable = { which = "buy_ra_fleet_count" value > 0 }
+        }
+        text = wg_crisis.24.desc.c_vip_own0
+    }
+    desc = { # 星战舰娘购买数0 持有数0
+        trigger = {
+            has_authority = auth_starshipgirls
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                check_variable = { which = "ra_fleet_count" value > 0 }
+                check_variable = { which = "buy_ra_fleet_count" value > 0 }
+            }
+            has_country_flag = ra_vip
+        }
+        text = wg_crisis.24.desc.c_vip_buy0_own0
+    }
+    # 其他帝国买船
+
+    immediate = {
+        if = {
+            limit = { has_wg_special_authority = no }
+            set_buy_ra_fleet_resource = { RESOURCE = alloys COUNTRY_TYPE = default }
+            set_buy_ra_fleet_resource = { RESOURCE = energy COUNTRY_TYPE = default }
+            set_buy_ra_fleet_resource = { RESOURCE = rare_resources COUNTRY_TYPE = default }
+        } else = {
+            set_buy_ra_fleet_resource = { RESOURCE = alloys COUNTRY_TYPE = wg }
+            set_buy_ra_fleet_resource = { RESOURCE = energy COUNTRY_TYPE = wg }
+            if = {
+                limit = { is_wg_empire = yes }
+                set_buy_ra_fleet_resource = { RESOURCE = sr_pantsu COUNTRY_TYPE = wg }
+                if = {
+                    limit = { has_country_flag = ra_vip }
+                    multiply_variable = { which = ra_fleet_sr_pantsu_cost value = 0.8 }
+                }
+            } else = {
+                set_buy_ra_fleet_resource = { RESOURCE = sr_tibanna_swgs COUNTRY_TYPE = stargirl }
+                set_buy_ra_fleet_resource = { RESOURCE = sr_kyber_swgs COUNTRY_TYPE = stargirl }
+                if = {
+                    limit = { has_country_flag = ra_vip }
+                    multiply_variable = { which = ra_fleet_sr_tibanna_swgs_cost value = 0.8 }
+                    multiply_variable = { which = ra_fleet_sr_kyber_swgs_cost value = 0.8 }
+                }
+            }
+            if = {
+                limit = { has_country_flag = ra_vip }
+                # vip打8折
+                multiply_variable = { which = ra_fleet_alloys_cost value = 0.8 }
+                multiply_variable = { which = ra_fleet_energy_cost value = 0.8 }
+            }
+        }
+    }
+    option = {
+        trigger = {
+            has_wg_special_authority = no
+        }
+        allow = {
+            resource_stockpile_compare = {
+                resource = alloys
+                value >= 1
+                mult = ra_fleet_alloys_cost
+            }
+            resource_stockpile_compare = {
+                resource = energy
+                value >= 1
+                mult = ra_fleet_energy_cost
+            }
+            resource_stockpile_compare = {
+                resource = exotic_gases
+                value >= 1
+                mult = ra_fleet_rare_resources_cost
+            }
+            resource_stockpile_compare = {
+                resource = rare_crystals
+                value >= 1
+                mult = ra_fleet_rare_resources_cost
+            }
+            resource_stockpile_compare = {
+                resource = volatile_motes
+                value >= 1
+                mult = ra_fleet_rare_resources_cost
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_buy_limit = no
+                fail_text = reach_ra_fleet_buy_limit
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_own_limit = no
+                fail_text = reach_ra_fleet_own_limit
+            }
+        }
+        name = wg_crisis.24.a
+        response_text = wg_crisis.24.a.response
+        add_resource = { alloys = -1 mult = ra_fleet_alloys_cost }
+        add_resource = { energy = -1 mult = ra_fleet_energy_cost }
+        add_resource = { exotic_gases = -1 mult = ra_fleet_rare_resources_cost }
+        add_resource = { rare_crystals = -1 mult = ra_fleet_rare_resources_cost }
+        add_resource = { volatile_motes = -1 mult = ra_fleet_rare_resources_cost }
+        hidden_effect = {
+            set_variable = { which = "ra_construct_cd1" value = 120 }
+            set_variable = { which = "ra_fleet_cd1" value = 1200 }
+            change_variable = { which = "buy_ra_fleet_count" value = 1 }
+            remove_country_flag = ra_diplo_engaged
+        }
+    }
+
+    # 舰娘买船
+    option = {
+        trigger = {
+            OR = {
+				has_authority = auth_shenhai
+				has_authority = auth_warshipgirls
+			}
+            check_variable = { which = "ra_fleet_cd1" value < 1 }
+        }
+        allow = {
+            resource_stockpile_compare = {
+                resource = alloys
+                value >= 1
+                mult = ra_fleet_alloys_cost
+            }
+            resource_stockpile_compare = {
+                resource = energy
+                value >= 1
+                mult = ra_fleet_energy_cost
+            }
+            resource_stockpile_compare = {
+                resource = sr_pantsu
+                value >= 1
+                mult = ra_fleet_sr_pantsu_cost
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_buy_limit = no
+                fail_text = reach_ra_fleet_buy_limit
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_own_limit = no
+                fail_text = reach_ra_fleet_own_limit
+            }
+        }
+        name = wg_crisis.24.a
+        response_text = wg_crisis.24.a.response
+        add_resource = { alloys = -1 mult = ra_fleet_alloys_cost }
+        add_resource = { energy = -1 mult = ra_fleet_energy_cost }
+        add_resource = { sr_pantsu = -1 mult = ra_fleet_sr_pantsu_cost }
+        hidden_effect = {
+            set_variable = { which = "ra_construct_cd1" value = 120 }
+            set_variable = { which = "ra_fleet_cd1" value = 1200 }
+            change_variable = { which = "buy_ra_fleet_count" value = 1 }
+            remove_country_flag = ra_diplo_engaged
+        }
+    }
+
+    # 舰娘买船(vip)
+    option = {
+        trigger = {
+            OR = {
+				has_authority = auth_shenhai
+				has_authority = auth_warshipgirls
+			}
+            check_variable = { which = "ra_fleet_cd1" value > 0 }
+            check_variable = { which = "ra_fleet_cd2" value < 1 }
+        }
+        allow = {
+            resource_stockpile_compare = {
+                resource = alloys
+                value >= 1
+                mult = ra_fleet_alloys_cost
+            }
+            resource_stockpile_compare = {
+                resource = energy
+                value >= 1
+                mult = ra_fleet_energy_cost
+            }
+            resource_stockpile_compare = {
+                resource = sr_pantsu
+                value >= 1
+                mult = ra_fleet_sr_pantsu_cost
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_buy_limit = no
+                fail_text = reach_ra_fleet_buy_limit
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_own_limit = no
+                fail_text = reach_ra_fleet_own_limit
+            }
+        }
+        name = wg_crisis.24.a
+        response_text = wg_crisis.24.a.response
+        add_resource = { alloys = -1 mult = ra_fleet_alloys_cost }
+        add_resource = { energy = -1 mult = ra_fleet_energy_cost }
+        add_resource = { sr_pantsu = -1 mult = ra_fleet_sr_pantsu_cost }
+        hidden_effect = {
+            set_variable = { which = "ra_construct_cd2" value = 120 }
+            set_variable = { which = "ra_fleet_cd2" value = 1200 }
+            change_variable = { which = "buy_ra_fleet_count" value = 1 }
+            remove_country_flag = ra_diplo_engaged
+        }
+    }
+
+    # 星战舰娘买船
+    option = {
+        trigger = {
+            has_authority = auth_starshipgirls
+            check_variable = { which = "ra_fleet_cd1" value < 1 }
+        }
+        allow = {
+            resource_stockpile_compare = {
+                resource = alloys
+                value >= 1
+                mult = ra_fleet_alloys_cost
+            }
+            resource_stockpile_compare = {
+                resource = energy
+                value >= 1
+                mult = ra_fleet_energy_cost
+            }
+            resource_stockpile_compare = {
+                resource = sr_tibanna_swgs
+                value >= 1
+                mult = ra_fleet_sr_tibanna_swgs_cost
+            }
+            resource_stockpile_compare = {
+                resource = sr_kyber_swgs
+                value >= 1
+                mult = ra_fleet_sr_kyber_swgs_cost
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_buy_limit = no
+                fail_text = reach_ra_fleet_buy_limit
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_own_limit = no
+                fail_text = reach_ra_fleet_own_limit
+            }
+        }
+        name = wg_crisis.24.a
+        response_text = wg_crisis.24.a.response
+        add_resource = { alloys = -1 mult = ra_fleet_alloys_cost }
+        add_resource = { energy = -1 mult = ra_fleet_energy_cost }
+        add_resource = { sr_tibanna_swgs = -1 mult = ra_fleet_sr_tibanna_swgs_cost }
+        add_resource = { sr_kyber_swgs = -1 mult = ra_fleet_sr_kyber_swgs_cost }
+        hidden_effect = {
+            set_variable = { which = "ra_construct_cd1" value = 120 }
+            set_variable = { which = "ra_fleet_cd1" value = 1200 }
+            change_variable = { which = "buy_ra_fleet_count" value = 1 }
+            remove_country_flag = ra_diplo_engaged
+        }
+    }
+
+    # 星战舰娘买船(vip)
+    option = {
+        trigger = {
+            has_authority = auth_starshipgirls
+            check_variable = { which = "ra_fleet_cd1" value > 0 }
+            check_variable = { which = "ra_fleet_cd2" value < 1 }
+        }
+        allow = {
+            resource_stockpile_compare = {
+                resource = alloys
+                value >= 1
+                mult = ra_fleet_alloys_cost
+            }
+            resource_stockpile_compare = {
+                resource = energy
+                value >= 1
+                mult = ra_fleet_energy_cost
+            }
+            resource_stockpile_compare = {
+                resource = sr_tibanna_swgs
+                value >= 1
+                mult = ra_fleet_sr_tibanna_swgs_cost
+            }
+            resource_stockpile_compare = {
+                resource = sr_kyber_swgs
+                value >= 1
+                mult = ra_fleet_sr_kyber_swgs_cost
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_buy_limit = no
+                fail_text = reach_ra_fleet_buy_limit
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_own_limit = no
+                fail_text = reach_ra_fleet_own_limit
+            }
+        }
+        name = wg_crisis.24.a
+        response_text = wg_crisis.24.a.response
+        add_resource = { alloys = -1 mult = ra_fleet_alloys_cost }
+        add_resource = { energy = -1 mult = ra_fleet_energy_cost }
+        add_resource = { sr_tibanna_swgs = -1 mult = ra_fleet_sr_tibanna_swgs_cost }
+        add_resource = { sr_kyber_swgs = -1 mult = ra_fleet_sr_kyber_swgs_cost }
+        hidden_effect = {
+            set_variable = { which = "ra_construct_cd2" value = 120 }
+            set_variable = { which = "ra_fleet_cd2" value = 1200 }
+            change_variable = { which = "buy_ra_fleet_count" value = 1 }
+            remove_country_flag = ra_diplo_engaged
+        }
+    }
+
+    # 分期付款买船
+    option = {
+        name = wg_crisis.24.b
+        allow = {
+            custom_tooltip = {
+                is_reach_ra_fleet_buy_limit = no
+                fail_text = reach_ra_fleet_buy_limit
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_own_limit = no
+                fail_text = reach_ra_fleet_own_limit
+            }
+        }
+        hidden_effect = {
+            country_event = { id = wg_crisis.25 }
+        }
+    }
+
+    option = {
+        name = wg_crisis.24.c
+        hidden_effect = { remove_country_flag = ra_diplo_engaged }
+        default_hide_option = yes
+    }
+
+    option = {
+        name = wg_crisis.59.e
+        hidden_effect = { 
+            country_event = { id = wg_crisis.23 }
+        }
+    }
+
+}
+
+# 分期付款确认
+country_event = {
+    id = wg_crisis.25
+	title = "TRANSMISSION"
+    is_triggered_only = yes
+
+    diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = "resistant_army_room"
+    }
+
+    desc = {
+        trigger = {
+            has_wg_special_authority = no
+        }
+        text = wg_crisis.25.desc.a
+    }
+
+    desc = {
+        trigger = {
+            OR = {
+                has_authority = auth_warshipgirls
+                has_authority = auth_shenhai
+            }
+            NOT = { has_country_flag = ra_vip }
+        }
+        text = wg_crisis.25.desc.b
+    }
+
+    desc = {
+        trigger = {
+            OR = {
+                has_authority = auth_warshipgirls
+                has_authority = auth_shenhai
+            }
+            has_country_flag = ra_vip
+        }
+        text = wg_crisis.25.desc.c
+    }
+
+    desc = {
+        trigger = {
+            has_authority = auth_starshipgirls
+            NOT = { has_country_flag = ra_vip }
+        }
+        text = wg_crisis.25.desc.d
+    }
+
+    desc = {
+        trigger = {
+            has_authority = auth_starshipgirls
+            has_country_flag = ra_vip
+        }
+        text = wg_crisis.25.desc.e
+    }
+
+    immediate = {
+        if = {
+            limit = { has_country_flag = ra_vip }
+            # vip 30个月交付
+            set_ra_fleet_monthly_cost = { RESOURCE = alloys MONTHS = 30 }
+            set_ra_fleet_monthly_cost = { RESOURCE = energy MONTHS = 30 }
+            if = {
+                limit = { has_wg_special_authority = yes }
+                if = {
+                    limit = { is_wg_empire = yes }
+                    set_ra_fleet_monthly_cost = { RESOURCE = sr_pantsu MONTHS = 30 }
+                } else = {
+                    set_ra_fleet_monthly_cost = { RESOURCE = sr_tibanna_swgs MONTHS = 30 }
+                }
+            } else = {
+                set_ra_fleet_monthly_cost = { RESOURCE = rare_resources MONTHS = 30 }
+            }
+            
+        } else = {
+            # 普通国家50个月交付
+            set_ra_fleet_monthly_cost = { RESOURCE = alloys MONTHS = 50 }
+            set_ra_fleet_monthly_cost = { RESOURCE = energy MONTHS = 50 }
+            if = {
+                limit = { has_wg_special_authority = yes }
+                if = {
+                    limit = { is_wg_empire = yes }
+                    set_ra_fleet_monthly_cost = { RESOURCE = sr_pantsu MONTHS = 50 }
+                } else = {
+                    set_ra_fleet_monthly_cost = { RESOURCE = sr_tibanna_swgs MONTHS = 50 }
+                    set_ra_fleet_monthly_cost = { RESOURCE = sr_kyber_swgs MONTHS = 50 }
+                }
+            } else = {
+                set_ra_fleet_monthly_cost = { RESOURCE = rare_resources MONTHS = 50 }
+            }
+        }
+    }
+
+    # 其他帝国
+    option = {
+        trigger = {
+            has_wg_special_authority = no
+        }
+        allow = {
+            custom_tooltip = {
+                is_reach_ra_fleet_buy_limit = no
+                fail_text = reach_ra_fleet_buy_limit
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_own_limit = no
+                fail_text = reach_ra_fleet_own_limit
+            }
+        }
+        name = wg_crisis.25.a
+        response_text = wg_crisis.25.a.response
+        add_modifier = { 
+            modifier = pay_alloys_for_resistant_fleet_base days = 1500 
+            multiplier = ra_fleet_alloys_monthly_cost
+        }
+        add_modifier = { 
+            modifier = pay_energy_for_resistant_fleet_base days = 1500 
+            multiplier = ra_fleet_energy_monthly_cost
+        }
+        add_modifier = { 
+            modifier = pay_rare_resources_for_resistant_fleet_base days = 1500 
+            multiplier = ra_fleet_rare_resources_monthly_cost
+        }
+        set_timed_country_flag = {
+            flag = ra_fleet_pay_monthly_normal_country days = 1500
+        }
+        hidden_effect = {
+            set_variable = { which = "ra_construct_cd1" value = 1080 }
+            set_variable = { which = "ra_fleet_cd1" value = 2160 }
+            change_variable = { which = "buy_ra_fleet_count" value = 1 }
+            remove_country_flag = ra_diplo_engaged
+        }
+    }
+
+    # 舰娘
+    option = {
+        trigger = {
+            has_wg_special_authority = yes
+            NOT = { has_country_flag = ra_vip }
+            check_variable = { which = "ra_construct_cd1" value < 1 }
+        }
+        allow = {
+            custom_tooltip = {
+                is_reach_ra_fleet_buy_limit = no
+                fail_text = reach_ra_fleet_buy_limit
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_own_limit = no
+                fail_text = reach_ra_fleet_own_limit
+            }
+        }
+        name = wg_crisis.25.a
+        response_text = wg_crisis.25.a.response
+        add_modifier = { 
+            modifier = pay_alloys_for_resistant_fleet_base days = 1500 
+            multiplier = ra_fleet_alloys_monthly_cost
+        }
+        add_modifier = { 
+            modifier = pay_energy_for_resistant_fleet_base days = 1500 
+            multiplier = ra_fleet_energy_monthly_cost
+        }
+        if = {
+            limit = { has_authority = auth_starshipgirls } # 星战舰娘独特资源订单
+            add_modifier = { 
+                modifier = pay_sr_tibanna_swgs_for_resistant_fleet_base days = 1500 
+                multiplier = ra_fleet_sr_tibanna_swgs_monthly_cost
+            }
+            add_modifier = { 
+                modifier = pay_sr_tibanna_swgs_for_resistant_fleet_base days = 1500 
+                multiplier = ra_fleet_sr_kyber_swgs_monthly_cost
+            }
+            set_timed_country_flag = {
+                flag = ra_fleet_pay_monthly_stargirl_country days = 1500
+            }
+        } else = {
+            add_modifier = { 
+                modifier = pay_sr_pantsu_for_resistant_fleet_base days = 1500 
+                multiplier = ra_fleet_sr_pantsu_monthly_cost
+            }
+            set_timed_country_flag = {
+                flag = ra_fleet_pay_monthly_wg_country days = 1500
+            }
+        }
+        hidden_effect = {
+            set_variable = { which = "ra_construct_cd1" value = 720 }
+            set_variable = { which = "ra_fleet_cd1" value = 1800 }
+            change_variable = { which = "buy_ra_fleet_count" value = 1 }
+            remove_country_flag = ra_diplo_engaged
+        }
+    }
+
+    # 舰娘(vip，订单1)
+    option = {
+        trigger = {
+            has_wg_special_authority = yes
+            has_country_flag = ra_vip
+            check_variable = { which = "ra_construct_cd1" value < 1 }
+        }
+        allow = {
+            custom_tooltip = {
+                is_reach_ra_fleet_buy_limit = no
+                fail_text = reach_ra_fleet_buy_limit
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_own_limit = no
+                fail_text = reach_ra_fleet_own_limit
+            }
+        }
+        name = wg_crisis.25.a
+        response_text = wg_crisis.25.a.response
+        add_modifier = { 
+            modifier = pay_alloys_for_resistant_fleet_base days = 900 
+            multiplier = ra_fleet_alloys_monthly_cost
+        }
+        add_modifier = { 
+            modifier = pay_energy_for_resistant_fleet_base days = 900 
+            multiplier = ra_fleet_energy_monthly_cost
+        }
+        if = {
+            limit = { has_authority = auth_starshipgirls } # 星战舰娘独特资源订单
+            add_modifier = { 
+                modifier = pay_sr_tibanna_swgs_for_resistant_fleet_base days = 900 
+                multiplier = ra_fleet_sr_tibanna_swgs_monthly_cost
+            }
+            add_modifier = { 
+                modifier = pay_sr_tibanna_swgs_for_resistant_fleet_base days = 900 
+                multiplier = ra_fleet_sr_kyber_swgs_monthly_cost
+            }
+            set_timed_country_flag = {
+                flag = ra_fleet_pay_monthly_stargirl_country days = 1500
+            }
+        } else = {
+            add_modifier = { 
+                modifier = pay_sr_pantsu_for_resistant_fleet_base days = 900 
+                multiplier = ra_fleet_sr_pantsu_monthly_cost
+            }
+            set_timed_country_flag = {
+                flag = ra_fleet_pay_monthly_wg_country days = 1500
+            }
+        }
+        hidden_effect = {
+            set_variable = { which = "ra_construct_cd1" value = 600 }
+            set_variable = { which = "ra_fleet_cd1" value = 1320 }
+            change_variable = { which = "buy_ra_fleet_count" value = 1 }
+            remove_country_flag = ra_diplo_engaged
+        }
+    }
+
+    # 舰娘(vip，订单2)
+    option = {
+        trigger = {
+            has_wg_special_authority = yes
+            has_country_flag = ra_vip
+            check_variable = { which = "ra_construct_cd1" value > 0 }
+            check_variable = { which = "ra_construct_cd2" value < 1 }
+        }
+        allow = {
+            custom_tooltip = {
+                is_reach_ra_fleet_buy_limit = no
+                fail_text = reach_ra_fleet_buy_limit
+            }
+            custom_tooltip = {
+                is_reach_ra_fleet_own_limit = no
+                fail_text = reach_ra_fleet_own_limit
+            }
+        }
+        name = wg_crisis.25.a
+        response_text = wg_crisis.25.a.response
+        add_modifier = { 
+            modifier = pay_alloys_for_resistant_fleet_base days = 900 
+            multiplier = ra_fleet_alloys_monthly_cost
+        }
+        add_modifier = { 
+            modifier = pay_energy_for_resistant_fleet_base days = 900 
+            multiplier = ra_fleet_energy_monthly_cost
+        }
+        if = {
+            limit = { has_authority = auth_starshipgirls } # 星战舰娘独特资源订单
+            add_modifier = { 
+                modifier = pay_sr_tibanna_swgs_for_resistant_fleet_base days = 900 
+                multiplier = ra_fleet_sr_tibanna_swgs_monthly_cost
+            }
+            set_timed_country_flag = {
+                flag = ra_fleet_pay_monthly_stargirl_country days = 1500
+            }
+            add_modifier = { 
+                modifier = pay_sr_tibanna_swgs_for_resistant_fleet_base days = 900 
+                multiplier = ra_fleet_sr_kyber_swgs_monthly_cost
+            }
+        } else = {
+            add_modifier = { 
+                modifier = pay_sr_pantsu_for_resistant_fleet_base days = 900 
+                multiplier = ra_fleet_sr_pantsu_monthly_cost
+            }
+            set_timed_country_flag = {
+                flag = ra_fleet_pay_monthly_wg_country days = 1500
+            }
+        }
+        hidden_effect = {
+            set_variable = { which = "ra_construct_cd2" value = 600 }
+            set_variable = { which = "ra_fleet_cd2" value = 1320 }
+            change_variable = { which = "buy_ra_fleet_count" value = 1 }
+            remove_country_flag = ra_diplo_engaged
+        }
+    }
+ 
+    option = {
+        name = wg_crisis.25.b
+        remove_country_flag = ra_diplo_engaged
+        default_hide_option = yes
+    }
+
+    option = {
+        name = wg_crisis.59.e
+        hidden_effect = { 
+            country_event = { id = wg_crisis.23 }
+        }
+    }
+}
+
+# CD倒计时1
+country_event = {
+    id = wg_crisis.26
+	hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+        NOT = {
+            has_global_flag = wg_invasion_end
+        }
+    }
+    immediate = {
+        if = {
+            limit = { check_variable = { which = "ra_fleet_cd1" value > 0 }}
+            change_variable = { which = "ra_fleet_cd1" value = -1 }
+        }
+        if = {
+            limit = { check_variable = { which = "ra_fleet_cd2" value > 0 }}
+            change_variable = { which = "ra_fleet_cd2" value = -1 }
+        }
+        if = {
+            limit = { check_variable = { which = "ra_construct_cd1" value > 0 }}
+            change_variable = { which = "ra_construct_cd1" value = -1 }
+            if = {
+                limit = { check_variable = { which = "ra_construct_cd1" value = 0 }}
+                country_event = { id = wg_crisis.29 }
+            }
+        }
+        if = {
+            limit = { check_variable = { which = "ra_construct_cd2" value > 0 }}
+            change_variable = { which = "ra_construct_cd2" value = -1 }
+            if = {
+                limit = { check_variable = { which = "ra_construct_cd2" value = 0 }}
+                country_event = { id = wg_crisis.29 }
+            }
+        }
+        if = {
+            limit = { check_variable = { which = "recruit_leader_cd" value > 0 }}
+            change_variable = { which = "recruit_leader_cd" value = -1 }
+        }
+        if = {
+            limit = { check_variable = { which = "refresh_days" value > 0 }}
+            change_variable = { which = "refresh_days" value = -1 }
+        }
+        country_event = { id = wg_crisis.26 days = 1}
+    }
+    
+}
+
+#检查分期付款的国家是不是曾经欠款
+country_event = {
+    id = wg_crisis.28
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = {
+            limit = { has_country_flag = fail_to_pay_fees }
+            if = {
+                limit = {
+                    OR = {
+                        has_authority = auth_shenhai
+				        has_authority = auth_warshipgirls
+                    }
+                }
+                remove_country_flag = fail_to_pay_fees
+                set_timed_country_flag = { flag = fail_to_pay_fees days = 540 }
+            }
+            else = {
+                change_variable = { which = "ra_construct_cd1" value = 900 }
+            }
+        }
+        else = { country_event = { id = wg_crisis.29 }}
+    }
+}
+
+country_event = {
+    id = wg_crisis.29
+    title = wg_crisis.29.name
+    desc = wg_crisis.29.desc
+    picture = GFX_evt_fleet_neutral
+    is_triggered_only = yes
+
+    trigger = {
+        any_country = {
+            OR = {
+                is_country_type = wg_crisis_country
+                is_country_type = wg_resistant_army
+            }
+        }
+    }
+
+    after = {
+        hidden_effect = {
+            capital_scope = { save_event_target_as = spawn_resistance_fleet_location }
+            create_wg_resistance_fleet_for_player = yes
+            update_ra_fleet_count = yes
+        }
+    }
+
+    option = {
+        name = EXCELLENT
+    }
+}
+
+# 反抗军直接进攻传送门
+country_event = {
+    id = wg_crisis.30
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = { 
+        is_country_type = wg_resistant_army
+        NOR = { 
+            has_global_flag = all_portal_destroyed
+            has_global_flag = resistance_reinforce_cooldown
+        }
+    }
+
+    immediate = {
+        set_timed_global_flag = { flag = resistance_reinforce_cooldown days = 800 }
+        if = {
+            limit = { NOT = { has_global_flag = first_portal_destroyed }}
+            event_target:first_portal_system = {
+                save_event_target_as = portal_system
+            }
+        }
+        else_if = {
+            limit = { NOT = { has_global_flag = first_portal_2_destroyed }}
+            event_target:first_portal_2_system = {
+                save_event_target_as = portal_system
+            }
+        }
+        else_if = {
+            limit = { NOT = { has_global_flag = second_portal_destroyed }}
+            event_target:second_portal_system = {
+                save_event_target_as = portal_system
+            }
+        }
+        else_if = {
+            limit = { NOT = { has_global_flag = second_portal_2_destroyed }}
+            event_target:second_portal_2_system = {
+                save_event_target_as = portal_system
+            }
+        }
+        else_if = {
+            limit = { NOT = { has_global_flag = third_portal_2_destroyed }}
+            event_target:third_portal_system = {
+                save_event_target_as = portal_system
+            }
+        }
+        else_if = {
+            limit = { NOT = { has_global_flag = third_portal_destroyed }}
+            event_target:third_portal_2_system = {
+                save_event_target_as = portal_system
+            }
+        }
+        event_target:portal_system = {
+            closest_system = {
+                limit = {
+                    any_ship_in_system = {
+                        owner = {
+                            NOT = { is_country_type = wg_crisis_country }
+                        }
+                    }
+                }
+                min_steps = 8
+                random_system_planet = { save_event_target_as = spawn_resistance_fleet_location }
+            }
+        }
+        event_target:wg_resistant_country = {
+            if = {
+                limit = { has_global_flag = wg_crisis_easy }
+                create_wg_resistance_admiral = yes
+                create_wg_resistance_weaker_flagfleet = yes
+                last_created_fleet = {
+                    set_fleet_flag = resistance_attack_fleet
+                }
+                create_wg_resistance_admiral = yes
+                create_wg_resistance_weaker_fleet = yes
+                last_created_fleet = {
+                    set_fleet_flag = resistance_attack_fleet
+                }
+            }
+            else = {
+                create_wg_resistance_greater_admiral = yes
+                create_wg_resistance_flagfleet = yes
+                last_created_fleet = {
+                    set_fleet_flag = resistance_attack_fleet
+                }
+                while = {
+                    count = 2
+                    create_wg_resistance_admiral = yes
+                    create_wg_resistance_fleet = yes
+                    last_created_fleet = {
+                        set_fleet_flag = resistance_attack_fleet
+                    }
+                }
+                if = {
+                    limit = {
+                        has_global_flag = wg_crisis_hard
+                        has_global_flag = wg_crisis_insane
+                    }
+                    create_wg_resistance_greater_admiral = yes
+                    create_wg_resistance_flagfleet = yes
+                    last_created_fleet = {
+                        set_fleet_flag = resistance_attack_fleet
+                    }
+                    while = {
+                        count = 2
+                        create_wg_resistance_admiral = yes
+                        create_wg_resistance_fleet = yes
+                        last_created_fleet = {
+                            set_fleet_flag = resistance_attack_fleet
+                        }
+                    }
+                }
+            }
+            country_event = { id = wg_crisis.37 }
+        }
+        every_playable_country = {
+            country_event = { id = wg_crisis.34 }
+        }
+    }
+}
+
+
+# 反抗军驻守各个国家
+country_event = {
+    id = wg_crisis.31
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = { is_country_type = wg_resistant_army }
+
+    immediate = {
+        if = {
+            limit = {
+                count_country = {
+                    limit = {
+						is_default_country_wg = yes
+                        has_wg_special_authority = no
+                    }
+                    count < 9
+                }
+            }
+            set_variable = { which = "loop_i" value = 5 }
+        }
+        else_if = {
+            limit = {
+                count_country = {
+                    limit = {
+                        is_default_country_wg = yes
+                        has_wg_special_authority = no
+                    }
+                    count < 16
+                }
+            }
+            set_variable = { which = "loop_i" value = 8 }
+        }
+        else = {
+            set_variable = { which = "loop_i" value = 10 }
+        }
+        while = { count = "loop_i"
+            random_country = {
+                limit = {
+                    is_default_country_wg = yes
+                    NOT = { has_country_flag = has_ra_fleet_spawn }
+                    has_wg_special_authority = no
+                }
+                set_timed_country_flag = { flag = has_ra_fleet_spawn days = 1}
+                capital_scope = {
+                    save_event_target_as = spawn_resistance_fleet_location
+                }
+                event_target:wg_resistant_country = {
+                    if = {
+                        limit = { has_global_flag = wg_crisis_easy }
+                        create_wg_resistance_admiral = yes
+                        create_wg_resistance_weaker_fleet = yes
+                        last_created_fleet = {
+                            set_fleet_flag = ra_defence_fleet@PREVPREV
+                        }
+                    }
+                    else = {
+                        create_wg_resistance_admiral = yes
+                        create_wg_resistance_fleet = yes
+                        last_created_fleet = {
+                            set_fleet_flag = ra_defence_fleet@PREVPREV
+                        }
+                        if = {
+                            limit = {
+                                OR = {
+                                    has_global_flag = wg_crisis_insane
+                                    has_global_flag = wg_crisis_hard
+                                    has_global_flag = wg_crisis_normal
+                                }
+                            }
+                            create_wg_resistance_admiral = yes
+                            create_wg_resistance_fleet = yes
+                            last_created_fleet = {
+                                set_fleet_flag = ra_defence_fleet@PREVPREV
+                            }
+                        }
+                        if = {
+                            limit = { has_global_flag = wg_crisis_insane }
+                            create_wg_resistance_admiral = yes
+                            create_wg_resistance_fleet = yes
+                            last_created_fleet = {
+                                set_fleet_flag = ra_defence_fleet@PREVPREV
+                            }
+                        }
+                    }
+                }
+                country_event = { id = wg_crisis.320 }
+            }
+        }
+        every_playable_country = {
+            country_event = { id = wg_crisis.33 }
+        }
+        every_playable_country = {
+            limit = {
+                has_wg_special_authority = yes
+            }
+            capital_scope = {
+                save_event_target_as = spawn_resistance_fleet_location
+            }
+            event_target:wg_resistant_country = {
+                if = {
+                    limit = { has_global_flag = wg_crisis_easy }
+                    create_wg_resistance_admiral = yes
+                    create_wg_resistance_weaker_fleet = yes
+                    last_created_fleet = {
+                        set_fleet_flag = ra_defence_fleet@PREVPREV
+                    }
+                }
+                else = {
+                    create_wg_resistance_admiral = yes
+                    create_wg_resistance_fleet = yes
+                    last_created_fleet = {
+                        set_fleet_flag = ra_defence_fleet@PREVPREV
+                    }
+                    if = {
+                        limit = {
+                            OR = {
+                                has_global_flag = wg_crisis_insane
+                                has_global_flag = wg_crisis_hard
+                                has_global_flag = wg_crisis_normal
+                            }
+                        }
+                        create_wg_resistance_admiral = yes
+                        create_wg_resistance_fleet = yes
+                        last_created_fleet = {
+                            set_fleet_flag = ra_defence_fleet@PREVPREV
+                        }
+                    }
+                    if = {
+                        limit = { has_global_flag = wg_crisis_insane }
+                        create_wg_resistance_admiral = yes
+                        create_wg_resistance_fleet = yes
+                        last_created_fleet = {
+                            set_fleet_flag = ra_defence_fleet@PREVPREV
+                        }
+                    }
+                }
+            }
+            country_event = { id = wg_crisis.320 }
+        }
+    }
+}
+
+country_event = {
+    id = wg_crisis.320
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+        event_target:wg_resistant_country = {
+            count_owned_ship = {
+                limit = { Fleet = { has_fleet_flag = ra_defence_fleet@root }}
+                count > 0
+            }
+        }
+    }
+
+    immediate = {
+        if = {
+            limit = {
+                any_system_within_border = {
+                    OR = {
+                        has_star_flag = target_system
+                        any_system_planet = {
+                            has_planet_flag = target_planet
+                        }
+                    }
+                }
+            }
+            country_event = { id = wg_crisis.32 }
+            set_timed_country_flag = { flag = ra_fleet_action_cd days = 100 }
+        }
+        country_event = { id = wg_crisis.320 days = 5 }
+    }
+
+}
+
+country_event = {
+    id = wg_crisis.32
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+        NOT = { has_country_flag = ra_fleet_action_cd }
+    }
+
+    immediate = {
+        event_target:wg_resistant_country = {
+            random_owned_fleet = {
+                limit = { has_fleet_flag = ra_defence_fleet@root }
+                random_owned_ship = { solar_system = {
+                    save_event_target_as = fleet_system
+                }}
+            }
+        }
+        every_system_within_border = {
+			limit = {
+                OR = {
+                    has_star_flag = target_system
+                    any_system_planet = { has_planet_flag = target_planet }
+                }
+                NOT = { is_same_value = event_target:fleet_system }
+			}
+            set_timed_star_flag = { flag = candidate_system@root days = 1 }
+        }
+        event_target:first_portal_system = { 
+            while = { count = 3
+                closest_system = {
+                    limit = {
+                        has_star_flag = candidate_system@root
+                        NOR = { 
+                            is_same_value = event_target:fleet_system
+                            has_star_flag = targeting_system@root
+                        }
+                    }
+                    set_timed_star_flag = { flag = targeting_system@root days = 1 }
+                }
+            }
+        }
+        if = {
+            limit = { has_global_flag = wg_crisis_insane }
+            if = {
+                limit = { 
+                    has_global_flag = second_portal_opened
+                    NOT = { has_global_flag = second_portal_destroyed }
+                }
+                event_target:second_portal_system = { 
+                    while = { count = 3
+                        closest_system = {
+                            limit = {
+                                has_star_flag = candidate_system@root
+                                NOR = { 
+                                    is_same_value = event_target:fleet_system
+                                    has_star_flag = targeting_system_second@root
+                                }
+                            }
+                            set_timed_star_flag = { flag = targeting_system_second@root days = 1 }
+                        }
+                    }
+                }
+            }
+            if = {
+                limit = { 
+                    has_global_flag = third_portal_opened
+                    NOT = { has_global_flag = third_portal_destroyed }
+                }
+                event_target:third_portal_system = { 
+                    while = { count = 3
+                        closest_system = {
+                            limit = {
+                                has_star_flag = candidate_system@root
+                                NOR = { 
+                                    is_same_value = event_target:fleet_system
+                                    has_star_flag = targeting_system_third@root
+                                }
+                            }
+                            set_timed_star_flag = { flag = targeting_system_third@root days = 1 }
+                        }
+                    }
+                }
+            }
+        }
+        event_target:first_portal_2_system = { 
+            while = { count = 3
+                closest_system = {
+                    limit = {
+                        has_star_flag = candidate_system@root
+                        NOR = { 
+                            is_same_value = event_target:fleet_system
+                            has_star_flag = targeting_system@root
+                        }
+                    }
+                    set_timed_star_flag = { flag = targeting_system@root days = 1 }
+                }
+            }
+        }
+        if = {
+            limit = { has_global_flag = wg_crisis_insane }
+            if = {
+                limit = { 
+                    has_global_flag = second_portal_2_opened
+                    NOT = { has_global_flag = second_portal_destroyed }
+                }
+                event_target:second_portal_system = { 
+                    while = { count = 3
+                        closest_system = {
+                            limit = {
+                                has_star_flag = candidate_system@root
+                                NOR = { 
+                                    is_same_value = event_target:fleet_system
+                                    has_star_flag = targeting_system_second@root
+                                }
+                            }
+                            set_timed_star_flag = { flag = targeting_system_second@root days = 1 }
+                        }
+                    }
+                }
+            }
+            if = {
+                limit = { 
+                    has_global_flag = third_portal_2_opened
+                    NOT = { has_global_flag = third_portal_2_destroyed }
+                }
+                event_target:third_portal_system = { 
+                    while = { count = 3
+                        closest_system = {
+                            limit = {
+                                has_star_flag = candidate_system@root
+                                NOR = { 
+                                    is_same_value = event_target:fleet_system
+                                    has_star_flag = targeting_system_third@root
+                                }
+                            }
+                            set_timed_star_flag = { flag = targeting_system_third@root days = 1 }
+                        }
+                    }
+                }
+            }
+        }
+        event_target:fleet_system = {
+            closest_system = {
+                limit = {
+                    OR = {
+                        has_star_flag = targeting_system@root
+                        has_star_flag = targeting_system_second@root
+                        has_star_flag = targeting_system_third@root
+                    }
+                    NOT = { has_star_flag = defening_system@root }
+                }
+                min_steps = 2
+                random_system = {
+                    limit = { has_star_flag = defening_system@root }
+                    remove_star_flag = defening_system@root
+                }
+                set_timed_star_flag = { flag = defening_system@root days = 360 }
+            }
+        }
+        event_target:wg_resistant_country = {
+            every_owned_fleet = {
+                limit = { has_fleet_flag = ra_defence_fleet@root }
+                queue_actions = {
+                    find_closest_system = {
+                        trigger = {
+                            id = wg_crisis.32.t1
+                            has_star_flag = defening_system@root
+                        }
+                        found_system = {
+                            move_to = this
+                            wait = 100
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+country_event = {
+    id = wg_crisis.33
+    title = wg_crisis.33.name
+    desc = wg_crisis.33.desc
+    picture = GFX_evt_fleet_neutral
+    is_triggered_only = yes
+
+    option = {
+        name = EXCELLENT
+    }
+}
+
+country_event = {
+    id = wg_crisis.34
+    title = wg_crisis.33.name
+    desc = wg_crisis.34.desc
+    picture = GFX_evt_fleet_neutral
+    is_triggered_only = yes
+
+    option = {
+        name = wg_crisis.34.a
+    }
+    option = {
+        name = wg_crisis.34.b
+    }
+}
+
+# 月检触发
+event = {
+    id = wg_crisis.10035
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+        has_global_flag = wg_resistant_army_arrived
+    }
+
+    immediate = {
+        every_country = {
+            limit = { 
+                is_ai = no
+                NOT = { has_country_flag = fail_to_pay_fees }
+                OR = {
+                    has_country_flag = ra_fleet_pay_monthly_wg_country
+                    has_country_flag = ra_fleet_pay_monthly_normal_country
+                    has_modifier = ra_vip
+                    has_modifier = ra_vip_sh
+                    has_country_flag = ra_fleet_pay_monthly_stargirl_country
+                    has_modifier = ra_vip_swg
+                }
+            }
+            country_event = { id = wg_crisis.35 }
+        }
+    }
+}
+
+# 分期付款途中资源归0
+country_event = {
+    id = wg_crisis.35
+    title = wg_crisis.35.name
+    desc = wg_crisis.35.desc
+    is_triggered_only = yes
+    picture = GFX_evt_ship_offloading_cargo
+
+    trigger = {
+        OR = {
+            AND = {
+                has_country_flag = ra_fleet_pay_monthly_wg_country
+                OR = {
+                    resource_stockpile_compare = { resource = alloys value <= 0 }
+                    resource_stockpile_compare = { resource = energy value <= 0 }
+                    resource_stockpile_compare = { resource = sr_pantsu value <= 0 }
+                }
+            }
+            AND = {
+                has_country_flag = ra_fleet_pay_monthly_normal_country
+                OR = {
+                    resource_stockpile_compare = { resource = alloys value <= 0 }
+                    resource_stockpile_compare = { resource = energy value <= 0 }
+                    resource_stockpile_compare = { resource = exotic_gases value <= 0 }
+                    resource_stockpile_compare = { resource = rare_crystals value <= 0 }
+                    resource_stockpile_compare = { resource = volatile_motes value <= 0 }
+                }
+            }
+            AND = {
+                has_modifier = ra_vip
+                OR = {
+                    resource_stockpile_compare = { resource = alloys value <= 0 }
+                    resource_stockpile_compare = { resource = energy value <= 0 }
+                    resource_stockpile_compare = { resource = consumer_goods value <= 0 }
+                    resource_stockpile_compare = { resource = sr_alpha value <= 0 }
+                }
+            }
+            AND = {
+                has_modifier = ra_vip_sh
+                OR = {
+                    resource_stockpile_compare = { resource = alloys value <= 0 }
+                    resource_stockpile_compare = { resource = energy value <= 0 }
+                    resource_stockpile_compare = { resource = consumer_goods value <= 0 }
+                    resource_stockpile_compare = { resource = sr_se value <= 0 }
+                }
+            }
+            AND = { # 星战舰娘独特资源
+                OR = {
+                    has_country_flag = ra_fleet_pay_monthly_stargirl_country
+                    has_modifier = ra_vip_swg
+                }
+                OR = {
+                    resource_stockpile_compare = { resource = alloys value <= 0 }
+                    resource_stockpile_compare = { resource = energy value <= 0 }
+                    resource_stockpile_compare = { resource = consumer_goods value <= 0 }
+                    resource_stockpile_compare = { resource = sr_tibanna_swgs value <= 0 }
+                    resource_stockpile_compare = { resource = sr_kyber_swgs value <= 0 }
+                }
+            }
+        }
+        NOT = { has_country_flag = fail_to_pay_fees }
+    }
+
+    immediate = {
+        set_country_flag = fail_to_pay_fees
+        if = {
+            limit = {
+                has_wg_special_authority = yes
+            }
+            remove_modifier = pay_alloys_for_resistant_fleet_base
+            remove_modifier = pay_energy_for_resistant_fleet_base
+            if = {
+                limit = { is_wg_empire = yes }
+                remove_modifier = pay_sr_pantsu_for_resistant_fleet_base
+            } else = {
+                remove_modifier = pay_sr_tibanna_swgs_for_resistant_fleet_base
+                remove_modifier = pay_sr_kyber_swgs_for_resistant_fleet_base
+            }
+            if = {
+                limit = { check_variable = { which = "ra_fleet_cd1" value > 0 }}
+                change_variable = { which = "ra_fleet_cd1" value = 500 }
+            }
+            if = {
+                limit = { check_variable = { which = "ra_construct_cd1" value > 0 }}
+                change_variable = { which = "ra_construct_cd1" value = 500 }
+            }
+            if = {
+                limit = { check_variable = { which = "ra_fleet_cd2" value > 0 }}
+                change_variable = { which = "ra_fleet_cd2" value = 500 }
+            }
+            if = {
+                limit = { check_variable = { which = "ra_construct_cd2" value > 0 }}
+                change_variable = { which = "ra_construct_cd2" value = 500 }
+            }
+            if = {
+                limit = { 
+                    OR = { 
+                        has_modifier = ra_vip
+                        has_modifier = ra_vip_sh 
+                        has_modifier = ra_vip_swg
+                    }
+                }
+                remove_country_flag = ra_vip
+                set_country_flag = fail_to_pay_vip
+            }
+        }
+        else = {
+            if = {
+                limit = { check_variable = { which = "ra_fleet_cd1" value > 0 }}
+                change_variable = { which = "ra_fleet_cd1" value = 900 }
+            }
+            if = {
+                limit = { check_variable = { which = "ra_construct_cd1" value > 0 }}
+                change_variable = { which = "ra_construct_cd1" value = 900 }
+            }
+        }
+    }
+
+    after = {
+        country_event = { id = wg_crisis.36 }
+    }
+
+    option = {
+        name = wg_crisis.35.a
+    }
+
+}
+
+# 反抗军视窗: 没资源交款
+country_event = {
+    id = wg_crisis.36
+    title = "TRANSMISSION"
+
+    diplomatic = yes
+	force_open = yes
+
+    picture_event_data = {
+        room = "resistant_army_room"
+    }
+
+    is_triggered_only = yes
+
+    desc = {
+        trigger = { NOT = { has_country_flag = fail_to_pay_vip }}
+        text = wg_crisis.36.desc_1
+    }
+
+    desc = {
+        trigger = { has_country_flag = fail_to_pay_vip }
+        text = wg_crisis.36.desc_2
+    }
+
+    # 普通帝国（船没交付）
+    option = {
+        trigger = {
+            NOR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+            check_variable = { which = "ra_construct_cd1" value > 0}
+        }
+        name = wg_crisis.36.a
+        response_text = wg_crisis.36.a.response_1
+        remove_modifier = pay_alloys_for_resistant_fleet_base
+        remove_modifier = pay_energy_for_resistant_fleet_base
+        remove_modifier = pay_rare_resources_for_resistant_fleet_base
+    }
+
+    # 普通帝国（船已交付）
+    option = {
+        trigger = {
+            NOR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+            check_variable = { which = "ra_construct_cd1" value < 1}
+        }
+        name = wg_crisis.36.a
+        response_text = wg_crisis.36.a.response_2
+        remove_modifier = pay_alloys_for_resistant_fleet_base
+        remove_modifier = pay_energy_for_resistant_fleet_base
+        remove_modifier = pay_rare_resources_for_resistant_fleet_base
+    }
+
+    # 舰娘（船没交付）
+    option = {
+        trigger = {
+            OR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+            NOT = { has_country_flag = fail_to_pay_vip }
+            check_variable = { which = "ra_construct_cd1" value > 0}
+        }
+        name = wg_crisis.36.b
+        response_text = wg_crisis.36.b.response_1
+    }
+
+    # 舰娘（船已交付）
+    option = {
+        trigger = {
+            OR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+            NOT = { has_country_flag = fail_to_pay_vip }
+            check_variable = { which = "ra_construct_cd1" value < 1}
+        }
+        name = wg_crisis.36.b
+        response_text = wg_crisis.36.b.response_2
+    }
+
+    option = {
+        trigger = {
+            has_wg_special_authority = yes
+            has_country_flag = fail_to_pay_vip
+        }
+        name = wg_crisis.36.c
+        hidden_effect = { country_event = { id = wg_crisis.27 }}
+    }
+    
+}
+
+country_event = {
+    id = wg_crisis.27
+    title = "TRANSMISSION"
+
+    desc = {
+        trigger = { OR = {
+            check_variable = { which = "ra_construct_cd1" value > 0}
+            check_variable = { which = "ra_construct_cd2" value > 0}
+        }}
+        text = wg_crisis.27.desc_1
+    }
+
+    desc = {
+        trigger = { NOR = {
+            check_variable = { which = "ra_construct_cd1" value > 0}
+            check_variable = { which = "ra_construct_cd2" value > 0}
+        }}
+        text = wg_crisis.27.desc_2
+    }
+
+    diplomatic = yes
+	force_open = yes
+
+    picture_event_data = {
+        room = "resistant_army_room"
+    }
+
+    is_triggered_only = yes
+    after = {
+        while = { count = 2
+            remove_modifier = pay_alloys_for_resistant_fleet_base
+            remove_modifier = pay_energy_for_resistant_fleet_base
+            if = {
+                limit = { is_wg_empire = yes }
+                remove_modifier = pay_sr_pantsu_for_resistant_fleet_base
+            } else = {
+                remove_modifier = pay_sr_tibanna_swgs_for_resistant_fleet_base
+                remove_modifier = pay_sr_kyber_swgs_for_resistant_fleet_base
+            }
+        }
+    }
+
+    option = {
+        trigger = { 
+            has_authority = auth_warshipgirls 
+            NOR = {
+                has_technology = tech_wsg_senergy
+                has_country_flag = wg_ascension_path_project_s
+            }
+        }
+        name = wg_crisis.27.a
+        response_text = wg_crisis.27.a.response
+        remove_modifier = ra_vip
+        add_resource = {
+            energy = 15000
+            alloys = 15000
+            consumer_goods = 10000
+            sr_alpha = 1500
+        }
+    }
+
+    option = {
+        trigger = { 
+            OR = {
+                has_authority = auth_shenhai 
+                AND = {
+                    has_authority = auth_warshipgirls
+                    OR = {
+                        has_technology = tech_wsg_senergy
+                        has_country_flag = wg_ascension_path_project_s
+                    }
+                }
+            }
+        }
+        name = wg_crisis.27.a
+        response_text = wg_crisis.27.a.response
+        remove_modifier = ra_vip_sh
+        add_resource = {
+            energy = 15000
+            alloys = 15000
+            consumer_goods = 10000
+            sr_se = 1500
+        }
+    }
+
+    option = { #星战舰娘欠款补偿金
+        trigger = { has_authority = auth_starshipgirls }
+        name = wg_crisis.27.a
+        response_text = wg_crisis.27.a.response
+        remove_modifier = ra_vip_swg
+        add_resource = {
+            energy = 15000
+            alloys = 15000
+            consumer_goods = 10000
+            sr_tibanna_swgs = 3000
+            sr_kyber_swgs = 1500
+        }
+    }
+}
+
+# 反抗军攻击传送门
+country_event = {
+    id = wg_crisis.37
+    hide_window = yes
+    trigger = {
+        has_global_flag = wg_resistant_army_arrived
+        is_country_type = wg_resistant_army
+		any_owned_fleet = {
+			has_fleet_flag = resistance_attack_fleet
+			is_fleet_idle = yes
+		}
+    }
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+    immediate = {
+        if = {
+            limit = { NOT = { has_global_flag = first_portal_destroyed }}
+            event_target:first_portal_system = {
+                save_event_target_as = portal_system
+            }
+        }
+        else_if = {
+            limit = { has_global_flag = wg_crisis_insane }
+            if = {
+                limit = { NOT = { has_global_flag = second_portal_destroyed }}
+                event_target:second_portal_system = {
+                    save_event_target_as = portal_system
+                }
+            }
+            else_if = {
+                limit = { NOT = { has_global_flag = third_portal_destroyed }}
+                event_target:third_portal_system = {
+                    save_event_target_as = portal_system
+                }
+            }
+        }
+        if = {
+            limit = { NOT = { has_global_flag = first_portal_2_destroyed }}
+            event_target:first_portal_2_system = {
+                save_event_target_as = portal_system
+            }
+        }
+        else_if = {
+            limit = { has_global_flag = wg_crisis_insane }
+            if = {
+                limit = { NOT = { has_global_flag = second_portal_2_destroyed }}
+                event_target:second_portal_2_system = {
+                    save_event_target_as = portal_system
+                }
+            }
+            else_if = {
+                limit = { NOT = { has_global_flag = third_portal_2_destroyed }}
+                event_target:third_portal_2_system = {
+                    save_event_target_as = portal_system
+                }
+            }
+        }
+        every_owned_fleet = {
+			limit = {
+				has_fleet_flag = resistance_attack_fleet
+				is_fleet_idle = yes
+			}
+			queue_actions = {
+                move_to = event_target:portal_system
+			}
+		}
+    }
+}
+
+# 反抗军vip
+country_event = {
+    id = wg_crisis.38
+    title = "TRANSMISSION"
+    is_triggered_only = yes
+
+    desc = {
+        trigger = { 
+            has_authority = auth_warshipgirls 
+            NOR = { 
+                has_country_flag = wg_ascension_path_project_s 
+                has_technology = tech_wsg_senergy
+            }
+        }
+        text = wg_crisis.38.desc
+    }
+    desc = {
+        trigger = { 
+            OR = {
+                has_authority = auth_shenhai 
+                AND = {
+                    has_authority = auth_warshipgirls
+                    OR = {
+                        has_country_flag = wg_ascension_path_project_s
+                        has_technology = tech_wsg_senergy
+                    }
+                }
+            }
+        }
+        text = wg_crisis.38.desc_2
+    }
+    desc = {
+        trigger = { has_authority = auth_starshipgirls }
+        text = wg_crisis.38.desc_3
+    }
+
+    diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = "resistant_army_room"
+    }
+
+    option = {
+        trigger = { 
+            has_authority = auth_warshipgirls 
+            has_authority = auth_warshipgirls 
+            NOR = { 
+                has_country_flag = wg_ascension_path_project_s 
+                has_technology = tech_wsg_senergy
+            }
+        }
+        name = wg_crisis.38.a
+        add_modifier = { modifier = ra_vip days = -1 }
+        response_text = wg_crisis.38.a.response
+        hidden_effect = { 
+            set_country_flag = ra_vip
+            set_timed_country_flag = { flag = cancel_vip_cd days = 1440 }
+        }
+        remove_country_flag = ra_diplo_engaged
+    }
+
+    option = {
+        trigger = { 
+            OR = {
+                has_authority = auth_shenhai 
+                AND = {
+                    has_authority = auth_warshipgirls
+                    OR = {
+                        has_country_flag = wg_ascension_path_project_s
+                        has_technology = tech_wsg_senergy
+                    }
+                }
+            } 
+        }
+        name = wg_crisis.38.a
+        add_modifier = { modifier = ra_vip_sh days = -1 }
+        response_text = wg_crisis.38.a.response
+        hidden_effect = { 
+            set_country_flag = ra_vip
+            set_timed_country_flag = { flag = cancel_vip_cd days = 1440 }
+        }
+        remove_country_flag = ra_diplo_engaged
+    }
+
+    option = {
+        trigger = { has_authority = auth_starshipgirls }
+        name = wg_crisis.38.a
+        add_modifier = { modifier = ra_vip_swg days = -1 }
+        response_text = wg_crisis.38.a.response
+        hidden_effect = { 
+            set_country_flag = ra_vip
+            set_timed_country_flag = { flag = cancel_vip_cd days = 1440 }
+        }
+        remove_country_flag = ra_diplo_engaged
+    }
+
+    option = {
+        trigger = { has_authority = auth_warshipgirls }
+        name = wg_crisis.38.b
+        hidden_effect = { remove_country_flag = ra_diplo_engaged }
+        default_hide_option = yes
+    }
+
+    option = {
+        trigger = { has_authority = auth_shenhai }
+        name = wg_crisis.38.c
+        hidden_effect = { remove_country_flag = ra_diplo_engaged }
+        default_hide_option = yes
+    }
+
+    option = {
+        trigger = { has_authority = auth_starshipgirls }
+        name = wg_crisis.38.d
+        hidden_effect = { remove_country_flag = ra_diplo_engaged }
+        default_hide_option = yes
+    }
+
+    option = {
+        name = wg_crisis.59.e
+        hidden_effect = { 
+            country_event = { id = wg_crisis.23 }
+        }
+    }
+}
+
+# 循环刷反抗军进攻传送门舰队
+country_event = {
+    id = wg_crisis.62
+    hide_window = yes
+	is_triggered_only = yes
+
+    trigger = {
+        is_country_type = wg_resistant_army
+        NOR = { 
+            has_global_flag = all_portal_destroyed
+            has_global_flag = resistance_reinforce_cooldown
+        }
+        NOR = {
+            has_global_flag = wg_crisis_very_easy
+            has_global_flag = wg_crisis_easy
+        }
+    }
+
+    immediate = {
+        every_owned_fleet = {
+            limit = { has_fleet_flag = resistance_attack_fleet }
+            delete_fleet = this
+        }
+        country_event = { id = wg_crisis.62 days = 800 random = 400 }
+        country_event = { id = wg_crisis.30 days = 30 random = 15}
+        every_playable_country = {
+            country_event = { id = wg_crisis.63 }
+        }
+    }
+}
+
+country_event = {
+    id = wg_crisis.63
+    title = "TRANSMISSION"
+    desc = wg_crisis.62.desc
+	is_triggered_only = yes
+
+    diplomatic = yes
+	force_open = yes
+
+	picture_event_data = {
+		room = "resistant_army_room"
+	}
+
+    option = {
+        name = OK
+    }
+}
+
+#击退天灾
+country_event = {
+    id = wg_crisis.52
+    title = "TRANSMISSION"
+    fire_only_once = yes
+
+    trigger = {
+        NOT = { has_global_flag = wg_crisis_very_easy }
+    }
+
+    desc = {
+        trigger = {
+            NOR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+        }
+        text = wg_crisis.52.desc.a
+    }
+
+    desc = {
+        trigger = {
+            OR = {
+                has_authority = auth_shenhai
+                has_authority = auth_warshipgirls
+            }
+        }
+        text = wg_crisis.52.desc.b
+    }
+
+    diplomatic = yes
+    force_open = yes
+    
+    immediate = {
+		hidden_effect = {
+			remove_country_flag = ra_vip
+			remove_modifier = ra_vip
+            remove_modifier = ra_vip_sh
+            remove_modifier = ra_vip_swg
+            remove_modifier = pay_energy_for_resistant_fleet_base
+            remove_modifier = pay_alloys_for_resistant_fleet_base
+            remove_modifier = pay_rare_resources_for_resistant_fleet_base
+            remove_modifier = pay_sr_kyber_swgs_for_resistant_fleet_base
+            remove_modifier = pay_sr_pantsu_for_resistant_fleet_base
+            remove_modifier = pay_sr_tibanna_swgs_for_resistant_fleet_base
+		}
+	}
+
+    
+    picture_event_data = {
+        room = "resistant_army_room"
+    }
+
+    is_triggered_only = yes
+
+    option = {
+        name = wg_crisis.52.a
+        add_monthly_resource_mult = {
+			resource = unity
+			value = 50
+		}
+    }
+
+    option = {
+        trigger = {
+            has_authority = auth_warshipgirls
+        }
+        name = wg_crisis.52.b
+        add_monthly_resource_mult = {
+			resource = unity
+			value = 50
+		}
+    }
+
+    option = {
+        trigger = {
+            has_authority = auth_shenhai
+        }
+        name = wg_crisis.52.c
+        add_monthly_resource_mult = {
+			resource = unity
+			value = 50
+		}
+    }
+}
+
+# 问情报
+country_event = {
+	id = wg_crisis.59
+	title = "TRANSMISSION"
+    desc = wg_crisis.59.desc
+
+    diplomatic = yes
+	force_open = yes
+    
+    picture_event_data = {
+        room = "resistant_army_room"
+    }
+
+    is_triggered_only = yes
+
+    #第一次问奖励凝聚力
+    option = {
+        trigger = {
+            has_wg_special_authority = yes
+            NOT = { has_country_flag = asked_resistanct_army_intel1 }
+        }
+        name = wg_crisis.59.a
+        response_text = wg_crisis.59.a.response
+        is_dialog_only = yes
+        add_resource = { unity = 2000 }
+        hidden_effect = {
+            set_country_flag = asked_resistanct_army_intel1
+        }
+    }
+
+    #第一次问奖励影响力
+    option = {
+        trigger = {
+            has_wg_special_authority = yes
+            NOT = { has_country_flag = asked_resistanct_army_intel2 }
+        }
+        name = wg_crisis.59.b
+        response_text = wg_crisis.59.b.response
+        is_dialog_only = yes
+        add_resource = { influence = 50 }
+        hidden_effect = {
+            set_country_flag = asked_resistanct_army_intel2
+        }
+    }
+
+    option = {
+        trigger = {
+            has_wg_special_authority = yes
+            has_country_flag = asked_resistanct_army_intel1
+        }
+        name = wg_crisis.59.a
+        response_text = wg_crisis.59.a.response
+        is_dialog_only = yes
+    }
+
+    option = {
+        trigger = {
+            has_wg_special_authority = yes
+            has_country_flag = asked_resistanct_army_intel2
+        }
+        name = wg_crisis.59.b
+        response_text = wg_crisis.59.b.response
+        is_dialog_only = yes
+    }
+
+    option = {
+        trigger = { NOT = { has_modifier = buff_vs_uf } }
+        allow = { resource_stockpile_compare = { resource = energy value > 2000 }}
+        name = wg_crisis.59.c
+        response_text = wg_crisis.59.c.response
+        add_modifier = { modifier = buff_vs_uf days = -1 }
+        add_resource = { energy = -2000 }
+        hidden_effect = { remove_country_flag = ra_diplo_engaged }
+    }
+
+    option = {
+        name = wg_crisis.59.d
+        hidden_effect = { remove_country_flag = ra_diplo_engaged }
+        default_hide_option = yes
+    }
+
+    option = {
+        name = wg_crisis.59.e
+        hidden_effect = { 
+            country_event = { id = wg_crisis.23 }
+        }
+    }
+}
+
+# 合并反抗军舰队前设置变数
+# 需要合并反抗军的话先呼叫此事件
+country_event = {
+    id = wg_crisis.64
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        set_variable = { which = "ra_fleet_id" value = 0 }
+        every_controlled_fleet = {
+            limit = { 
+                exists = this
+                has_fleet_flag = fleet_bought_from_resistance
+                NOT = { has_fleet_flag = removed_fleet }
+                is_in_combat = no
+            }
+            ROOT = { change_variable = { which = "ra_fleet_id" value = 1 }}
+            set_variable = { which = "ra_fleet_id" value = ROOT.ra_fleet_id }
+            count_ra_fleet_ships = yes
+            if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 1 }}
+                save_event_target_as = ra_fleet_1
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 2 }}
+                save_event_target_as = ra_fleet_2
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 3 }}
+                save_event_target_as = ra_fleet_3
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 4 }}
+                save_event_target_as = ra_fleet_4
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 5 }}
+                save_event_target_as = ra_fleet_5
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 6 }}
+                save_event_target_as = ra_fleet_6
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 7 }}
+                save_event_target_as = ra_fleet_7
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 8 }}
+                save_event_target_as = ra_fleet_8
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 9 }}
+                save_event_target_as = ra_fleet_9
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 10 }}
+                save_event_target_as = ra_fleet_10
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 11 }}
+                save_event_target_as = ra_fleet_11
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 12 }}
+                save_event_target_as = ra_fleet_12
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 13 }}
+                save_event_target_as = ra_fleet_13
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 14 }}
+                save_event_target_as = ra_fleet_14
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 15 }}
+                save_event_target_as = ra_fleet_15
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 16 }}
+                save_event_target_as = ra_fleet_16
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 17 }}
+                save_event_target_as = ra_fleet_17
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 18 }}
+                save_event_target_as = ra_fleet_18
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 19 }}
+                save_event_target_as = ra_fleet_19
+            }
+            else_if = {
+                limit = { check_variable = { which = "ra_fleet_id" value = 20 }}
+                save_event_target_as = ra_fleet_20
+            }
+        }
+        country_event = { id = wg_crisis.65 }
+    }
+}
+
+# 选择要合并的舰队
+country_event = {
+    id = wg_crisis.65
+    title = wg_crisis.65.name
+    picture = GFX_evt_federation_fleet
+    is_triggered_only = yes
+
+    trigger = {
+        OR = {
+            NOT = { has_active_event = { wg_crisis.65 }}
+            has_country_flag = first_fleet_chosen
+            FROM = { is_same_value = ROOT }
+            has_country_flag = rechoose_fleet
+        }
+    }
+
+    desc = {
+        trigger = { NOT = { has_country_flag = first_fleet_chosen }}
+        text = wg_crisis.65.desc_1
+    }
+    desc = {
+        trigger = { has_country_flag = first_fleet_chosen }
+        text = wg_crisis.65.desc_2
+    }
+
+    immediate = {
+        remove_country_flag = rechoose_fleet
+    }
+
+    option = {
+        name = wg_crisis.65.a
+        trigger = { has_country_flag = first_fleet_chosen }
+        hidden_effect = {
+            remove_country_flag = first_fleet_chosen
+            set_country_flag = rechoose_fleet
+            every_controlled_fleet = {
+                remove_fleet_flag = first_chosen_fleet
+            }
+            country_event = { id = wg_crisis.65 }
+        }
+    }
+    option = {
+        name = wg_crisis.65.b
+        hidden_effect = {
+            reset_ra_variables = yes
+        }
+    }
+
+    option = {
+        name = ra_fleet_1_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 1 }
+            exists = event_target:ra_fleet_1
+            event_target:ra_fleet_1 = {
+                check_variable = { which = "ra_fleet_id" value = 1 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_1 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_1 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_2_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 2 }
+            exists = event_target:ra_fleet_2
+            event_target:ra_fleet_2 = {
+                check_variable = { which = "ra_fleet_id" value = 2 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_2 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_2 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_3_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 3 }
+            exists = event_target:ra_fleet_3
+            event_target:ra_fleet_3 = {
+                check_variable = { which = "ra_fleet_id" value = 3 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_3 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_3 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_4_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 4 }
+            exists = event_target:ra_fleet_4
+            event_target:ra_fleet_4 = {
+                check_variable = { which = "ra_fleet_id" value = 4 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_4 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_4 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_5_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 5 }
+            exists = event_target:ra_fleet_5
+            event_target:ra_fleet_5 = {
+                check_variable = { which = "ra_fleet_id" value = 5 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_5 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_5 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_6_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 6 }
+            exists = event_target:ra_fleet_6
+            event_target:ra_fleet_6 = {
+                check_variable = { which = "ra_fleet_id" value = 6 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_6 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_6 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_7_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 7 }
+            exists = event_target:ra_fleet_7
+            event_target:ra_fleet_7 = {
+                check_variable = { which = "ra_fleet_id" value = 7 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_7 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_7 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_8_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 8 }
+            exists = event_target:ra_fleet_8
+            event_target:ra_fleet_8 = {
+                check_variable = { which = "ra_fleet_id" value = 8 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_8 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_8 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_9_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 9 }
+            exists = event_target:ra_fleet_9
+            event_target:ra_fleet_9 = {
+                check_variable = { which = "ra_fleet_id" value = 9 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_9 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_9 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_10_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 10 }
+            exists = event_target:ra_fleet_10
+            event_target:ra_fleet_10 = {
+                check_variable = { which = "ra_fleet_id" value = 10 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_10 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_10 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_11_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 11 }
+            exists = event_target:ra_fleet_11
+            event_target:ra_fleet_11 = {
+                check_variable = { which = "ra_fleet_id" value = 11 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_11 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_11 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_12_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 12 }
+            exists = event_target:ra_fleet_12
+            event_target:ra_fleet_12 = {
+                check_variable = { which = "ra_fleet_id" value = 12 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_12 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_12 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_13_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 13 }
+            exists = event_target:ra_fleet_13
+            event_target:ra_fleet_13 = {
+                check_variable = { which = "ra_fleet_id" value = 13 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_13 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_13 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_14_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 14 }
+            exists = event_target:ra_fleet_14
+            event_target:ra_fleet_14 = {
+                check_variable = { which = "ra_fleet_id" value = 14 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_14 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_14 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_15_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 15 }
+            exists = event_target:ra_fleet_15
+            event_target:ra_fleet_15 = {
+                check_variable = { which = "ra_fleet_id" value = 15 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_15 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_15 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_16_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 16 }
+            exists = event_target:ra_fleet_16
+            event_target:ra_fleet_16 = {
+                check_variable = { which = "ra_fleet_id" value = 16 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_16 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_16 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_17_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 17 }
+            exists = event_target:ra_fleet_17
+            event_target:ra_fleet_17 = {
+                check_variable = { which = "ra_fleet_id" value = 17 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_17 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_17 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_18_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 18 }
+            exists = event_target:ra_fleet_18
+            event_target:ra_fleet_18 = {
+                check_variable = { which = "ra_fleet_id" value = 18 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_18 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_18 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_19_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 19 }
+            exists = event_target:ra_fleet_19
+            event_target:ra_fleet_19 = {
+                check_variable = { which = "ra_fleet_id" value = 19 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_19 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_19 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+    option = {
+        name = ra_fleet_20_name
+        trigger = { 
+            check_variable = { which = "ra_fleet_id" value >= 20 }
+            exists = event_target:ra_fleet_20
+            event_target:ra_fleet_20 = {
+                check_variable = { which = "ra_fleet_id" value = 20 }
+                NOT = { has_fleet_flag = first_chosen_fleet }
+            }
+        }
+        hidden_effect = {
+            if = { 
+                limit = { NOT = { has_country_flag = first_fleet_chosen }}
+                set_country_flag = first_fleet_chosen
+                event_target:ra_fleet_20 = { set_fleet_flag = first_chosen_fleet }
+                country_event = { id = wg_crisis.65 }
+            }
+            else = {
+                event_target:ra_fleet_20 = { set_fleet_flag = second_chosen_fleet }
+                country_event = { id = wg_crisis.66 }
+            }
+        }
+    }
+}
+
+country_event = {
+    id = wg_crisis.66
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = {
+            limit = { NOT = { has_country_flag = merge_disband_fleet }}
+            random_controlled_fleet = {
+                limit = { has_fleet_flag = first_chosen_fleet }
+                save_event_target_as = first_fleet
+            }
+        }
+        random_controlled_fleet = {
+            limit = { has_fleet_flag = second_chosen_fleet }
+            save_event_target_as = second_fleet
+        }
+        event_target:second_fleet = {
+            set_variable = { which = "new_titan_count" value = event_target:first_fleet.titan_count }
+            change_variable = { which = "new_titan_count" value = titan_count }
+            set_variable = { which = "new_bb_count" value = event_target:first_fleet.bb_count }
+            change_variable = { which = "new_bb_count" value = bb_count }
+            set_variable = { which = "new_dd_count" value = event_target:first_fleet.dd_count }
+            change_variable = { which = "new_dd_count" value = dd_count }
+            # 计算舰队规模
+            change_variable = { which = "new_fleet_size" value = "new_titan_count" }
+            multiply_variable = { which = "new_fleet_size" value = 16 }
+            change_variable = { which = "new_bb_size" value = "new_bb_count" }
+            multiply_variable = { which = "new_bb_size" value = 8 }
+            change_variable = { which = "new_dd_size" value = "new_dd_count" }
+            multiply_variable = { which = "new_dd_size" value = 2 }
+            change_variable = { which = "new_fleet_size" value = "new_bb_size" }
+            change_variable = { which = "new_fleet_size" value = "new_dd_size" }
+            set_variable = { which = "new_bb_size" value = 0 }
+            set_variable = { which = "new_dd_size" value = 0 }
+            if = {
+                limit = {
+                    check_variable = { which = "new_titan_count" value <= 8 }
+                    check_variable = { which = "new_bb_count" value <= 35 }
+                    check_variable = { which = "new_dd_count" value <= 70 }
+                    check_variable = { which = "new_fleet_size" value <= 500 }
+                }
+                event_target:first_fleet = {
+                    set_fleet_flag = removed_fleet
+                    delete_fleet = {
+                        target = this
+                        kill_leader = no
+                        destroy_template = yes
+                    }
+                }
+                event_target:second_fleet = {
+                    set_fleet_flag = removed_fleet
+                    delete_fleet = {
+                        target = this
+                        kill_leader = no
+                        destroy_template = yes
+                    }
+                }
+                create_fleet = {
+                    name = "NAME_Resistance_Fleet"
+                    effect = {
+                        set_owner = PREV
+                        while = {
+                            count = "new_titan_count"
+                            create_ship = {
+                                name = random
+                                design = "NAME_WG_RA_TITAN"
+                                graphical_culture = "mammalian_01"
+                                upgradable = no
+                            }
+                        }
+                        while = {
+                            count = "new_bb_count"
+                            create_ship = {
+                                name = random
+                                design = "NAME_WG_RA_BB"
+                                graphical_culture = "mammalian_01"
+                                upgradable = no
+                            }
+                        }
+                        while = {
+                            count = "new_dd_count"
+                            create_ship = {
+                                name = random
+                                design = "NAME_WG_RA_DD"  
+                                graphical_culture = "mammalian_01"
+                                upgradable = no
+                            }
+                        }
+                        set_location = {
+                            target = event_target:second_fleet
+                            distance = 5
+                            angle = random
+                        }
+                        set_fleet_stance = aggressive
+                        set_aggro_range_measure_from = self
+                        set_aggro_range = 500
+                        add_modifier = { modifier = reduce_fleet_maintenance_95pc days = -1 }
+                        set_fleet_flag = fleet_bought_from_resistance
+                        set_variable = { which = "titan_count" value = PREV.new_titan_count }
+                        set_variable = { which = "bb_count" value = PREV.new_bb_count }
+                        set_variable = { which = "dd_count" value = PREV.new_dd_count }
+                        set_variable = { which = "ra_fleet_id" value = 0 }
+                        set_variable = { which = "new_titan_count" value = 0 }
+                        set_variable = { which = "new_bb_count" value = 0 }
+                        set_variable = { which = "new_dd_count" value = 0 }	
+                    }
+                    settings = { 
+                        can_upgrade = no 
+                        can_change_composition = no 
+                        uses_naval_capacity = yes
+                    }
+                }
+                update_ra_fleet_count = yes
+                country_event = { id = wg_crisis.67 }
+            }
+            else = {
+                country_event = { id = wg_crisis.68 }
+            }
+        }
+        
+        remove_country_flag = merge_disband_fleet
+        reset_ra_variables = yes
+    }
+}
+
+country_event = {
+    id = wg_crisis.67
+    title = wg_crisis.67.name
+    desc = wg_crisis.67.desc
+    picture = GFX_evt_fleet_neutral
+    show_sound = event_ship_thrusters
+    is_triggered_only = yes
+
+    option = {
+        name = OK
+    }
+}
+
+country_event = {
+    id = wg_crisis.68
+    title = wg_crisis.68.name
+    desc = wg_crisis.68.desc
+    picture = GFX_evt_fleet_good
+    show_sound = event_sensor_ping
+    is_triggered_only = yes
+
+    option = {
+        name = OK
+    }
+}
+
+country_event = {
+    id = wg_crisis.69
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        set_variable = { which = "reflesh_count" value = 10 }
+        country_event = { id = wg_crisis.69 days = 3600 }
+    }
+
+}
+
+# 反抗军舰队被摧毁，重新计算拥有的舰队数
+country_event = {
+    id = wg_crisis.70
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+        FROMFROM = { has_fleet_flag = fleet_bought_from_resistance }
+    }
+
+    immediate = {
+        FROMFROM = {
+            set_fleet_flag = removed_fleet
+        }
+        update_ra_fleet_count = yes
+    }
+}
+
+# 解散反抗军舰队，并询问是否要合并舰队
+country_event = {
+    id = wg_crisis.71
+    title = wg_crisis.71.name
+    desc = wg_crisis.71.desc
+    picture = GFX_evt_unknown_ships
+    show_sound = event_sensor_ping
+    is_triggered_only = yes
+
+    trigger = {
+        FROM = { has_fleet_flag = fleet_bought_from_resistance }
+        check_variable = { which = "ra_fleet_count" value >= 2 }
+    }
+
+    immediate = {
+        FROM = { 
+            set_fleet_flag = removed_fleet
+            set_fleet_flag = first_chosen_fleet
+        }
+        set_variable = { which = "titan_count" value = FROM.titan_count }
+        set_variable = { which = "bb_count" value = FROM.bb_count }
+        set_variable = { which = "dd_count" value = FROM.dd_count }
+    }
+
+    option = {
+        name = wg_crisis.71.a
+        hidden_effect = {
+            update_ra_fleet_count = yes
+            set_variable = { which = "titan_count" value = 0 }
+            set_variable = { which = "bb_count" value = 0 }
+            set_variable = { which = "dd_count" value = 0 }
+        }
+    }
+
+    option = {
+        name = wg_crisis.71.b
+        hidden_effect = {
+            set_country_flag = first_fleet_chosen
+            set_country_flag = merge_disband_fleet
+            country_event = { id = wg_crisis.64 }
+        }
+    }
+}
+
+# 反抗军舰队在战斗胜出，重新计算舰船数量
+country_event = {
+    id = wg_crisis.72
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+        OR = {
+            AND = { FROMFROM = { has_fleet_flag = fleet_bought_from_resistance }}
+            AND = { FROMFROMFROM = { 
+                exists = this
+                has_fleet_flag = fleet_bought_from_resistance
+            }}
+        }
+    }
+
+    immediate = {
+        FROMFROM = {
+            if = {
+                limit = { has_fleet_flag = fleet_bought_from_resistance }
+                count_ra_fleet_ships = yes
+            }
+        }
+        FROMFROMFROM = {
+            if = {
+                limit = { has_fleet_flag = fleet_bought_from_resistance }
+                count_ra_fleet_ships = yes
+            }
+        }
+    }
+}
+
+# 反抗军领袖阵亡，降低持有领袖变数
+country_event = {
+    id = wg_crisis.73
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+        exists = FROM
+        FROM = { has_leader_flag = ra_admiral }
+    }
+
+    immediate = {
+        change_variable = { which = "buy_ra_leader_count" value = -1 }
+        if = {
+            limit = { 
+                FROM = { OR = {
+                    has_leader_flag = ra_enterprise 
+                    has_leader_flag = ra_VV
+                    has_leader_flag = ra_hood
+                    has_leader_flag = ra_rodney
+                    has_leader_flag = ra_yukikaze
+                }}
+            }
+            change_variable = { which = "SR_num" value = -1 }
+        }
+        else_if = {
+            limit = { 
+                FROM = { OR = {
+                    has_leader_flag = ra_lexington
+                    has_leader_flag = ra_missouri
+                    has_leader_flag = ra_taiho_sh
+                    has_leader_flag = ra_cobot
+                }}
+            }
+            change_variable = { which = "SSR_num" value = -1 }
+        }
+    }
+}
+
+country_event = {
+    id = wg_crisis.60
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = { 
+            limit = { 
+                OR = {
+                    NOT = { has_country_flag = remain_admiral_list }
+                    has_country_flag = reflesh_admiral_list
+                    check_variable = { which = "refresh_days" value < 1 }
+                }
+            }
+            if = {
+                limit = { NOT = { has_country_flag = ra_vip }}
+                random_list = {
+                    35 = {
+                        while = { count = 2
+                            generate_random_ra_admiral_list = yes
+                        }
+                    }
+                    45 = {
+                        while = { count = 3
+                            generate_random_ra_admiral_list = yes
+                        }
+                    }
+                    20 = {
+                        while = { count = 4
+                            generate_random_ra_admiral_list = yes
+                        }
+                    }
+                }
+            }
+            else = {
+                random_list = {
+                    35 = {
+                        while = { count = 3
+                            generate_random_ra_admiral_list = yes
+                        }
+                    }
+                    45 = {
+                        while = { count = 4
+                            generate_random_ra_admiral_list = yes
+                        }
+                    }
+                    20 = {
+                        while = { count = 5
+                            generate_random_ra_admiral_list = yes
+                        }
+                    }
+                }
+                if = {
+                    limit = { has_UR_admiral = yes }
+                    generate_random_ra_admiral_list = yes
+                }
+                else = {
+                    generate_random_greater_ra_admiral_list = yes
+                }
+            }
+        }
+        country_event = { id = wg_crisis.61 }
+    }
+}
+
+# 抽舰娘将军
+country_event = {
+    id = wg_crisis.61
+    title = "TRANSMISSION"
+
+    diplomatic = yes
+	force_open = yes
+    is_triggered_only = yes
+
+    picture_event_data = {
+        room = "resistant_army_room"
+    }
+
+    # 普通难度
+    desc = {
+        trigger = {
+            has_global_flag = wg_crisis_easy
+            NOT = { has_country_flag = ra_vip }
+            check_variable = { which = refresh_days value > 0 }
+        }
+        text = wg_crisis.61.desc.easy
+    }
+    desc = { # 刷新CD为0
+        trigger = {
+            has_global_flag = wg_crisis_easy
+            NOR = { 
+                has_country_flag = ra_vip 
+                check_variable = { which = refresh_days value > 0 }
+            }
+        }
+        text = wg_crisis.61.desc.easy_cd0
+    }
+    # 舰娘非vip
+    desc = {
+        trigger = {
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                has_country_flag = ra_vip 
+            }
+            check_variable = { which = refresh_days value > 0 }
+            check_variable = { which = buy_ra_leader_count value > 0 }
+        }
+        text = wg_crisis.61.desc.others
+    }
+    desc = { # 刷新CD为0
+        trigger = {
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                has_country_flag = ra_vip 
+                check_variable = { which = refresh_days value > 0 }
+            }
+            check_variable = { which = buy_ra_leader_count value > 0 }
+        }
+        text = wg_crisis.61.desc.others_cd0
+    }
+    desc = { # 购买将领为0
+        trigger = {
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                has_country_flag = ra_vip 
+                check_variable = { which = buy_ra_leader_count value > 0 }
+            }
+            check_variable = { which = refresh_days value > 0 }
+        }
+        text = wg_crisis.61.desc.others_count0
+    }
+    desc = { # 刷新CD为0, 购买将领为0
+        trigger = {
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                has_country_flag = ra_vip 
+                check_variable = { which = refresh_days value > 0 }
+                check_variable = { which = buy_ra_leader_count value > 0 }
+            }
+        }
+        text = wg_crisis.61.desc.others_cd0_count0
+    }
+    # vip
+    desc = { 
+        trigger = {
+            NOT = { has_global_flag = wg_crisis_easy }
+            has_country_flag = ra_vip
+            check_variable = { which = refresh_days value > 0 }
+            check_variable = { which = buy_ra_leader_count value > 0 }
+        }
+        text = wg_crisis.61.desc.others_vip
+    }
+    desc = { # 刷新CD为0
+        trigger = {
+            has_country_flag = ra_vip 
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                check_variable = { which = refresh_days value > 0 }
+            }
+            check_variable = { which = buy_ra_leader_count value > 0 }
+        }
+        text = wg_crisis.61.desc.others_vip_cd0
+    }
+    desc = { # 购买将领为0
+        trigger = {
+            has_country_flag = ra_vip 
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                check_variable = { which = buy_ra_leader_count value > 0 }
+            }
+            check_variable = { which = refresh_days value > 0 }
+        }
+        text = wg_crisis.61.desc.others_vip_count0
+    }
+    desc = { # 购买将领为0
+        trigger = {
+            has_country_flag = ra_vip 
+            NOR = {
+                has_global_flag = wg_crisis_easy
+                check_variable = { which = buy_ra_leader_count value > 0 }
+                check_variable = { which = refresh_days value > 0 }
+            }
+        }
+        text = wg_crisis.61.desc.others_vip_cd0_count0
+    }
+
+    immediate = {
+        if = {
+            limit = { has_country_flag = reflesh_admiral_list }
+            remove_country_flag = reflesh_admiral_list
+        }
+    }
+
+# 稀有级别：普通（R）
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_1 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.1
+        custom_tooltip = ra_admiral.1.desc
+        create_ra_admiral_1 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_2 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.2
+        custom_tooltip = ra_admiral.2.desc
+        create_ra_admiral_2 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_3 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.3
+        custom_tooltip = ra_admiral.3.desc
+        create_ra_admiral_3 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_4 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.4
+        custom_tooltip = ra_admiral.4.desc
+        create_ra_admiral_4 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_5 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.5
+        custom_tooltip = ra_admiral.5.desc
+        create_ra_admiral_5 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_6 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.6
+        custom_tooltip = ra_admiral.6.desc
+        create_ra_admiral_6 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_7 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.7
+        custom_tooltip = ra_admiral.7.desc
+        create_ra_admiral_7 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_8 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.8
+        custom_tooltip = ra_admiral.8.desc
+        create_ra_admiral_8 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_9 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.9
+        custom_tooltip = ra_admiral.9.desc
+        create_ra_admiral_9 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_10 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.10
+        custom_tooltip = ra_admiral.10.desc
+        create_ra_admiral_10 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_11 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.11
+        custom_tooltip = ra_admiral.11.desc
+        create_ra_admiral_11 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_12 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.12
+        custom_tooltip = ra_admiral.12.desc
+        create_ra_admiral_12 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        hidden_effect = {
+            clear_all_admiral_flags = yes
+            remove_country_flag = remain_admiral_list
+            set_timed_country_flag = { flag = recruited_resistant_leader days = 360 }
+            set_variable = { which = "recruit_leader_cd" value = 360 }
+            if = { limit = { NOT = { has_modifier = ninghai_buff }
+        }
+                add_modifier = { modifier = ninghai_buff days = -1 }
+            }
+        }
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_13 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.13
+        custom_tooltip = ra_admiral.13.desc
+        create_ra_admiral_13 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_14 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.14
+        custom_tooltip = ra_admiral.14.desc
+        create_ra_admiral_14 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_15 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 500 }
+        }
+        name = ra_admiral.15
+        custom_tooltip = ra_admiral.15.desc
+        create_ra_admiral_15 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -500 }
+        set_ra_admiral_datas = yes
+    }
+
+# 稀有级别：稀有（UR）
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_101 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 1000 }
+        }
+        name = ra_admiral.101
+        custom_tooltip = ra_admiral.101.desc
+        create_ra_admiral_101 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -1000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_102 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 1000 }
+        }
+        name = ra_admiral.102
+        custom_tooltip = ra_admiral.102.desc
+        create_ra_admiral_102 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -1000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_103 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 1000 }
+        }
+        name = ra_admiral.103
+        custom_tooltip = ra_admiral.103.desc
+        create_ra_admiral_103 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -1000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_104 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 1000 }
+        }
+        name = ra_admiral.104
+        custom_tooltip = ra_admiral.104.desc
+        create_ra_admiral_104 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -1000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_105 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 1000 }
+        }
+        name = ra_admiral.105
+        custom_tooltip = ra_admiral.105.desc
+        create_ra_admiral_105 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -1000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_106 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 1000 }
+        }
+        name = ra_admiral.106
+        custom_tooltip = ra_admiral.106.desc
+        create_ra_admiral_106 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -1000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_107 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 1000 }
+        }
+        name = ra_admiral.107
+        custom_tooltip = ra_admiral.107.desc
+        create_ra_admiral_107 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -1000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_108 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 1000 }
+        }
+        name = ra_admiral.108
+        custom_tooltip = ra_admiral.108.desc
+        create_ra_admiral_108 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -1000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_109 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 1000 }
+        }
+        name = ra_admiral.109
+        custom_tooltip = ra_admiral.109.desc
+        create_ra_admiral_109 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -1000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_110 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 1000 }
+        }
+        name = ra_admiral.110
+        custom_tooltip = ra_admiral.110.desc
+        create_ra_admiral_110 = yes
+        hidden_effect = { country_event = { id = raa_skill.9999 }}
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -1000 }
+        set_ra_admiral_datas = yes
+    }
+
+# 稀有级别：传奇（SR） 
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_201 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 2000 }
+        }
+        name = ra_admiral.201
+        custom_tooltip = ra_admiral.201.desc
+        create_ra_admiral_201 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -2000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_202 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 2000 }
+        }
+        name = ra_admiral.202
+        custom_tooltip = ra_admiral.202.desc
+        create_ra_admiral_202 = yes
+        hidden_effect = { country_event = { id = raa_skill.9999 }}
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -2000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_203 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 2000 }
+        }
+        name = ra_admiral.203
+        custom_tooltip = ra_admiral.203.desc
+        create_ra_admiral_203 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -2000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_204 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 2000 }
+        }
+        name = ra_admiral.204
+        custom_tooltip = ra_admiral.204.desc
+        create_ra_admiral_204 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -2000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_205 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 2000 }
+        }
+        name = ra_admiral.205
+        custom_tooltip = ra_admiral.205.desc
+        create_ra_admiral_205 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -2000 }
+        set_ra_admiral_datas = yes
+    }
+
+# 传奇将领(SSR)（最高难度限定）
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_1001 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 10000 }
+        }
+        name = ra_admiral.1001
+        custom_tooltip = ra_admiral.1001.desc
+        create_ra_admiral_1001 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -10000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_1002 
+        }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 10000 }
+        }
+        name = ra_admiral.1002
+        custom_tooltip = ra_admiral.1002.desc
+        create_ra_admiral_1002 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -10000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_1003 }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 10000 }
+        }
+        name = ra_admiral.1003
+        custom_tooltip = ra_admiral.1003.desc
+        create_ra_admiral_1003 = yes
+        response_text = wg_crisis.61.response
+        add_resource = { energy = -10000 }
+        set_ra_admiral_datas = yes
+    }
+    option = {
+        trigger = {
+            has_country_flag = ra_admiral_1004 }
+        allow = { 
+            custom_tooltip = {
+                is_reach_ra_leader_limit = no
+                fail_text = reach_ra_admiral_limit
+            }
+            resource_stockpile_compare = { resource = energy value > 10000 }
+        }
+        name = ra_admiral.1004
+        custom_tooltip = ra_admiral.1004.desc
+        create_ra_admiral_1004 = yes
+        response_text = wg_crisis.61.response
+        hidden_effect = { country_event = { id = raa_skill.9999 }}
+        add_resource = { energy = -10000 }
+        set_ra_admiral_datas = yes
+    }
+# 刷新
+
+    option = {
+        name = wg_crisis.61.a
+        trigger = { check_variable = { which = "reflesh_count" value > 0 }}
+        allow = { resource_stockpile_compare = { resource = energy value > 5000 }}
+        add_resource = { energy = -5000 }
+        hidden_effect = {
+            clear_all_admiral_flags = yes
+            set_country_flag = reflesh_admiral_list
+            change_variable = { which = "reflesh_count" value = -1 }
+            country_event = { id = wg_crisis.60 }
+        }
+    }
+
+# 返回
+    option = {
+        name = wg_crisis.59.e
+        hidden_effect = {
+            if = {
+                limit = {
+                    NOT = { has_country_flag = remain_admiral_list }
+                    check_variable = { which = "refresh_days" value < 1 }
+                }
+                set_timed_country_flag = { flag = remain_admiral_list days = 270 }
+                set_variable = { which = "refresh_days" value = 270 }
+            }
+            country_event = { id = wg_crisis.23 }
+        }
+    }
+
+# 退出
+    option = {
+        name = wg_crisis.24.c
+        hidden_effect = { 
+            remove_country_flag = ra_diplo_engaged
+            if = {
+                limit = {
+                    NOT = { has_country_flag = remain_admiral_list }
+                    check_variable = { which = "refresh_days" value < 1 }
+                }
+                set_timed_country_flag = { flag = remain_admiral_list days = 270 }
+                set_variable = { which = "refresh_days" value = 270 }
+            }
+        }
+        default_hide_option = yes
+    }
+
+}

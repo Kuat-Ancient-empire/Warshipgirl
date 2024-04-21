@@ -1,0 +1,205 @@
+Galo = {
+	trigger = {
+		owner = {
+			OR = { 	
+				is_country_type = wg_crisis_country
+				is_khan_country_type = yes
+				is_wg_fallen_empire = yes
+				AND = {
+					has_authority = auth_warshipgirls
+					has_technology = tech_galokiller
+				}
+			}
+		}
+	}	
+	default = yes
+	
+	stop_when_armies_dead = no
+	abduct_pops = no
+
+	planet_damage = 5.0
+	army_damage = 3.0	
+	
+	kill_pop_chance = {
+		base = 1.50
+	}
+	min_pops_to_kill_pop = 0
+	
+	# root = fleet
+	# from = planet
+	ai_weight = {
+		weight = 1
+	}
+}
+
+SH_Galo = {
+	trigger = {
+		owner = { 	
+			OR = {
+				is_wg_fallen_empire = yes
+				AND = {
+					has_authority = auth_shenhai
+					has_technology = tech_sh_galokiller
+				}
+			}
+		}
+	}	
+	default = yes
+	
+	stop_when_armies_dead = no
+	abduct_pops = no
+
+	planet_damage = 5.0
+	army_damage = 5.0	
+	
+	kill_pop_chance = {
+		base = 1.50
+	}
+	min_pops_to_kill_pop = 0
+	
+	# root = fleet
+	# from = planet
+	ai_weight = {
+		weight = 1
+	}
+}
+
+wg_doom = {
+	trigger = {
+		owner = {
+			OR = { 	
+				is_country_type = wg_crisis_country
+				is_country_type = wg_crisis_sub_gate_country
+				has_authority = auth_shenhai
+				has_authority = auth_warshipgirls
+			}
+			AND = {
+				has_technology = tech_wg_doom
+			}			
+		}
+	}
+	default = no
+	
+	stop_when_armies_dead = no
+	abduct_pops = no
+
+	planet_damage = 8.0
+	army_damage = 0.5	
+	
+	kill_pop_chance = {
+		base = 0.5
+	}
+	min_pops_to_kill_pop = 0
+	
+	# root = fleet
+	# from = planet
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 0.01
+			exists = from
+			from = { 
+				owner = { NOT = { is_hostile = root.owner } }
+			}
+		}
+	}
+}
+
+wg_doom2 = {
+	trigger = {
+		owner = {
+			OR = { 	
+				is_country_type = wg_crisis_country
+				is_khan_country_type = yes
+			}
+		}
+	}
+	default = no
+	
+	stop_when_armies_dead = no
+	abduct_pops = no
+
+	planet_damage = 8.0
+	army_damage = 8.0	
+	
+	kill_pop_chance = {
+		base = 2
+	}
+	min_pops_to_kill_pop = 0
+	
+	# root = fleet
+	# from = planet
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 0.01
+			exists = from
+			from = { 
+				owner = { NOT = { is_hostile = root.owner } }
+			}
+		}
+	}
+}
+
+wg_shop_raiding = {
+	trigger = {
+		owner = {
+			has_country_flag = pantsu_shop_origin
+			is_at_war = yes
+			any_war = {
+				using_war_goal = {
+					type = wg_shop_war
+					owner = PREV
+				}
+			}
+		}
+	}	
+	default = no
+	
+	stop_when_armies_dead = no
+	abduct_pops = yes
+
+	planet_damage = 1.0
+	army_damage = 2.0	
+	
+	kill_pop_chance = {
+		base = 0.07
+	}
+	min_pops_to_kill_pop = 5
+	
+	# root = fleet
+	# from = planet
+	ai_weight = {
+		weight = 0
+	}
+}
+
+wg_pod = {
+	trigger = {
+		any_owned_ship = {
+			OR = {
+				is_ship_size = wg_pod
+				is_ship_size = parit_carrier
+			}	
+		}
+	}
+	
+	default = yes
+
+	stop_when_armies_dead = no
+	abduct_pops = no
+
+	planet_damage = 0.5
+	army_damage = 1.0
+
+	kill_pop_chance = {
+		base = 0.25
+	}
+	min_pops_to_kill_pop = 21
+
+	# root = fleet
+	# from = planet
+	ai_weight = {
+		weight = 0
+	}
+}

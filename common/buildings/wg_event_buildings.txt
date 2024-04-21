@@ -1,0 +1,1234 @@
+# 螺旋培养农场
+building_wg_worm_farming = {
+	base_buildtime = @b2_time
+	category = resource
+	base_cap_amount = 1
+	empire_limit = {
+		base = 1
+		modifier = {
+			factor = building_wg_worm_farming_allow
+		}
+	}
+
+	planet_modifier = {
+		district_farming_max = 5
+		planet_farmers_food_produces_mult = 0.25
+	}
+
+	allow = {
+		exists = owner
+		has_upgraded_capital = yes
+		
+	}
+
+	potential = {
+		exists = owner
+		owner = {
+			check_variable = { which = building_wg_worm_farming_allow value > 0 }
+		}
+	}
+
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire_spiritualist = no
+			}
+		}
+		modifier = {
+			job_farmer_add = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_farm_add = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_agri_drone_add = 5
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = @b2_minerals
+		}
+		upkeep = {
+			energy = 5
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_agri_drone_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
+		}
+		text = job_farmer_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_farm_effect_desc
+	}
+
+	prerequisites = {
+		
+	}
+
+	ai_resource_production = {
+		food = 3
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+# 螺旋开挖矿井
+building_wg_worm_mining = {
+	base_buildtime = @b2_time
+	category = resource
+	base_cap_amount = 1
+	empire_limit = {
+		base = 1
+		modifier = {
+			factor = building_wg_worm_mining_allow
+		}
+	}
+
+	allow = {
+		has_upgraded_capital = yes
+		NOT = { has_modifier = resort_colony }
+	}
+
+	potential = {
+		exists = owner
+		owner = {
+			check_variable = { which = building_wg_worm_mining_allow value > 0 }
+		}
+	}
+
+
+	planet_modifier = {
+		district_mining_max = 5
+		planet_miners_minerals_produces_mult = 0.25
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire_spiritualist = no
+			}
+		}
+		modifier = {
+			job_miner_add = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_mine_add = 5
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_mining_drone_add = 5
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = @b2_minerals
+		}
+		cost = {
+			trigger = {
+				owner = {
+					is_robot_empire = yes
+				}
+			}
+			minerals = 300
+			alloys = 150
+		}
+		upkeep = {
+			energy = 5
+		}
+	}
+
+	prerequisites = {
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_mining_drone_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
+		}
+		text = job_miner_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_mine_effect_desc
+	}
+	ai_resource_production = {
+		minerals = 3
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+# 螺旋发电池
+building_wg_worm_generator = {
+	base_buildtime = @b2_time
+	base_cap_amount = 1
+	category = resource
+	icon = building_energy_nexus
+	empire_limit = {
+		base = 1
+		modifier = {
+			factor = building_wg_worm_generator_allow
+		}
+	}
+
+	destroy_trigger = {
+		has_modifier = resort_colony
+	}
+
+	allow = {
+		has_upgraded_capital = yes
+		NOT = { has_modifier = resort_colony }
+	}
+
+	potential = {
+		exists = owner
+		owner = {
+			check_variable = { which = building_wg_worm_generator_allow value > 0 }
+		}
+	}
+
+	planet_modifier = {
+		district_generator_max = 5
+		planet_technician_energy_produces_mult = 0.25
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire_spiritualist = no
+			}
+		}
+		modifier = {
+			job_technician_add = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_generator_add = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_technician_drone_add = 5
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = @b2_minerals
+		}
+		cost = {
+			trigger = {
+				owner = {
+					is_robot_empire = yes
+				}
+			}
+			minerals = 100
+			alloys = 100
+		}
+		upkeep = {
+			energy = 5
+		}
+	}
+
+	prerequisites = {
+	}
+
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_technician_drone_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
+		}
+		text = job_technician_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_generator_effect_desc
+	}
+
+	ai_resource_production = {
+		energy = 3
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+building_loop_institute = {
+	base_buildtime = @b2_time
+	base_cap_amount = 1
+	category = research
+
+	empire_limit = {
+		base = 1
+	}
+
+	potential = {
+		NOT = { has_modifier = resort_colony }
+		NOT = { has_modifier = slave_colony }
+		exists = owner
+		owner = { 
+			is_regular_empire = yes 
+			NOT = { has_modifier = slave_colony }
+		}
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			has_modifier = resort_colony
+			has_modifier = slave_colony
+			owner = {
+				is_gestalt = no
+				is_regular_empire = no
+			}
+		}
+	}
+
+
+	allow = {
+		has_major_upgraded_capital = yes
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = @b4_minerals
+		}
+		upkeep = {
+			energy = @b4_upkeep
+		}
+	}
+
+	country_modifier = {
+		planet_jobs_society_research_produces_mult = 0.15
+	}
+
+	planet_modifier = {
+		pop_happiness = 0.05
+		job_head_researcher_add = 3
+	}
+
+	prerequisites = {
+		"tech_akx_worm_2"
+	}
+
+	triggered_desc = {
+		text = job_head_researcher_effect_desc
+	}
+
+	show_tech_unlock_if = {
+		is_regular_empire = yes
+	}
+}
+
+# 奸商的狡猾椅子工厂
+building_pantsu_shop_chair_factory = {
+	base_buildtime = @b2_time
+	category = resource
+	base_cap_amount = 1
+	can_build = no
+	can_demolish = no
+	can_be_disabled = no
+	can_be_ruined = no
+
+	allow = {
+		always = no
+	}
+
+	destroy_trigger = {
+		OR = {
+			AND = {
+				exists = owner
+				OR = {
+					owner = { is_ai = yes }
+					owner = { NOT = { has_origin = origin_wg_shop }}
+				}
+			}
+			is_planet_class = pc_machine
+		}
+	}
+
+	planet_modifier = {
+		planet_max_buildings_add = 1
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			owner = { has_authority = auth_warshipgirls }
+		}
+		job_wsg_soldier_add = 1
+	}
+	triggered_planet_modifier = {
+		potential = {
+			owner = { has_authority = auth_shenhai }
+		}
+		job_sh_soldier_add = 1
+	}
+
+	potential = {
+		exists = owner
+		owner = {
+			has_country_flag = pantsu_shop_origin
+			has_country_flag = make_gooooood_chair
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		upkeep = {
+			minerals = 20
+			alloys = 10
+			consumer_goods = 10
+		}
+		produces = {
+			energy = 5
+			sr_pantsu = 2
+		}
+	}
+
+	
+}
+
+# 胖次之星
+building_shop_pantsu_star = {
+	base_buildtime = 360
+	base_cap_amount = 1
+	category = unity
+
+	potential = {
+		exists = owner
+		owner = {
+			has_country_flag = pantsu_shop_origin
+			has_country_flag = pantsu_shop_pantsu_star_allowed
+		}
+	}
+
+	planet_modifier = {
+		job_culture_worker_add = 4
+		planet_jobs_produces_mult = 0.10
+		planet_amenities_add = 10
+	}
+	
+	
+	
+	triggered_desc = {
+		text = job_culture_worker_effect_desc
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 100
+			sr_pantsu = 20
+		}
+		produces = {
+			unity = 10
+		}
+		upkeep = {
+			energy = 1
+			sr_pantsu = 1
+		}
+	}
+}
+
+#狡马逊s
+building_cunningmazon_s = {
+	base_buildtime = 720
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = no
+	category = unity
+
+	potential = {
+		exists = owner
+		owner = {
+			has_country_flag = building_cunningmazon_s_allowed
+		}
+	}
+	empire_limit = {
+	 	base = 1
+	}
+	allow = {
+	    custom_tooltip_fail = {
+			text = not_in_shop_system
+			solar_system = { NOT = { has_star_flag = shop_system_home }}
+        }
+	}
+	triggered_desc = {
+		text = Building_cunningmazon_ring_desc
+	}
+
+	on_built = {
+		hidden_effect = { planet_event = { id = wsgranking.2104 }}
+	}
+
+	resources = {
+		category = ring_building
+		cost = {
+			minerals = 1000
+			sr_pantsu = 200
+		}
+		produces = {
+			unity = 10
+		}
+		upkeep = {
+			rare_crystals = 15
+            sr_se = 15
+            sr_pantsu = 15
+			energy = 15
+		}
+	}
+}
+
+#狡马逊m
+building_cunningmazon_m = {
+	base_buildtime = 720
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = no
+	category = unity
+
+	potential = {
+		exists = owner
+		owner = {
+			has_country_flag = building_cunningmazon_m_allowed
+		}
+	}
+	allow = {
+	    custom_tooltip_fail = {
+			text = not_in_shop_system
+			solar_system = { NOT = { has_star_flag = shop_system_home }}
+        }
+	}
+	empire_limit = {
+	 	base = 1
+	}
+	triggered_desc = {
+		text = Building_cunningmazon_ring_desc
+	}
+
+	on_built = {
+		hidden_effect = { planet_event = { id = wsgranking.2104 }}
+	}
+
+	resources = {
+		category = ring_building
+		cost = {
+			minerals = 1000
+			sr_pantsu = 200
+		}
+		produces = {
+			unity = 10
+		}
+		upkeep = {
+			rare_crystals = 15
+            sr_alpha = 15
+            sr_pantsu = 15
+		}
+	}
+}
+
+#生物质工厂
+building_alien_slicer_wsg = {
+	base_buildtime = 360
+	base_cap_amount = 1
+	category = pop_assembly
+	can_be_disabled = no
+    empire_limit = {
+	 	base = 3
+	}
+	potential = {
+		exists = owner
+		owner = { 
+			OR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+			}
+			has_authority = auth_warshipgirls 
+		}
+	}
+    planet_modifier = {
+		pop_purge_speed = -0.1
+	}
+	triggered_desc = {
+		text = building_alien_slicer_effect_desc
+	}
+	prerequisites = {
+		"tech_building_alien_slicer_wsg"
+	}
+	on_built = {
+		planet_event = { id = wsg.9912 }
+	}
+	triggered_planet_modifier = {
+		potential = {
+			has_planet_flag = alien_slicer_4
+		}
+		modifier = {
+			planet_pop_assembly_organic_add = 4
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			has_planet_flag = alien_slicer_2	
+		}
+		modifier = {
+			planet_pop_assembly_organic_add = 2
+		}
+	}
+	resources = {
+		category = wg_event_building
+		cost = {
+			minerals = 400
+		}
+		upkeep = {
+			energy = 2
+		}
+	}
+}
+
+#生物质工厂
+building_alien_slicer_sh = {
+	base_buildtime = 360
+	base_cap_amount = 1
+	category = pop_assembly
+	can_be_disabled = no
+    empire_limit = {
+	 	base = 5
+		modifier = {
+	 		add = 2
+	 		has_civic = civic_CM
+	 	}
+	}
+	potential = {
+		exists = owner
+		owner = { 
+			OR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+			}
+			has_authority = auth_shenhai
+		}
+	}
+    planet_modifier = {
+		pop_purge_speed = -0.1
+	}
+	triggered_desc = {
+		text = building_alien_slicer_effect_desc
+	}
+	prerequisites = {
+		"tech_building_alien_slicer_sh"
+	}
+	on_built = {
+		planet_event = { id = wsg.9912 }
+	}
+	triggered_planet_modifier = {
+		potential = {
+			has_planet_flag = alien_slicer_4	
+		}
+		modifier = {
+			planet_pop_assembly_organic_add = 4
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			has_planet_flag = alien_slicer_2	
+		}
+		modifier = {
+			planet_pop_assembly_organic_add = 2
+		}
+	}
+	resources = {
+		category = wg_event_building
+		cost = {
+			minerals = 400
+		}
+		upkeep = {
+			energy = 2
+		}
+	}
+}
+#
+building_wsg_ground_shipyard = {
+	base_buildtime = 480
+
+	category = army
+	
+	empire_limit = {
+	 	base = 10
+	}
+	potential = {
+		exists = owner
+		owner = { 
+			OR = {
+				has_ethic = ethic_militarist
+				has_ethic = ethic_fanatic_militarist
+			}
+			has_authority = auth_warshipgirls 
+		}
+	}
+	convert_to = {
+		"building_sh_ground_shipyard"
+	}
+	
+	destroy_trigger = {
+		exists = owner
+		free_building_slots = 0
+		owner = { has_authority = auth_shenhai }
+	}	
+	planet_modifier = {
+		planet_army_build_speed_mult  = 0.20
+	}
+	country_modifier = {
+		starbase_shipyard_build_speed_mult = 0.10
+	}
+	
+	upgrades = {
+		"building_wsg_ground_shipyard_2"
+	}
+
+	resources = {
+		category = planet_buildings_strongholds
+		cost = {
+			alloys = 300
+		}			
+		upkeep = {
+			energy = 5
+			alloys = 1
+		}
+	}	
+}
+
+building_wsg_ground_shipyard_2 = {
+	base_buildtime = 720
+    can_build = no
+	category = army
+	
+	potential = {
+		exists = owner
+		owner = { 
+			OR = {
+				has_ethic = ethic_fanatic_militarist
+			}
+			has_authority = auth_warshipgirls 
+		}
+	}
+	convert_to = {
+		"building_sh_ground_shipyard_2"
+	}
+	prerequisites = {
+		"tech_building_wsg_ground_shipyard_2"
+	}
+	
+	destroy_trigger = {
+		exists = owner
+		free_building_slots = 0
+		owner = { has_authority = auth_shenhai }
+	}	
+	planet_modifier = {
+		planet_army_build_speed_mult  = 0.20
+	}
+	country_modifier = {
+		starbase_shipyard_build_speed_mult = 0.20
+	}
+	
+	resources = {
+		category = planet_buildings_strongholds
+		cost = {
+			alloys = 600
+		}			
+		upkeep = {
+			energy = 15
+			alloys = 3
+			sr_pantsu = 2
+		}
+	}	
+}
+
+building_sh_ground_shipyard = {
+	base_buildtime = 480
+
+	category = army
+	
+	empire_limit = {
+	 	base = 10
+	}
+	potential = {
+		exists = owner
+		owner = { 
+			OR = {
+				has_ethic = ethic_militarist
+				has_ethic = ethic_fanatic_militarist
+			}
+			has_authority = auth_shenhai
+		}
+	}
+	convert_to = {
+		"building_wsg_ground_shipyard"
+	}
+	
+	destroy_trigger = {
+		exists = owner
+		free_building_slots = 0
+		owner = { has_authority = auth_warshipgirls }
+	}	
+	planet_modifier = {
+		planet_army_build_speed_mult  = 0.20
+	}
+	country_modifier = {
+		starbase_shipyard_build_speed_mult = 0.10
+	}
+	
+	upgrades = {
+		"building_sh_ground_shipyard_2"
+	}
+
+	resources = {
+		category = planet_buildings_strongholds
+		cost = {
+			alloys = 300
+		}			
+		upkeep = {
+			energy = 5
+			alloys = 1
+		}
+	}	
+}
+
+building_sh_ground_shipyard_2 = {
+	base_buildtime = 720
+    can_build = no
+	category = army
+	
+	potential = {
+		exists = owner
+		owner = { 
+			OR = {
+				has_ethic = ethic_fanatic_militarist
+			}
+			has_authority = auth_shenhai 
+		}
+	}
+	convert_to = {
+		"building_wsg_ground_shipyard_2"
+	}
+	prerequisites = {
+		"tech_building_sh_ground_shipyard_2"
+	}
+	
+	destroy_trigger = {
+		exists = owner
+		free_building_slots = 0
+		owner = { has_authority = auth_warshipgirls }
+	}	
+	planet_modifier = {
+		planet_army_build_speed_mult  = 0.20
+	}
+	country_modifier = {
+		starbase_shipyard_build_speed_mult = 0.20
+	}
+	
+	resources = {
+		category = planet_buildings_strongholds
+		cost = {
+			alloys = 600
+		}			
+		upkeep = {
+			energy = 15
+			alloys = 3
+			sr_pantsu = 2
+		}
+	}	
+}
+
+
+building_wg_sacrilege_altar_1 = {
+	can_build = no
+    icon = building_wg_sacrilege_altar
+    can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+
+	planet_modifier = {
+		planet_stability_add = 5
+		planet_amenities_mult = 0.1
+		planet_jobs_society_research_produces_mult = 0.1
+		planet_max_buildings_add = 1
+	}
+	destroy_trigger = {
+		always = no
+	}
+	upgrades = {
+		"building_wg_sacrilege_altar_1_2"
+	}
+}
+
+
+building_wg_sacrilege_altar_1_2 = {
+	can_build = no
+    icon = building_wg_sacrilege_altar_2
+	base_buildtime = 360
+    can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+    allow = {
+		#exists = owner
+		custom_tooltip = {
+			fail_text = custom_building_wg_sacrilege_altar_1_upgraded
+			owner = { 
+				has_country_flag = building_wg_sacrilege_altar_allowed	
+			}
+		}
+	}
+	destroy_trigger = {
+		always = no
+	}
+	planet_modifier = {
+		planet_stability_add = 5
+		planet_amenities_mult = 0.10
+		planet_jobs_produces_mult = 0.10
+		planet_max_buildings_add = 1
+	}
+	on_built = {
+		planet = {
+			planet_event = { id = wg_boss.356 } 
+		}
+	}
+}
+
+
+building_wg_sacrilege_altar_2 = {
+	can_build = no
+    icon = building_wg_sacrilege_altar
+    can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+    destroy_trigger = {
+		always = no
+	}
+	planet_modifier = {
+		planet_stability_add = 5
+		planet_amenities_mult = 0.1
+		planet_jobs_society_research_produces_mult = 0.1
+		planet_max_buildings_add = 1
+	}
+	
+	upgrades = {
+		"building_wg_sacrilege_altar_2_2"
+	}
+}
+
+
+building_wg_sacrilege_altar_2_2 = {
+	can_build = no
+    icon = building_wg_sacrilege_altar_2
+    can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+	base_buildtime = 360
+    allow = {
+		#exists = owner
+		custom_tooltip = {
+			fail_text = custom_building_wg_sacrilege_altar_1_2_upgraded
+			OR = { 
+				owner = { 
+					has_country_flag = building_wg_sacrilege_altar_1_2_upgraded
+				}
+				has_building = building_wg_sacrilege_altar_1_2
+			}
+		}
+	}
+	planet_modifier = {
+		planet_stability_add = 10
+		planet_amenities_mult = 0.10
+		planet_jobs_produces_mult = 0.20
+		planet_max_buildings_add = 3
+	}
+	on_built = {
+		planet = {
+			planet_event = { id = wg_boss.357 } 
+		}
+	}
+	destroy_trigger = {
+		always = no
+	}
+}
+
+building_wg_sacrilege_altar_3 = {
+	can_build = no
+    icon = building_wg_sacrilege_altar
+    can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+
+	planet_modifier = {
+		planet_stability_add = 5
+		planet_amenities_mult = 0.1
+		planet_jobs_society_research_produces_mult = 0.1
+		planet_max_buildings_add = 1
+	}
+	destroy_trigger = {
+		always = no
+	}
+	upgrades = {
+		"building_wg_sacrilege_altar_3_2"
+	}
+}
+
+
+building_wg_sacrilege_altar_3_2 = {
+	can_build = no
+    icon = building_wg_sacrilege_altar_2
+    can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+	base_buildtime = 360
+	allow = {
+		#exists = owner
+		custom_tooltip = {
+			fail_text = custom_building_wg_sacrilege_altar_2_2_upgraded
+			OR = { 
+				owner = { 
+					has_country_flag = building_wg_sacrilege_altar_2_2_upgraded
+				}
+				has_building = building_wg_sacrilege_altar_2_2
+			}
+		}
+	}
+	planet_modifier = {
+		planet_stability_add = 20
+		planet_amenities_mult = 0.50
+		planet_jobs_produces_mult = 0.70
+		planet_max_buildings_add = 6
+	}
+	on_built = {
+		planet = {
+			planet_event = { id = wg_boss.358 } 
+		}
+	}
+	destroy_trigger = {
+		always = no
+	}
+}
+
+building_wg_golden_toilet = {
+	category = resource
+	base_cap_amount = 1
+	can_build = no
+	can_demolish = no
+	can_be_disabled = no
+	can_be_ruined = no
+
+	allow = {
+		always = no
+	}
+
+	destroy_trigger = {
+		OR = {
+			AND = {
+				exists = owner
+				OR = {
+					owner = { is_ai = yes }
+					owner = { NOT = { has_origin = origin_wg_warhammer }}
+				}
+			}
+		}
+	}
+
+	country_modifier = {
+		pop_growth_speed = -0.10
+		ship_ftl_jumpdrive_range_mult = 0.2
+		ship_jumpdrive_cooldown_mult = -0.2
+		ship_windup_mult = -0.2
+	}
+    triggered_country_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_country_flag = galo_astronomican_fuel }
+		}
+		pop_growth_speed = 0.10
+		ship_ftl_jumpdrive_range_mult = 0.2
+	}
+	resources = {
+		category = planet_buildings
+		upkeep = {
+			energy = 20
+		}
+	}
+}
+
+building_wsg_god_t_monument = {
+	base_buildtime = 360
+	base_cap_amount = 1
+	icon = building_wsg_autochthon_monument
+
+	category = unity
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_origin = origin_wg_warhammer	
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 1200
+		}
+		upkeep = {
+			energy = 5
+		}
+	}
+	
+	planet_modifier = {
+		job_culture_worker_add = 2
+		job_priest_add = 2
+		planet_jobs_produces_mult = 0.10
+	}
+	
+	triggered_desc = {
+		text = job_culture_worker_effect_desc
+	}
+	triggered_desc = {
+		text = job_priest_effect_desc
+	}
+}
+
+building_wg_artificial_uteru = {
+	category = resource
+	base_cap_amount = 1
+	empire_limit = {
+		base = 1
+	}
+	can_build = no
+	can_demolish = no
+	can_be_disabled = no
+	can_be_ruined = no
+
+	allow = {
+		always = no
+	}
+
+	destroy_trigger = {
+		OR = {
+			AND = {
+				exists = owner
+				OR = {
+					owner = { is_ai = yes }
+					owner = { NOT = { has_origin = origin_wg_warhammer }}
+				}
+			}
+		}
+	}
+    planet_modifier = {
+		planet_pop_assembly_organic_add = 8
+	}
+	country_modifier = {
+		planet_pop_assembly_organic_add = 1
+	}
+	resources = {
+		category = planet_buildings
+		upkeep = {
+			energy = 20
+		}
+	}
+}

@@ -1,0 +1,204 @@
+building_wsg_fortress = {
+	base_buildtime = 480
+	base_cap_amount = 1
+	add_to_first_building_slot = yes
+	planetary_ftl_inhibitor = yes
+
+	category = army
+	
+	potential = {
+	}
+	
+	destroy_trigger = {
+		exists = owner
+		free_building_slots = 0
+		owner = { 
+			is_ai = yes 
+			owner = {
+				used_naval_capacity_percent < 0.6
+				is_at_war = no # don't destroy while at war
+			}
+		}
+	}
+	allow = {
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 15 }
+	}	
+	planet_modifier = {
+		planet_housing_add = 1
+		planet_army_build_speed_mult  = 0.20
+		planet_orbital_bombardment_damage = -0.50
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		modifier = {
+			job_soldier_add = 10
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_warrior_drone_add = 10
+		}
+	}
+
+	resources = {
+		category = planet_buildings_strongholds
+		cost = {
+			alloys = 300
+			sr_pantsu = 50
+		}			
+		upkeep = {
+			energy = 10
+			sr_pantsu = 1
+		}
+	}
+	
+	prerequisites = {
+		"tech_building_wsg_fortress"
+	}
+	
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_warrior_drone_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_soldier_effect_desc
+	}	
+}
+
+building_wsg_military_academy = {
+	base_buildtime = 480
+	base_cap_amount = 1
+	can_build = no
+
+	category = army
+	
+	potential = {
+	}
+	
+	planet_modifier = {
+		planet_army_build_speed_mult  = 1.00
+	}
+		
+	allow = {
+		has_upgraded_capital = yes
+	}
+	
+	army_modifier = {
+		army_starting_experience_add = 800
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			owner = { is_gestalt = no }
+		}
+		modifier = {
+			job_wsg_instructor_add = 3
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_warrior_drone_add = 1
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 1000
+			sr_pantsu = 50
+		}			
+		upkeep = {
+			energy = 10
+			sr_pantsu = 1
+		}
+	}
+	
+	prerequisites = {
+		"tech_building_wsg_military_academy"
+	}
+	
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_warrior_drone_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_wsg_instructor_effect_desc
+	}
+}
+
+building_mining_zoo = {
+	base_buildtime = 360
+	base_cap_amount = 1
+	
+	is_capped_by_modifier = yes
+
+	category = army
+	
+	potential = {
+		NOT = { has_modifier = resort_colony }
+		has_deposit = d_alien_pets_deposit
+	}	
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 300
+		}
+		produces = {
+			minerals = 50
+		}
+	}
+	planet_modifier = {
+		planet_jobs_minerals_produces_mult = 0.15
+		planet_army_build_speed_mult  = 0.10
+		army_defense_damage_mult = 0.2
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		modifier = {
+			job_soldier_add = 2
+		}
+	}
+
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		text = job_soldier_effect_desc
+	}
+
+	
+	prerequisites = {
+		"tech_wg_mining_zoo"
+	}
+}

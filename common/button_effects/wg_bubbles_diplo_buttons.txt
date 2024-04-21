@@ -1,0 +1,104 @@
+wg_bubbles_portrait = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = { } #no need
+}
+
+wg_bubbles_link_button_effect = {
+	potential = { 
+		exists = event_target:wg_bubbles_own_country
+		FROM = {
+			is_same_value = event_target:wg_bubbles_own_country
+			check_variable = { which = link_button_current_page value = 0 }
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = cannot_commu_with_bubbles
+			bubbles_available = yes
+		}
+		custom_tooltip = {
+			fail_text = already_has_wsg_bubbles_diplo
+			NAND = {
+				has_country_flag = engaged_with_bubbles
+				has_active_event = { wg_bubbles.6 wg_old_leader_diplo.4001 }
+			}
+		}
+	}}
+	effect = { FROM = {
+		hidden_effect = { country_event = { id = wg_old_leader_diplo.4000 }}
+	}}
+}
+
+wg_bubbles_link_button_pg2_effect = {
+	potential = { 
+		exists = event_target:wg_bubbles_own_country
+		event_target:wg_bubbles_own_country = {
+			bubbles_available = yes 
+			check_variable = { which = link_button_current_page value = 1 }
+		}
+	}
+	allow = {
+		hidden_trigger = { exists = event_target:wg_bubbles_own_country }
+		custom_tooltip = {
+			fail_text = already_has_wsg_bubbles_diplo
+			event_target:wg_bubbles_own_country = {
+				NAND = {
+					has_country_flag = engaged_with_bubbles
+					has_active_event = { wg_bubbles.6 wg_old_leader_diplo.4001 }
+				}
+			}
+		}
+	}
+	effect = {
+		event_target:wsg_lady_own_country = {
+			hidden_effect = { country_event = { id = wg_old_leader_diplo.4000 }}
+		}
+	}
+}
+
+wg_bubbles_affection1_show_effect = {
+	potential = { 
+		event_target:wg_bubbles_own_country = {
+			special_leader_affection_lv1_trigger = { LEADER = bubbles }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_bubbles_affection_show_lv2 }
+}
+wg_bubbles_affection2_show_effect = {
+	potential = { 
+		event_target:wg_bubbles_own_country = {
+			special_leader_affection_lv2_trigger = { LEADER = bubbles }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_bubbles_affection_show_lv3 }
+}
+wg_bubbles_affection3_show_effect = {
+	potential = { 
+		event_target:wg_bubbles_own_country = {
+			special_leader_affection_lv3_trigger = { LEADER = bubbles }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_bubbles_affection_show_lv4 }
+}
+wg_bubbles_affection4_show_effect = {
+	potential = { 
+		event_target:wg_bubbles_own_country = {
+			special_leader_affection_lv4_trigger = { LEADER = bubbles MARRIED_FLAG = married_bubbles }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_bubbles_affection_show_lv5 }
+}
+wg_bubbles_affection5_show_effect = {
+	potential = { 
+		event_target:wg_bubbles_own_country = {
+			special_leader_affection_lv5_trigger = { LEADER = bubbles MARRIED_FLAG = married_bubbles }
+		}
+	}
+	allow = { }
+	effect = { custom_tooltip = wg_bubbles_affection_show_lv5 }
+}

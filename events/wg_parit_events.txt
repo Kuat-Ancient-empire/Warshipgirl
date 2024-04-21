@@ -1,0 +1,2275 @@
+namespace = wg_parit
+
+#######################################
+# ???
+#######################################
+country_event = {
+	id = wg_parit.1
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+	trigger = {
+		NOT = { has_global_flag = wg_parit_created }
+	}	
+	immediate = {
+		if = {
+			limit = { exists = capital_scope }
+			capital_scope = { 
+				solar_system = { 
+					if = {
+						limit = { NOT = { any_neighbor_system_euclidean = {
+							has_hyperlane_to = prev
+						}}}
+						save_event_target_as = spawn_parit_system_source
+					} else = {
+						random_neighbor_system_euclidean = {
+							limit = { NOR = { 
+								has_star_flag = sealed_system 
+								has_star_flag = wg_sealed_system
+								has_star_flag = can_spawn_boss_system
+							}}
+							save_event_target_as = spawn_parit_system_source
+						}
+					}
+				}
+			}
+		} else_if = {
+			limit = { 
+				OR = {
+					has_origin = origin_ev_meg_homeless_ship_strat
+					is_country_type = default_ev 
+				}
+			}
+			random_controlled_fleet = {
+				limit = { any_owned_ship = { is_any_type_homeless_ship = yes }}
+				solar_system = { 
+					if = {
+						limit = { NOT = { any_neighbor_system_euclidean = {
+							has_hyperlane_to = prev
+						}}}
+						save_event_target_as = spawn_parit_system_source
+					} else = {
+						random_neighbor_system_euclidean = {
+							limit = { NOR = { 
+								has_star_flag = sealed_system 
+								has_star_flag = wg_sealed_system
+								has_star_flag = can_spawn_boss_system
+							}}
+							save_event_target_as = spawn_parit_system_source
+						}
+					}
+				}
+			}
+		} else = {
+			random_controlled_fleet = { solar_system = {
+				save_event_target_as = spawn_parit_system_source
+			}}
+		}
+		every_system = {
+			limit = {
+				distance = {
+					source = event_target:spawn_parit_system_source
+					min_jumps = 1
+					max_jumps = 4
+					type = hyperlane 
+					use_bypasses = no
+				}
+				NOR = {
+					has_natural_wormhole = yes
+					exists = space_owner
+					has_star_flag = hostile_system
+					has_star_flag = guardian
+					has_star_flag = sealed_system
+					has_star_flag = lex_sol
+					has_star_flag = wg_sealed_system
+				}
+			}
+			set_timed_star_flag = { flag = can_spawn_parit_system days = 1 }
+		}
+		country_event = { id = wg_parit.2 }
+	}
+}
+country_event = {
+	id = wg_parit.2
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+	trigger = {
+		NOT = { has_global_flag = wg_parit_created }
+	}	
+
+	immediate = {
+		random_system = {
+			limit = { has_star_flag = can_spawn_parit_system }
+			spawn_system = {
+				hyperlane = yes
+				is_discovered = no
+				min_distance = 10
+				max_distance = 20
+				initializer = Parit_system
+			}
+			set_global_flag = wg_parit_created
+			remove_star_flag = can_spawn_parit_system
+		}
+	}
+}
+
+
+fleet_event = {
+	id = wg_parit.3
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = from
+		from = {
+			is_scope_type = planet
+			has_planet_flag = Parit_planet
+		}
+		NAND = {
+			is_ship_class = shipclass_constructor
+			is_ship_class = shipclass_science_ship
+		}
+	}
+
+	immediate = {
+		owner = {
+			country_event = { id = wg_parit.4 days = 5 }
+		}						
+	}
+}
+
+country_event = {
+	id = wg_parit.4
+	title = wg_parit.4.name
+	desc = wg_parit.4.desc
+	picture = GFX_evt_wsg_no_video
+	show_sound = event_red_alert
+	location = event_target:Parit_fleet_target
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	immediate = {
+		every_galaxy_planet = {
+			limit = {
+				has_planet_flag = Parit_planet
+			}
+			save_event_target_as = Parit_fleet_target
+		}
+		create_country = {
+			name = "NAME_Parit_fleet_country"
+			type = faction_wsg
+			flag = {
+                icon = {
+                    category = "warshipgirls"
+                    file = "wg_flags_08.dds"
+                }
+                background= {
+                    category = "backgrounds"
+                    file = "circle.dds"
+                }
+                colors={
+                    "dark_blue"
+                    "green"
+                    "null"
+                    "null"
+                }
+            }			
+			effect = {
+				establish_communications_no_message = root.owner
+				save_global_event_target_as = Parit_fleet_country
+				set_country_flag = Parit_fleet_country_flag
+			}
+		}		
+		create_fleet = {
+			name = "NAME_parit_fleet"
+			settings = {
+				spawn_debris = no
+				is_boss = yes
+			}			
+			effect = {			
+				set_owner = event_target:Parit_fleet_country			
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_C_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_C_SH"
+					graphical_culture = "fallen_empire_03"
+				}				
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_C_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_C_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_C_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_C_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}				
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}				
+				add_modifier = {
+					modifier = sh_sanctuary_power3
+					days = -1
+				}				
+				set_location = {
+					target = event_target:Parit_fleet_target
+					distance = 5
+					angle = random
+				}
+			}
+		}		
+	}
+	
+	option = {
+		name = "wg_parit.4.a"
+	}	
+}	
+
+country_event = {
+	id = wg_parit.5
+	title = "wg_parit.5.name"
+	desc = "wg_parit.5.desc"
+
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_no_video
+
+	option = {
+		name = "wg_parit.5.a"
+	}
+}
+#没用了这个
+country_event = {
+	id = wg_parit.6
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { is_country_type = default }
+		FROMFROM = { has_planet_flag = Parit_planet }
+		FROMFROM = { NOT = { has_planet_flag = Parit_planet } }
+	}
+
+	immediate = {
+		FROM = {
+			country_event = { id = wg_parit.7 days = 5 }
+		}
+	}
+}
+#没用了这个
+country_event = {
+	id = wg_parit.7
+	title = "wg_parit.7.name"
+	desc = "wg_parit.7.desc"
+	picture = GFX_evt_wsg_helldives
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "wg_parit.7.a"
+		hidden_effect = {
+			country_event = { id = wg_parit.7 days = 10 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.8
+	title = wg_parit.8.name
+	desc = wg_parit.8.desc
+	picture = GFX_evt_fleet_from_surface
+	location = event_target:Parit_fleet_target
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	immediate = {
+		every_galaxy_planet = {
+			limit = {
+				has_planet_flag = Parit_planet
+			}
+		save_event_target_as = Parit_fleet_target		
+		}
+		owner = {
+			save_event_target_as = Parit_fleet2_owner
+		}		
+	}
+	
+	option = {
+		name = "wg_parit.8.a"
+		hidden_effect = {
+			random_list = { 
+				20 = {#欧洲人必须死
+					create_fleet = {
+						name = "NAME_parit_fleet2"
+						effect = {
+							set_owner = event_target:Parit_fleet2_owner
+							while = {
+								count = 25
+								create_ship = {
+									name = random
+									design = "NAME_WG_FE_ESCORTE"
+									graphical_culture = "fallen_empire_03"
+								}
+							}
+							while = {
+								count = 15
+								create_ship = {
+									name = random
+									design = "NAME_WG_FE_BATTLE_CRUISE"
+									graphical_culture = "fallen_empire_03"
+								}
+							}
+							while = {
+								count = 3
+								create_ship = {
+									name = random
+									design = "NAME_WG_FE_TITAN"
+									graphical_culture = "fallen_empire_03"
+								}
+							}				
+							set_location = {
+								target = event_target:Parit_fleet_target
+								distance = 5
+								angle = random
+							}
+							add_modifier = {
+								modifier = wsg_free_fleet
+								days = -1
+							}								
+						}	
+					}		
+				}
+				40 = {
+					create_fleet = {
+						name = "NAME_parit_fleet2"
+						effect = {
+							set_owner = event_target:Parit_fleet2_owner
+							while = {
+								count = 20
+								create_ship = {
+									name = random
+									design = "NAME_WG_FE_ESCORTE"
+									graphical_culture = "fallen_empire_03"
+								}
+							}
+							while = {
+								count = 10
+								create_ship = {
+									name = random
+									design = "NAME_WG_FE_BATTLE_CRUISE"
+									graphical_culture = "fallen_empire_03"
+								}
+							}
+							while = {
+								count = 1
+								create_ship = {
+									name = random
+									design = "NAME_WG_FE_TITAN"
+									graphical_culture = "fallen_empire_03"
+								}
+							}				
+							set_location = {
+								target = event_target:Parit_fleet_target
+								distance = 5
+								angle = random
+							}
+							add_modifier = {
+								modifier = wsg_free_fleet
+								days = -1
+							}							
+						}	
+					}		
+				}
+				40 = {#非洲泪
+					create_fleet = {
+						name = "NAME_parit_fleet2"
+						effect = {
+							set_owner = event_target:Parit_fleet2_owner
+							while = {
+								count = 20
+								create_ship = {
+									name = random
+									design = "NAME_WG_FE_ESCORTE"
+									graphical_culture = "fallen_empire_03"
+								}
+							}
+							while = {
+								count = 5
+								create_ship = {
+									name = random
+									design = "NAME_WG_FE_BATTLE_CRUISE"
+									graphical_culture = "fallen_empire_03"
+								}
+							}				
+							set_location = {
+								target = event_target:Parit_fleet_target
+								distance = 5
+								angle = random
+							}
+							add_modifier = {
+								modifier = wsg_free_fleet
+								days = -1
+							}							
+						}	
+					}		
+				}				
+			}
+		}	
+	}	
+}
+country_event = {
+	id = wg_parit.9
+	title = "wg_parit.9.name"
+	desc = "wg_parit.9.desc"
+	picture = GFX_evt_habitable_dig_site
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "wg_parit.9.a"
+		hidden_effect = {
+			country_event = { id = wg_parit.10 days = 5 }
+		}
+	}	
+}
+
+country_event = {
+	id = wg_parit.10
+	title = "wg_parit.10.name"
+	desc = "wg_parit.10.desc"
+	picture = GFX_evt_generator_powerup
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "wg_parit.10.a"
+		hidden_effect = {
+			country_event = { id = wg_parit.11 days = 30 }
+		}
+	}
+	option = {
+		name = "wg_parit.10.b"
+		hidden_effect = {
+			country_event = { id = wg_parit.11 days = 30 }
+		}
+	}	
+}
+
+country_event = {
+	id = wg_parit.11
+	title = "wg_parit.11.name"
+	desc = "wg_parit.11.desc"
+	picture = GFX_evt_fallen_empire
+	
+	is_triggered_only = yes
+	immediate = {
+		set_country_flag = eddy_disoverer
+	}	
+	option = {
+		name = "wg_parit.11.a"
+        trigger = { 
+            has_wg_special_authority = yes
+			has_country_flag = eddy_flag
+        }		
+		owner = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}			
+		}		
+		hidden_effect = {
+			capital_scope = {
+				closest_system = {
+					min_steps = 1
+					limit = {
+						has_access_fleet = root.owner
+						
+						has_owner = no
+						NOT = {
+							any_ship_in_system = {
+								owner = { 
+									is_hostile = root.owner
+								}	
+							}
+						}
+					}
+				}
+				spawn_system = {
+					min_jumps = 3
+					max_jumps = 6
+					initializer = wg_eddy_system
+				}
+			}
+		}
+	}
+	option = {
+		name = "wg_parit.11.b"
+		owner = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}			
+		}		
+		hidden_effect = {
+			capital_scope = {
+				closest_system = {
+					min_steps = 1
+					limit = {
+						has_access_fleet = root.owner
+						
+						has_owner = no
+						NOT = {
+							any_ship_in_system = {
+								owner = { 
+									is_hostile = root.owner
+								}	
+							}
+						}
+					}
+				}
+				spawn_system = {
+					min_jumps = 5
+					max_jumps = 9
+					initializer = wg_eddy_system
+				}
+			}
+		}
+	}
+	option = {
+		name = "wg_parit.11.c"
+		owner = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}			
+		}		
+    	owner = { 
+    		add_resource = {
+    			influence = 300
+    		}
+    	}
+	}	
+}
+
+country_event = {
+	id = wg_parit.12
+	title = "wg_parit.12.name"
+	desc = "wg_parit.12.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_fallen_empire
+
+	option = {
+		name = "wg_parit.12.a"
+		add_resource = { unity = 10000 }
+		add_resource = { influence = 100 }
+		hidden_effect = {
+			if = {
+				limit = {
+               	 	any_country = {			
+			       		has_country_flag = executorbuilding
+					}	
+            	}
+				country_event = { id = executor_build.100 days = 10 }
+			}	
+		}		
+	}	
+}
+
+# Stage 1 - 护盾封装
+fleet_event = {
+	id = wg_parit.13
+	title = "wg_parit.13.name"
+	desc = "wg_parit.13.desc"
+	picture = GFX_evt_fallen_empire_awakes
+	show_sound = event_planetary_riot
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = wg_parit.13.a
+		small_artifact_reward = yes
+	}
+}
+# Stage 2 - 1-1-4区域
+fleet_event = {
+	id = wg_parit.14
+	title = "wg_parit.14.name"
+	desc = "wg_parit.14.desc"
+	picture = GFX_evt_fallen_empire
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = wg_parit.14.a
+		small_artifact_reward = yes
+	}
+}
+# Stage 3 - 恩多迪亚指南
+fleet_event = {
+	id = wg_parit.15
+	title = "wg_parit.15.name"
+	desc = "wg_parit.15.desc"
+	picture = GFX_evt_analyzing_artifacts
+	show_sound = event_structural_collapse
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = wg_parit.15.a
+		large_artifact_reward = yes
+		owner = { add_relic = "r_eddy" }
+	}
+}
+
+country_event = {
+	id = wg_parit.2333
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+	    every_country = {
+			limit = {
+				OR = {
+					is_country_type = wg_crisis_country
+					is_country_type = wg_crisis_sub_gate_country
+				}
+				NOT = { has_modifier = uf_hidden_buff }
+			}
+			add_modifier = {
+				modifier = uf_hidden_buff
+				days = -1
+			}			
+		}
+	}	
+}
+
+fleet_event = {
+	id = wg_parit.16
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_fleet_flag = astesia_back_home
+		owner = { NOT = { has_country_flag = triggered_astesia_back_home_event } }
+		from = { has_star_flag = wg_eddy_system }
+	}
+
+	immediate = {
+		owner = {
+			set_country_flag = triggered_astesia_back_home_event
+			country_event = { id = wg_parit.17 days = 5 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.17
+	title = "wg_parit.17.name"
+	desc = "wg_parit.17.desc"
+	show_sound = event_administrative_work
+	location = from.from.from
+
+	picture_event_data = {
+		room = no_video_feed_room
+	}
+	diplomatic = yes
+	force_open = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.17.a
+		response_text = wg_parit.17.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.17.b
+		hidden_effect = {
+			country_event = { id = wg_parit.18 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.18
+	title = "wg_parit.18.name"
+	desc = "wg_parit.18.desc"
+	show_sound = event_administrative_work
+	location = from.from.from
+
+	picture_event_data = {
+		room = no_video_feed_room
+	}
+	diplomatic = yes
+	force_open = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.18.a
+	}
+}
+
+#帕里特起源
+country_event = {
+	id = wg_parit.19
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_authority = auth_shenhai
+		has_country_flag = custom_start_parit
+		NOT = { has_country_flag = origin_parit_star_deposit }
+	}
+	immediate = {
+	    set_country_flag = origin_parit_star_deposit
+		set_country_flag = wg_custom_origin
+		country_event = { id = wg_parit.20 days = 5 }
+		country_event = { id = wg_parit.21 days = 7200 }
+		random_owned_planet = {
+			limit = {
+				is_capital = yes
+			}
+			set_name = "NAME_Parit_system"
+			add_deposit = d_Parit7
+			add_deposit = d_Parit8
+			add_deposit = d_Parit6
+			add_deposit = d_rich_mountain
+			add_deposit = d_ore_rich_caverns
+			remove_deposit = d_great_river
+			remove_deposit = d_marvelous_oasis
+			add_building = building_energy_Parit
+			add_building = building_minerlas_Parit
+			add_building = building_food_Parit
+			add_modifier = {
+				modifier = planet_Parit2
+				days = -1
+			}
+			add_modifier = {
+				modifier = planet_Parit4
+				days = -1
+			}
+		}		
+	}
+}
+
+country_event = {
+	id = wg_parit.20
+	title = "wg_parit.20.name"
+	desc = "wg_parit.20.desc"
+	picture = GFX_evt_wg_parit
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "wg_parit.20.a"
+		hidden_effect = {
+			country_event = { id = wg_parit.38 days = 180 }
+		}
+	}	
+}
+
+country_event = {
+	id = wg_parit.21
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_authority = auth_shenhai
+		has_country_flag = custom_start_parit
+	}
+	immediate = {
+		random_owned_planet = {
+			limit = {
+				has_planet_flag = Parit_home_planet
+			}
+			remove_deposit = d_Parit7
+		}		
+	}
+}
+
+country_event = {
+	id = wg_parit.22
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_authority = auth_shenhai
+		has_country_flag = custom_start_parit
+		has_technology = tech_terrestrial_sculpting
+		NOT = { has_country_flag = parit_terrestrial }
+	}
+	immediate = {	
+		country_event = { id = wg_parit.23 days = 10 random = 20 }
+		set_country_flag = parit_terrestrial		
+	}
+}
+
+country_event = {
+	id = wg_parit.23
+	title = "wg_parit.23.name"
+	desc = "wg_parit.23.desc"
+	picture = GFX_evt_desert
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_parit.23.a"
+		enable_special_project = {
+			name = "WG_PARIT_PROJECT"
+			location = event_target:Parit_home_target
+			owner = root
+		}
+	}
+	option = {
+		name = "wg_parit.23.b"
+		add_resource = {
+    		influence = 100
+    	}
+	}
+}
+
+planet_event = {
+	id = wg_parit.24
+	title = "wg_parit.24.name"
+	desc = "wg_parit.24.desc"
+	picture = GFX_evt_wsg_world_tree
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.24.a
+		if = {
+			limit = { NOR = {
+				is_planet_class = pc_relic
+				is_planet_class = pc_shenhai
+				is_planet_class = pc_wsg_port
+				is_planet_class = pc_wg_graygoo
+			}}
+			owner = { random_planet_within_border = {
+				limit = {
+					has_planet_flag = Parit_home_planet
+				}
+				change_pc = pc_gaia
+			}}
+		}
+	}
+}
+
+planet_event = {
+	id = wg_parit.25
+	title = "wg_parit.25.name"
+	desc = "wg_parit.25.desc"
+	picture = GFX_evt_desert
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.25.a		
+	}
+}
+
+planet_event = {
+	id = wg_parit.26
+	title = "wg_parit.26.name"
+	desc = "wg_parit.26.desc"
+	picture = GFX_evt_Pshenhai
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.26.a
+		owner = { random_planet_within_border = {
+			limit = {
+				has_planet_flag = Parit_home_planet
+			}
+			change_pc = pc_shenhai
+		}}
+	}
+}
+
+country_event = {
+	id = wg_parit.27
+	title = "wg_parit.27.name"
+	desc = "wg_parit.27.desc"
+	picture = GFX_evt_habitable_dig_site
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.27.a
+		hidden_effect = {
+			country_event = { id = wg_parit.28 days = 30 }
+		}		
+	}
+}
+
+country_event = {
+	id = wg_parit.28
+	title = "wg_parit.28.name"
+	desc = "wg_parit.28.desc"
+	picture = GFX_evt_habitable_dig_site
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.28.a
+		hidden_effect = {
+			country_event = { id = wg_parit.29 days = 60 }
+		}		
+	}
+}
+
+country_event = {
+	id = wg_parit.29
+	title = "wg_parit.29.name"
+	desc = "wg_parit.29.desc"
+	picture = GFX_evt_crusher_droid
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.29.a
+		enable_special_project = {
+			name = "WG_PARIT_PROJECT2"
+			location = event_target:Parit_home_target
+			owner = root
+		}		
+	}
+}
+
+country_event = {
+	id = wg_parit.30
+	title = "wg_parit.30.name"
+	desc = "wg_parit.30.desc"
+	picture = GFX_evt_ancient_databank
+	location = root
+
+	is_triggered_only = yes
+	
+	immediate = {	
+		set_country_flag = parit_databank_discovered	
+	}
+
+	option = {
+		name = wg_parit.30.a
+		custom_tooltip = wg_parit.30.tooltip
+		random_owned_planet = {
+			limit = {
+				has_planet_flag = Parit_home_planet
+			}
+			add_modifier = {
+				modifier = planet_Parit3
+				days = -1
+			}
+		}
+		hidden_effect = {
+			capital_scope = {
+				closest_system = {
+					min_steps = 1
+					limit = {
+						has_access_fleet = root.owner
+						
+						has_owner = no
+						NOT = {
+							any_ship_in_system = {
+								owner = { 
+									is_hostile = root.owner
+								}	
+							}
+						}
+					}
+				}
+				spawn_system = {
+					min_jumps = 1
+					max_jumps = 2
+					initializer = wg_eddy2_system
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_parit.30.b
+		custom_tooltip = wg_parit.30.tooltip
+		trigger = { 
+            has_country_flag = has_parit_girl
+		}
+		random_owned_planet = {
+			limit = {
+				has_planet_flag = Parit_home_planet
+			}
+			add_modifier = {
+				modifier = planet_Parit3
+				days = -1
+			}
+		}
+		hidden_effect = {
+			capital_scope = {
+				closest_system = {
+					min_steps = 1
+					limit = {
+						has_access_fleet = root.owner
+						
+						has_owner = no
+						NOT = {
+							any_ship_in_system = {
+								owner = { 
+									is_hostile = root.owner
+								}	
+							}
+						}
+					}
+				}
+				spawn_system = {
+					min_jumps = 1
+					max_jumps = 2
+					initializer = wg_eddy2_system
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_parit.30.c
+		custom_tooltip = wg_parit.30.tooltip
+		trigger = { 
+            has_global_flag = astesia_parit_helper
+		}
+		random_owned_planet = {
+			limit = {
+				has_planet_flag = Parit_home_planet
+			}
+			add_modifier = {
+				modifier = planet_Parit3
+				days = -1
+			}
+		}
+		hidden_effect = {
+			capital_scope = {
+				closest_system = {
+					min_steps = 1
+					limit = {
+						has_access_fleet = root.owner
+						
+						has_owner = no
+						NOT = {
+							any_ship_in_system = {
+								owner = { 
+									is_hostile = root.owner
+								}	
+							}
+						}
+					}
+				}
+				spawn_system = {
+					min_jumps = 1
+					max_jumps = 2
+					initializer = wg_eddy2_system
+				}
+			}
+		}
+	}
+}
+
+# Stage 1 - 护盾封装
+fleet_event = {
+	id = wg_parit.31
+	title = "wg_parit.31.name"
+	desc = "wg_parit.31.desc"
+	picture = GFX_evt_fallen_empire_awakes
+	show_sound = event_planetary_riot
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = wg_parit.31.a
+		small_artifact_reward = yes
+	}
+}
+# Stage 2 - 1-1-4区域
+fleet_event = {
+	id = wg_parit.32
+	title = "wg_parit.32.name"
+	desc = "wg_parit.32.desc"
+	picture = GFX_evt_fallen_empire
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = wg_parit.32.a
+		small_artifact_reward = yes
+	}
+}
+# Stage 3 - 恩多迪亚指南
+fleet_event = {
+	id = wg_parit.33
+	title = "wg_parit.33.name"
+	desc = "wg_parit.33.desc"
+	picture = GFX_evt_analyzing_artifacts
+	show_sound = event_structural_collapse
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = wg_parit.33.a
+		large_artifact_reward = yes
+		owner = { add_relic = "r_eddy" }
+	}
+}
+
+country_event = {
+	id = wg_parit.34
+	title = "wg_parit.34.name"
+	desc = "wg_parit.34.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_fallen_empire
+
+	option = {
+		name = "wg_parit.34.a"
+		owner = {
+			add_resource = { unity = 10000 }
+			add_resource = { influence = 100 }
+		}		
+	}	
+}
+
+country_event = {
+	id = wg_parit.35
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_authority = auth_shenhai
+		has_country_flag = custom_start_parit
+		has_technology = tech_shields_3
+		NOT = { has_country_flag = tech_parit_shields }
+	}
+	immediate = {	
+		country_event = { id = wg_parit.36 days =180 random = 360 }
+		set_country_flag = tech_parit_shields	
+	}
+}
+
+country_event = {
+	id = wg_parit.36
+	title = "wg_parit.36.name"
+	desc = "wg_parit.36.desc"
+	picture = GFX_evt_wg_parit2
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.36.a
+		enable_special_project = {
+			name = "WG_PARIT_PROJECT3"
+			location = event_target:Parit_home_target
+			owner = root
+		}		
+	}
+}
+country_event = {
+	id = wg_parit.37
+	title = "wg_parit.37.name"
+	desc = "wg_parit.37.desc"
+	picture = GFX_evt_wg_parit2
+	location = root
+
+	is_triggered_only = yes
+	immediate = {
+	    event_target:parit_debris_object = {
+			destroy_ambient_object = this
+		}
+	}
+	option = {
+		name = wg_parit.37.a
+		owner = {
+			add_resource = { unity = 500 }
+		}
+		random_owned_planet = {
+			limit = {
+				has_planet_flag = Parit_home_planet
+			}
+			remove_modifier = planet_Parit4
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.38
+	title = "wg_parit.38.name"
+	desc = "wg_parit.38.desc"
+	picture = GFX_evt_ship_in_orbit_3
+	location = root
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = wg_parit.38.a
+		begin_event_chain = {
+			event_chain = "parit_chain"
+			target = this.owner
+		}
+		hidden_effect = {
+			enable_special_project = {
+				name = "WG_PARIT_HOME"
+				location = event_target:executor_ship_object_target
+				owner = root
+			}
+			enable_special_project = {
+				name = "WG_PARIT_HOME2"
+				location = event_target:parit_battlefield_target
+				owner = root
+			}
+			enable_special_project = {
+				name = "WG_PARIT_HOME3"
+				location = event_target:parit_unknownworld_target
+				owner = root
+			}
+			enable_special_project = {
+				name = "WG_PARIT_HOME4"
+				location = event_target:parit_gas_target
+				owner = root
+			}
+		}
+	}
+	option = {
+		name = "wg_parit.38.b"		
+    	owner = { 
+    		add_resource = {
+    			influence = 50
+    		}
+    	}
+	}
+}
+
+country_event = {
+	id = wg_parit.39
+	title = "wg_parit.39.name"
+	desc = "wg_parit.39.desc"
+	picture = GFX_evt_ship_in_orbit_3
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.39.a
+		owner = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_event_chain_counter = { 
+				event_chain = "parit_chain" 
+				counter = "wg_parit_home_porject_counter" 
+				amount = 1 
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_completed_event_chain_counter = {
+						event_chain = "parit_chain" 
+						counter = "wg_parit_home_porject_counter" 
+					}
+					NOT = { has_country_flag = parit_home_project_finished }
+				}
+				country_event = { id = wg_parit.45 }
+			}
+		}
+	}
+}
+country_event = {
+	id = wg_parit.40
+	title = "wg_parit.40.name"
+	desc = "wg_parit.40.desc"
+	picture = GFX_evt_ship_in_orbit_3
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.40.a
+		owner = { 
+    		add_resource = {
+    			alloys = 500
+    		}
+			add_event_chain_counter = { 
+				event_chain = "parit_chain" 
+				counter = "wg_parit_home_porject_counter" 
+				amount = 1 
+			}
+    	}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_completed_event_chain_counter = {
+						event_chain = "parit_chain" 
+						counter = "wg_parit_home_porject_counter" 
+					}
+					NOT = { has_country_flag = parit_home_project_finished }
+				}
+				country_event = { id = wg_parit.45 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.41
+	title = "wg_parit.41.name"
+	desc = "wg_parit.41.desc"
+	picture = GFX_evt_fallen_empire_awakes
+	location = root
+
+	is_triggered_only = yes
+		immediate = {
+		owner = {
+			save_event_target_as = parit_owner
+		}
+	}
+
+	option = {
+		name = wg_parit.41.a
+		owner = { 
+			add_event_chain_counter = { 
+				event_chain = "parit_chain" 
+				counter = "wg_parit_home_porject_counter" 
+				amount = 1 
+			}
+    	}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_completed_event_chain_counter = {
+						event_chain = "parit_chain" 
+						counter = "wg_parit_home_porject_counter" 
+					}
+					NOT = { has_country_flag = parit_home_project_finished }
+				}
+				country_event = { id = wg_parit.45 }
+			}
+		}
+		create_fleet = {
+			name = "NAME_parit_fleet"
+			settings = {
+				spawn_debris = no
+			}			
+			effect = {			
+				set_owner = event_target:parit_owner		
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_D_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				add_modifier = {
+					modifier = parit_fleet
+					days = 3600
+				}
+				set_location = {
+					target = event_target:parit_battlefield_target
+					distance = 5
+					angle = random
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_completed_event_chain_counter = {
+						event_chain = "parit_chain" 
+						counter = wg_parit_home_porject_counter
+					}
+					NOT = { has_country_flag = parit_home_project_finished }
+				}
+				country_event = { id = wg_parit.45 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.42
+	title = "wg_parit.42.name"
+	desc = "wg_parit.42.desc"
+	picture = GFX_evt_fallen_empire_awakes
+	location = root
+
+	is_triggered_only = yes
+		immediate = {
+		owner = {
+			save_event_target_as = parit_owner
+		}
+	}
+
+	option = {
+		name = wg_parit.42.a
+		owner = { 
+			add_event_chain_counter = { 
+				event_chain = "parit_chain" 
+				counter = "wg_parit_home_porject_counter" 
+				amount = 1 
+			}
+    	}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_completed_event_chain_counter = {
+						event_chain = "parit_chain" 
+						counter = "wg_parit_home_porject_counter" 
+					}
+					NOT = { has_country_flag = parit_home_project_finished }
+				}
+				country_event = { id = wg_parit.45 }
+			}
+		}
+		create_fleet = {
+			name = "NAME_parit_fleet"
+			settings = {
+				spawn_debris = no
+			}			
+			effect = {			
+				set_owner = event_target:parit_owner		
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_E_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				add_modifier = {
+					modifier = parit_fleet2
+					days = 9600
+				}
+				set_location = {
+					target = event_target:parit_battlefield_target
+					distance = 5
+					angle = random
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_completed_event_chain_counter = {
+						event_chain = "parit_chain" 
+						counter = wg_parit_home_porject_counter
+					}
+					NOT = { has_country_flag = parit_home_project_finished }
+				}
+				country_event = { id = wg_parit.45 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.43
+	title = "wg_parit.43.name"
+	desc = "wg_parit.43.desc"
+	picture = GFX_evt_star_chart
+	location = root
+
+	is_triggered_only = yes
+	immediate = {
+		every_system = {
+			limit = {
+				distance = {
+					source = event_target:wg_Parit_origin_system
+					use_bypasses = no
+					min_jumps = 1
+					max_jumps = 3
+				}
+			}
+			set_surveyed = {
+				surveyed = yes
+				surveyor = root.owner
+			}
+		}
+	}
+    option = {
+		name = wg_parit.43.a
+		custom_tooltip = wg_parit.43.tooltip
+		add_monthly_resource_mult = {
+			resource = engineering_research
+			value = @tier3researchreward
+			min = @tier3researchmin
+			max = @tier3researchmax
+		}
+		add_monthly_resource_mult = {
+			resource = physics_research
+     		value = @tier3researchreward
+			min = @tier3researchmin
+			max = @tier3researchmax
+     	}
+		owner = { 
+			add_event_chain_counter = { 
+				event_chain = "parit_chain" 
+				counter = "wg_parit_home_porject_counter" 
+				amount = 1 
+			}
+    	}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_completed_event_chain_counter = {
+						event_chain = "parit_chain" 
+						counter = "wg_parit_home_porject_counter" 
+					}
+					NOT = { has_country_flag = parit_home_project_finished }
+				}
+				country_event = { id = wg_parit.45 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.44
+	title = "wg_parit.44.name"
+	desc = "wg_parit.44.desc"
+	picture = GFX_evt_cargoship_caravan
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.44.a
+		owner = { 
+			add_event_chain_counter = { 
+				event_chain = "parit_chain" 
+				counter = "wg_parit_home_porject_counter" 
+				amount = 1 
+			}
+    	}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_completed_event_chain_counter = {
+						event_chain = "parit_chain" 
+						counter = "wg_parit_home_porject_counter" 
+					}
+					NOT = { has_country_flag = parit_home_project_finished }
+				}
+				country_event = { id = wg_parit.45 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.45
+	title = "wg_parit.45.name"
+	desc = "wg_parit.45.desc"
+	picture = GFX_evt_wg_parit
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.45.a
+		owner = {
+			add_monthly_resource_mult = {
+				resource = influence
+				value = @tier4influencereward
+				min = @tier4influencemin
+				max = @tier4influencemax
+			}
+            add_monthly_resource_mult = {
+				resource = unity
+				value = @tier5unityreward
+				min = @tier5unitymin
+				max = @tier5unitymax
+			}
+		}
+		owner={
+			end_event_chain = "parit_chain"
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_country_flag = has_parit_girl
+				}
+				country_event = { id = executor_build.258 days = 180 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.46
+	title = "wg_boss.15.name"
+	desc = "wg_boss.15.desc"
+	picture = GFX_evt_wsg_no_video
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	trigger = {
+		NOT = { has_global_flag = no_guardian_wg_think_tank }
+	}		
+	option = {
+		name = "wg_boss.15.a"
+		hidden_effect = {
+			set_country_flag = astesia_chosen_one
+			owner = {
+				country_event = { id = wg_parit.47 days = 1 }
+			}			
+		}		
+	}	
+}
+
+country_event = {
+	id = wg_parit.47
+	title = "wg_parit.47.name"
+	desc = "wg_parit.47.desc"
+	show_sound = event_administrative_work
+	location = from.from.from
+
+	picture_event_data = {
+		room = no_video_feed_room
+	}
+	diplomatic = yes
+	force_open = yes
+
+	is_triggered_only = yes
+	immediate = {
+		set_country_flag = eddy_flag
+	}
+	option = {
+		name = wg_parit.47.a
+		response_text = wg_parit.47.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.47.b
+		response_text = wg_parit.47.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.47.c
+		hidden_effect = {
+			country_event = { id = wg_parit.48 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.48
+	title = "wg_parit.48.name"
+	desc = "wg_parit.48.desc"
+	show_sound = event_administrative_work
+	location = from.from.from
+
+	picture_event_data = {
+		room = no_video_feed_room
+	}
+	diplomatic = yes
+	force_open = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.48.a
+		response_text = wg_parit.48.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.48.b
+		hidden_effect = {
+			country_event = { id = wg_parit.49 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.49
+	title = "wg_parit.49.name"
+	desc = "wg_parit.49.desc"
+	picture = GFX_evt_think_tank
+	location = FROM
+	trackable = yes
+
+	is_triggered_only = yes
+	immediate = {
+		random_country = {
+			limit = { is_country_type = guardian_wg_think_tank }
+			random_owned_fleet = {
+				limit = { has_fleet_flag = wsg_think_tank_fleet }
+				save_event_target_as = wg_think_tank_location
+			}
+		}
+	}
+	option = {
+		name = "wg_parit.49.a"
+		enable_special_project = {
+			name = "THINK_TANK_FTL_PROJECT"
+			location = event_target:wg_think_tank_location
+			owner = root
+		}
+		hidden_effect = {
+			set_country_flag = astesia_helper
+			set_global_flag = astesia_parit_helper
+		}		
+	}
+}
+
+country_event = {
+    id = wg_parit.50
+    hide_window = yes
+    is_triggered_only = yes
+	fire_only_once = yes
+	trigger = {
+		has_communications = event_target:sh_fallen_empire
+		exists = event_target:sh_fallen_empire
+		has_country_flag = custom_start_parit
+		NOT = { has_country_flag = triggered_parit_sh_fe_event }
+	}
+
+    immediate = {
+        country_event = { id = wg_parit.51 days = 360  }
+		set_country_flag = triggered_parit_sh_fe_event
+    }
+}
+
+country_event = {
+	id = wg_parit.51
+	title = "wg_parit.51.name"
+	desc = "wg_parit.51.desc"
+	picture = GFX_evt_ship_in_orbit_3
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	trigger = {
+		exists = event_target:sh_fallen_empire
+	}		
+	option = {
+		name = "wg_parit.51.a"
+		hidden_effect = {
+			owner = {
+				country_event = { id = wg_parit.52 days = 180 random = 180 }
+			}			
+		}		
+	}	
+}
+
+country_event = {
+	id = wg_parit.52
+	title = "wg_parit.52.name"
+	desc = "wg_parit.52.desc"
+	picture = GFX_evt_ship_in_orbit_3
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	trigger = {
+		exists = event_target:sh_fallen_empire
+	}		
+	option = {
+		name = "wg_parit.52.a"
+		hidden_effect = {
+			owner = {
+				country_event = { id = wg_parit.53 days = 10 }
+			}			
+		}		
+	}	
+}
+
+country_event = {
+	id = wg_parit.53
+	title = "TRANSMISSION"
+	desc = "wg_parit.53.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+	fire_only_once = yes
+
+	picture_event_data = {
+		portrait = event_target:sh_fallen_empire
+		planet_background = event_target:sh_fallen_empire
+		graphical_culture = event_target:sh_fallen_empire
+		city_level = event_target:sh_fallen_empire
+		room = event_target:sh_fallen_empire.ruler
+	}
+
+	option = {
+		name = "wg_parit.53.a"
+		response_text = wg_parit.53.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = "wg_parit.53.b"
+		hidden_effect = {
+			country_event = { id = wg_parit.54 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.54
+	title = "TRANSMISSION"
+	desc = "wg_parit.54.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+	fire_only_once = yes
+
+	picture_event_data = {
+		portrait = event_target:sh_fallen_empire
+		planet_background = event_target:sh_fallen_empire
+		graphical_culture = event_target:sh_fallen_empire
+		city_level = event_target:sh_fallen_empire
+		room = event_target:sh_fallen_empire.ruler
+	}
+
+	option = {
+		name = "wg_parit.54.a"
+		hidden_effect = {
+			country_event = { id = wg_parit.55 }
+		}
+	}
+}
+
+
+country_event = {
+	id = wg_parit.55
+	title = "wg_parit.55.name"
+	desc = "wg_parit.55.desc"
+	location = from.from.from
+
+	picture_event_data = {
+		room = no_video_feed_room
+	}
+	diplomatic = yes
+	force_open = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.55.a
+		response_text = wg_parit.55.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.55.b
+		response_text = wg_parit.55.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.55.c
+		response_text = wg_parit.55.c.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.55.d
+		response_text = wg_parit.55.d.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.55.e
+		response_text = wg_parit.55.e.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.55.f
+		response_text = wg_parit.55.f.response
+		hidden_effect = {
+			country_event = { id = wg_parit.56 days = 5 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.56
+	title = "wg_parit.56.name"
+	desc = "wg_parit.56.desc"
+	picture = GFX_evt_wg_parit
+	is_triggered_only = yes
+	fire_only_once = yes
+		
+	option = {
+		name = "wg_parit.56.a"
+		owner = {
+			add_resource = { unity = 2000 }
+		}		
+	}	
+}
+
+#执行者垂死病中惊坐起
+country_event = {
+	id = wg_parit.57
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_authority = auth_shenhai
+		has_country_flag = has_parit_girl
+		has_country_flag = custom_start_parit
+		has_technology = tech_kuat_THRUSTER
+		NOT = { has_country_flag = parit_kuat_executor }
+	}
+	immediate = {	
+		country_event = { id = wg_parit.58 days = 180 random = 180 }
+		set_country_flag = parit_kuat_executor		
+	}
+}
+
+
+country_event = {
+	id = wg_parit.58
+	title = "wg_parit.58.name"
+	desc = "wg_parit.58.desc"
+	picture = GFX_evt_wsg_executor
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.58.a
+		enable_special_project = {
+			name = "WG_PARIT_EXECTOR"
+			location = event_target:executor_ship_object_target
+			owner = root
+		}
+		add_modifier = {
+			modifier = parit_executor
+			days = -1
+		}
+	}
+	option = {
+		name = wg_parit.58.b
+	}
+}
+
+country_event = {
+	id = wg_parit.59
+	title = "wg_parit.59.name"
+	desc = "wg_parit.59.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_laser_grid
+
+
+	option = {
+		name = "wg_parit.59.a"
+		remove_modifier = parit_executor
+		hidden_effect = {
+			country_event = { id = wg_parit.60 days = 60 random = 30 }
+		}	
+	}
+}
+
+country_event = {
+	id = wg_parit.60
+	title = "wg_parit.60.name"
+	desc = "wg_parit.60.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_space_walk
+
+
+	option = {
+		name = "wg_parit.60.a"
+		owner = {
+			add_resource = { unity = 1000 }
+		}
+		hidden_effect = {
+			country_event = { id = wg_parit.61 }
+		}	
+	}
+}
+
+country_event = {
+	id = wg_parit.61
+	title = "wg_parit.61.name"
+	desc = "wg_parit.61.desc"
+	location = from.from.from
+
+	picture_event_data = {
+		room = no_video_feed_room
+	}
+	diplomatic = yes
+	force_open = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = wg_parit.61.a
+		response_text = wg_parit.61.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.61.b
+		response_text = wg_parit.61.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.61.c
+		response_text = wg_parit.61.c.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.61.d
+		response_text = wg_parit.61.d.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.61.e
+		response_text = wg_parit.61.e.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = wg_parit.61.f
+		response_text = wg_parit.61.f.response
+		hidden_effect = {
+			country_event = { id = wg_parit.62 days = 2 }
+		}
+	}
+}
+
+country_event = {
+	id = wg_parit.62
+	title = "wg_parit.62.name"
+	desc = "wg_parit.62.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_executor
+
+
+
+	option = {
+		name = "wg_parit.62.a"
+		create_fleet = {
+			name = "NAME_eddy_system"
+			settings = {
+				spawn_debris = no
+			}			
+			effect = {			
+				set_owner = root			
+				create_ship = {
+					name = random
+					design = "Name_boss_EXECUTOR"
+				}				
+				set_location = {
+					target = event_target:executor_ship_object_target
+					distance = 5
+					angle = random
+				}
+			}
+		}
+		event_target:executor_ship_object_target = {
+			destroy_ambient_object = this
+		}
+	}
+}

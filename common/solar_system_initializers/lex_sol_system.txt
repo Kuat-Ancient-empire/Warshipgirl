@@ -1,0 +1,380 @@
+# Sol System (Primitive Humans)
+lex_sol_system = {
+	name = "NAME_Sol_wg"
+	class = "sc_g"
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 145
+	}
+	asteroid_belt = {
+		type = icy_asteroid_belt
+		radius = 290
+	}
+
+	flags = { lex_sol wg_event_system }
+	
+	planet = {
+		name = "NAME_Sol_wg"
+		class = "pc_g_star"
+		orbit_distance = 0
+		orbit_angle = 1
+		size = 30
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_molten"
+		orbit_distance = 40
+		orbit_angle = 15
+		size = 10
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_toxic"
+		orbit_distance = 25
+		orbit_angle = 125
+		size = 20
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_continental"
+		orbit_distance = 25
+		orbit_angle = 120
+		size = 20
+		has_ring = no
+		entity = "continental_planet_earth_entity"
+		deposit_blockers = none
+		modifiers = none
+		
+		init_effect = {
+			prevent_anomaly = yes
+			set_planet_flag = lex_sol_III
+            create_species = {
+                name = Human
+                plural = Humans
+                class = "HUM"
+                portrait = "human"
+                homeworld = THIS
+                traits = {
+                    trait = "trait_adaptive"
+                    trait = "trait_nomadic"	
+                    trait = "trait_wasteful"
+				}
+				effect = {
+					save_event_target_as = sol_III_species
+				}
+            }
+            create_country = {
+                name = random
+                authority = random
+                day_zero_contact = no
+                civics = {
+                    civic = civic_increasing_urbanization
+                    civic = civic_atmospheric_pollution
+                }
+                species = event_target:sol_III_species
+                ethos = {
+                    ethic = "ethic_xenophile"
+                    ethic = "ethic_fanatic_egalitarian"			
+                }
+                flag = {
+                    icon = {
+                        category = "human"
+                        file = "flag_human_9.dds"
+                    }
+                    background= {
+                        category = "backgrounds"
+                        file = "circle.dds"
+                    }
+                    colors={
+                        "dark_blue"
+                        "green"
+                        "null"
+                        "null"
+                    }
+                }
+                type = primitive
+            }
+            last_created_country = {
+                set_graphical_culture = industrial_01
+				set_pre_ftl_age = wg_information_age
+				set_country_flag = wg_information_age
+				set_country_flag = sol_III_country
+				save_event_target_as = sol_III_country
+            }
+            set_owner = event_target:sol_III_country
+
+            create_primitive_blockers = yes
+            
+            create_army = {
+				name = "US Armed Forces West"
+				owner = event_target:sol_III_country
+				species = event_target:sol_III_species
+				type = "postatomic_army"
+			}
+			create_army = {
+				name = "US Armed Forces East"
+				owner = event_target:sol_III_country
+				species = event_target:sol_III_species
+				type = "postatomic_army"
+			}
+			create_army = {
+				name = "Chinese PLA"
+				owner = event_target:sol_III_country
+				species = event_target:sol_III_species
+				type = "postatomic_army"
+			}
+			create_army = {
+				name = "Russian Armed Forces"
+				owner = event_target:sol_III_country
+				species = event_target:sol_III_species
+				type = "postatomic_army"
+			}
+			create_army = {
+				name = "EU Combined Forces"
+				owner = event_target:sol_III_country
+				species = event_target:sol_III_species
+				type = "postatomic_army"
+			}
+			while = {
+				count = 28
+				create_pop = {
+					species = event_target:sol_III_species
+				}					
+			}
+            add_building = building_lex_monument
+			add_building = building_lex_monument
+			add_building = building_lex_monument
+			add_building = building_lex_monument
+			add_building = building_primitive_capital_lex
+			add_building = building_lex_monument
+
+            last_created_country = {
+                capital_scope = { set_name = "NAME_Sol_3_wg" }
+            }			
+        }
+
+		moon = {
+			class = "pc_barren_cold"
+			size = 5
+			orbit_distance = 12
+			orbit_angle = 40
+			has_ring = no
+			entity = "cold_barren_planet_luna_entity"
+			init_effect = {
+				prevent_anomaly = yes
+			}
+		}
+	}
+	
+	planet = {
+		class = "pc_barren"
+		orbit_distance = 25
+		orbit_angle = 60
+		size = 13
+		has_ring = no
+		entity = "barren_planet_mars_entity"
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_asteroid"
+		orbit_distance = 30
+		orbit_angle = -210
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_asteroid"
+		orbit_distance = 0
+		orbit_angle = -95
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_asteroid"
+		orbit_distance = 0
+		orbit_angle = 285
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_asteroid"
+		orbit_distance = 0
+		orbit_angle = -80
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_gas_giant"
+		orbit_distance = 40
+		orbit_angle = -160
+		size = 35
+		has_ring = no
+		entity = "gas_giant_jupiter_entity"
+		change_orbit = 6
+		
+		moon = {
+			class = "pc_molten"
+			size = 6
+			orbit_distance = 10
+			orbit_angle = 110
+			has_ring = no
+		}
+		moon = {
+			class = "pc_frozen"
+			size = 6
+			orbit_distance = 2.5
+			orbit_angle = 10
+			has_ring = no
+		}
+		moon = {
+			class = "pc_frozen"
+			size = 9
+			orbit_distance = 2.5
+			orbit_angle = 80
+			has_ring = no
+		}
+		moon = {
+			class = "pc_frozen"
+			size = 7
+			orbit_distance = 2.5
+			orbit_angle = -155
+			has_ring = no
+		}
+	}
+	
+	planet = {
+		class = "pc_gas_giant"
+		orbit_distance = 25
+		orbit_angle = 170
+		size = 30
+		has_ring = yes
+		entity = "gas_giant_05_entity"
+		change_orbit = 7
+		
+		moon = {
+			class = "pc_frozen"
+			size = 8
+			orbit_distance = 12
+			orbit_angle = 320
+			has_ring = no
+		}
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_gas_giant"
+		orbit_distance = 25
+		orbit_angle = 125
+		size = 20
+		has_ring = no
+		entity = "gas_giant_03_entity"
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_gas_giant"
+		orbit_distance = 25
+		orbit_angle = -195
+		size = 20
+		has_ring = no
+		entity = "gas_giant_02_entity"
+		change_orbit = 4
+		
+		moon = {
+			class = "pc_frozen"
+			size = 6
+			orbit_distance = 7
+			orbit_angle = 115
+			has_ring = no
+		}
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+
+	planet = {
+		class = "pc_asteroid"
+		orbit_distance = 30
+		orbit_angle = -210
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_ice_asteroid"
+		orbit_distance = 0
+		orbit_angle = -95
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_ice_asteroid"
+		orbit_distance = 0
+		orbit_angle = 285
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+	
+	planet = {
+		class = "pc_ice_asteroid"
+		orbit_distance = 0
+		orbit_angle = -80
+		size = 5
+		has_ring = no
+		init_effect = {
+			prevent_anomaly = yes
+		}
+	}
+
+	init_effect = {
+		random_system_planet = {
+			limit = { has_planet_flag = lex_sol_III }
+			save_global_event_target_as = lex_sol_III
+		}
+	}
+}

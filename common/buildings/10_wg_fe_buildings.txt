@@ -1,0 +1,470 @@
+building_wg_fe_ancient_palace = {
+	base_buildtime = 480
+	capital = yes
+	can_build = no
+	can_demolish = yes
+	icon = building_wg_fe_ancient_palace
+	destroy_trigger = {
+		always = no
+	}
+	potential = {
+		exists = owner
+		owner = { 
+			OR = {
+				is_fallen_empire = yes
+				is_sh_fallen_empire = yes
+			}	
+		}
+	}	
+	planet_modifier = {
+		planet_jobs_produces_mult = 1
+		planet_amenities_add = 50
+		planet_crime_add = -50		
+	}	
+	convert_to = {
+		building_hive_major_capital
+		building_machine_major_capital
+		building_major_capital
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_sh_fallen_empire = yes }
+		}
+		modifier = {
+			job_sh_fe_leader_add = 5
+			job_sh_fe_factorer_add = 30
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_sh_fallen_empire = no }
+		}
+		modifier = {
+			job_fe_overseer_add = 5
+			job_fe_protector_add = 5
+		}
+	}
+
+
+	resources = {
+		category = planet_buildings
+		upkeep = {
+			energy = 10
+		}
+	}
+		
+	upgrades = {
+	}
+}
+
+building_wg_fe_game_centre = {
+	base_buildtime = 360
+    base_cap_amount = 2
+    icon = building_wg_fe_game_centre
+
+	category = amenity
+	destroy_trigger = {
+		always = no
+	}
+	potential = {
+		owner = { is_wg_fallen_empire = yes }
+	}
+	
+	planet_modifier = {
+		pop_happiness = 0.3
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 300
+		}
+		upkeep = {
+			energy = 2
+		}
+	}
+	
+	triggered_desc = {
+		text = wg_fe_game_centre_desc
+	}	
+}
+
+building_wg_memory_data_base = {
+	base_buildtime = 480
+	can_build = no
+	can_demolish = yes
+	icon = building_wg_memory_data_base
+	
+	potential = {
+		owner = { is_wg_fallen_empire = yes }
+	}
+	destroy_trigger = {
+		always = no
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire = yes }
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		produces = {
+			physics_research = 500
+			society_research = 500
+			engineering_research = 500
+		}
+		upkeep = {
+			energy = 20
+		}
+	}
+		
+	upgrades = {
+	}
+}
+
+building_wg_fe_foundry = {
+	base_buildtime = 480
+	can_build = no
+	can_demolish = yes
+	icon = building_wg_fe_foundry
+	
+	potential = {
+		owner = { is_wg_fallen_empire = yes }
+	}
+	destroy_trigger = {
+		always = no
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire = yes }
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		produces = {
+			alloys = 100
+			consumer_goods = 100
+		}
+		upkeep = {
+			sr_se = 4
+			minerals = 80
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { is_fallen_empire = yes }
+			}
+			alloys = 80
+			consumer_goods = 80
+		#Fixed fallen empire being unable to build new ships.
+		}
+	}	
+}
+
+building_wg_fe_senergy = {
+	base_buildtime = 480
+	can_build = no
+	can_demolish = yes
+	icon = building_sh_senergy2
+	
+	potential = {
+		owner = { is_wg_fallen_empire = yes }
+	}
+	destroy_trigger = {
+		always = no
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				OR = {
+					is_fallen_empire = yes
+					is_sh_fallen_empire = yes
+				}	
+			}
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		produces = {
+			sr_se = 30
+		}
+		upkeep = {
+			energy = 150
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { is_fallen_empire = yes }
+			}
+			sr_se = 10
+		}#Fixed fallen empire being unable to build new ships.
+	}	
+	upgrades = {
+	}	
+}
+building_wg_fe_energy = {
+	base_buildtime = 480
+	can_demolish = yes
+	icon = building_wg_fe_energy
+	destroy_trigger = {
+		always = no
+	}
+	potential = {
+		custom_tooltip = {
+			exists = owner
+			OR = {
+				owner = { is_fallen_empire = yes }
+				owner = {
+					check_variable = { which = building_wg_fe_energy_count value >= 1 }
+				}
+			}
+		}
+	}
+	on_queued = {
+		owner = {
+			subtract_variable = { which = building_wg_fe_energy_count value = 1 }
+		}
+	}
+	on_unqueued = {
+		owner = {
+			change_variable = { which = building_wg_fe_energy_count value = 1 }
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		produces = {
+			energy = 800
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { is_fallen_empire = yes }
+			}
+			energy = 400
+		}#Fixed fallen empire being unable to build new ships.	
+	}
+	
+	upgrades = {
+	}
+}
+
+building_wg_fe_food = {
+	base_buildtime = 480
+	can_build = no
+	can_demolish = yes
+	icon = building_wg_fe_food
+	destroy_trigger = {
+		always = no
+	}
+	potential = {
+		owner = { is_wg_fallen_empire = yes }
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire = yes }
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		produces = {
+			food = 200
+		}
+		upkeep = {
+			energy = 30
+		}
+	}
+		
+	upgrades = {
+	}
+}
+building_wg_fe_stronghold = {
+	can_build = no
+	icon = building_sh_fortress
+	planetary_ftl_inhibitor = yes
+	potential = {
+		exists = owner
+		owner = { is_fallen_empire = yes }
+	}
+	destroy_trigger = {
+		always = no
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				OR = {
+					is_fallen_empire = no
+				}	
+			}					
+		}
+		modifier = {
+			job_soldier_add = 50
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				is_sh_fallen_empire = yes	
+			}					
+		}
+		modifier = {
+			job_soldier_add = 50
+		}
+	}
+	convert_to = {
+		building_wg_fe_stronghold
+	}
+	
+	planet_modifier = {
+		army_damage_mult = 0.35
+		planet_orbital_bombardment_damage = -0.5
+	}
+	resources = {
+		category = planet_buildings	
+		upkeep = {
+			energy = 30
+			sr_se = 1
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				is_fallen_empire = yes
+				is_sh_fallen_empire = no
+			}
+		}
+		modifier = {
+			job_fe_protector_add = 40
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				is_sh_fallen_empire = yes
+			}
+		}
+		modifier = {
+			job_sh_fe_protector_add = 20
+		}
+	}
+}
+
+building_wg_fe_dimensional_fabricator = {
+	can_build = yes
+	can_demolish = yes
+	icon = building_wg_fe_dimensional_fabricator
+	destroy_trigger = {
+		always = no
+	}
+	potential = {
+		custom_tooltip = {
+			exists = owner
+			OR = {
+				owner = { is_fallen_empire = yes }
+				owner = { is_sh_fallen_empire = yes }
+			}
+			fail_text = "ancrel.10004.failtext"
+		}
+	}
+	
+	planet_modifier = {
+	}
+
+	resources = {
+		category = planet_buildings
+		produces = {
+			minerals = 500
+			rare_crystals = 5
+			exotic_gases = 5
+			volatile_motes = 5
+			sr_pantsu = 5
+			sr_dark_matter = 2
+			sr_living_metal = 2		
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { is_fallen_empire = yes }
+			}
+			sr_dark_matter = 3
+			sr_living_metal = 3
+		}#Fixed fallen empire being unable to build new ships.
+		upkeep = {
+			energy = 150
+			sr_se = 3
+		}
+	}
+
+	on_queued = {
+		owner = {
+			subtract_variable = { which = dimensional_fabricator_build_count value = 1 }
+		}
+	}
+
+	on_unqueued = {
+		owner = {
+			change_variable = { which = dimensional_fabricator_build_count value = 1 }
+		}
+	}
+		
+	upgrades = {
+	}
+}
+
+building_wg_fe_war_factory = {
+	base_buildtime = 360
+    base_cap_amount = 2
+    icon = building_wg_fe_war_factory
+	
+	potential = {
+		owner = { is_wg_fallen_empire = yes }
+	}
+	destroy_trigger = {
+		always = no
+	}
+	planet_modifier = {
+		pop_happiness = 0.3
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 300
+		}
+		upkeep = {
+			energy = 100
+			minerals = 100
+			sr_pantsu = 30
+		}
+		produces = {
+			sr_se = 5
+		}
+	}
+
+	country_modifier = {
+		ship_weapon_damage = 0.02
+		starbase_shipyard_build_speed_mult = 0.05
+		ships_upkeep_mult = -0.05
+		armies_upkeep_mult= -0.05
+	}
+	
+	triggered_desc = {
+		text = wg_fe_war_factory_desc
+	}	
+}

@@ -1,0 +1,135 @@
+sh_planet_blaster_situation = {
+	picture = GFX_evt_exploding_planet
+
+	complete_icon = GFX_situation_outcome_icon_exploding_planet
+	complete_icon_frame = GFX_situation_outcome_frame_red
+
+	category = positive
+
+	on_start = {
+		# 防小数点未进位
+		add_situation_progress = 0.01
+	}
+	on_progress_complete = {
+		situation_event = { id = sh.3104 }
+		custom_tooltip = sh_planet_blaster_effects
+	}
+
+	stages = {
+		sh_planet_blaster_s1 = {
+			icon = GFX_situation_stage_1
+			icon_background = GFX_situation_stage_frame_blue
+			end = 25
+			#custom_tooltip = sh_planet_blaster_s1_effects
+		}
+		sh_planet_blaster_s2 = {
+			icon = GFX_situation_stage_2
+			icon_background = GFX_situation_stage_frame_blue
+			end = 50
+			on_first_enter = {
+				random_list = {
+					95 = { situation_event = { id = sh.3101 }}
+					5 = { 
+						modifier = {
+							factor = 0.5
+							has_situation_flag = less_fail_event
+						}
+						modifier = {
+							factor = 0
+							has_situation_flag = no_fail_event
+						}
+						situation_event = { id = sh.3109 }
+					}
+				}
+			}
+			custom_tooltip = sh_planet_blaster_s2_effects
+		}
+		sh_planet_blaster_s3 = {
+			icon = GFX_situation_stage_3
+			icon_background = GFX_situation_stage_frame_blue
+			end = 75
+			on_first_enter = {
+				random_list = {
+					85 = { situation_event = { id = sh.3102 }}
+					15 = { 
+						modifier = {
+							factor = 0.5
+							has_situation_flag = less_fail_event
+						}
+						modifier = {
+							factor = 0
+							has_situation_flag = no_fail_event
+						}
+						situation_event = { id = sh.3109 }
+					}
+				}
+			}
+			custom_tooltip = sh_planet_blaster_s3_effects
+		}
+		sh_planet_blaster_s4 = {
+			icon = GFX_situation_stage_4
+			icon_background = GFX_situation_stage_frame_green
+			end = 100
+			on_first_enter = {
+				random_list = {
+					65 = { situation_event = { id = sh.3103 }}
+					35 = { 
+						modifier = {
+							factor = 0.5
+							has_situation_flag = less_fail_event
+						}
+						modifier = {
+							factor = 0
+							has_situation_flag = no_fail_event
+						}
+						situation_event = { id = sh.3109 }
+					}
+				}
+			}
+			custom_tooltip = sh_planet_blaster_s4_effects
+		}
+	}
+	approach = {
+		name = situation_sh_planet_blaster_normal
+		icon = GFX_situation_approach_suspicious
+		icon_background = GFX_situation_approach_bg_yellow
+		default = yes
+		on_select = {
+			custom_tooltip = situation_sh_planet_blaster_normal
+		}
+	}
+    approach = {
+		name = situation_sh_planet_blaster_speed_up
+		icon = GFX_situation_approach_energy_credits
+		icon_background = GFX_situation_approach_bg_green
+		on_select = {
+			custom_tooltip = situation_sh_planet_blaster_speed_up_tooltip
+		}
+		allow = {
+			owner = {
+				resource_stockpile_compare = { resource = energy value >= 10 }
+			}
+		}
+		resources = {
+			category = situations
+			upkeep = {
+				energy = 10
+			}
+		}
+	}
+	on_monthly = {
+		random_events = {
+			1 = sh.3105 
+			99 = 0
+		}
+	}
+	monthly_progress = {
+		base = 0.416 # 100 / 240个月
+		modifier = {
+			factor = 1.1
+			desc = situation_sh_planet_blaster_speed_up_tooltip
+			current_situation_approach = situation_sh_planet_blaster_speed_up
+		}
+	}
+		
+}

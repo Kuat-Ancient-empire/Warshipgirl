@@ -1,0 +1,194 @@
+particle={
+	name="uf_nemesis_system_core_file"
+	subsystem={
+		name="Glow_flare"
+		max_amount=20
+		slave_particles=0
+		sort="depth"
+		emitter_type="point"
+		invert=no
+		trail=no
+		local_space=yes
+		billboard=no
+		hide=no
+		texture={
+			file="gfx/particles/polar_swirl_4.dds"
+			x=1
+			y=1
+			shader="ParticleAdditive"
+		}
+		color={
+			x={ 255 20 }
+			y={ 180 20 }
+			z={ 100 20 }
+			alpha={ 255,fade_in_out_flairs 20 }
+		}
+		position={
+			x=0
+			y=-15
+			z=0
+		}
+		start=0
+		duration=-1
+		emitter_yaw={ 0 0 }
+		emitter_pitch={ 0 0 }
+		velocity_pitch={ 0 180 }
+		velocity_yaw={ 0 180 }
+		velocity={ 0 0 }
+		life={ 2 0.5 }
+		emission=4
+		size={ 150,size_shrink 15 }
+		particle_yaw={ 0 180 }
+		particle_pitch={ 0 180 }
+		rotation={ 0 180 }
+	}
+	subsystem={
+		name="SolarSparks"
+		max_amount=40
+		slave_particles=0
+		sort="depth"
+		emitter_type="point"
+		invert=no
+		trail=no
+		local_space=yes
+		billboard=no
+		hide=no
+		texture={
+			file="gfx/particles/sparks_circle.dds"
+			x=1
+			y=1
+			shader="ParticleAdditive"
+		}
+		color={
+			x={ 255 20 }
+			y={ 180 20 }
+			z={ 100 20 }
+			alpha={ 240,fade_in_out_flairs 25 }
+		}
+		position={
+			x=0
+			y=-15
+			z=0
+		}
+		start=0
+		duration=-1
+		emitter_yaw={ 0 0 }
+		emitter_pitch={ 0 0 }
+		velocity_pitch={ 0 180 }
+		velocity_yaw={ 0 180 }
+		velocity={ 0 0 }
+		life={ 1.5 0.2 }
+		emission=30
+		size={ 90,size_shrink 20 }
+		particle_yaw={ 0 180 }
+		particle_pitch={ 0 180 }
+		rotation={ 0 180 }
+	}
+	subsystem={
+		name="Shockwaves"
+		max_amount=1
+		slave_particles=0
+		sort="depth"
+		emitter_type="point"
+		invert=no
+		trail=no
+		local_space=yes
+		billboard=no
+		hide=no
+		texture={
+			file="gfx/particles/halo.dds"
+			x=1
+			y=1
+			shader="ParticleAdditive"
+		}
+		color={
+			x={ 255 7 }
+			y={ 180 7 }
+			z={ 100 15 }
+			alpha=150,shock_fade
+		}
+		position={
+			x=0
+			y=-15
+			z=0
+		}
+		duration=-1
+		emitter_yaw={ 0 0 }
+		emitter_pitch={ 0 0 }
+		velocity_pitch=-90
+		velocity_yaw=0
+		velocity={ 4 0 }
+		life={ 12 0.5 }
+		emission=2
+		size={ 500,shockwave_grow 6 }
+		particle_yaw={ 0 0 }
+		particle_pitch={ 90 0 }
+		rotation={ 0 180 }
+	}
+	animation={
+		name="fade_in_out_flairs"
+		start=0
+		duration=1
+		repeat=yes
+		minValue=0
+		maxValue=1
+		curve={
+			0 0 0.10882 0.34375 0.32353 0.94531 0.73529 0.51563 1 0 
+		}
+		op="MUL"
+		time="life"
+	}
+	animation={
+		name="shockwave_grow"
+		start=0
+		duration=1
+		repeat=no
+		minValue=0
+		maxValue=1
+		curve={
+			0 0.0625 0.17941 0.28906 0.57059 0.78906 1 0.92188 
+		}
+		op="MUL"
+		time="life"
+	}
+	animation={
+		name="shock_fade"
+		start=0
+		duration=1
+		repeat=no
+		minValue=0
+		maxValue=1
+		curve={
+			0 0 0.03235 0.82031 0.46765 0.32031 1 0 
+		}
+		op="MUL"
+		time="life"
+	}
+	animation={
+		name="size_shrink"
+		start=0
+		duration=1
+		repeat=no
+		minValue=0
+		maxValue=1
+		curve={
+			0 1 0.4 0.625 1 0.25781 
+		}
+		op="MUL"
+		time="life"
+	}
+	force={
+		type="planar"
+		name="force0"
+		position={
+			0 0 0 
+		}
+		direction={
+			0 1 0 
+		}
+		local_force=yes
+		yaw=0
+		division=16
+		amount=5
+	}
+}

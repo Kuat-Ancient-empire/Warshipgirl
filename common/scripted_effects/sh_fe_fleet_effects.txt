@@ -1,0 +1,514 @@
+create_sh_fe_capital_fleet_and_admiral = {
+	optimize_memory
+    set_update_modifiers_batch = begin
+    create_sh_fe_admiral = yes
+    create_sh_fe_fleet = yes
+	create_sh_fe_admiral = yes
+    create_sh_fe_fleet2 = yes
+	create_sh_fe_admiral = yes
+    create_sh_fe_fleet2 = yes
+	create_sh_fe_admiral = yes
+    create_sh_fe_fleet2 = yes
+    create_sh_fe_construction_ship = yes
+    set_update_modifiers_batch = end
+}
+
+create_sh_fe_fleet = {
+	if = {
+		limit = {
+			owner = { has_authority = auth_sh_fe }
+		}
+		create_fleet = {
+			name = "NAME_SH_FE_CAPITAL_FLEET"
+			effect = {
+                set_owner = event_target:sh_fallen_empire
+				create_ship = {
+					name = random
+					design = "NAME_SH_FE_WATCHKEEPER2"
+					upgradable = no
+				}
+                while = {
+                    count = 6
+                    create_ship = {
+                        name = random
+                        design = "NAME_SH_FE_TITAN"
+                        graphical_culture = "fallen_empire_04"
+                        upgradable = no
+                    }
+                }
+                while = {
+                    count = 25
+                    create_ship = {
+                        name = random
+                        design = "NAME_SH_FE_BATTLE_CRUISE"
+                        graphical_culture = "fallen_empire_04"
+                        upgradable = no
+                    }
+                }
+                while = {
+                    count = 30
+                    create_ship = {
+                        name = random
+                        design = "NAME_SH_FE_ESCORTE"
+                        graphical_culture = "fallen_empire_04"
+                        upgradable = no
+                    }
+                }
+				while = {
+                     count = 15
+                     create_ship = {
+                         name = random
+                         design = "NAME_Fallen_uav_4"
+                         graphical_culture = "fallen_empire_04"
+                         upgradable = no
+                     }
+                }
+                set_location = {
+                    target = PREV
+                    distance = 5
+                    angle = random
+                }
+                set_fleet_stance = aggressive
+                set_fleet_bombardment_stance = Galo
+                assign_leader = last_created_leader
+                #set_aggro_range_measure_from = self
+                #set_aggro_range = 500
+            }	
+        	settings = { 
+            	can_upgrade = no 
+            	uses_naval_capacity = yes
+            }
+		}						
+	}					
+}
+create_sh_fe_construction_ship = {					
+    create_fleet = {
+        name = "NAME_SH_FE_CONSTRUCTION"
+        effect = {
+            set_owner = event_target:sh_fallen_empire
+            create_ship = {
+                name = random
+                design = "NAME_SH_FE_CONSTRUCTION"
+                graphical_culture = "fallen_empire_04"
+                upgradable = no
+            }
+            set_location = {
+                target = PREV
+                distance = 15
+                angle = random
+            }
+        }
+        settings = { 
+            can_upgrade = no 
+            uses_naval_capacity = yes
+        }
+    }					
+}
+create_sh_fe_colossus = {					
+	if = {
+		limit = {
+			owner = { has_authority = auth_sh_fe }
+		}
+		create_fleet = {
+			name = "NAME_SH_FE_COLOSSUS"
+			effect = {
+            set_owner = event_target:sh_fallen_empire
+            while = {
+                count = 1
+                create_ship = {
+                    name = random
+                    design = "NAME_SH_FE_COLOSSUS"
+					graphical_culture = "fallen_empire_04"
+                    upgradable = no
+                }
+            }					
+            set_location = {
+                target = PREV
+                distance = 30
+                angle = random
+                }
+            }
+            settings = { 
+                can_upgrade = no 
+                uses_naval_capacity = yes
+            }
+		}						
+	}					
+}
+
+create_sh_fe_fleet2 = {
+	if = {
+		limit = {
+			owner = { has_authority = auth_sh_fe }
+		}
+		create_fleet = {
+			name = "NAME_SH_FE_COLONY_FLEET"
+			effect = {
+            set_owner = event_target:sh_fallen_empire
+            while = {
+                count = 2
+                create_ship = {
+                    name = random
+                    design = "NAME_SH_FE_TITAN"
+                    graphical_culture = "fallen_empire_04"
+                    upgradable = no
+                }
+            }
+            while = {
+                count = 20
+                create_ship = {
+                    name = random
+                    design = "NAME_SH_FE_BATTLE_CRUISE"
+                    graphical_culture = "fallen_empire_04"
+                    upgradable = no
+                }
+            }
+            while = {
+                count = 35
+                create_ship = {
+                    name = random
+                    design = "NAME_SH_FE_ESCORTE"
+                    graphical_culture = "fallen_empire_04"
+                    upgradable = no
+                }
+            }
+			while = {
+                     count = 5
+                     create_ship = {
+                         name = random
+                         design = "NAME_Fallen_uav_4"
+                         graphical_culture = "fallen_empire_04"
+                         upgradable = no
+                     }
+                }
+            set_location = {
+                target = PREV
+                distance = 80
+                angle = random
+            }
+            set_fleet_stance = aggressive
+            set_fleet_bombardment_stance = Galo
+			assign_leader = last_created_leader
+            #set_aggro_range_measure_from = self
+            #set_aggro_range = 500
+        }
+        settings = { 
+            can_upgrade = no 
+            uses_naval_capacity = yes
+            }
+		}						
+	}					
+}
+
+create_sh_fe_citadel = {
+	create_starbase = {
+		size = "starbase_citadel"
+
+		module = "shipyard"
+		module = "anchorage"
+		module = "anchorage"
+		module = "hangar_bay"
+		module = "gun_battery"
+		module = "gun_battery"
+
+		building = "crew_quarters"
+		building = "command_center"
+		building = "target_uplink_computer"
+		building = "dark_matter_listening_post"
+		
+		effect = {
+			while = {
+				count = 45
+				create_sh_fallen_empire_platform = yes
+			}
+			while = {
+				count = 10
+				create_sh_fallen_empire_large_platform = yes
+			}
+		}			
+	}
+}
+create_sh_fe_home_citadel = {
+	create_starbase = {
+		size = "starbase_citadel"
+
+		module = "shipyard"
+		module = "shipyard"
+		module = "shipyard"			
+		module = "hangar_bay"
+		module = "gun_battery"
+		module = "gun_battery"		
+
+		building = "target_uplink_computer"
+		building = "defense_grid"
+		building = "colossus_yards"
+		building = "titan_yards"
+		
+		effect = {
+			while = {
+				count = 50
+				create_sh_fallen_empire_platform = yes
+			}
+			while = {
+				count = 10
+				create_sh_fallen_empire_large_platform = yes
+			}
+		}
+	}
+}
+
+create_sh_fallen_empire_platform = {
+	if = {
+		limit = {
+			owner = { has_authority = auth_sh_fe }
+		}
+		create_ship = {
+			name = random
+			design = "NAME_SH_FE_PLATFORM"
+			graphical_culture = owner
+		}						
+	}					
+}
+create_sh_fallen_empire_large_platform = {
+	if = {
+		limit = {
+			owner = { has_authority = auth_sh_fe }
+		}
+		create_ship = {
+			name = random
+			design = "NAME_SH_FE_LARGE_PLATFORM"
+			graphical_culture = owner
+		}						
+	}					
+}
+create_sh_fe_platform = {
+	if = {
+		limit = {
+			owner = { has_authority = auth_sh_fe }
+		}
+		create_fleet = {
+			name = "NAME_SH_FE_PLATFORM"
+			effect = {
+            set_owner = event_target:sh_fallen_empire
+            while = {
+                count = 20
+                create_ship = {
+                    name = random
+                    design = "NAME_SH_FE_PLATFORM"
+                    graphical_culture = "fallen_empire_04"
+                    upgradable = no
+                }
+            }
+            while = {
+                count = 3
+                create_ship = {
+                    name = random
+                    design = "NAME_SH_FE_LARGE_PLATFORM"
+                    graphical_culture = "fallen_empire_04"
+                    upgradable = no
+                }
+            }					
+            set_location = {
+                target = PREV
+                distance = 10
+                angle = random
+            }
+            set_fleet_stance = aggressive
+            #set_aggro_range_measure_from = self
+            #set_aggro_range = 500
+        }
+        settings = { 
+            can_upgrade = no 
+            uses_naval_capacity = yes
+            }
+		}						
+	}					
+}
+############
+create_sh_attack_fe_admiral = {
+    event_target:sh_attack_fleet_country_targer = {
+        random_list = {
+            50 = {
+                create_leader = {
+                    class = commander
+                    species = event_target:fe_species_sh2
+                    name = random
+                    skill = 10
+                    traits = {
+                        trait = leader_trait_shenhai1
+						trait = leader_trait_admiral_sh_weapon_master
+                    }
+                }
+            }
+            50 = {
+                create_leader = {
+                    class = commander
+                    species = event_target:fe_species_sh2
+                    name = random
+                    skill = 10
+                    traits = {
+                        trait = leader_trait_shenhai1
+						trait = leader_trait_admiral_sh_armor
+                    }
+                }
+            }			
+        }
+    }
+}
+
+create_sh_attack_fe_fleet = {
+	if = {
+		limit = {
+			owner = { is_country_type = wg_awakened_fleet_country }
+		}
+		create_fleet = {
+			name = "NAME_SH_FE_CAPITAL_FLEET"
+			effect = {
+                set_owner = event_target:sh_attack_fleet_country_targer
+				create_ship = {
+					name = random
+					design = "NAME_SH_FE_WATCHKEEPER2"
+					upgradable = no
+				}
+                while = {
+                    count = 4
+                    create_ship = {
+                        name = random
+                        design = "NAME_SH_FE_TITAN"
+                        graphical_culture = "fallen_empire_04"
+                        upgradable = no
+                    }
+                }
+                while = {
+                    count = 20
+                    create_ship = {
+                        name = random
+                        design = "NAME_SH_FE_BATTLE_CRUISE"
+                        graphical_culture = "fallen_empire_04"
+                        upgradable = no
+                    }
+                }
+                while = {
+                    count = 35
+                    create_ship = {
+                        name = random
+                        design = "NAME_SH_FE_ESCORTE"
+                        graphical_culture = "fallen_empire_04"
+                        upgradable = no
+                    }
+                }
+				while = {
+                     count = 15
+                     create_ship = {
+                         name = random
+                         design = "NAME_Fallen_uav_4"
+                         graphical_culture = "fallen_empire_04"
+                         upgradable = no
+                     }
+                }
+                set_location = {
+                    target = event_target:sh_fe_capital_location
+                    distance = 5
+                    angle = random
+                }
+                set_fleet_stance = aggressive
+                set_aggro_range_measure_from = self
+                set_aggro_range = 500
+                assign_leader = last_created_leader
+            }	
+        	settings = { 
+            	can_upgrade = no 
+            	uses_naval_capacity = yes
+            }
+		}						
+	}					
+}
+
+create_sh_attack_fe_fleet2 = {
+	if = {
+		limit = {
+			owner = { is_country_type = wg_awakened_fleet_country }
+		}
+		create_fleet = {
+			name = "NAME_SH_FE_COLONY_FLEET"
+			effect = {
+                set_owner = event_target:sh_attack_fleet_country_targer
+                while = {
+                    count = 2
+                    create_ship = {
+                        name = random
+                        design = "NAME_SH_FE_TITAN"
+                        graphical_culture = "fallen_empire_04"
+                        upgradable = no
+                    }
+                }
+                while = {
+                    count = 15
+                    create_ship = {
+                        name = random
+                        design = "NAME_SH_FE_BATTLE_CRUISE"
+                        graphical_culture = "fallen_empire_04"
+                        upgradable = no
+                    }
+                }
+                while = {
+                    count = 30
+                    create_ship = {
+                        name = random
+                        design = "NAME_SH_FE_ESCORTE"
+                        graphical_culture = "fallen_empire_04"
+                        upgradable = no
+                    }
+                }
+				while = {
+                     count = 5
+                     create_ship = {
+                         name = random
+                         design = "NAME_Fallen_uav_4"
+                         graphical_culture = "fallen_empire_04"
+                         upgradable = no
+                     }
+                }
+                set_location = {
+                    target = event_target:sh_fe_capital_location
+                    distance = 5
+                    angle = random
+                }
+                set_fleet_stance = aggressive
+                set_aggro_range_measure_from = self
+                set_aggro_range = 500
+                assign_leader = last_created_leader
+				}
+				settings = { 
+            		can_upgrade = no 
+            		uses_naval_capacity = yes
+            }
+		}	
+	}					
+}
+
+create_sh_planetary_ship = {					
+    create_fleet = {
+        name = "NAME_sh_fe_planetary_ship"
+        effect = {
+            set_owner = event_target:sh_fallen_empire
+            create_ship = {
+                name = random
+                design = "NAME_sh_fe_planetary_ship"
+                #graphical_culture = "fallen_empire_04"
+                upgradable = no
+            }
+            set_location = {
+                target = PREV
+                distance = 15
+                angle = random
+            }
+        }
+        settings = { 
+            can_upgrade = no 
+            uses_naval_capacity = yes
+			spawn_debris = no
+            is_boss = yes
+        }
+    }					
+}

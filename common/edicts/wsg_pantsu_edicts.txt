@@ -1,0 +1,789 @@
+
+wg_sr_se_trait_enable = {
+	length = -1
+    icon = "GFX_ap_wg_sr_se_edict"
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			has_authority = auth_shenhai
+		}
+		OR = {
+			has_ascension_perk = ap_mist
+			has_ascension_perk = ap_project_s
+			has_ascension_perk = ap_shenhai_silent
+			has_ascension_perk = ap_shenhai_icebreaking
+		}
+	}
+
+	effect = {
+	}
+	ai_weight = {
+		weight = 1000
+	}
+}
+wsg_colony = {
+	length = -1
+	icon = "GFX_wg_edict"
+	resources = {
+		category = edicts
+		upkeep = {
+			unity = 10
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	modifier = {
+		colony_start_num_pops_add = 1
+		custom_tooltip = tr_expansion_colonization_fever_desc
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_authority = auth_warshipgirls
+	}
+	
+	ai_weight = {
+		weight = 10
+	}	
+}
+
+
+wsg_folding_chair = {
+	length = -1
+	icon = "GFX_wg_edict"
+	resources = {
+		category = edicts
+		upkeep = {
+			unity = 10
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	modifier = {
+		pop_housing_usage_mult = -0.1
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_authority = auth_warshipgirls
+	}
+	
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = @EdictLowPrio
+			has_monthly_income = {
+				resource = consumer_goods
+				value < 0
+			}
+		}
+	}	
+}
+
+
+wsg_nobodyzk = {
+	length = -1
+	icon = "GFX_ap_wg_pantsu_edict"
+	resources = {
+		category = campaigns
+		upkeep = {
+			sr_pantsu = 0.5
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	modifier = {
+		planet_jobs_produces_mult = 0.05
+		pop_happiness = 0.05
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_technology = tech_wsg_pantsu
+	}
+	
+	ai_weight = {
+		weight = 10
+	}	
+}
+
+wsg_pantsureplace = {
+	length = -1
+	icon = "GFX_ap_wg_pantsu_edict"
+	resources = {
+		category = campaigns
+		upkeep = {
+			sr_pantsu = 0.5
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	modifier = {
+		pop_amenities_usage_no_happiness_mult = -0.05
+		planet_pops_consumer_goods_upkeep_mult = -0.10
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_technology = tech_wsg_pantsu
+	}
+	
+	ai_weight = {
+		weight = 5
+		modifier = {
+			factor = 10
+			decision_has_resource = {
+				RESOURCE = sr_pantsu
+				MIN_REQUIREMENT = 250
+			}
+		}
+	}	
+}
+
+wsg_sillystudy = {
+	length = -1
+	icon = "GFX_ap_wg_pantsu_edict"
+	resources = {
+		category = campaigns
+		upkeep = {
+			sr_pantsu = 0.5
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	modifier = {
+		all_technology_research_speed = 0.10
+		species_leader_exp_gain = 0.31
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_technology = tech_wsg_pantsu
+	}
+	
+	ai_weight = {
+		weight = 5
+		modifier = {
+			factor = 10
+			decision_has_resource = {
+				RESOURCE = sr_pantsu
+				MIN_REQUIREMENT = 250
+			}
+		}
+	}	
+}
+
+wsg_energy = {
+	length = -1
+	icon = "GFX_ap_wg_pantsu_edict"
+	resources = {
+		category = campaigns
+		upkeep = {
+			sr_pantsu = 1
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	modifier = {
+		country_energy_produces_mult = 0.10
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_technology = tech_wsg_pantsu
+	}
+	
+	ai_weight = {
+		weight = 0
+		modifier = {
+			add = 20
+			decision_has_resource = {
+				RESOURCE = sr_pantsu
+				MIN_REQUIREMENT = 250
+			}
+		}
+	}	
+}
+
+
+wsg_pantsuarmor = {
+	length = -1
+	icon = "GFX_ap_wg_pantsu_edict"
+
+	resources = {
+		category = edicts
+
+		cost = {
+			sr_pantsu = 10
+			multiplier = value:edict_size_effect
+		}
+		upkeep = {
+			sr_pantsu = 1
+			multiplier = value:edict_size_effect
+		}
+
+	}
+
+	modifier = {
+	    ship_armor_mult = 0.1
+		ship_hull_regen_add_static = 25
+		ship_armor_regen_add_static = 25
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_technology = tech_wsg_pantsu
+	}
+	
+	ai_weight = {
+		weight = 0
+		modifier = {
+			add = 20
+			is_at_war = yes
+			decision_has_resource = {
+				RESOURCE = sr_pantsu
+				MIN_REQUIREMENT = 250
+			}
+		}
+	}	
+}
+
+wsg_dj = {
+	length = -1
+	icon = "GFX_ap_wg_pantsu_edict"
+
+	resources = {
+		category = edicts
+
+		cost = {
+			sr_pantsu = 25
+			multiplier = value:edict_size_effect
+		}
+		upkeep = {
+			sr_pantsu = 1.5
+			multiplier = value:edict_size_effect
+		}
+
+	}
+
+	modifier = {
+		starbase_shipyard_build_cost_mult = -0.05
+		starbase_shipyard_build_speed_mult = 0.20
+		pop_growth_speed= 0.1
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_technology = tech_wsg_pantsu
+	}
+	
+	ai_weight = {
+		weight = 5
+		modifier = {
+			factor = 10
+			decision_has_resource = {
+				RESOURCE = sr_pantsu
+				MIN_REQUIREMENT = 250
+			}
+		}
+	}	
+}
+
+wsg_Ptuitu = {
+	length = -1
+	icon = "GFX_ap_wg_pantsu_edict"
+	
+	resources = {
+		category = edicts
+
+		cost = {
+			sr_pantsu = 25
+			multiplier = value:edict_size_effect
+		}
+		upkeep = {
+			sr_pantsu = 1.5
+			multiplier = value:edict_size_effect
+		}
+
+
+	}
+
+	modifier = {
+		country_war_exhaustion_mult = -0.2
+		army_damage_mult = 0.3	
+		army_morale = 0.3
+		planet_army_build_speed_mult  = 0.50
+		army_defense_damage_mult = 0.5
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_technology = tech_wsg_pantsu
+	}
+	
+	ai_weight = {
+		weight = 0
+		modifier = {
+			add = 20
+			is_at_war = yes
+			decision_has_resource = {
+				RESOURCE = sr_pantsu
+				MIN_REQUIREMENT = 400
+			}
+		}
+	}	
+}
+
+wsg_Stuitu = {
+	length = -1
+	icon = "GFX_ap_wg_pantsu_edict"
+	resources = {
+		category = edicts
+
+		cost = {
+			sr_pantsu = 25
+			multiplier = value:edict_size_effect
+		}
+		upkeep = {
+			sr_pantsu = 1.5
+			multiplier = value:edict_size_effect
+		}
+
+
+	}
+
+	modifier = {
+	    ship_speed_mult = 0.15
+	    ship_weapon_damage = 0.15
+		ship_fire_rate_mult = 0.15
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_technology = tech_wsg_pantsu
+	}
+	
+	ai_weight = {
+		weight = 0
+		modifier = {
+			add = 20
+			is_at_war = yes
+			decision_has_resource = {
+				RESOURCE = sr_pantsu
+				MIN_REQUIREMENT = 400
+			}
+		}
+	}
+}
+#########################深海
+sh_double_pantsu = {
+	length = -1
+	icon = "GFX_wg_edict"
+	resources = {
+		category = edicts
+		upkeep = {
+			sr_pantsu = 1
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	modifier = {
+		planet_jobs_sr_pantsu_produces_mult = 0.25
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_authority = auth_shenhai
+	}
+	
+	ai_weight = {
+		weight = 20
+		modifier = {
+			factor = 5
+			decision_has_resource = {
+				RESOURCE = sr_pantsu
+				MIN_REQUIREMENT = 200
+			}
+		}
+	}
+}
+sh_energy = {
+	length = -1
+	icon = "GFX_ap_wg_pantsu_edict"
+	resources = {
+		category = edicts
+		upkeep = {
+			sr_pantsu = 1
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	modifier = {
+		country_energy_produces_mult = 0.15
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_authority = auth_shenhai
+	}
+	
+	ai_weight = {
+		weight = 20
+		modifier = {
+			factor = 5
+			decision_has_resource = {
+				RESOURCE = sr_pantsu
+				MIN_REQUIREMENT = 200
+			}
+		}
+	}
+}
+sh_pantsuartisan = {
+	length = -1
+	icon = "GFX_ap_wg_pantsu_edict"
+	resources = {
+		category = edicts
+		upkeep = {
+			sr_pantsu = 1
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	modifier = {
+	    planet_jobs_consumer_goods_produces_mult = 0.20
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_authority = auth_shenhai
+	}
+	
+	ai_weight = {
+		weight = 20
+		modifier = {
+			factor = 5
+			decision_has_resource = {
+				RESOURCE = sr_pantsu
+				MIN_REQUIREMENT = 200
+			}
+		}
+	}	
+}
+
+sh_pantsuarmor = {
+	length = -1
+	icon = "GFX_ap_wg_pantsu_edict"
+	
+	resources = {
+		category = edicts
+
+		cost = {
+			sr_pantsu = 10
+			multiplier = value:edict_size_effect
+		}
+		upkeep = {
+			sr_pantsu = 1
+			multiplier = value:edict_size_effect
+		}
+
+
+	}
+	modifier = {
+	    ship_armor_mult = 0.15
+		ship_hull_regen_add_perc = 0.15
+		ship_armor_regen_add_perc = 0.15
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_authority = auth_shenhai
+	}
+	
+
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			add = 20
+			is_at_war = yes
+			decision_has_resource = {
+				RESOURCE = sr_pantsu
+				MIN_REQUIREMENT = 400
+			}
+		}
+	}
+}
+
+sh_pantsubattle = {
+	length = -1
+	icon = "GFX_ap_wg_pantsu_edict"
+	resources = {
+		category = edicts
+
+		cost = {
+			sr_pantsu = 25
+			multiplier = value:edict_size_effect
+		}
+		upkeep = {
+			sr_pantsu = 1.5
+			multiplier = value:edict_size_effect
+		}
+
+	}
+
+	modifier = {
+	    ship_speed_mult = 0.15
+	    ship_weapon_damage = 0.15
+		ship_fire_rate_mult = 0.20
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_authority = auth_shenhai
+	}
+	
+	ai_weight = {
+		weight = 0
+		modifier = {
+			add = 20
+			is_at_war = yes
+			decision_has_resource = {
+				RESOURCE = sr_pantsu
+				MIN_REQUIREMENT = 400
+			}
+		}
+	}	
+}
+
+sh_senergyproduce = {
+	length = -1
+	icon = "GFX_ap_wg_sr_se_edict"
+	resources = {
+		category = campaigns
+		upkeep = {
+			sr_se = 1
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	modifier = {
+	    country_minerals_produces_mult = 0.30
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_authority = auth_shenhai
+		has_technology = tech_sh_senergy
+	}
+	
+	ai_weight = {
+		weight = 20
+		modifier = {
+			factor = 5
+			decision_has_resource = {
+				RESOURCE = sr_se
+				MIN_REQUIREMENT = 200
+			}
+		}
+	}
+}
+
+sh_alloys = {
+	length = -1
+	icon = "GFX_ap_wg_sr_se_edict"
+	resources = {
+		category = campaigns
+		upkeep = {
+			sr_se = 1
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	modifier = {
+		planet_jobs_alloys_produces_mult = 0.2
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_authority = auth_shenhai
+		has_technology = tech_sh_senergy
+	}
+	
+	ai_weight = {
+		weight = 20
+		modifier = {
+			factor = 5
+			decision_has_resource = {
+				RESOURCE = sr_se
+				MIN_REQUIREMENT = 200
+			}
+		}
+	}
+}
+
+sh_senergyresearch = {
+	length = -1
+	icon = "GFX_ap_wg_sr_se_edict"
+	resources = {
+		category = campaigns
+		upkeep = {
+			sr_se = 2
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	modifier = {
+	    all_technology_research_speed = 0.15
+		num_tech_alternatives_add = 1
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_authority = auth_shenhai
+		has_technology = tech_sh_senergy
+	}
+	
+	ai_weight = {
+		weight = 20
+		modifier = {
+			factor = 5
+			decision_has_resource = {
+				RESOURCE = sr_se
+				MIN_REQUIREMENT = 300
+			}
+		}
+	}
+}
+
+sh_dj = {
+	length = -1
+	icon = "GFX_ap_wg_sr_se_edict"
+
+	resources = {
+		category = edicts
+
+		cost = {
+			sr_se = 10
+			multiplier = value:edict_size_effect
+		}
+		upkeep = {
+			sr_se = 1.5
+			multiplier = value:edict_size_effect
+		}
+
+
+	}
+
+	modifier = {
+		starbase_shipyard_build_cost_mult = -0.05
+		starbase_shipyard_build_speed_mult = 0.30
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_authority = auth_shenhai
+		has_technology = tech_sh_senergy
+	}
+	
+	ai_weight = {
+		weight = 20
+		modifier = {
+			factor = 5
+			decision_has_resource = {
+				RESOURCE = sr_se
+				MIN_REQUIREMENT = 300
+			}
+		}
+	}
+}
+
+wg_readjust_crisis = {
+	length = 1
+	icon = "GFX_wg_edict"
+	potential = {
+		OR = {
+			has_wg_special_authority = yes
+			has_country_flag = can_adjust_wg_crisis_diff
+		}
+		NOR = { 
+			has_authority = auth_united_fleet
+			has_global_flag = wg_crisis_triggered 
+			has_global_flag = wg_invasion_happened
+			has_global_flag = activated_uf_hidden_diff
+		}
+		OR = {
+			has_global_flag = wg_khan_main_fleet_defeated
+			NOT = { has_global_flag = wg_khan_crisis_active }
+		}	
+		OR = { #虚境入侵事件
+			NOT = { has_global_flag = wg_psi_invasion_events_happened }
+			has_global_flag = wg_shroud_invasion_end
+		}
+		is_ai = no
+	}
+
+	effect = {
+		country_event = { id = wg_crisis.10000 }
+	}
+	
+	ai_weight = {
+		weight = 0
+	}	
+}
+#############
+
+wg_struggle_edicts = {
+	length = -1
+	icon = "GFX_wg_edict"
+	resources = {
+		category = edicts
+		upkeep = {
+			unity = 30
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	modifier = {
+		ships_upkeep_mult = -0.10
+		planet_jobs_alloys_produces_mult = 0.20
+		country_naval_cap_mult = 0.30
+		starbase_shipyard_build_speed_mult = 1.5
+		planet_jobs_consumer_goods_produces_mult = -0.20
+		pop_amenities_usage_no_happiness_mult = 0.20
+		empire_size_penalty_mult = 0.20
+		trade_value_mult = -0.30
+	}
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		has_country_flag = struggle_edicts
+	}
+	
+	effect = {
+		set_country_flag = struggle_for_existance
+	}
+	
+	ai_weight = {
+		weight = 1000
+	}
+}
+
+wsg_auto_buffing = {
+	length = -1
+    icon = "GFX_wg_edict"
+	potential = {
+		has_authority = auth_warshipgirls
+		has_technology = tech_warshipgirl_assembly_plant
+		NOT = { has_country_flag = wsg_auto_buffing }
+	}
+
+	effect = {
+		hidden_effect = { country_event = { id = wsg.9990 }}
+	}
+}
+
+sh_auto_buffing = {
+	length = -1
+    icon = "GFX_wg_edict"
+	potential = {
+		has_authority = auth_shenhai
+	}
+
+	effect = {
+		hidden_effect = { country_event = { id = wsg.9992 }}
+	}
+}
+wg_dominant_species = {
+	length = -1
+    icon = "GFX_wg_edict"
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls
+			has_authority = auth_shenhai
+		}
+	}
+
+	effect = {
+	}
+}
+

@@ -1,0 +1,514 @@
+namespace = wg_pod
+
+# 出厂后初始设定
+# on_ship_built / on_ship_upgraded
+# 若要加新舰种使用此系统，直接复制然后将条件更换成新舰种的判断即可
+ship_event = {
+	id = wg_pod.1
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_wg_pod_ship_size = yes
+	}
+
+	immediate = {
+		fire_on_action = {
+			on_action = on_wg_pod_built
+		}
+	}
+}
+# 炸球
+# on_planet_bombarded
+planet_event = {
+	id = wg_pod.2
+	hide_window = yes
+	is_triggered_only = yes
+	pre_triggers = {
+		has_owner = yes
+		has_ground_combat = no
+	}
+	trigger = {
+		planet_devastation >= 25
+		has_orbital_bombardment_stance = wg_pod
+	}
+
+	immediate = {
+		every_fleet_in_orbit = {
+			limit = { any_owned_ship = {
+				is_wg_pod_ship_size = yes
+				check_variable = { which = wg_pod_army_num value > 0 }
+				NOT = { has_ship_flag = drop_troops_cooldown }
+			}}
+			every_owned_ship = {
+				limit = {
+					is_wg_pod_ship_size = yes
+					check_variable = { which = wg_pod_army_num value > 0 }
+					NOT = { has_ship_flag = drop_troops_cooldown }
+				}
+				fire_on_action = {
+					on_action = on_wg_pod_bombarding_planet
+					scopes = { from = prevprev }
+				}
+			}
+		}
+	}
+}
+# 触发器：on_wg_pod_built
+# 搭载：深海大军；搭载上限10
+ship_event = {
+	id = wg_pod.3
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_SH_MARINE
+	}
+
+	immediate = {
+		set_variable = { which = wg_pod_army_num value = 10 }
+		set_variable = { which = wg_pod_army_cap value = wg_pod_army_num }
+	}
+
+}
+# 触发器：on_wg_pod_bombarding_planet
+# 投放：深海大军；制造天数120，投放冷却25天
+ship_event = {
+	id = wg_pod.4
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_SH_MARINE
+		NOT = { has_ship_flag = drop_troops_cooldown }
+	}
+
+	immediate = {
+		wg_pod_create_army_effects = { 
+			cooldown = 25 
+			rebuilt_resource = minerals
+			rebuilt_time = 120 
+			ARMY = SH_army_pod
+			ARMY_NUM = 2
+		}
+	}
+}
+# 触发器：on_wg_pod_built
+# 搭载：深海院长；搭载上限4
+ship_event = {
+	id = wg_pod.5
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_SH_LORD
+	}
+
+	immediate = {
+		set_variable = { which = wg_pod_army_num value = 4 }
+		set_variable = { which = wg_pod_army_cap value = wg_pod_army_num }
+	}
+
+}
+# 触发器：on_wg_pod_bombarding_planet
+# 投放：深海院长；制造天数350，投放冷却60天
+ship_event = {
+	id = wg_pod.6
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_SH_LORD
+		NOT = { has_ship_flag = drop_troops_cooldown }
+	}
+
+	immediate = {
+		wg_pod_create_army_effects = { 
+			cooldown = 60 
+			rebuilt_resource = minerals
+			rebuilt_time = 350 
+			ARMY = SH_BOSS_pod
+			ARMY_NUM = 3
+		}
+	}
+}
+# 触发器：on_wg_pod_built
+# 搭载：雅和；搭载上限1
+ship_event = {
+	id = wg_pod.7
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_SH_EXECUTIONER
+	}
+
+	immediate = {
+		set_variable = { which = wg_pod_army_num value = 1 }
+		set_variable = { which = wg_pod_army_cap value = wg_pod_army_num }
+	}
+}
+# 触发器：on_wg_pod_bombarding_planet
+# 投放：雅和；制造天数600，投放冷却120天
+ship_event = {
+	id = wg_pod.8
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_SH_EXECUTIONER
+		NOT = { has_ship_flag = drop_troops_cooldown }
+	}
+
+	immediate = {
+		wg_pod_create_army_effects = { 
+			cooldown = 120 
+			rebuilt_resource = alloys
+			rebuilt_time = 540 
+			ARMY = YAMATO_executioner_pod
+			ARMY_NUM = 1
+		}
+	}
+}
+# 触发器：on_wg_pod_built
+# 搭载：381；搭载上限25
+ship_event = {
+	id = wg_pod.9
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_381
+	}
+
+	immediate = {
+		set_variable = { which = wg_pod_army_num value = 25 }
+		set_variable = { which = wg_pod_army_cap value = wg_pod_army_num }
+	}
+}
+# 触发器：on_wg_pod_bombarding_planet
+# 投放：381；制造天数25，投放冷却10天
+ship_event = {
+	id = wg_pod.10
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_381
+		NOT = { has_ship_flag = drop_troops_cooldown }
+	}
+
+	immediate = {
+		wg_pod_create_army_effects = { 
+			cooldown = 10 
+			rebuilt_resource = minerals
+			rebuilt_time = 25 
+			ARMY = 381_cannon_army_pod
+			ARMY_NUM = 3
+		}
+	}
+}
+# 触发器：on_wg_pod_built
+# 搭载：舰娘马润；搭载上限8
+ship_event = {
+	id = wg_pod.11
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_WSG_MARINE
+	}
+
+	immediate = {
+		set_variable = { which = wg_pod_army_num value = 8 }
+		set_variable = { which = wg_pod_army_cap value = wg_pod_army_num }
+	}
+}
+# 触发器：on_wg_pod_bombarding_planet
+# 投放：舰娘马润；制造天数150，投放冷却30天
+ship_event = {
+	id = wg_pod.12
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_WSG_MARINE
+		NOT = { has_ship_flag = drop_troops_cooldown }
+	}
+
+	immediate = {
+		wg_pod_create_army_effects = { 
+			cooldown = 30 
+			rebuilt_resource = minerals
+			rebuilt_time = 150 
+			ARMY = WSG_army_pod
+			ARMY_NUM = 1
+		}
+	}
+}
+# 触发器：on_wg_pod_built
+# 搭载：舰娘科迪亚克；搭载上限4
+ship_event = {
+	id = wg_pod.13
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_WSG_KODIAX
+	}
+
+	immediate = {
+		set_variable = { which = wg_pod_army_num value = 4 }
+		set_variable = { which = wg_pod_army_cap value = wg_pod_army_num }
+	}
+}
+# 触发器：on_wg_pod_bombarding_planet
+# 投放：舰娘科迪亚克；制造天数300，投放冷却60天
+ship_event = {
+	id = wg_pod.14
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_WSG_KODIAX
+		NOT = { has_ship_flag = drop_troops_cooldown }
+	}
+
+	immediate = {
+		wg_pod_create_army_effects = { 
+			cooldown = 60 
+			rebuilt_resource = minerals
+			rebuilt_time = 300 
+			ARMY = WSG_kodiak_pod
+			ARMY_NUM = 1
+		}
+	}
+}
+# 触发器：on_wg_pod_built
+# 搭载：舰娘galo；搭载上限1
+ship_event = {
+	id = wg_pod.15
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_WSG_GALO
+	}
+
+	immediate = {
+		set_variable = { which = wg_pod_army_num value = 1 }
+		set_variable = { which = wg_pod_army_cap value = wg_pod_army_num }
+	}
+}
+# 触发器：on_wg_pod_bombarding_planet
+# 投放：舰娘galo；制造天数400，投放冷却100天
+ship_event = {
+	id = wg_pod.16
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_component = SHIP_POD_WSG_GALO
+		NOT = { has_ship_flag = drop_troops_cooldown }
+	}
+
+	immediate = {
+		wg_pod_create_army_effects = { 
+			cooldown = 100 
+			rebuilt_resource = food
+			rebuilt_time = 400 
+			ARMY = WSG_galodam_pod
+			ARMY_NUM = 1
+		}
+	}
+}
+
+# 星球压制舰制造陆军：循环事件
+# 抄其中一个改就行
+ship_event = {
+	id = wg_pod.99
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		exists = this
+		has_ship_flag = recruiting_army
+	}
+
+	immediate = {
+		change_variable = { which = wg_pod_army_num value = 1 }
+		switch = {
+			trigger = has_component
+			SHIP_POD_SH_MARINE = {
+				if = {
+					limit = { check_variable = { which = wg_pod_army_num value < wg_pod_army_cap }}
+					ship_event = { id = wg_pod.99 days = 120 }
+				} else = {
+					remove_ship_flag = recruiting_army
+					remove_modifier = standard_wg_pod_minerals_maintain_modifier
+				}
+			}
+			SHIP_POD_SH_LORD = {
+				if = {
+					limit = { check_variable = { which = wg_pod_army_num value < wg_pod_army_cap }}
+					ship_event = { id = wg_pod.99 days = 350 }
+				} else = {
+					remove_ship_flag = recruiting_army
+					remove_modifier = standard_wg_pod_minerals_maintain_modifier
+				}
+			}
+			SHIP_POD_SH_EXECUTIONER = {
+				if = {
+					limit = { check_variable = { which = wg_pod_army_num value < wg_pod_army_cap }}
+					ship_event = { id = wg_pod.99 days = 540 }
+				} else = {
+					remove_ship_flag = recruiting_army
+					remove_modifier = standard_wg_pod_alloys_maintain_modifier
+				}
+			}
+			SHIP_POD_381 = {
+				if = {
+					limit = { check_variable = { which = wg_pod_army_num value < wg_pod_army_cap }}
+					ship_event = { id = wg_pod.99 days = 25 }
+				} else = {
+					remove_ship_flag = recruiting_army
+					remove_modifier = standard_wg_pod_minerals_maintain_modifier
+				}
+			}
+			SHIP_POD_WSG_MARINE = {
+				if = {
+					limit = { check_variable = { which = wg_pod_army_num value < wg_pod_army_cap }}
+					ship_event = { id = wg_pod.99 days = 150 }
+				} else = {
+					remove_ship_flag = recruiting_army
+					remove_modifier = standard_wg_pod_minerals_maintain_modifier
+				}
+			}
+			SHIP_POD_WSG_KODIAX = {
+				if = {
+					limit = { check_variable = { which = wg_pod_army_num value < wg_pod_army_cap }}
+					ship_event = { id = wg_pod.99 days = 300 }
+				} else = {
+					remove_ship_flag = recruiting_army
+					remove_modifier = standard_wg_pod_minerals_maintain_modifier
+				}
+			}
+			SHIP_POD_WSG_GALO = {
+				if = {
+					limit = { check_variable = { which = wg_pod_army_num value < wg_pod_army_cap }}
+					ship_event = { id = wg_pod.99 days = 400 }
+				} else = {
+					remove_ship_flag = recruiting_army
+					remove_modifier = standard_wg_pod_food_maintain_modifier
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_pod.100
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		FROMFROM = { has_planet_flag = wg_pod_bombarded_planet }
+	}
+
+	immediate = {
+		FROMFROM = { 
+			planet_event = { id = wg_pod.101 days = 1 }
+			remove_planet_flag = wg_pod_bombarded_planet
+		}
+	}
+}
+# 交战后remove 陆军
+planet_event = {
+	id = wg_pod.101
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_planet_army = {
+			limit = { is_wg_pod_army_type = yes }
+			remove_army = yes
+		}
+		every_fleet_in_orbit = {
+			owner = { every_owned_army = {
+				limit = { is_wg_pod_army_type = yes }
+				if = {
+					limit = { 
+						exists = fleet 
+						fleet = { is_same_value = PREVPREVPREV }
+					}
+					fleet = { delete_fleet = this }
+				}
+			}}
+		}
+	}
+}
+# 加buff
+fleet_event = {
+	id = wg_pod.102
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		owner = { is_same_value = root.from.owner }
+		FROM = { 
+			is_scope_type = planet
+			NOT = { has_modifier = wg_pod_planet_modifier }
+		}
+		any_owned_ship = {
+			is_ship_size = wg_pod
+		}
+	}
+
+	immediate = {
+		FROM = { add_modifier = {
+			modifier = wg_pod_planet_modifier
+		}}
+	}
+}
+# 每个月检查并删除buff（因为蠢驴并无离开星球的触发器）
+country_event = {
+	id = wg_pod.103
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_owned_planet = {
+			has_modifier = wg_pod_planet_modifier
+		}
+	}
+
+	immediate = {
+		every_owned_planet = {
+			limit = { 
+				has_modifier = wg_pod_planet_modifier
+				NOT = { any_fleet_in_orbit = {
+					any_owned_ship = {
+						is_ship_size = wg_pod
+					}
+				}}
+			}
+			remove_modifier = wg_pod_planet_modifier
+		}
+	}
+}
+# 星球压制舰解释
+country_event = {
+	id = wg_pod.104
+	title = wg_pod.104.name
+	desc = wg_pod.104.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_no_video
+
+	trigger = {
+		last_increased_tech = tech_wsg_pod
+		NOT = { has_origin = origin_wg_warhammer }
+	}
+
+	option = {
+		name = OK
+	}
+}
+# 帕里特航母解释
+country_event = {
+	id = wg_pod.105
+	title = wg_pod.105.name
+	desc = wg_pod.105.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_no_video
+
+	trigger = {
+		last_increased_tech = tech_parit_carrier
+	}
+
+	option = {
+		name = OK
+	}
+}

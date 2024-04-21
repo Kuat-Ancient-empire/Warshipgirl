@@ -1,0 +1,659 @@
+PR_D_JOB_uf_evolver = {
+	##	基础信息,照抄
+	icon = PR_D_icon_JOB_uf_evolver
+	is_for_colonizable = yes
+	category = PR_D_cat_JOB
+	should_swap_deposit_on_terraforming = no
+	drop_weight = { weight = 0 }
+	
+	##	基础大类
+	planet_modifier = {
+		PR_smod_plnt_JOB_deposit_WSG = 1	# 岗位检测标签
+	}
+
+	resources = { category = planet_uf_evolver	# 行业类型,直接同步岗位的
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_evolver|EFFICIENCY|general|
+			minerals = 3
+			energy = 3
+			unity = 3
+			physics_research = 3
+			engineering_research = 3
+			society_research = 3
+			consumer_goods = 1
+			alloys = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		mult = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_evolver|
+		#	岗位削减
+		job_uf_evolver_add = -1
+		#	buff
+		PR_smod_plnt_MOD_trade_value_add = 5
+		PR_smod_plnt_MOD_all_amenities_add = 5
+		pop_happiness = 0.01
+		PR_smod_plnt_VAR_workshop_add = 1
+		PR_smod_plnt_CAT_planet_uf_evolver_add = 1
+	}
+}
+
+PR_D_JOB_uf_entertainer = {
+	##	基础信息,照抄
+	icon = PR_D_icon_JOB_uf_evolver
+	is_for_colonizable = yes
+	category = PR_D_cat_JOB
+	should_swap_deposit_on_terraforming = no
+	drop_weight = { weight = 0 }
+	
+	##	基础大类
+	planet_modifier = {
+		PR_smod_plnt_JOB_deposit_WSG = 1	# 岗位检测标签
+	}
+
+	resources = { category = planet_entertainers	# 行业类型,直接同步岗位的
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_entertainer|EFFICIENCY|general|
+			unity = 2
+		}
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_entertainer|EFFICIENCY|general|
+			consumer_goods = 1
+			energy = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		mult = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_entertainer|
+		#	岗位削减
+		job_uf_entertainer_add = -1
+		#	buff
+		PR_smod_plnt_MOD_trade_value_add = 5
+		PR_smod_plnt_MOD_all_amenities_add = 20
+		pop_happiness = 0.01
+		PR_smod_plnt_VAR_workshop_add = 1
+		PR_smod_plnt_CAT_planet_entertainers_add = 1
+	}
+}
+
+PR_D_JOB_uf_food_writer = {
+	##	基础信息,照抄
+	icon = PR_D_icon_JOB_uf_food_writer
+	is_for_colonizable = yes
+	category = PR_D_cat_JOB
+	should_swap_deposit_on_terraforming = no
+	drop_weight = { weight = 0 }
+	
+	##	基础大类
+	planet_modifier = {
+		PR_smod_plnt_JOB_deposit_WSG = 1	# 岗位检测标签
+	}
+
+	resources = { category = planet_entertainers	# 行业类型,直接同步岗位的
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_food_writer|EFFICIENCY|general|
+			unity = 10
+		}
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_food_writer|EFFICIENCY|general|
+			food = 4
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { has_megastructure = uf_star_city }
+			}
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_food_writer|EFFICIENCY|general|
+			unity = 5
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { has_megastructure = uf_star_city }
+			}
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_food_writer|EFFICIENCY|general|
+			food = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		mult = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_food_writer|
+		#	岗位削减
+		job_uf_food_writer_add = -1
+		PR_smod_plnt_VAR_workshop_add = 1
+		PR_smod_plnt_CAT_planet_entertainers_add = 1
+	}
+}
+
+PR_D_JOB_uf_researcher = {
+	##	基础信息,照抄
+	icon = PR_D_icon_JOB_uf_researcher
+	is_for_colonizable = yes
+	category = PR_D_cat_JOB
+	should_swap_deposit_on_terraforming = no
+	drop_weight = { weight = 0 }
+	
+	##	基础大类
+	planet_modifier = {
+		PR_smod_plnt_JOB_deposit_WSG = 1	# 岗位检测标签
+	}
+
+	resources = { category = planet_researchers	# 行业类型,直接同步岗位的
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_researcher|EFFICIENCY|general|
+			physics_research = 15
+			engineering_research = 15
+			society_research = 15
+		}
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_researcher|EFFICIENCY|general|
+			consumer_goods = 3.5
+		}
+		# 特质：联合科研协议
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_researcher|EFFICIENCY|general|
+			physics_research = 5
+			engineering_research = 5
+			society_research = 5
+			trigger = {
+				exists = owner_main_species
+				owner_main_species = {
+					has_trait = uf_trait_knowledgeable
+				}
+			}
+		}
+		# 特质：联合科研协议
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_researcher|EFFICIENCY|general|
+			consumer_goods = 1
+			trigger = {
+				exists = owner_main_species
+				owner_main_species = {
+					has_trait = uf_trait_knowledgeable
+				}
+			}
+		}
+		# 特质：超维科研
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_researcher|EFFICIENCY|general|
+			physics_research = 10
+			engineering_research = 10
+			society_research = 10
+			trigger = {
+				exists = owner_main_species
+				owner_main_species = {
+					has_trait = uf_trait_knowledgeable_2
+				}
+			}
+		}
+		# 特质：超维科研
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_researcher|EFFICIENCY|general|
+			consumer_goods = 3
+			energy = 3
+			trigger = {
+				exists = owner_main_species
+				owner_main_species = {
+					has_trait = uf_trait_knowledgeable_2
+				}
+			}
+		}
+		produces = {
+			trigger = { 
+				exists = owner
+				owner = { has_technology = tech_uf_research_upgrade_1 }
+			}
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_researcher|EFFICIENCY|general|
+			physics_research = 5
+			engineering_research = 5
+			society_research = 5
+		}
+
+		produces = {
+			trigger = { 
+				exists = owner
+				owner = { has_valid_civic = civic_technocracy }
+			}
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_researcher|EFFICIENCY|general|
+			unity = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		mult = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_researcher|
+		#	岗位削减
+		job_uf_researcher_add = -1
+		PR_smod_plnt_VAR_workshop_add = 1
+		PR_smod_plnt_CAT_planet_researchers_add = 1
+	}
+}
+
+PR_D_JOB_uf_hm = {
+	##	基础信息,照抄
+	icon = PR_D_icon_JOB_uf_hm
+	is_for_colonizable = yes
+	category = PR_D_cat_JOB
+	should_swap_deposit_on_terraforming = no
+	drop_weight = { weight = 0 }
+	
+	##	基础大类
+	planet_modifier = {
+		PR_smod_plnt_JOB_deposit_WSG = 1	# 岗位检测标签
+	}
+
+	resources = { category = planet_translucers	# 行业类型,直接同步岗位的
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm|EFFICIENCY|general|
+			sr_uf = 3
+		}
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm|EFFICIENCY|general|
+			energy = 20
+			alloys = 6
+		}
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm|EFFICIENCY|general|
+			sr_uf = 2
+			trigger = {
+				exists = owner
+				owner = { 
+					has_technology = tech_uf_hyperdimensional_matter_upgrade_1	
+				}
+			}
+		}
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm|EFFICIENCY|general|
+			sr_uf = 2
+			trigger = {
+				exists = owner
+				owner = { 
+					has_technology = tech_uf_hyperdimensional_matter_upgrade_2
+				}
+			}
+		}
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm|EFFICIENCY|general|
+			energy = 15
+			alloys = 6
+			trigger = {
+				exists = owner
+				owner = { 
+					has_technology = tech_uf_hyperdimensional_matter_upgrade_2
+				}
+			}
+		}
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm|EFFICIENCY|general|
+			sr_uf = 4
+			trigger = {
+				exists = owner_main_species
+				owner_main_species = { has_trait = uf_trait_hm_produces }
+			}
+		}
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm|EFFICIENCY|general|
+			energy = 15
+			alloys = 8
+			trigger = {
+				exists = owner_main_species
+				owner_main_species = { has_trait = uf_trait_hm_produces }
+			}
+		}
+	}
+
+	triggered_planet_modifier = {
+		mult = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm|
+		#	岗位削减
+		job_uf_hm_add = -1
+		PR_smod_plnt_VAR_workshop_add = 1
+		PR_smod_plnt_CAT_planet_translucers_add = 1
+	}
+}
+
+PR_D_JOB_uf_hm_alloys = {
+	##	基础信息,照抄
+	icon = PR_D_icon_JOB_uf_hm_alloys
+	is_for_colonizable = yes
+	category = PR_D_cat_JOB
+	should_swap_deposit_on_terraforming = no
+	drop_weight = { weight = 0 }
+	
+	##	基础大类
+	planet_modifier = {
+		PR_smod_plnt_JOB_deposit_WSG = 1	# 岗位检测标签
+	}
+
+	resources = { category = planet_metallurgists	# 行业类型,直接同步岗位的
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm_alloys|EFFICIENCY|general|
+			alloys = 15
+			consumer_goods = 5
+		}
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm_alloys|EFFICIENCY|general|
+			minerals = 8
+		}
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm_alloys|EFFICIENCY|general|
+			alloys = 5
+			consumer_goods = 5
+			trigger = {
+				exists = owner
+				owner = { 
+					has_technology = tech_uf_hm_foundry_upgrade_1	
+				}
+			}
+		}
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm_alloys|EFFICIENCY|general|
+			minerals = 5
+			trigger = {
+				exists = owner
+				owner = { 
+					has_technology = tech_uf_hm_foundry_upgrade_1	
+				}
+			}
+		}
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm_alloys|EFFICIENCY|general|
+			alloys = 5
+			consumer_goods = 5
+			trigger = {
+				exists = owner
+				owner = { 
+					has_technology = tech_uf_hm_foundry_upgrade_2	
+				}
+			}
+		}
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm_alloys|EFFICIENCY|general|
+			minerals = 5
+			trigger = {
+				exists = owner
+				owner = { 
+					has_technology = tech_uf_hm_foundry_upgrade_2	
+				}
+			}
+		}
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm_alloys|EFFICIENCY|general|
+			alloys = 10
+			consumer_goods = 10
+			trigger = {
+				exists = owner
+				owner = { 
+					has_technology = tech_uf_hm_foundry_upgrade_3	
+				}
+			}
+		}
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm_alloys|EFFICIENCY|general|
+			minerals = 10
+			trigger = {
+				exists = owner
+				owner = { 
+					has_technology = tech_uf_hm_foundry_upgrade_3	
+				}
+			}
+		}
+	}
+
+	triggered_planet_modifier = {
+		mult = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm_alloys|
+		#	岗位削减
+		job_uf_hm_alloys_add = -1
+		PR_smod_plnt_VAR_workshop_add = 1
+		PR_smod_plnt_CAT_planet_metallurgists_add = 1
+	}
+}
+
+PR_D_JOB_uf_rare_resource = {
+	##	基础信息,照抄
+	icon = PR_D_icon_JOB_uf_rare_resource
+	is_for_colonizable = yes
+	category = PR_D_cat_JOB
+	should_swap_deposit_on_terraforming = no
+	drop_weight = { weight = 0 }
+	
+	##	基础大类
+	planet_modifier = {
+		PR_smod_plnt_JOB_deposit_WSG = 1	# 岗位检测标签
+	}
+
+	resources = { category = planet_translucers	# 行业类型,直接同步岗位的
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { 
+					OR = {
+						has_technology = tech_exotic_gases
+						has_technology = tech_mine_exotic_gases
+					}	
+				}
+			}
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_rare_resource|EFFICIENCY|general|
+			exotic_gases = 5
+		} 
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { 
+					OR = {
+						has_technology = tech_volatile_motes
+						has_technology = tech_mine_volatile_motes
+					}	
+				}
+			}
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_rare_resource|EFFICIENCY|general|
+			volatile_motes = 5
+		} 
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { 
+					OR = {
+						has_technology = tech_rare_crystals
+						has_technology = tech_mine_rare_crystals
+					}	
+				}
+			}
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_rare_resource|EFFICIENCY|general|
+			rare_crystals = 5
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { has_technology = tech_mine_dark_matter }
+			}
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_rare_resource|EFFICIENCY|general|
+			sr_dark_matter = 5
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { has_technology = tech_mine_living_metal }
+			}
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_rare_resource|EFFICIENCY|general|
+			sr_living_metal = 5
+		}
+		produces = {
+			trigger = { 
+				exists = owner
+				owner = { has_technology = tech_mine_zro } 
+			}
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_rare_resource|EFFICIENCY|general|
+			sr_zro = 5
+		}
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_rare_resource|EFFICIENCY|general|
+			energy = 5
+			sr_uf = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		mult = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_rare_resource|
+		#	岗位削减
+		job_uf_rare_resource_add = -1
+		PR_smod_plnt_VAR_workshop_add = 1
+		PR_smod_plnt_CAT_planet_translucers_add = 1
+	}
+}
+
+PR_D_JOB_uf_admin = {
+	##	基础信息,照抄
+	icon = PR_D_icon_JOB_uf_admin
+	is_for_colonizable = yes
+	category = PR_D_cat_JOB
+	should_swap_deposit_on_terraforming = no
+	drop_weight = { weight = 0 }
+	
+	##	基础大类
+	planet_modifier = {
+		PR_smod_plnt_JOB_deposit_WSG = 1	# 岗位检测标签
+	}
+
+	resources = { category = planet_administrators	# 行业类型,直接同步岗位的
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_admin|EFFICIENCY|general|
+			unity = 6
+		}
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_admin|EFFICIENCY|general|
+			energy = 3
+			consumer_goods = 3
+		}
+	}
+
+	triggered_planet_modifier = {
+		mult = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_admin|
+		#	岗位削减
+		job_uf_admin_add = -1
+		PR_smod_plnt_MOD_admin_cap_add = 15
+		PR_smod_plnt_MOD_naval_cap_add = 2
+		PR_smod_plnt_MOD_defense_armies_add = 1
+		planet_crime_add = -10
+		PR_smod_plnt_VAR_workshop_add = 1
+		PR_smod_plnt_CAT_planet_administrators_add = 1
+	}
+	triggered_planet_modifier = {
+		potential = {
+			has_designation = col_uf_pc_military
+		}
+		mult = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_admin|
+		PR_smod_plnt_MOD_admin_cap_add = 5
+		PR_smod_plnt_MOD_naval_cap_add = 5
+	}
+	triggered_planet_modifier = {
+		potential = {
+			has_designation = col_rw_uf_pc_military
+		}
+		modifier = {
+			PR_smod_plnt_MOD_admin_cap_add = 5
+			PR_smod_plnt_MOD_naval_cap_add = 5
+		}
+	}
+	
+}
+
+PR_D_JOB_uf_hm_soldier = {
+	##	基础信息,照抄
+	icon = PR_D_icon_JOB_uf_evolver
+	is_for_colonizable = yes
+	category = PR_D_cat_JOB
+	should_swap_deposit_on_terraforming = no
+	drop_weight = { weight = 0 }
+	
+	##	基础大类
+	planet_modifier = {
+		PR_smod_plnt_JOB_deposit_WSG = 1	# 岗位检测标签
+	}
+
+	resources = { category = planet_soldiers	# 行业类型,直接同步岗位的
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { has_valid_civic = civic_citizen_service }
+			}
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm_soldier|EFFICIENCY|general|
+			unity = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		mult = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_hm_soldier|
+		#	岗位削减
+		job_uf_hm_soldier_add = -1
+		PR_smod_plnt_MOD_defense_armies_add = 2
+		planet_crime_add = -25
+		PR_smod_plnt_MOD_naval_cap_add = 25
+		PR_smod_plnt_VAR_workshop_add = 1
+		PR_smod_plnt_CAT_planet_soldiers_add = 1
+	}
+}
+
+PR_D_JOB_uf_archaeologist = {
+	##	基础信息,照抄
+	icon = PR_D_icon_JOB_uf_archaeologist
+	is_for_colonizable = yes
+	category = PR_D_cat_JOB
+	should_swap_deposit_on_terraforming = no
+	drop_weight = { weight = 0 }
+	
+	##	基础大类
+	planet_modifier = {
+		PR_smod_plnt_JOB_deposit_WSG = 1	# 岗位检测标签
+	}
+
+	resources = { category = planet_culture_workers	# 行业类型,直接同步岗位的
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_archaeologist|EFFICIENCY|general|
+			minor_artifacts = 1
+			unity = 25
+		}
+		upkeep = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_archaeologist|EFFICIENCY|general|
+			energy = 5
+			consumer_goods = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		mult = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_archaeologist|
+		#	岗位削减
+		job_uf_archaeologist_add = -1
+		PR_smod_plnt_VAR_workshop_add = 1
+		PR_smod_plnt_CAT_planet_culture_workers_add = 1
+	}
+}
+
+PR_D_JOB_uf_administrator = {
+	##	基础信息,照抄
+	icon = PR_D_icon_JOB_uf_administrator
+	is_for_colonizable = yes
+	category = PR_D_cat_JOB
+	should_swap_deposit_on_terraforming = no
+	drop_weight = { weight = 0 }
+	
+	##	基础大类
+	planet_modifier = {
+		PR_smod_plnt_JOB_deposit_WSG = 1	# 岗位检测标签
+	}
+
+	resources = { category = planet_administrators	# 行业类型,直接同步岗位的
+		produces = {
+			multiplier = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_administrator|EFFICIENCY|general|
+			unity = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		mult = value:PR_prmt_sv_plnt_JOB_FACTOR|JOB|uf_administrator|
+		#	岗位削减
+		job_uf_administrator_add = -1
+		PR_smod_plnt_MOD_all_amenities_add = 10
+		PR_smod_plnt_MOD_naval_cap_add = 5
+		PR_smod_plnt_VAR_workshop_add = 1
+		PR_smod_plnt_CAT_planet_administrators_add = 1
+	}
+}

@@ -1,0 +1,4182 @@
+uf_dyson_cloud = {
+	entity = "uf_dyson_cloud_entity"
+	construction_entity = "uf_dyson_cloud_entity"
+	portrait = "GFX_wsg_yamato_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 1080
+	construction_blocks_and_blocked_by = none
+	show_in_outliner = no
+	potential = {
+		has_authority = auth_united_fleet
+	}
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 3000
+			unity = 100
+		}
+		produces = {
+			energy = 300
+		}
+		produces = {
+			trigger = {
+				owner = {
+					has_technology = tech_uf_dyson_cloud_upgrade_1
+				}
+			}
+			energy = 50
+		}
+		produces = {
+			trigger = {
+				owner = {
+					has_technology = tech_uf_dyson_cloud_upgrade_2
+				}
+			}
+			energy = 150
+		}
+	}
+    prerequisites = { "tech_uf_dyson_cloud" }
+
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_inside_border_or_uf_subject"
+			OR = {
+				is_inside_border = from
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_uf_subject }
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+		#custom_tooltip = {
+			#fail_text = "requires_only_one_yamato_in_system"
+			#NOT = {
+				#has_star_flag = dyson_cloud_built
+			#}
+		#}		
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system" # or is in my subject's territory
+			OR = {
+				NOT = {
+					any_system_planet = {
+						is_surveyed = {
+							who = prev.from
+							status = no
+						}
+					}
+				}
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+		
+		custom_tooltip = {
+			fail_text = "requires_no_black_hole_neutron_star_pulsar"
+			NOT = {
+				is_star_class = sc_black_hole
+				is_star_class = sc_neutron_star
+				is_star_class = sc_pulsar
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_megastructure"
+			#NOT = { has_any_megastructure = yes }
+			has_no_non_gate_megastructure = yes
+		}
+	}
+	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "must_build_around_star"
+				is_star = yes
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+		}
+	}
+	
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		set_star_flag = dyson_cloud_built
+		from = { set_country_flag = dyson_cloud_built_flag }
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+		}
+	}
+}
+
+uf_mining_station = {
+	entity = "uf_minerals_station_avoid_entity"
+	construction_entity = "uf_minerals_station_entity"
+	portrait = "GFX_wsg_mining_station_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	show_in_outliner = no
+	entity_offset = { x = 0 y = 0 }
+	build_time = 720
+	resources = {
+		category = megastructures
+		cost = { alloys = 2000 unity = 100 }
+		upkeep = { energy = 50 }
+		produces = { minerals = 300 }
+	}
+	prerequisites = { "tech_uf_mining_station" }
+	potential = {
+		has_authority = auth_united_fleet
+	}
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_inside_border_or_uf_subject"
+			OR = {
+				is_inside_border = from
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_uf_subject }
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_only_one_uf_mining_station_in_system"
+			NOT = {
+				has_star_flag = uf_mining_station_built
+			}
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_anomaly" NOT = { has_anomaly = yes }}
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_asteroid"
+				is_asteroid = yes
+			}			
+		}
+	}	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			if = {
+				limit = { NOT = { has_country_flag = built_uf_mining_station }}
+				set_country_flag = built_uf_mining_station
+			}
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = megastructure
+			set_planet_entity = {
+				entity = "uf_minerals_station_avoid_planet_entity"
+			}
+		}
+	}
+}
+
+uf_hm_ring = {
+	entity = "uf_hm_ringworld_seam_entity_02_full_entity"
+	construction_entity = "uf_hm_ringworld_seam_entity_02_full_entity"
+	portrait = "GFX_uf_hm_ring_background"
+    build_time = 360
+	
+	potential = {
+		has_country_flag = uf_hm_ring_project_allowed
+		has_authority = auth_united_fleet
+	}
+	possible = {
+		exists = starbase
+
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_uf_hm_ring"
+			from = { NOT = { has_country_flag = built_uf_hm_ring } }
+		}
+	}
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_gas_giant" 
+				is_planet_class = pc_gas_giant
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_moon_pls"
+				NOT = {
+					has_moon = yes
+				}
+			}
+		}
+	}
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 2000
+		}
+		upkeep = { 
+			energy = 5
+		}
+	}
+	show_prereqs = yes
+
+	on_build_complete = {
+		from = { set_country_flag = built_uf_hm_ring }
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = megastructure
+			set_planet_flag = uf_hm_ring_gas
+		}
+		from = { 
+			country_event = { id = uf_origin.41 }			
+		}
+	}
+}
+
+
+uf_hm_ring_1 = {
+	entity = "uf_hm_ringworld_seam_entity_01_full_entity"
+	construction_entity = "uf_hm_ringworld_seam_entity_01_full_entity"
+	portrait = "GFX_uf_hm_ring_1_background"
+	show_in_outliner = no
+    build_time = 30
+	upgrade_from = {
+		uf_hm_ring
+	}
+	resources = {
+		category = megastructures
+		cost = {
+			sr_uf = 500
+		}
+		produces = {
+			physics_research = 150
+		}
+		upkeep = { 
+			energy = 10
+		}
+	}
+	show_prereqs = yes
+
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.42 }			
+		}
+		random_system_planet = {
+			limit = { has_planet_flag = uf_hm_ring_gas }
+			change_pc = pc_barren
+			set_planet_size = 5
+		}	
+	}
+}
+
+
+uf_ring_shipyard_damaged = {
+	entity = "uf_ring_shipyard_damaged_entity"
+	construction_entity = "uf_ring_shipyard_damaged_entity"
+	portrait = "GFX_uf_ring_shipyard_damaged_background"
+
+	
+	potential = {
+		always = no
+	}
+    country_modifier = { 
+		country_naval_cap_add = 50
+		country_resource_max_add = 2000
+	}
+	resources = {
+		category = megastructures
+		upkeep = { 
+			sr_uf = 1
+		}
+	}
+	ship_modifier = {
+		ship_starting_experience_add = 100
+	}
+	station_modifier = {
+		starbase_shipyard_capacity_add = 5
+		starbase_shipyard_build_cost_mult = -0.15
+		starbase_shipyard_build_speed_mult = 0.25		
+	}
+	show_prereqs = yes
+
+	on_build_complete = {
+	}
+}
+
+uf_ring_shipyard_restored = {
+	entity = "uf_ring_shipyard_entity"
+	construction_entity = "uf_ring_shipyard_entity"
+	portrait = "GFX_uf_ring_shipyard_background"
+    build_time = 1800
+	
+    resources = {
+		category = megastructures
+		cost = {
+			alloys = 2500
+			sr_uf = 150
+			unity = 250
+		}
+		upkeep = { 
+			sr_uf = 3
+		}
+	}
+    country_modifier = { 
+		country_naval_cap_add = 200
+		country_resource_max_add = 5000
+	}
+	upgrade_from = {
+		uf_ring_shipyard_damaged
+	}
+	ship_modifier = {
+		ship_starting_experience_add = 100
+	}
+	station_modifier = {
+		starbase_shipyard_capacity_add = 20
+		starbase_shipyard_build_cost_mult = -0.15
+		starbase_shipyard_build_speed_mult = 1.0	
+	}
+	show_prereqs = yes
+
+	on_build_complete = {
+		random_system_ambient_object = {
+			limit = { has_ambient_object_flag = uf_second_planet_debris_object }
+			destroy_ambient_object = this
+		}
+		from = {
+			country_event = { id = uf_origin.2 }
+			set_country_flag = has_built_or_repaired_megastructure	
+		}
+		random_system_planet = {
+			limit = { has_planet_flag = uf_home_second_planet }
+			remove_modifier = planet_uf_ring_shipyard_damaged
+			add_modifier = {
+				modifier = planet_uf_ring_shipyard
+				days = -1
+			}
+		}	
+	}
+}
+uf_ring_shipyard_platform = {
+	entity = "mammalian_01_construction_platform_entity"
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	overlord_can_upgrade = yes
+	entity_offset = { x = -7 y = -7 }
+	build_time = 720
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 2000 unity = 250 }
+		upkeep = { 
+			energy = 5
+		}
+	}
+	
+	possible = {
+		exists = starbase
+
+		custom_tooltip = {
+			fail_text = "requires_inside_border_or_uf_subject"
+			OR = {
+				is_inside_border = from
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_uf_subject }
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system" # or is in my subject's territory
+			OR = {
+				NOT = {
+					any_system_planet = {
+						is_surveyed = {
+							who = prev.from
+							status = no
+						}
+					}
+				}
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_anomaly" NOT = { has_anomaly = yes } }
+			custom_tooltip = {
+				#can_build_megastructure_on_planet = yes
+				fail_text = "requires_no_megastructure_planet" 
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					has_planet_flag = uf_home_second_planet
+					is_ringworld_wg = yes
+					is_habitat_wg = yes
+					solar_system = {
+						has_star_flag = ring_world_built
+					}
+				}
+			}	
+			custom_tooltip = {
+				fail_text = "requires_colonizeable_planet" 
+				AND = {
+					exists = owner
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_mood" 
+				is_moon = no
+			}
+		}
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.3 }		
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = megastructure
+		}
+	}
+}
+uf_ring_shipyard = {
+	entity = "uf_ring_shipyard_entity"
+	construction_entity = "uf_ring_shipyard_entity"
+	portrait = "GFX_uf_ring_shipyard_background"
+    build_time = 1800
+	
+    resources = {
+		category = megastructures
+		cost = {
+			alloys = 3000
+			unity = 250
+			sr_uf = 200
+		}
+		upkeep = { 
+			energy = 10
+		}
+		upkeep = { 
+			trigger = {
+				owner = {
+					has_authority = auth_united_fleet
+				}
+			}
+			sr_uf = 5
+			energy = 10
+		}
+	}
+    country_modifier = { 
+		country_naval_cap_add = 200
+		country_resource_max_add = 5000
+	}
+	upgrade_from = {
+		uf_ring_shipyard_platform
+		#uf_ring_shipyard_2
+	}
+	ship_modifier = {
+		ship_starting_experience_add = 100
+	}
+	station_modifier = {
+		starbase_shipyard_capacity_add = 15
+		starbase_shipyard_build_cost_mult = -0.15
+		starbase_shipyard_build_speed_mult = 1.0	
+	}
+	show_prereqs = yes
+
+	on_build_complete = {
+		fromfrom.planet = {
+			add_modifier = { modifier = planet_uf_ring_shipyard days = -1 }
+		}
+		from = {
+			country_event = { id = uf_origin.4 }
+			set_country_flag = has_built_or_repaired_megastructure	
+		}		
+	}
+}
+
+uf_ring_shipyard_2 = {
+	entity = "uf_ring_shipyard_entity"
+	construction_entity = "uf_ring_shipyard_entity"
+	portrait = "GFX_uf_ring_shipyard_background"
+    build_time = 720
+	
+    resources = {
+		category = megastructures
+		cost = {
+			alloys = 1000
+			unity = 250
+		}
+	}
+	upgrade_from = {
+		#uf_ring_shipyard
+		uf_ring_shipyard_restored
+		uf_ring_shipyard_platform
+	}
+	country_modifier = { 
+		country_naval_cap_add = 400
+		country_resource_max_add = 10000
+	}
+	show_prereqs = yes
+
+	on_build_complete = {
+		fromfrom.planet = {
+			if = {
+				limit = {
+					NOT = {
+						has_modifier = planet_uf_ring_shipyard
+					}
+				}	
+			}
+			add_modifier = { modifier = planet_uf_ring_shipyard days = -1 }
+		}
+		from = {
+			country_event = { id = uf_origin.4 }
+			set_country_flag = has_built_or_repaired_megastructure	
+		}		
+	}
+}
+
+uf_ring_shipyard_3 = {
+	entity = "uf_ring_shipyard_entity"
+	construction_entity = "uf_ring_shipyard_entity"
+	portrait = "GFX_uf_ring_shipyard_background"
+    build_time = 360
+	potential = {
+		has_authority = auth_united_fleet
+		has_country_flag = uf_ring_shipyard_3
+	}
+	upgrade_from = {
+		uf_ring_shipyard
+	}
+	country_modifier = { 
+		country_naval_cap_add = 400
+		country_resource_max_add = 15000
+	}
+	show_prereqs = yes
+}
+uf_hyperdimensional_matter_core_1 = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -7 y = -7 }
+	build_time = 1800
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 10000
+			unity = 2500
+		}
+
+		upkeep = {
+			energy = 5
+		}
+	}
+	potential = {
+		has_authority = auth_united_fleet
+	}
+    prerequisites = { "tech_uf_hyperdimensional_matter_core" }
+
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		#custom_tooltip = {
+			#fail_text = "requires_no_existing_hyperdimensional_matter_core"
+			#from = { NOT = { has_country_flag = built_hyperdimensional_matter_core } }
+		#}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_habitable_planets"
+			NOT = {
+				any_system_planet = {
+					OR = {
+						is_colony = yes
+						colonizable_planet = yes
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_black_hole_neutron_star_pulsar"
+			NOT = {
+				is_star_class = sc_black_hole
+				is_star_class = sc_neutron_star
+				is_star_class = sc_pulsar
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_binary_trinary"
+			NOR = {
+				is_star_class = sc_binary_1
+				is_star_class = sc_binary_2
+				is_star_class = sc_binary_3
+				is_star_class = sc_binary_4
+				is_star_class = sc_binary_5
+				is_star_class = sc_binary_6
+				is_star_class = sc_binary_7
+				is_star_class = sc_binary_8
+				is_star_class = sc_binary_9
+				is_star_class = sc_binary_10
+				is_star_class = sc_trinary_1
+				is_star_class = sc_trinary_2
+				is_star_class = sc_trinary_3
+				is_star_class = sc_trinary_4
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_megastructure"
+			has_no_non_gate_megastructure = yes
+		}
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "must_build_around_star"
+				is_star = yes
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+		}
+	}
+
+	# root = system
+	# from = country
+	ai_weight = {
+		factor = 0
+
+	}
+
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		#from = { set_country_flag = built_hyperdimensional_matter_core }
+		from = { 
+			country_event = { id = uf_origin.13 }			
+		}
+		every_system_planet = {
+			limit = {
+				has_modifier = terraforming_candidate
+			}
+			remove_modifier = terraforming_candidate
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+		}
+	}
+}
+uf_hyperdimensional_matter_core_2 = {
+	entity = "uf_hyperdimensional_matter_entity"
+	construction_entity = "uf_hyperdimensional_matter_entity"
+	portrait = "GFX_uf_hyperdimensional_matter_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	build_time = 2400
+		
+	resources = {
+		category = megastructures
+		cost = { alloys = 10000 unity = 5000 }
+	}
+	upgrade_from = {
+		uf_hyperdimensional_matter_core_1
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.14 }		
+		}
+		every_system_planet = {
+			limit = { is_star = no }
+			remove_planet = yes
+		}
+		set_asteroid_belt = {
+			radius = 0
+		}
+	}
+}
+uf_hyperdimensional_matter_core_3 = {
+	entity = "uf_hyperdimensional_matter_full_entity"
+	construction_entity = "uf_hyperdimensional_matter_full_entity"
+	portrait = "GFX_uf_hyperdimensional_matter_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	build_time = 2400
+		
+	resources = {
+		category = megastructures
+		cost = { energy = 50000 sr_uf = 1000 unity = 5000 }
+		upkeep = {
+		    alloys = 2000
+		}
+		produces = {
+			sr_uf = 2000
+		}
+	}
+	upgrade_from = {
+		uf_hyperdimensional_matter_core_2
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.15 }	
+			set_country_flag = has_built_or_repaired_megastructure	
+		}
+	}
+}
+
+uf_space_farm_core = {
+	entity = "uf_space_farm_core_entity"
+	construction_entity = "uf_space_farm_core_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -7 y = -7 }
+	build_time = 360
+	overlord_can_upgrade = yes
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 2000 unity = 150 }
+		upkeep = { 
+			energy = 5
+		}
+	}
+	prerequisites = { "tech_uf_space_farm" }
+	possible = {
+		exists = starbase
+
+		custom_tooltip = {
+			fail_text = "requires_inside_border_or_uf_subject"
+			OR = {
+				is_inside_border = from
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						any_agreement = { agreement_preset = preset_uf_subject }
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system" # or is in my subject's territory
+			OR = {
+				NOT = {
+					any_system_planet = {
+						is_surveyed = {
+							who = prev.from
+							status = no
+						}
+					}
+				}
+				AND = {
+					exists = owner
+					owner = {
+						is_subject = yes
+						overlord = { is_same_value = from }
+					}
+				}
+			}
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld_wg = no
+			}
+			custom_tooltip = {
+				#can_build_megastructure_on_planet = yes
+				fail_text = "requires_no_farm_megastructure" 
+				NOT = {
+					has_planet_flag = uf_farm_megastructure
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+		} # use these for all non-star megastructures
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.10 }		
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = uf_farm_megastructure
+			set_planet_flag = megastructure
+		}
+	}
+}
+
+uf_space_farm_half = {
+	entity = "uf_space_farm_half_entity"
+	construction_entity = "uf_space_farm_half_entity"
+	portrait = "GFX_uf_space_farm_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	overlord_can_upgrade = yes
+	build_time = 1080
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 3000 unity = 1000 }
+		upkeep = { 
+			energy = 25
+		}
+		produces = {
+			food = 1500
+		}
+	}
+	
+	upgrade_from = {
+		uf_space_farm_core
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.11 }		
+		}
+	}
+}
+
+uf_space_farm_full = {
+	entity = "uf_space_farm_full_entity"
+	construction_entity = "uf_space_farm_full_entity"
+	portrait = "GFX_uf_space_farm_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	show_in_outliner = no
+	entity_offset = { x = -7 y = -7 }
+	overlord_can_upgrade = yes
+	build_time = 1080
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 3000 unity = 1000 }
+		upkeep = { 
+			energy = 50
+		}
+		produces = {
+			food = 3000
+		}
+	}
+	
+	upgrade_from = {
+		uf_space_farm_half
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.12 }
+			set_country_flag = has_built_or_repaired_megastructure	
+		}
+	}
+}
+
+uf_ews = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -7 y = -7 }
+	build_time = 360
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 1000 unity = 1000 }
+		upkeep = { 
+			energy = 5
+		}
+	}
+	prerequisites = { "tech_uf_ews" }
+	possible = {
+		exists = starbase
+        custom_tooltip = {
+			fail_text = "requires_no_existing_uf_ews"
+			from = { NOT = { has_country_flag = has_built_uf_ews } }
+		}
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld_wg = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+		} # use these for all non-star megastructures
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.23 }
+			set_country_flag = has_built_uf_ews
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = megastructure
+		}
+	}
+}
+
+uf_ews_1 = {
+	entity = "uf_ews_1_entity"
+	construction_entity = "uf_ews_1_entity"
+	portrait = "GFX_uf_ews_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -5 y = -5 }
+	build_time = 1080
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 2000 sr_uf = 200 unity = 3000 }
+		upkeep = { 
+			energy = 10
+		}
+		produces = { 
+			influence = 3
+		}
+	}
+	country_modifier = {
+		add_base_country_intel = 10
+	}
+	country_modifier = {
+		custom_tooltip = uf_ews_1_effects
+	}
+	sensor_range = 10
+	hyperlane_range = 20
+	
+	upgrade_from = {
+		uf_ews
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.24 }
+			country_event = { id = uf_origin.25 }
+			set_country_flag = has_built_or_repaired_megastructure	
+		}
+	}
+}
+uf_ews_2 = {
+	entity = "uf_ews_1_entity"
+	construction_entity = "uf_ews_1_entity"
+	portrait = "GFX_uf_ews_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -5 y = -5 }
+	build_time = 2700
+	potential = {
+		has_country_flag = uf_ews_upgrade
+	}	
+	resources = {
+		category = megastructures
+		cost = { sr_uf = 5000 }
+		upkeep = { 
+			energy = 30
+		}
+		produces = { 
+			influence = 3
+		}
+	}
+	country_modifier = {
+		add_base_country_intel = 10
+	}
+	country_modifier = {
+		custom_tooltip = uf_ews_1_effects
+	}
+	sensor_range = 10
+	hyperlane_range = 20
+	
+	upgrade_from = {
+		uf_ews_1
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = monolith_crisis.359 }	
+		}
+	}
+}
+
+uf_resource_ring_0 = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -9 y = -9 }
+	build_time = 3600
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 10000
+			sr_uf = 100
+			unity = 5000
+		}
+
+		upkeep = {
+			energy = 5
+		}
+	}
+	potential = {
+		has_authority = auth_united_fleet
+	}
+
+    prerequisites = { "tech_uf_resource_ring" }
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_habitable_planets"
+			NOT = {
+				any_system_planet = {
+					OR = {
+						is_colony = yes
+						colonizable_planet = yes
+					}
+				}
+			}
+		}
+
+		custom_tooltip = {
+			fail_text = "requires_no_a_or_b_or_f_star"
+			OR = {
+				is_star_class = sc_b
+				is_star_class = sc_a
+				is_star_class = sc_f
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_megastructure"
+			#NOT = { has_any_megastructure = yes }
+			has_no_non_gate_megastructure = yes
+		}
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "must_build_around_star"
+				is_star = yes
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+		}
+	}
+
+	# root = system
+	# from = country
+	ai_weight = {
+		factor = 15
+
+		modifier = {
+			factor = 0.1
+			starbase = { NOT = { has_starbase_size >= starbase_starfortress } }
+		}
+
+		modifier = {
+			factor = 0.1
+			any_neighbor_system = {
+				exists = owner
+				NOT = {
+					owner = { is_same_value = from }
+				}
+			}
+		}
+	}
+
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { set_country_flag = built_hyperdimensional_matter_core }
+		from = { 
+			country_event = { id = uf_origin.80 }			
+		}
+		every_system_planet = {
+			limit = {
+				has_modifier = terraforming_candidate
+			}
+			remove_modifier = terraforming_candidate
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+		}
+	}
+}
+uf_resource_ring_1 = {
+	entity = "uf_resource_ring_0_entity"
+	construction_entity = "uf_resource_ring_0_entity"
+	portrait = "GFX_uf_resource_ring_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	build_time = 2400
+		
+	resources = {
+		category = megastructures
+		cost = { energy = 10000 alloys = 10000 sr_uf = 1000 unity = 5000 }
+		upkeep = {
+			sr_uf = 20
+		}
+		produces = {
+			energy = 500
+			minerals = 500
+		    alloys = 200
+			consumer_goods = 200
+			volatile_motes = 50
+			exotic_gases = 50
+			rare_crystals = 50
+			sr_living_metal = 50
+			sr_zro = 50
+			sr_dark_matter = 50
+			nanites = 50
+			sr_crystal_adf = 50
+			sr_parts_adf = 50
+			sr_iodizium = 50
+			sr_solar_energy = 100
+			sr_magical_neutronium = 50
+			sr_psionic_sublimate = 50
+			acot_sr_dark_energy = 50
+			acot_sr_stellarite = 50
+		}
+	}
+	upgrade_from = {
+		uf_resource_ring_0
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.81 }	
+			set_country_flag = has_built_or_repaired_megastructure	
+		}
+	}
+}
+uf_resource_ring_2 = {
+	entity = "uf_resource_ring_1_entity"
+	construction_entity = "uf_resource_ring_1_entity"
+	portrait = "GFX_uf_resource_ring_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	build_time = 2400
+		
+	resources = {
+		category = megastructures
+		cost = { energy = 20000 alloys = 20000 sr_uf = 2000 unity = 5000 }
+		upkeep = {
+			sr_uf = 40
+		}
+		produces = {
+			energy = 2000
+			minerals = 2000
+		    alloys = 700
+			consumer_goods = 700
+			volatile_motes = 200
+			exotic_gases = 200
+			rare_crystals = 200
+			sr_living_metal = 200
+			sr_zro = 200
+			sr_dark_matter = 200
+			nanites = 200
+			sr_crystal_adf = 200
+			sr_parts_adf = 200
+			sr_iodizium = 200
+			sr_solar_energy = 200
+			sr_magical_neutronium = 200
+			sr_psionic_sublimate = 200
+			acot_sr_dark_energy = 200
+			acot_sr_stellarite = 200
+		}
+	}
+	upgrade_from = {
+		uf_resource_ring_1
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.82 }	
+			set_country_flag = has_built_or_repaired_megastructure	
+		}
+	}
+}
+
+uf_resource_ring_3 = {
+	entity = "uf_resource_ring_2_entity"
+	construction_entity = "uf_resource_ring_2_entity"
+	portrait = "GFX_uf_resource_ring_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	build_time = 2400
+		
+	resources = {
+		category = megastructures
+		cost = { energy = 50000 alloys = 50000 sr_uf = 3000 unity = 5000 }
+		upkeep = {
+			sr_uf = 60
+		}
+		produces = {
+			energy = 5000
+			minerals = 5000
+		    alloys = 3000
+			consumer_goods = 3000
+			volatile_motes = 500
+			exotic_gases = 500
+			rare_crystals = 500
+			sr_living_metal = 500
+			sr_zro = 500
+			sr_dark_matter = 500
+			nanites = 500
+			astral_threads = 500
+			sr_crystal_adf = 500
+			sr_parts_adf = 500
+			sr_iodizium = 500
+			sr_solar_energy = 500
+			sr_magical_neutronium = 500
+			sr_psionic_sublimate = 500
+			acot_sr_dark_energy = 500
+			acot_sr_stellarite = 500
+		}
+	}
+	upgrade_from = {
+		uf_resource_ring_2
+	}
+	
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.83 }	
+			set_country_flag = has_built_or_repaired_megastructure	
+		}
+	}
+}
+
+uf_star_fortress_megastructure_0 = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -7 y = -7 }
+	build_time = 720
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 2000 influence = 50 }
+		upkeep = { 
+			energy = 5
+		}
+	}
+	prerequisites = { "tech_uf_star_fortress" }
+	possible = {
+		exists = starbase
+
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_only_one_fortress_megastructure_in_system"
+			NOT = {
+				has_star_flag = fortress_megastructure_built
+			}
+		}	
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld_wg = no
+			}
+			custom_tooltip = {
+				#can_build_megastructure_on_planet = yes
+				fail_text = "requires_no_farm_megastructure" 
+				NOT = {
+					has_planet_flag = uf_farm_megastructure
+				}
+			}
+		} # use these for all non-star megastructures
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		set_star_flag = fortress_megastructure_built
+		from = { 
+			country_event = { id = uf_origin.55 }		
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = uf_star_fortress_planet
+		}
+	}
+}
+
+uf_star_fortress_megastructure_1 = {
+	entity = "uf_star_fortress_frame_megastructure_entity"
+	construction_entity = "uf_star_fortress_frame_megastructure_entity"
+	portrait = "GFX_uf_star_fortress_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	build_time = 1800
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 20000 }
+		upkeep = { 
+			energy = 10
+		}
+	}
+	
+	upgrade_from = {
+		uf_star_fortress_megastructure_0
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.56 }
+		}
+	}
+}
+
+uf_star_fortress_megastructure_2 = {
+	entity = "uf_star_fortress_frame_entity"
+	construction_entity = "uf_star_fortress_frame_entity"
+	portrait = "GFX_uf_star_fortress_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	build_time = 720
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { sr_uf = 1000 }
+	}
+	
+	upgrade_from = {
+		uf_star_fortress_megastructure_1
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.57 }		
+		}
+		remove_star_flag = fortress_megastructure_built
+		random_megastructure = {
+			limit = { 
+				is_megastructure_type = uf_star_fortress_megastructure_2
+			}
+			remove_megastructure = this
+		}
+		random_system_planet = {
+			limit = { has_planet_flag = uf_star_fortress_planet }
+			save_event_target_as = uf_star_fortress_planet_target 
+			remove_planet_flag = uf_star_fortress_planet
+			create_fleet = {
+				name = "NAME_uf_star_fortress_2"
+				effect = {
+					set_owner = ROOT.owner
+					create_ship = {
+						random_existing_design = uf_star_fortress_2
+					}
+					set_location = {
+						target = event_target:uf_star_fortress_planet_target
+						distance = 1
+						angle = random
+					}
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+				}
+				settings = { 
+					spawn_debris = no 
+					
+					is_boss = yes
+					can_change_leader = no 
+				}
+			}
+		}	
+	}
+}
+
+uf_star_fortress_megastructure_3 = {
+	entity = "uf_star_fortress_frame_entity"
+	construction_entity = "uf_star_fortress_frame_entity"
+	portrait = "GFX_uf_star_fortress_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	build_time = 720
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { sr_uf = 1000 }
+	}
+	
+	upgrade_from = {
+		uf_star_fortress_megastructure_1
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.57 }		
+		}
+		remove_star_flag = fortress_megastructure_built
+		random_megastructure = {
+			limit = { 
+				is_megastructure_type = uf_star_fortress_megastructure_3
+			}
+			remove_megastructure = this
+		}
+		random_system_planet = {
+			limit = { has_planet_flag = uf_star_fortress_planet }
+			save_event_target_as = uf_star_fortress_planet_target 
+			remove_planet_flag = uf_star_fortress_planet
+			create_fleet = {
+				name = "NAME_uf_star_fortress"
+				effect = {
+					set_owner = ROOT.owner
+					create_ship = {
+						random_existing_design = uf_star_fortress
+					}
+					set_location = {
+						target = event_target:uf_star_fortress_planet_target
+						distance = 1
+						angle = random
+					}
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+				}
+				settings = { 
+					spawn_debris = no 
+					
+					is_boss = yes
+					can_change_leader = no 
+				}
+			}
+		}	
+	}
+}
+
+uf_star_fortress_megastructure_ruin = {
+	entity = "uf_star_fortress_ruin_entity"
+	construction_entity = "uf_star_fortress_ruin_entity"
+	portrait = "GFX_uf_star_fortress_ruin_background"
+    entity_offset = { x = 5 y = 5 }
+	
+	potential = {
+		always = no
+	}
+
+	show_prereqs = yes
+
+	on_build_complete = {
+	}
+}
+uf_star_fortress_megastructure_ruin_2 = {
+	entity = "uf_star_fortress_frame_entity"
+	construction_entity = "uf_star_fortress_frame_entity"
+	portrait = ""
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	build_time = 1080
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { sr_uf = 1000 alloys = 8000 }
+	}
+	
+	upgrade_from = {
+		uf_star_fortress_megastructure_ruin
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.109 }			
+		}
+		fromfrom = {
+			save_event_target_as = uf_star_fortress_megastructure_target 
+			remove_megastructure = this
+		}
+		random_system_planet = {
+			limit = { is_star = yes }
+			create_fleet = {
+				name = "NAME_uf_star_fortress"
+				effect = {
+					set_owner = ROOT.owner
+					create_ship = {
+						random_existing_design = uf_star_fortress
+					}
+					set_location = {
+						target = event_target:uf_star_fortress_megastructure_target
+						distance = 1
+						angle = random
+					}
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+				}
+				settings = { 
+					spawn_debris = no 
+					
+					is_boss = yes
+					can_change_leader = no 
+				}
+			}
+		}
+		every_system_ambient_object = {
+			limit = {
+				OR = {
+					is_ambient_object_type = large_debris_object
+					is_ambient_object_type = medium_debris_01_object
+					is_ambient_object_type = medium_debris_02_object
+					is_ambient_object_type = small_debris_object
+				}
+			}
+			destroy_ambient_object = this
+		}		
+	}
+}
+uf_star_fortress_megastructure_ruin_3 = {
+	entity = "uf_star_fortress_frame_entity"
+	construction_entity = "uf_star_fortress_frame_entity"
+	portrait = ""
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	build_time = 1080
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { sr_uf = 1000 alloys = 8000 }
+	}
+	
+	upgrade_from = {
+		uf_star_fortress_megastructure_ruin
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.110 }			
+		}
+		fromfrom = {
+			save_event_target_as = uf_star_fortress_megastructure_2_target 
+			remove_megastructure = this
+		}
+		random_system_planet = {
+			limit = { is_star = yes }
+			create_fleet = {
+				name = "NAME_uf_star_fortress_2"
+				effect = {
+					set_owner = ROOT.owner
+					create_ship = {
+						random_existing_design = uf_star_fortress_2
+					}
+					set_location = {
+						target = event_target:uf_star_fortress_megastructure_2_target
+						distance = 1
+						angle = random
+					}
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+				}
+				settings = { 
+					spawn_debris = no 
+					
+					is_boss = yes
+					can_change_leader = no 
+				}
+			}
+		}
+		every_system_ambient_object = {
+			limit = {
+				OR = {
+					is_ambient_object_type = large_debris_object
+					is_ambient_object_type = medium_debris_01_object
+					is_ambient_object_type = medium_debris_02_object
+					is_ambient_object_type = small_debris_object
+				}
+			}
+			destroy_ambient_object = this
+		}		
+	}
+}
+#联合荣耀
+uf_glory_megastructure_0 = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -15 y = -15 }
+	build_time = 720
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 10000 influence = 300 }
+		upkeep = { 
+			energy = 5
+		}
+	}
+	prerequisites = { "tech_uf_star_glory" }
+	possible = {
+		exists = starbase
+
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_black_hole_neutron_star_pulsar"
+			NOT = {
+				is_star_class = sc_black_hole
+				is_star_class = sc_neutron_star
+				is_star_class = sc_pulsar
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_binary_trinary"
+			NOR = {
+				is_star_class = sc_binary_1
+				is_star_class = sc_binary_2
+				is_star_class = sc_binary_3
+				is_star_class = sc_binary_4
+				is_star_class = sc_binary_5
+				is_star_class = sc_binary_6
+				is_star_class = sc_binary_7
+				is_star_class = sc_binary_8
+				is_star_class = sc_binary_9
+				is_star_class = sc_binary_10
+				is_star_class = sc_trinary_1
+				is_star_class = sc_trinary_2
+				is_star_class = sc_trinary_3
+				is_star_class = sc_trinary_4
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_megastructure"
+			#NOT = { has_any_megastructure = yes }
+			has_no_non_gate_megastructure = yes
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_uf_glory_megastructure" 
+			from = { 
+				NOR = { 
+					has_megastructure = uf_glory_megastructure_0
+					has_megastructure = uf_glory_megastructure_1
+					has_megastructure = uf_glory_megastructure_2
+					has_megastructure = uf_glory_megastructure_3
+					has_megastructure = uf_glory_megastructure_4
+				}
+			}
+		}	
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld_wg = no
+			}
+			custom_tooltip = {
+				fail_text = "must_build_around_star"
+				is_star = yes
+			}
+		} # use these for all non-star megastructures
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.62 }
+			set_country_flag = uf_glory_megastructure_flag
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+		}
+	}
+}
+
+uf_glory_megastructure_1 = {
+	entity = "wsg_supermacy_megastructure_entity"
+	construction_entity = "wsg_supermacy_megastructure_entity"
+	portrait = "GFX_uf_uf_glory_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	build_time = 1500
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 50000 sr_uf = 5000 }
+	}
+	
+	upgrade_from = {
+		uf_glory_megastructure_0
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.63 }	
+		}	
+	}
+}
+
+uf_glory_megastructure_2 = {
+	entity = "wsg_supermacy_megastructure_entity"
+	construction_entity = "wsg_supermacy_megastructure_entity"
+	portrait = "GFX_uf_uf_glory_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	build_time = 1500
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 20000 sr_uf = 2000 }
+	}
+	
+	upgrade_from = {
+		uf_glory_megastructure_1
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.64 }
+		}	
+	}
+}
+
+uf_glory_megastructure_3 = {
+	entity = "wsg_supermacy_megastructure_entity"
+	construction_entity = "wsg_supermacy_megastructure_entity"
+	portrait = "GFX_uf_uf_glory_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	build_time = 1500
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 30000 sr_uf = 2000 }
+	}
+	
+	upgrade_from = {
+		uf_glory_megastructure_2
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.65 }		
+		}	
+	}
+}
+
+uf_glory_megastructure_4 = {
+	entity = "wsg_supermacy_megastructure_entity"
+	construction_entity = "wsg_supermacy_megastructure_entity"
+	portrait = "GFX_uf_uf_glory_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	build_time = 720
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { sr_uf = 5000 }
+	}
+	
+	upgrade_from = {
+		uf_glory_megastructure_3
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.66 }			
+			remove_country_flag = uf_glory_megastructure_flag
+		}
+		random_megastructure = {
+			limit = { 
+				is_megastructure_type = uf_glory_megastructure_4
+			}
+			remove_megastructure = this
+		}
+		random_system_planet = {
+			limit = { is_star = yes }
+			save_event_target_as = uf_glory_megastructure_target 
+			create_fleet = {
+				name = "NAME_uf_star_glory"
+				effect = {
+					set_owner = ROOT.owner
+					create_ship = {
+						random_existing_design = uf_glory_o
+					}
+					set_location = {
+						target = event_target:uf_glory_megastructure_target
+						distance = 1
+						angle = random
+					}
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+				}
+				settings = { 
+					spawn_debris = no 
+					
+					is_boss = yes
+					can_change_leader = no 
+				}
+			}
+		}
+	}
+}
+uf_glory_megastructure_ruin = {
+	entity = "wsg_supermacy_ruin_entity"
+	construction_entity = "wsg_supermacy_ruin_entity"
+	portrait = "GFX_uf_uf_glory_ruin_background"
+
+	
+	potential = {
+		always = no
+	}
+
+	show_prereqs = yes
+
+	on_build_complete = {
+	}
+}
+uf_glory_megastructure_ruin_2 = {
+	entity = "wsg_supermacy_ruin_entity"
+	construction_entity = "wsg_supermacy_ruin_entity"
+	portrait = "GFX_uf_uf_glory_ruin_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = 20 }
+	build_time = 1080
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { sr_uf = 5000 alloys = 10000 }
+	}
+	
+	upgrade_from = {
+		uf_glory_megastructure_ruin
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.108 }			
+			#remove_country_flag = uf_glory_megastructure_flag
+		}
+		random_megastructure = {
+			limit = { 
+				is_megastructure_type = uf_glory_megastructure_ruin_2
+			}
+			save_event_target_as = uf_glory_megastructure_target 
+			remove_megastructure = this
+		}
+		random_system_planet = {
+			limit = { is_star = yes }
+			create_fleet = {
+				name = "NAME_uf_star_glory"
+				effect = {
+					set_owner = ROOT.owner
+					create_ship = {
+						random_existing_design = uf_glory_o
+					}
+					set_location = {
+						target = event_target:uf_glory_megastructure_target
+						distance = 1
+						angle = random
+					}
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+				}
+				settings = { 
+					spawn_debris = no 
+					
+					is_boss = yes
+					can_change_leader = no 
+				}
+			}
+		}
+		every_system_ambient_object = {
+			limit = {
+				OR = {
+					is_ambient_object_type = large_debris_object
+					is_ambient_object_type = medium_debris_01_object
+					is_ambient_object_type = medium_debris_02_object
+					is_ambient_object_type = small_debris_object
+				}
+			}
+			destroy_ambient_object = this
+		}		
+	}
+}
+
+uf_hyperlane_a = {
+	entity = "gateway_entity"
+	construction_entity = "gateway_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	show_galactic_map_icon = no
+	prerequisites = { "tech_uf_hyperlane" }
+	build_outside_gravity_well = yes	
+	potential = {
+		has_authority = auth_united_fleet
+	}
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_uf_hyperlane"
+			NOR = {
+				has_megastructure = uf_hyperlane_a
+				has_megastructure = uf_hyperlane_b
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_uf_hyperlane_a"
+			from = {
+				NOR = {
+					has_megastructure = uf_hyperlane_a
+				}
+			}		
+		}
+	}
+
+	build_time = 360
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 500
+		}
+	}
+
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.69 }
+		}
+	}
+}
+
+uf_hyperlane_b = {
+	entity = "gateway_entity"
+	construction_entity = "gateway_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	show_galactic_map_icon = no
+	build_outside_gravity_well = yes	
+	prerequisites = { "tech_uf_hyperlane" }
+	potential = {
+		has_authority = auth_united_fleet
+	}
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_uf_hyperlane"
+			NOR = {
+				has_megastructure = uf_hyperlane_a
+				has_megastructure = uf_hyperlane_b
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_uf_hyperlane_b"
+			from = {
+				NOR = {
+					has_megastructure = uf_hyperlane_b
+				}
+			}		
+		}
+	}
+
+	build_time = 360
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 500
+		}
+	}
+
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.69 }
+		}
+	}
+}
+
+uf_hyperlane_c = {
+	entity = "gateway_entity"
+	construction_entity = "construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	show_galactic_map_icon = no
+	prerequisites = { "tech_uf_hyperlane" }
+	potential = {
+		has_authority = auth_united_fleet
+	}
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_no_existing_uf_hyperlane_a_b"
+			from = {
+				has_megastructure = uf_hyperlane_a
+				has_megastructure = uf_hyperlane_b
+			}
+		}
+	}
+	
+	upgrade_from = {
+		uf_hyperlane_b
+	}
+
+	build_time = 0
+	resources = {
+		category = megastructures
+		cost = {
+			sr_uf = 100
+		}
+	}
+
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.67 }
+		}
+	}
+}
+
+uf_hyperlane_d = {
+	entity = "gateway_entity"
+	construction_entity = "construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	show_galactic_map_icon = no
+	prerequisites = { "tech_uf_hyperlane" }
+	potential = {
+		has_authority = auth_united_fleet
+	}
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_no_existing_uf_hyperlane_a_b"
+			from = {
+				has_megastructure = uf_hyperlane_a
+				has_megastructure = uf_hyperlane_b
+			}
+		}
+	}
+	
+	upgrade_from = {
+		uf_hyperlane_a
+	}
+
+	build_time = 0
+	resources = {
+		category = megastructures
+		cost = {
+			sr_uf = 100
+		}
+	}
+
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.68 }
+		}
+	}
+}
+
+uf_kind_yard = {
+	entity = "mammalian_01_construction_platform_entity"
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	prerequisites = { "tech_uf_mega_shipyard" }
+	build_outside_gravity_well = yes	
+	potential = {
+		has_authority = auth_united_fleet
+	}
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_uf_kind_yard"
+			from = { NOT = { has_country_flag = built_uf_kind_yard } }
+		}
+	}
+
+	build_time = 1800
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 20000
+			influence = 800
+		}
+		upkeep = { energy = 10 }
+	}
+
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.70 }
+			set_country_flag = built_uf_kind_yard
+		}
+	}
+}
+uf_kind_yard_1 = {
+	entity = "mammalian_01_construction_platform_entity"
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_uf_mega_shipyard_1_background"
+	place_entity_on_planet_plane = no
+	
+	upgrade_from = {
+		uf_kind_yard
+	}
+
+
+	build_time = 3600
+	resources = {
+		category = megastructures
+		cost = {
+			sr_uf = 5000
+			alloys = 80000
+		}
+		upkeep = { sr_uf = 10 energy = 100 }
+	}
+
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.71 }
+			set_timed_ship_flag = { flag = uf_kind_shipyard_builder days = 5 }
+			random_system_within_border = {
+				limit = {
+					any_system_megastructure = {
+						is_megastructure_type = uf_kind_yard_1
+					}
+				}
+				save_event_target_as = uf_kind_yard_1_target
+			}
+		}
+		random_megastructure = {
+			limit = { 
+				is_megastructure_type = uf_kind_yard_1
+			}
+			remove_megastructure = this
+		}
+		
+		event_target:uf_kind_yard_1_target = {
+			spawn_system = {
+				min_distance = 10
+				max_distance = 15
+				min_jumps = 0
+				max_jumps = 0
+				initializer = uf_shipyard_system
+			}
+		}
+	}
+}
+uf_kind_yard_2 = {
+	entity = "shipyard_wsg_01_entity"
+	construction_entity = "shipyard_wsg_01_entity"
+	portrait = "GFX_uf_mega_shipyard_1_background"
+	place_entity_on_planet_plane = no
+	
+	potential = {
+		always = no
+	}
+
+	build_time = 3600
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 50000
+			sr_uf = 2500
+		}
+		upkeep = { sr_uf = 10 energy = 100 }
+	}
+
+	on_build_complete = {
+	}
+}
+uf_kind_yard_3 = {
+	entity = "shipyard_wsg_03_entity"
+	construction_entity = "shipyard_wsg_03_entity"
+	portrait = "GFX_uf_mega_shipyard_2_background"
+	place_entity_on_planet_plane = no
+	
+	upgrade_from = {
+		uf_kind_yard_2
+	}
+
+
+	build_time = 1800
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 50000
+			sr_uf = 2500
+		}
+		upkeep = { sr_uf = 10 energy = 100 }
+	}
+
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.72 }
+		}
+	}
+}
+
+uf_kind_yard_4 = {
+	entity = "shipyard_wsg_04_entity"
+	construction_entity = "shipyard_wsg_04_entity"
+	portrait = "GFX_uf_mega_shipyard_3_background"
+	place_entity_on_planet_plane = no
+	
+	upgrade_from = {
+		uf_kind_yard_3
+	}
+
+
+	build_time = 360
+	resources = {
+		category = megastructures
+		cost = {
+			sr_uf = 2500
+			alloys = 50000
+		}
+	}
+
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.73 }
+		}
+	}
+}
+
+uf_mega_shipyard = {
+	entity = "shipyard_wsg_05_entity"
+	construction_entity = "shipyard_wsg_05_entity"
+	portrait = "GFX_uf_mega_shipyard_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	upgrade_from = {
+		uf_kind_yard_4
+	}
+	build_time = 1800
+	resources = {
+		category = megastructures
+		cost = {
+			sr_uf = 2500
+			alloys = 50000
+		}
+		upkeep = { sr_uf = 50 energy = 2000 alloys = 200 }
+	}
+	country_modifier = {
+		custom_tooltip = uf_mega_shipyard_effects
+	}
+	country_modifier = { 
+		country_naval_cap_add = 5000
+	}
+	ship_modifier = {
+		ship_starting_experience_add = 1000
+	}
+	country_modifier = {
+		starbase_shipyard_build_speed_mult = 2
+	}
+	station_modifier = {
+		starbase_shipyard_capacity_add = 1000
+		starbase_shipyard_build_cost_mult = -0.90
+		starbase_shipyard_build_speed_mult = 8.0		
+	}
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.74 }
+		}
+	}
+}
+
+
+uf_galactic_university = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -7 y = -7 }
+	build_time = 720
+	potential = {
+		has_authority = auth_united_fleet
+		NOT = { has_country_flag = uf_galactic_university_main_built }
+	}
+	prerequisites = { "tech_uf_galactic_university" } 
+	resources = {
+		category = megastructures
+		cost = { alloys = 10000 influence = 100 unity = 1500 }
+		upkeep = { 
+			energy = 5
+		}
+
+	}
+	
+	possible = {
+		exists = starbase
+
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_only_one_uf_galactic_university_in_system"
+			NOT = {
+				has_star_flag = uf_galactic_university_built
+			}
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld_wg = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+		}
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		set_star_flag = uf_galactic_university_built
+		from = { 
+			country_event = { id = uf_origin.85 }	
+			set_country_flag = uf_galactic_university_main_built
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = has_megastructure
+		}
+	}
+}
+
+uf_galactic_university_1 = {
+	entity = "uf_galactic_university_entity"
+	construction_entity = "uf_galactic_university_entity"
+	portrait = "GFX_uf_galactic_university_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	upgrade_from = {
+		uf_galactic_university
+	}
+	prerequisites = { "tech_uf_galactic_university" } 
+	build_time = 3600
+	resources = {
+		category = megastructures
+		cost = { alloys = 15000 sr_uf = 500 unity = 1500 }
+		upkeep = { 
+			energy = 200
+			sr_uf = 10
+		}
+		produces = {
+			society_research = 5000
+			engineering_research = 5000
+			physics_research = 5000
+		}
+	}
+	country_modifier = {
+		all_technology_research_speed = 0.35
+		custom_tooltip = uf_galactic_university_effects
+	}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.86 }
+			country_event = { id = uf_origin.84 }
+			set_country_flag = uf_galactic_university_main_complete_built
+			set_country_flag = has_built_or_repaired_megastructure	
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+		}
+	}
+}
+
+uf_galactic_university_sub = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -7 y = -7 }
+	build_time = 720
+	potential = {
+		has_authority = auth_united_fleet
+		has_country_flag = uf_galactic_university_main_built
+	}
+	prerequisites = { "tech_uf_galactic_university" } 
+	resources = {
+		category = megastructures
+		cost = { alloys = 5000 unity = 1000 }
+		upkeep = { 
+			energy = 5
+		}
+
+	}
+	
+	possible = {
+		exists = starbase
+
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_uf_galactic_university_main_finished"
+			from = { has_country_flag = uf_galactic_university_main_complete_built  }
+		}
+		custom_tooltip = {
+			fail_text = "requires_only_one_uf_galactic_university_in_system"
+			NOT = {
+				has_star_flag = uf_galactic_university_built
+			}
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld_wg = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+		}
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		set_star_flag = uf_galactic_university_built
+		from = { 
+			country_event = { id = uf_origin.87 }	
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = megastructure
+		}
+	}
+}
+
+uf_galactic_university_sub_1 = {
+	entity = "uf_galactic_university_entity"
+	construction_entity = "uf_galactic_university_entity"
+	portrait = "GFX_uf_galactic_university_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -7 y = -7 }
+	upgrade_from = {
+		uf_galactic_university_sub
+	}
+	prerequisites = { "tech_uf_galactic_university" } 
+	build_time = 2400
+	resources = {
+		category = megastructures
+		cost = { alloys = 10000 sr_uf = 500 unity = 1500 }
+		upkeep = { 
+			energy = 150
+			sr_uf = 5
+		}
+		produces = {
+			society_research = 2500
+			engineering_research = 2500
+			physics_research = 2500
+		}
+	}
+	country_modifier = {
+		all_technology_research_speed = 0.05
+	}
+	on_build_complete = {
+		set_star_flag = uf_galactic_university_built
+		from = { 
+			country_event = { id = uf_origin.88 }	
+		}
+	}
+}
+
+
+uf_ancient_galaxy_gun = {
+	entity = "uf_gun_full_entity"
+	construction_entity = "uf_gun_full_entity"
+	portrait = "GFX_uf_ancient_galaxy_gun_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	potential = {
+		always = no
+	}
+	resources = {
+		category = megastructures
+		upkeep = { energy = 5 }
+	}
+
+}
+
+uf_ancient_galaxy_gun_1 = {
+	entity = "uf_gun_charging_entity"
+	construction_entity = "uf_gun_charging_entity"
+	portrait = "GFX_uf_ancient_galaxy_gun_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	upgrade_from = {
+		uf_ancient_galaxy_gun
+	}
+	possible = {
+		custom_tooltip = {
+			fail_text = "uf_ancient_galaxy_gun_unexplored"
+			FROM = { 
+				has_country_flag = uf_ancient_galaxy_gun_fire_test_allowed 
+			}
+		}
+	}
+	potential = {
+		NOT = { has_country_flag = uf_ancient_galaxy_gun_fire_test_cancel }
+	}
+	build_time = 60
+	resources = {
+		category = megastructures
+		cost = { energy = 5000 }
+		upkeep = { 
+			energy = 100
+		}
+	}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_story.14 }	
+		}
+	}
+}
+
+uf_ancient_galaxy_gun_2 = {
+	entity = "uf_gun_firing_entity"
+	construction_entity = "uf_gun_firing_entity"
+	portrait = "GFX_uf_ancient_galaxy_gun_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	upgrade_from = {
+		uf_ancient_galaxy_gun_1
+	}
+	build_time = 0
+	resources = {
+		category = megastructures
+		upkeep = { 
+			energy = 100
+		}
+	}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_story.13 days = 5 }
+			country_event = { id = uf_story.16 }
+			country_event = { id = uf_story.17 days = 5 }
+			set_country_flag = ancient_galaxy_gun_fired
+		}
+	}
+}
+
+uf_ancient_galaxy_gun_destroyed = {
+	entity = "uf_gun_destroyed_full_entity"
+	construction_entity = "uf_gun_destroyed_full_entity"
+	portrait = "GFX_uf_ancient_galaxy_gun_2_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	show_galactic_map_icon = no
+	show_in_outliner = no
+	entity_offset = { x = 0 y = 0 }
+	potential = {
+		always = no
+	}
+	resources = {
+		category = megastructures
+	}
+
+}
+
+uf_ancient_galaxy_gun_effect = {
+	entity = "uf_gun_fire_hit_effect_entity"
+	construction_entity = "uf_gun_fire_hit_effect_entity"
+	portrait = "GFX_uf_ancient_galaxy_gun_background"
+	show_galactic_map_icon = no
+	show_in_outliner = no
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	potential = {
+		always = no
+	}
+	resources = {
+		category = megastructures
+	}
+
+}
+
+uf_monolith_2 = {
+	entity = "uf_monolith_2_entity"
+	construction_entity = "uf_monolith_2_entity"
+	portrait = "GFX_uf_ancient_galaxy_gun_background"
+	show_galactic_map_icon = no
+	show_in_outliner = no
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 20 y = 12 }
+	potential = {
+		always = no
+	}
+	resources = {
+		category = megastructures
+	}
+}
+
+uf_mega_habitat_0 = {
+	entity = "mammalian_01_construction_platform_entity"
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	prerequisites = { "tech_uf_mega_habitat" }
+	build_outside_gravity_well = yes	
+	potential = {
+		has_authority = auth_united_fleet
+	}
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_uf_mega_habitat"
+			from = { NOT = { has_country_flag = built_uf_mega_habitat } }
+		}
+	}
+
+	build_time = 1800
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 20000
+			influence = 1000
+		}
+		upkeep = { energy = 10 }
+	}
+
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.90 }
+			set_country_flag = built_uf_mega_habitat
+		}
+	}
+}
+
+uf_mega_habitat_0_1 = {
+	entity = ""
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	prerequisites = { "tech_uf_mega_habitat" }
+	potential = {
+		has_authority = auth_united_fleet
+	}
+
+	build_time = 3600
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 100000
+			sr_uf = 5000
+			unity = 10000
+		}
+	}
+    upgrade_from = {
+		uf_mega_habitat_0
+	}
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.91 }
+			random_system_within_border = {
+				limit = {
+					any_system_megastructure = {
+						is_megastructure_type = uf_mega_habitat_0_1
+					}
+				}
+				save_event_target_as = uf_mega_habitat_target
+			}
+			set_timed_ship_flag = { flag = uf_mega_habitat_builder days = 5 }
+		}
+		random_megastructure = {
+			limit = { 
+				is_megastructure_type = uf_mega_habitat_0_1
+			}
+			remove_megastructure = this
+		}
+		
+		event_target:uf_mega_habitat_target = {
+			spawn_system = {
+				min_distance = 10
+				max_distance = 15
+				min_jumps = 0
+				max_jumps = 0
+				initializer = uf_mega_habitat_system
+			}
+		}
+	}
+}
+
+uf_mega_habitat_1 = {
+	entity = "uf_mega_habitat_1_entity"
+	construction_entity = "uf_mega_habitat_1_entity"
+	portrait = "GFX_uf_mega_habitat_1_background"
+	show_galactic_map_icon = yes
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	build_time = 3600
+	potential = {
+		always = no
+	}
+    bypass_type = gateway
+	resources = {
+		category = megastructures
+		upkeep = { 
+			energy = 1000
+			sr_uf = 200
+		}
+	}
+
+}
+uf_mega_habitat_2 = {
+	entity = "uf_mega_habitat_2_entity"
+	construction_entity = "uf_mega_habitat_2_entity"
+	portrait = "GFX_uf_mega_habitat_2_background"
+	show_galactic_map_icon = yes
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	prerequisites = { "tech_uf_mega_habitat" }
+	entity_offset = { x = 0 y = 0 }
+	build_time = 3600
+	upgrade_from = {
+		uf_mega_habitat_1
+	}
+	bypass_type = gateway
+	resources = {
+		category = megastructures
+		cost = { alloys = 100000 sr_uf = 20000 unity = 10000 }
+		upkeep = { 
+			energy = 1000
+			sr_uf = 200
+		}
+	}
+	on_build_complete = {
+		activate_gateway = fromfrom
+		from = {
+			country_event = { id = uf_origin.93 }
+		}
+	}
+}
+uf_mega_habitat_3 = {
+	entity = "uf_mega_habitat_3_entity"
+	construction_entity = "uf_mega_habitat_3_entity"
+	portrait = "GFX_uf_mega_habitat_3_background"
+	show_galactic_map_icon = yes
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	prerequisites = { "tech_uf_mega_habitat" }
+	build_time = 3600
+	upgrade_from = {
+		uf_mega_habitat_2
+	}
+	bypass_type = gateway
+	resources = {
+		category = megastructures
+		cost = { alloys = 100000 sr_uf = 20000 unity = 10000 }
+		upkeep = { 
+			energy = 1000
+			sr_uf = 200
+		}
+	}
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.94 }
+		}
+	}
+}
+uf_mega_habitat_4 = {
+	entity = "uf_mega_habitat_4_entity"
+	construction_entity = "uf_mega_habitat_4_entity"
+	portrait = "GFX_uf_mega_habitat_4_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	prerequisites = { "tech_uf_mega_habitat" }
+	upgrade_from = {
+		uf_mega_habitat_3
+	}
+	build_time = 3600
+	resources = {
+		category = megastructures
+		cost = { alloys = 100000 sr_uf = 20000 unity = 10000 }
+		upkeep = { 
+			energy = 1000
+			sr_uf = 200
+		}
+	}
+	bypass_type = gateway
+	on_build_complete = {
+		from = {
+			set_country_flag = has_built_or_repaired_megastructure
+			country_event = { id = uf_origin.95 }
+		}
+		
+		spawn_planet = {
+			class = "pc_uf_glory"
+			size = 0
+			location = fromfrom
+			orbit_angle_offset = -30
+			orbit_distance_offset = 200
+			init_effect = {
+				set_name = "NAME_Habitable_Section_UF"
+				set_planet_entity = {
+					entity = "non"
+				}
+				set_surveyed = {
+					surveyed = yes
+					surveyor = FROM
+				}
+				set_all_comms_surveyed = yes
+				clear_blockers = yes
+				trigger_megastructure_icon = yes
+				set_planet_flag = megastructure
+				set_planet_flag = pc_uf_glory_flag
+				set_planet_flag = colony_event
+			}
+		}
+		spawn_planet = {
+			class = "pc_uf_glory"
+			size = 0
+			location = fromfrom
+			orbit_angle_offset = 60
+			orbit_distance_offset = 200
+			init_effect = {
+				set_name = "NAME_Habitable_Section_UF"
+				set_planet_entity = {
+					entity = "non"
+				}
+				set_surveyed = {
+					surveyed = yes
+					surveyor = FROM
+				}
+				set_all_comms_surveyed = yes
+				clear_blockers = yes
+				trigger_megastructure_icon = yes
+				set_planet_flag = megastructure
+				set_planet_flag = pc_uf_glory_flag
+				set_planet_flag = colony_event
+			}
+		}
+		spawn_planet = {
+			class = "pc_uf_glory"
+			size = 0
+			location = fromfrom
+			orbit_angle_offset = 150
+			orbit_distance_offset = 200
+			init_effect = {
+				set_name = "NAME_Habitable_Section_UF"
+				set_planet_entity = {
+					entity = "non"
+				}
+				set_surveyed = {
+					surveyed = yes
+					surveyor = FROM
+				}
+				set_all_comms_surveyed = yes
+				clear_blockers = yes
+				trigger_megastructure_icon = yes
+				set_planet_flag = megastructure
+				set_planet_flag = pc_uf_glory_flag
+				set_planet_flag = colony_event
+			}
+		}
+		spawn_planet = {
+			class = "pc_uf_glory"
+			size = 0
+			location = fromfrom
+			orbit_angle_offset = 240
+			orbit_distance_offset = 200
+			init_effect = {
+				set_name = "NAME_Habitable_Section_UF"
+				set_planet_entity = {
+					entity = "non"
+				}
+				set_surveyed = {
+					surveyed = yes
+					surveyor = FROM
+				}
+				set_all_comms_surveyed = yes
+				clear_blockers = yes
+				trigger_megastructure_icon = yes
+				set_planet_flag = megastructure
+				set_planet_flag = pc_uf_glory_flag
+				set_planet_flag = colony_event
+			}
+		}
+		fromfrom.planet = {
+			set_planet_flag = has_megastructure
+		}
+	}
+
+}
+uf_mega_habitat_5 = {
+	entity = "uf_mega_habitat_4_entity"
+	construction_entity = "uf_mega_habitat_4_entity"
+	portrait = "GFX_uf_mega_habitat_4_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	prerequisites = { "tech_uf_mega_habitat" }
+    potential = {
+		always = no
+	}
+	resources = {
+		category = megastructures
+		cost = { alloys = 100000 sr_uf = 20000 }
+		upkeep = { 
+			energy = 1000
+			sr_uf = 200
+		}
+	}
+	country_modifier = {
+		custom_tooltip = uf_mega_shipyard_effects
+	}
+	country_modifier = { 
+		country_naval_cap_add = 3000
+		empire_size_pops_mult = -0.25
+		country_admin_cap_add = 500
+	}
+	ship_modifier = {
+		ship_starting_experience_add = 1000
+	}
+	
+	station_modifier = {
+		starbase_shipyard_capacity_add = 300
+		starbase_shipyard_build_cost_mult = -0.90
+		starbase_shipyard_build_speed_mult = 5.0		
+	}
+	bypass_type = uf_gateway
+	on_build_complete = {
+		from = {
+			set_country_flag = has_built_or_repaired_megastructure
+			country_event = { id = uf_origin.95 }
+		}
+		
+		spawn_planet = {
+			class = "pc_uf_glory"
+			size = 0
+			location = fromfrom
+			orbit_angle_offset = -30
+			orbit_distance_offset = 200
+			init_effect = {
+				set_name = "NAME_Habitable_Section_UF"
+				set_planet_entity = {
+					entity = "non"
+				}
+				set_surveyed = {
+					surveyed = yes
+					surveyor = FROM
+				}
+				set_all_comms_surveyed = yes
+				clear_blockers = yes
+				trigger_megastructure_icon = yes
+				set_planet_flag = megastructure
+				set_planet_flag = colony_event
+				save_global_event_target_as = pc_uf_glory_flag_o
+			}
+		}
+		spawn_planet = {
+			class = "pc_uf_glory"
+			size = 0
+			location = fromfrom
+			orbit_angle_offset = 60
+			orbit_distance_offset = 200
+			init_effect = {
+				set_name = "NAME_Habitable_Section_UF"
+				set_planet_entity = {
+					entity = "non"
+				}
+				set_surveyed = {
+					surveyed = yes
+					surveyor = FROM
+				}
+				set_all_comms_surveyed = yes
+				clear_blockers = yes
+				trigger_megastructure_icon = yes
+				set_planet_flag = megastructure
+				set_planet_flag = colony_event
+				save_global_event_target_as = pc_uf_glory_flag_o_1
+			}
+		}
+		spawn_planet = {
+			class = "pc_uf_glory"
+			size = 0
+			location = fromfrom
+			orbit_angle_offset = 150
+			orbit_distance_offset = 200
+			init_effect = {
+				set_name = "NAME_Habitable_Section_UF"
+				set_planet_entity = {
+					entity = "non"
+				}
+				set_surveyed = {
+					surveyed = yes
+					surveyor = FROM
+				}
+				set_all_comms_surveyed = yes
+				clear_blockers = yes
+				trigger_megastructure_icon = yes
+				set_planet_flag = megastructure
+				set_planet_flag = colony_event
+				save_global_event_target_as = pc_uf_glory_flag_o_2
+			}
+		}
+		spawn_planet = {
+			class = "pc_uf_glory"
+			size = 0
+			location = fromfrom
+			orbit_angle_offset = 240
+			orbit_distance_offset = 200
+			init_effect = {
+				set_name = "NAME_Habitable_Section_UF"
+				set_planet_entity = {
+					entity = "non"
+				}
+				set_surveyed = {
+					surveyed = yes
+					surveyor = FROM
+				}
+				set_all_comms_surveyed = yes
+				clear_blockers = yes
+				trigger_megastructure_icon = yes
+				set_planet_flag = megastructure
+				set_planet_flag = colony_event
+				save_global_event_target_as = pc_uf_glory_flag_o_3
+			}
+		}
+		fromfrom.planet = {
+			set_planet_flag = has_megastructure
+		}
+	}
+
+}
+
+uf_mega_habitat_gateway = {
+	entity = "wsg_01_gateway_entity"
+	construction_entity = "wsg_01_gateway_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	show_galactic_map_icon = no
+	build_outside_gravity_well = yes	
+	potential = {
+		always = no
+	}
+	resources = {
+		category = megastructures
+		upkeep = { 
+			energy = 50
+			sr_uf = 20
+			unity = 100
+		}
+	}
+	bypass_type = uf_gateway
+}
+
+uf_star_city = {
+	entity = "uf_star_city_entity"
+	construction_entity = "uf_star_city_entity"
+	portrait = "GFX_uf_star_city_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -7 y = -7 }
+	build_time = 2400
+	potential = {
+		has_authority = auth_united_fleet
+	}
+	country_modifier = {
+		custom_tooltip = uf_star_city_effects
+		country_unity_produces_mult = 0.10
+		pop_happiness = 0.20
+		planet_stability_add = 5
+	}
+	resources = {
+		category = megastructures
+		cost = { alloys = 10000 unity = 500 }
+		upkeep = { 
+			energy = 50
+			food = 50
+			sr_uf = 2
+		}
+		produces = {
+			unity = 1000
+		}
+	}
+	prerequisites = { "tech_uf_space_city" }
+	possible = {
+		exists = starbase
+
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_uf_star_city"
+			from = { NOT = { has_country_flag = built_uf_star_city } }
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld_wg = no
+			}
+			custom_tooltip = {
+				#can_build_megastructure_on_planet = yes
+				fail_text = "requires_no_farm_megastructure" 
+				NOT = {
+					has_planet_flag = uf_farm_megastructure
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+		} # use these for all non-star megastructures
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			set_country_flag = built_uf_star_city
+			country_event = { id = uf_origin.97 }		
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = megastructure
+		}
+	}
+}
+
+uf_mega_store = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -7 y = -7 }
+	build_time = 720
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 3000 unity = 500 }
+		upkeep = { 
+			energy = 5
+		}
+	}
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_ring_world"
+				is_ringworld_wg = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+		} # use these for all non-star megastructures
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.106 }
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = megastructure
+		}
+	}
+}
+
+uf_mega_store_1 = {
+	entity = "uf_megastructure_store_entity"
+	construction_entity = "uf_megastructure_store_entity"
+	portrait = "GFX_uf_mega_store_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = -5 y = -5 }
+	build_time = 720
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+	resources = {
+		category = megastructures
+		cost = { alloys = 7000 unity = 500 }
+		upkeep = { 
+			energy = 10
+		}
+	}
+	country_modifier = {
+		country_resource_max_add = 250000
+		custom_tooltip = uf_mega_store_effects
+	}
+	station_modifier = {
+		trade_value_add = 2
+	}
+	
+	upgrade_from = {
+		uf_mega_store
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			country_event = { id = uf_origin.107 }
+			set_country_flag = has_built_or_repaired_megastructure	
+		}
+		every_system_planet = {
+			limit = { 
+				OR = {
+					check_modifier_value = { modifier = trade_value_add value > 0 }
+					is_colony = yes
+					is_colonizable = yes
+				}
+				NOT = { has_modifier = wg_mega_store_modifier }
+			}
+			add_modifier = { modifier = wg_mega_store_modifier }
+		}
+	}
+}
+
+uf_cylinder = {
+	entity = "uf_cylinder_entity"
+	construction_entity = "uf_cylinder_entity"
+	portrait = "GFX_uf_cylinder_background"
+	show_in_outliner = no
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 7 y = 7 }
+	potential = {
+		always = no
+	}
+	resources = {
+		category = megastructures
+	}
+}
+#银河纪念碑
+uf_rectangular_0 = {
+	entity = "mammalian_01_construction_platform_entity"
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	build_outside_gravity_well = yes	
+	potential = {
+		has_authority = auth_united_fleet
+		has_country_flag = time_to_leave_this_galaxy
+	}
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_uf_rectangular"
+			from = { NOT = { has_country_flag = built_uf_rectangular } }
+		}
+	}
+
+	build_time = 180
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 10000
+			influence = 100
+		}
+		upkeep = { energy = 10 }
+	}
+
+	on_build_complete = {
+		from = {
+			country_event = { id = monolith_crisis.344 }
+			set_country_flag = built_uf_rectangular
+		}
+	}
+}
+
+uf_rectangular_0_1 = {
+	entity = ""
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	potential = {
+		has_authority = auth_united_fleet
+	}
+
+	build_time = 360
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 10000
+		}
+	}
+    upgrade_from = {
+		uf_rectangular_0
+	}
+	on_build_complete = {
+		from = {
+			country_event = { id = monolith_crisis.345 days = 1 }
+			random_system_within_border = {
+				limit = {
+					any_system_megastructure = {
+						is_megastructure_type = uf_rectangular_0_1
+					}
+				}
+				save_event_target_as = uf_rectangular_target
+			}
+			set_timed_ship_flag = { flag = uf_rectangular_builder days = 5 }
+		}
+		random_megastructure = {
+			limit = { 
+				is_megastructure_type = uf_rectangular_0_1
+			}
+			remove_megastructure = this
+		}
+		
+		event_target:uf_rectangular_target = {
+			spawn_system = {
+				min_distance = 10
+				max_distance = 15
+				min_jumps = 0
+				max_jumps = 0
+				initializer = uf_rectangular_system
+			}
+		}
+	}
+}
+uf_rectangular = {
+	entity = "uf_rectangular_2_entity"
+	construction_entity = "uf_rectangular_2_entity"
+	portrait = "GFX_uf_rectangular_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_others = no
+	entity_offset = { x = 0 y = 0 }
+	potential = {
+		always = no
+	}
+	resources = {
+		category = megastructures
+		produces = {
+			unity = 100000
+			influence = 10000
+		}
+	}
+	resources = {
+		category = megastructures
+	}
+}
+
+uf_gate_0 = {
+	entity = "mammalian_01_construction_platform_entity"
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	build_outside_gravity_well = yes	
+	potential = {
+		has_authority = auth_united_fleet
+		has_country_flag = time_to_leave_this_galaxy
+	}
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_uf_gate"
+			from = { NOT = { has_country_flag = built_uf_gate } }
+		}
+	}
+
+	build_time = 180
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 20000
+			influence = 1000
+		}
+		upkeep = { energy = 10 }
+	}
+
+	on_build_complete = {
+		from = {
+			country_event = { id = monolith_crisis.342 }
+			set_country_flag = built_uf_gate
+		}
+	}
+}
+uf_gate_0_1 = {
+	entity = ""
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	potential = {
+		has_authority = auth_united_fleet
+	}
+
+	build_time = 360
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 10000
+			sr_uf = 5000
+			unity = 5000
+		}
+	}
+    upgrade_from = {
+		uf_gate_0
+	}
+	on_build_complete = {
+		from = {
+			country_event = { id = monolith_crisis.343 days = 1 }
+			random_system_within_border = {
+				limit = {
+					any_system_megastructure = {
+						is_megastructure_type = uf_gate_0_1
+					}
+				}
+				save_event_target_as = uf_gate_target
+			}
+			set_timed_ship_flag = { flag = uf_gate_builder days = 5 }
+		}
+		random_megastructure = {
+			limit = { 
+				is_megastructure_type = uf_gate_0_1
+			}
+			remove_megastructure = this
+		}
+		
+		event_target:uf_gate_target = {
+			spawn_system = {
+				min_distance = 10
+				max_distance = 15
+				min_jumps = 0
+				max_jumps = 0
+				initializer = uf_gate_system
+			}
+		}
+	}
+}
+uf_gate_1 = {
+	entity = "Megastructure_X3087_gate_full_entity"
+	construction_entity = "Megastructure_X3087_gate_full_entity"
+	portrait = "GFX_uf_gate_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_others = no
+	entity_offset = { x = 0 y = 0 }
+	potential = {
+		always = no
+	}
+	resources = {
+		category = megastructures
+	}
+}
+
+uf_gate_2 = {
+	entity = "Megastructure_X3087_gate_full_entity"
+	construction_entity = "Megastructure_X3087_gate_full_entity"
+	portrait = "GFX_uf_gate_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_others = no
+	entity_offset = { x = 0 y = 0 }
+	upgrade_from = {
+		uf_gate_1
+	}
+	build_time = 30
+
+	on_build_complete = {
+		from = {
+			country_event = { id = monolith_crisis.346 }
+			
+		}
+
+	}
+}
+
+uf_polymer_matrix = {
+	entity = "uf_shield_full_entity"
+	construction_entity = "uf_shield_full_entity"
+	portrait = "GFX_uf_polymer_matrix_background"
+	place_entity_on_planet_plane = yes
+	entity_offset = { x = 0 y = 0 }
+	build_time = 1800
+	scales_with_planet = yes
+		
+	resources = {
+		category = megastructures
+		cost = { alloys = 8000 unity = 1500 }
+		produces = {
+			energy = 800
+			minerals = 800
+			alloys = 300
+			volatile_motes = 20
+			exotic_gases = 20
+			rare_crystals = 20
+		}
+		upkeep = {
+			sr_uf = 1
+		}
+	}
+	prerequisites = { "tech_uf_polymer_matrix" }
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+	}	
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_anomaly" NOT = { has_anomaly = yes } }
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				NOR = {
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					solar_system = { has_star_flag = ring_world_built }
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_star"
+				is_star = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_survey_not_habitable"
+				is_surveyed = {			# prevent leaking habitability information
+					who = prev.from
+					status = yes
+				}
+				colonizable_planet = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_gas_giant" 
+				NOT = { is_planet_class = pc_gas_giant }
+			}
+			custom_tooltip = {
+				fail_text = "requires_not_minor_planetary_body"
+				NOR = {
+					is_asteroid = yes
+					is_moon = yes
+				}
+			}
+		}
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		from = { 
+			set_country_flag = has_built_or_repaired_megastructure	
+			#country_event = { id = wsg.2112 }			
+		}
+		fromfrom.planet = {
+			if = {
+				limit = { has_orbital_station = yes }
+				orbital_station = {
+					dismantle = yes
+				}
+			}
+			set_planet_flag = megastructure
+		}
+	}
+}

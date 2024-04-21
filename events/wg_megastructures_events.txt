@@ -1,0 +1,63 @@
+namespace = wg_megastructures
+
+# This = Ship
+# From = Disabler Ship
+# Habitat Orbital Disabled
+ship_event = {
+	id = wg_megastructures.115
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		is_ship_class = shipclass_habitat_station
+		FROM.owner = { 
+			OR = { 	
+				is_country_type = wg_crisis_country
+				is_country_type = wg_crisis_sub_gate_country
+				is_country_type = monolith_crisis_country
+				is_country_type = wg_Khan_country_type
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				exists = orbit
+			}
+			orbit = {
+				remove_planet_flag = has_megastructure
+				save_event_target_as = target_planet
+			}
+		}
+		solar_system = {
+			random_system_planet = {
+				limit = {
+					has_planet_flag = habitat
+				}
+				every_deposit = {
+					limit = {
+						has_deposit_flag = planet@event_target:target_planet
+					}
+					remove_deposit = yes
+				}
+			}
+		}
+		destroy_ship = this
+		create_ambient_object = {
+			location = this
+			type = habitat_cracker_object
+			duration = 5
+
+			use_3d_location = yes
+			base_angle_towards = star
+			entity_face_object = star
+
+			entity_offset = { min = 0 max = 0 }
+
+			entity_scale_to_size = yes
+			scale = 0.10
+		}
+	}
+}

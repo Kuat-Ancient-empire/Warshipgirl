@@ -1,0 +1,861 @@
+##############
+weapon_component_template = {
+	key = "PLANETARY_SHIP_T"
+	size = titanic
+	entity = "invisible_turret_entity"
+	type = instant
+	
+	icon = "GFX_PLANETARY_SHIP_T"
+	icon_frame = 1
+	
+	firing_arc = 25.0
+	min_range = 80.0
+	
+	use_ship_kill_target = no
+	
+	damage = { min = 20000000 max = 30000000 }
+	windup = { min = 45 max = 55 }
+	total_fire_time = 450
+	range = 800.0
+	accuracy = 1
+	shield_penetration = 1.0
+	armor_penetration = 1.0
+	tracking = 0.25
+	power = -900000
+	size_restriction = { sh_planetary_ship planetary_ship_1 planetary_ship_2 }
+
+	component_set = "PLANETARY_SHIP_T"
+	projectile_gfx = "planetary_ship_laser"
+	tags = { weapon_type_energy t_slot }
+	ai_tags = { weapon_role_artillery }
+	ai_tag_weight = 0
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 3000
+			sr_dark_matter = 500
+		}		
+		upkeep = {
+			energy = 20
+			alloys = 10
+		}
+	}
+	ai_weight = {
+		weight = 1000
+	}
+}
+
+weapon_component_template = {
+	key = "PLANETARY_SHIP_T2"
+	size = titanic
+	entity = "invisible_turret_entity"
+	type = instant
+	
+	icon = "GFX_PLANETARY_SHIP_T2"
+	icon_frame = 1
+	
+	firing_arc = 35.0
+	min_range = 25.0
+	
+	use_ship_kill_target = no
+	
+	damage = { min = 30000 max = 50000 }
+	windup = { min = 20 max = 45 }
+	total_fire_time = 220
+	range = 300.0
+	accuracy = 1
+	shield_penetration = 1.0
+	armor_penetration = 1.0
+	tracking = 0.35
+	power = -5000
+	size_restriction = { sh_planetary_ship planetary_ship_1 planetary_ship_2 }
+
+	component_set = "PLANETARY_SHIP_T2"
+	projectile_gfx = "planetary_ship_laser2"
+	tags = { weapon_type_energy t_slot }
+	ai_tags = { weapon_role_artillery }
+	ai_tag_weight = 0
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 700
+			sr_dark_matter = 50
+		}		
+		upkeep = {
+			energy = 10
+			alloys = 5
+		}
+	}
+	ai_weight = {
+		weight = 500
+	}
+}
+utility_component_template = {
+	key = "PLANETARY_SHIP_REACTOR"
+	size = small
+	icon = "GFX_PLANETARY_SHIP_REACTOR"
+	icon_frame = 1
+	power = 1200000
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 1000
+			sr_dark_matter = 500
+		}
+		upkeep = {
+			energy = 5
+			alloys = 5
+		}
+	}
+	size_restriction = { sh_planetary_ship planetary_ship_1 planetary_ship_2 }
+	component_set = "ship_aura_planetary_ship_power_core"
+	ai_weight = {
+		weight = 10
+	}
+}
+
+utility_component_template = {
+	key = "PLANETARY_SHIP_THRUSTER"
+	size = small
+	icon = "GFX_PLANETARY_SHIP_THRUSTER"
+	icon_frame = 1
+	power = -300
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 500
+			sr_dark_matter = 100
+		}
+		upkeep = {
+			energy = 1
+			alloys = 1
+		}
+	}
+	modifier = {
+	}
+    size_restriction = { sh_planetary_ship planetary_ship_1 planetary_ship_2 }
+	component_set = "thruster_components"
+	ai_weight = {
+		weight = 1000
+	}
+}
+
+
+utility_component_template = {
+	key = "PLANETARY_SHIP_JUMP_DRIVE"
+	size = small
+	icon = "GFX_PLANETARY_SHIP_JUMP_DRIVE"
+	icon_frame = 1
+	power = -3500
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 500
+			sr_dark_matter = 100
+		}
+	}
+	ftl = yes
+	jumpdrive = yes
+	ship_modifier = {
+		ship_windup_mult = -0.7
+		ship_jumpdrive_cooldown_mult = -0.5
+		ship_ftl_jumpdrive_range_mult = 5.0
+	}
+	
+	ai_weight = {
+		weight = 1000
+	}
+
+	size_restriction = { sh_planetary_ship planetary_ship_1 planetary_ship_2 }
+	component_set = "ftl_components"
+}
+
+#线列
+utility_component_template = {
+	key = "PLANETARY_SHIP_COMPUTER"
+	size = small
+	icon = "GFX_PLANETARY_SHIP_COMPUTER"
+	icon_frame = 1
+	power = -45
+	
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 500
+			sr_dark_matter = 100
+		}
+	}
+	size_restriction = { sh_planetary_ship planetary_ship_1 planetary_ship_2 }
+	component_set = "combat_computers"
+	ship_behavior = "line"
+
+	ship_modifier = {
+		ship_weapon_range_mult = 0.80
+		ship_tracking_add = 15
+		ship_accuracy_add = 15
+		ship_engagement_range_mult = 1.0
+	}
+	ai_weight = {
+		weight = 1000
+	}
+}
+utility_component_template = {
+	key = "PLANETARY_SHIP_COMPUTER2"
+	size = small
+	icon = "GFX_PLANETARY_SHIP_COMPUTER"
+	icon_frame = 1
+	power = -45
+	
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 500
+			sr_dark_matter = 100
+		}
+	}
+	size_restriction = { sh_planetary_ship planetary_ship_1 planetary_ship_2 }
+	component_set = "combat_computers"
+	ship_behavior = "artillery"
+
+	ship_modifier = {
+		ship_weapon_range_mult = 1.20
+		ship_fire_rate_mult = 0.20
+		ship_tracking_add = 5
+		ship_accuracy_add = 5
+		ship_engagement_range_mult = 1.0
+	}
+	ai_weight = {
+		weight = 1000
+	}
+}
+utility_component_template = {
+	key = "PLANETARY_SHIP_IA"
+	size = large
+	icon = "GFX_PLANETARY_SHIP_IA"
+	icon_frame = 1
+	power = -300
+	
+	modifier = {
+		ship_armor_add = 10000
+		ship_hull_add = 10000
+		ship_shield_add = 10000
+		ship_hull_regen_add_static = 100
+		ship_armor_regen_add_static = 100
+		ship_shield_regen_add_static = 500
+	}
+	ship_modifier = {
+		ship_shield_hardening_add = 0.01
+		ship_armor_hardening_add = 0.01
+	}
+	component_set = "PLANETARY_SHIP_IA"
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 100
+			sr_dark_matter = 10
+		}
+		upkeep = {
+			energy = 2
+			alloys = 1
+		}
+	}
+	size_restriction = { sh_planetary_ship planetary_ship_1 planetary_ship_2 }
+	ai_weight = {
+		weight = 500
+	}
+}
+
+utility_component_template = {
+	key = "PLANETARY_SHIP_SENSOR"
+	size = medium
+	icon = "GFX_PLANETARY_SHIP_AURA_2"
+	icon_frame = 1
+	power = -500
+	resources = {
+		category = ship_components
+
+	}
+	sensor_range = 10
+	hyperlane_range = 25
+	
+	ship_modifier = {
+		ship_tracking_add = 15
+	}
+		
+	component_set = "sensor_components"
+	size_restriction = { sh_planetary_ship planetary_ship_1 planetary_ship_2 }
+	ai_weight = {
+		weight = 1200
+	}	
+}
+
+utility_component_template = {
+	key = "PLANETARY_SHIP_SH_AURA"
+	size = medium
+	icon = "GFX_ship_part_aura_fog"
+	icon_frame = 1
+	power = 0
+
+	size_restriction = { sh_planetary_ship }
+	component_set = "ship_aura_components"
+	hostile_aura = {
+		name = "aura_shield_dampener"
+		radius = @shipAuraRange
+		apply_on = ships
+		stack_info = {
+			id = aura_sh_planetary_ship_debuff
+			priority = 150
+		}
+		modifier = {
+			ship_shield_hardening_add = -0.35
+			ship_armor_hardening_add = -0.35
+			ship_shield_penetration_mult = -0.5
+			ship_armor_penetration_mult = -0.5
+		}
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 5
+			is_wg_empire = yes
+		}
+		modifier = {
+			factor = 0.0
+			component_no_resource = { RESOURCE = sr_se MIN_REQUIREMENT = 200 }
+		}
+	}
+}
+
+utility_component_template = {
+	key = "PLANETARY_SHIP_SH_AURA_2"
+	size = medium
+	icon = "GFX_ship_part_aura_fog"
+	icon_frame = 1
+	power = 0
+	hidden = yes
+	size_restriction = { sh_planetary_ship }
+	component_set = "ship_aura_components"
+	hostile_aura = {
+		name = "aura_shield_dampener"
+		radius = @shipAuraRange
+		apply_on = ships
+		stack_info = {
+			id = aura_sh_planetary_ship_2_debuff
+			priority = 200
+		}
+		damage_per_day = {
+			accuracy = 2.0
+			damage = { min = 10 max = 30 }
+			
+			shield_penetration = 1.0
+			armor_penetration = 1.0
+		}		
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}	
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 2
+			is_ai = yes
+			is_preferred_weapons = weapon_type_energy
+		}
+	}
+}
+#一号位光环
+utility_component_template = {
+	key = "PLANETARY_SHIP_AURA_1_1"
+	size = medium
+	icon = "GFX_PLANETARY_SHIP_AURA_1"
+	icon_frame = 1
+	power = 0
+
+	size_restriction = { planetary_ship_1 planetary_ship_2 }
+	component_set = "ship_aura_components"
+	hostile_aura = {
+		name = "planetary_ship_aura_1_1_debuff"
+		radius = @shipAuraRange
+		apply_on = ships
+		stack_info = {
+			id = aura_planetary_ship_aura_1_1
+			priority = 150
+		}
+		modifier = {
+			ship_shield_hardening_add = -0.35
+			ship_armor_hardening_add = -0.35
+			ship_shield_penetration_mult = -0.5
+			ship_armor_penetration_mult = -0.5
+		}
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}
+	ai_weight = {
+		weight = 100
+	}
+}
+utility_component_template = {
+	key = "PLANETARY_SHIP_AURA_1_2"
+	size = medium
+	icon = "GFX_PLANETARY_SHIP_AURA_1"
+	icon_frame = 1
+	power = 0
+
+	size_restriction = { planetary_ship_1 planetary_ship_2 }
+	component_set = "ship_aura_components"
+	hostile_aura = {
+		name = "planetary_ship_aura_1_2_debuff"
+		radius = @shipAuraRange
+		apply_on = ships
+		stack_info = {
+			id = aura_planetary_ship_aura_1_2
+			priority = 150
+		}
+		modifier = {
+			ship_weapon_damage = -0.15
+			ship_accuracy_mult = -0.15
+			ship_fire_rate_mult = -0.15
+			ship_weapon_range_mult = -0.15
+		}
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}
+	ai_weight = {
+		weight = 100
+	}
+}
+#二号位光环
+utility_component_template = {
+	key = "PLANETARY_SHIP_AURA_EMPTY"
+	size = small
+	icon = "GFX_ship_part_empty_ftl_drive"
+	icon_frame = 1
+	power = 0
+	#should_ai_use = no
+
+	component_set = "ship_aura_planetary_ship_1_components"
+	ai_weight = {
+		weight = 1
+	}
+}
+utility_component_template = {
+	key = "PLANETARY_SHIP_AURA_2_1"
+	size = medium
+	icon = "GFX_PLANETARY_SHIP_AURA_6"
+	icon_frame = 1
+	power = 0
+
+	size_restriction = { planetary_ship_1 planetary_ship_2 }
+	component_set = "ship_aura_planetary_ship_1_components"
+	friendly_aura = {
+		name = "planetary_ship_aura_2_1_buff"
+		radius = @shipAuraRange
+		apply_on = ships
+		
+		stack_info = {			
+			id = friendly_hyperlane#优先级高于主宰
+			priority = 200
+		}
+		modifier = {
+			ship_windup_mult = -0.6
+			ship_winddown_mult = -0.6
+			ship_jumpdrive_cooldown_mult = -0.5
+			ship_evasion_mult = 0.2
+			ship_speed_mult = 0.2
+		}
+		
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}
+	ai_weight = {
+		weight = 100
+	}
+}
+utility_component_template = {
+	key = "PLANETARY_SHIP_AURA_2_2"
+	size = medium
+	icon = "GFX_PLANETARY_SHIP_AURA_3"
+	icon_frame = 1
+	power = 0
+
+	size_restriction = { planetary_ship_1 planetary_ship_2 }
+	component_set = "ship_aura_planetary_ship_1_components"
+	friendly_aura = {
+		name = "planetary_ship_aura_2_2_buff"
+		radius = @shipAuraRange
+		apply_on = ships
+		
+		stack_info = {			
+			id = aura_planetary_ship_aura_2_2
+			priority = 200
+		}
+		modifier = {
+			ship_fire_rate_mult = 0.25
+			ship_accuracy_mult = 0.25
+			ship_fire_rate_mult = 0.25
+			ship_weapon_range_mult = 0.40
+		}
+		
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}
+	ai_weight = {
+		weight = 100
+	}
+}
+utility_component_template = {
+	key = "PLANETARY_SHIP_AURA_EMPTY_2"
+	size = small
+	icon = "GFX_ship_part_empty_ftl_drive"
+	icon_frame = 1
+	power = 0
+	#should_ai_use = no
+
+	component_set = "ship_aura_planetary_ship_2_components"
+	ai_weight = {
+		weight = 1
+	}
+}
+#三号位光环
+utility_component_template = {
+	key = "PLANETARY_SHIP_AURA_3_1"
+	size = medium
+	icon = "GFX_PLANETARY_SHIP_AURA_5"
+	icon_frame = 1
+	power = 0
+
+	size_restriction = { planetary_ship_1 planetary_ship_2 }
+	component_set = "ship_aura_planetary_ship_2_components"
+	hostile_aura = {
+		name = "planetary_ship_aura_3_1_debuff"
+		radius = @shipAuraRange
+		apply_on = ships
+		stack_info = {
+			id = aura_planetary_ship_aura_3_1
+			priority = 150
+		}
+		modifier = {
+			ship_emergency_ftl_min_days_mult = 2
+			ship_disengage_chance_mult = -1.00
+		}
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}	
+	ai_weight = {
+		weight = 100
+	}
+}
+
+utility_component_template = {
+	key = "PLANETARY_SHIP_AURA_3_2"
+	size = medium
+	icon = "GFX_PLANETARY_SHIP_AURA_4"
+	icon_frame = 1
+	power = 0
+
+	size_restriction = { planetary_ship_1 planetary_ship_2 }
+	component_set = "ship_aura_planetary_ship_2_components"
+	hostile_aura = {
+		name = "planetary_ship_aura_3_1_debuff"
+		radius = @shipAuraRange
+		apply_on = ships
+		stack_info = {
+			id = aura_planetary_ship_aura_3_1
+			priority = 150
+		}
+		modifier = {
+			ship_shield_mult = -0.50
+		}
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}	
+	ai_weight = {
+		weight = 100
+	}
+}
+
+
+#巨像武器
+weapon_component_template = { # World Cracker
+	key = "PLANET_KILLER_PLANETARY_SHIP_CRACKER"
+	size = planet_killer
+	type = planet_killer
+	use_ship_kill_target = no
+	valid_for_country = {
+		has_technology = tech_pk_cracker
+	}
+	icon = GFX_ship_part_world_cracker
+	icon_frame = 1
+	power = -7500
+	#windup = 90
+	#total_fire_time = 30
+	#accuracy = 1
+	#damage = 0
+	#range = 0
+	#cost = 0
+	windup = { min = 90 max = 90 }
+	total_fire_time = 30
+	size_restriction = { planetary_ship_1 }
+	component_set = "PLANET_KILLER_CRACKER"
+	planet_destruction_gfx = "shatter_planet_gfx"
+
+	ai_weight = {
+		factor = 200
+	}
+}
+weapon_component_template = { # Pacifier
+	key = "PLANET_KILLER_PLANETARY_SHIP_SHIELDER"
+	size = planet_killer
+	type = planet_killer
+	use_ship_kill_target = no
+	valid_for_country = {
+		has_technology = tech_pk_shielder
+	}
+	icon = GFX_ship_part_global_pacifier
+	icon_frame = 1
+	power = -7500
+	#windup = 90
+	#total_fire_time = 30
+	#accuracy = 1
+	#damage = 0
+	#range = 0
+	#cost = 0
+	windup = { min = 90 max = 90 }
+	total_fire_time = 30
+	size_restriction = { planetary_ship_1 }
+	component_set = "PLANET_KILLER_SHIELDER"
+	planet_destruction_gfx = "global_pacifier_gfx"
+
+	ai_weight = {
+		factor = 100
+		modifier = {
+			factor = 8
+			is_pacifist = yes
+		}
+	}
+}
+weapon_component_template = { # Neutron Beam
+	key = "PLANET_KILLER_PLANETARY_SHIP_NEUTRON"
+	size = planet_killer
+	type = planet_killer
+	use_ship_kill_target = no
+	valid_for_country = {
+		has_technology = tech_pk_neutron
+	}
+	icon = GFX_ship_part_neutron_sweep
+	icon_frame = 1
+	power = -7500
+	#windup = 90
+	#total_fire_time = 30
+	#accuracy = 1
+	#damage = 0
+	#range = 0
+	#cost = 0
+	windup = { min = 90 max = 90 }
+	total_fire_time = 30
+	size_restriction = { planetary_ship_1 }
+	component_set = "PLANET_KILLER_NEUTRON"
+
+	planet_destruction_gfx = "neutron_planet_gfx"
+
+	ai_weight = {
+		factor = 100
+		modifier = {
+			factor = 5
+			is_homicidal = no
+		}
+	}
+}
+weapon_component_template = { # God Ray
+	key = "PLANET_KILLER_PLANETARY_SHIP_GODRAY"
+	size = planet_killer
+	type = planet_killer
+	use_ship_kill_target = no
+	valid_for_country = {
+		has_technology = tech_pk_godray
+	}
+	icon = GFX_ship_part_divine_enforcer
+	icon_frame = 1
+	power = -7500
+	#windup = 90
+	#total_fire_time = 30
+	#accuracy = 1
+	#damage = 0
+	#range = 0
+	#cost = 0
+	windup = { min = 90 max = 90 }
+	total_fire_time = 30
+	size_restriction = { planetary_ship_1 }
+	component_set = "PLANET_KILLER_GODRAY"
+
+	planet_destruction_gfx = "god_ray_gfx"
+
+	ai_weight = {
+		factor = 100
+		modifier = {
+			factor = 8
+			is_spiritualist = yes
+		}
+	}
+}
+weapon_component_template = { # Nanobot Assimilation
+	key = "PLANET_KILLER_PLANETARY_SHIP_NANOBOTS"
+	size = planet_killer
+	type = planet_killer
+	use_ship_kill_target = no
+	valid_for_country = {
+		has_technology = tech_pk_nanobots
+	}
+	icon = GFX_ship_part_nanobot_diffuser
+	icon_frame = 1
+	power = -7500
+	#windup = 90
+	#total_fire_time = 30
+	#accuracy = 1
+	#damage = 0
+	#range = 0
+	#cost = 0
+	windup = { min = 90 max = 90 }
+	total_fire_time = 30
+	size_restriction = { planetary_ship_1 }
+	component_set = "PLANET_KILLER_NANOBOTS"
+
+	planet_destruction_gfx = "assimilation_nanobots_gfx"
+
+	ai_weight = {
+		factor = 100
+		modifier = {
+			factor = 10
+			has_authority = auth_machine_intelligence
+		}
+	}
+}
+weapon_component_template = { # Deluge
+	key = "PLANET_KILLER_PLANETARY_SHIP_DELUGE"
+	size = planet_killer
+	type = planet_killer
+	use_ship_kill_target = no
+	valid_for_country = {
+		has_ascension_perk = ap_hydrocentric
+	}
+	icon = GFX_ship_part_deluge
+	icon_frame = 1
+	power = -7500
+	#windup = 90
+	#total_fire_time = 30
+	#accuracy = 1
+	#damage = 0
+	#range = 0
+	#cost = 0
+	windup = { min = 90 max = 90 }
+	total_fire_time = 30
+	size_restriction = { planetary_ship_1 }
+	component_set = "PLANET_KILLER_DELUGE"
+
+	planet_destruction_gfx = "planet_deluge_gfx"
+
+	ai_weight = {
+		factor = 1000
+	}
+}
+weapon_component_template = { # Archaeo Devolving Beam
+	key = "PLANET_KILLER_PLANETARY_SHIP_DEVOLUTION"
+	size = planet_killer
+	type = planet_killer
+	use_ship_kill_target = no
+	valid_for_country = {
+		has_technology = tech_archaeo_pk_devolving_beam
+	}
+	icon = GFX_ship_part_devolution_beam
+	icon_frame = 1
+	power = -7500
+	#windup = 90
+	#total_fire_time = 30
+	#accuracy = 1
+	#damage = 0
+	#range = 0
+	#cost = 0
+	windup = { min = 90 max = 90 }
+	total_fire_time = 30
+	size_restriction = { planetary_ship_1 }
+	component_set = "PLANET_KILLER_DEVOLVER"
+
+	planet_destruction_gfx = "neutron_planet_gfx"
+
+	ai_weight = {
+		factor = 100
+		modifier = {
+			factor = 3
+			is_homicidal = no
+		}
+		modifier = {
+			factor = 3
+			has_ascension_perk = ap_archaeoengineers
+		}
+	}
+}

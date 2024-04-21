@@ -1,0 +1,3767 @@
+namespace = uf_story
+
+#######################################
+country_event = {
+	id = uf_story.1
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		any_country = { has_authority = auth_united_fleet }
+		NOT = { has_global_flag = triggered_uf_story_1 }
+	}
+	immediate = {
+		set_global_flag = triggered_uf_story_1
+	    capital_scope = {
+			closest_system = {
+				min_steps = 2
+				limit = {
+					has_access_fleet = root.owner
+					has_owner = no
+					NOT = {
+						any_ship_in_system = {
+							owner = { 
+								is_hostile = root.owner
+							}	
+						}
+					}
+				}
+			}
+			spawn_system = {
+				min_distance = 10
+				max_distance = 30
+				min_jumps = 1
+				max_jumps = 2
+				initializer = uf_cake_system
+			}
+		}
+		capital_scope = {
+			closest_system = {
+				min_steps = 1
+				limit = {
+					has_access_fleet = root.owner
+					has_owner = no
+					NOT = {
+						any_ship_in_system = {
+							owner = { 
+								is_hostile = root.owner
+							}	
+						}
+					}
+				}
+			}
+			spawn_system = {
+				min_distance = 10
+				max_distance = 30
+				min_jumps = 1
+				max_jumps = 1
+				initializer = uf_phoenix_system
+			}
+		}
+		capital_scope = {
+			closest_system = {
+				min_steps = 1
+				limit = {
+					has_access_fleet = root.owner
+					has_owner = no
+					NOT = {
+						any_ship_in_system = {
+							owner = { 
+								is_hostile = root.owner
+							}	
+						}
+					}
+				}
+			}
+			spawn_system = {
+				min_distance = 50
+				max_distance = 60
+				min_jumps = 3
+				max_jumps = 4
+				initializer = uf_ancient_galaxy_gun_system
+			}
+		}
+		event_target:uf_ancient_galaxy_gun_system_target = {
+			spawn_system = {
+				min_distance = 10
+				max_distance = 15
+				min_orientation_angle = 190
+				max_orientation_angle = 191
+				initializer = uf_ancient_galaxy_gun_2_system
+			}
+		}
+		add_hyperlane = { 
+			from = event_target:uf_ancient_galaxy_gun_system_target
+			to = event_target:uf_ancient_galaxy_gun_2_system_target
+		}
+	}
+}
+
+ship_event = {
+	id = uf_story.2
+	title = uf_story.2.name
+	desc = uf_story.2.desc
+	picture = GFX_evt_uf_space_cake
+	show_sound = event_default
+	location = from
+    fire_only_once = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		owner = { is_ai = no }
+		from = {
+			has_star_flag = uf_cake_system
+		}
+	}
+	immediate = {
+		from = {
+			save_event_target_as = cake_system
+		}	
+    }
+
+	option = {
+		name = uf_story.2.a
+		owner = {
+			add_resource = { food = 1 }
+		}
+		begin_event_chain = {
+			event_chain = "uf_cake_chain"
+			target = this.owner
+		}
+		hidden_effect = {
+			enable_special_project = {
+				name = "uf_cake_project_1"
+				location = event_target:molten_cake
+				owner = root
+			}
+			enable_special_project = {
+				name = "uf_cake_project_2"
+				location = event_target:dirty_cake
+				owner = root
+			}
+			enable_special_project = {
+				name = "uf_cake_project_3"
+				location = event_target:broken_cake
+				owner = root
+			}
+			enable_special_project = {
+				name = "uf_cake_project_4"
+				location = event_target:frozen_cake
+				owner = root
+			}
+		}
+	}
+	option = {
+		name = uf_story.2.b
+	}
+}
+
+country_event = {
+	id = uf_story.3
+	title = "uf_story.3.name"
+	desc = "uf_story.3.desc"
+	picture = GFX_evt_molten
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.3.a
+		owner = {
+			add_resource = { food = 1 }
+		}
+		owner = {
+			add_event_chain_counter = { 
+				event_chain = "uf_cake_chain" 
+				counter = "uf_cake_counter" 
+				amount = 1 
+			}
+		}
+		owner = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_completed_event_chain_counter = {
+							event_chain = "uf_cake_chain" 
+							counter = "uf_cake_counter" 
+						}
+					}
+					country_event = { id = uf_story.7 days = 5 }
+				}
+			}	
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.4
+	title = "uf_story.4.name"
+	desc = "uf_story.4.desc"
+	picture = GFX_evt_cold_barren
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.4.a
+		owner = {
+			add_resource = { food = 1 }
+		}
+		owner = {
+			add_event_chain_counter = { 
+				event_chain = "uf_cake_chain" 
+				counter = "uf_cake_counter" 
+				amount = 1 
+			}
+		}
+		owner = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_completed_event_chain_counter = {
+							event_chain = "uf_cake_chain" 
+							counter = "uf_cake_counter" 
+						}
+					}
+					country_event = { id = uf_story.7 days = 5 }
+				}
+			}	
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.5
+	title = "uf_story.5.name"
+	desc = "uf_story.5.desc"
+	picture = GFX_evt_shattered_planet
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.5.a
+		owner = {
+			add_resource = { food = 1 }
+		}
+		owner = {
+			add_event_chain_counter = { 
+				event_chain = "uf_cake_chain" 
+				counter = "uf_cake_counter" 
+				amount = 1 
+			}
+		}
+		owner = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_completed_event_chain_counter = {
+							event_chain = "uf_cake_chain" 
+							counter = "uf_cake_counter" 
+						}
+					}
+					country_event = { id = uf_story.7 days = 5 }
+				}
+			}	
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.6
+	title = "uf_story.6.name"
+	desc = "uf_story.6.desc"
+	picture = GFX_evt_frozen
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.6.a
+		owner = {
+			add_resource = { food = 1 }
+		}
+		owner = {
+			add_event_chain_counter = { 
+				event_chain = "uf_cake_chain" 
+				counter = "uf_cake_counter" 
+				amount = 1 
+			}
+		}
+		owner = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_completed_event_chain_counter = {
+							event_chain = "uf_cake_chain" 
+							counter = "uf_cake_counter" 
+						}
+					}
+					country_event = { id = uf_story.7 days = 5 }
+				}
+			}	
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.7
+	title = "uf_story.7.name"
+	desc = "uf_story.7.desc"
+	picture = GFX_evt_uf_space_cake
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.7.a
+		enable_special_project = {
+			name = "uf_cake_project_5"
+			location = event_target:star_cake
+			owner = root
+		}
+	}
+}
+
+ship_event = {
+	id = uf_story.8
+	title = "uf_story.8.name"
+	desc = "uf_story.8.desc"
+	picture = GFX_evt_exploding_ship
+	location = root
+
+	is_triggered_only = yes
+    immediate = {
+		save_event_target_as = cake_ship
+		leader = { save_event_target_as = cake_ship_leader }
+		leader = {unassign_leader = this}
+		delete_ship = this
+    }
+	option = {
+		name = uf_story.8.a
+		owner= {
+			add_relic = "r_uf_cake" 
+		}
+		owner= {
+			end_event_chain = "uf_cake_chain"
+		}
+		event_target:cake_ship_leader = {
+			add_trait_no_notify = leader_trait_scientist_cake
+			leader = { add_experience = 15000 }
+		}
+	}
+}
+#联合殖民随机事件
+planet_event = {
+	id = uf_story.9
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	pre_triggers = {
+		has_owner = yes
+	}
+
+	trigger = {
+		NOR = {
+			is_planet_class = pc_habitat
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_city
+			is_planet_class = pc_relic
+		}
+		owner = {
+			has_authority = auth_united_fleet
+			NOT = {
+				has_country_flag = triggered_uf_colonization_event
+			}
+		}
+	}
+
+	immediate = {
+		random_list = {
+			30 = {
+				planet_event = { id = uf_story.10 days = 30 }
+				owner = {
+					set_country_flag = triggered_uf_colonization_event
+				}
+			}
+			70 = {
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = uf_story.10
+	title = uf_story.10.name
+	desc = uf_story.10.desc
+	picture = GFX_evt_colony_settlement
+	location = root
+
+	is_triggered_only = yes
+
+	immediate = {
+		add_building = building_uf_farmland
+	}
+
+	option = {
+		name = uf_story.10.a
+	}
+
+	option = {
+		name = uf_story.10.b
+		remove_building = building_uf_farmland
+		owner = {
+			add_resource = { minerals = 2000 }
+		}
+	}
+}
+######银河之枪事件
+ship_event = {
+	id = uf_story.11
+	title = uf_story.11.name
+	desc = uf_story.11.desc
+	picture = GFX_evt_uf_ancient_galaxy_gun
+	show_sound = event_default
+	location = from
+
+	is_triggered_only = yes
+
+	trigger = {
+		owner = { has_authority = auth_united_fleet }
+		owner = { NOT = { has_country_flag = triggered_ancient_galaxy_gun_event } }
+		from = {
+			has_star_flag = uf_ancient_galaxy_gun_system
+		}
+	}
+	option = {
+		name = uf_story.11.a
+		event_target:uf_ancient_galaxy_gun = {
+			create_archaeological_site = site_uf_ancient_galaxy_gun
+		}
+		owner = {
+			set_country_flag = triggered_ancient_galaxy_gun_event
+		}
+	}
+}
+
+ship_event = {
+	id = uf_story.12
+	title = uf_story.12.name
+	desc = uf_story.12.desc
+	picture = GFX_evt_ship_in_orbit
+	show_sound = event_default
+	location = from
+
+	is_triggered_only = yes
+
+	trigger = {
+		owner = { has_authority = auth_united_fleet }
+		owner = { NOT = { has_country_flag = triggered_ancient_galaxy_gun_target_event } }
+		from = {
+			has_star_flag = uf_ancient_galaxy_gun_2_system
+		}
+	}
+	option = {
+		name = uf_story.12.a
+		owner = {
+			set_country_flag = triggered_ancient_galaxy_gun_target_event
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.13
+	hide_window = yes
+	is_triggered_only = yes	
+	immediate = {
+		event_target:uf_ancient_galaxy_gun_system_target = {
+		    solar_system = {
+				star = {
+					change_pc = pc_t_star
+					set_planet_size = 35
+				}
+				set_star_class = sc_t
+			}
+			create_ambient_object = {
+				type = "wsg_BF_explosion_object"
+				play_animation_once = yes
+				entity_offset_height = { min = -15 max = -15 }
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = event_target:uf_ancient_galaxy_gun
+				}
+			}
+			create_ambient_object = {
+				type = "nebula_1"
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = event_target:uf_ancient_galaxy_gun
+				}
+			}
+			every_system_ambient_object = {
+				limit = {
+					is_ambient_object_type = ancient_galaxy_gun_station
+				}
+				destroy_ambient_object = this
+			}
+			random_megastructure = {
+				limit = {
+					OR = {
+						is_megastructure_type = uf_ancient_galaxy_gun_2
+						is_megastructure_type = uf_ancient_galaxy_gun_1
+					}
+				}
+				remove_megastructure = this
+			}
+			spawn_megastructure = {
+				type = "uf_ancient_galaxy_gun_destroyed"
+				coords_from = event_target:uf_ancient_galaxy_gun
+			}
+			while = {
+				count = 5
+				create_ambient_object = {
+					type = "large_debris_object"
+					entity_offset_height = { min = -0 max = -25 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 100
+						angle = random
+					}
+				}
+			}
+			while = {
+				count = 15
+				create_ambient_object = {
+					type = "medium_debris_01_object"
+					entity_offset_height = { min = -0 max = -25 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 100
+						angle = random
+					}
+				}
+			}
+			while = {
+				count = 15
+				create_ambient_object = {
+					type = "medium_debris_02_object"
+					entity_offset_height = { min = -0 max = -25 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 100
+						angle = random
+					}
+				}
+			}
+			while = {
+				count = 50
+				create_ambient_object = {
+					type = "small_debris_object"
+					entity_offset_height = { min = -0 max = -25 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 100
+						angle = random
+					}
+				}
+			}
+			every_fleet_in_system = {
+				destroy_fleet = this				
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.14
+	title = "uf_story.14.name"
+	desc = "uf_story.14.desc"
+	picture = GFX_evt_uf_ancient_galaxy_gun_1
+	location = event_target:uf_ancient_galaxy_gun_system_target
+
+	is_triggered_only = yes
+    immediate = {
+		country_event = { id = uf_story.15 days = 15 random = 15 }
+	}
+	option = {
+		name = uf_story.14.a
+	}
+}
+#蓄能太久不开火
+country_event = {
+	id = uf_story.15
+	title = "uf_story.15.name"
+	desc = "uf_story.15.desc"
+	picture = GFX_evt_uf_ancient_galaxy_gun_3
+	location = event_target:uf_ancient_galaxy_gun_system_target
+
+	is_triggered_only = yes
+    trigger = {
+		NOT = { has_country_flag = ancient_galaxy_gun_fired }
+	}
+	immediate = {
+		country_event = { id = uf_story.13 }
+	}
+	option = {
+		name = uf_story.15.a
+		custom_tooltip = uf_story.15.a_tooltip	
+		owner = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.16
+	title = "uf_story.16.name"
+	desc = "uf_story.16.desc"
+	picture = GFX_evt_uf_ancient_galaxy_gun_2
+	location = event_target:uf_ancient_galaxy_gun_system_target
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.16.a
+	}
+}
+country_event = {
+	id = uf_story.17
+	title = "uf_story.17.name"
+	desc = "uf_story.17.desc"
+	picture = GFX_evt_uf_ancient_galaxy_gun_3
+	location = event_target:uf_ancient_galaxy_gun_system_target
+
+	is_triggered_only = yes
+    immediate = {
+		country_event = { id = uf_story.19 days = 10 random = 10 }
+	}
+	option = {
+		name = uf_story.17.a
+		owner = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+		}
+	}
+}
+
+
+country_event = {
+	id = uf_story.18
+	hide_window = yes
+	is_triggered_only = yes	
+	immediate = {
+		event_target:uf_ancient_galaxy_gun_2_system_target = {
+			spawn_megastructure = {
+				type = "uf_ancient_galaxy_gun_effect"
+				coords_from = event_target:uf_ancient_galaxy_gun_target_star
+			}
+			create_ambient_object = {
+				type = "wsg_gateway_portal_crisis_object"
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = event_target:uf_ancient_galaxy_gun_target_star
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.19
+	title = "uf_story.19.name"
+	desc = "uf_story.19.desc"
+	picture = GFX_evt_uf_star_killer
+	location = event_target:uf_ancient_galaxy_gun_2_system_target
+    immediate = {
+		country_event = { id = uf_story.18 }
+	}
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.19.a
+		hidden_effect = {
+			country_event = { id = uf_story.20 days = 2 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.20
+	title = "uf_story.20.name"
+	desc = "uf_story.20.desc"
+	picture = GFX_evt_supernova
+	location = event_target:uf_ancient_galaxy_gun_2_system_target
+    immediate = {
+		event_target:uf_ancient_galaxy_gun_2_system_target = {
+			every_system_ambient_object = {
+				limit = {
+					is_ambient_object_type = wsg_gateway_portal_crisis_object
+				}
+				destroy_ambient_object = this
+			}
+			random_megastructure = {
+				limit = {
+					OR = {
+						is_megastructure_type = uf_ancient_galaxy_gun_effect
+					}
+				}
+				remove_megastructure = this
+			}
+			create_ambient_object = {
+				type = "wsg_BF_explosion_object"
+				play_animation_once = yes
+				entity_offset_height = { min = -15 max = -15 }
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = event_target:uf_ancient_galaxy_gun_target_star
+				}
+			}
+			solar_system = {
+				star = {
+					change_pc = pc_black_hole
+					set_planet_size = 15
+				}
+				set_star_class = sc_black_hole
+				every_system_planet = {
+					limit = {
+						is_star = no
+					}
+					change_pc = pc_shattered
+				}
+			}
+		}
+	}
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.20.a
+		custom_tooltip = uf_story.15.a_tooltip
+		owner = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_modifier = {
+				modifier = uf_ancient_galaxy_gun_modifier
+				days = 5400
+			}
+		}
+	}
+	option = {
+		name = uf_story.20.b
+		custom_tooltip = uf_story.15.a_tooltip
+		allow = {
+			custom_tooltip = {
+				fail_text = require_building_uf_archaeology
+				has_country_flag = triggered_building_uf_archaeology
+			}
+		}
+		owner = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_modifier = {
+				modifier = uf_ancient_galaxy_gun_modifier_2
+				days = 7200
+			}
+		}
+	}
+}
+
+#银河之枪坟
+fleet_event = {
+	id = uf_story.21
+	title = "uf_story.21.name"
+	desc = "uf_story.21.desc"
+	picture = GFX_evt_uf_ancient_galaxy_gun
+	show_sound = event_planetary_riot
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.21.a
+		small_artifact_reward = yes
+		owner = {
+			add_modifier = {
+				modifier = uf_ancient_galaxy_gun_modifier_1
+				days = -1
+			}
+		}
+	}
+}
+
+fleet_event = {
+	id = uf_story.22
+	title = "uf_story.22.name"
+	desc = "uf_story.22.desc"
+	picture = GFX_evt_derelict_interior
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.22.a
+		small_artifact_reward = yes
+	}
+	option = {
+		name = uf_story.22.b
+		small_artifact_reward = yes
+		allow = {
+			custom_tooltip = {
+				fail_text = require_building_uf_archaeology
+				owner = { has_country_flag = triggered_building_uf_archaeology }
+			}
+		}
+		fromfrom = {
+			add_stage_clues = 5
+		}
+	}
+}
+
+fleet_event = {
+	id = uf_story.23
+	title = "uf_story.23.name"
+	desc = "uf_story.23.desc"
+	picture = GFX_evt_glitchy_matrix
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.23.a
+		small_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.24
+	title = "uf_story.24.name"
+	desc = "uf_story.24.desc"
+	picture = GFX_evt_underwater_ruins
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.24.a
+		large_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.25
+	title = "uf_story.25.name"
+	desc = "uf_story.25.desc"
+	picture = GFX_evt_crusher_droid
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.25.a
+		large_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.26
+	title = "uf_story.26.name"
+	desc = "uf_story.26.desc"
+	picture = GFX_evt_uf_ancient_galaxy_gun
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.26.a
+		large_artifact_reward = yes
+		hidden_effect = {
+			owner = {
+				country_event = { id = uf_story.27 days = 2 }
+				set_country_flag = uf_ancient_galaxy_gun_fire_test_allowed
+			}
+		}
+	}
+	option = {
+		name = uf_story.26.b
+		large_artifact_reward = yes
+		custom_tooltip = uf_story.15.a_tooltip
+		owner = {
+			add_resource = { influence = 1000 }
+			set_country_flag = uf_ancient_galaxy_gun_fire_test_cancel
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.27
+	title = "uf_story.27.name"
+	desc = "uf_story.27.desc"
+	picture = GFX_evt_uf_star_killer
+	location = event_target:uf_ancient_galaxy_gun_system_target
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.27.a
+	}
+}
+###维内托
+country_event = {
+	id = uf_story.28
+	hide_window = yes
+
+	is_triggered_only = yes
+    trigger = {
+		has_authority = auth_united_fleet
+		NOT = {has_origin = origin_united_fleet_glory_world}
+	}
+	immediate = {
+		create_species = {
+			name = United_fleet_shipgirls
+			plural = United_fleet_shipgirls
+			class = United_fleet
+			portrait = wsg112
+			namelist = WSG2_SC
+			effect = {
+				save_global_event_target_as = uf_vv_species
+			}
+		}
+		create_leader = {
+			class = commander
+			species = event_target:uf_vv_species
+			name = "NAME_uf_vv"
+			skill = 5
+			event_leader = yes
+			traits = {
+				trait = leader_trait_uf
+				trait = leader_trait_admiral_uf_vv
+			}
+			custom_description = uf_vv_desc
+			effect = {
+				set_leader_flag = uf_vv_admiral
+				set_leader_flag = legendary_leader
+			}
+		}
+		
+		last_created_leader = {
+			add_experience = 500
+			set_gender = female
+			set_age = 35
+			change_leader_portrait = wsg112
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.29
+	title = "uf_story.29.name"
+	desc = "uf_story.29.desc"
+	picture = GFX_evt_VV2
+	location = root
+	is_triggered_only = yes
+	immediate = {
+	}	
+	option = {
+		name = uf_story.29.a
+	}
+}
+#救不了
+country_event = {
+	id = uf_story.30
+	title = "uf_story.30.name"
+	desc = "uf_story.30.desc"
+	picture = GFX_evt_VV3
+	location = root
+	is_triggered_only = yes
+	trigger = {
+		has_authority = auth_united_fleet
+		NOT = {has_origin = origin_united_fleet_glory_world}
+	}
+	option = {
+		name = uf_story.30.a
+		hidden_effect = {
+			country_event = { id = uf_story.31 days = 5 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.31
+	title = "uf_story.31.name"
+	desc = "uf_story.31.desc"
+	picture = GFX_evt_VV4
+	location = root
+	is_triggered_only = yes
+	
+	option = {
+		name = uf_story.31.a
+	}
+}
+#救不了
+country_event = {
+	id = uf_story.32
+	title = "uf_story.32.name"
+	desc = "uf_story.32.desc"
+	picture = GFX_evt_uf_genetic_and_cybernetics
+	location = root
+	is_triggered_only = yes
+	trigger = {
+		has_authority = auth_united_fleet
+		NOT = {has_origin = origin_united_fleet_glory_world}
+	}
+	option = {
+		name = uf_story.32.a
+		hidden_effect = {
+			country_event = { id = uf_story.33 days = 5 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.33
+	title = "uf_story.33.name"
+	desc = "uf_story.33.desc"
+	picture = GFX_evt_VV4
+	location = root
+	is_triggered_only = yes
+	
+	option = {
+		name = uf_story.33.a
+	}
+}
+#超维无所不能
+country_event = {
+	id = uf_story.34
+	title = "uf_story.34.name"
+	desc = "uf_story.34.desc"
+	picture = GFX_evt_uf_hyperdimensional_matter
+	location = root
+	is_triggered_only = yes
+	trigger = {
+		has_authority = auth_united_fleet
+		NOT = {has_origin = origin_united_fleet_glory_world}
+	}
+	option = {
+		name = uf_story.34.a
+		capital_scope = {
+			enable_special_project = {
+				name = uf_vv_hm_test
+				owner = ROOT
+				location = this
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.35
+	title = uf_story.35.name
+	desc = uf_story.35.desc
+	picture = GFX_evt_wg_box3
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.35.a
+		hidden_effect = {
+			country_event = { id = uf_story.36 days = 5 }
+		}
+	}
+}
+country_event = {
+	id = uf_story.36
+	title = uf_story.36.name
+	desc = uf_story.36.desc
+	picture = GFX_evt_uf_awakening
+	show_sound = event_the_great_awakening
+	location = from
+
+	is_triggered_only = yes
+    immediate = {
+        every_owned_leader = {
+			limit = {
+				has_leader_flag = uf_vv_admiral
+			}
+			change_leader_portrait = wsg9994
+			add_experience = 50000
+			set_leader_flag = uf_mountain_vv_admiral
+			switch = {
+				trigger = leader_class
+				admiral = { 
+				    remove_trait = leader_trait_admiral_uf_vv_2 
+					add_trait_no_notify = leader_trait_admiral_uf_vv_3 
+					add_trait_no_notify = leader_trait_admiral_uf_vv_hm
+				}
+			}
+			save_event_target_as = vv_leader 
+		}
+		country_event = { id = uf_story.3600 days = 1 }
+	}
+	option = {
+		name = uf_story.36.a
+		custom_tooltip = uf_story.36.a_tooltip
+		
+	}
+}
+
+#传奇VV
+country_event = {
+	id = uf_story.3600
+	title = "TRASMISSTION"
+	desc = uf_story.3600.desc
+	is_triggered_only = yes
+	event_window_type = leader_recruit
+	picture = GFX_leader_wg_06_bg_renowned
+	picture_event_data = {
+		portrait = event_target:vv_leader
+		room = wg05_room
+	}
+    option = {
+		name = uf_story.3600.a
+		response_text = uf_story.3600.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = uf_story.3600.b
+		tag = hire_leader
+	}
+}
+#直接巨乳
+country_event = {
+	id = uf_story.37
+	hide_window = yes
+
+	is_triggered_only = yes
+    trigger = {
+		has_authority = auth_united_fleet
+		has_origin = origin_united_fleet_glory_world
+	}
+	immediate = {
+		create_species = {
+			name = United_fleet_shipgirls
+			plural = United_fleet_shipgirls
+			class = United_fleet
+			portrait = wsg9994
+			namelist = WSG2_SC
+			effect = {
+				save_global_event_target_as = uf_vv_species
+			}
+		}
+		create_leader = {
+			class = commander
+			species = event_target:uf_vv_species
+			name = "NAME_uf_vv"
+			skill = 10
+			event_leader = yes
+			traits = {
+				trait = leader_trait_uf_2
+				trait = leader_trait_admiral_uf_vv_4
+				trait = leader_trait_admiral_uf_vv_hm
+			}
+			effect = {
+				set_leader_flag = uf_vv_admiral
+				set_leader_flag = legendary_leader
+			}
+		}
+		last_created_leader = {
+			add_experience = 500000
+			set_gender = female
+			set_age = 35
+			change_leader_portrait = wsg9994
+		}
+	}
+}
+
+####
+ship_event = {
+	id = uf_story.38
+	title = uf_story.38.name
+	desc = uf_story.38.desc
+	picture = GFX_evt_ship_in_orbit
+	show_sound = event_default
+	location = from
+
+	is_triggered_only = yes
+
+	trigger = {
+		owner = { has_authority = auth_united_fleet }
+		owner = { NOT = { has_country_flag = triggered_phoenix_system_event } }
+		from = {
+			has_star_flag = phoenix_system
+		}
+	}
+	option = {
+		name = uf_story.38.a
+		owner = {
+			set_country_flag = triggered_phoenix_system_event
+			hidden_effect = {
+				country_event = { id = uf_story.39 days = 1 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.39
+	title = uf_story.39.name
+	desc = uf_story.39.desc
+	location = from
+	
+	picture_event_data = {
+		portrait = sh53
+		room = ethic_spaceship_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = uf_story.39.a
+		hidden_effect = {
+			country_event = { id = uf_story.40 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.40
+	title = uf_story.40.name
+	desc = uf_story.40.desc
+	location = from
+	
+	picture_event_data = {
+		portrait = sh53
+		room = ethic_spaceship_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = uf_story.40.a
+		hidden_effect = {
+			country_event = { id = uf_story.41 }
+		}
+	}
+	option = {
+		name = uf_story.40.b
+		hidden_effect = {
+			country_event = { id = uf_story.42 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.41
+	title = uf_story.41.name
+	desc = uf_story.41.desc
+	location = from
+	
+	picture_event_data = {
+		portrait = sh53
+		room = ethic_spaceship_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = uf_story.41.a
+		hidden_effect = {
+			country_event = { id = uf_story.43 }
+		}
+	}
+}
+
+
+country_event = {
+	id = uf_story.42
+	title = uf_story.42.name
+	desc = uf_story.42.desc
+	location = from
+	
+	picture_event_data = {
+		portrait = sh53
+		room = ethic_spaceship_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = uf_story.42.a
+		hidden_effect = {
+			country_event = { id = uf_story.43 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.43
+	title = uf_story.43.name
+	desc = uf_story.43.desc
+	location = from
+	
+	picture_event_data = {
+		portrait = sh53
+		room = ethic_spaceship_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = uf_story.43.a
+		response_text = uf_story.43.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = uf_story.43.b
+		response_text = uf_story.43.b.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = uf_story.43.c
+		hidden_effect = {
+			country_event = { id = uf_story.44 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.44
+	title = uf_story.44.name
+	desc = uf_story.44.desc
+	location = from
+	
+	picture_event_data = {
+		portrait = sh53
+		room = ethic_spaceship_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = uf_story.44.a
+		response_text = uf_story.44.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = uf_story.44.b
+		hidden_effect = {
+			country_event = { id = uf_story.45 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.45
+	title = uf_story.45.name
+	desc = uf_story.45.desc
+	location = from
+	
+	picture_event_data = {
+		portrait = sh53
+		room = ethic_spaceship_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = uf_story.45.a
+		random_owned_planet = {
+			create_pop = {
+				species = owner_species
+			}
+		}
+	}
+}
+
+#超维探险
+country_event = {
+	id = uf_story.46
+	hide_window = yes
+	location = from
+
+	is_triggered_only = yes
+	trigger = {
+		last_increased_tech = tech_uf_hyperdimensional_matter
+	}
+
+	immediate = { 
+		country_event = { id = uf_story.47 days = 720 random = 360 }
+		#country_event = { id = uf_story.47 days = 30 }
+	}
+}
+
+country_event = {
+	id = uf_story.47
+	title = uf_story.47.name
+	desc = uf_story.47.desc
+	picture = GFX_evt_uf_archaeological_1
+	location = from
+
+	is_triggered_only = yes
+
+    immediate = { 
+		country_event = { id = uf_story.48 days = 360 random = 360 }
+		#country_event = { id = uf_story.48 days = 30 }
+	}
+	option = {
+		name = uf_story.47.a
+	}
+}
+country_event = {
+	id = uf_story.48
+	title = uf_story.48.name
+	desc = uf_story.48.desc
+	picture = GFX_evt_overgrown_city
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.48.a
+		begin_event_chain = {
+			event_chain = "uf_archaeological_chain"
+			target = this.owner
+		}
+		enable_special_project = {
+			name = uf_archaeological_project_1
+			owner = root
+		}
+	}
+}
+country_event = {
+	id = uf_story.49
+	title = uf_story.49.name
+	desc = uf_story.49.desc
+	picture = GFX_evt_uf_archaeological_2
+	location = from
+
+	is_triggered_only = yes
+
+    immediate = { 
+		country_event = { id = uf_story.50 days = 1 }
+	}
+	option = {
+		name = uf_story.49.a
+		give_technology = { tech = tech_uf_archaeology }	
+	}
+}
+
+country_event = {
+	id = uf_story.50
+	title = uf_story.50.name
+	desc = uf_story.50.desc
+	picture = GFX_evt_archaeological_dig
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.50.a	
+	}
+}
+
+planet_event = {
+	id = uf_story.51
+	title = uf_story.51.name
+	desc = uf_story.51.desc
+	picture = GFX_evt_archaeological_dig
+	location = from
+
+	is_triggered_only = yes
+	trigger = {
+		has_building = building_uf_archaeology	
+		owner = {
+			NOT = {
+				has_country_flag = triggered_building_uf_archaeology
+			}
+		}	
+	}
+    immediate = { 
+		owner = {
+			country_event = { id = uf_story.52 days = 360 random = 360 }
+			set_country_flag = triggered_building_uf_archaeology	
+		}
+	}
+	option = {
+		name = uf_story.51.a
+		owner = {
+			add_resource = { unity = 300 }
+			set_country_flag = triggered_building_uf_archaeology
+		}
+	}
+}
+country_event = {
+	id = uf_story.52
+	title = uf_story.52.name
+	desc = uf_story.52.desc
+	picture = GFX_evt_archaeological_dig
+	location = event_target:uf_first_archaeological_planet
+
+	is_triggered_only = yes
+	immediate = {
+		random_planet_within_border = {
+			limit = {
+				is_ringworld_wg = no
+				is_star = no
+				has_owner = no
+				is_colonizable = no
+				is_habitat_wg = no
+				NOR = { 
+					exists = archaeological_site
+					is_planet_class = pc_gas_giant
+				}
+			}
+			save_event_target_as = uf_first_archaeological_planet
+		}	
+		if = {
+			limit = { NOT = { exists = event_target:uf_first_archaeological_planet }}
+			random_system = {
+				limit = {
+					any_system_planet = {
+						is_colonizable = no
+						is_star = no
+						is_capital = no
+						is_ringworld_wg = no
+						is_habitat_wg = no
+						NOT = { exists = archaeological_site }
+					}
+					count_neighbor_system = { count > 0 }
+				}
+				weights = {
+					base = 1
+					modifier = {
+						factor = 10
+						closest_system = {
+							exists = space_owner
+							space_owner = { is_same_value = ROOT }
+							min_steps = 4
+							max_steps = 5
+							use_bypasses = yes
+						}
+					}
+					modifier = {
+						factor = 10
+						closest_system = {
+							exists = space_owner
+							space_owner = { is_same_value = ROOT }
+							min_steps = 1
+							max_steps = 3
+						}
+					}
+				}
+				random_system_planet = {
+					limit = {
+						is_colonizable = no
+						is_star = no
+						is_capital = no
+						is_ringworld_wg = no
+						is_habitat_wg = no
+						NOT = { exists = archaeological_site }
+					}
+					save_event_target_as = uf_first_archaeological_planet
+				}
+			}
+		}
+	}
+
+	option = {
+		name = uf_story.52.a
+		event_target:uf_first_archaeological_planet = {
+			create_archaeological_site = site_uf_archaeological_1
+		}		
+		create_point_of_interest = {
+			id = uf_archaeological_poi.1
+			name = uf_archaeological_poi
+			desc = uf_archaeological_poi_desc
+			event_chain = uf_archaeological_chain
+			location = event_target:uf_first_archaeological_planet
+		}
+	}
+}
+
+fleet_event = {
+	id = uf_story.53
+	title = "uf_story.53.name"
+	desc = "uf_story.53.desc"
+	picture = GFX_evt_scanning_remains
+	show_sound = event_planetary_riot
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.53.a
+		small_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.54
+	title = "uf_story.54.name"
+	desc = "uf_story.54.desc"
+	picture = GFX_evt_alien_wildlife
+	show_sound = event_planetary_riot
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.54.a
+		small_artifact_reward = yes
+	}
+}
+fleet_event = {
+	id = uf_story.55
+	title = "uf_story.55.name"
+	desc = "uf_story.55.desc"
+	picture = GFX_evt_busy_spaceport
+	show_sound = event_planetary_riot
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.55.a
+		small_artifact_reward = yes
+	}
+}
+fleet_event = {
+	id = uf_story.56
+	title = "uf_story.56.name"
+	desc = "uf_story.56.desc"
+	picture = GFX_evt_uf_archaeological_3
+	show_sound = event_planetary_riot
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.56.a
+		large_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.57
+	title = "uf_story.57.name"
+	desc = "uf_story.57.desc"
+	picture = GFX_evt_clones
+	show_sound = event_planetary_riot
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.57.a
+		hidden_effect = {
+			owner = {
+				country_event = { id = uf_story.58 }
+			}
+		}
+	}
+	option = {
+		name = uf_story.57.b
+		hidden_effect = {
+			owner = {
+				country_event = { id = uf_story.64 days = 30 }
+			}
+		}
+	}
+	option = {
+		name = uf_story.57.c
+		custom_tooltip = uf_story.57.a_tooltip	
+		large_artifact_reward = yes	
+		owner = {
+			add_resource = { unity = 3000 }
+			hidden_effect = {
+				remove_point_of_interest = uf_archaeological_poi.1
+				country_event = { id = uf_story.65 days = 180 random = 360 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.58
+	title = uf_story.58.name
+	desc = uf_story.58.desc
+	location = from
+	
+	picture_event_data = {
+		room = last_cat_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.58.a
+		hidden_effect = {
+			country_event = { id = uf_story.59 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.59
+	title = uf_story.59.name
+	desc = uf_story.59.desc
+	location = from
+	
+	picture_event_data = {
+		room = last_cat_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.59.a
+		hidden_effect = {
+			country_event = { id = uf_story.60 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.60
+	title = uf_story.60.name
+	desc = uf_story.60.desc
+	location = from
+	
+	picture_event_data = {
+		room = last_cat_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.60.a
+		custom_tooltip = uf_story.60.a_tooltip	
+		hidden_effect = {
+			country_event = { id = uf_story.61 }
+		}
+	}
+	option = {
+		name = uf_story.60.b
+		custom_tooltip = uf_story.60.b_tooltip	
+		hidden_effect = {
+			country_event = { id = uf_story.62 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.61
+	title = uf_story.61.name
+	desc = uf_story.61.desc
+	location = from
+	
+	picture_event_data = {
+		room = last_cat_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.61.a
+		hidden_effect = {
+			country_event = { id = uf_story.63 days = 30 }
+			remove_point_of_interest = uf_archaeological_poi.1
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.62
+	title = uf_story.62.name
+	desc = uf_story.62.desc
+	location = from
+	
+	picture_event_data = {
+		room = last_cat_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.62.a
+		custom_tooltip = uf_story.57.a_tooltip	
+		owner = {
+			add_resource = { unity = 3000 }
+		}
+		hidden_effect = {
+			remove_point_of_interest = uf_archaeological_poi.1
+			country_event = { id = uf_story.65 days = 180 random = 360 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.63
+	title = uf_story.63.name
+	desc = uf_story.63.desc
+	picture = GFX_evt_diplomatic_visit
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.63.a
+		custom_tooltip = uf_story.57.a_tooltip	
+		set_country_flag = uf_cat_girls
+		hidden_effect = {
+			remove_point_of_interest = uf_archaeological_poi.1
+			country_event = { id = uf_story.65 days = 180 random = 360 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.64
+	title = uf_story.64.name
+	desc = uf_story.64.desc
+	picture = GFX_evt_disease_outbreak
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.64.a
+		custom_tooltip = uf_story.57.a_tooltip	
+		set_country_flag = uf_monster_cat
+		hidden_effect = {
+			remove_point_of_interest = uf_archaeological_poi.1
+			country_event = { id = uf_story.65 days = 180 random = 360 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.65
+	title = uf_story.65.name
+	desc = uf_story.65.desc
+	picture = GFX_evt_archaeology_camp
+	location = event_target:uf_second_archaeological_planet
+
+	is_triggered_only = yes
+	immediate = {
+		random_planet_within_border = {
+			limit = {
+				is_ringworld_wg = no
+				is_star = no
+				has_owner = no
+				is_colonizable = no
+				is_habitat_wg = no
+				is_planet_class = pc_toxic
+				NOR = { 
+					exists = archaeological_site
+					is_planet_class = pc_gas_giant
+				}
+			}
+			save_event_target_as = uf_second_archaeological_planet
+		}	
+		if = {
+			limit = { NOT = { exists = event_target:uf_second_archaeological_planet }}
+			random_system = {
+				limit = {
+					any_system_planet = {
+						is_colonizable = no
+						is_star = no
+						is_capital = no
+						is_ringworld_wg = no
+						is_habitat_wg = no
+						is_planet_class = pc_toxic
+						NOT = { exists = archaeological_site }
+					}
+					count_neighbor_system = { count > 0 }
+				}
+				weights = {
+					base = 1
+					modifier = {
+						factor = 10
+						closest_system = {
+							exists = space_owner
+							space_owner = { is_same_value = ROOT }
+							min_steps = 4
+							max_steps = 5
+							use_bypasses = yes
+						}
+					}
+					modifier = {
+						factor = 10
+						closest_system = {
+							exists = space_owner
+							space_owner = { is_same_value = ROOT }
+							min_steps = 1
+							max_steps = 3
+						}
+					}
+				}
+				random_system_planet = {
+					limit = {
+						is_colonizable = no
+						is_star = no
+						is_capital = no
+						is_ringworld_wg = no
+						is_habitat_wg = no
+						is_planet_class = pc_toxic
+						NOT = { exists = archaeological_site }
+					}
+					save_event_target_as = uf_second_archaeological_planet
+				}
+			}
+		}
+	}
+
+	option = {
+		name = uf_story.65.a
+		event_target:uf_second_archaeological_planet = {
+			create_archaeological_site = site_uf_archaeological_2
+		}		
+		create_point_of_interest = {
+			id = uf_archaeological_poi.2
+			name = uf_archaeological_poi_2
+			desc = uf_archaeological_poi_2_desc
+			event_chain = uf_archaeological_chain
+			location = event_target:uf_second_archaeological_planet
+		}
+	}
+}
+
+fleet_event = {
+	id = uf_story.66
+	title = "uf_story.66.name"
+	desc = "uf_story.66.desc"
+	picture = GFX_evt_archaeology_camp
+	show_sound = event_planetary_riot
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.66.a
+	}
+}
+
+fleet_event = {
+	id = uf_story.67
+	title = "uf_story.67.name"
+	desc = "uf_story.67.desc"
+	picture = GFX_evt_huge_monument
+	show_sound = event_planetary_riot
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.67.a
+		small_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.68
+	title = "uf_story.68.name"
+	desc = "uf_story.68.desc"
+	picture = GFX_evt_uf_archaeological_4
+	show_sound = event_planetary_riot
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.68.a
+		small_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.69
+	title = "uf_story.69.name"
+	desc = "uf_story.69.desc"
+	picture = GFX_evt_burning_city
+	show_sound = event_planetary_riot
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.69.a
+	}
+}
+
+fleet_event = {
+	id = uf_story.70
+	title = "uf_story.70.name"
+	desc = "uf_story.70.desc"
+	picture = GFX_evt_burning_city
+	show_sound = event_planetary_riot
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.70.a
+		hidden_effect = {
+			owner = {
+				country_event = { id = uf_story.71 days = 5 }
+				remove_point_of_interest = uf_archaeological_poi.2
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.71
+	title = uf_story.71.name
+	desc = uf_story.71.desc
+	picture = GFX_evt_galactic_senate
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.71.a
+		custom_tooltip = uf_story.57.a_tooltip	
+		add_modifier = {
+			modifier = uf_truth
+			days = 540
+		}
+		hidden_effect = {
+			country_event = { id = uf_story.72 days = 540 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.72
+	title = uf_story.72.name
+	desc = uf_story.72.desc
+	picture = GFX_evt_ap_wg_crisis_announce
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.72.a
+		hidden_effect = {
+			country_event = { id = uf_story.73 days = 360 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.73
+	title = uf_story.73.name
+	desc = uf_story.73.desc
+	picture = GFX_evt_uf_hyperlane
+	location = event_target:uf_cylinder_system_global_target
+
+	is_triggered_only = yes
+
+	immediate = {
+		random_system_within_border = {
+			limit = { NOT = { has_star_flag = uf_mega_habitat_origin_core_system }}
+			save_event_target_as = uf_cylinder_spawn_system
+		}
+		event_target:uf_cylinder_spawn_system = {
+			spawn_system = {
+				min_distance = 10
+				max_distance = 30
+				max_jumps = 0
+				initializer = "uf_cylinder_system"
+			}
+			if = {
+				limit = { last_created_system = { NOT = { has_hyperlane_to = prev } } }
+				add_hyperlane = {
+					from = this
+					to = last_created_system
+				}
+			}
+			else = {
+				add_extra_hyperlane_to_spawned_system_effect = yes
+			}
+		}
+		create_point_of_interest = {
+			id = uf_archaeological_poi.3
+			name = uf_archaeological_poi_3
+			desc = uf_archaeological_poi_3_desc
+			event_chain = uf_archaeological_chain
+			location = event_target:uf_cylinder_system_global_target
+		}
+	}
+
+	option = {
+		name = uf_story.73.a
+		event_target:uf_cylinder_target = {
+			create_archaeological_site = site_uf_archaeological_3
+		}
+	}
+}
+
+ship_event = {
+	id = uf_story.74
+	title = uf_story.74.name
+	desc = uf_story.74.desc
+	picture = GFX_evt_uf_archaeological_5
+	show_sound = event_default
+	location = from
+
+	is_triggered_only = yes
+
+	trigger = {
+		owner = { has_authority = auth_united_fleet }
+		owner = { NOT = { has_country_flag = triggered_uf_cylinder_event } }
+		from = {
+			has_star_flag = uf_cylinder_system
+		}
+	}
+	option = {
+		name = uf_story.74.a
+		owner = {
+			set_country_flag = triggered_uf_cylinder_event
+		}
+	}
+}
+
+fleet_event = {
+	id = uf_story.75
+	title = uf_story.75.name
+	desc = uf_story.751.desc
+	picture = GFX_evt_relic_world
+	show_sound = event_structural_collapse_03
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.75.a
+		medium_artifact_reward = yes
+		owner = {
+			add_modifier = {
+				modifier = uf_cylinder_modifier
+				days = -1
+			}
+		}
+	}
+}
+
+fleet_event = {
+	id = uf_story.76
+	title = "uf_story.76.name"
+	desc = "uf_story.76.desc"
+	picture = GFX_evt_alien_cavemen
+	show_sound = event_structural_collapse
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.76.a
+		medium_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.77
+	title = "uf_story.77.name"
+	desc = "uf_story.77.desc"
+	picture = GFX_evt_glitchy_matrix
+	show_sound = event_scanner
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.77.a
+		medium_artifact_reward = yes
+	}
+}
+fleet_event = {
+	id = uf_story.78
+	title = "uf_story.78.name"
+	desc = "uf_story.78.desc"
+	picture = GFX_evt_uf_archaeological_6
+	show_sound = event_construction
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.78.a
+		medium_artifact_reward = yes
+	}
+}
+fleet_event = {
+	id = uf_story.79
+	title = "uf_story.79.name"
+	desc = "uf_story.79.desc"
+	picture = GFX_evt_uf_archaeological_7
+	show_sound = event_construction
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.79.a
+	}
+}
+fleet_event = {
+	id = uf_story.80
+	title = "uf_story.80.name"
+	desc = "uf_story.80.desc"
+	picture = GFX_evt_diplomatic_visit
+	show_sound = event_default
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.80.a
+		custom_tooltip = uf_story.80.a_tooltip
+		owner = {
+			hidden_effect = {
+				country_event = { id = uf_story.81 days = 3600 random = 1080 }
+				country_event = { id = uf_story.82 days = 360 random = 360 }
+				remove_point_of_interest = uf_archaeological_poi.3
+				random_owned_planet = {
+				while = {
+					count = 2
+					create_pop = {
+						species = owner_species
+						}
+					}
+				}
+			}
+		}	
+	}
+}
+
+country_event = {
+	id = uf_story.81
+	title = uf_story.81.name
+	desc = uf_story.81.desc
+	picture = GFX_evt_uf_archaeological_8
+	location = from
+
+	is_triggered_only = yes
+
+    immediate = {
+		random_megastructure = {
+			limit = {
+				is_megastructure_type = uf_cylinder
+			}
+			remove_megastructure = this
+		}
+	}
+	option = {
+		name = uf_story.81.a
+	}
+}
+
+country_event = {
+	id = uf_story.82
+	title = uf_story.82.name
+	desc = uf_story.82.desc
+	picture = GFX_evt_relic_world
+	location = event_target:uf_qq_group_global_target
+
+	is_triggered_only = yes
+
+	immediate = {
+		random_system_within_border = {
+			limit = { NOT = { has_star_flag = uf_mega_habitat_origin_core_system }}
+			save_event_target_as = uf_qq_group_spawn_system
+		}
+		event_target:uf_qq_group_spawn_system = {
+			spawn_system = {
+				min_distance = 10
+				max_distance = 30
+				max_jumps = 0
+				initializer = "uf_qq_group_system"
+			}
+			if = {
+				limit = { last_created_system = { NOT = { has_hyperlane_to = prev } } }
+				add_hyperlane = {
+					from = this
+					to = last_created_system
+				}
+			}
+			else = {
+				add_extra_hyperlane_to_spawned_system_effect = yes
+			}
+		}
+		create_point_of_interest = {
+			id = uf_archaeological_poi.4
+			name = uf_archaeological_poi_4
+			desc = uf_archaeological_poi_4_desc
+			event_chain = uf_archaeological_chain
+			location = event_target:uf_qq_group_global_target
+		}
+	}
+
+	option = {
+		name = uf_story.82.a
+		event_target:uf_qq_group_target = {
+			create_archaeological_site = site_uf_archaeological_4
+		}
+	}
+}
+
+fleet_event = {
+	id = uf_story.83
+	title = "uf_story.83.name"
+	desc = "uf_story.83.desc"
+	picture = GFX_evt_uf_archaeological_9
+	show_sound = event_construction
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.83.a
+		medium_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.84
+	title = "uf_story.84.name"
+	desc = "uf_story.84.desc"
+	picture = GFX_evt_uf_archaeological_10
+	show_sound = event_construction
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.84.a
+		medium_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.85
+	title = "uf_story.85.name"
+	desc = "uf_story.85.desc"
+	picture = GFX_evt_glitchy_matrix
+	show_sound = event_construction
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.85.a
+		medium_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.86
+	title = "uf_story.86.name"
+	desc = "uf_story.86.desc"
+	picture = GFX_evt_night_raid
+	show_sound = event_construction
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.86.a
+		medium_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.87
+	title = "uf_story.87.name"
+	desc = "uf_story.87.desc"
+	picture = GFX_evt_uf_archaeological_11
+	show_sound = event_construction
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.87.a
+		medium_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.88
+	title = "uf_story.88.name"
+	desc = "uf_story.88.desc"
+	picture = GFX_evt_habitable_dig_site
+	show_sound = event_construction
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.87.a
+		custom_tooltip = uf_story.57.a_tooltip	
+		owner= {
+			add_relic = "r_uf_xp" 
+		}
+		owner = {
+			hidden_effect = {
+				remove_point_of_interest = uf_archaeological_poi.4
+				country_event = { id = uf_story.91 days = 360 random = 360 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.89
+	hide_window = yes
+	is_triggered_only = yes	
+	immediate = {
+		if = {
+			limit = { 
+				any_country = {
+					has_civic = civic_machine_terminator
+				}
+			}
+			random_country = {
+				limit = {
+					has_civic = civic_machine_terminator
+				}
+				save_global_event_target_as = uf_machine_terminator_empire
+				force_remove_civic = civic_machine_terminator
+				force_add_civic = civic_machine_servitor
+			}
+			country_event = { id = uf_story.90 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.90
+	title = uf_story.90.name
+	desc = uf_story.90.desc
+	picture = GFX_evt_uf_archaeological_12
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.90.a
+		clear_global_event_target = uf_machine_terminator_empire
+	}
+}
+
+country_event = {
+	id = uf_story.91
+	title = uf_story.91.name
+	desc = uf_story.91.desc
+	picture = GFX_evt_crashed_station
+	location = event_target:uf_fifth_archaeological_planet
+
+	is_triggered_only = yes
+	immediate = {
+		random_planet_within_border = {
+			limit = {
+				is_ringworld_wg = no
+				is_star = no
+				has_owner = no
+				is_colonizable = no
+				is_habitat_wg = no
+				NOR = { 
+					exists = archaeological_site
+					is_planet_class = pc_gas_giant
+				}
+			}
+			save_event_target_as = uf_fifth_archaeological_planet
+		}	
+		if = {
+			limit = { NOT = { exists = event_target:uf_fifth_archaeological_planet }}
+			random_system = {
+				limit = {
+					any_system_planet = {
+						is_colonizable = no
+						is_star = no
+						is_capital = no
+						is_ringworld_wg = no
+						is_habitat_wg = no
+						NOR = { 
+							exists = archaeological_site
+							is_planet_class = pc_gas_giant
+						}
+					}
+					count_neighbor_system = { count > 0 }
+				}
+				weights = {
+					base = 1
+					modifier = {
+						factor = 10
+						closest_system = {
+							exists = space_owner
+							space_owner = { is_same_value = ROOT }
+							min_steps = 4
+							max_steps = 5
+							use_bypasses = yes
+						}
+					}
+					modifier = {
+						factor = 10
+						closest_system = {
+							exists = space_owner
+							space_owner = { is_same_value = ROOT }
+							min_steps = 1
+							max_steps = 3
+						}
+					}
+				}
+				random_system_planet = {
+					limit = {
+						is_colonizable = no
+						is_star = no
+						is_capital = no
+						is_ringworld_wg = no
+						is_habitat_wg = no
+						NOR = { 
+							exists = archaeological_site
+							is_planet_class = pc_gas_giant
+						}
+					}
+					save_event_target_as = uf_fifth_archaeological_planet
+				}
+			}
+		}
+	}
+
+	option = {
+		name = uf_story.91.a
+		event_target:uf_fifth_archaeological_planet = {
+			create_archaeological_site = site_uf_archaeological_5
+		}		
+		create_point_of_interest = {
+			id = uf_archaeological_poi.5
+			name = uf_archaeological_poi_5
+			desc = uf_archaeological_poi_5_desc
+			event_chain = uf_archaeological_chain
+			location = event_target:uf_fifth_archaeological_planet
+		}
+	}
+}
+fleet_event = {
+	id = uf_story.92
+	title = "uf_story.92.name"
+	desc = "uf_story.92.desc"
+	picture = GFX_evt_resource_cache
+	show_sound = event_construction
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.92.a
+		medium_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.93
+	title = "uf_story.93.name"
+	desc = "uf_story.93.desc"
+	picture = GFX_evt_uf_archaeological_7
+	show_sound = event_construction
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.93.a
+		medium_artifact_reward = yes
+	}
+}
+
+fleet_event = {
+	id = uf_story.94
+	title = "uf_story.94.name"
+	desc = "uf_story.94.desc"
+	picture = GFX_evt_uf_archaeological_13
+	show_sound = event_construction
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.94.a
+		medium_artifact_reward = yes
+		owner = {
+			set_country_flag = we_know_monolith
+		}
+	}
+}
+
+fleet_event = {
+	id = uf_story.95
+	title = "uf_story.95.name"
+	desc = "uf_story.95.desc"
+	picture = GFX_evt_uf_archaeological_14
+	show_sound = event_construction
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = uf_story.95.a
+		custom_tooltip = uf_story.57.a_tooltip	
+		large_artifact_reward = yes
+		owner = {
+			hidden_effect = {
+				country_event = { id = uf_story.96 days = 5 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.96
+	title = uf_story.96.name
+	desc = uf_story.96.desc
+	picture = GFX_evt_galactic_empire
+	location = from	
+	
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.96.a
+		hidden_effect = {
+			remove_point_of_interest = uf_archaeological_poi.5
+		}
+		enable_special_project = {
+			name = uf_archaeological_project_2
+			owner = root
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.97
+	title = uf_story.97.name
+	desc = uf_story.97.desc
+	picture = GFX_evt_planet_beam
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.97.a
+		capital_scope = {
+			enable_special_project = {
+				name = uf_archaeological_project_3
+				owner = ROOT
+				location = this
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.98
+	title = uf_story.98.name
+	desc = uf_story.98.desc
+	picture = GFX_evt_animal_wildlife
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.98.a
+	}
+}
+
+country_event = {
+	id = uf_story.99
+	title = uf_story.99.name
+	desc = uf_story.99.desc
+	picture = GFX_evt_uf_sword
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.99.a
+		#对归位者增伤
+		add_modifier = {
+			modifier = damage_to_monolith_25
+			days = 5400
+		}
+	}
+	option = {
+		name = uf_story.99.b
+		add_modifier = {
+			modifier = damage_to_monolith_25
+			days = 5400
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.100
+	title = uf_story.100.name
+	desc = uf_story.100.desc
+	picture = GFX_evt_uf_awakening_2
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.100.a
+	}
+}
+
+country_event = {
+	id = uf_story.101
+	title = uf_story.101.name
+	desc = uf_story.101.desc
+	picture = GFX_evt_uf_archaeological_15
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.101.a
+	    hidden_effect = {
+			country_event = { id = uf_story.102 days = 5 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.102
+	title = uf_story.102.name
+	desc = uf_story.102.desc
+	picture = GFX_evt_uf_archaeological_16
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.102.a
+		hidden_effect = {
+			country_event = { id = uf_story.103 days = 1 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.103
+	title = uf_story.103.name
+	desc = uf_story.103.desc
+	location = from
+	
+	picture_event_data = {
+		room = uf_emperor_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.103.a
+		hidden_effect = {
+			country_event = { id = uf_story.104 }
+		}
+	}
+}
+country_event = {
+	id = uf_story.104
+	title = uf_story.104.name
+	desc = uf_story.104.desc
+	location = from
+	
+	picture_event_data = {
+		room = uf_emperor_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+    option = {
+		name = uf_story.104.a
+		response_text = uf_story.104.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = uf_story.104.b
+		hidden_effect = {
+			country_event = { id = uf_story.105 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.105
+	title = uf_story.105.name
+	desc = uf_story.105.desc
+	location = from
+	
+	picture_event_data = {
+		room = uf_emperor_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+    option = {
+		name = uf_story.105.a
+		response_text = uf_story.105.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = uf_story.105.b
+		hidden_effect = {
+			country_event = { id = uf_story.106 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.106
+	title = uf_story.106.name
+	desc = uf_story.106.desc
+	location = from
+	
+	picture_event_data = {
+		room = uf_emperor_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+    option = {
+		name = uf_story.106.a
+		response_text = uf_story.106.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = uf_story.106.b
+		hidden_effect = {
+			country_event = { id = uf_story.107 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.107
+	title = uf_story.107.name
+	desc = {
+        # 无超维网络
+        text = uf_story.107_1.desc
+        trigger = {
+			NOT = {
+				has_technology = tech_uf_hm_network
+				has_technology = tech_uf_sword
+			}
+		}
+    }
+	desc = {
+        # 有超维网络无联合剑
+        text = uf_story.107_2.desc
+        trigger = {
+			NOT = {
+				has_technology = tech_uf_sword
+			}
+			has_technology = tech_uf_hm_network
+		}
+    }
+	desc = {
+        # 有联合剑
+        text = uf_story.107_3.desc
+        trigger = {
+			has_technology = tech_uf_sword
+			has_technology = tech_uf_hm_network
+		}
+    }
+	location = from
+	
+	picture_event_data = {
+		room = uf_emperor_room
+	}
+	diplomatic = yes
+	force_open = yes	
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		set_country_flag = finished_uf_archaeological
+	}
+    option = {#应该没有人会菜到这一阶段了还没超维网络
+		name = uf_story.107.a
+		trigger = {
+			NOT = {
+				has_technology = tech_uf_hm_network
+				has_technology = tech_uf_sword
+			}
+		}
+		give_technology = { tech = tech_uf_hm_network }	
+		end_event_chain = "uf_archaeological_chain"
+	}
+	option = {
+		name = uf_story.107.a
+		trigger = {
+			NOT = {
+				has_technology = tech_uf_sword
+			}
+			has_technology = tech_uf_hm_network
+		}
+		add_tech_progress = {
+            tech = tech_uf_sword
+            progress = 0.5
+        }
+		end_event_chain = "uf_archaeological_chain"
+	}
+	option = {
+		name = uf_story.107.a
+		trigger = {
+			has_technology = tech_uf_hm_network
+			has_technology = tech_uf_sword
+		}
+		add_resource = { influence = 1000 }
+		end_event_chain = "uf_archaeological_chain"
+	}
+}
+
+country_event = {
+	id = uf_story.108
+	hide_window = yes
+	is_triggered_only = yes
+
+    immediate = {
+		if = {
+			limit = { 
+				any_country = {
+					is_country_type = default
+					is_homicidal = no
+					has_communications = prev
+					NOR = {
+						is_at_war_with = prev
+						is_same_value = prev
+						has_civic = civic_criminal_heritage
+						is_gestalt = yes
+					}
+				}
+			}
+			random_country = {
+				limit = {
+					is_country_type = default
+					is_homicidal = no
+					has_communications = prev
+					NOR = {
+						is_at_war_with = prev
+						is_same_value = prev
+						has_civic = civic_criminal_heritage
+						is_gestalt = yes
+					}
+				}
+				save_global_event_target_as = uf_sword_country
+			}
+			country_event = { id = uf_story.109 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.109
+	title = "uf_story.109.name"
+	desc = "uf_story.109.desc"
+
+	location = event_target:uf_sword_country
+	fire_only_once = yes
+	diplomatic = yes
+	is_triggered_only = yes
+
+
+	picture_event_data = {
+		portrait = event_target:uf_sword_country
+		planet_background = event_target:uf_sword_country
+		graphical_culture = event_target:uf_sword_country
+		city_level = event_target:uf_sword_country
+		room = event_target:uf_sword_country.ruler
+	}
+
+	option = {
+		name = uf_story.109.a
+		hidden_effect = {
+			country_event = { id = uf_story.110 }
+		}
+	}
+	option = {
+		name = uf_story.109.b
+		hidden_effect = {
+			country_event = { id = uf_story.111 days = 10 }
+		}
+	}
+	option = {
+		name = uf_story.109.c
+		event_target:uf_sword_country = {
+			add_opinion_modifier = {
+				who = root
+				modifier = triggered_opinion_of_uf_sword_1
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.110
+	title = "uf_story.110.name"
+	desc = "uf_story.110.desc"
+
+	location = event_target:uf_sword_country
+	fire_only_once = yes
+	diplomatic = yes
+	is_triggered_only = yes
+
+	picture_event_data = {
+		portrait = event_target:uf_sword_country
+		planet_background = event_target:uf_sword_country
+		graphical_culture = event_target:uf_sword_country
+		city_level = event_target:uf_sword_country
+		room = event_target:uf_sword_country.ruler
+	}
+
+	option = {
+		name = uf_story.110.a
+		hidden_effect = {
+			country_event = { id = uf_story.111 days = 10 }
+		}
+	}
+	option = {
+		name = uf_story.110.b
+		event_target:uf_sword_country = {
+			add_opinion_modifier = {
+				who = root
+				modifier = triggered_opinion_of_uf_sword_1
+			}
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.111
+	title = uf_story.111.name
+	desc = uf_story.111.desc
+	picture = GFX_evt_uf_sword_4
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = uf_story.111.a
+		hidden_effect = {
+			country_event = { id = uf_story.112 days = 1 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.112
+	title = "uf_story.112.name"
+	desc = "uf_story.112.desc"
+
+	location = event_target:uf_sword_country
+	fire_only_once = yes
+	diplomatic = yes
+	is_triggered_only = yes
+
+	picture_event_data = {
+		portrait = event_target:uf_sword_country
+		planet_background = event_target:uf_sword_country
+		graphical_culture = event_target:uf_sword_country
+		city_level = event_target:uf_sword_country
+		room = event_target:uf_sword_country.ruler
+	}
+
+	option = {
+		name = uf_story.112.a
+
+	}
+}
+
+country_event = {
+	id = uf_story.113
+	title = NAME_cv16
+	desc = uf_story.113.desc
+	is_triggered_only = yes
+	diplomatic = yes
+
+	diplomatic = yes
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 1000 }
+		set_variable = { which = wg_dialogue_character value = 0 }
+	}
+
+	option = {
+		name = uf_story.113.a
+		hidden_effect = {
+			country_event = { id = uf_story.114 }
+		}
+	}
+	option = {
+		name = uf_story.113.b
+		hidden_effect = {
+			country_event = { id = uf_story.115 }
+		}
+	}
+	option = {
+		name = uf_story.113.c
+		hidden_effect = {
+			country_event = { id = uf_story.116 }
+		}
+	}
+	option = {
+		name = uf_story.113.d
+		hidden_effect = {
+			country_event = { id = uf_story.117 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.114
+	title = NAME_cv16
+	desc = uf_story.114.desc
+	is_triggered_only = yes
+	diplomatic = yes
+
+	diplomatic = yes
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 1000 }
+		set_variable = { which = wg_dialogue_character value = 0 }
+	}
+
+	option = {
+		name = uf_story.114.a
+		hidden_effect = {
+			country_event = { id = uf_story.118 }
+		}
+	}
+	option = {
+		name = uf_story.114.b
+		hidden_effect = {
+			country_event = { id = uf_story.115 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.115
+	title = NAME_cv16
+	desc = uf_story.115.desc
+	is_triggered_only = yes
+	diplomatic = yes
+
+	diplomatic = yes
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 1000 }
+		set_variable = { which = wg_dialogue_character value = 0 }
+	}
+
+	option = {
+		name = uf_story.115.a
+		hidden_effect = {
+			country_event = { id = uf_story.116 }
+		}
+	}
+	option = {
+		name = uf_story.113.d
+		hidden_effect = {
+			country_event = { id = uf_story.117 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.116
+	title = NAME_cv16
+	desc = uf_story.116.desc
+	is_triggered_only = yes
+	diplomatic = yes
+
+	diplomatic = yes
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 1000 }
+		set_variable = { which = wg_dialogue_character value = 0 }
+	}
+
+	option = {
+		name = uf_story.116.a
+	}
+}
+
+country_event = {
+	id = uf_story.117
+	title = NAME_cv16
+	desc = uf_story.117.desc
+	is_triggered_only = yes
+	diplomatic = yes
+
+	diplomatic = yes
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 1000 }
+		set_variable = { which = wg_dialogue_character value = 0 }
+	}
+
+	option = {
+		name = uf_story.117.a
+		hidden_effect = {
+			country_event = { id = uf_story.122 days = 60 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.118
+	title = NAME_cv16
+	desc = uf_story.118.desc
+	is_triggered_only = yes
+	diplomatic = yes
+
+	diplomatic = yes
+	custom_gui = wg_dialogue_window
+	custom_gui_option = wg_dialogue_button
+
+	immediate = {
+		set_variable = { which = wg_dialogue_bg value = 1000 }
+		set_variable = { which = wg_dialogue_character value = 0 }
+	}
+
+	option = {
+		name = uf_story.118.a
+		hidden_effect = {
+			country_event = { id = uf_story.116 }
+		}
+	}
+	option = {
+		name = uf_story.118.b
+		hidden_effect = {
+			country_event = { id = uf_story.117 }
+		}
+	}
+}
+
+country_event = {
+	id = uf_story.119
+	title = uf_story.119.name
+	desc = uf_story.119.desc
+	picture = GFX_evt_uf_cv16
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.119.a
+		hidden_effect = {
+			country_event = { id = uf_story.113 }
+		}
+	}
+	option = {
+		name = uf_story.119.b
+	}
+}
+###典范24工程
+country_event = {
+	id = uf_story.120
+	title = uf_story.120.name
+	desc = uf_story.120.desc
+	picture = GFX_evt_federation_fleet
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.120.a
+		hidden_effect = {
+			country_event = { id = uf_story.121 days = 10 }
+		}
+	}
+	option = {
+		name = uf_story.120.b
+		custom_tooltip = uf_story.120.b_tooltip	
+	}
+}
+
+country_event = {
+	id = uf_story.121
+	title = uf_story.121.name
+	desc = uf_story.121.desc
+	picture = GFX_evt_uf_ai
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.121.a
+		hidden_effect = {
+			country_event = { id = wg_paragon.2 }
+		}
+	}
+}
+
+###卡伯特后续
+country_event = {
+	id = uf_story.122
+	title = uf_story.122.name
+	desc = uf_story.122.desc
+	picture = GFX_evt_uf_cv16
+	location = from
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = uf_story.122.a
+		custom_tooltip = uf_story.122.a_tooltip
+		hidden_effect = {
+			country_event = { id = wg_paragon.22 }
+		}
+	}
+	option = {
+		name = uf_story.122.b
+		custom_tooltip = uf_story.122.b_tooltip
+	}
+}

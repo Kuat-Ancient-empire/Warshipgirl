@@ -1,0 +1,303 @@
+uf_galaxy_gun_platefrom = {
+	entity = "mammalian_01_construction_platform_entity"
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	prerequisites = { "tech_uf_sword_5" }
+	build_outside_gravity_well = yes	
+	potential = {
+		has_authority = auth_united_fleet
+	}
+	possible = {
+		exists = starbase
+		custom_tooltip = {
+			fail_text = "requires_inside_border"
+			is_inside_border = from
+		}
+		custom_tooltip = {
+			fail_text = "requires_surveyed_system"
+			NOT = {
+				any_system_planet = {
+					is_surveyed = {
+						who = prev.from
+						status = no
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_uf_galaxy_gun"
+			NOT = { has_global_flag = built_uf_galaxy_gun } 
+		}
+	}
+
+	build_time = 1800
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 20000
+			influence = 1000
+		}
+		upkeep = { energy = 10 }
+	}
+
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.100 }
+		}
+		from = { set_country_flag = uf_galaxy_gun_builder }
+		set_global_flag = built_uf_galaxy_gun
+	}
+}
+
+uf_galaxy_gun_platefrom_1 = {
+	entity = ""
+	construction_entity = "mammalian_01_construction_platform_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	prerequisites = { "tech_uf_sword_5" }
+
+	build_time = 3600
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 100000
+			sr_uf = 5000
+		}
+	}
+    upgrade_from = {
+		uf_galaxy_gun_platefrom
+	}
+	on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.101 }
+			country_event = { id = uf_story.108 days = 30 }
+			random_system_within_border = {
+				limit = {
+					any_system_megastructure = {
+						is_megastructure_type = uf_galaxy_gun_platefrom_1
+					}
+				}
+				save_event_target_as = uf_galaxy_gun_target
+			}
+		}
+		random_megastructure = {
+			limit = { 
+				is_megastructure_type = uf_galaxy_gun_platefrom_1
+			}
+			remove_megastructure = this
+		}
+		
+		event_target:uf_galaxy_gun_target = {
+			spawn_system = {
+				min_distance = 10
+				max_distance = 15
+				min_jumps = 0
+				max_jumps = 0
+				initializer = uf_galaxy_gun_system
+			}
+		}
+	}
+}
+
+uf_galaxy_gun = {
+	entity = "uf_new_1_entity"
+	construction_entity = "uf_new_1_entity"
+	portrait = "GFX_uf_galaxy_gun_1_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	potential = {
+		always = no
+	}
+	resources = {
+		category = megastructures
+		upkeep = { energy = 2000 }
+		cost = { alloys = 30000 sr_uf = 10000 }
+	}
+
+	on_build_complete = {
+		set_star_flag = uf_galaxy_gun_system
+		from = { set_country_flag = built_uf_galaxy_gun }
+	}
+
+}
+
+uf_galaxy_gun_2 = {
+	entity = "uf_new_2_entity"
+	construction_entity = "uf_new_2_entity"
+	portrait = "GFX_uf_galaxy_gun_2_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	upgrade_from = {
+		uf_galaxy_gun
+	}
+	build_time = 1800
+	resources = {
+		category = megastructures
+		upkeep = { sr_uf = 100 energy = 3000 }
+		cost = { alloys = 30000 sr_uf = 10000 }
+	}
+    on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.103 }
+		}
+	}
+}
+uf_galaxy_gun_3 = {
+	entity = "uf_new_3_entity"
+	construction_entity = "uf_new_3_entity"
+	portrait = "GFX_uf_galaxy_gun_3_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	upgrade_from = {
+		uf_galaxy_gun_2
+	}
+	build_time = 1800
+	resources = {
+		category = megastructures
+		upkeep = { sr_uf = 200 energy = 5000 }
+		cost = { alloys = 30000 sr_uf = 10000 }
+	}
+    on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.104 }
+		}
+	}
+}
+
+uf_galaxy_gun_4 = {
+	entity = "uf_new_full_entity"
+	construction_entity = "uf_new_full_entity"
+	portrait = "GFX_uf_galaxy_gun_4_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	upgrade_from = {
+		uf_galaxy_gun_3
+	}
+	build_time = 1800
+	resources = {
+		category = megastructures
+		upkeep = { sr_uf = 500 energy = 10000 }
+		cost = { alloys = 30000 sr_uf = 10000 }
+	}
+    on_build_complete = {
+		from = {
+			country_event = { id = uf_origin.105 }
+		}
+	}	
+}
+
+uf_galaxy_gun_5 = {
+	entity = "uf_new_charging_entity"
+	construction_entity = "uf_new_charging_entity"
+	portrait = "GFX_uf_galaxy_gun_5_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	potential = {
+		always = no
+	}
+	upgrade_from = {
+	}
+	build_time = 10
+	resources = {
+		category = megastructures
+		upkeep = { energy = 10000 }
+		cost = { alloys = 30000 sr_uf = 10000 }
+	}
+}
+uf_galaxy_gun_6 = {
+	entity = "uf_new_attacking_entity"
+	construction_entity = "uf_new_attacking_entity"
+	portrait = "GFX_uf_galaxy_gun_6_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	potential = {
+		always = no
+	}
+	upgrade_from = {
+		#uf_galaxy_gun_5
+	}
+	build_time = 30 # 充能时间
+	resources = {
+		category = megastructures
+		upkeep = { energy = 10000 }
+	}
+
+}
+# 菜单
+uf_galaxy_gun_7 = {
+	entity = "uf_new_full_entity"
+	construction_entity = ""
+	portrait = "GFX_uf_galaxy_gun_4_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	upgrade_from = {
+		uf_galaxy_gun_4
+	}
+	build_time = 1
+	resources = {
+		category = megastructures
+		#upkeep = { sr_uf = 100 energy = 4000 }
+	}
+
+	possible = {
+		custom_tooltip = {
+			fail_text = "ufs_window_on_screen"
+			from = { NOT = { has_country_flag = ufs_window_active }}
+		}
+		custom_tooltip = {
+			fail_text = "ufs_cooldown"
+			from = { NOT = { has_modifier = ufs_recover_cd }}
+		}
+	}
+
+	on_build_complete = {
+		remove_megastructure = fromfrom
+		spawn_megastructure = {
+			type = uf_galaxy_gun_4
+			planet = star
+			owner = from
+			orbit_distance = 0
+			orbit_angle = 0
+		}
+	}
+}
+# 生产信标
+uf_galaxy_gun_8 = {
+	entity = "uf_new_full_entity"
+	construction_entity = ""
+	portrait = "GFX_uf_galaxy_gun_4_background"
+	place_entity_on_planet_plane = yes
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+	upgrade_from = {
+		uf_galaxy_gun_4
+	}
+	build_time = 10
+	resources = {
+		category = megastructures
+		# upkeep = { sr_uf = 100 energy = 4000 }
+	}
+
+	possible = {
+		custom_tooltip = {
+			fail_text = "all_ufs_beacon_exists"
+			NAND = {
+				exists = event_target:ufs_beacon_1
+				exists = event_target:ufs_beacon_2
+				exists = event_target:ufs_beacon_3
+			}
+		}
+	}
+
+	on_build_complete = {
+		
+	}
+}

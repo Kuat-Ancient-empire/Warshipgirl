@@ -1,0 +1,417 @@
+utility_component_template = {
+	key = "Monolith_core"
+	size = small
+	icon = "GFX_Monolith_core"
+	icon_frame = 1
+	power = 30000000
+	hidden = yes
+	resources = {
+		category = ship_components
+	}
+	ftl = yes
+	jumpdrive = yes
+	ship_behavior = "United_fleet_line"
+	ship_modifier = {
+		ship_windup_mult = -1.0
+		ship_ftl_jumpdrive_range_mult = 10.0
+		ship_jumpdrive_cooldown_mult = -1.0
+		ship_weapon_range_mult = 0.50
+	}
+	modifier = {
+		ship_speed_mult = 0.5
+		ship_evasion_add = 100
+		ship_evasion_mult = 1.00
+	}
+	sensor_range = 10
+	hyperlane_range = 15
+	
+	ai_weight = {
+		weight = 4
+	}
+	component_set = "monolith_component"
+}
+utility_component_template = {
+	key = "Monolith_starbase_core"
+	size = small
+	icon = "GFX_Monolith_core"
+	icon_frame = 1
+	power = 50000000
+	hidden = yes
+	resources = {
+		category = ship_components
+	}
+	ship_modifier = {
+		ship_weapon_range_mult = 2.0
+	}
+	sensor_range = 10
+	hyperlane_range = 15
+	
+	ai_weight = {
+		weight = 4
+	}
+	component_set = "monolith_component"
+}
+
+weapon_component_template = {
+	key = "Monolith_T"
+	size = titanic
+	type = instant
+	
+	icon = "GFX_Monolith_weapon"
+	icon_frame = 1
+	
+	use_ship_kill_target = no
+	hidden = yes	
+	damage = { min = 300000000 max = 500000000 }
+	windup = { min = 30 max = 45 }
+	total_fire_time = 220
+	range = 1500.0
+	accuracy = 30.0
+	shield_penetration = 1.01
+	armor_penetration = 1.01
+	
+	tracking = 30.0
+	power = -1000000
+	
+	component_set = "Monolith_weapon"
+	projectile_gfx = "monolith_weapon"
+	tags = {  }
+	ai_tags = { weapon_role_artillery }
+	ai_tag_weight = 0
+}
+weapon_component_template = {
+	key = "Monolith_L"
+	size = large
+	type = instant
+	
+	icon = "GFX_Monolith_weapon"
+	icon_frame = 1
+	
+	use_ship_kill_target = no
+	hidden = yes	
+	damage = { min = 100000 max = 200000 }
+	windup = { min = 20 max = 30 }
+	total_fire_time = 160
+	range = 400.0
+	accuracy = 30.0
+	shield_penetration = 1.01
+	armor_penetration = 1.01
+	
+	tracking = 30.0
+	power = -1000000
+	
+	component_set = "Monolith_weapon"
+	projectile_gfx = "monolith_weapon"
+	tags = {  }
+	ai_tags = { weapon_role_artillery }
+	ai_tag_weight = 0
+}
+
+weapon_component_template = {
+	key = "Monolith_S"
+	size = small
+	type = instant
+	
+	icon = "GFX_Monolith_weapon"
+	icon_frame = 1
+	
+	use_ship_kill_target = no
+	hidden = yes	
+	damage = { min = 10000 max = 20000 }
+	windup = { min = 20 max = 30 }
+	total_fire_time = 140
+	range = 250.0
+	accuracy = 30.0
+	shield_penetration = 1.01
+	armor_penetration = 1.01
+	
+	tracking = 30.0
+	power = -1000000
+	
+	component_set = "Monolith_weapon"
+	projectile_gfx = "monolith_weapon"
+	tags = {  }
+	ai_tags = { weapon_role_artillery }
+	ai_tag_weight = 0
+}
+
+strike_craft_component_template = {
+	key = "Monolith_H"
+	size = LARGE
+	entity = "uf_monolith_strikecraft_entity"
+	power = -35000
+
+	count = 1
+	regeneration_per_day = 0.25
+	launch_time = 0.5
+	
+	
+	damage = { min = 5000 max = 20000 }
+	cooldown = 25
+	range = 80
+	accuracy = 30.0
+	tracking = 30.0
+	
+	health = 5000
+	armor = 5000
+	shield = 5000
+	evasion = 0
+	
+	speed = 1400
+	rotation_speed = 0.8
+	acceleration = 1
+	
+	shield_penetration = 1.1
+	armor_penetration = 1.1
+	
+	ship_behavior = "fighters_behavior"
+	
+	weapon_type = point_defence
+	#weapon_type = strike_craft
+	projectile_gfx = "monolith_weapon"
+	
+	component_set = "Monolith_weapon"
+	
+	hidden = yes
+	
+	icon = "GFX_Monolith_weapon"
+	icon_frame = 1
+	tags = { }
+	ai_tags = { weapon_role_point_defence }
+}
+
+utility_component_template = {
+	key = "Monolith_aura"
+	size = medium
+	icon = "GFX_Monolith_aura"
+	icon_frame = 1
+	power = 0
+	hidden = yes
+	component_set = "ship_aura_components"
+
+	hostile_aura = {
+		name = "Monolith_aura_1"
+		radius = @shipAuraRange
+		apply_on = ships
+		
+		stack_info = {			
+			id = Monolith_1_debuff
+			priority = 300
+		}
+
+		limit = { fleet = { has_fleet_flag = monolith_aura_debuff }}
+		
+		modifier = {		
+			ship_weapon_damage = -20
+			ship_tracking_mult = -2000
+			ship_accuracy_mult = -2000
+			ship_shield_penetration_mult = -1.0
+			ship_armor_penetration_mult = -1.0
+			ship_shield_hardening_add = -1.5
+			ship_armor_hardening_add = -1.5
+			ship_weapon_range_mult = -0.50
+			ship_evasion_mult = -0.3
+		}
+		
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 2
+			is_ai = yes
+			is_preferred_weapons = weapon_type_energy
+		}
+	}
+}
+
+utility_component_template = {
+	key = "Monolith_aura_2"
+	size = medium
+	icon = "GFX_Monolith_aura"
+	icon_frame = 1
+	power = 0
+	hidden = yes
+	component_set = "ship_aura_components"
+	hostile_aura = {
+		name = "Monolith_aura_2"
+		radius = @shipAuraRange
+		apply_on = ships
+		
+		stack_info = {			
+			id = Monolith_2_debuff
+			priority = 500
+		}
+		damage_per_day = {
+			accuracy = 5
+			damage = { min = 500 max = 3500 }
+			
+			shield_penetration = 0.9
+			armor_penetration = 0.9
+		}		
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}	
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 2
+			is_ai = yes
+			is_preferred_weapons = weapon_type_energy
+		}
+	}
+}
+
+utility_component_template = {
+	key = "Monolith_aura_3"
+	size = medium
+	icon = "GFX_Monolith_aura"
+	icon_frame = 1
+	power = 0
+	hidden = yes
+	component_set = "ship_aura_components"
+	hostile_aura = {
+		name = "Monolith_aura_3"
+		radius = @shipAuraRange
+		apply_on = ships
+		
+		stack_info = {			
+			id = Monolith_3_debuff
+			priority = 500
+		}
+		damage_per_day = {
+			accuracy = 1.5
+			damage = { min = 2000 max = 40000 }
+			
+			shield_penetration = 0.8
+			armor_penetration = 0.8
+		}		
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}	
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 2
+			is_ai = yes
+			is_preferred_weapons = weapon_type_energy
+		}
+	}
+}
+
+
+utility_component_template = {
+	key = "Monolith_aura_4"
+	size = medium
+	icon = "GFX_Monolith_aura"
+	icon_frame = 1
+	power = 0
+	hidden = yes
+	component_set = "ship_aura_components"
+	hostile_aura = {
+		name = "Monolith_aura_4"
+		radius = @shipAuraRange
+		apply_on = ships
+		
+		stack_info = {			
+			id = Monolith_4_debuff
+			priority = 500
+		}
+		damage_per_day = {
+			accuracy = 1.0
+			damage = { min = 150000 max = 500000 }
+			
+			shield_penetration = 0.5
+			armor_penetration = 0.5
+		}		
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}	
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 2
+			is_ai = yes
+			is_preferred_weapons = weapon_type_energy
+		}
+	}
+}
+@shipAuraRange = 360
+utility_component_template = {
+	key = "Monolith_aura_5"
+	size = medium
+	icon = "GFX_Monolith_aura"
+	icon_frame = 1
+	power = 0
+	hidden = yes
+	component_set = "ship_aura_components"
+	hostile_aura = {
+		name = "Monolith_aura_5"
+		radius = @shipAuraRange
+		apply_on = ships
+		
+		stack_info = {			
+			id = Monolith_5_debuff
+			priority = 500
+		}
+		damage_per_day = {
+			accuracy = 0.3
+			damage = { min = 1000000 max = 5000000 }
+			
+			shield_penetration = 0.3
+			armor_penetration = 0.3
+		}		
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}	
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 2
+			is_ai = yes
+			is_preferred_weapons = weapon_type_energy
+		}
+	}
+}

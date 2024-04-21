@@ -1,0 +1,131 @@
+namespace = anomaly
+
+# ROOT = ship scope
+# FROM = planet scope
+
+### Familiar Shrine, AST_SHRINE_1_CAT
+ship_event = {
+	id = anomaly.140
+	title = "anomaly.140.name"
+	desc = "anomaly.140.desc"
+	picture = GFX_evt_asteroid_approaching_planet
+	show_sound = event_mystic_reveal
+	location = FROM
+
+	is_triggered_only = yes
+	trigger = {
+		owner = {
+			has_wg_special_authority = no
+		}
+	}
+
+	immediate = {
+		closest_system = {
+			limit = {
+				NOR = {
+					has_star_flag = hostile_system
+					is_same_value = root.solar_system
+					is_pirate_system = yes
+					any_system_planet = { is_colony = yes }
+				}
+				has_access_fleet = root.owner
+			}
+			min_steps = 1
+			max_steps = 8
+			set_star_flag = old_gods_system_1@root.owner
+		}
+		closest_system = {
+			limit = {
+				NOR = {
+					has_star_flag = old_gods_system_1@root.owner
+					has_star_flag = hostile_system
+					is_same_value = root.solar_system
+					is_pirate_system = yes
+					any_system_planet = { is_colony = yes }
+				}
+				has_access_fleet = root.owner
+			}
+			min_steps = 2
+			max_steps = 9
+			set_star_flag = old_gods_system_2@root.owner
+		}
+		closest_system = {
+			limit = {
+				NOR = {
+					has_star_flag = old_gods_system_1@root.owner
+					has_star_flag = old_gods_system_2@root.owner
+					is_same_value = root.solar_system
+					has_star_flag = hostile_system
+					is_pirate_system = yes
+					any_system_planet = { is_colony = yes }
+				}
+				has_access_fleet = root.owner
+			}
+			min_steps = 3
+			max_steps = 10
+			set_star_flag = old_gods_system_3@root.owner
+		}
+	}
+
+	option = {
+		name = "anomaly.140.a"
+		custom_tooltip = "anomaly.140.a.tooltip"
+		trigger = {	owner = { NOT = { has_ethic = ethic_fanatic_spiritualist } } }
+	}
+
+	option = {
+		name = "anomaly.140.c"
+		custom_tooltip = "anomaly.140.c.tooltip"
+		trigger = {	owner = { has_ethic = ethic_fanatic_spiritualist } }
+	}
+
+	option = {
+		trigger = {
+			any_system = { has_star_flag = old_gods_system_1@root.owner }
+			any_system = { has_star_flag = old_gods_system_2@root.owner }
+			any_system = { has_star_flag = old_gods_system_3@root.owner }
+		}
+		name = "anomaly.140.b"
+		owner = {
+			begin_event_chain = {
+				event_chain = "old_gods_chain"
+				target = root.owner
+			}
+		}
+		hidden_effect = {
+			random_system = {
+				limit = { has_star_flag = old_gods_system_1@root.owner }
+				save_event_target_as = old_gods_system_1
+			}
+			random_system = {
+				limit = { has_star_flag = old_gods_system_2@root.owner }
+				save_event_target_as = old_gods_system_2
+			}
+			random_system = {
+				limit = { has_star_flag = old_gods_system_3@root.owner }
+				save_event_target_as = old_gods_system_3
+			}
+			create_point_of_interest = {
+				id = old_gods_shrine_poi.1
+				name = "old_gods_shrine_poi_1"
+				desc = "old_gods_shrine_poi_1_desc"
+				event_chain = "old_gods_chain"
+				location = event_target:old_gods_system_1
+			}
+			create_point_of_interest = {
+				id = old_gods_shrine_poi.2
+				name = "old_gods_shrine_poi_2"
+				desc = "old_gods_shrine_poi_2_desc"
+				event_chain = "old_gods_chain"
+				location = event_target:old_gods_system_2
+			}
+			create_point_of_interest = {
+				id = old_gods_shrine_poi.3
+				name = "old_gods_shrine_poi_3"
+				desc = "old_gods_shrine_poi_3_desc"
+				event_chain = "old_gods_chain"
+				location = event_target:old_gods_system_3
+			}
+		}
+	}
+}

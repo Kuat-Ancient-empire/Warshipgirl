@@ -1,0 +1,1527 @@
+namespace = wg_affection
+#########################################
+# 好感度系统
+# 地砖重构版
+#########################################
+#on_five_year_pulse
+#五年一次全国好感度校验，增长
+event = {
+	id = wg_affection.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_country = { # 泡泡事件
+			limit = { is_ai = no }
+			country_event = { id = wg_affection.200 }
+		}
+		every_playable_country = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { has_country_flag = can_have_wg_affection_country_flag }
+						has_wg_special_authority = no
+					}
+					has_civic = civic_CM
+					has_ascension_perk = ap_shenhai_silent
+				}
+			}
+			every_pool_leader = {
+				limit = {
+					has_leader_flag = has_wg_affection
+				}
+				fire_on_action = {
+					on_action = on_wg_affection_system_end
+				}
+			}
+			every_owned_leader = {
+				limit = {
+					has_leader_flag = has_wg_affection
+				}
+				fire_on_action = {
+					on_action = on_wg_affection_system_end
+				}
+			}
+		}
+		every_playable_country = {
+			limit = {
+				OR = {
+					has_wg_special_authority = yes 
+					any_owned_leader = { is_wg_leader_all = yes }
+				}
+			}
+			if = {
+				limit = { has_communications = event_target:pantsu_shop_country }
+				change_variable = {
+					which = wg_coffee_ticket
+					value = 10
+				}
+			}
+			######临时代码，特殊领袖好感度自然增长#####
+			if = {
+				limit = { has_country_flag = modified_bubbles }
+				change_variable = {
+					which = wg_bubbles_affection
+					value = 10
+				}
+			}
+			if = {
+				limit = { has_country_flag = wg_dragon_owner }
+				change_variable = {
+					which = wg_dragon_affection
+					value = 10
+				}
+			}
+			if = {
+				limit = { has_country_flag = gray_owner }
+				change_variable = {
+					which = wg_gray_affection
+					value = 10
+				}
+			}
+			if = {
+				limit = { has_country_flag = gain_wsg_lady }
+				change_variable = {
+					which = wg_lady_affection
+					value = 10
+				}
+			}
+			if = {
+				limit = { has_country_flag = get_wg_yukikaze }
+				change_variable = {
+					which = wg_yukikaze_affection
+					value = 10
+				}
+			}
+			if = {
+				limit = { has_country_flag = get_wg_shimakaze }
+				change_variable = {
+					which = wg_shimakaze_affection
+					value = 10
+				}
+			}
+			every_owned_leader = {
+				# limit = {
+				# 	has_leader_flag = has_wg_affection
+				# }
+				fire_on_action = {
+					on_action = on_wg_affection_system_increase
+				}
+				fire_on_action = {
+					on_action = on_wg_affection_system_check
+				}
+				if = {
+					limit = {
+						check_variable = { which = affection value >= wg_leader_affection_to_lv3 }
+					}
+					set_leader_flag = immune_to_negative_traits
+					remove_all_negative_traits = yes # 移除3级好感领袖的负面特性
+				}
+			}
+		}
+	}
+}
+# on_leader_spawned
+# 领袖添加好感度特性
+country_event = {
+	id = wg_affection.2
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		AND = {
+			OR = {
+				has_country_flag = can_have_wg_affection_country_flag
+				has_wg_special_authority = yes
+			}
+			NOR = {
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+			}
+		}
+	}
+	immediate = {
+		set_update_modifiers_batch = begin
+		from = {
+			wg_affection_normal_system_launch = yes
+		}
+		set_update_modifiers_batch = end
+	}
+}
+# 移除不应存在的好感度
+leader_event = {
+	id = wg_affection.3
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_leader_flag = has_wg_affection
+	}
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		wg_affection_normal_system_end = yes
+		set_update_modifiers_batch = end
+	}
+}
+# 开局领袖添加好感度特性
+country_event = {
+	id = wg_affection.4
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		AND = {
+			OR = {
+				has_country_flag = can_have_wg_affection_country_flag
+				has_wg_special_authority = yes
+			}
+			NOR = {
+				has_civic = civic_CM
+				has_ascension_perk = ap_shenhai_silent
+			}
+		}
+	}
+	immediate = {
+		set_update_modifiers_batch = begin
+		every_owned_leader = {
+			wg_affection_normal_system_launch = yes
+		}
+		set_update_modifiers_batch = end
+	}
+}
+# 常规好感度校验
+leader_event = {
+	id = wg_affection.5
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		#has_leader_flag = has_wg_affection
+	}
+
+	immediate = {
+		wg_affection_normal_system_check = yes
+		wg_affection_wg_astesia_system_check = yes
+		wg_affection_wg_bubbles_system_check = yes
+		wg_affection_wg_dragon_system_check = yes
+		wg_affection_wg_gray_system_check = yes
+		wg_affection_wg_lady_system_check = yes
+		wg_affection_wg_rbq_dragon_system_check = yes
+		wg_affection_wg_shimakaze_system_check = yes
+	}
+}
+# 常规好感度增加
+leader_event = { 
+	id = wg_affection.6
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = {
+			has_leader_flag = wg_affection_auto_change_no
+		}
+		has_leader_flag = has_wg_affection
+		NAND = {
+			NOT = { has_leader_flag = married }
+			check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+		}
+	}
+
+	immediate = {
+		wg_affection_system_increase = yes
+	}
+}
+# 常规好感度减少
+leader_event = {
+	id = wg_affection.7
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_leader_flag = has_wg_affection
+	}
+
+	immediate = {
+		wg_affection_system_reduce = yes
+	}
+}
+# 特殊领袖好感度初始化
+leader_event = {
+	id = wg_affection.8
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		wg_affection_normal_system_check = yes
+		wg_affection_wg_astesia_system_launch = yes
+		wg_affection_wg_bubbles_system_launch = yes
+		wg_affection_wg_dragon_system_launch = yes
+		wg_affection_wg_gray_system_launch = yes
+		wg_affection_wg_lady_system_launch = yes
+		wg_affection_wg_rbq_dragon_system_launch = yes
+		wg_affection_wg_shimakaze_system_launch = yes
+		set_update_modifiers_batch = end
+	}
+}
+# 变成统治者时改成统治者好感度
+country_event = {
+	id = wg_affection.39
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		ruler = { 
+			has_leader_flag = has_wg_affection
+		}
+	}
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		ruler = {
+			fire_on_action = {
+				on_action = on_wg_affection_system_check
+			}
+		}
+		set_update_modifiers_batch = end
+	}
+}
+# 统治者变回领袖时更改好感度特性
+country_event = {
+	id = wg_affection.40
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		from = {
+			has_leader_flag = has_wg_affection
+		}
+	}
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		from = {
+			fire_on_action = {
+				on_action = on_wg_affection_system_check
+			}
+		}
+		set_update_modifiers_batch = end
+	}
+}
+# 特殊事件
+# 全体领袖好感度+1
+country_event = {
+	id = wg_affection.99
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_wg_special_authority = yes
+		NOR = {
+			has_ascension_perk = ap_shenhai_silent
+			has_civic = civic_CM
+		}
+	}
+
+	immediate = {
+		every_owned_leader = {
+			limit = { 
+				has_leader_flag = has_wg_affection_normal
+			}
+			wg_affection_system_increase = yes
+		}
+	}
+}
+
+# 誓约——领袖选择窗口 初始化数据
+country_event = {
+	id = wg_affection.16
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_owned_leader = {
+			limit = {
+				NOT = { has_leader_flag = married }
+				NOT = { has_leader_flag = not_has_wg_affection_normal }
+				has_leader_flag = has_wg_affection_normal
+			}
+			remove_leader_flag = can_be_married
+		}
+		set_variable = { which = num_marriable_leader value = 0 }
+		every_owned_leader = {
+			limit = {
+				has_leader_flag = has_wg_affection_normal
+				NOT = { has_leader_flag = not_has_wg_affection_normal }
+				NOT = { has_leader_flag = married }
+				if = {
+					limit = { is_ruler = yes }
+					check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+				} else_if = {
+					limit = { leader_class = official }
+					check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+				} else_if = {
+					limit = { leader_class = scientist }
+					check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+				} else_if = {
+					limit = { leader_class = commander }
+					check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+				} else_if = {
+					limit = { leader_class = commander }
+					check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+				}
+			}
+			set_leader_flag = can_be_married
+			ROOT = { change_variable = { which = num_marriable_leader value = 1 }}
+			set_variable = { which = num_marriable_leader value = ROOT.num_marriable_leader }
+			set_variable = { which = leader_id value = num_marriable_leader }
+			set_variable = { which = num_marriable_leader value = 0 }
+		}
+		set_variable = { which = leader_id value = 0 }
+		country_event = { id = wg_affection.17 }
+	}
+}
+
+# 誓约——领袖选择窗口 翻页
+country_event = {
+	id = wg_affection.17
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		change_variable = { which = leader_id value = 1 }
+		if = {
+			limit = { check_variable = { which = leader_id value <= num_marriable_leader }}
+			random_owned_leader = { # 这页的第一名领袖
+				limit = { 
+					has_leader_flag = can_be_married
+					check_variable = { which = leader_id value = ROOT.leader_id }
+				}
+				save_event_target_as = leader_tobe_view_1
+			}
+		}
+		if = {
+			limit = { check_variable = { which = leader_id value = num_marriable_leader }}
+			set_variable = { which = reminder value = 4 }
+			country_event = { id = wg_affection.18 }
+			break = yes
+		}
+		else = { change_variable = { which = leader_id value = 1 }}
+		
+		if = {
+			limit = { check_variable = { which = leader_id value <= num_marriable_leader }}
+			random_owned_leader = { # 这页的第二名领袖
+				limit = { 
+					has_leader_flag = can_be_married
+					check_variable = { which = leader_id value = ROOT.leader_id }
+				}
+				save_event_target_as = leader_tobe_view_2
+			}
+		}
+		if = {
+			limit = { check_variable = { which = leader_id value = num_marriable_leader }}
+			set_variable = { which = reminder value = 3 }
+			country_event = { id = wg_affection.18 }
+			break = yes
+		}
+		else = { change_variable = { which = leader_id value = 1 }}
+
+		if = {
+			limit = { check_variable = { which = leader_id value <= num_marriable_leader }}
+			random_owned_leader = { # 这页的第三名领袖
+				limit = { 
+					has_leader_flag = can_be_married
+					check_variable = { which = leader_id value = ROOT.leader_id }
+				}
+				save_event_target_as = leader_tobe_view_3
+			}
+		}
+		if = {
+			limit = { check_variable = { which = leader_id value = num_marriable_leader }}
+			set_variable = { which = reminder value = 2 }
+			country_event = { id = wg_affection.18 }
+			break = yes
+		}
+		else = { change_variable = { which = leader_id value = 1 }}
+
+		if = {
+			limit = { check_variable = { which = leader_id value <= num_marriable_leader }}
+			random_owned_leader = { # 这页的第四名领袖
+				limit = { 
+					has_leader_flag = can_be_married
+					check_variable = { which = leader_id value = ROOT.leader_id }
+				}
+				save_event_target_as = leader_tobe_view_4
+			}
+		}
+		if = {
+			limit = { check_variable = { which = leader_id value = num_marriable_leader }}
+			set_variable = { which = reminder value = 1 }
+			country_event = { id = wg_affection.18 }
+			break = yes
+		}
+		else = { change_variable = { which = leader_id value = 1 }}
+
+		random_owned_leader = { # 这页的第五名领袖
+			limit = { 
+				has_leader_flag = can_be_married
+				check_variable = { which = leader_id value = ROOT.leader_id }
+			}
+			save_event_target_as = leader_tobe_view_5
+		}
+		set_variable = { which = reminder value = 0 }
+		country_event = { id = wg_affection.18 }
+	}
+}
+
+
+# 誓约对象选择窗口
+country_event = {
+	id = wg_affection.18
+	title = wg_affection.18.name
+	desc = wg_affection.18.desc
+	is_triggered_only = yes
+
+	diplomatic = yes
+
+	picture_event_data = {
+		room = wg06_room
+	}
+
+	option = {
+		name = make_ring
+		trigger = {
+			has_wg_special_authority = no
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value >= 648 }
+			resource_stockpile_compare = { resource = minerals value >= 648 }
+			resource_stockpile_compare = { resource = alloys value >= 648 }
+			resource_stockpile_compare = { resource = consumer_goods value >= 648 }
+		}
+		add_resource = {
+			energy = -648
+			minerals = -648
+			alloys = -648
+			consumer_goods = -648
+		}
+		change_variable = { which = wsg_rings value = 1 }
+		is_dialog_only = yes
+		response_text = wg_affection.18.desc
+	}
+	option = {
+		name = make_ring
+		trigger = {
+			has_authority = auth_starshipgirls # 星战舰娘直接造戒指
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value >= 648 }
+			resource_stockpile_compare = { resource = minerals value >= 648 }
+			resource_stockpile_compare = { resource = sr_kyber_swgs value >= 648 } # 凯伯水晶
+			resource_stockpile_compare = { resource = sr_tibanna_swgs value >= 648 } # 提巴那瓦斯
+		}
+		add_resource = {
+			energy = -648
+			minerals = -648
+			sr_kyber_swgs = -648
+			sr_tibanna_swgs = -648
+		}
+		change_variable = { which = wsg_rings value = 1 }
+		custom_tooltip = starshipgirls_ring_tooltip
+		is_dialog_only = yes
+		response_text = wg_affection.18.desc
+	}
+	option = {
+		name = "goto_pantsu_shop_buy_ring"
+		allow = {
+			custom_tooltip = {
+				fail_text = pantsu_shop_interface_already_open
+				NOT = { has_country_flag = engaged_with_pantsu_shop }
+			}
+		}
+		hidden_effect = {
+			set_country_flag = engaged_with_pantsu_shop
+			country_event = { id = wsgranking.1010 }
+		}
+	}
+	option = {
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		trigger = {
+			exists = event_target:leader_tobe_view_1
+			check_variable = { which = reminder value <= 4 }
+		}
+		name = wg_affection.18.leader1
+		change_variable = { which = wsg_rings value = -1 }
+		hidden_effect = {
+			event_target:leader_tobe_view_1 = {
+				save_event_target_as = married_leader
+			}
+			country_event = { id = wg_affection.19 }
+		}
+	}
+	option = {
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		trigger = {
+			exists = event_target:leader_tobe_view_2
+			check_variable = { which = reminder value <= 3 }
+		}
+		name = wg_affection.18.leader2
+		change_variable = { which = wsg_rings value = -1 }
+		hidden_effect = {
+			event_target:leader_tobe_view_2 = {
+				save_event_target_as = married_leader
+			}
+			country_event = { id = wg_affection.19 }
+		}
+	}
+	option = {
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		trigger = {
+			exists = event_target:leader_tobe_view_3
+			check_variable = { which = reminder value <= 2 }
+		}
+		name = wg_affection.18.leader3
+		change_variable = { which = wsg_rings value = -1 }
+		hidden_effect = {
+			event_target:leader_tobe_view_3 = {
+				save_event_target_as = married_leader
+			}
+			country_event = { id = wg_affection.19 }
+		}
+	}
+	option = {
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		trigger = {
+			exists = event_target:leader_tobe_view_4
+			check_variable = { which = reminder value <= 1 }
+		}
+		name = wg_affection.18.leader4
+		change_variable = { which = wsg_rings value = -1 }
+		hidden_effect = {
+			event_target:leader_tobe_view_4 = {
+				save_event_target_as = married_leader
+			}
+			country_event = { id = wg_affection.19 }
+		}
+	}
+	option = {
+		allow = {
+			check_variable = { which = wsg_rings value >= 1 }
+		}
+		trigger = {
+			exists = event_target:leader_tobe_view_5
+			NOT = { check_variable = { which = reminder value > 0 }}
+		}
+		name = wg_affection.18.leader5
+		change_variable = { which = wsg_rings value = -1 }
+		hidden_effect = {
+			event_target:leader_tobe_view_5 = {
+				save_event_target_as = married_leader
+			}
+			country_event = { id = wg_affection.19 }
+		}
+	}
+
+	option = {
+		trigger = {
+			check_variable = { which = leader_id value > 5 }
+		}
+		name = wg_affection.18.a
+		hidden_effect = { 
+			if = {
+				limit = { check_variable = { which = leader_id value > 10 }}
+				change_variable = { which = leader_id value = -10 }
+				change_variable = { which = leader_id value = reminder } 
+			}
+			else = {
+				set_variable = { which = leader_id value = 0 }
+			}
+			country_event = { id = wg_affection.17 }
+		} 
+	}
+	option = {
+		trigger = {
+			check_variable = { which = leader_id value < num_marriable_leader }
+		}
+		name = wg_affection.18.b
+		hidden_effect = { 
+			country_event = { id = wg_affection.17 }
+		} 
+	}
+	option = {
+		name = wg_affection.18.c
+		hidden_effect = { 
+			set_variable = { which = leader_id value = 0 }
+			every_owned_leader = {
+				set_variable = { which = leader_id value = 0 }
+			}
+		}
+		default_hide_option = yes
+	}
+}
+
+country_event = {
+	id = wg_affection.19
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_owned_leader = {
+			set_variable = { which = leader_id value = 0 }
+		}
+		event_target:married_leader = {
+			set_leader_flag = married
+			remove_leader_flag = can_be_married
+			switch = {
+				trigger = has_trait
+				leader_trait_admiral_Rodney = { ROOT = { country_event = { id = wg_affection.19001 }}}
+				leader_trait_ruler_lexington = { ROOT = { country_event = { id = wg_affection.19002 }}}
+				default = { ROOT = { country_event = { id = wg_affection.19000 }}}
+			}
+		}
+	}
+}
+
+# 誓约仪式
+country_event = {
+	id = wg_affection.19000
+	title = wg_affection.19.name
+	desc = wg_affection.19.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_marry
+	show_sound = event_wg_wedding
+
+	immediate = {
+		event_target:married_leader = {
+			if = {
+				limit = { NOT = { has_leader_flag = wsg_event_leader }}
+				set_leader_flag = can_revive
+			}
+		}
+	}
+
+	option = {
+		name = wg_affection.19.a
+		custom_tooltip = wg_affection.19.a.tooltip
+		change_variable = { which = rankpts value = 1 }
+	}
+}
+
+# 老罗誓约
+country_event = {
+	id = wg_affection.19001
+	title = wg_affection.19.name
+	desc = wg_affection.19.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wg_rodney_wedding
+	show_sound = event_wg_wedding
+
+	immediate = {
+	}
+
+	option = {
+		name = wg_affection.19.a
+		change_variable = { which = rankpts value = 1 }
+	}
+}
+
+# 太太誓约
+country_event = {
+	id = wg_affection.19002
+	title = wg_affection.19.name
+	desc = wg_affection.19.desc
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_marry
+	show_sound = event_wg_wedding
+
+	immediate = {
+		event_target:married_leader = { 
+			change_leader_portrait = wsg29_1
+		}
+	}
+
+	option = {
+		name = wg_affection.19.a
+		change_variable = { which = rankpts value = 2 }
+	}
+}
+
+country_event = {
+	id = wg_affection.30000
+	title = wg_affection.30000.name
+	desc = wg_affection.30000.desc
+	is_triggered_only = yes
+	diplomatic = yes
+	show_sound = event_wg_wedding
+	custom_gui = wg_gray_commu_window
+	custom_gui_option = wg_gray_commu_option
+
+	immediate = {
+		set_country_flag = married_gray
+	}
+
+	option = {
+		name = wg_affection.30000.a
+		response_text = wg_affection.30000.response
+		change_variable = { which = rankpts value = 2 }
+	}
+}
+
+# 测试用：全领袖满好感结婚
+country_event = {
+	id = wg_affection.12450
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		every_owned_leader = {
+			limit = {
+				is_wg_leader_normal = yes
+			}
+			set_leader_flag = affection_max
+			set_variable = { which = affection_level value = 5 }
+			set_leader_flag = married
+			set_leader_flag = can_revive
+			set_variable = { which = affection value = wg_leader_affection_to_lv5 }
+		}
+		set_country_flag = married_wsg_lady
+		set_variable = { which = "wg_lady_affection" value = @wg_lady_affection_to_lv5 }
+		set_variable = { which = "wg_lady_affection_level" value = 5 }
+	}
+}
+
+# 复活普通领袖
+country_event = {
+	id = wg_affection.20
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		FROM = { 
+			is_wg_leader_normal = yes
+			NOT = { has_leader_flag = wsg_event_leader }
+			OR = {
+				has_leader_flag = can_revive
+				has_leader_flag = unlimited_revive
+			}
+		}
+	}
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		set_variable = { which = affection value = FROM.affection }
+		set_variable = { which = affection_level value = FROM.affection_level }
+		if = {
+			limit = { from = { has_leader_flag = married }}
+			set_country_flag = married_leader
+		}
+		clone_leader = { target = FROM effect = { save_event_target_as = revive_leader }}
+		from = { save_event_target_as = death_leader }
+		event_target:revive_leader = { 
+			copy_flags_and_variables_from = event_target:death_leader
+			set_variable = { which = affection value = root.affection }
+			set_variable = { which = affection_level value = root.affection_level }
+			if = {
+				limit = { event_target:death_leader = { is_ruler = yes }}
+				subtract_variable = { which = affection value = wg_leader_affection_to_lv2 }
+				root = { set_leader = prev }
+			}
+			else = {
+				subtract_variable = { which = affection value = wg_leader_affection_to_lv2 }
+			}
+		}
+		if = { 
+			limit = { has_country_flag = married_leader }
+			event_target:revive_leader = { set_leader_flag = married }
+			remove_country_flag = married_leader
+		}
+		if = {
+			limit = { FROM = { has_leader_flag = unlimited_revive }}
+			country_event = { id = wg_affection.37 days = 1 }
+		} else = {
+			if = { #提醒事件
+				limit = { NOT = { has_country_flag = has_married_leader_dead }}
+				set_country_flag = has_married_leader_dead
+				country_event = { id = wg_affection.22 days = 1 }
+			}
+			else = {
+				country_event = { id = wg_affection.30 days = 1 }
+			}
+		}
+		set_variable = { which = affection value = 0 }
+		set_variable = { which = affection_level value = 0 }
+		set_update_modifiers_batch = end
+	}
+}
+
+# 复活事件领袖
+country_event = {
+	id = wg_affection.21
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		FROM = { OR = {
+			has_leader_flag = wsg_event_leader
+			has_leader_flag = uf_vv_admiral
+		}}
+	}
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		if = {
+			limit = { from = { has_leader_flag = wsg_event_leader }}
+			set_variable = { which = affection value = FROM.affection }
+			set_variable = { which = affection_level value = FROM.affection_level }
+		}
+		if = {
+			limit = { from = { has_leader_flag = married }}
+			set_country_flag = married_leader
+		}
+		clone_leader = { target = FROM effect = { save_event_target_as = resurrect_leader }}
+		FROM = { 
+			save_event_target_as = death_leader
+			if = { #劳模
+				limit = { has_leader_flag = overtime_yamato }
+				ROOT = { 
+					country_event = { id = wg_affection.23 }
+				}
+				event_target:resurrect_leader = {
+					set_leader_flag = overtime_yamato
+					set_leader_flag = wsg_event_leader
+					change_leader_portrait = sh65_1
+				}
+				break = yes
+			}
+			if = { #老罗
+				limit = { has_trait = leader_trait_admiral_Rodney }
+				ROOT = { 
+					country_event = { id = wg_affection.24 }
+				}
+				event_target:resurrect_leader = {
+					set_leader_flag = wsg_event_leader
+					set_leader_flag = event_Rodney
+					change_leader_portrait = wsg9996
+				}
+				break = yes
+			}
+			if = { #艾拉
+				limit = { has_trait = leader_trait_official_Ella }
+				ROOT = { 
+					country_event = { id = wg_affection.25 }
+				}
+				event_target:resurrect_leader = {
+					set_leader_flag = wsg_event_leader
+					set_leader_flag = event_Ella
+					change_leader_portrait = wsg9999
+				}
+				break = yes
+			}
+			if = { #桑提
+				limit = { has_trait = leader_trait_official_santee }
+				ROOT = { 
+					country_event = { id = wg_affection.26 }
+				}
+				event_target:resurrect_leader = {
+					set_leader_flag = santee_flag
+					set_leader_flag = wsg_event_leader
+					change_leader_portrait = wsg9998
+				}
+				break = yes
+			}
+			if = { #花生
+				limit = { has_trait = leader_trait_general_washington_axe }
+				ROOT = { 
+					country_event = { id = wg_affection.27 }
+				}
+				event_target:resurrect_leader = {
+					set_leader_flag = wsg_event_leader
+					set_leader_flag = event_Washington_flag
+					change_leader_portrait = wsg111
+				}
+				break = yes
+			}
+			if = { #太太
+				limit = { has_trait = leader_trait_ruler_lexington }
+				ROOT = { 
+					country_event = { id = wg_affection.28 }
+				}
+				event_target:resurrect_leader = {
+					set_leader_flag = event_lexington
+					set_leader_flag = set_skills
+					set_leader_flag = wsg_event_leader
+					set_leader_flag = has_gained_level_trait
+					set_leader_flag = has_gained_trait
+					set_age = 17
+					change_leader_portrait = wsg29_3
+					root = { assign_leader = prev }
+				}
+				break = yes
+			}
+			if = { #乜提督
+				limit = { has_trait = leader_trait_admiral_NieAdmiral }
+				ROOT = { 
+					country_event = { id = wg_affection.1020 }
+				}
+				event_target:resurrect_leader = {
+					set_leader_flag = wsg_event_leader
+					set_leader_flag = NieAdmiral
+					set_leader_flag = has_gained_level_trait
+					set_leader_flag = has_gained_trait
+					change_leader_portrait = wsg9990
+				}
+				break = yes
+			}
+			if = { #联合vv
+				limit = { has_leader_flag = uf_vv_admiral }
+				ROOT = { 
+					country_event = { id = uf_story.29 }
+				}
+				event_target:resurrect_leader = {
+					set_leader_flag = uf_vv_admiral 
+				}
+				break = yes
+			}
+			if = { #苍青声望
+				limit = { has_leader_flag = mist_Renown }
+				ROOT = { 
+					country_event = { id = wg_affection.1030 }
+				}
+				event_target:resurrect_leader = {
+					change_leader_portrait = nf262
+					set_leader_flag = wsg_event_leader
+					set_leader_flag = mist_Renown
+					set_leader_flag = has_gained_level_trait
+					set_leader_flag = has_gained_trait
+				}
+				break = yes
+			}
+			if = { #苍青反击
+				limit = { has_leader_flag = mist_Repulse }
+				ROOT = { 
+					country_event = { id = wg_affection.1031 }
+				}
+				event_target:resurrect_leader = {
+					change_leader_portrait = nf263
+					set_leader_flag = wsg_event_leader
+					set_leader_flag = mist_Repulse
+					set_leader_flag = has_gained_level_trait
+					set_leader_flag = has_gained_trait
+				}
+				break = yes
+			}
+			if = { #S飞秘书
+				limit = { has_leader_flag = projectS_missouri }
+				ROOT = { 
+					country_event = { id = wg_affection.1032 }
+				}
+				event_target:resurrect_leader = {
+					change_leader_portrait = wsg9984
+					set_leader_flag = wsg_event_leader
+					set_leader_flag = projectS_missouri
+					set_leader_flag = has_gained_level_trait
+					set_leader_flag = has_gained_trait
+				}
+				break = yes
+			}
+			if = { #星极
+				limit = { has_leader_flag = wg_astesia_leader }
+				ROOT = { 
+					country_event = { id = wg_affection.1033 }
+				}
+				event_target:resurrect_leader = {
+					change_wg_astesia_portrait = yes
+					set_leader_flag = wg_astesia_leader
+					set_leader_flag = wsg_event_leader
+					set_leader_flag = wg_special_affection_leader
+					set_leader_flag = wg_astesia_scientist
+					set_leader_flag = has_gained_level_trait
+					set_leader_flag = has_gained_trait
+					save_global_event_target_as = wg_astesia_scientist
+				}
+				break = yes
+			}
+		}
+		event_target:resurrect_leader = {
+			if = {
+				limit = { has_leader_flag = wsg_event_leader }
+				if = { 
+					limit = { root = { has_country_flag = married_leader }}
+					set_leader_flag = married
+				}
+				root = { remove_country_flag = married_leader }
+				set_variable = { which = affection value = root.affection }
+				set_variable = { which = affection_level value = root.affection_level }
+				if = {
+					limit = { event_target:death_leader = { is_ruler = yes }}
+					subtract_variable = { which = affection value = wg_leader_affection_to_lv2 }
+				} else = {
+					subtract_variable = { which = affection value = wg_leader_affection_to_lv2 }
+				}
+				set_variable = { which = affection value = 0 }
+				set_variable = { which = affection_level value = 0 }
+			}
+		}
+		set_update_modifiers_batch = end
+	}
+}
+
+# 领袖被解雇
+country_event = {
+	id = wg_affection.10021
+	hide_window = yes
+	is_triggered_only = yes	
+
+	trigger = {
+		from = {
+			has_leader_flag = uf_vv_admiral
+		}
+	}
+
+	immediate = {
+		country_event = { id = wg_affection.21 scopes = { from = root.from }}
+	}
+}
+
+# 普通领袖复活事件
+country_event = {
+	id = wg_affection.22
+	title = wg_affection.22.name
+	desc = wg_affection.22.desc
+	picture = GFX_evt_revive_leader
+	is_triggered_only = yes
+
+	option = {
+		name = wg_affection.22.a
+	}
+	option = {
+		name = wg_affection.22.b
+	}
+}
+
+# 劳模复活事件
+country_event = {
+	id = wg_affection.23
+	title = wg_affection.23.name
+	desc = wg_affection.23.desc
+	picture = GFX_evt_revive_yamato
+	is_triggered_only = yes
+
+	immediate = {
+		# country_event = { id = wg_affection.1021 scopes = { from = from }}
+	}
+
+	option = {
+		name = wg_affection.23.a
+	}
+}
+
+# 老罗复活事件
+country_event = {
+	id = wg_affection.24
+	title = wg_affection.24.name
+	desc = wg_affection.24.desc
+	picture = GFX_evt_revive_rodney
+	is_triggered_only = yes
+
+	immediate = {
+		# country_event = { id = wg_affection.1021 scopes = { from = from }}
+	}
+
+	option = {
+		name = wg_affection.24.a
+	}
+}
+
+# 艾拉复活事件
+country_event = {
+	id = wg_affection.25
+	title = wg_affection.25.name
+	desc = wg_affection.25.desc
+	picture = GFX_evt_wsg_Istanbul
+	show_sound = event_wg_lightning
+	is_triggered_only = yes
+
+	# immediate = {
+	# 	country_event = { id = wg_affection.1021 scopes = { from = from }}
+	# }
+
+	option = {
+		name = wg_affection.25.a
+	}
+}
+
+# 桑提复活事件
+country_event = {
+	id = wg_affection.26
+	title = wg_affection.26.name
+	desc = wg_affection.26.desc
+	picture = GFX_evt_revive_santee
+	is_triggered_only = yes
+
+	# immediate = {
+	# 	country_event = { id = wg_affection.1021 scopes = { from = from }}
+	# }
+
+	option = {
+		name = wg_affection.26.a
+	}
+}
+
+# 花生复活事件
+country_event = {
+	id = wg_affection.27
+	title = wg_affection.27.name
+	desc = wg_affection.27.desc
+	picture = GFX_evt_revive_washington
+	is_triggered_only = yes
+
+	# immediate = {
+	# 	country_event = { id = wg_affection.1021 scopes = { from = from }}
+	# }
+
+	option = {
+		name = EXCELLENT
+	}
+}
+
+# 太太复活事件
+country_event = {
+	id = wg_affection.28
+	title = wg_affection.28.name
+	desc = wg_affection.28.desc
+	picture = GFX_evt_revive_lex
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = set_lex_as_ruler
+	}
+
+	option = {
+		name = EXCELLENT
+	}
+}
+
+# 乜提督复活事件
+country_event = {
+	id = wg_affection.1020
+	title = wg_affection.1020.name
+	desc = wg_affection.1020.desc
+	picture = GFX_evt_revive_leader
+	is_triggered_only = yes
+
+	immediate = {
+		# country_event = { id = wg_affection.1021 scopes = { from = from }}
+	}
+
+	option = {
+		name = ASTOUNDING
+	}
+}
+country_event = {
+	id = wg_affection.1030
+	title = wg_affection.1030.name
+	desc = wg_affection.1030.desc
+	picture = GFX_evt_mist_ibuki
+	is_triggered_only = yes
+
+	option = {
+		name = EXCELLENT
+	}
+}
+country_event = {
+	id = wg_affection.1031
+	title = wg_affection.1031.name
+	desc = wg_affection.1031.desc
+	picture = GFX_evt_mist_ibuki
+	is_triggered_only = yes
+
+	option = {
+		name = EXCELLENT
+	}
+}
+country_event = {
+	id = wg_affection.1032
+	title = wg_affection.1032.name
+	desc = wg_affection.1032.desc
+	picture = GFX_evt_projectS_missouri
+	is_triggered_only = yes
+
+	option = {
+		name = wg_affection.1032.a
+	}
+}
+#星极复活
+country_event = {
+	id = wg_affection.1033
+	title = wg_affection.1033.name
+	desc = wg_affection.1033.desc
+	picture = GFX_evt_revive_leader
+	is_triggered_only = yes
+
+	option = {
+		name = wg_affection.1033.a
+	}
+}
+# 第二次提醒事件
+country_event = {
+	id = wg_affection.30
+	title = wg_affection.22.name
+	desc = wg_affection.30.desc
+	picture = GFX_evt_revive_leader
+	is_triggered_only = yes
+
+	option = {
+		name = wg_affection.22.b
+	}
+}
+country_event = {
+	id = wg_affection.37
+	title = wg_affection.37.name
+	desc = wg_affection.37.desc
+	picture = GFX_evt_revive_leader
+	is_triggered_only = yes
+
+	option = {
+		name = EXCELLENT
+	}
+}
+
+# 已复活过一次，不可再复活
+country_event = {
+	id = wg_affection.31
+	title = wg_affection.31.name
+	desc = wg_affection.31.desc
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { 
+			is_wg_leader_normal = yes
+			has_leader_flag = revive_leader
+			NOT = { has_leader_flag = can_revive }
+		}
+	}
+
+	immediate = {
+		FROM = { save_event_target_as = pass_leader }
+	}
+
+	option = {
+		name = wg_affection.31.a
+	}
+}
+
+# 每年检测有没有捡起了泡泡，并增加好感度
+country_event = {
+	id = wg_affection.200
+	hide_window = yes
+	trigger = {
+		has_country_flag = amoeba_befriended
+		any_controlled_fleet = {
+			OR = {
+				has_fleet_flag = lost_amoeba_fleet@ROOT
+				has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+				has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+			}
+		}
+		bubbles_available = yes
+	}
+	is_triggered_only = yes
+	immediate = {
+		random_controlled_fleet = {
+			limit = { 
+				OR = {
+					has_fleet_flag = lost_amoeba_fleet@ROOT
+					has_fleet_flag = lost_amoeba_adult_fleet@ROOT
+					has_fleet_flag = lost_amoeba_centenarian_fleet@ROOT
+				}
+			}
+			add_special_leader_affection = { LEADER = bubbles }
+			random_list = {
+				1 = {
+					modifier = { # buff加成的额外几率
+						owner = { has_modifier = wg_modifier_canteen_affectionUp1 }
+						factor = 2
+					}
+					add_special_leader_affection = { LEADER = bubbles }
+				}
+				1 = { }
+			}
+			random_list = {
+				2 = {
+					modifier = { # buff加成的额外几率
+						owner = { has_modifier = wg_modifier_canteen_affectionUp1 }
+						factor = 2
+					}
+					add_special_leader_affection = { LEADER = bubbles }
+				}
+				3 = { }
+			}
+		}
+		if = {
+			limit = { 
+				NOT = { has_country_flag = bubbles_centenarian }
+				any_controlled_fleet = {
+					has_fleet_flag = lost_amoeba_centenarian_fleet@root
+				}
+			}
+			set_country_flag = bubbles_centenarian
+		} else_if = {
+			limit = { NOT = { has_country_flag = bubbles_adult }}
+			set_country_flag = bubbles_adult
+		}
+		if = {
+			limit = {
+				NOR = { 
+					has_country_flag = modified_bubbles 
+					has_country_flag = give_up_modify_bubbles 
+				}
+				any_controlled_fleet = { OR = {
+					has_fleet_flag = lost_amoeba_adult_fleet@root
+					has_fleet_flag = lost_amoeba_centenarian_fleet@root
+				}}
+			}
+			if = {
+				limit = { 
+					OR = {
+						has_technology = tech_wsg_genetic_resequencing 
+						has_technology = tech_sh_genetic_resequencing 
+						has_technology = tech_sh_genetic_resequencing2
+						has_technology = tech_gene_tailoring 
+					}
+					NOR = { 
+						has_special_project = MODIFY_BUBBLES
+						has_special_project = MODIFY_BUBBLES2
+						has_country_flag = modified_bubbles 
+					}
+				}
+				country_event = { id = wg_bubbles.1 }
+			} else_if = {
+				limit = {
+					has_technology = tech_morphogenetic_field_mastery
+					NOR = { 
+						has_special_project = MODIFY_BUBBLES
+						has_special_project = MODIFY_BUBBLES2
+						has_special_project = MODIFY_BUBBLES_SECOND
+						has_special_project = MODIFY_BUBBLES_SECOND2
+						has_country_flag = modified_bubbles 
+						has_country_flag = can_communicate_bubbles
+					}
+				}
+				country_event = { id = wg_bubbles.2 }
+			}
+		}
+	}
+}
+
+# debug测试用
+country_event = {
+	id = wg_affection.12452
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		set_variable = { which = wg_lady_affection value = @wg_lady_affection_to_lv2 }
+		set_variable = { which = wg_gray_affection value = @wg_gray_affection_to_lv2 }
+		set_variable = { which = wg_shimakaze_affection value = @wg_shimakaze_affection_to_lv2 }
+		set_variable = { which = wg_astesia_affection value = @wg_astesia_affection_to_lv2 }
+		set_variable = { which = wg_bubbles_affection value = @wg_bubbles_affection_to_lv2 }
+		set_variable = { which = wg_dragon_affection value = @wg_dragon_affection_to_lv2 }
+		set_variable = { which = wg_yukikaze_affection value = @wg_yukikaze_affection_to_lv2 }
+	}
+}
+country_event = {
+	id = wg_affection.12453
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		set_variable = { which = wg_lady_affection value = @wg_lady_affection_to_lv3 }
+		set_variable = { which = wg_gray_affection value = @wg_gray_affection_to_lv3 }
+		set_variable = { which = wg_shimakaze_affection value = @wg_shimakaze_affection_to_lv3 }
+		set_variable = { which = wg_astesia_affection value = @wg_astesia_affection_to_lv3 }
+		set_variable = { which = wg_bubbles_affection value = @wg_bubbles_affection_to_lv3 }
+		set_variable = { which = wg_dragon_affection value = @wg_dragon_affection_to_lv3 }
+		set_variable = { which = wg_yukikaze_affection value = @wg_yukikaze_affection_to_lv3 }
+	}
+}
+country_event = {
+	id = wg_affection.12454
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		set_variable = { which = wg_lady_affection value = @wg_lady_affection_to_lv4 }
+		set_variable = { which = wg_gray_affection value = @wg_gray_affection_to_lv4 }
+		set_variable = { which = wg_shimakaze_affection value = @wg_shimakaze_affection_to_lv4 }
+		set_variable = { which = wg_astesia_affection value = @wg_astesia_affection_to_lv4 }
+		set_variable = { which = wg_bubbles_affection value = @wg_bubbles_affection_to_lv4 }
+		set_variable = { which = wg_dragon_affection value = @wg_dragon_affection_to_lv4 }
+		set_variable = { which = wg_yukikaze_affection value = @wg_yukikaze_affection_to_lv4 }
+	}
+}
+country_event = {
+	id = wg_affection.12455
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		set_variable = { which = wg_lady_affection value = @wg_lady_affection_to_lv5 }
+		set_variable = { which = wg_gray_affection value = @wg_gray_affection_to_lv5 }
+		set_variable = { which = wg_shimakaze_affection value = @wg_shimakaze_affection_to_lv5 }
+		set_variable = { which = wg_astesia_affection value = @wg_astesia_affection_to_lv5 }
+		set_variable = { which = wg_bubbles_affection value = @wg_bubbles_affection_to_lv5 }
+		set_variable = { which = wg_dragon_affection value = @wg_dragon_affection_to_lv5 }
+		set_variable = { which = wg_yukikaze_affection value = @wg_yukikaze_affection_to_lv5 }
+	}
+}
+country_event = {
+	id = wg_affection.12456
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+
+	immediate = {
+		set_country_flag = married_wsg_lady
+		set_country_flag = married_wg_shimakaze
+		set_country_flag = married_gray
+		set_country_flag = married_bubbles
+		set_country_flag = married_wg_dragon
+		set_country_flag = married_wg_yukikaze
+		set_country_flag = married_wg_astesia
+	}
+}
+

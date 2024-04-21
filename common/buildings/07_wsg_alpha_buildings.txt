@@ -1,0 +1,483 @@
+building_wsg_alpha_center = {
+	base_buildtime = 1800
+	
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = no
+
+	category = research
+
+	empire_limit = {
+	 	base = 1
+	}
+	potential = {
+		exists = planet
+		is_capital = yes
+		owner = { has_authority = auth_warshipgirls }	
+		NOT = { has_modifier = slave_colony }
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			owner = { OR = {
+				is_regular_empire = no 
+				has_wg_special_authority = no
+			}}
+			has_modifier = slave_colony
+		}
+	}
+	allow = {
+		has_major_upgraded_capital = yes	
+	}
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 40
+		job_wsg_administrator_add = 4
+		job_wsg_researcher_add = 10
+		planet_stability_add = 100
+	}
+	country_modifier = {
+		all_technology_research_speed = 0.2	
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			influence = 100
+			sr_alpha = 100
+			sr_neo = 300
+		}
+
+		upkeep = {
+			energy = 50
+			sr_alpha = 20
+			sr_neo = 10
+		}
+	}	
+
+	prerequisites = {
+		"tech_building_wsg_alpha_center"
+	}
+	
+	triggered_desc = {
+		text = job_wsg_administrator_effect_desc
+	}	
+	triggered_desc = {		
+		text = job_wsg_research_effect_desc
+	}
+}
+
+building_wsg_norston_tower = {
+	base_buildtime = 1800
+	
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+
+	category = unity
+
+	empire_limit = {
+	 	base = 1
+	}
+	potential = {
+		exists = planet
+		OR = {
+			is_planet_class = pc_wsg_port
+			is_planet_class = pc_wg_graygoo
+		}
+		owner = { 
+			has_ascension_perk = ap_port_project
+			has_authority = auth_warshipgirls	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			owner = { OR = {
+				is_regular_empire = no 
+				has_wg_special_authority = no
+			}}
+			has_modifier = slave_colony
+		}
+	}
+	allow = {
+		has_major_upgraded_capital = yes	
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 50 }
+	}
+	planet_modifier = {
+		planet_stability_add = 5
+		planet_jobs_produces_mult = 0.15
+	}
+	country_modifier = {
+		country_influence_produces_mult = 0.2
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			alloys = 2000
+		}
+		cost = {
+			trigger = { 
+				exists = owner
+				owner = { OR = {
+					has_technology = tech_wsg_senergy
+					has_country_flag = wg_ascension_path_project_s
+				}}
+			}
+			sr_se = 50
+		}
+		cost = {
+			trigger = { 
+				exists = owner
+				owner = { NOR = {
+					has_technology = tech_wsg_senergy
+					has_country_flag = wg_ascension_path_project_s
+				}}
+			}
+			sr_neo = 50
+		}
+		upkeep = {
+			energy = 20
+		}
+		upkeep = {
+			trigger = { 
+				exists = owner
+				owner = { OR = {
+					has_technology = tech_wsg_senergy
+					has_country_flag = wg_ascension_path_project_s
+				}}
+			}
+			sr_se = 30
+		}
+		upkeep = {
+			trigger = { 
+				exists = owner
+				owner = { NOR = {
+					has_technology = tech_wsg_senergy
+					has_country_flag = wg_ascension_path_project_s
+				}}
+			}
+			sr_neo = 20
+		}
+	}	
+}
+
+building_wsg_bison = {
+	base_buildtime = 1000
+	
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+
+	category = resource
+
+	empire_limit = {
+	 	base = 1
+	}
+	potential = {
+		exists = planet
+		owner = { has_authority = auth_warshipgirls	}
+		NOT = { has_modifier = slave_colony }
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			owner = { OR = {
+				is_regular_empire = no 
+				has_wg_special_authority = no
+			}}
+			has_modifier = slave_colony
+		}
+	}
+	allow = {
+		has_upgraded_capital = yes	
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 20 }
+	}
+	planet_modifier = {
+		planet_stability_add = 5
+	}
+	country_modifier = {
+		country_energy_produces_mult = 0.10
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			influence = 50
+			minerals = 3000
+		}
+		upkeep = {
+			food = 10
+		}
+	}		
+	ai_resource_production = {
+		energy = 25
+		trigger = { always = yes }
+	}
+}
+
+building_wsg_cloud_city = {
+	base_buildtime = 1500
+	
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+
+	category = unity
+
+	empire_limit = {
+	 	base = 1
+	}
+	potential = {
+		exists = planet
+		owner = { 
+			has_authority = auth_warshipgirls	
+			has_ascension_perk = ap_wsg_universal_transactions
+		}	
+		NOT = { has_modifier = slave_colony }
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			owner = { OR = {
+				is_regular_empire = no 
+				has_wg_special_authority = no
+			}}
+			has_modifier = slave_colony
+			AND = {
+				buildings_stop_pop = yes
+				owner = { is_ai = yes }
+			}
+		}
+	}
+	allow = {
+		has_upgraded_capital = yes	
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 35 }
+	}
+	planet_modifier = {
+		planet_amenities_mult = 0.50
+		trade_value_mult = 0.50
+	}
+	country_modifier = {
+		country_trade_fee = -0.05
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			influence = 50
+			minerals = 5000
+		}
+		upkeep = {
+			energy = 20
+		}
+	}		
+	ai_resource_production = {
+		energy = 20
+		trigger = { always = yes }
+	}
+}
+
+building_wsg_historical_library = {
+	base_buildtime = 1800
+	
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+
+	category = research
+	empire_limit = {
+	 	base = 1
+	}
+	potential = {
+		exists = planet
+		owner = { 
+			has_country_flag = canarias_owner
+			has_authority = auth_warshipgirls	
+		}	
+		NOT = { has_modifier = slave_colony }
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			owner = { OR = {
+				is_regular_empire = no 
+				has_wg_special_authority = no
+			}}
+			has_modifier = slave_colony
+		}
+	}
+	allow = {
+		has_upgraded_capital = yes
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 40 }
+	}
+	planet_modifier = {
+		planet_jobs_society_research_produces_mult = 0.3
+		job_wsg_historical_researcher_add = 5
+	}
+	country_modifier = {
+		country_society_research_produces_mult = 0.1
+		category_statecraft_research_speed_mult = 0.2
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 2000
+			alloys = 1000
+		}
+		upkeep = {
+			energy = 10
+		}
+	}		
+}
+#向日葵射线接收塔
+building_wsg_sunflower_radioactive = {
+	base_buildtime = 1200
+	
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+
+	category = unity
+
+	empire_limit = {
+	 	base = 1
+	}
+	potential = {
+		exists = planet
+		owner = { 
+			has_civic = civic_sunflower
+			has_ascension_perk = ap_wsg_station
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			owner = { OR = {
+				is_regular_empire = no 
+				has_wg_special_authority = no
+			}}
+			has_modifier = slave_colony
+		}
+	}
+	allow = {
+		has_upgraded_capital = yes	
+		custom_tooltip = {
+			fail_text = z_mod_num_pop_trigger_20
+			z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 20 }
+		}
+		custom_tooltip = {
+			fail_text = decision_last_sunflower_pop
+			count_owned_pop = {
+				limit = { has_trait = trait_wg_sunflower }
+				count > 1
+			}
+		}
+		custom_tooltip = {
+			fail_text = without_dyson_cloud
+			owner = {
+				has_country_flag = built_dyson_yamato
+			}
+		}
+	}
+	planet_modifier = {
+		planet_jobs_energy_produces_mult = 0.25
+	}
+	country_modifier = {
+		custom_tooltip = sunflower_radioactive_effects
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			influence = 50
+			alloys = 5000
+			food = 5000
+		}
+		upkeep = {
+			alloys = 5
+			food = 5
+		}
+	}	
+}
+
+building_wsg_prosperity_monument = {
+	base_buildtime = 1500
+	
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = yes
+
+	category = unity
+
+	empire_limit = {
+	 	base = 1
+	}
+	potential = {
+		exists = owner
+		owner = { 
+			OR = {
+				has_ethic = ethic_fanatic_pacifist
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_egalitarian
+				has_ethic = ethic_egalitarian
+			}
+			has_authority = auth_warshipgirls
+		}
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			owner = { OR = {
+				is_regular_empire = no 
+				has_wg_special_authority = no
+			}}
+			has_modifier = slave_colony
+		}
+	}
+	allow = {
+		has_upgraded_capital = yes	
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 20 }
+	}
+	planet_modifier = {
+		planet_jobs_unity_produces_mult = 0.10
+		job_culture_worker_add = 4
+	}
+	triggered_desc = {
+		text = building_wsg_prosperity_monument_effect
+	}
+	triggered_desc = {
+		text = job_culture_worker_effect_desc
+	}
+	country_modifier = {
+		ascension_perks_add = 1 
+		tradition_cost_empire_size_mult = -0.1
+		tech_cost_empire_size_mult = -0.1
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			influence = 50
+			minerals = 3500
+		}
+		produces = {
+			unity = 50
+		}
+		produces = {
+			trigger = { exists = owner }
+			unity = 10
+			multiplier = owner.trigger:num_ascension_perks
+		}
+		upkeep = {
+			energy = 10
+		}
+	}		
+	ai_resource_production = {
+		energy = 25
+		trigger = { always = yes }
+	}
+}

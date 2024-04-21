@@ -1,0 +1,671 @@
+#联合老家
+united_fleet_home_system = {
+	class = "rl_binary_starting_stars"
+
+	usage = origin
+	
+	flags = { empire_home_system }
+	
+	init_effect = {
+		every_neighbor_system = {
+			set_star_flag = empire_cluster
+			every_neighbor_system = {
+				set_star_flag = empire_cluster
+			}
+		}
+		generate_home_system_resources = yes
+	}
+
+	planet = {
+		count = 1
+		class = star
+		orbit_distance = 25
+		orbit_angle = 0
+		size = { min = 30 max = 35 }
+		has_ring = no
+	}
+
+	planet = {
+		count = 1
+		class = star
+		orbit_distance = 0
+		size = { min = 15 max = 25 }
+		has_ring = no
+		init_effect = {
+			save_global_event_target_as = uf_home_ambient_object_target
+			create_ambient_object = {
+				type = "large_debris_object"
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 65
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "large_debris_object"
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 80
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "large_debris_object"
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 120
+					angle = random
+				}
+			}
+			create_ambient_object = {
+				type = "large_debris_object"
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 125
+					angle = random
+				}
+			}
+		}
+	}
+	max_instances = 1
+	change_orbit = 30
+	
+	planet = {
+		class = pc_molten
+		size = 13
+		orbit_angle = { min = 90 max = 270 }
+	}
+
+	planet = {
+		count = 1
+		class = ideal_planet_class
+		orbit_distance = 30
+		orbit_angle = random
+		size = { min = 25 max = 30 }
+		home_planet = yes
+		has_ring = no
+		deposit_blockers = none
+		modifiers = none
+
+		init_effect = {
+			set_planet_flag = uf_home_planet
+			save_global_event_target_as = uf_home_planet_target
+			prevent_anomaly = yes		
+		}
+	}
+	planet = {
+		count = 1
+		class = "pc_nuked"
+		name = "NAME_uf_home_second_planet"
+		orbit_angle = { min = 90 max = 270 }
+		has_ring = no
+		size = { min = 18 max = 25 }
+
+		init_effect = {
+			prevent_anomaly = yes
+			set_planet_flag = uf_home_second_planet
+			save_global_event_target_as = uf_home_second_planet_target
+		}
+		init_effect = {
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = -15 max = -15 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 0
+					angle = random
+				}
+				set_ambient_object_flag = uf_second_planet_debris_object
+			}
+		}
+	}
+	planet = {
+	    class = pc_frozen
+		orbit_distance = 30
+		size = { min = 20 max = 25 }
+		change_orbit = @base_moon_distance
+		
+		moon = {	
+			class = pc_barren_cold		
+			count = { min = 0 max = 1 }
+			orbit_distance = 5
+		}
+	}
+    planet = {
+		class = pc_gas_giant
+		size = 22
+		orbit_distance = 30
+		orbit_angle = { min = 90 max = 270 }
+
+		moon = {
+			class = "pc_barren_cold"
+			orbit_distance = 14
+			orbit_angle = { min = 90 max = 270 }
+		}
+
+		moon = {
+			class = "pc_barren_cold"
+			orbit_distance = 6
+			orbit_angle = { min = 90 max = 270 }
+		}
+
+		moon = {
+			class = "pc_frozen"
+			orbit_distance = 6
+			orbit_angle = { min = 90 max = 270 }
+		}
+	}
+	planet = {
+		class = pc_frozen
+		count = 1
+		orbit_distance = 30
+	}
+    planet = {
+		class = pc_gas_giant
+		size = 20
+		has_ring = no
+		orbit_distance = 40
+		orbit_angle = { min = 90 max = 270 }
+	}	
+	neighbor_system = {
+		trigger = { num_guaranteed_colonies >= 2 }
+		distance = { min = 13 max = @distance }
+		initializer = "neighbor_t1"
+	}
+	neighbor_system = {
+		trigger = { num_guaranteed_colonies >= 1 }
+		distance = { min = 13 max = @distance }	
+		initializer = "neighbor_t1_first_colony"
+	}
+	init_effect = {
+		save_global_event_target_as = uf_home_system_target
+		spawn_megastructure = { 
+			type = "uf_ring_shipyard_damaged" 
+			coords_from = event_target:uf_home_second_planet_target
+		}
+	}
+}
+
+
+
+uf_mega_habitat_origin_system = {
+	flags = { uf_mega_habitat_origin_system }
+	class = "rl_binary_starting_stars"
+	usage = origin
+	planet = {
+		class = star
+		orbit_distance = 0
+		size = 25	
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+		
+	}
+	planet = {
+		class = star
+		orbit_distance = 0
+		size = 25	
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+		
+	}
+
+	change_orbit = 45
+	
+	planet = {
+		class = pc_molten
+		orbit_distance = 30
+		size = { max = 25 min = 25 }	
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+	}
+	
+	planet = {
+		count = 1
+		class = ideal_planet_class
+		orbit_angle = random
+		size = { min = 25 max = 30 }
+		home_planet = yes
+		orbit_distance = 30
+		has_ring = no
+		deposit_blockers = none
+		modifiers = none
+
+		init_effect = {
+			prevent_anomaly = yes
+			save_global_event_target_as = uf_mega_habitat_origin_old_start_planet
+		}
+	}
+	planet = {
+		class = pc_barren_cold
+		orbit_distance = 30
+		size = { max = 25 min = 25 }	
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+	}
+	init_effect = {
+		save_global_event_target_as = uf_mega_habitat_origin_start_system
+		spawn_megastructure = {
+			type = "uf_mega_habitat_gateway"
+			orbit_angle = 40
+			orbit_distance = 40
+			planet = star
+		}
+	}
+}
+
+uf_mega_habitat_origin_2_system = {
+	name = "NAME_uf_mega_habitat_system"
+	flags = { uf_mega_habitat_origin_core_system wg_sealed_system }
+	class = "sc_uf_beyond_the_galaxy"
+	planet = {
+		class = star
+		orbit_distance = 0
+		size = 0	
+		init_effect = {
+			save_event_target_as = uf_mega_habitat
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+		
+	}
+	planet = {
+		count = 1
+		class = "pc_uf_glory"
+		name = "NAME_Habitable_Section_UF_Center"
+		orbit_angle = 0
+		has_ring = no
+		size = 0
+
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			prevent_anomaly = yes
+			set_planet_flag = uf_new_capital
+			set_planet_flag = colony_event
+			save_global_event_target_as = uf_mega_habitat_origin_start_home_planet
+			add_modifier =  { modifier = uf_glory_world_cente days = -1 }
+		}
+	}
+
+	init_effect = {
+		spawn_megastructure = { 
+			type = "uf_mega_habitat_5" 
+			coords_from = event_target:uf_mega_habitat
+		}
+		save_global_event_target_as = uf_mega_habitat_origin_2_system_target
+	}
+	change_orbit = 200
+	
+	planet = {
+		class = pc_barren_cold
+		name = "NAME_WG_NO_NAME"
+		orbit_distance = 30
+		size = { max = 0 min = 0 }	
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+	}
+}
+
+
+
+uf_mega_habitat_system = {
+	name = "NAME_uf_mega_habitat_system"
+	flags = { uf_mega_habitat_system }
+	class = "sc_uf_mega_habitat"
+	planet = {
+		class = star
+		orbit_distance = 0
+		size = 0	
+		init_effect = {
+			save_event_target_as = uf_mega_habitat
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+		
+	}
+	planet = {
+		count = 1
+		class = "pc_uf_glory"
+		name = "NAME_Habitable_Section_UF_Center"
+		orbit_angle = 0
+		has_ring = no
+		size = 0
+
+		init_effect = {
+			trigger_megastructure_icon = yes
+			set_planet_flag = megastructure
+			set_planet_flag = colony_event
+			prevent_anomaly = yes
+			save_global_event_target_as = pc_uf_glory_target_1
+			add_modifier =  { modifier = uf_glory_world_cente days = -1 }
+		}
+	}
+
+	init_effect = {
+		spawn_megastructure = { 
+			type = "uf_mega_habitat_1" 
+			coords_from = event_target:uf_mega_habitat
+		}
+	}
+	change_orbit = 200
+	
+	planet = {
+		class = pc_barren_cold
+		name = "NAME_WG_NO_NAME"
+		orbit_distance = 30
+		size = { min = 0 max = 0 }	
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+	}
+	init_effect = {
+		save_global_event_target_as = uf_mega_habitat_system_target
+	}
+}
+
+uf_shipyard_system = {
+	name = "NAME_uf_shipyard_system"
+	flags = { uf_shipyard_system }
+	class = "sc_wsg_box"
+	planet = {
+		class = star
+		orbit_distance = 0
+		size = 0	
+		init_effect = {
+			save_event_target_as = uf_mega_shipyard
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+		
+	}
+
+
+	init_effect = {
+		spawn_megastructure = { 
+			type = "uf_kind_yard_2" 
+			coords_from = event_target:uf_mega_shipyard
+		}
+	}
+	change_orbit = 300
+	
+	planet = {
+		class = pc_barren_cold
+		name = "NAME_WG_NO_NAME"
+		orbit_distance = 30
+		size = { min = 0 max = 0 }	
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+	}
+	init_effect = {
+		save_global_event_target_as = uf_shipyard_system_target
+	}
+}
+
+uf_galaxy_gun_system = {
+	name = "NAME_uf_galaxy_gun_system"
+	flags = { uf_galaxy_gun_system }
+	class = "sc_uf_gun"
+	planet = {
+		class = "pc_g_star"
+		orbit_distance = 0
+		size = 32	
+		init_effect = {
+			save_event_target_as = uf_galaxy_gun
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+		
+	}
+
+
+	init_effect = {
+		spawn_megastructure = { 
+			type = "uf_galaxy_gun" 
+			coords_from = event_target:uf_galaxy_gun
+		}
+		save_global_event_target_as = uf_galaxy_gun_system_target
+	}
+	change_orbit = 200
+	
+	planet = {
+		class = pc_barren_cold
+		name = "NAME_WG_NO_NAME"
+		orbit_distance = 30
+		size = { min = 0 max = 0 }	
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+	}
+}
+
+uf_galaxy_memorial_hall = {
+	name = "NAME_galaxy_memorial_hall"
+	flags = { uf_system }
+	class = "sc_wsg_box"
+	planet = {
+		class = star
+		orbit_distance = 0
+		size = 0	
+		init_effect = {
+			save_event_target_as = uf_rectangular
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+		
+	}
+
+	init_effect = {
+		spawn_megastructure = { 
+			type = "uf_rectangular" 
+			coords_from = event_target:uf_rectangular
+		}
+	}
+	change_orbit = 50
+	
+	planet = {
+		class = pc_barren_cold
+		name = "NAME_WG_NO_NAME"
+		orbit_distance = 30
+		size = { min = 0 max = 0 }	
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+	}
+}
+
+
+
+uf_test_system = {
+	name = "NAME_wg_fallen_empire_colony_4"
+	flags = { uf_system }
+	class = rl_standard_stars
+	planet = {
+		class = "pc_g_star"
+		orbit_distance = 0
+		size = 25	
+		init_effect = {
+			save_event_target_as = uf_mega
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+		
+	}
+
+
+	init_effect = {
+		spawn_megastructure = { 
+			type = "uf_hyperdimensional_matter_core_3" 
+			coords_from = event_target:uf_mega
+		}
+	}
+	change_orbit = 300
+}
+
+
+uf_test_3_system = {
+	name = "NAME_wg_fallen_empire_colony_4"
+	flags = { uf_system }
+	class = "sc_wsg_box"
+	planet = {
+		class = star
+		orbit_distance = 0
+		size = 0	
+		init_effect = {
+			save_event_target_as = uf_rectangular
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+		
+	}
+
+	init_effect = {
+		spawn_megastructure = { 
+			type = "uf_rectangular" 
+			coords_from = event_target:uf_rectangular
+		}
+	}
+	change_orbit = 50
+	
+	planet = {
+		class = pc_barren_cold
+		name = "NAME_WG_NO_NAME"
+		orbit_distance = 30
+		size = { min = 0 max = 0 }	
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+	}
+}
+uf_test_4_system = {
+	name = "NAME_wg_fallen_empire_colony_4"
+	flags = { uf_system }
+	class = "sc_monolith_crisis_star"
+	planet = {
+		class = pc_monolith_crisis_star
+		orbit_distance = 0
+		size = 25	
+		init_effect = {
+			clear_deposits = yes
+		}
+		
+	}
+
+	change_orbit = 200
+	planet = {
+		class = pc_barren_cold
+		name = "NAME_WG_NO_NAME"
+		orbit_distance = 30
+		size = { min = 0 max = 0 }	
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+	}
+}
+
+uf_gate_system = {
+	name = "NAME_uf_gate_system"
+	flags = { uf_gate_system }
+	class = "sc_wsg_box"
+	planet = {
+		class = star
+		orbit_distance = 0
+		size = 0	
+		init_effect = {
+			save_event_target_as = uf_gate
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+		
+	}
+
+
+	init_effect = {
+		spawn_megastructure = { 
+			type = "uf_gate_1" 
+			coords_from = event_target:uf_gate
+		}
+	}
+	change_orbit = 300
+	
+	planet = {
+		class = pc_barren_cold
+		name = "NAME_WG_NO_NAME"
+		orbit_distance = 30
+		size = { min = 0 max = 0 }	
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+	}
+	init_effect = {
+		save_global_event_target_as = uf_gate_system_target
+	}
+}
+
+uf_rectangular_system = {
+	name = "NAME_uf_rectangular_system"
+	flags = { uf_rectangular_system }
+	class = "sc_wsg_box"
+	planet = {
+		class = star
+		orbit_distance = 0
+		size = 0	
+		init_effect = {
+			save_event_target_as = uf_rectangular
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+		
+	}
+
+
+	init_effect = {
+		spawn_megastructure = { 
+			type = "uf_rectangular" 
+			coords_from = event_target:uf_rectangular
+		}
+	}
+	change_orbit = 300
+	
+	planet = {
+		class = pc_barren_cold
+		name = "NAME_WG_NO_NAME"
+		orbit_distance = 30
+		size = { min = 0 max = 0 }	
+		init_effect = {
+			prevent_anomaly = yes
+			clear_deposits = yes
+		}
+	}
+	init_effect = {
+		save_global_event_target_as = uf_rectangular_system_target
+	}
+}

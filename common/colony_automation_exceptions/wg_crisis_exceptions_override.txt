@@ -1,0 +1,156 @@
+automate_amenity_management = {
+	category = "planet_automation_amenities"
+	available = {
+		free_amenities <= -5
+		owner = {
+			is_wg_empire = no
+			NOR = {
+				has_authority = auth_machine_intelligence
+				has_authority = auth_hive_mind
+			}
+		}
+		OR = {
+			NOT = { uses_district_set = city_world }
+			free_district_slots = 0
+			has_resource = { type = exotic_gases amount < 75 }
+		}
+	}
+
+	crisis = yes
+
+	buildings = {
+		holo = {
+			building = building_holo_theatres
+			available = {
+				owner = {
+					is_spiritualist = no
+					is_megacorp = no
+				}
+			}
+		}
+
+		temp = {
+			building = building_temple
+			available = {
+				owner = {
+					is_spiritualist = yes
+					is_megacorp = no
+				}
+			}
+		}
+
+		commerce = {
+			building = building_commercial_zone
+			available = {
+				owner = {
+					is_megacorp = yes
+				}
+			}
+		}
+	}
+}
+
+automate_amenity_management_ecu = {
+	category = "planet_automation_amenities"
+	available = {
+		free_amenities <= -5
+		owner = {
+			is_wg_empire = no
+			NOR = {
+				has_authority = auth_machine_intelligence
+				has_authority = auth_hive_mind
+			}
+		}
+		uses_district_set = city_world
+		free_district_slots > 0
+		has_resource = { type = exotic_gases amount >= 75 }
+	}
+
+	crisis = yes
+
+	prio_districts = {
+		district_arcology_leisure
+	}
+}
+
+automate_crystal_deficit_management = {
+	category = "planet_automation_rare_resources"
+	available = {
+		owner = { has_monthly_income = { resource = rare_crystals value < 0 } }
+		free_building_slots > 1
+	}
+
+	crisis = yes
+
+	buildings = {
+		wg_crystal_building = {
+			building = building_wsg_crystal_plant
+			available = {
+				owner = { has_authority = auth_warshipgirls }
+			}
+		}
+		crystal_deposit = {
+			building = building_crystal_mines
+		}
+
+		crystal_plant = {
+			building = building_crystal_plant
+		}
+	}
+}
+
+automate_mote_deficit_management = {
+	category = "planet_automation_rare_resources"
+	available = {
+		owner = { 
+			uses_sr_senergy_country = no
+			has_monthly_income = { resource = volatile_motes value < 0 } 
+		}
+		free_building_slots > 1
+	}
+
+	crisis = yes
+
+	buildings = {
+		wg_mote_building = {
+			building = building_wsg_chemical_plant
+			available = {
+				owner = { has_authority = auth_warshipgirls }
+			}
+		}
+
+		mote_deposit = {
+			building = building_mote_harvesters
+		}
+
+		chem_plant = {
+			building = building_chemical_plant
+		}
+	}
+}
+
+automate_gas_deficit_management = {
+	category = "planet_automation_rare_resources"
+	available = {
+		owner = { has_monthly_income = { resource = exotic_gases value < 0 } }
+		free_building_slots > 1
+	}
+
+	crisis = yes
+
+	buildings = {
+		wg_gas_building = {
+			building = building_wsg_refinery
+			available = {
+				owner = { has_authority = auth_warshipgirls }
+			}
+		}
+		gas_deposit = {
+			building = building_gas_extractors
+		}
+
+		refinery = {
+			building = building_refinery
+		}
+	}
+}

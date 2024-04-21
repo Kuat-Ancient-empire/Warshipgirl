@@ -1,0 +1,3342 @@
+namespace = wsgranking
+
+## WSG RANKING EVENTS
+country_event = {
+	id = wsgranking.100
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		is_ai = no
+		is_wg_empire = yes
+	}
+
+	immediate = {
+		# Increment events - resources
+		country_event = { id = wsgranking.101 days = 5 } # 电
+		country_event = { id = wsgranking.111 days = 5 } # 矿
+		country_event = { id = wsgranking.121 days = 5 } # 食物
+		country_event = { id = wsgranking.131 days = 5 } # 合金
+		# country_event = { id = wsgranking.141 days = 5 } # 消费品
+
+		
+		country_event = { id = wsgranking.211 days = 6 } # Fleet power
+		country_event = { id = wsgranking.301 days = 6 } # Empire size
+		country_event = { id = wsgranking.339 days = 6 } # number of pops
+		country_event = { id = wsgranking.340 days = 6 } # number of planet pops
+		country_event = { id = wsgranking.341 days = 6 } # vassals
+
+		country_event = { id = wsgranking.3207 days = 6 } # ringworld
+	}
+
+}
+country_event = {
+	id = wsgranking.101
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NAND = {
+			has_country_flag = wsgranking101
+			has_country_flag = wsgranking102
+			has_country_flag = wsgranking103
+			has_country_flag = wsgranking104
+		}
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking101 }}
+			if = {
+				limit = { resource_income_compare = { resource = energy value >= 200 }}
+				set_country_flag = wsgranking101
+				change_variable = { which = rankpts value = 2 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10101 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking102 }}
+			if = {
+				limit = { resource_income_compare = { resource = energy value >= 500 }}
+				set_country_flag = wsgranking102
+				change_variable = { which = rankpts value = 3 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10102 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking103 }}
+			if = {
+				limit = { resource_income_compare = { resource = energy value >= 1000 }}
+				set_country_flag = wsgranking103
+				change_variable = { which = rankpts value = 4 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10103 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking104 }}
+			if = {
+				limit = { resource_income_compare = { resource = energy value >= 4000 }}
+				set_country_flag = wsgranking104
+				change_variable = { which = rankpts value = 7 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10104 }
+				}
+			}
+			break = yes
+		}
+	}
+}
+
+# 矿物
+country_event = {
+	id = wsgranking.111
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NAND = {
+			has_country_flag = wsgranking111
+			has_country_flag = wsgranking112
+			has_country_flag = wsgranking113
+			has_country_flag = wsgranking114
+		}
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking111 }}
+			if = {
+				limit = { resource_income_compare = { resource = minerals value >= 200 }}
+				set_country_flag = wsgranking111
+				change_variable = { which = rankpts value = 2 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10111 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking112 }}
+			if = {
+				limit = { resource_income_compare = { resource = minerals value >= 500 }}
+				set_country_flag = wsgranking112
+				change_variable = { which = rankpts value = 3 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10112 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking113 }}
+			if = {
+				limit = { resource_income_compare = { resource = minerals value >= 1000 }}
+				set_country_flag = wsgranking113
+				change_variable = { which = rankpts value = 4 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10113 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking114 }}
+			if = {
+				limit = { resource_income_compare = { resource = minerals value >= 3000 }}
+				set_country_flag = wsgranking114
+				change_variable = { which = rankpts value = 7 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10114 }
+				}
+			}
+			break = yes
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.121
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NAND = {
+			has_country_flag = wsgranking121
+			has_country_flag = wsgranking122
+			has_country_flag = wsgranking123
+			has_country_flag = wsgranking124
+		}
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking121 }}
+			if = {
+				limit = { resource_income_compare = { resource = food value >= 200 }}
+				set_country_flag = wsgranking121
+				change_variable = { which = rankpts value = 2 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10121 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking122 }}
+			if = {
+				limit = { resource_income_compare = { resource = food value >= 500 }}
+				set_country_flag = wsgranking122
+				change_variable = { which = rankpts value = 3 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10122 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking123 }}
+			if = {
+				limit = { resource_income_compare = { resource = food value >= 1000 }}
+				set_country_flag = wsgranking123
+				change_variable = { which = rankpts value = 4 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10123 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking124 }}
+			if = {
+				limit = { resource_income_compare = { resource = food value >= 2000 }}
+				set_country_flag = wsgranking124
+				change_variable = { which = rankpts value = 7 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10124 }
+				}
+			}
+			break = yes
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.131
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NAND = {
+			has_country_flag = wsgranking131
+			has_country_flag = wsgranking132
+			has_country_flag = wsgranking133
+			has_country_flag = wsgranking134
+		}
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking131 }}
+			if = {
+				limit = { resource_income_compare = { resource = alloys value >= 100 }}
+				set_country_flag = wsgranking131
+				change_variable = { which = rankpts value = 2 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10131 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking132 }}
+			if = {
+				limit = { resource_income_compare = { resource = alloys value >= 500 }}
+				set_country_flag = wsgranking132
+				change_variable = { which = rankpts value = 4 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10132 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking133 }}
+			if = {
+				limit = { resource_income_compare = { resource = alloys value >= 1000 }}
+				set_country_flag = wsgranking133
+				change_variable = { which = rankpts value = 5 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10133 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking134 }}
+			if = {
+				limit = { resource_income_compare = { resource = alloys value >= 2000 }}
+				set_country_flag = wsgranking134
+				change_variable = { which = rankpts value = 9 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10134 }
+				}
+			}
+			break = yes
+		}
+	}
+}
+
+#Increment events - Fleet power
+country_event = {
+	id = wsgranking.211
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NAND = {
+			has_country_flag = wsgranking211
+			has_country_flag = wsgranking212
+			has_country_flag = wsgranking213
+			has_country_flag = wsgranking214
+		}
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking211 }}
+			if = {
+				limit = { fleet_power > 5000 }
+				set_country_flag = wsgranking211
+				change_variable = { which = rankpts value = 2 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10211 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking212 }}
+			if = {
+				limit = { fleet_power > 50000 }
+				set_country_flag = wsgranking212
+				change_variable = { which = rankpts value = 5 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10212 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking213 }}
+			if = {
+				limit = { fleet_power > 500000 }
+				set_country_flag = wsgranking213
+				change_variable = { which = rankpts value = 8 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10213 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking214 }}
+			if = {
+				limit = { fleet_power > 5000000 }
+				set_country_flag = wsgranking214
+				change_variable = { which = rankpts value = 10 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10214 }
+				}
+			}
+			break = yes
+		}
+	}
+}
+
+ship_event = {
+	id = wsgranking.220
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		owner = {
+			is_ai = no
+			is_wg_empire = yes
+		}
+	}
+
+	immediate = {
+		switch = {
+			trigger = is_ship_size
+			destroyer = { owner = { country_event = { id = wsgranking.221 }}}
+			cruiser = { owner = { country_event = { id = wsgranking.222 }}}
+			titan = { owner = { country_event = { id = wsgranking.224 }}}
+			colossus = { owner = { country_event = { id = wsgranking.225 }}}
+			Dreadnaught = { owner = { country_event = { id = wsgranking.226 }}}
+			Flagship = { owner = { country_event = { id = wsgranking.228 }}}
+			battleship = {
+				owner = { 
+					if = {
+						limit = {
+							NAND = {
+								has_country_flag = wsgranking223
+								has_country_flag = wsgranking231
+								has_country_flag = wsgranking232
+								has_country_flag = wsgranking233
+								has_country_flag = wsgranking233
+							}
+						}
+						if = {
+							limit = { NOT = { has_country_flag = wsgranking223 }}
+							country_event = { id = wsgranking.223 }
+							break = yes
+						}
+						if = {
+							limit = { NOT = { has_country_flag = wsgranking231 }}
+							country_event = { id = wsgranking.231 }
+							break = yes
+						}
+						if = {
+							limit = { NOT = { has_country_flag = wsgranking232 }}
+							country_event = { id = wsgranking.232 }
+							break = yes
+						}
+						if = {
+							limit = { NOT = { has_country_flag = wsgranking233 }}
+							country_event = { id = wsgranking.233 }
+							break = yes
+						}
+						if = {
+							limit = { NOT = { has_country_flag = wsgranking234 }}
+							country_event = { id = wsgranking.234 }
+							break = yes
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+#Increment events - Ship sizes
+country_event = {
+	id = wsgranking.221
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NOT = { has_country_flag = wsgranking221 }
+	}
+	immediate = {
+		set_country_flag = wsgranking221
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10221 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 2
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.222
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NOT = { has_country_flag = wsgranking222 }
+	}
+	immediate = {
+		set_country_flag = wsgranking222
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10222 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 2
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.223
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		count_owned_ship = {
+			limit = {
+				is_ship_size = battleship
+			}
+			count > 1
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking223
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10223 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.224
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NOT = { has_country_flag = wsgranking224 }
+	}
+	immediate = {
+		set_country_flag = wsgranking224
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10224 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.225
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NOT = { has_country_flag = wsgranking225 }
+	}
+	immediate = {
+		set_country_flag = wsgranking225
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10225 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 8
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.226
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NOT = { has_country_flag = wsgranking226 }
+	}
+	immediate = {
+		set_country_flag = wsgranking226
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10226 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.227
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NOT = { has_country_flag = wsgranking227 }
+	}
+	immediate = {
+		set_country_flag = wsgranking227
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10227 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 12
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.228
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NOT = { has_country_flag = wsgranking228 }
+	}
+	immediate = {
+		set_country_flag = wsgranking228
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10228 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 10
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.231
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		count_owned_ship = {
+			limit = {
+				is_ship_size = battleship
+			}
+			count > 25
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking231
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10231 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 2
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.232
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		count_owned_ship = {
+			limit = {
+				is_ship_size = battleship
+			}
+			count > 50
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking232
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10232 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.233
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		count_owned_ship = {
+			limit = {
+				is_ship_size = battleship
+			}
+			count > 125
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking233
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10233 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 8
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.234
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		count_owned_ship = {
+			limit = {
+				is_ship_size = battleship
+			}
+			count > 250
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking234
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10234 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 12
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.301
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NAND = { 
+			has_country_flag = wsgranking301 
+			has_country_flag = wsgranking302 
+			has_country_flag = wsgranking303 
+			has_country_flag = wsgranking304 
+		}
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking301 }}
+			if = {
+				limit = { empire_size > 75 }
+				set_country_flag = wsgranking301
+				change_variable = { which = rankpts value = 1 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10301 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking302 }}
+			if = {
+				limit = { empire_size > 150 }
+				set_country_flag = wsgranking302
+				change_variable = { which = rankpts value = 2 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10302 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking303 }}
+			if = {
+				limit = { empire_size > 300 }
+				set_country_flag = wsgranking303
+				change_variable = { which = rankpts value = 3 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10303 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking304 }}
+			if = {
+				limit = { empire_size > 600 }
+				set_country_flag = wsgranking304
+				change_variable = { which = rankpts value = 5 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10304 }
+				}
+			}
+			break = yes
+		}
+	}
+}
+
+# count megastructure
+country_event = {
+	id = wsgranking.310
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		FROM = { 
+			is_finished_megastructure = yes 
+			owner = { is_same_value = ROOT }
+		}
+		is_wg_empire = yes
+		check_variable = { which = built_ms_count value < 16 }
+	}
+
+	immediate = {
+		change_variable = { which = built_ms_count value = 1 }
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking311 }}
+			if = {
+				limit = { check_variable = { which = built_ms_count value >= 1 }}
+				set_country_flag = wsgranking311
+				change_variable = { which = rankpts value = 2 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10311 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking312 }}
+			if = {
+				limit = { check_variable = { which = built_ms_count value >= 1 }}
+				set_country_flag = wsgranking312
+				change_variable = { which = rankpts value = 4 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10312 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking313 }}
+			if = {
+				limit = { check_variable = { which = built_ms_count value >= 1 }}
+				set_country_flag = wsgranking313
+				change_variable = { which = rankpts value = 6 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10313 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking314 }}
+			if = {
+				limit = { check_variable = { which = built_ms_count value >= 1 }}
+				set_country_flag = wsgranking314
+				change_variable = { which = rankpts value = 10 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10314 }
+				}
+			}
+			break = yes
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.3201
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3201 }
+		is_wg_empire = yes
+		FROM = {
+			is_megastructure_type = strategic_coordination_center_1
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3201
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13201 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.3202
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3202 }
+		is_wg_empire = yes
+		FROM = {
+			OR = {
+				is_megastructure_type = strategic_coordination_center_3
+				is_megastructure_type = strategic_coordination_center_restored
+			}
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3202
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13202 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 8
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.3203
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3203 }
+		is_wg_empire = yes
+		FROM = {
+			is_megastructure_type = think_tank_1
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3203
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13203 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.3204
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3204 }
+		is_wg_empire = yes
+		FROM = {
+			OR = {
+				is_megastructure_type = think_tank_3
+				is_megastructure_type = think_tank_restored
+			}
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3204
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13204 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.3205
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3205 }
+		is_wg_empire = yes
+		FROM = {
+			is_megastructure_type = spy_orb_1
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3205
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13205 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.3206
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3206 }
+		is_wg_empire = yes
+		FROM = {
+			OR = {
+				is_megastructure_type = spy_orb_4
+				is_megastructure_type = spy_orb_restored
+			}
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3206
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13206 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 8
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.3207
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_wg_empire = yes
+		NAND = { 
+			has_country_flag = wsgranking3207
+			has_country_flag = wsgranking3208
+		}
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking3207 }}
+			if = {
+				limit = { has_country_flag = started_first_ring_world }
+				set_country_flag = wsgranking3207
+				change_variable = { which = rankpts value = 4 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.13207 }
+				}
+			}
+		} else = {
+			if = {
+				limit = { has_country_flag = finished_ringworld }
+				set_country_flag = wsgranking3208
+				change_variable = { which = rankpts value = 12 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.13208 }
+				}
+			}
+			break = yes
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.3209
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3209 }
+		is_wg_empire = yes
+		FROM = {
+			is_megastructure_type = ring_world_3_intermediate
+		}
+		FROMFROM = {
+			NOT = {
+				any_system_megastructure = {
+					is_megastructure_type = ring_world_2
+				}
+			}
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3209
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13209 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.3210
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3210 }
+		is_wg_empire = yes
+		FROM = {
+			is_megastructure_type = dyson_sphere_1
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3210
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13210 }
+		}
+		change_variable = { which = rankpts value = 3 }
+	}
+}
+
+country_event = {
+	id = wsgranking.3211
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3211 }
+		is_wg_empire = yes
+		FROM = {
+			OR = {
+				is_megastructure_type = dyson_sphere_5
+				is_megastructure_type = dyson_sphere_restored
+			}
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3211
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13211 }
+		}
+		change_variable = { which = rankpts value = 12 }
+	}
+}
+
+country_event = {
+	id = wsgranking.3212
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3212 }
+		is_wg_empire = yes
+		FROM = {
+			is_megastructure_type = matter_decompressor_1
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3212
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13212 }
+		}
+		change_variable = { which = rankpts value = 3 }
+	}
+}
+
+country_event = {
+	id = wsgranking.3213
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3213 }
+		is_wg_empire = yes
+		FROM = {
+			OR = {
+				is_megastructure_type = matter_decompressor_1
+				is_megastructure_type = matter_decompressor_restored
+			}
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3213
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13213 }
+		}
+		change_variable = { which = rankpts value = 12 }
+	}
+}
+
+country_event = {
+	id = wsgranking.3214
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3214 }
+		is_wg_empire = yes
+		FROM = {
+			is_megastructure_type = interstellar_assembly_1
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3214
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13214 }
+		}
+		change_variable = { which = rankpts value = 3 }
+	}
+}
+
+country_event = {
+	id = wsgranking.3215
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3215 }
+		is_wg_empire = yes
+		FROM = {
+			OR = {
+				is_megastructure_type = interstellar_assembly_4
+				is_megastructure_type = interstellar_assembly_restored
+			}
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3215
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13215 }
+		}
+		change_variable = { which = rankpts value = 12 }
+	}
+}
+
+country_event = {
+	id = wsgranking.3216
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3216 }
+		is_wg_empire = yes
+		FROM = {
+			is_megastructure_type = mega_art_installation_1
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3216
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13216 }
+		}
+		change_variable = { which = rankpts value = 3 }
+	}
+}
+
+country_event = {
+	id = wsgranking.3217
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3217 }
+		is_wg_empire = yes
+		FROM = {
+			OR = {
+				is_megastructure_type = mega_art_installation_4
+				is_megastructure_type = mega_art_installation_restored_2
+			}
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3217
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13217 }
+		}
+		change_variable = { which = rankpts value = 12 }
+	}
+}
+
+country_event = {
+	id = wsgranking.3218
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3218 }
+		is_wg_empire = yes
+		FROM = {
+			is_megastructure_type = mega_shipyard_1
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3218
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13218 }
+		}
+		change_variable = { which = rankpts value = 3 }
+	}
+}
+
+country_event = {
+	id = wsgranking.3219
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3219 }
+		is_wg_empire = yes
+		FROM = {
+			OR = {
+				is_megastructure_type = mega_shipyard_3
+				is_megastructure_type = mega_shipyard_restored
+			}
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3219
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13219 }
+		}
+		change_variable = { which = rankpts value = 12 }
+	}
+}
+
+country_event = {
+	id = wsgranking.3220
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking3220 }
+		is_wg_empire = yes
+		FROM = {
+			OR = {
+				is_megastructure_type = gateway_final
+				is_megastructure_type = gateway_restored
+			}
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking3220
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.13220 }
+		}
+		change_variable = { which = rankpts value = 3 }
+	}
+}
+
+country_event = {
+	id = wsgranking.339
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NAND = { 
+			has_country_flag = wsgranking331 
+			has_country_flag = wsgranking332
+			has_country_flag = wsgranking333
+			has_country_flag = wsgranking334
+		}
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking331 }}
+			if = {
+				limit = { num_pops > 75 }
+				set_country_flag = wsgranking331
+				change_variable = { which = rankpts value = 1 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10331 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking332 }}
+			if = {
+				limit = { num_pops > 200 }
+				set_country_flag = wsgranking332
+				change_variable = { which = rankpts value = 2 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10332 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking333 }}
+			if = {
+				limit = { num_pops > 500 }
+				set_country_flag = wsgranking333
+				change_variable = { which = rankpts value = 3 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10333 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking334 }}
+			if = {
+				limit = { num_pops > 1500 }
+				set_country_flag = wsgranking334
+				change_variable = { which = rankpts value = 5 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10334 }
+				}
+			}
+			break = yes
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.340
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NAND = { 
+			has_country_flag = wsgranking335
+			has_country_flag = wsgranking336
+			has_country_flag = wsgranking337
+			has_country_flag = wsgranking338
+		}
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking335 }}
+			if = {
+				limit = { any_owned_planet = { num_pops > 30 }}
+				set_country_flag = wsgranking335
+				change_variable = { which = rankpts value = 2 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10335 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking336 }}
+			if = {
+				limit = { any_owned_planet = { num_pops > 50 }}
+				set_country_flag = wsgranking336
+				change_variable = { which = rankpts value = 3 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10336 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking337 }}
+			if = {
+				limit = { any_owned_planet = { num_pops > 80 }}
+				set_country_flag = wsgranking337
+				change_variable = { which = rankpts value = 4 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10337 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking338 }}
+			if = {
+				limit = { any_owned_planet = { num_pops > 150 }}
+				set_country_flag = wsgranking338
+				change_variable = { which = rankpts value = 7 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10338 }
+				}
+			}
+			break = yes
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.341
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NAND = { 
+			has_country_flag = wsgranking341
+			has_country_flag = wsgranking342
+		}
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking341 }}
+			if = {
+				limit = { vassals >= 1 }
+				set_country_flag = wsgranking341
+				change_variable = { which = rankpts value = 2 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10341 }
+				}
+			}
+			break = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wsgranking342 }}
+			if = {
+				limit = { vassals >= 2 }
+				set_country_flag = wsgranking342
+				change_variable = { which = rankpts value = 2 }
+				if = {
+					limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+					country_event = { id = wsgranking.10342 }
+				}
+			}
+			break = yes
+		}
+	}
+}
+
+#Ã§Â²Â¾Ã§Â½â€”Ã¨ÂÂ½Ã¦Â³Âª
+#Ã¦â€”Â±Ã¥Å“Â°Ã¨Â¡Å’Ã¨Ë†Å¸Ã¯Â¼Å’Ã¦â€“Â°Ã¦Å“ÂÃ©â€ºâ€¦Ã¦â€Â¿
+country_event = {
+	id = wsgranking.343
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking343 }
+		OR = {
+			has_authority = auth_warshipgirls
+			has_authority = auth_shenhai
+		}
+		any_owned_planet = {
+			num_pops > 50
+			free_jobs = 0
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking343
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10343 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.344
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking344 }
+		is_wg_empire = yes
+		any_owned_planet = {
+			AND = {
+				planet_stability = 100
+				planet_crime = 0
+			}
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking344
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10344 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 2
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.345
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking345 }
+		is_wg_empire = yes
+		any_owned_planet = {
+			num_buildings = {
+				type = any
+				value > 16
+			}
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking345
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10345 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 2
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.346
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking346 }
+		is_wg_empire = yes
+		any_owned_planet = {
+			num_free_districts = {
+				type = any
+				value = 0
+			}
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking346
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10346 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 2
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.347
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking347 }
+		is_wg_empire = yes
+		is_at_war = yes
+	}
+	immediate = {
+		set_country_flag = wsgranking347
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10347 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 2
+		}
+	}
+}
+country_event = {
+	id = wsgranking.348
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking348 }
+		is_wg_empire = yes
+		last_increased_tech = tech_dark_matter_power_core
+	}
+	immediate = {
+		set_country_flag = wsgranking348
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10348 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 8
+		}
+	}
+}
+
+####### Leviathan Ranking Events ######
+country_event = {
+	id = wsgranking.400
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking400 }
+		is_wg_empire = yes
+		has_country_flag = restored_dreadnought
+	}
+	immediate = {
+		set_country_flag = wsgranking400
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10400 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 2
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.401
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking401 }
+		is_country_type = guardian_dreadnought
+		has_country_flag = automated_dreadnought_country
+		FROMFROM = {
+			is_ship_size = npc_warship_01
+		}
+		FROM = {
+			is_wg_empire = yes
+			is_ai = no
+		}
+	}
+	immediate = {
+		from = {
+			set_country_flag = wsgranking401
+			if = {
+				limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+				country_event = { id = wsgranking.10401 }
+			}
+			change_variable = {
+				which = rankpts
+				value = 3
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.402
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking402 }
+		is_country_type = guardian_horror
+		has_country_flag = dimensional_horror_country
+		FROMFROM = {
+			is_ship_size = dimensional_horror
+		}
+		FROM = {
+			is_wg_empire = yes
+			is_ai = no
+		}
+	}
+	immediate = {
+		from = {
+			set_country_flag = wsgranking402
+			if = {
+				limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+				country_event = { id = wsgranking.10402 }
+			}
+			change_variable = {
+				which = rankpts
+				value = 4
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.403
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking403 }
+		is_wg_empire = yes
+		has_country_flag = stellarite_project_success
+	}
+	immediate = {
+		set_country_flag = wsgranking403
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10403 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.404
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking404 }
+		is_wg_empire = yes
+		has_relic = r_dragon_trophy
+	}
+	immediate = {
+		set_country_flag = wsgranking404
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10404 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.405
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking405 }
+		is_wg_empire = yes
+		OR = {
+			last_increased_tech = tech_enigmatic_encoder
+			last_increased_tech = tech_enigmatic_decoder
+		}
+	}
+	immediate = {
+		set_country_flag = wsgranking405
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10405 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.406
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking406 }
+		is_wg_empire = yes
+		last_increased_tech = tech_gargantuan_evolution
+	}
+	immediate = {
+		set_country_flag = wsgranking406
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10406 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+
+country_event = {
+	id = wsgranking.407
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking407 }
+		is_wg_empire = yes
+		last_increased_tech = tech_neuroregeneration
+	}
+	immediate = {
+		set_country_flag = wsgranking407
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10407 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.408
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		is_ai = no
+		NOT = { has_country_flag = wsgranking408 }
+		is_wg_empire = yes
+		last_increased_tech = tech_nanite_repair_system
+	}
+	immediate = {
+		set_country_flag = wsgranking408
+		if = {
+			limit = { NOT = { has_country_flag = ban_notice_wsgranking }}
+			country_event = { id = wsgranking.10408 }
+		}
+		change_variable = {
+			which = rankpts
+			value = 4
+		}
+	}
+}
+
+country_event = {
+	id = wsgranking.10101
+	title = "wsgranking.101.name"
+	desc = "wsgranking.101.desc"
+	picture = GFX_evt_wsg_rank1
+	is_triggered_only = yes
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10102
+	title = "wsgranking.102.name"
+	desc = "wsgranking.102.desc"
+	picture = GFX_evt_wsg_rank1
+	is_triggered_only = yes
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10103
+	title = "wsgranking.103.name"
+	desc = "wsgranking.103.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10104
+	title = "wsgranking.104.name"
+	desc = "wsgranking.104.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10111
+	title = "wsgranking.111.name"
+	desc = "wsgranking.111.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10112
+	title = "wsgranking.112.name"
+	desc = "wsgranking.112.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10113
+	title = "wsgranking.113.name"
+	desc = "wsgranking.113.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10114
+	title = "wsgranking.114.name"
+	desc = "wsgranking.114.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10121
+	title = "wsgranking.121.name"
+	desc = "wsgranking.121.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10122
+	title = "wsgranking.122.name"
+	desc = "wsgranking.122.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10123
+	title = "wsgranking.123.name"
+	desc = "wsgranking.123.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10124
+	title = "wsgranking.124.name"
+	desc = "wsgranking.124.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10131
+	title = "wsgranking.131.name"
+	desc = "wsgranking.131.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10132
+	title = "wsgranking.132.name"
+	desc = "wsgranking.132.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10133
+	title = "wsgranking.133.name"
+	desc = "wsgranking.133.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10134
+	title = "wsgranking.134.name"
+	desc = "wsgranking.134.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank1
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+#Increment events - Fleet power
+country_event = {
+	id = wsgranking.10211
+	title = "wsgranking.211.name"
+	desc = "wsgranking.211.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10212
+	title = "wsgranking.212.name"
+	desc = "wsgranking.212.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10213
+	title = "wsgranking.213.name"
+	desc = "wsgranking.213.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10214
+	title = "wsgranking.214.name"
+	desc = "wsgranking.214.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+#Increment events - Ship sizes
+country_event = {
+	id = wsgranking.10221
+	title = "wsgranking.221.name"
+	desc = "wsgranking.221.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10222
+	title = "wsgranking.222.name"
+	desc = "wsgranking.222.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10223
+	title = "wsgranking.223.name"
+	desc = "wsgranking.223.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10224
+	title = "wsgranking.224.name"
+	desc = "wsgranking.224.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10225
+	title = "wsgranking.225.name"
+	desc = "wsgranking.225.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10226
+	title = "wsgranking.226.name"
+	desc = "wsgranking.226.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = wsgranking.226.a
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10227
+	title = "wsgranking.227.name"
+	desc = "wsgranking.227.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10228
+	title = "wsgranking.228.name"
+	desc = "wsgranking.228.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10231
+	title = "wsgranking.231.name"
+	desc = "wsgranking.231.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10232
+	title = "wsgranking.232.name"
+	desc = "wsgranking.232.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10233
+	title = "wsgranking.233.name"
+	desc = "wsgranking.233.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10234
+	title = "wsgranking.234.name"
+	desc = "wsgranking.234.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank2
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10301
+	title = "wsgranking.301.name"
+	desc = "wsgranking.301.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank3
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10302
+	title = "wsgranking.302.name"
+	desc = "wsgranking.302.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank3
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10303
+	title = "wsgranking.303.name"
+	desc = "wsgranking.303.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank3
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10304
+	title = "wsgranking.304.name"
+	desc = "wsgranking.304.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank3
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10311
+	title = "wsgranking.311.name"
+	desc = "wsgranking.311.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank3
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+
+country_event = {
+	id = wsgranking.10312
+	title = "wsgranking.312.name"
+	desc = "wsgranking.312.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank3
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10313
+	title = "wsgranking.313.name"
+	desc = "wsgranking.313.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank3
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10314
+	title = "wsgranking.314.name"
+	desc = "wsgranking.314.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank3
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13201
+	title = "wsgranking.3201.name"
+	desc = "wsgranking.3201.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank3
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13202
+	title = "wsgranking.3202.name"
+	desc = "wsgranking.3202.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank3
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13203
+	title = "wsgranking.3203.name"
+	desc = "wsgranking.3203.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank3
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13204
+	title = "wsgranking.3204.name"
+	desc = "wsgranking.3204.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank3
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13205
+	title = "wsgranking.3205.name"
+	desc = "wsgranking.3205.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13206
+	title = "wsgranking.3206.name"
+	desc = "wsgranking.3206.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13207
+	title = "wsgranking.3207.name"
+	desc = "wsgranking.3207.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13208
+	title = "wsgranking.3208.name"
+	desc = "wsgranking.3208.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13209
+	title = "wsgranking.3209.name"
+	desc = "wsgranking.3209.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13210
+	title = "wsgranking.3210.name"
+	desc = "wsgranking.3210.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13211
+	title = "wsgranking.3211.name"
+	desc = "wsgranking.3211.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13212
+	title = "wsgranking.3212.name"
+	desc = "wsgranking.3212.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13213
+	title = "wsgranking.3213.name"
+	desc = "wsgranking.3213.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13214
+	title = "wsgranking.3214.name"
+	desc = "wsgranking.3214.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13215
+	title = "wsgranking.3215.name"
+	desc = "wsgranking.3215.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13216
+	title = "wsgranking.3216.name"
+	desc = "wsgranking.3216.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13217
+	title = "wsgranking.3217.name"
+	desc = "wsgranking.3217.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13218
+	title = "wsgranking.3218.name"
+	desc = "wsgranking.3218.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13219
+	title = "wsgranking.3219.name"
+	desc = "wsgranking.3219.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.13220
+	title = "wsgranking.3220.name"
+	desc = "wsgranking.3220.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10331
+	title = "wsgranking.331.name"
+	desc = "wsgranking.331.desc"
+	picture = GFX_evt_wsg_rank5
+	is_triggered_only = yes
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10332
+	title = "wsgranking.332.name"
+	desc = "wsgranking.332.desc"
+	picture = GFX_evt_wsg_rank5
+	is_triggered_only = yes
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10333
+	title = "wsgranking.333.name"
+	desc = "wsgranking.333.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10334
+	title = "wsgranking.334.name"
+	desc = "wsgranking.334.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10335
+	title = "wsgranking.335.name"
+	desc = "wsgranking.335.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10336
+	title = "wsgranking.336.name"
+	desc = "wsgranking.336.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+
+}
+
+country_event = {
+	id = wsgranking.10337
+	title = "wsgranking.337.name"
+	desc = "wsgranking.337.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+	
+}
+
+country_event = {
+	id = wsgranking.10338
+	title = "wsgranking.338.name"
+	desc = "wsgranking.338.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10341
+	title = "wsgranking.341.name"
+	desc = "wsgranking.341.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10342
+	title = "wsgranking.342.name"
+	desc = "wsgranking.342.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+#Ã§Â²Â¾Ã§Â½â€”Ã¨ÂÂ½Ã¦Â³Âª
+#Ã¦â€”Â±Ã¥Å“Â°Ã¨Â¡Å’Ã¨Ë†Å¸Ã¯Â¼Å’Ã¦â€“Â°Ã¦Å“ÂÃ©â€ºâ€¦Ã¦â€Â¿
+country_event = {
+	id = wsgranking.10343
+	title = "wsgranking.343.name"
+	desc = "wsgranking.343.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10344
+	title = "wsgranking.344.name"
+	desc = "wsgranking.344.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10345
+	title = "wsgranking.345.name"
+	desc = "wsgranking.345.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10346
+	title = "wsgranking.346.name"
+	desc = "wsgranking.346.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank5
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10347
+	title = "wsgranking.347.name"
+	desc = "wsgranking.347.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank4
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+country_event = {
+	id = wsgranking.10348
+	title = "wsgranking.348.name"
+	desc = "wsgranking.348.desc"
+	is_triggered_only = yes
+	picture = GFX_evt_wsg_rank4
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+####### Leviathan Ranking Events ######
+country_event = {
+	id = wsgranking.10400
+	title = "wsgranking.400.name"
+	desc = "wsgranking.400.desc"
+	picture = GFX_evt_wsg_rank3
+	is_triggered_only = yes
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10401
+	title = "wsgranking.401.name"
+	desc = "wsgranking.401.desc"
+	picture = GFX_evt_wsg_rank4
+	is_triggered_only = yes
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10402
+	title = "wsgranking.402.name"
+	desc = "wsgranking.402.desc"
+	picture = GFX_evt_wsg_rank4
+	is_triggered_only = yes
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10403
+	title = "wsgranking.403.name"
+	desc = "wsgranking.403.desc"
+	picture = GFX_evt_wsg_rank3
+	is_triggered_only = yes
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10404
+	title = "wsgranking.404.name"
+	desc = "wsgranking.404.desc"
+	picture = GFX_evt_wsg_rank4
+	is_triggered_only = yes
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10405
+	title = "wsgranking.405.name"
+	desc = "wsgranking.405.desc"
+	picture = GFX_evt_wsg_rank3
+	is_triggered_only = yes
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10406
+	title = "wsgranking.406.name"
+	desc = "wsgranking.406.desc"
+	picture = GFX_evt_wsg_rank3
+	is_triggered_only = yes
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+
+country_event = {
+	id = wsgranking.10407
+	title = "wsgranking.407.name"
+	desc = "wsgranking.407.desc"
+	picture = GFX_evt_wsg_rank3
+	is_triggered_only = yes
+	show_sound = event_celebration
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+country_event = {
+	id = wsgranking.10408
+	title = "wsgranking.408.name"
+	desc = "wsgranking.408.desc"
+	picture = GFX_evt_wsg_rank3
+	is_triggered_only = yes
+	option = {
+		name = "OK"
+	}
+	option = {
+        name = raa_skill.150.a
+        hidden_effect = { set_country_flag = ban_notice_wsgranking }
+    }
+}
+
+
+country_event = {
+	id = wsgranking.601
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_country_flag = shop_encountered
+	}
+}

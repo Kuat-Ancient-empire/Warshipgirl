@@ -1,0 +1,218 @@
+# Icons set here are the ones show in the actual slot.
+
+@cost1 = 3
+@cost2 = 6
+@cost3 = 9
+@cost4 = 12
+
+@power_1 = -10
+@power_2 = -15
+@power_3 = -20
+@power_4 = -25
+
+#############
+# THRUSTERS #
+#############
+
+### 1
+
+utility_component_template = {
+	key = "UAV_THRUSTER_1"
+	size = small
+	icon = "GFX_ship_part_thruster_1"
+	icon_frame = 1
+	power = -5
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @cost1
+		}
+	}
+	
+	modifier = {
+	}
+		
+	prerequisites = { "tech_thrusters_1" }
+	component_set = "thruster_components"
+	size_restriction = { scout_UAV wsg_colonizer }
+	upgrades_to = "UAV_THRUSTER_2"
+	
+	ai_weight = {
+		weight = 1
+	}
+}
+
+utility_component_template = {
+	key = "UAV_THRUSTER_2"
+	size = small
+	icon = "GFX_ship_part_thruster_2"
+	icon_frame = 1
+	power = -10
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @cost2
+		}
+	}
+	modifier = {
+		ship_speed_mult = 0.20
+		ship_evasion_add = 5
+	}
+
+	prerequisites = { "tech_thrusters_2" }
+	component_set = "thruster_components"
+	size_restriction = { scout_UAV wsg_colonizer }
+	upgrades_to = "UAV_THRUSTER_3"
+	
+	ai_weight = {
+		weight = 2
+	}
+}
+
+utility_component_template = {
+	key = "UAV_THRUSTER_3"
+	size = small
+	icon = "GFX_ship_part_thruster_3"
+	icon_frame = 1
+	power = -15
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @cost3
+		}
+	}
+	modifier = {
+		ship_speed_mult = 0.40
+		ship_evasion_add = 10
+	}
+
+	prerequisites = { "tech_thrusters_3" }
+	component_set = "thruster_components"
+	size_restriction = { scout_UAV wsg_colonizer }
+	upgrades_to = "UAV_THRUSTER_4"
+	
+	ai_weight = {
+		weight = 3
+	}
+}
+
+utility_component_template = {
+	key = "UAV_THRUSTER_4"
+	size = small
+	icon = "GFX_ship_part_thruster_4"
+	icon_frame = 1
+	power = -20
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @cost4
+		}
+	}
+	modifier = {
+		ship_speed_mult = 0.60
+		ship_evasion_add = 15
+	}
+
+	prerequisites = { "tech_thrusters_4" }
+	component_set = "thruster_components"
+	size_restriction = { scout_UAV wsg_colonizer }
+	upgrades_to = "UAV_THRUSTER_5"
+	
+	ai_weight = {
+		weight = 4
+	}
+}
+
+utility_component_template = {
+	key = "UAV_THRUSTER_5"
+	size = small
+	icon = "GFX_ship_part_thruster_5"
+	icon_frame = 1
+	power = -25
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 50
+		}
+	}
+	modifier = {
+		ship_speed_mult = 0.80
+		ship_evasion_add = 20
+	}
+
+	prerequisites = { "tech_dark_matter_propulsion" }
+	component_set = "thruster_components"
+	size_restriction = { scout_UAV wsg_colonizer }
+	
+	ai_weight = {
+		weight = 4
+	}
+}	
+utility_component_template = {
+	key = "UAV_SHIP_THRUSTER_WSG"
+	size = small
+	icon = "GFX_ship_part_thruster_wsg"
+	icon_frame = 1
+	power = -30
+	resources = {
+		category = ship_components
+		cost = {
+			sr_alpha = 0.2
+			alloys = 5
+			sr_dark_matter = 0.5
+		}
+	}
+	modifier = {
+		ship_base_speed_mult = 1.35
+		ship_evasion_add = 40
+	}
+
+	prerequisites = { "tech_wsg_alpha_propulsion" }
+	component_set = "thruster_components"
+	size_restriction = { scout_UAV wsg_colonizer }
+	
+	ai_weight = {
+		weight = 5
+		modifier = {
+			factor = 0.0
+			has_monthly_income = { resource = sr_dark_matter value <= 0 }
+		}
+	}
+}
+
+utility_component_template = {
+	key = "UAV_SHIP_THRUSTER_SH"
+	size = small
+	icon = "GFX_ship_part_thruster_sh"
+	icon_frame = 1
+	power = -30
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 5
+			sr_se = 0.5
+		}
+	}
+	modifier = {
+		ship_base_speed_mult = 1.3
+		ship_evasion_add = 45
+	}
+	prerequisites = {
+		"tech_sh_propulsion"
+	}
+	component_set = "thruster_components"
+	size_restriction = {
+		scout_UAV
+		wsg_colonizer
+	}
+	ai_weight = {
+		weight = 5
+		modifier = {
+			factor = 0
+			has_monthly_income = {
+				resource = sr_se
+				value <= 0
+			}
+		}
+	}
+}

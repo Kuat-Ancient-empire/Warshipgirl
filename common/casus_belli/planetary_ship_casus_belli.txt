@@ -1,0 +1,37 @@
+cb_planetary_ship = {
+	show_in_diplomacy = no
+	show_notification = no
+	potential = {
+		NOT = { is_in_federation_with = from }
+		has_country_flag = planetary_ship_built
+		NOT = { has_authority = auth_united_fleet } #己方不是联合舰队
+	}
+	is_valid = {
+		has_total_war_cb = no
+		NOT = { is_overlord_to = FROM }
+		OR = {
+			is_subject = no
+			overlord = { NOT = { is_same_value = from } }
+		}
+	}
+}
+cb_stop_planetary_ship = {
+	show_in_diplomacy = no
+	show_notification = no
+	potential = {
+		NOT = { is_in_federation_with = from }
+		NOT = { has_country_flag = planetary_ship_built }
+		from = {
+			has_country_flag = planetary_ship_built
+			NOT = { has_authority = auth_united_fleet } #对方不是联合舰队
+		}
+	}
+	is_valid = {
+		has_total_war_cb = no
+		NOT = { is_overlord_to = FROM }
+		OR = {
+			is_subject = no
+			overlord = { NOT = { is_same_value = from } }
+		}
+	}
+}

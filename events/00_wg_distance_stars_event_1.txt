@@ -1,0 +1,386 @@
+namespace = distar
+
+## Lost Amoeba
+ship_event = {
+	id = distar.50
+	title = "distar.50.name"
+	desc = {
+		trigger = {
+			owner = { has_country_flag = amoeba_encountered }
+		}
+		text = "distar.50.desc"
+	}
+	desc = {
+		trigger = {
+			owner = { NOT = { has_country_flag = amoeba_encountered } }
+		}
+		text = "distar.50.desc.first_enc"
+	}
+	picture = GFX_evt_friendly_amoeba
+	show_sound = event_space_amoeba
+	location = from
+
+	is_triggered_only = yes
+
+	immediate = {
+		solar_system = {
+			set_star_flag = bubbles_found_system
+		}
+		leader = { 
+			if = {
+				limit = { is_special_affection_leader = no }
+				set_leader_flag = amoeba_finding_scientist 
+			}
+		}
+		create_country = {
+			name = "NAME_Lost_Amoeba"
+			type = neutral_faction
+			auto_delete = yes
+			flag = {
+    		    icon = {
+    		        category = "pirate"
+    		        file = "flag_pirate_3.dds"
+    		    }
+    		    background = {
+    		        category = "backgrounds"
+    		        file = "00_solid.dds"
+    		    }
+    		    colors = {
+    		        "blue"
+    		        "blue"
+    		        "null"
+    		        "null"
+    		    }
+    		}
+			effect = {
+				set_faction_hostility = {
+					target = root.owner
+					set_hostile = no
+					set_neutral = no
+					set_friendly = yes
+				}
+				create_fleet = {
+					name = "NAME_Lost_Amoeba"
+					effect = {
+						set_owner = prev
+						create_ship = {
+							name = "NAME_Lost_Amoeba"
+							design = "NAME_Small_Space_Organism_Teal"
+							prefix = no
+							upgradable = no
+						}
+						set_location = {
+							target = from
+							distance = 5
+							angle = random
+						}
+						add_many_hp = { DAYS = 5 }
+						set_fleet_stance = passive
+						set_fleet_flag = lost_amoeba_fleet@root.owner
+						save_event_target_as = lost_amoeba_fleet
+					}
+					settings = {
+						can_upgrade = no
+						can_disband = no
+						can_change_composition = no
+						can_change_leader = no
+						uses_naval_capacity = no
+						spawn_debris = yes
+					}
+				}
+				save_event_target_as = lost_amoeba_country
+			}
+		}
+		root = {
+			fleet = {
+				save_event_target_as = science_ship_fleet
+			}
+		}
+		event_target:lost_amoeba_fleet = {
+			auto_follow_fleet = {
+				target = event_target:science_ship_fleet
+				attack_fleet = no
+			}
+		}
+	}
+
+	after = {
+		hidden_effect = {
+			owner = {
+				set_country_flag = amoeba_encountered
+				every_country = {
+					limit = {
+						NOT = { is_same_value = event_target:lost_amoeba_country }
+						NOT = { has_communications = root.owner }
+						is_amoeba_country_type = yes
+					}
+					root.owner = {
+						establish_communications_no_message = prev
+						establish_communication_with_subjects_and_federation = { FLAG = amoeba_encountered }
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = distar.50.a
+		trigger = {
+			owner = { is_homicidal = no }
+		}
+		event_target:lost_amoeba_fleet = {
+			set_owner = root.owner
+		}
+		hidden_effect = {
+			leader = {
+				if = {
+					limit = { is_special_affection_leader = no }
+					save_global_event_target_as = amoeba_finding_scientist
+					add_trait_no_notify = leader_trait_scientist_bubbles_saver
+				}
+			}
+			owner = {
+				set_country_flag = amoeba_befriended # Achievement flag
+				set_variable = { which = wg_bubbles_affection value = 10 }
+				set_variable = { which = wg_bubbles_affection_level value = 1 }
+				country_event = { id = distar.51 days = 365 random = 60 }
+				# country_event = { id = distar.304 days = 36500 }
+				if = {
+					limit = { NOT = { has_country_flag = amoeba_encountered } }
+					capital_scope = {
+						enable_special_project = {
+							name = "AMOEBAS_PACIFICATION_PROJECT"
+							location = this
+							owner = root.owner
+						}
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = distar.50.b
+		custom_tooltip = distar.50.b.tooltip
+		hidden_effect = {
+			owner = {
+				country_event = { id = distar.52 days = 90 }
+				if = {
+					limit = {
+						NOT = { has_country_flag = amoeba_encountered }
+					}
+					capital_scope = {
+						enable_special_project = {
+							name = "AMOEBAS_PROJECT"
+							location = this
+							owner = root.owner
+						}
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = "distar.50.c"
+		event_target:lost_amoeba_fleet = {
+			enable_special_project = {
+				name = "DISSECTION_PROJECT"
+				location = this
+				owner = root.owner
+			}
+		}
+		owner = { 
+			if = {
+				limit = { NOT = { has_country_flag = amoeba_encountered } }
+				add_modifier = {
+					modifier = amoeba_hunting_buff
+					days = -1
+				}
+				custom_tooltip = story.101.aa.amoebahunt
+			}
+		}
+	}
+}
+
+country_event = { #Adopted Amoeba Evolves
+	id = distar.51
+	title = "distar.51.name"
+	desc = "distar.51.desc"
+	picture = GFX_evt_friendly_amoeba
+	show_sound = event_space_amoeba
+	location = event_target:lost_amoeba_adult_fleet
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = event_target:lost_amoeba_fleet
+	}
+
+	after = {
+		event_target:lost_amoeba_adult_fleet = {
+			set_name = "NAME_Bubbles"
+			hidden_effect = {
+				add_modifier = { modifier = "amoeba_speed_boost" days = -1 }
+				add_modifier = { modifier = "evolved_weapon_boost" days = -1 }
+				add_modifier = { modifier = "evolved_firing_rate" days = -1 }
+				add_modifier = { modifier = "evolved_evasion" days = -1 }
+			}
+		}
+		hidden_effect = {
+			event_target:lost_amoeba_ship = {
+				set_name = "NAME_Bubbles"
+			}
+		}
+	}
+
+	immediate = {
+		set_country_flag = bubbles_adult
+		create_fleet = {
+			name = "NAME_Adopted_Amoeba"
+			effect = {
+				set_owner = root
+				create_ship = {
+					name = "NAME_Adopted_Amoeba"
+					design = "NAME_Large_Space_Organism_Teal"
+					prefix = no
+					upgradable = no
+					effect = {
+						save_event_target_as = lost_amoeba_ship
+						set_disable_at_health = 0.001
+						set_ship_flag = lost_amoeba_ship
+					}
+				}
+				set_location = {
+					target = event_target:lost_amoeba_fleet
+				}
+				set_fleet_stance = passive
+				set_fleet_flag = lost_amoeba_adult_fleet@root
+				save_event_target_as = lost_amoeba_adult_fleet
+			}
+			settings = {
+				can_upgrade = no
+				can_disband = no
+				can_change_composition = no
+				can_change_leader = no
+				uses_naval_capacity = no
+			}
+		}
+		event_target:lost_amoeba_fleet = {
+			delete_fleet = {
+				target = this
+				destroy_template = yes
+			}
+		}
+		if = {
+			limit = { exists = event_target:lost_amoeba_country }
+			event_target:lost_amoeba_country = {
+				destroy_country = yes
+			}
+		}
+	}
+
+	option = {
+		name = "distar.51.a"
+	}
+	option = {
+		name = "distar.51.a"
+	}
+	option = {
+		name = "distar.51.a"
+	}
+	option = {
+		name = "distar.51.a"
+	}
+	option = {
+		name = "distar.51.a"
+	}
+	option = {
+		name = "distar.51.a"
+	}
+	option = {
+		name = "distar.51.a"
+	}
+	option = {
+		name = "just_do_it"
+	}
+}
+
+country_event = { #Discovering Scientist becomes depressed if Amoeba dies
+	id = distar.57
+	title = "distar.57.name"
+	desc = "distar.57.desc"
+	picture = GFX_evt_space_funeral
+	show_sound = event_life_support_fail
+	location = FromFrom
+
+	is_triggered_only = yes
+
+	trigger = {
+		# fromfrom.fleet = {
+		# 	OR = {
+		# 		has_fleet_flag = lost_amoeba_adult_fleet@root
+		# 		has_fleet_flag = lost_amoeba_centenarian_fleet@root
+		# 	}
+		# }
+		exists = event_target:amoeba_finding_scientist
+		NOT = {
+			has_country_flag = modified_bubbles
+		}
+	}
+
+	option = {
+		name = "distar.57.a"
+		event_target:amoeba_finding_scientist = {
+			add_trait_no_notify = leader_trait_substance_abuser
+		}
+	}
+}
+
+country_event = { #Upgrade if Amoeba survives 100 years
+	id = distar.304
+	title = "distar.304.name"
+	desc = "distar.304.desc"
+	picture = GFX_evt_friendly_amoeba
+	show_sound = event_space_amoeba
+	location = event_target:lost_amoeba_centenarian_fleet
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_country_flag = modified_bubbles
+			any_owned_fleet = { #Since each empire can have one, we don't want a GET
+				has_fleet_flag = lost_amoeba_adult_fleet@root
+			}
+		}
+		always = no 
+	}
+
+	immediate = {
+		set_country_flag = bubbles_centenarian
+		set_country_flag = bubbles_changing
+		if = {
+			limit = {
+				any_owned_fleet = { #Since each empire can have one, we don't want a GET
+					has_fleet_flag = lost_amoeba_adult_fleet@root
+				}
+				NOT = { has_country_flag = bubbles_official_active }
+			}
+			random_owned_fleet = {
+				limit = { has_fleet_flag = lost_amoeba_adult_fleet@root }
+				delete_fleet = {
+					target = this
+					kill_leader = no
+					destroy_template = yes
+				}
+			}
+			create_bubbles_warship = yes
+		}
+	}
+
+	option = {
+		name = ASTOUNDING
+		custom_tooltip = "distar.304.a.tooltip"
+		hidden_effect = { remove_country_flag = bubbles_changing }
+	}
+}

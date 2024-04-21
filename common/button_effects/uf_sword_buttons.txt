@@ -1,0 +1,791 @@
+default_button_show = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = { }
+}
+default_button_hide = {
+	potential = { always = no }
+	allow = { always = yes }
+	effect = { }
+}
+
+ufs_fliter_starclass_active = {
+	potential = {
+		exists = from
+		from = { 
+			OR = {
+				is_variable_set = ufs_fliter_starclass
+				check_variable = { which = ufs_fliter_mod value = 1 }
+			}
+		}
+	}
+	allow = { FROM = {
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = { 
+		if = {
+			limit = { FROM = { is_variable_set = ufs_fliter_starclass }}
+			custom_tooltip = ufs_selected_starclass_tooltip
+		} else = {
+			custom_tooltip = ufs_fliter_starclass_tooltip
+		}
+		from = { if = {
+			limit = { NOT = { check_variable = { which = ufs_fliter_mod value = 1 }}}
+			hidden_effect = {
+				clear_variable = ufs_fliter_starclass
+				set_variable = { which = ufs_fliter_mod value = 1 }
+				set_variable = { which = ufs_interface_page value = 0 }
+				set_variable = { which = ufs_target_count value = 14 }
+			}
+		}}
+	}
+}
+ufs_fliter_starclass_inactive = {
+	potential = {
+		exists = from
+		from = { 
+			NOR = {
+				is_variable_set = ufs_fliter_starclass
+				check_variable = { which = ufs_fliter_mod value = 1 }
+			}
+		}
+	}
+	allow = { FROM = {
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = { 
+		custom_tooltip = ufs_fliter_starclass_tooltip
+		from = { hidden_effect = {
+			remove_country_flag = crisis_fliter_enabled
+			clear_variable = ufs_fliter_starclass
+			set_variable = { which = ufs_fliter_mod value = 1 }
+			set_variable = { which = ufs_interface_page value = 0 }
+			set_variable = { which = ufs_target_count value = 14 }
+		}}
+	}
+}
+ufs_fliter_country_inactive = {
+	potential = {
+		exists = from
+		from = { NOR = {
+			has_country_flag = selected_ufs_country_target
+			check_variable = { which = ufs_fliter_mod value = 2 }
+		}}
+	}
+	allow = { FROM = {
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = { 
+		custom_tooltip = ufs_fliter_country_tooltip
+		from = { hidden_effect = {
+			remove_country_flag = crisis_fliter_enabled
+			clear_global_event_target = ufs_target_country
+			remove_country_flag = selected_ufs_country_target
+			set_variable = { which = ufs_fliter_mod value = 2 }
+			set_variable = { which = ufs_interface_page value = 0 }
+			country_event = { id = uf_sword.110 }
+		}}
+	}
+}
+ufs_fliter_country_active = {
+	potential = {
+		exists = from
+		from = { OR = {
+			has_country_flag = selected_ufs_country_target
+			check_variable = { which = ufs_fliter_mod value = 2 }
+		}}
+	}
+	allow = { FROM = {
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = { 
+		if = {
+			limit = { FROM = { has_country_flag = selected_ufs_country_target }}
+			custom_tooltip = ufs_selected_country_tooltip
+		} else = {
+			custom_tooltip = ufs_fliter_country_tooltip
+		}
+		from = { if = {
+			limit = { NOT = { check_variable = { which = ufs_fliter_mod value = 2 }}}
+			hidden_effect = {
+				clear_global_event_target = ufs_target_country
+				remove_country_flag = selected_ufs_country_target
+				set_variable = { which = ufs_fliter_mod value = 2 }
+				set_variable = { which = ufs_interface_page value = 0 }
+				country_event = { id = uf_sword.110 }
+			}
+		}}
+	}
+}
+ufs_fliter_crisis_inactive = {
+	potential = {
+		has_global_flag = first_monolith_node_spawned
+		NOT = { has_global_flag = destroy_all_monolith_nodes }
+		exists = event_target:monolith_crisis_country
+		exists = from
+		from = { NOR = {
+			has_country_flag = selected_ufs_country_target
+			check_variable = { which = ufs_fliter_mod value = 3 }
+			check_variable = { which = ufs_fliter_mod value = 1 }
+			check_variable = { which = ufs_fliter_mod value = 2 }
+			is_variable_set = ufs_fliter_starclass
+			has_country_flag = selected_ufs_country_target
+			has_country_flag = ufs_fliter_colony_system
+			has_country_flag = ufs_fliter_megastructure
+		}}
+	}
+	allow = { FROM = {
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+		custom_tooltip = {
+			fail_text = "only_single_mode"
+			NOR = {
+				has_country_flag = ufs_fire_mode_all
+				check_variable = { which = ufs_fliter_mod value = 6 }
+			}
+		}
+	}}
+	effect = { 
+		custom_tooltip = ufs_fliter_crisis_tooltip
+		from = { hidden_effect = {
+			set_country_flag = crisis_fliter_enabled
+			clear_global_event_target = ufs_target_country
+			clear_variable = ufs_fliter_starclass
+			remove_country_flag = ufs_fire_mode_all
+			remove_country_flag = ufs_fliter_colony_system
+			remove_country_flag = ufs_fliter_megastructure
+			remove_country_flag = selected_ufs_country_target
+			set_variable = { which = ufs_fliter_mod value = 3 }
+			set_variable = { which = ufs_interface_page value = 0 }
+			if = {
+				limit = { has_global_flag = monolith_core_spawned }
+				set_variable = { which = ufs_target_count value = 1 }
+			} else_if = {
+				limit = { has_global_flag = third_monolith_node_spawned }
+				set_variable = { which = ufs_target_count value = 6 }
+			} else_if = {
+				limit = { has_global_flag = second_monolith_node_spawned }
+				set_variable = { which = ufs_target_count value = 4 }
+			} else_if = {
+				limit = { has_global_flag = first_monolith_node_spawned }
+				set_variable = { which = ufs_target_count value = 2 }
+			}
+		}}
+	}
+}
+ufs_fliter_crisis_active = {
+	potential = {
+		has_global_flag = first_monolith_node_spawned
+		NOT = { has_global_flag = destroy_all_monolith_nodes }
+		exists = event_target:monolith_crisis_country
+		exists = from
+		from = { 
+			check_variable = { which = ufs_fliter_mod value = 3 }
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 1 }
+				check_variable = { which = ufs_fliter_mod value = 2 }
+				is_variable_set = ufs_fliter_starclass
+				has_country_flag = selected_ufs_country_target
+				has_country_flag = ufs_fliter_colony_system
+				has_country_flag = ufs_fliter_megastructure
+			}
+		}
+	}
+	allow = {}
+	effect = { 
+	}
+}
+ufs_PowerOverwhelming_inactive = {
+	potential = {
+		has_global_flag = first_monolith_node_spawned
+		has_global_flag = destroy_all_monolith_nodes
+		exists = event_target:monolith_crisis_country
+		exists = from
+		from = { NOR = {
+			has_country_flag = selected_ufs_country_target
+			check_variable = { which = ufs_fliter_mod value = 3 }
+			check_variable = { which = ufs_fliter_mod value = 1 }
+			check_variable = { which = ufs_fliter_mod value = 2 }
+			is_variable_set = ufs_fliter_starclass
+			has_country_flag = selected_ufs_country_target
+			has_country_flag = ufs_fliter_colony_system
+			has_country_flag = ufs_fliter_megastructure
+		}}
+	}
+	allow = { FROM = {
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+		custom_tooltip = {
+			fail_text = "only_single_mode"
+			NOR = {
+				has_country_flag = ufs_fire_mode_all
+				check_variable = { which = ufs_fliter_mod value = 6 }
+			}
+		}
+	}}
+	effect = { 
+		custom_tooltip = ufs_fliter_crisis_tooltip
+		from = { hidden_effect = {
+			set_country_flag = crisis_fliter_enabled
+			clear_global_event_target = ufs_target_country
+			clear_variable = ufs_fliter_starclass
+			remove_country_flag = ufs_fire_mode_all
+			remove_country_flag = ufs_fliter_colony_system
+			remove_country_flag = ufs_fliter_megastructure
+			remove_country_flag = selected_ufs_country_target
+			set_variable = { which = ufs_fliter_mod value = 3 }
+			set_variable = { which = ufs_interface_page value = 0 }
+			if = {
+				limit = { has_global_flag = monolith_core_spawned }
+				set_variable = { which = ufs_target_count value = 1 }
+			} else_if = {
+				limit = { has_global_flag = third_monolith_node_spawned }
+				set_variable = { which = ufs_target_count value = 6 }
+			} else_if = {
+				limit = { has_global_flag = second_monolith_node_spawned }
+				set_variable = { which = ufs_target_count value = 4 }
+			} else_if = {
+				limit = { has_global_flag = first_monolith_node_spawned }
+				set_variable = { which = ufs_target_count value = 2 }
+			}
+		}}
+	}
+}
+ufs_PowerOverwhelming_active = {
+	potential = {
+		has_global_flag = first_monolith_node_spawned
+		has_global_flag = destroy_all_monolith_nodes
+		exists = event_target:monolith_crisis_country
+		exists = from
+		from = { 
+			check_variable = { which = ufs_fliter_mod value = 3 }
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 1 }
+				check_variable = { which = ufs_fliter_mod value = 2 }
+				is_variable_set = ufs_fliter_starclass
+				has_country_flag = selected_ufs_country_target
+				has_country_flag = ufs_fliter_colony_system
+				has_country_flag = ufs_fliter_megastructure
+			}
+		}
+	}
+	allow = {}
+	effect = { 
+	}
+}
+ufs_fliter_colony_system_inactive = {
+	potential = {
+		exists = from
+		from = { 
+			NOT = { has_country_flag = ufs_fliter_colony_system }
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = "not_crisis_fliter_mode"
+			NOT = { check_variable = { which = ufs_fliter_mod value = 3 }}
+		}
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 3 }
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = { 
+		custom_tooltip = ufs_fliter_colony_system_tooltip
+		from = { hidden_effect = {
+			remove_country_flag = crisis_fliter_enabled
+			set_country_flag = ufs_fliter_colony_system
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+				set_variable = { which = ufs_interface_page value = 0 }
+				country_event = { id = uf_sword.121 }
+			}
+		}}
+	}
+}
+ufs_fliter_colony_system_active = {
+	potential = {
+		exists = from
+		from = { 
+			has_country_flag = ufs_fliter_colony_system
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = "not_crisis_fliter_mode"
+			NOT = { check_variable = { which = ufs_fliter_mod value = 3 }}
+		}
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 3 }
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = { from = { hidden_effect = {
+		remove_country_flag = ufs_fliter_colony_system
+		if = {
+			limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+			set_variable = { which = ufs_interface_page value = 0 }
+			country_event = { id = uf_sword.121 }
+		}
+	}}}
+}
+ufs_fliter_megastructure_inactive = {
+	potential = {
+		exists = from
+		from = { 
+			NOT = { has_country_flag = ufs_fliter_megastructure }
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = "not_crisis_fliter_mode"
+			NOT = { check_variable = { which = ufs_fliter_mod value = 3 }}
+		}
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 3 }
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = { 
+		custom_tooltip = ufs_fliter_megastructure_tooltip
+		from = { hidden_effect = {
+			remove_country_flag = crisis_fliter_enabled
+			set_country_flag = ufs_fliter_megastructure
+			if = {
+				limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+				set_variable = { which = ufs_interface_page value = 0 }
+				country_event = { id = uf_sword.121 }
+			}
+		}}
+	}
+}
+ufs_fliter_megastructure_active = {
+	potential = {
+		exists = from
+		from = { 
+			has_country_flag = ufs_fliter_megastructure
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = "not_crisis_fliter_mode"
+			NOT = { check_variable = { which = ufs_fliter_mod value = 3 }}
+		}
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = { from = { hidden_effect = {
+		remove_country_flag = ufs_fliter_megastructure
+		if = {
+			limit = { check_variable = { which = ufs_fliter_mod value = 4 }}
+			set_variable = { which = ufs_interface_page value = 0 }
+			country_event = { id = uf_sword.121 }
+		}
+	}}}
+}
+ufs_clear_fliters = {
+	potential = {
+		exists = from
+		from = {
+			OR = {
+				check_variable = { which = ufs_fliter_mod value = 1 }
+				check_variable = { which = ufs_fliter_mod value = 2 }
+				is_variable_set = ufs_fliter_starclass
+				has_country_flag = selected_ufs_country_target
+				has_country_flag = ufs_fliter_colony_system
+				has_country_flag = ufs_fliter_megastructure
+			}
+		}
+	}
+	allow = { FROM = {
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = {
+		custom_tooltip = ufs_clear_fliters_tooltip
+		FROM = { hidden_effect = {
+			country_event = { id = uf_sword.1000 }
+			set_variable = { which = ufs_fliter_mod value = 4 }
+		}}
+	}
+}
+
+ufs_unselected_system_1 = {
+	potential = {
+		exists = from
+		from = { NOT = { has_country_flag = select_first_ufs_system }}
+	}
+	allow = { always = yes }
+	effect = {
+		custom_tooltip = not_selected_ufs_target
+	}
+}
+ufs_selected_system_1 = {
+	potential = {
+		exists = from
+		from = { 
+			has_country_flag = select_first_ufs_system
+		}
+	}
+	allow = { from = {
+		custom_tooltip = {
+			fail_text = already_cancelling_system
+			NOT = { is_variable_set = selected_cancel_system }
+		}
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = { 
+		custom_tooltip = selected_ufs_target_1
+		custom_tooltip = cancel_selected_target_tooltip
+		hidden_effect = { from = {
+			event_target:first_selected_ufs_system = { save_global_event_target_as = selected_ufs_system }
+			set_variable = { which = selected_cancel_system value = 1 }
+			country_event = { id = uf_sword.200 }
+		}}
+	}
+}
+
+ufs_unselected_system_2 = {
+	potential = {
+		exists = from
+		from = { 
+			OR = {
+				has_country_flag = ufs_fire_mode_all
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+			NOT = { has_country_flag = select_second_ufs_system }
+		}
+	}
+	allow = { always = yes }
+	effect = {
+		custom_tooltip = not_selected_ufs_target
+	}
+}
+ufs_selected_system_2 = {
+	potential = {
+		exists = from
+		from = { 
+			OR = {
+				has_country_flag = ufs_fire_mode_all
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+			has_country_flag = select_second_ufs_system
+		}
+	}
+	allow = { from = {
+		custom_tooltip = {
+			fail_text = already_cancelling_system
+			NOT = { is_variable_set = selected_cancel_system }
+		}
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = { 
+		custom_tooltip = selected_ufs_target_2
+		custom_tooltip = cancel_selected_target_tooltip
+		hidden_effect = { from = {
+			event_target:second_selected_ufs_system = { save_global_event_target_as = selected_ufs_system }
+			set_variable = { which = selected_cancel_system value = 2 }
+			country_event = { id = uf_sword.200 }
+		}}
+	}
+}
+
+ufs_unselected_system_3 = {
+	potential = {
+		exists = from
+		from = { 
+			OR = {
+				has_country_flag = ufs_fire_mode_all
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+			NOT = { has_country_flag = select_third_ufs_system }
+		}
+	}
+	allow = { always = yes }
+	effect = {
+		custom_tooltip = not_selected_ufs_target
+	}
+}
+ufs_selected_system_3 = {
+	potential = {
+		exists = from
+		from = { 
+			OR = {
+				has_country_flag = ufs_fire_mode_all
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+			has_country_flag = select_third_ufs_system
+		}
+	}
+	allow = { from = {
+		custom_tooltip = {
+			fail_text = already_cancelling_system
+			NOT = { is_variable_set = selected_cancel_system }
+		}
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = { 
+		custom_tooltip = selected_ufs_target_3
+		custom_tooltip = cancel_selected_target_tooltip
+		hidden_effect = { from = {
+			event_target:third_selected_ufs_system = { save_global_event_target_as = selected_ufs_system }
+			set_variable = { which = selected_cancel_system value = 3 }
+			country_event = { id = uf_sword.200 }
+		}}
+	}
+}
+
+uf_sword_button_single_fire_effect = {
+	potential = {
+		exists = from
+		from = { 
+			has_country_flag = ufs_fire_mode_all
+		}
+	}
+	
+	allow = { FROM = {
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 6 }
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = {
+		custom_tooltip = uf_sword_button_single_fire_tooltip
+		hidden_effect = { 
+			remove_country_flag = ufs_fire_mode_all 
+			if = {
+				limit = { check_variable = { which = selected_ufs_system value > 1 }}
+				set_variable = { which = ufs_target_count value = 4 }
+				set_variable = { which = ufs_fliter_mod value = 9 }
+			}
+		}
+	}
+}
+uf_sword_button_single_fire_active_effect = {
+	potential = {
+		exists = from
+		from = { 
+			NOT = { has_country_flag = ufs_fire_mode_all }
+		}
+	}
+	allow = { FROM = {
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 6 }
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = {
+		custom_tooltip = uf_sword_button_single_fire_tooltip
+	}
+}
+uf_sword_button_all_fire_effect = {
+	potential = {
+		exists = from
+		from = { 
+			NOT = { has_country_flag = ufs_fire_mode_all }
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = "not_crisis_fliter_mode"
+			NOT = { check_variable = { which = ufs_fliter_mod value = 3 }}
+		}
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 6 }
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = {
+		custom_tooltip = uf_sword_button_all_fire_tooltip
+		hidden_effect = { set_country_flag = ufs_fire_mode_all }
+	}
+}
+uf_sword_button_all_fire_active_effect = {
+	potential = {
+		exists = from
+		from = { 
+			has_country_flag = ufs_fire_mode_all
+		}
+	}
+	allow = { FROM = {
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 6 }
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = {
+		custom_tooltip = uf_sword_button_all_fire_tooltip
+	}
+}
+
+uf_sword_beacon_effect = {
+	potential = {
+		exists = from
+		from = { 
+			NOT = { check_variable = { which = ufs_fliter_mod value = 6 }}
+		}
+	}
+	allow = { FROM = {
+		custom_tooltip = {
+			fail_text = "not_crisis_fliter_mode"
+			NOT = { check_variable = { which = ufs_fliter_mod value = 3 }}
+		}
+		custom_tooltip = {
+			fail_text = "exists_any_ufs_beacon"
+			OR = {
+				exists = event_target:ufs_beacon_1
+				exists = event_target:ufs_beacon_2
+				exists = event_target:ufs_beacon_3
+			}
+		}
+		hidden_trigger = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 9 }
+				check_variable = { which = ufs_fliter_mod value = 10 }
+			}
+		}
+	}}
+	effect = {
+		hidden_effect = { from = {
+			set_variable = { which = ufs_fliter_mod value = 6 }
+		}}
+	}
+}
+
+uf_sword_beacon_effect_active = {
+	potential = {
+		exists = from
+		from = { 
+			check_variable = { which = ufs_fliter_mod value = 6 }
+		}
+	}
+	allow = { always = yes }
+	effect = {
+		from = { hidden_effect = {
+			set_variable = { which = ufs_fliter_mod value = 4 }
+			set_variable = { which = ufs_interface_page value = 0 }
+			country_event = { id = uf_sword.121 }
+		}}
+	}
+}
+
+ufs_fliter_crisis = {
+	potential = {
+		exists = from
+		from = {
+			NOR = {
+				check_variable = { which = ufs_fliter_mod value = 1 }
+				check_variable = { which = ufs_fliter_mod value = 2 }
+				is_variable_set = ufs_fliter_starclass
+				has_country_flag = selected_ufs_country_target
+				has_country_flag = ufs_fliter_colony_system
+				has_country_flag = ufs_fliter_megastructure
+			}
+		}
+	}
+	allow = { 
+		FROM = {
+			hidden_trigger = {
+				NOR = {
+					check_variable = { which = ufs_fliter_mod value = 9 }
+					check_variable = { which = ufs_fliter_mod value = 10 }
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "exists_any_crisis_faction"
+			any_country = { is_ufs_crisis_faction = yes }
+		}
+		custom_tooltip = {
+			fail_text = "only_single_mode"
+			NOR = {
+				has_country_flag = ufs_fire_mode_all
+				check_variable = { which = ufs_fliter_mod value = 6 }
+			}
+		}
+	}
+	effect = {
+		custom_tooltip = ufs_fliter_crisis_tooltip
+		FROM = { hidden_effect = {
+			country_event = { id = uf_sword.1000 }
+			set_country_flag = crisis_fliter_enabled
+			set_variable = { which = ufs_fliter_mod value = 4 }
+		}}
+	}
+}

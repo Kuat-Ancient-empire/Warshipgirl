@@ -1,0 +1,246 @@
+weapon_component_template = {
+	key = "wsg_weapon_autocannon_152_hidden"
+	size = large
+	icon = "GFX_ship_part_wsg_autocannon_152"
+	icon_frame = 1
+	entity = "caravaneer_turret_01_entity"
+    type = instant
+    hidden = yes
+
+	damage = { min = 116 max = 144 }
+	windup = { min = 2.0 max = 3.0 }
+	total_fire_time = 15
+	range = 140
+	accuracy = 1.0
+	power = -200
+
+	resources = {
+		category = ship_components
+		cost = {
+			sr_neo = 15
+			sr_alpha = 5
+			sr_dark_matter = 5
+			alloys = 75
+		}
+		upkeep = {
+			energy = 1.0
+			alloys = 0.1
+		}
+	}
+
+	hull_damage = 1.1
+	armor_damage = 1.1
+	shield_damage = 1.5
+	tracking = 0.6
+
+	prerequisites = { "" }
+	component_set = "wsg_weapon_autocannon_152_hidden"
+	projectile_gfx = "gfx_wsg_152auto"
+	tags = { weapon_type_energy weapon_type_kinetic l_slot }
+	ai_tags = { weapon_role_anti_shield }
+
+}
+
+
+weapon_component_template = {
+	key = "wsg_weapon_203plasma"
+	size = large
+	icon = "GFX_ship_part_wsg_203plasma"
+	icon_frame = 1
+	entity = "caravaneer_turret_01_entity"
+    type = instant
+    hidden = yes
+
+	damage = { min = 288 max = 400 }
+	windup = { min = 5 max = 10 }
+	total_fire_time = 25
+	range = 140
+	accuracy = 0.8
+	power = -130
+
+	resources = {
+		category = ship_components
+		cost = {
+			sr_neo = 15
+			sr_alpha = 5
+			sr_dark_matter = 5
+			alloys = 75
+		}
+		upkeep = {
+			energy = 1.0
+			alloys = 0.1
+		}
+	}
+
+
+	shield_damage = 0.4
+	armor_damage = 2.5
+	hull_damage = 1.75
+	tracking = 0.2
+
+	component_set = "wsg_weapon_203plasma"
+	projectile_gfx = "gfx_wsg_203plasma"
+	tags = { weapon_type_energy weapon_type_explosive l_slot }
+	valid_for_country = {
+		is_fallen_empire = yes
+	}
+
+	ai_weight = {
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0
+			resource_stockpile_compare = {
+				resource = volatile_motes
+				value < 100
+			}
+		}
+	}
+}
+
+weapon_component_template = {
+	key = "wsg_weapon_356laser_hidden"
+	size = large
+	icon = "GFX_ship_part_wsg_356laser"
+	icon_frame = 1
+	entity = "caravaneer_turret_01_entity"
+    type = instant
+    hidden = yes
+
+	damage = { min = 762 max = 1022 }
+	windup = { min = 6.0 max = 13.0 }
+	total_fire_time = 90
+	range = 144
+	accuracy = 1.0
+	power = -115
+
+	resources = {
+		category = ship_components
+		cost = {
+			sr_neo = 10
+			sr_alpha = 2
+			alloys = 80
+		}
+		upkeep = {
+			energy = 0.8
+			alloys = 0.1
+		}
+	}
+
+	shield_damage = 2.5
+	armor_damage = 0.35
+	hull_damage = 1.25
+	tracking = 0.4
+
+	prerequisites = { "" }
+	component_set = "wsg_weapon_356laser_hidden"
+	projectile_gfx = "gfx_wsg_356laser"
+	tags = { weapon_type_energy l_slot }
+	ai_tags = { weapon_role_anti_shield }
+
+	valid_for_country = {
+		is_fallen_empire = yes
+	}
+}
+
+strike_craft_component_template = {
+	key = "wsg_shop_fighter"
+	size = LARGE
+	entity = "bomber_entity"
+	weapon_type = point_defence
+	projectile_gfx = "stellarite_plasma"
+	hidden = yes
+
+	power = 0
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 1
+		}
+		upkeep = {
+			energy = @l_t5_upkeep_energy
+			alloys = @l_t5_upkeep_alloys
+		}
+	}
+
+	count = 4
+	regeneration_per_day = 1
+	launch_time = 1
+
+	damage = { min = 115 max = 167 }
+	cooldown = 4
+	range = 65
+	engagement_range = 150
+	accuracy = 1.00
+	tracking = 1.00
+
+	health = 150
+	armor = 40
+	shield = 90
+	evasion = 0.80
+
+	speed = 600
+	rotation_speed = 0.8
+	acceleration = 1
+
+	shield_penetration = 2.0
+	armor_damage = 2.5
+
+	ship_behavior = "fighters_behavior"
+
+	icon = "GFX_ship_part_strike_craft_fighter_3"
+	icon_frame = 1
+	component_set = "wsg_shop_fighter"
+	prerequisites = { "" }
+
+	tags = { weapon_type_strike_craft }
+	ai_tags = { weapon_role_point_defense }
+
+}
+
+weapon_component_template = {
+	key = "wsg_shop_ion_cannon"
+	size = titanic
+	type = instant
+	prio_projectile = yes
+	entity = "caravaneer_turret_01_entity"
+	icon = "GFX_ship_part_perdition_beam"
+	icon_frame = 1
+	hidden = yes
+	
+	firing_arc = 60.0
+	min_range = 30.0
+	use_ship_kill_target = no
+	
+	#prerequisites = { "tech_titans" }
+	component_set = "wsg_shop_ion_cannon"
+	projectile_gfx = "perdition_beam"
+    size_restriction = { ion_cannon }
+    
+	damage = { min = 6000 max = 12000 }
+	windup = { min = 10.0 max = 15.0 }
+	total_fire_time = 30
+	range = 235
+	accuracy = 0.85
+    power = -500
+    
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = 300
+		}
+		upkeep = {
+			energy = 5
+			alloys = 0.1
+		}
+	}
+
+	shield_damage = 2.5
+	armor_damage = 2.0
+	hull_damage = 1.25
+	tracking = 0.4
+
+	ai_weight = {
+		weight = 1
+	}
+    tags = { weapon_type_energy t_slot }
+}

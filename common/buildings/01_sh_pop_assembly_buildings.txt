@@ -1,0 +1,219 @@
+#深海建造器
+building_sh_assembly_plant = {
+	base_buildtime = 240
+	base_cap_amount = 1
+
+	category = pop_assembly
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai	
+			NOT = { has_ascension_perk = ap_become_the_gray }
+		}
+	}
+	
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				is_regular_empire = no 
+				is_wg_empire = no
+				has_ascension_perk = ap_become_the_gray
+			}
+		}
+	}
+
+	convert_to = {
+		"building_sh_nano_assembly_plant"
+	}
+	
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 3
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 250
+		}
+		upkeep = {
+			minerals = 2
+			energy = 2
+		}
+		upkeep = {
+			trigger = {
+				exists = assembling_species
+				assembling_species = {
+					OR = {
+						has_trait = sh_trait_building2E
+						has_trait = sh_trait_building22E
+					}
+				}
+			}
+			sr_se = 15
+		}
+	}	
+	
+	prerequisites = {
+		"tech_sh_assembly"
+	}
+	
+	upgrades = {
+		building_sh_assembly_plantU
+	}
+}
+
+#深海建造器MK2
+building_sh_assembly_plantU = {
+	base_buildtime = 240
+	can_build = no
+
+	category = pop_assembly
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai	
+			NOT = { has_ascension_perk = ap_become_the_gray }
+		}
+	}
+	allow = {
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 0 }
+	}	
+	
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				is_regular_empire = no 
+				is_wg_empire = no
+				has_ascension_perk = ap_become_the_gray
+			}
+		}
+	}
+
+	convert_to = {
+		"building_sh_nano_assembly_plantU"
+	}
+	
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 6
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 500
+		}
+		upkeep = {
+			minerals = 10
+			energy = 10
+			sr_pantsu = 1
+		}
+		upkeep = {
+			trigger = {
+				exists = assembling_species
+				assembling_species = {
+					OR = {
+						has_trait = sh_trait_building2E
+						has_trait = sh_trait_building22E
+					}
+				}
+			}
+			sr_se = 15
+		}
+	}	
+
+	upgrades = {
+		building_sh_assembly_plantF
+	}
+	
+	prerequisites = {
+		"tech_sh_assembly2"
+	}	
+}
+
+#深海建造器MK3
+building_sh_assembly_plantF = {
+	base_buildtime = 400
+	can_build = no
+
+	category = pop_assembly
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_shenhai	
+			NOT = { has_ascension_perk = ap_become_the_gray }
+		}
+	}
+	allow = {
+		z_mod_num_pop_trigger = { OPERATOR = ">=" NUM = 0 }
+	}	
+	
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				is_regular_empire = no 
+				is_wg_empire = no
+				has_ascension_perk = ap_become_the_gray
+			}
+		}
+	}
+
+	convert_to = {
+		"building_sh_nano_assembly_plantF"
+	}
+	
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 9
+		planet_stability_add = 5
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 800
+			sr_se = 40
+		}
+		upkeep = {
+			minerals = 15
+			energy = 15
+			sr_pantsu = 1
+			sr_se = 1
+		}
+		upkeep = {
+			trigger = {
+				exists = assembling_species
+				assembling_species = {
+					OR = {
+						has_trait = sh_trait_building2E
+						has_trait = sh_trait_building22E
+					}
+				}
+			}
+			sr_se = 15
+		}
+	}	
+	
+	prerequisites = {
+		"tech_sh_assembly3"
+	}	
+}

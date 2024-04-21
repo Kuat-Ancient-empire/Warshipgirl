@@ -1,0 +1,42 @@
+#####    Stars    ######
+entity = { # A
+	name = "monolith_crisis_star_entity"
+	cull_radius = 1
+	default_state = "idle"
+	locator = { name = "energy_core" 	position = { 0 0 0 } }
+	locator = { name = "root" 	position = { 0 0 0 } }
+	state = { name = "idle" state_time = 5.0
+		event = { trigger_once = yes sound = { soundeffect = "space_ambient" } }  
+		event = { trigger_once = yes sound = { soundeffect = "falling_star" } }
+		event = { trigger_once = yes sound = { soundeffect = "space_ambient_layer_02" } }
+	}
+    attach = { name = root "inner_section" = "lithoid_01_starbase_core_entity"	}
+	attach = { name = "root"		root = "uf_monolith_ring_full_entity" }
+}
+
+entity = { #核心
+	name = "monolith_crisis_core_star_entity"
+	cull_radius = 1
+	default_state = "idle"
+	locator = { name = "energy_core" 	position = { 0 0 0 } }
+	locator = { name = "root" 	position = { 0 0 0 } }
+	state = { name = "idle" state_time = 5.0
+		event = { trigger_once = yes sound = { soundeffect = "space_ambient" } }  
+		event = { trigger_once = yes sound = { soundeffect = "falling_star" } }
+		event = { trigger_once = yes sound = { soundeffect = "space_ambient_layer_02" } }
+	}
+    attach = { name = root "inner_section" = "monolith_core_entity"	}
+	attach = { name = "root"		root = "uf_monolith_core_full_entity" }
+}
+
+entity = {
+	name = "monolith_core_entity"
+
+	locator = { name = "core_effect"				position = { 0	1  0 } }	
+		default_state = "idle"
+		state = { name = "idle"
+			event = { time = 0 node = "core_effect" particle = "lithoid_03_ion_core" keep_particle = yes trigger_once = yes life = 15}
+		}
+	attach = { "core_effect" = "ion_core_pull_entity"	}	
+	scale = 5
+}

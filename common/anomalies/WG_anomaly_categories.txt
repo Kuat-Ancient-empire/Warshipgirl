@@ -1,0 +1,201 @@
+wg_psi_planet_category = {
+	desc = wg_psi_planet_category_desc
+	max_once_global = yes
+	max_once = yes
+	picture = GFX_evt_shrouded_planet
+	level = 8
+	should_ai_use = no
+
+	null_spawn_chance = 0
+
+	spawn_chance = {
+		modifier = {
+			add = 999999999999
+			has_planet_flag = wg_shrouded_planet
+			FROM.owner = { has_country_flag = wg_psi_event_country }
+			# FROM.leader = { OR = {
+			# 	has_trait = leader_trait_scientist_wsg_curiosity
+			# 	has_trait = leader_trait_scientist_canarias
+			# 	has_trait = leader_trait_scientist_wsg_lady_science_ship
+			# 	has_trait = leader_trait_scientist_wsg_lady_science_ship_weaken
+			# 	has_trait = leader_trait_roamer
+			# 	has_trait = leader_trait_expertise_field_manipulation
+			# 	has_trait = leader_trait_expertise_psionics
+			# 	has_trait = leader_trait_curator
+			# }}
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_global_flag = spawned_wg_psi_anomaly_cat
+				FROM.owner = { OR = {
+					has_country_flag = accept_psi_country_request 
+					has_country_flag = reject_psi_country_request
+				}}
+			}
+		}
+	}
+
+	on_spawn = {
+		set_global_flag = spawned_wg_psi_anomaly_cat
+		event_target:wg_psi_1_system = {
+			random_system_planet = {
+				limit = { 
+					has_planet_flag = wg_shrouded_planet_1 
+					NOT = { is_same_value = ROOT }
+				}
+				prevent_anomaly = yes
+			}
+		}
+		event_target:wg_psi_2_system = {
+			random_system_planet = {
+				limit = { 
+					has_planet_flag = wg_shrouded_planet_2 
+					NOT = { is_same_value = ROOT }
+				}
+				prevent_anomaly = yes
+			}
+			random_system_planet = {
+				limit = { 
+					has_planet_flag = wg_shrouded_planet_3 
+					NOT = { is_same_value = ROOT }
+				}
+				prevent_anomaly = yes
+			}
+		}
+		event_target:wg_psi_3_system = {
+			random_system_planet = {
+				limit = { 
+					has_planet_flag = wg_shrouded_planet_4 
+					NOT = { is_same_value = ROOT }
+				}
+				prevent_anomaly = yes
+			}
+		}
+	}
+
+	on_success = wg_boss.137
+}
+
+wg_precursors_category = {
+	desc = wg_precursors_category_desc
+	picture = GFX_evt_archaeological_dig
+	level = 8
+	
+	spawn_chance = {
+		modifier = {
+			add = 100
+			FROM.owner = { 
+				is_ai = yes
+				is_ai = no
+				check_variable = { which = spawned_wg_precursors_anomalies value <= 5 }
+				is_wg_empire = yes
+				is_wg_empire = no
+				has_event_chain = wg_precursors
+			}
+		}
+	}
+
+	on_spawn = {
+		FROM.owner = { 
+			change_variable = { which = spawned_wg_precursors_anomalies value = 1 }
+		}
+	}
+
+	on_success = {
+		1 = {
+			max_once = yes
+			anomaly_event = wsgancrel.99
+		}
+	}
+}
+#
+sh_shield_planet_category = {
+	desc = sh_shield_planet_category_desc
+	max_once_global = yes
+	max_once = yes
+	picture = GFX_evt_shielded_planet
+	level = 4
+	should_ai_use = no
+
+	null_spawn_chance = 0
+
+	spawn_chance = {
+		modifier = {
+			add = 999999999999
+			has_planet_flag = shenhai_shield_world
+			FROM.owner = { has_authority = auth_shenhai }
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_global_flag = spawned_shenhai_shield_world
+			}
+		}
+	}
+
+	on_spawn = {
+		set_global_flag = spawned_shenhai_shield_world
+		event_target:shenhai_shield_world_target = {
+			random_system_planet = {
+				limit = { 
+					has_planet_flag = shenhai_shield_world 
+					NOT = { is_same_value = ROOT }
+				}
+				prevent_anomaly = yes
+			}
+		}
+	}
+
+	on_success = sh.3056
+}
+
+WG_DELICIOUS_MAID_CAT = {
+	desc = "WG_DELICIOUS_MAID_CAT_DESC"
+	picture = "GFX_evt_space_debris"
+	level = 3
+
+	spawn_chance = {
+		modifier = {
+			add = 1
+			has_global_flag = ms_species_enabled
+			uninhabitable_regular_planet = yes
+		}
+	}
+
+	max_once_global = yes
+
+	on_success = wg_paragon.1004
+}
+
+WG_GREAT_MING_RUINED_SHIP = {
+	desc = "WG_GREAT_MING_RUINED_SHIP_DESC"
+	picture = "GFX_evt_wg_great_ming_1"
+	level = 5
+
+	spawn_chance = {
+		modifier = {
+			add = 3
+			uninhabitable_regular_planet = yes
+		}
+		modifier = {
+			factor = 0
+			from.owner = {
+				NOR = {
+					has_authority = auth_warshipgirls
+					has_authority = auth_shenhai
+				}	
+			}
+		}
+		modifier = {
+			factor = 0
+			from.owner = {
+				is_ai = yes	
+			}
+		}
+	}
+
+	max_once_global = yes
+
+	on_success = wg_great_ming.1
+}

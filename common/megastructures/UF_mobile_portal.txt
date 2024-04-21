@@ -1,0 +1,75 @@
+# 传送门
+uf_mobile_portal = {
+	entity = "Megastructure_X3087_2_entity"
+	construction_entity = "Megastructure_X30871_small_entity"
+	portrait = "GFX_uf_mobile_portal_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	show_galactic_map_icon = no
+	show_in_outliner = no
+
+	potential = {
+		always = no
+	}
+
+	resources = {
+		category = megastructures
+		upkeep = { energy = 10 alloys = 5 }
+	}
+
+	bypass_type = gateway
+}
+# 给门折叠升级用的，升级完直接回删掉
+uf_mobile_portal2 = {
+	entity = "mobile_portal_section_entity"
+	construction_entity = "mobile_portal_section_entity"
+	portrait = "GFX_megastructure_construction_background"
+	construction_blocks_and_blocked_by = none
+	entity_offset = { x = 0 y = 0 }
+
+	possible = {
+		exists = this
+		exists = from
+		# 不给ai升级
+		from = {
+			is_ai = no
+			has_authority = auth_united_fleet
+		}
+		custom_tooltip = {
+			fail_text = "no_hostile_fleet_in_system"
+			NOT = { any_fleet_in_system = { 
+				owner = { is_hostile = prevprev.from }
+				any_owned_ship = { OR = {
+					is_ship_class = shipclass_military 
+					is_ship_class = shipclass_military_station
+				}}
+			}}
+		}
+		
+	}
+
+	upgrade_from = {
+		uf_mobile_portal
+	}
+
+	build_time = 60
+}
+# 炸掉之后生成的门，无法升级，过一段时间删掉
+uf_mobile_portal_temp = {
+	entity = "extra_dimensional_uf2_small_dimensional_portal_core_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	show_galactic_map_icon = no
+	show_in_outliner = no
+
+	potential = {
+		always = no
+	}
+
+	resources = {
+		category = megastructures
+	}
+
+	bypass_type = gateway
+}

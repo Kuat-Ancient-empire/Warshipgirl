@@ -1,0 +1,1823 @@
+building_uf_energy = {
+	base_buildtime = 720
+	icon = building_uf_energy
+
+	category = resource
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+			
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 300
+			sr_uf = 20
+		}
+		produces = {
+			multiplier = auto_building_upgrade
+			energy = 20
+		}
+		produces = {
+			energy = 200
+		}
+		produces = {
+			trigger = {
+				colony_type = col_uf_auto_world
+			}
+			energy = 20
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_energy_upgrade_1 }
+			}
+			energy = 100
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_energy_upgrade_2 }
+			}
+			energy = 100
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_energy_upgrade_3 }
+			}
+			energy = 200
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_energy_upgrade_4 }
+			}
+			energy = 500
+		}
+		upkeep = {
+			sr_uf = 1
+		}
+		upkeep = {
+			trigger = {
+				owner = { has_technology = tech_uf_energy_upgrade_2 }
+			}
+			sr_uf = 1
+		}
+		upkeep = {
+			trigger = {
+				owner = { has_technology = tech_uf_energy_upgrade_3 }
+			}
+			sr_uf = 1
+		}
+		upkeep = {
+			trigger = {
+				owner = { has_technology = tech_uf_energy_upgrade_4 }
+			}
+			sr_uf = 1
+		}
+	}	
+}
+building_uf_archaeology = {
+	base_buildtime = 1080
+	icon = building_uf_archaeology
+    empire_limit = {
+	 	base = 1
+	}
+	category = resource
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	planet_modifier = {
+		job_uf_archaeologist_add = 2
+	}
+	country_modifier = {
+		ship_archaeological_site_clues_add = 3
+		ship_astral_rift_clues_add = 3
+		ship_anomaly_generation_chance_mult = 0.15
+	}
+	triggered_desc = {
+		text = job_uf_archaeologist_effect_desc
+	}		
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 800
+			sr_uf = 20
+		}
+		upkeep = {
+			sr_uf = 1
+		}
+	}
+	prerequisites = { "tech_uf_archaeology" }
+}
+
+building_uf_constructrue = {
+	base_buildtime = 720
+	base_cap_amount = 1
+
+	category = government
+	
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			has_authority = auth_united_fleet
+		}
+	}	
+	planet_modifier = {
+		planet_building_build_speed_mult = 0.50
+		planet_decision_enact_speed_mult = 0.50
+	}
+	
+	prerequisites = { "tech_uf_constructrue" }
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 500
+		}
+		upkeep = {
+			minerals = 5
+			energy = 5
+			sr_uf = 1
+		}
+	}	
+}
+building_uf_assembly = {
+	base_buildtime = 360
+	base_cap_amount = 1
+
+	category = pop_assembly
+	
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			has_authority = auth_united_fleet
+		}
+	}	
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 4
+		pop_growth_speed = 0.3
+	}
+	upgrades = {
+		"building_uf_assembly_2"
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 300
+		}
+		upkeep = {
+			minerals = 3
+			energy = 3
+			food = 3
+		}
+	}	
+}
+
+building_uf_assembly_2 = {
+	base_buildtime = 480
+	can_build = no
+
+    allow = {
+		has_upgraded_capital = yes
+	}
+	category = pop_assembly
+
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			has_authority = auth_united_fleet
+		}
+	}
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 10
+		pop_growth_speed = 0.5
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 400
+		}
+		upkeep = {
+			minerals = 12
+			energy = 12
+			food = 12
+			sr_uf = 1
+		}
+	}	
+	prerequisites = { "tech_uf_assembly_2" }
+}
+
+building_uf_monument = {
+	base_buildtime = 360
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = no
+	base_cap_amount = 1
+    empire_limit = {
+	 	base = 1
+	}
+	category = unity
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			has_authority = auth_united_fleet
+			has_country_flag = uf_monument_flag
+		}
+	}
+    country_modifier = {
+		country_unity_produces_mult = 0.10
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 200
+		}
+		upkeep = {
+			energy = 1
+		}
+		produces = {
+			unity = 50
+		}
+	}
+}
+building_uf_food_writer_base = {
+	base_buildtime = 540
+	category = unity
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	allow = {
+	}
+	
+	planet_modifier = {
+		planet_jobs_unity_produces_mult = 0.02
+	}	
+	planet_modifier = {
+		job_uf_food_writer_add = 4
+	}
+
+	triggered_desc = {
+		text = job_uf_food_writer_effect_desc
+	}	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 500
+			food = 500
+		}
+		upkeep = {
+			energy = 5
+			food = 5
+		}
+	}	
+	
+}
+building_uf_entertainment_center = {
+	base_buildtime = 540
+	category = amenity
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	allow = {
+	}
+	
+		
+	planet_modifier = {
+		planet_stability_add = 5
+		job_uf_entertainer_add = 4
+		job_uf_food_writer_add = 1
+	}
+	triggered_desc = {
+		text = job_uf_entertainer_effect_desc
+	}
+	triggered_desc = {
+		text = job_uf_food_writer_effect_desc
+	}	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 500
+		}
+		upkeep = {
+			energy = 5
+		}
+	}	
+	
+}
+
+building_uf_residence = {
+	base_buildtime = 360
+	category = amenity
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	allow = {
+	}
+	
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			AND = {
+				free_building_slots = 0
+				free_jobs = 0
+				free_housing > 10
+				owner = {
+					is_ai = yes
+				}
+			}
+			owner = { is_regular_empire = no }
+			has_modifier = slave_colony
+		}
+	}
+		
+	planet_modifier = {
+		planet_housing_add = 25
+		planet_amenities_add = 35
+		pop_environment_tolerance = 0.20
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_active_tradition = tr_domination_imperious_architecture
+			}					
+		}
+		modifier = {
+			planet_housing_add = 0
+		}
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 300
+		}
+		upkeep = {
+			energy = 4
+		}
+	}	
+	
+}
+
+building_uf_residence_s = {
+	base_buildtime = 360
+	category = amenity
+	icon = building_uf_residence
+	
+	potential = {
+		exists = owner
+		always = no
+	}
+	
+	allow = {
+	}
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			AND = {
+				free_building_slots = 0
+				free_jobs = 0
+				free_housing > 10
+				owner = {
+					is_ai = yes
+				}
+			}
+			owner = { is_regular_empire = no }
+			has_modifier = slave_colony
+		}
+	}
+		
+	planet_modifier = {
+		planet_housing_add = 35
+		planet_amenities_add = 50
+		pop_environment_tolerance = 0.35
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_active_tradition = tr_domination_imperious_architecture
+			}					
+		}
+		modifier = {
+			planet_housing_add = 0
+		}
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 300
+		}
+		upkeep = {
+			energy = 5
+		}
+	}	
+	
+}
+
+building_uf_science_center = {
+	base_buildtime = 1080
+	base_cap_amount = 1
+
+	category = research
+	
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			has_authority = auth_united_fleet
+		}
+	}	
+	prerequisites = { "tech_uf_science_center" }
+	planet_modifier = {
+		planet_jobs_physics_research_produces_mult = 1
+		planet_jobs_society_research_produces_mult = 1
+		planet_jobs_engineering_research_produces_mult = 1
+	}
+    triggered_desc = {
+		text = building_uf_science_center_effect_desc
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 2000
+		}
+		upkeep = {
+			sr_uf = 10
+			energy = 25
+		}
+	}	
+}
+
+#科研站
+building_uf_research = {
+	base_buildtime = 360
+	icon = building_uf_research
+
+	category = research
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+			
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 400
+			sr_uf = 20
+		}	
+		upkeep = {
+			energy = 5
+		}
+	}
+	upgrades = {
+		"building_uf_research_2"
+	}
+	planet_modifier = {
+		job_uf_researcher_add = 1
+		job_researcher_add = 1
+		planet_jobs_physics_research_produces_mult = 0.005
+		planet_jobs_society_research_produces_mult = 0.005
+		planet_jobs_engineering_research_produces_mult = 0.005
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_uf_research_upgrade_2 }
+		}
+		modifier = {
+			job_researcher_add = 1
+		}
+	}
+	
+
+	triggered_desc = {
+		text = job_researcher_effect_desc
+	}
+    triggered_desc = {
+		text = job_uf_researcher_effect_desc
+	}	
+
+}
+#自动化科研站
+building_uf_auto_research = {
+	base_buildtime = 360
+	icon = building_uf_research_auto
+
+	category = research
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+
+	planet_modifier = {
+		planets_physics_research_produces_mult = 0.005
+		planets_society_research_produces_mult = 0.005
+		planets_engineering_research_produces_mult = 0.005
+	}
+			
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 450
+			sr_uf = 20
+		}
+		produces = {
+			physics_research = 25
+			society_research = 25
+			engineering_research = 25
+		}
+		produces = {
+			multiplier = auto_building_upgrade
+			physics_research = 5
+			society_research = 5
+			engineering_research = 5
+		}
+		upkeep = {
+			multiplier = auto_building_upgrade
+			energy = 2
+		}
+		produces = {
+			trigger = {
+				colony_type = col_uf_auto_world
+			}
+			physics_research = 10
+			society_research = 10
+			engineering_research = 10
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_research_upgrade_1 }
+			}
+			physics_research = 15
+			society_research = 15
+			engineering_research = 15
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_research_upgrade_2 }
+			}
+			physics_research = 25
+			society_research = 25
+			engineering_research = 25
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_research_upgrade_3 }
+			}
+			physics_research = 35
+			society_research = 35
+			engineering_research = 35
+		}
+		upkeep = {
+			energy = 15
+		}
+		produces = {
+			trigger = {
+				has_building = building_uf_science_center
+			}
+			physics_research = 70
+			society_research = 70
+			engineering_research = 70
+		}
+	}
+	upgrades = {
+		"building_uf_auto_research_2"
+	}	
+
+}
+#科研站2
+building_uf_research_2 = {
+	base_buildtime = 480
+	icon = building_uf_research_2
+    can_build = no
+	category = research
+	allow = {
+		has_upgraded_capital = yes
+	}
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+			
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 300
+			sr_uf = 50
+		}	
+		upkeep = {
+			exotic_gases = 1
+			sr_uf = 1
+			energy = 10
+		}
+	}
+	upgrades = {
+		"building_uf_research_3"
+	}
+	prerequisites = { "tech_uf_research_2" }
+	planet_modifier = {
+		job_uf_researcher_add = 2
+		job_researcher_add = 2
+		planet_jobs_physics_research_produces_mult = 0.02
+		planet_jobs_society_research_produces_mult = 0.02
+		planet_jobs_engineering_research_produces_mult = 0.02
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_uf_research_upgrade_2 }
+		}
+		modifier = {
+			job_researcher_add = 2
+		}
+	}
+
+	triggered_desc = {
+		text = job_researcher_effect_desc
+	}
+    triggered_desc = {
+		text = job_uf_researcher_effect_desc
+	}	
+
+}
+#自动化科研站
+building_uf_auto_research_2 = {
+	base_buildtime = 480
+	icon = building_uf_research_2_auto
+    can_build = no
+	category = research
+
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+
+	planet_modifier = {
+		planets_physics_research_produces_mult = 0.02
+		planets_society_research_produces_mult = 0.02
+		planets_engineering_research_produces_mult = 0.02
+	}
+			
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 500
+			sr_uf = 50
+		}
+		produces = {
+			multiplier = auto_building_upgrade
+			physics_research = 10
+			society_research = 10
+			engineering_research = 10
+		}
+		upkeep = {
+			multiplier = auto_building_upgrade
+			energy = 3
+		}
+		produces = {
+			trigger = {
+				colony_type = col_uf_auto_world
+			}
+			physics_research = 20
+			society_research = 20
+			engineering_research = 20
+		}
+		produces = {
+			physics_research = 50
+			society_research = 50
+			engineering_research = 50
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_research_upgrade_1 }
+			}
+			physics_research = 20
+			society_research = 20
+			engineering_research = 20
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_research_upgrade_2 }
+			}
+			physics_research = 50
+			society_research = 50
+			engineering_research = 50
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_research_upgrade_3 }
+			}
+			physics_research = 80
+			society_research = 80
+			engineering_research = 80
+		}
+		upkeep = {
+			exotic_gases = 1
+			sr_uf = 1
+			energy = 20
+		}
+		produces = {
+			trigger = {
+				has_building = building_uf_science_center
+			}
+			physics_research = 150
+			society_research = 150
+			engineering_research = 150
+		}
+	}
+	prerequisites = { "tech_uf_research_2" }
+	upgrades = {
+		"building_uf_auto_research_3"
+	}	
+
+}
+
+#科研站3
+building_uf_research_3 = {
+	base_buildtime = 720
+	icon = building_uf_research_3
+    can_build = no
+	category = research
+	allow = {
+		has_upgraded_capital = yes
+	}
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+			
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 500
+			sr_uf = 80
+		}	
+		upkeep = {
+			exotic_gases = 3
+			sr_uf = 3
+			energy = 15
+		}
+	}
+
+	prerequisites = { "tech_uf_research_3" }
+	planet_modifier = {
+		job_uf_researcher_add = 3
+		job_researcher_add = 3
+		planet_jobs_physics_research_produces_mult = 0.03
+		planet_jobs_society_research_produces_mult = 0.03
+		planet_jobs_engineering_research_produces_mult = 0.03
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_uf_research_upgrade_2 }
+		}
+		modifier = {
+			job_researcher_add = 2
+			job_uf_researcher_add = 1
+		}
+	}
+
+	triggered_desc = {
+		text = job_researcher_effect_desc
+	}
+    triggered_desc = {
+		text = job_uf_researcher_effect_desc
+	}	
+
+}
+#自动化科研站
+building_uf_auto_research_3 = {
+	base_buildtime = 720
+	icon = building_uf_research_3_auto
+    can_build = no
+	category = research
+
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+
+	planet_modifier = {
+		planets_physics_research_produces_mult = 0.03
+		planets_society_research_produces_mult = 0.03
+		planets_engineering_research_produces_mult = 0.03
+	}
+			
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 500
+			sr_uf = 50
+		}
+		produces = {
+			multiplier = auto_building_upgrade
+			physics_research = 20
+			society_research = 20
+			engineering_research = 20
+		}
+		upkeep = {
+			multiplier = auto_building_upgrade
+			energy = 5
+		}
+		produces = {
+			trigger = {
+				colony_type = col_uf_auto_world
+			}
+			physics_research = 50
+			society_research = 50
+			engineering_research = 50
+		}
+		produces = {
+			physics_research = 100
+			society_research = 100
+			engineering_research = 100
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_research_upgrade_1 }
+			}
+			physics_research = 50
+			society_research = 50
+			engineering_research = 50
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_research_upgrade_2 }
+			}
+			physics_research = 80
+			society_research = 80
+			engineering_research = 80
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_research_upgrade_3 }
+			}
+			physics_research = 170
+			society_research = 170
+			engineering_research = 170
+		}
+		upkeep = {
+			exotic_gases = 3
+			sr_uf = 3
+			energy = 30
+		}
+		produces = {
+			trigger = {
+				has_building = building_uf_science_center
+			}
+			physics_research = 300
+			society_research = 300
+			engineering_research = 300
+		}
+	}
+	prerequisites = { "tech_uf_research_3" }
+
+
+}
+####
+#超维捕获站
+building_uf_hyperdimensional_matter = {
+	base_buildtime = 720
+	icon = building_uf_hyperdimensional_matter
+
+	category = manufacturing
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+			
+	resources = {
+		category = planet_buildings
+		cost = {
+			alloys = 300
+		}	
+		upkeep = {
+			energy = 2
+		}
+	}
+	upgrades = {
+		"building_uf_hyperdimensional_matter_2"
+	}
+	prerequisites = {
+		"tech_uf_hyperdimensional_matter"
+	}
+	planet_modifier = {
+		job_uf_hm_add = 1
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_uf_hyperdimensional_matter_upgrade_1 }
+		}
+		modifier = {
+			job_uf_hm_add = 1
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_uf_hyperdimensional_matter_upgrade_2 }
+		}
+		modifier = {
+			job_uf_hm_add = 1
+		}
+	}
+
+    triggered_desc = {
+		text = job_uf_hm_effect_desc
+	}
+}
+
+#超维捕获站
+building_uf_hyperdimensional_matter_2 = {
+	base_buildtime = 540
+	icon = building_uf_hyperdimensional_matter_2
+	can_build = no
+
+	category = manufacturing
+	allow = {
+		has_upgraded_capital = yes
+	}
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+			
+	resources = {
+		category = planet_buildings
+		cost = {
+			alloys = 300
+		}	
+		upkeep = {
+			energy = 4
+		}
+	}
+
+	prerequisites = {
+		"tech_uf_hyperdimensional_matter_2"
+	}
+	planet_modifier = {
+		job_uf_hm_add = 3
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_uf_hyperdimensional_matter_upgrade_1 }
+		}
+		modifier = {
+			job_uf_hm_add = 1
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_uf_hyperdimensional_matter_upgrade_2 }
+		}
+		modifier = {
+			job_uf_hm_add = 1
+		}
+	}
+
+    triggered_desc = {
+		text = job_uf_hm_effect_desc
+	}	
+}
+#超维合金厂
+building_uf_hm_foundry = {
+	base_buildtime = 540
+	category = manufacturing	
+	base_cap_amount = 1
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	upgrades = {
+		"building_uf_hm_foundry_2"
+	}
+	prerequisites = { "tech_uf_hm_foundry" }
+
+	planet_modifier = {
+		job_uf_hm_alloys_add = 4
+		job_uf_hm_alloys_per_pop = 0.05
+		planet_metallurgists_alloys_produces_add = 2
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 800
+			sr_uf = 50
+		}	
+		upkeep = {
+			energy = 5
+			sr_uf = 2
+		}
+	}	
+	triggered_planet_modifier = {
+		potential = { has_deposit = PR_D_core }
+		mult = PR_var_plnt_MAN
+		job_uf_hm_alloys_add = 0.05
+	}
+	
+	triggered_desc = {
+		text = job_uf_hm_alloys_effect_desc
+	}
+
+	ai_resource_production = {
+		alloys = 1
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+building_uf_auto_hm_foundry = {
+	base_buildtime = 540
+	category = manufacturing	
+	icon = building_uf_hm_foundry_auto
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	upgrades = {
+		"building_uf_auto_hm_foundry_2"
+	}
+
+	planet_modifier = {
+		planet_metallurgists_alloys_produces_mult = 0.05
+	}
+
+    prerequisites = { "tech_uf_hm_foundry" }
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 1000
+			sr_uf = 50
+		}
+		produces = {
+			alloys = 50
+			consumer_goods = 20
+		}
+		produces = {
+			multiplier = auto_building_upgrade
+			alloys = 5
+			consumer_goods = 5
+		}
+		upkeep = {
+			multiplier = auto_building_upgrade
+			minerals = 10
+		}
+		produces = {
+			trigger = {
+				colony_type = col_uf_auto_world
+			}
+			alloys = 10
+			consumer_goods = 5
+		}
+		upkeep = {
+			energy = 15
+			minerals = 10
+			sr_uf = 1
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_hm_foundry_upgrade_1 }
+			}
+			alloys = 50
+			consumer_goods = 30
+		}
+		upkeep = {
+			trigger = {
+				owner = { has_technology = tech_uf_hm_foundry_upgrade_1 }
+			}
+			minerals = 10
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_hm_foundry_upgrade_2 }
+			}
+			alloys = 50
+			consumer_goods = 30
+		}
+		upkeep = {
+			trigger = {
+				owner = { has_technology = tech_uf_hm_foundry_upgrade_2 }
+			}
+			minerals = 10
+			sr_uf = 1
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_hm_foundry_upgrade_3 }
+			}
+			alloys = 150
+			consumer_goods = 120
+		}
+		upkeep = {
+			trigger = {
+				owner = { has_technology = tech_uf_hm_foundry_upgrade_3 }
+			}
+			minerals = 50
+			sr_uf = 2
+		}
+	}
+	
+
+	ai_resource_production = {
+		alloys = 1
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+#超维合金厂
+building_uf_hm_foundry_2 = {
+	base_buildtime = 1080
+	category = manufacturing	
+	can_build = no
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+    prerequisites = {
+		"tech_uf_hm_foundry_2"
+	}
+	allow = {
+		has_upgraded_capital = yes
+	}
+	planet_modifier = {
+		job_uf_hm_alloys_add = 8
+		job_uf_hm_alloys_per_pop = 0.08
+		planet_metallurgists_alloys_produces_add = 3
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 1500
+			sr_uf = 150
+		}	
+		upkeep = {
+			energy = 10
+			sr_uf = 3
+			volatile_motes = 5
+		}
+	}	
+	triggered_planet_modifier = {
+		potential = { has_deposit = PR_D_core }
+		mult = PR_var_plnt_MAN
+		job_uf_hm_alloys_add = 0.08
+	}
+	
+	triggered_desc = {
+		text = job_uf_hm_alloys_effect_desc
+	}
+
+	ai_resource_production = {
+		alloys = 1
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+building_uf_auto_hm_foundry_2 = {
+	base_buildtime = 720
+	category = manufacturing	
+	can_build = no
+	icon = building_uf_hm_foundry_2_auto
+
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+    prerequisites = {
+		"tech_uf_hm_foundry_2"
+	}
+	planet_modifier = {
+		planet_metallurgists_alloys_produces_mult = 0.1
+	}
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 1500
+			sr_uf = 150
+		}
+		produces = {
+			alloys = 150
+			consumer_goods = 50
+		}
+		produces = {
+			multiplier = auto_building_upgrade
+			alloys = 10
+			consumer_goods = 5
+		}
+		upkeep = {
+			multiplier = auto_building_upgrade
+			minerals = 15
+		}
+		produces = {
+			trigger = {
+				colony_type = col_uf_auto_world
+			}
+			alloys = 20
+			consumer_goods = 10
+		}
+		upkeep = {
+			energy = 25
+			minerals = 40
+			volatile_motes = 3
+			sr_uf = 2
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_hm_foundry_upgrade_1 }
+			}
+			alloys = 50
+			consumer_goods = 30
+		}
+		upkeep = {
+			trigger = {
+				owner = { has_technology = tech_uf_hm_foundry_upgrade_1 }
+			}
+			minerals = 10
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_hm_foundry_upgrade_2 }
+			}
+			alloys = 50
+			consumer_goods = 30
+		}
+		upkeep = {
+			trigger = {
+				owner = { has_technology = tech_uf_hm_foundry_upgrade_2 }
+			}
+			minerals = 10
+			sr_uf = 1
+		}
+		produces = {
+			trigger = {
+				owner = { has_technology = tech_uf_hm_foundry_upgrade_3 }
+			}
+			alloys = 250
+			consumer_goods = 140
+		}
+		upkeep = {
+			trigger = {
+				owner = { has_technology = tech_uf_hm_foundry_upgrade_3 }
+			}
+			minerals = 100
+			sr_uf = 3
+		}
+	}
+
+	ai_resource_production = {
+		alloys = 1
+		trigger = {
+			always = yes
+		}
+	}
+}
+#战略资源工厂
+building_uf_auto_rare_resource = {
+	icon = building_uf_rare_resource_auto
+	base_buildtime = 540
+
+	category = manufacturing
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 800
+			sr_uf = 100
+		}
+		produces = {
+			trigger = {
+				owner = { 
+					OR = {
+						has_technology = tech_exotic_gases
+						has_technology = tech_mine_exotic_gases
+					}	
+				}
+			}
+			exotic_gases = 15
+		} 
+		produces = {
+			trigger = {
+				owner = { 
+					OR = {
+						has_technology = tech_volatile_motes
+						has_technology = tech_mine_volatile_motes
+					}	
+				}
+			}
+			volatile_motes = 15
+		} 
+		produces = {
+			trigger = {
+				owner = { 
+					OR = {
+						has_technology = tech_rare_crystals
+						has_technology = tech_mine_rare_crystals
+					}	
+				}
+			}
+			rare_crystals = 15
+		}
+		produces = {
+			trigger = {
+				owner = { 
+					OR = {
+						has_technology = tech_mine_dark_matter
+					}	
+				}
+			}
+			sr_dark_matter = 15
+		}
+		produces = {
+			trigger = {
+				owner = { 
+					OR = {
+						has_technology = tech_mine_living_metal
+					}	
+				}
+			}
+			sr_living_metal = 15
+		}
+		produces = {
+			trigger = {
+				owner = { 
+					OR = {
+						has_technology = tech_mine_zro
+					}	
+				}
+			}
+			sr_zro = 15
+		}
+		produces = {
+			trigger = {
+				owner = { 
+					OR = {
+						has_technology = tech_uf_mozheng
+					}	
+				}
+			}
+			nanites = 15
+			sr_crystal_adf = 15
+			sr_parts_adf = 15
+			sr_iodizium = 15
+			sr_solar_energy = 15
+			sr_magical_neutronium = 15
+			sr_psionic_sublimate = 15
+			acot_sr_dark_energy = 15
+			acot_sr_stellarite = 15
+		}
+		upkeep = {
+			energy = 15
+			sr_uf = 4
+		}
+	}	
+	
+	prerequisites = {
+		"tech_uf_rare_resource"
+	}
+	
+	triggered_desc = {
+		text = uf_rare_resource_manufacturer_effect_desc
+	}
+
+	ai_resource_production = {
+		rare_crystals = 2
+		exotic_gases = 2
+		volatile_motes = 2
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+building_uf_rare_resource = {
+	base_buildtime = 540
+
+	category = manufacturing
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	
+	planet_modifier = {
+		job_uf_rare_resource_add = 4
+	}
+	
+	resources = {
+		category = planet_buildings
+		produces = {
+			trigger = {
+				owner = { 
+					OR = {
+						has_technology = tech_uf_mozheng
+					}	
+				}
+			}
+			nanites = 15
+			sr_crystal_adf = 15
+			sr_parts_adf = 15
+			sr_iodizium = 15
+			sr_solar_energy = 15
+			sr_magical_neutronium = 15
+			sr_psionic_sublimate = 15
+			acot_sr_dark_energy = 15
+			acot_sr_stellarite = 15
+		}
+		cost = {
+			minerals = 800
+			sr_uf = 100
+		}
+		upkeep = {
+			energy = 10
+		}
+	}	
+	
+	prerequisites = {
+		"tech_uf_rare_resource"
+	}
+	
+	triggered_desc = {
+		text = job_uf_rare_resource_effect_desc
+	}
+
+	ai_resource_production = {
+		rare_crystals = 2
+		exotic_gases = 2
+		volatile_motes = 2
+		trigger = {
+			always = yes
+		}
+	}
+}
+#指挥部
+building_uf_admin = {
+	base_buildtime = 540
+
+	category = government
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	allow = {
+		has_upgraded_capital = yes
+	}
+	
+	
+	planet_modifier = {
+		job_uf_admin_add = 6
+		job_uf_admin_per_pop = 0.02
+		planet_stability_add = 2
+	}
+	triggered_planet_modifier = {
+		potential = { has_deposit = PR_D_core }
+		mult = PR_var_plnt_MAN
+		job_uf_admin_add = 0.02
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 800
+		}	
+		upkeep = {
+			energy = 10
+		}
+	}	
+	
+	prerequisites = {
+		"tech_uf_admin"
+	}
+	
+	triggered_desc = {
+		text = job_uf_admin_effect_desc
+	}
+
+}
+
+building_uf_admin_auto = {
+	base_buildtime = 540
+
+	category = government
+	
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+	
+	allow = {
+		has_upgraded_capital = yes
+	}
+	
+	country_modifier = {
+		country_naval_cap_add = 70
+		country_admin_cap_add = 2
+	}
+	
+	planet_modifier = {
+		planet_stability_add = 2
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 800
+			sr_uf = 30
+		}	
+		produces = {
+			unity = 70
+		}
+		produces = {
+			trigger = {
+				colony_type = col_uf_auto_world
+			}
+			unity = 20
+		}
+		produces = {
+			multiplier = auto_building_upgrade
+			unity = 5
+		}
+		upkeep = {
+			multiplier = auto_building_upgrade
+			energy = 2
+		}
+		upkeep = {
+			energy = 15
+			sr_uf = 1
+		}
+	}	
+	
+	prerequisites = {
+		"tech_uf_admin"
+	}
+	
+
+}
+#要塞
+building_uf_fortress = {
+	base_buildtime = 720
+	position_priority = 200
+
+	category = army
+
+	allow = {
+		has_upgraded_capital = yes
+	}
+    prerequisites = {
+		"tech_uf_fortress"
+	}
+	potential = {
+		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+		}
+		owner = { 
+			is_regular_empire = yes
+			has_authority = auth_united_fleet	
+		}
+		NOT = { has_modifier = slave_colony }
+	}
+    planet_modifier = {
+		job_uf_hm_soldier_add = 6
+		planet_orbital_bombardment_damage = -0.50
+	}
+	army_modifier = {
+		army_starting_experience_add = 500
+	}
+	resources = {
+		category = planet_buildings_strongholds
+		produces = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_active_tradition = tr_unyielding_resistance_is_frugal
+				}
+			}
+			unity = 3
+		}
+		cost = {
+			minerals = 800
+			sr_uf = 20
+		}
+		upkeep = {
+			energy = 3
+			sr_uf = 1
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_uf_hm_soldier_effect_desc
+	}
+}

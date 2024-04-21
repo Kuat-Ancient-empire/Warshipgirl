@@ -1,0 +1,97 @@
+#野生的
+entity = {
+	name = "uf_gun_full_entity"
+	attach = { root = uf_gun_main_entity }
+	
+	scale = 1.5
+}
+#充能
+entity = {
+	name = "uf_gun_charging_entity"
+	locator = { name = "sun_ring_1" position = { 0 0 0 } rotation = { 0 90 90}}
+	attach = { root = uf_gun_main_entity }
+	attach = { sun_ring_1 = uf_gun_charging_effect_entity }
+	scale = 1.5
+}
+#开火
+entity = {
+	name = "uf_gun_firing_entity"
+	locator = { name = "sun_ring_1" position = { 0 0 0 } rotation = { 0 90 90}}
+	locator = { name = "sun_ring_2" position = { 2200 0 0 } rotation = { 0 0 270}}
+	attach = { root = uf_gun_main_entity }
+	attach = { sun_ring_1 = uf_gun_charging_effect_entity }
+	attach = { sun_ring_2 = uf_gun_fire_effect_entity }
+	scale = 1.5
+}
+#被摧毁的
+entity = {
+	name = "uf_gun_destroyed_full_entity"
+	attach = { root = uf_gun_destroyed_main_entity }
+	
+	scale = 1.5
+}
+#主体
+entity = {
+	name = "uf_gun_main_entity"
+	pdxmesh = "uf_gun_mesh"
+	scale = 10
+	attach = { root = uf_resource_ring_effect_entity }
+}
+#主体2
+entity = {
+	name = "uf_gun_destroyed_main_entity"
+	pdxmesh = "uf_gun_destroyed_mesh"
+	scale = 10
+	attach = { root = uf_resource_ring_effect_entity }
+}
+
+#充能动画
+entity = {
+	name = "uf_gun_charging_effect_entity"
+	scale = 25
+	default_state = "idle"
+	state = { name = "idle" animation = "idle"
+		
+		start_event = { node = "root" particle = "uf_ancient_gun_star_effect" keep_particle = yes trigger_once = yes }
+
+		start_event = { trigger_once = yes sound = { soundeffect = "sfx_matter_decompressor_hum" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "sfx_matter_decompressor_hum_treble" } }
+	}
+}
+
+#发射动画
+entity = { 
+	name = "uf_gun_fire_effect_entity"
+	locator = { name = "part1" position = { 0 0 0 } }
+	default_state = "idle"
+	state = { name = "idle" state_time = 5 looping = yes 
+
+		event = { time = 0.0 	node = "part1" particle = "uf_ancient_gun_fire_effect"  keep_particle = yes trigger_once = yes }
+		start_event = { trigger_once = yes sound = { soundeffect = "sfx_star_eater_weapon_windup_starting" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_star_eater_weapon_windup_low_pulse" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_star_eater_weapon_windup_distortion" } }
+
+	}
+	scale = 17
+}
+#目标光束
+entity = {
+	name = "uf_gun_fire_hit_effect_entity"
+	locator = { name = "sun_ring_2" position = { -2200 0 0 } rotation = { 0 0 -270}}
+	attach = { sun_ring_2 = uf_gun_fire_hit_entity }
+	scale = 1.5
+}
+entity = { 
+	name = "uf_gun_fire_hit_entity"
+	locator = { name = "part1" position = { 0 0 0 } rotation = { 0 0 0}}
+	default_state = "idle"
+	state = { name = "idle" state_time = 5 looping = yes 
+
+		event = { time = 0.0 	node = "part1" particle = "uf_ancient_gun_fire_hit_effect"  keep_particle = yes trigger_once = yes }
+		start_event = { trigger_once = yes sound = { soundeffect = "sfx_star_eater_weapon_windup_starting" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_star_eater_weapon_windup_low_pulse" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_star_eater_weapon_windup_distortion" } }
+
+	}
+	scale = 17
+}

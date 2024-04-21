@@ -1,0 +1,140 @@
+set_ufs_choose_variable = {
+	if = {
+		limit = { check_variable = { which = ufs_fliter_mod value = 1 }}
+		set_variable = { which = ufs_fliter_starclass value = ufs_interface_page }
+		multiply_variable = { which = ufs_fliter_starclass value = 5 }
+		change_variable = { which = ufs_fliter_starclass value = $OPTION$ }
+	}
+}
+ufs_system_fliter_sc = {
+	every_system = {
+		limit = { is_star_class = $STAR_CLASS$ }
+		prev = { change_variable = { which = ufs_target_count value = 1 }}
+		set_variable = { which = ufs_system_id value = root.ufs_target_count }
+	}
+}
+ufs_system_fliter_sc_country = {
+	every_system = {
+		limit = { has_star_flag = ufs_$STAR_CLASS$@event_target:ufs_target_country }
+		root = { change_variable = { which = ufs_target_count value = 1 }}
+		set_variable = { which = ufs_system_id value = root.ufs_target_count }
+	}
+}
+
+default_ufs_return_effect = {
+	set_variable = { which = ufs_fliter_mod value = 4 }
+	set_variable = { which = ufs_interface_page value = 0 }
+	country_event = { id = uf_sword.2 }
+	country_event = { id = uf_sword.121 }
+}
+remove_ufs_country_found_flags = {
+	remove_country_flag = found_ufs_target_country_1
+	remove_country_flag = found_ufs_target_country_2
+	remove_country_flag = found_ufs_target_country_3
+	remove_country_flag = found_ufs_target_country_4
+	remove_country_flag = found_ufs_target_country_5
+}
+remove_ufs_system_found_flags = {
+	remove_country_flag = found_ufs_target_system_1
+	remove_country_flag = found_ufs_target_system_2
+	remove_country_flag = found_ufs_target_system_3
+	remove_country_flag = found_ufs_target_system_4
+	remove_country_flag = found_ufs_target_system_5
+}
+clear_ufs_fliter_data = {
+	clear_global_event_target = ufs_target_country_1
+	clear_global_event_target = ufs_target_country_2
+	clear_global_event_target = ufs_target_country_3
+	clear_global_event_target = ufs_target_country_4
+	clear_global_event_target = ufs_target_country_5
+	clear_global_event_target = ufs_target_system_1
+	clear_global_event_target = ufs_target_system_2
+	clear_global_event_target = ufs_target_system_3
+	clear_global_event_target = ufs_target_system_4
+	clear_global_event_target = ufs_target_system_5
+	clear_global_event_target = ufs_target_country
+	every_country = { clear_variable = ufs_country_id }
+	remove_ufs_country_found_flags = yes
+	remove_ufs_system_found_flags = yes
+	clear_variable = ufs_fliter_starclass
+	remove_country_flag = selected_ufs_country_target
+	remove_country_flag = ufs_fliter_colony_system
+	remove_country_flag = ufs_fliter_megastructure
+}
+clear_ufs_all_data = {
+	clear_ufs_fliter_data = yes
+	every_system = { 
+		clear_variable = ufs_system_id 
+		remove_star_flag = ufs_system_has_colony
+		remove_star_flag = ufs_crisis_system
+		remove_star_flag = ufs_system_has_megastructure
+	}
+	clear_variable = ufs_target_count
+	clear_variable = ufs_fliter_mod
+	clear_variable = ufs_interface_page
+	clear_variable = selected_ufs_system
+	remove_country_flag = locked_ufs_beacon_1
+	remove_country_flag = locked_ufs_beacon_2
+	remove_country_flag = locked_ufs_beacon_3
+	remove_country_flag = select_first_ufs_system
+	remove_country_flag = select_second_ufs_system
+	remove_country_flag = select_third_ufs_system
+	event_target:first_selected_ufs_system = { remove_star_flag = first_selected_ufs_system }
+	event_target:second_selected_ufs_system = { remove_star_flag = second_selected_ufs_system }
+	event_target:third_selected_ufs_system = { remove_star_flag = third_selected_ufs_system }
+}
+clear_second_third_ufs_system_data = {
+	set_country_flag = select_first_ufs_system
+	remove_country_flag = select_second_ufs_system
+	clear_global_event_target = second_selected_ufs_system
+	remove_country_flag = select_third_ufs_system
+	clear_global_event_target = third_selected_ufs_system
+	set_variable = { which = selected_ufs_system value = 1 }
+}
+create_ufs_beacon_fleet = {
+	create_fleet = {
+		name = "NAME_ufs_beacon"
+		effect = {
+			set_owner = root
+			create_ship = {
+				name = "NAME_ufs_beacon"
+				design = NAME_ufs_beacon
+			}
+			set_location = prev
+		}
+		settings = {
+			spawn_debris = no
+			can_change_composition = no
+			can_change_leader = no
+			can_upgrade = no
+			uses_naval_capacity = no
+		}
+	}
+}
+# this = system_star
+create_ufs_hit_effect = {
+	create_ambient_object = {
+		type = "uf_galaxy_gun_hit_effect"
+		location = this
+	}
+	last_created_ambient_object = {
+		set_ambient_object_flag = ufs_hit_effect
+		set_location = {
+			target = prev
+			distance = 0
+			angle = random
+		}
+	}
+	create_ambient_object = {
+		type = "uf_galaxy_gun_crisis_effect"
+		location = this
+	}
+	last_created_ambient_object = {
+		set_ambient_object_flag = ufs_hit_effect
+		set_location = {
+			target = prev
+			distance = 0
+			angle = random
+		}
+	}
+}

@@ -1,0 +1,97 @@
+leader_trait_admiral_wg_rbq_dragon = {
+	cost = 0
+	leader_trait_rarity = paragon
+	sorting_priority = 1000
+	icon = "gfx/interface/icons/traits/trait_wg_rbq_dragon.dds"
+	icon = {
+		layer = {
+			icon = "GFX_trait_frame_destiny"
+		}
+	}
+	modifier = {
+		ship_armor_mult = 0.3
+		ship_hull_mult = 0.2
+		ship_weapon_damage = 0.3
+	}
+	
+	leader_class = { commander }
+	initial = no
+	randomized = no
+}
+
+leader_trait_wg_yukikaze_affection = {
+	cost = 0
+	inline_script = {
+		script = trait/wg_new_leader_affection_trait
+		LEADER_TYPE = wg_rbq_dragon
+	}
+
+	#admiral
+	triggered_modifier = {
+		# lv2
+		potential = {
+			leader_class = commander
+			check_variable = { which = affection value >= wg_leader_affection_to_lv2 }
+			check_variable = { which = affection value < wg_leader_affection_to_lv3 }
+		}
+		ship_evasion_add = 10
+		ship_accuracy_add = 10
+		ship_armor_regen_add_static = 5
+		ship_hull_regen_add_static = 5
+	}
+	triggered_modifier = {
+		# lv3
+		potential = {
+			leader_class = commander
+			check_variable = { which = affection value >= wg_leader_affection_to_lv3 }
+			check_variable = { which = affection value < wg_leader_affection_to_lv4 }
+		}
+		ship_evasion_add = 10
+		ship_evasion_add = 10
+		ship_accuracy_add = 10
+		ship_armor_regen_add_static = 10
+		ship_hull_regen_add_static = 10
+	}
+	triggered_modifier = {
+		# lv4
+		potential = {
+			leader_class = commander
+			if = {
+				limit = { has_leader_flag = married }
+				check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+				check_variable = { which = affection value < wg_leader_affection_to_lv5 }
+			} else = {
+				check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+			}
+		}
+		ship_evasion_add = 15
+		ship_evasion_add = 15
+		ship_accuracy_add = 15
+		ship_armor_regen_add_static = 20
+		ship_hull_regen_add_static = 20
+		ship_fire_rate_mult = 0.15
+	}
+	triggered_modifier = {
+		# lv5
+		potential = {
+			leader_class = commander
+			check_variable = { which = affection value >= wg_leader_affection_to_lv5 }
+			has_leader_flag = married
+		}
+		ship_armor_mult = 0.15
+		ship_armor_regen_add_static = 30
+		ship_hull_mult = 0.15
+		ship_hull_regen_add_static = 30
+		ship_evasion_add = 25
+		ship_evasion_add = 25
+		ship_accuracy_add = 25
+		ship_armor_regen_add_static = 35
+		ship_hull_regen_add_static = 35
+		ship_fire_rate_mult = 0.25
+	}
+	
+	leader_class = { commander }
+	initial = no
+	randomized = no
+	notify_on_gained = no
+}

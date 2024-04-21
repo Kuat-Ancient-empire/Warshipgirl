@@ -1,0 +1,49 @@
+# 用来放置储存大小姐对玩家称呼的命名船的星系
+wg_naming_ship_system = {
+	name = "NAME_empty"
+	class = rl_standard_stars
+	usage = misc_system_init
+
+	usage_odds = 0
+	flags = { wg_naming_ship_system wg_sealed_system }
+
+	prevent_anomalies = yes
+
+	planet = {
+		count = 1
+		orbit_angle = { min = 85 max = 95 }
+		size = { min = 10 max = 25 }
+		class = "rl_unhabitable_planets"
+		orbit_distance = 12
+
+		init_effect = {
+			create_fleet = {
+				name = "WSG_PLAYER_DEFAULT_NICKNAME"
+				effect = {
+					set_owner = event_target:wsg_lady_country
+					create_ship = {
+						name = "NAMING_SHIP"
+						design = "NAME_wg_naming_ship"
+						upgradable = no
+					}
+					set_fleet_flag = wsg_player_default_nickname
+					set_location = prev
+					save_global_event_target_as = wsg_player_default_nickname
+					save_global_event_target_as = wsg_player_nickname
+				}
+				settings = {
+					can_upgrade = no 
+					uses_naval_capacity = no
+					spawn_debris = no
+					can_disband = no
+					can_change_leader = no
+					can_change_composition = no
+				}
+			}
+		}
+	}
+
+	init_effect = {
+		save_global_event_target_as = wg_naming_ship_system
+	}
+}

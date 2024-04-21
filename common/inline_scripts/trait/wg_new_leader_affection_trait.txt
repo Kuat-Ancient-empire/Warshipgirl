@@ -1,0 +1,101 @@
+#地砖新好感体系
+#格式
+#LEADER_TYPE提供本地化文本
+#inline_script = {
+#	script = trait/wg_new_leader_affection_trait
+#	LEADER_TYPE = wg_normal
+#}
+#需要在封装中定义此领袖各层好感度的数值
+icon = {
+	layer = {
+		icon = "gfx/interface/icons/traits/affection1.dds"
+		visible = {
+			OR = {
+				NOT = { is_variable_set = affection }
+				check_variable = { which = affection value < wg_leader_affection_to_lv2 }
+			}
+		}
+	}
+	layer = {
+		icon = "gfx/interface/icons/traits/affection2.dds"
+		visible = {
+			check_variable = { which = affection value >= wg_leader_affection_to_lv2 }
+			check_variable = { which = affection value < wg_leader_affection_to_lv3 }
+		}
+	}
+	layer = {
+		icon = "gfx/interface/icons/traits/affection3.dds"
+		visible = {
+			check_variable = { which = affection value >= wg_leader_affection_to_lv3 }
+			check_variable = { which = affection value < wg_leader_affection_to_lv4 }
+		}
+	}
+	layer = {
+		icon = "gfx/interface/icons/traits/affection4.dds"
+		visible = {
+			if = {
+				limit = { has_leader_flag = married }
+				check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+				check_variable = { which = affection value < wg_leader_affection_to_lv5 }
+			} else = {
+				check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+			}
+		}
+	}
+	layer = {
+		icon = "gfx/interface/icons/traits/affection5.dds"
+		visible = {
+			check_variable = { which = affection value >= wg_leader_affection_to_lv5 }
+			has_leader_flag = married
+		}
+	}
+}
+#custom_subtitle = "好感度特质\n[This.GetClassTexticon][This.GetClass]"
+triggered_desc = {
+	trigger = { OR = {
+		NOT = { is_variable_set = affection }
+		check_variable = { which = affection value < wg_leader_affection_to_lv2 }
+	}}
+	text = leader_trait_$LEADER_TYPE$_affection_lv1_desc
+}
+triggered_desc = {
+	trigger = {
+		check_variable = { which = affection value >= wg_leader_affection_to_lv2 }
+		check_variable = { which = affection value < wg_leader_affection_to_lv3 }
+	}
+	text = leader_trait_$LEADER_TYPE$_affection_lv2_desc
+}
+triggered_desc = {
+	trigger = {
+		check_variable = { which = affection value >= wg_leader_affection_to_lv3 }
+		check_variable = { which = affection value < wg_leader_affection_to_lv4 }
+	}
+	text = leader_trait_$LEADER_TYPE$_affection_lv3_desc
+}
+triggered_desc = {
+	trigger = {
+		if = {
+			limit = { has_leader_flag = married }
+			check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+			check_variable = { which = affection value < wg_leader_affection_to_lv5 }
+		} else = {
+			check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+		}
+	}
+	text = leader_trait_$LEADER_TYPE$_affection_lv4_desc
+}
+triggered_desc = {
+	trigger = {
+		check_variable = { which = affection value >= wg_leader_affection_to_lv4 }
+		check_variable = { which = affection value < wg_leader_affection_to_lv5 }
+		NOT = { has_leader_flag = married }
+	}
+	text = max_affection_tooltip
+}
+triggered_desc = {
+	trigger = {
+		check_variable = { which = affection value >= wg_leader_affection_to_lv5 }
+		has_leader_flag = married
+	}
+	text = leader_trait_$LEADER_TYPE$_affection_lv5_desc
+}

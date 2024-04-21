@@ -1,0 +1,75 @@
+ap_wg_crisis_window = {
+	length = 1
+	icon = "GFX_ap_wg_crisis_edict"
+	potential = {
+		has_wg_special_authority = yes
+		has_ascension_perk = ap_wg_crisis	
+		is_ai = no
+	}
+
+	effect = {
+		hidden_effect = {
+			country_event = { id = ap_wg_crisis.1 }
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}	
+}
+wg_main_menu = {
+	length = 1
+	icon = "GFX_wg_edict"
+	potential = {
+		is_ai = no
+		NOT = { has_authority = auth_united_fleet }
+	}
+	allow = {
+		NOT = { has_country_flag = wg_main_menu_opened }
+	}
+
+	effect = {
+		hidden_effect = {
+			country_event = { id = wsg.9999 }
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}	
+}
+uf_main_menu = {
+	length = 1
+	icon = "GFX_uf_edict"
+	potential = {
+		has_authority = auth_united_fleet
+		is_ai = no
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = uf_crisis_menu_opened
+			NOR = {
+				has_active_event = { monolith_crisis.10000 }
+				has_country_flag = uf_crisis_menu_opened
+			}
+		}
+		custom_tooltip = {
+			fail_text = monolith_crisis_triggered
+			NOR = { 
+				has_global_flag = monolith_crisis_triggered
+				has_global_flag = monolith_crisis_invaded
+			}
+		}
+	}
+	
+	effect = {
+		hidden_effect = {
+			country_event = { id = monolith_crisis.10000 }
+		}
+	}
+
+	ai_weight = {
+		weight = 0
+	}	
+}

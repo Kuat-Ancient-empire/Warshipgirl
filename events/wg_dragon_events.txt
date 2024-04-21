@@ -1,0 +1,916 @@
+namespace = wg_dragon
+
+country_event = {
+	id = wg_dragon.1
+	title = wg_dragon.1.title
+	desc = wg_dragon.1.desc
+	is_triggered_only = yes
+	picture = GFX_evt_space_dragon
+	fire_only_once = yes
+
+	trigger = {
+		NOT = { has_global_flag = wg_dragon_spawned }
+	}
+
+	immediate = {
+		set_country_flag = wg_dragon_owner
+		set_global_flag = wg_dragon_spawned
+		save_global_event_target_as = wg_dragon_own_country
+		
+		create_species = {
+			name = WG_DRAGON_SPECIES
+			plural = WG_DRAGON_SPECIES
+			class = ART
+			portrait = art13
+			namelist = ART1
+			effect = {
+				save_global_event_target_as = wg_dragon_species
+			}
+		}
+		create_country = {
+			name = "NAME_wg_dragon"
+			species = event_target:wg_dragon_species
+			type = wg_dragon
+			flag = {
+				icon = {
+					category = "zoological"
+					file = "flag_zoological_5.dds"
+				}
+				background= {
+					category = "backgrounds"
+					file = "00_solid.dds"
+				}
+				colors={
+					"red"
+					"red"
+					"null"
+					"null"
+				}
+			}
+			effect = {
+				save_global_event_target_as = wg_dragon_country
+				set_country_flag = wg_dragon_country
+				establish_communications_no_message = root
+			}
+		}
+		set_variable = { which = wg_dragon_level value = 6 }
+		set_variable = { which = wg_dragon_affection value = 1 }
+		set_variable = { which = wg_dragon_affection_level value = 1 }
+		set_timed_country_flag = {
+			flag = wg_dragon_first_day_created days = 1
+		}
+	}
+
+	option = {
+		name = ONSCREEN
+		change_variable = { which = rankpts value = 3 }
+		hidden_effect = {
+			country_event = { id = wg_old_leader_diplo.5000 }
+		}
+	}
+}
+
+# 初始交流界面
+country_event = {
+	id = wg_dragon.2
+	title = "TRANSMISSION"
+	desc = {
+		exclusive_trigger = {
+			has_country_flag = wg_dragon_first_day_created
+		}
+		text = wg_dragon.2.desc_a
+	}
+	desc = wg_dragon.2.desc_a
+	desc = wg_dragon.2.desc_b
+	desc = wg_dragon.2.desc_c
+	diplomatic = yes 
+	is_triggered_only = yes
+	custom_gui = wg_dragon_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	trigger = {
+		from = { OR = {
+			is_country_type = wg_dragon 
+			is_same_value = ROOT
+		}}
+		check_variable = { which = wg_dragon_active_type value = 0 }
+		wg_dragon_available = yes
+		NOT = { has_country_flag = talking_to_wg_dragon }
+	}
+
+	immediate = {
+		set_country_flag = talking_to_wg_dragon
+	}
+
+	after = {
+		wg_dragon_after_effects = yes
+	}
+
+	option = {
+		name = wg_dragon_to_admiral
+		allow = {
+			custom_tooltip = {
+				fail_text = wg_dragon_become_ruler
+				NOT = { ruler = { has_leader_flag = wg_dragon_leader }}
+			}
+		}
+		hidden_effect = { create_wg_dragon_admiral = yes }
+	}
+	option = {
+		name = wg_dragon_to_fleet
+		allow = {
+			custom_tooltip = {
+				fail_text = wg_dragon_become_ruler
+				NOT = { ruler = { has_leader_flag = wg_dragon_leader }}
+			}
+		}
+		hidden_effect = { create_wg_dragon_fleet = yes }
+	}
+	option = {
+		name = wg_dragon_to_army
+		allow = {
+			custom_tooltip = {
+				fail_text = wg_dragon_become_ruler
+				NOT = { ruler = { has_leader_flag = wg_dragon_leader }}
+			}
+		}
+		hidden_effect = { create_wg_dragon_army = yes }
+	}
+	option = {
+		name = quit_wg_lady_commu
+		default_hide_option = yes
+	}
+	option = {
+		name = marry_wg_dragon
+		trigger = {
+			check_variable = { which = wg_dragon_affection value > @wg_dragon_affection_to_lv4 }
+			NOT = { has_country_flag = married_wg_dragon }
+		}
+		allow = {
+			OR = {
+				AND = {
+					has_wg_special_authority = no
+					resource_stockpile_compare = {
+						resource = sr_living_metal
+						value >= 100
+					}
+					resource_stockpile_compare = {
+						resource = rare_crystals
+						value >= 1000
+					}
+				}
+				custom_tooltip = {
+					check_variable = { which = wsg_rings value >= 1 }
+					fail_text = not_enough_engagement_rings
+				}
+			}
+		}
+		if = {
+			limit = { has_wg_special_authority = yes }
+			subtract_variable = { which = wsg_rings value = 1 }
+			change_variable = { which = rankpts value = 2 }
+		} else = {
+			add_resource = {
+				sr_living_metal = -100
+				rare_crystals = -1000
+			}
+		}
+		hidden_effect = { set_country_flag = married_wg_dragon }
+		response_text = marry_wg_dragon_response
+	}
+}
+
+# 总督交流界面
+country_event = {
+	id = wg_dragon.3
+	title = "TRANSMISSION"
+	desc = wg_dragon.3.desc_a
+	desc = wg_dragon.3.desc_b
+	desc = wg_dragon.3.desc_c
+	diplomatic = yes 
+	is_triggered_only = yes
+	custom_gui = wg_dragon_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	trigger = {
+		from = { OR = {
+			is_country_type = wg_dragon 
+			is_same_value = ROOT
+		}}
+		check_variable = { which = wg_dragon_active_type value = 1 }
+		wg_dragon_available = yes
+		NOT = { has_country_flag = talking_to_wg_dragon }
+	}
+
+	immediate = {
+		set_country_flag = talking_to_wg_dragon
+	}
+
+	after = {
+		wg_dragon_after_effects = yes
+	}
+
+	option = {
+		name = wg_dragon_to_fleet
+		hidden_effect = { create_wg_dragon_fleet = yes }
+	}
+	option = {
+		name = wg_dragon_to_army
+		hidden_effect = { create_wg_dragon_army = yes }
+	}
+	option = {
+		name = quit_wg_lady_commu
+		default_hide_option = yes
+	}
+	option = {
+		name = marry_wg_dragon
+		trigger = {
+			check_variable = { which = wg_dragon_affection value > @wg_dragon_affection_to_lv4 }
+			NOT = { has_country_flag = married_wg_dragon }
+		}
+		allow = {
+			OR = {
+				has_wg_special_authority = no
+				custom_tooltip = {
+					check_variable = { which = wsg_rings value >= 1 }
+					fail_text = not_enough_engagement_rings
+				}
+			}
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		change_variable = { which = rankpts value = 2 }
+		hidden_effect = { set_country_flag = married_wg_dragon }
+		response_text = marry_wg_dragon_response
+	}
+}
+
+# 舰队交流界面
+country_event = {
+	id = wg_dragon.4
+	title = "TRANSMISSION"
+	desc = wg_dragon.4.desc_a
+	desc = wg_dragon.4.desc_b
+	desc = wg_dragon.4.desc_c
+	diplomatic = yes 
+	is_triggered_only = yes
+	custom_gui = wg_dragon_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	trigger = {
+		from = { OR = {
+			is_country_type = wg_dragon 
+			is_same_value = ROOT
+		}}
+		check_variable = { which = wg_dragon_active_type value = 2 }
+		wg_dragon_available = yes
+		NOT = { has_country_flag = talking_to_wg_dragon }
+	}
+
+	immediate = {
+		set_country_flag = talking_to_wg_dragon
+	}
+
+	after = {
+		wg_dragon_after_effects = yes
+	}
+
+	option = {
+		name = wg_dragon_to_admiral
+		allow = { wg_dragon_changing_prev_warship_allow_triggers = yes }
+		hidden_effect = { create_wg_dragon_admiral = yes }
+	}
+	option = {
+		name = wg_dragon_to_army
+		allow = { wg_dragon_changing_prev_warship_allow_triggers = yes }
+		hidden_effect = { create_wg_dragon_army = yes }
+	}
+	option = {
+		name = quit_wg_lady_commu
+		default_hide_option = yes
+	}
+	option = {
+		name = marry_wg_dragon
+		trigger = {
+			check_variable = { which = wg_dragon_affection value > @wg_dragon_affection_to_lv4 }
+			NOT = { has_country_flag = married_wg_dragon }
+		}
+		allow = {
+			OR = {
+				has_wg_special_authority = no
+				custom_tooltip = {
+					check_variable = { which = wsg_rings value >= 1 }
+					fail_text = not_enough_engagement_rings
+				}
+			}
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		change_variable = { which = rankpts value = 2 }
+		hidden_effect = { set_country_flag = married_wg_dragon }
+		response_text = marry_wg_dragon_response
+	}
+}
+
+# 陆军交流界面
+country_event = {
+	id = wg_dragon.5
+	title = "TRANSMISSION"
+	desc = wg_dragon.5.desc_a
+	desc = wg_dragon.5.desc_b
+	desc = wg_dragon.5.desc_c
+	diplomatic = yes 
+	is_triggered_only = yes
+	custom_gui = wg_dragon_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	trigger = {
+		from = { OR = {
+			is_country_type = wg_dragon 
+			is_same_value = ROOT
+		}}
+		check_variable = { which = wg_dragon_active_type value = 3 }
+		wg_dragon_available = yes
+		NOT = { has_country_flag = talking_to_wg_dragon }
+	}
+
+	immediate = {
+		set_country_flag = talking_to_wg_dragon
+	}
+
+	after = {
+		wg_dragon_after_effects = yes
+	}
+
+	option = {
+		name = wg_dragon_to_admiral
+		allow = { wg_dragon_changing_prev_army_allow_triggers = yes }
+		hidden_effect = { create_wg_dragon_admiral = yes }
+	}
+	option = {
+		name = wg_dragon_to_fleet
+		allow = { wg_dragon_changing_prev_army_allow_triggers = yes }
+		hidden_effect = { create_wg_dragon_fleet = yes }
+	}
+	option = {
+		name = quit_wg_lady_commu
+		default_hide_option = yes
+	}
+	option = {
+		name = marry_wg_dragon
+		trigger = {
+			check_variable = { which = wg_dragon_affection value > @wg_dragon_affection_to_lv4 }
+			NOT = { has_country_flag = married_wg_dragon }
+		}
+		allow = {
+			OR = {
+				has_wg_special_authority = no
+				custom_tooltip = {
+					check_variable = { which = wsg_rings value >= 1 }
+					fail_text = not_enough_engagement_rings
+				}
+			}
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		change_variable = { which = rankpts value = 2 }
+		hidden_effect = { set_country_flag = married_wg_dragon }
+		response_text = marry_wg_dragon_response
+	}
+}
+
+# 大破时交流界面
+country_event = {
+	id = wg_dragon.6
+	title = "TRANSMISSION"
+	desc = wg_dragon.6.desc
+	diplomatic = yes 
+	is_triggered_only = yes
+	custom_gui = wg_dragon_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	trigger = {
+		from = { OR = {
+			is_country_type = wg_dragon 
+			is_same_value = ROOT
+		}}
+		has_country_flag = wg_dragon_owner
+		has_modifier = wg_dragon_recover_cd
+		NOT = { has_country_flag = talking_to_wg_dragon }
+	}
+
+	immediate = {
+		set_country_flag = talking_to_wg_dragon
+	}
+
+	option = {
+		name = OK
+		hidden_effect = { remove_country_flag = talking_to_wg_dragon }
+	}
+	option = {
+		name = marry_wg_dragon
+		trigger = {
+			check_variable = { which = wg_dragon_affection value > @wg_dragon_affection_to_lv4 }
+			NOT = { has_country_flag = married_wg_dragon }
+		}
+		allow = {
+			OR = {
+				has_wg_special_authority = no
+				custom_tooltip = {
+					check_variable = { which = wsg_rings value >= 1 }
+					fail_text = not_enough_engagement_rings
+				}
+			}
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		change_variable = { which = rankpts value = 2 }
+		hidden_effect = { set_country_flag = married_wg_dragon }
+		response_text = marry_wg_dragon_response
+	}
+}
+
+# 当领袖时大破
+country_event = {
+	id = wg_dragon.7
+	title = "TRANSMISSION"
+	desc = wg_dragon.7.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_dragon_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	trigger = {
+		wg_dragon_available = yes
+		check_variable = { which = wg_dragon_active_type value = 1 }
+		FROM = { has_leader_flag = wg_dragon_leader }
+	}
+
+	option = {
+		name = wg_dragon.7.a
+		hidden_effect = {
+			set_variable = { which = wg_dragon_active_type value = 0 }
+			add_modifier = { modifier = wg_dragon_recover_cd days = 180 }
+			country_event = { id = wg_dragon.13 days = 180 }
+		}
+	}
+}
+
+# 战斗时大破
+country_event = {
+	id = wg_dragon.8
+	title = "TRANSMISSION"
+	desc = wg_dragon.8.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_dragon_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	trigger = {
+		wg_dragon_available = yes
+		check_variable = { which = wg_dragon_active_type value = 2 }
+		FROMFROM = { has_fleet_flag = wg_dragon_fleet }
+	}
+
+	immediate = {
+		every_owned_leader = {
+			limit = { has_leader_flag = wg_dragon_leader }
+			kill_leader = { show_notification = no }
+		}
+	}
+
+	option = {
+		name = wg_dragon.7.a
+		hidden_effect = {
+			set_variable = { which = wg_dragon_active_type value = 0 }
+			add_modifier = { modifier = wg_dragon_recover_cd days = 180 }
+			country_event = { id = wg_dragon.13 days = 180 }
+		}
+	}
+}
+
+# 陆军船被毁
+country_event = {
+	id = wg_dragon.9
+	title = "TRANSMISSION"
+	desc = wg_dragon.7.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_dragon_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	trigger = {
+		wg_dragon_available = yes
+		check_variable = { which = wg_dragon_active_type value = 3 }
+		NOT = { any_owned_army = { 
+			is_wg_dragon_army = yes
+			OR = {
+				exists = planet
+				AND = {
+					exists = fleet
+					fleet = { num_ships > 0 }
+				}
+			}
+		}}
+	}
+
+	option = {
+		name = wg_dragon.7.a
+		hidden_effect = {
+			set_variable = { which = wg_dragon_active_type value = 0 }
+			add_modifier = { modifier = wg_dragon_recover_cd days = 180 }
+			country_event = { id = wg_dragon.13 days = 180 }
+		}
+	}
+}
+
+# 地面战斗失败
+country_event = {
+	id = wg_dragon.10
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		wg_dragon_available = yes
+		check_variable = { which = wg_dragon_active_type value = 3 }
+		NOT = { any_owned_army = { 
+			is_wg_dragon_army = yes
+			OR = {
+				exists = planet
+				AND = {
+					exists = fleet
+					fleet = { num_ships > 0 }
+				}
+			}
+		}}
+	}
+
+	immediate = {
+		set_variable = { which = wg_dragon_active_type value = 0 }
+		country_event = { id = wg_dragon.12 }
+	}
+}
+
+# 每个月检测以太龙是否大破
+event = {
+	id = wg_dragon.11
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = event_target:wg_dragon_own_country
+		event_target:wg_dragon_own_country = {
+			wg_dragon_available = yes
+			NOT = { has_modifier = wg_dragon_recover_cd }
+			OR = {
+				# 海军将领
+				AND = {
+					check_variable = { which = wg_dragon_active_type value = 1 }
+					NOT = { any_owned_leader = { has_leader_flag = wg_dragon_admiral }}
+				}
+				# 龙形态
+				AND = {
+					check_variable = { which = wg_dragon_active_type value = 2 }
+					NOT = { any_controlled_fleet = { has_fleet_flag = wg_dragon_fleet }}
+				}
+				# 陆军形态
+				AND = {
+					check_variable = { which = wg_dragon_active_type value = 3 }
+					NOT = { any_owned_army = { 
+						is_wg_dragon_army = yes
+						OR = {
+							exists = planet
+							AND = {
+								exists = fleet
+								fleet = { num_ships > 0 }
+							}
+						}
+					}}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		event_target:wg_dragon_own_country = {
+			every_owned_leader = {
+				limit = { has_leader_flag = wg_dragon_leader }
+				kill_leader = { show_notification = no }
+			}
+			country_event = { id = wg_dragon.12 }
+		}
+	}
+}
+
+# 玩家讯息提示
+country_event = {
+	id = wg_dragon.12
+	title = "TRANSMISSION"
+	desc = wg_dragon.12.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_dragon_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+		set_variable = { which = wg_dragon_active_type value = 0 }
+	}
+
+	option = {
+		name = wg_dragon.7.a
+		add_modifier = { modifier = wg_dragon_recover_cd days = 180 }
+		hidden_effect = {
+			country_event = { id = wg_dragon.13 days = 180 }
+		}
+	}
+}
+
+# 复活
+country_event = {
+	id = wg_dragon.13
+	title = "TRANSMISSION"
+	desc = wg_dragon.13.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = wg_dragon_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	option = {
+		name = wg_dragon.7.a
+		hidden_effect = {
+			subtract_variable = { which = wg_dragon_affection value = @wg_dragon_affection_reduce }
+		}
+	}
+}
+
+# 解散以太龙陆军
+country_event = {
+	id = wg_dragon.14
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		wg_dragon_available = yes
+		check_variable = { which = wg_dragon_active_type value = 3 }
+		NOT = { any_owned_army = { is_wg_dragon_army = yes }}
+	}
+
+	immediate = {
+		set_variable = { which = wg_dragon_active_type value = 0 }
+	}
+}
+
+# 重设以太龙陆军类型（好感度）
+country_event = {
+	id = wg_dragon.15
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_active_event = { wg_dragon.15 }}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					any_owned_army = {
+						exists = planet
+						is_wg_dragon_army = yes
+						planet = { has_ground_combat = no }
+					}
+					any_owned_army = {
+						exists = fleet
+						is_wg_dragon_army = yes
+						fleet = { is_in_combat = no }
+					}
+				}
+			}
+			if = {
+				limit = {
+					any_owned_army = {
+						exists = planet
+						is_wg_dragon_army = yes
+					}
+				}
+				random_owned_army = {
+					limit = { is_wg_dragon_army = yes }
+					planet = { create_wg_dragon_army_troop = yes }
+				}
+			} else_if = {
+				limit = { 
+					any_owned_army = {
+						exists = fleet
+						is_wg_dragon_army = yes
+					}
+				}
+				random_owned_army = {
+					limit = { is_wg_dragon_army = yes }
+					fleet = { create_wg_dragon_army_transport = yes }
+				}
+			}
+		} else = {
+			country_event = { id = wg_dragon.15 days = 1 }
+		}
+	}
+}
+
+# 龙无敌技能，触发器
+country_event = {
+    id = wg_dragon.16
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = { 
+        FROMFROM = { 
+			has_fleet_flag = wg_dragon_fleet
+		}
+	}
+
+
+	immediate = {
+		FROMFROM = { fleet_event = { id = wg_dragon.17 }}
+	}
+}
+
+fleet_event = {
+	id = wg_dragon.17
+    hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		has_fleet_flag = wg_dragon_fleet
+		is_in_combat = yes
+	}
+
+	immediate = {
+		if = {
+			limit = { NOT = { has_fleet_flag = invincible }}
+			random_list = {
+				2 = {
+					modifier = {
+						owner = { special_leader_affection_lv2_trigger = { LEADER = wg_dragon }}
+						add = 2
+					}
+					modifier = {
+						owner = { special_leader_affection_lv3_trigger = { LEADER = wg_dragon }}
+						add = 4
+					}
+					modifier = {
+						owner = { special_leader_affection_lv4_trigger = { LEADER = wg_dragon }}
+						add = 6
+					}
+					modifier = {
+						owner = { special_leader_affection_lv5_trigger = { LEADER = wg_dragon }}
+						add = 8
+					}
+					every_owned_ship = {
+						if = {
+							limit = { has_hp_percentage > 0.96 }
+							set_timed_ship_flag = { flag = hp_10 days = 7 }
+						} else_if = {
+							limit = { has_hp_percentage > 0.9 }
+							set_timed_ship_flag = { flag = hp_9 days = 7 }
+						} else_if = {
+							limit = { has_hp_percentage > 0.8 }
+							set_timed_ship_flag = { flag = hp_8 days = 7 }
+						} else_if = {
+							limit = { has_hp_percentage > 0.7 }
+							set_timed_ship_flag = { flag = hp_7 days = 7 }
+						} else_if = {
+							limit = { has_hp_percentage > 0.6 }
+							set_timed_ship_flag = { flag = hp_6 days = 7 }
+						} else_if = {
+							limit = { has_hp_percentage > 0.5 }
+							set_timed_ship_flag = { flag = hp_5 days = 7 }
+						} else_if = {
+							limit = { has_hp_percentage > 0.4 }
+							set_timed_ship_flag = { flag = hp_4 days = 7 }
+						} else_if = {
+							limit = { has_hp_percentage > 0.3 }
+							set_timed_ship_flag = { flag = hp_3 days = 7 }
+						} else_if = {
+							limit = { has_hp_percentage > 0.2 }
+							set_timed_ship_flag = { flag = hp_2 days = 7 }
+						} 
+					}
+					if = {
+						limit = { owner = { special_leader_affection_lv5_trigger = { LEADER = wg_dragon MARRIED_FLAG = married_wg_dragon }}}
+						every_owned_ship = {
+							set_timed_ship_flag = { flag = invincible days = 4 }
+							#临时加生命避免一击秒杀
+							add_many_hp = { DAYS = 5 }
+							ship_event = { id = raa_skill.2021 }
+							ship_event = { id = wg_dragon.18 days = 5 }
+						}
+					} else_if = {
+						limit = { always = yes }
+						every_owned_ship = {
+							set_timed_ship_flag = { flag = invincible days = 2 }
+							#临时加生命避免一击秒杀
+							add_many_hp = { DAYS = 3 }
+							ship_event = { id = raa_skill.2021 }
+							ship_event = { id = wg_dragon.18 days = 3 }
+						}
+					}
+					if = {
+						limit = { 
+							any_owned_ship = { has_hp_percentage < 0.3 }
+							owner = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv4 }}
+						}
+						set_timed_fleet_flag = { flag = invincible days = 60 }
+					} else_if = {
+						limit = { always = yes }
+						set_timed_fleet_flag = { flag = invincible days = 30 }
+					}
+				}
+				98 = {
+					modifier = {
+						factor = 0
+						any_owned_ship = { has_hp_percentage < 0.3 }
+						owner = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv4 }}
+					}
+					modifier = {
+						special_leader_affection_lv2_trigger = { LEADER = wg_dragon }
+						add = -2
+					}
+					modifier = {
+						special_leader_affection_lv3_trigger = { LEADER = wg_dragon }
+						add = -4
+					}
+					modifier = {
+						NOT = { has_country_flag = married_wg_dragon }
+						check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv4 }
+						add = -6
+					}
+					modifier = {
+						special_leader_affection_lv5_trigger = { LEADER = wg_dragon MARRIED_FLAG = married_wg_dragon }
+						add = -8
+					}
+				}
+			}
+		}
+		fleet_event = { id = wg_dragon.17 days = 1 }
+	}
+}
+
+ship_event = {
+	id = wg_dragon.18
+    hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		repair_ship = yes
+		if = {
+			limit = { has_ship_flag = hp_9 }
+			reduce_hp_percent = 10
+		} else_if = {
+			limit = { has_ship_flag = hp_8 }
+			reduce_hp_percent = 20
+		} else_if = {
+			limit = { has_ship_flag = hp_7 }
+			reduce_hp_percent = 30
+		} else_if = {
+			limit = { has_ship_flag = hp_6 }
+			reduce_hp_percent = 40
+		} else_if = {
+			limit = { has_ship_flag = hp_5 }
+			reduce_hp_percent = 50
+		} else_if = {
+			limit = { has_ship_flag = hp_4 }
+			reduce_hp_percent = 60
+		} else_if = {
+			limit = { has_ship_flag = hp_3 }
+			reduce_hp_percent = 70
+		} else_if = {
+			limit = { has_ship_flag = hp_2 }
+			reduce_hp_percent = 80
+		}
+	}
+}
+
+# 以太龙外部通讯触发器
+country_event = {
+	id = wg_dragon.99
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = wg_dragon_owner
+	}
+
+	immediate = {
+		if = {
+			limit = { has_modifier = wg_dragon_recover_cd }
+			country_event = { id = wg_dragon.6 }
+		} else_if = {
+			limit = { check_variable = { which = wg_dragon_active_type value = 0 }}
+			country_event = { id = wg_dragon.2 }
+		} else_if = {
+			limit = { check_variable = { which = wg_dragon_active_type value = 1 }}
+			country_event = { id = wg_dragon.3 }
+		}  else_if = {
+			limit = { check_variable = { which = wg_dragon_active_type value = 2 }}
+			country_event = { id = wg_dragon.4 }
+		}  else_if = {
+			limit = { check_variable = { which = wg_dragon_active_type value = 3 }}
+			country_event = { id = wg_dragon.5 }
+		}
+	}
+}

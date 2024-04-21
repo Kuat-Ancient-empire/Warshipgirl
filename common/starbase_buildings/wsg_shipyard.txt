@@ -1,0 +1,125 @@
+# wsgshipyard = {
+# 	icon = "GFX_spaceport_wsg_station_uplink"
+# 	# section = "ASSEMBLYYARD_STARBASE_SECTION"
+# 	construction_days = 120
+# 	resources = {
+# 		category = starbase_buildings
+# 		cost = { alloys = 600 }
+# 		upkeep = { energy = 5 }
+# 	}
+# 	station_modifier = {
+# 		starbase_shipyard_capacity_add = 12
+# 		starbase_shipyard_build_cost_mult = -0.05
+# 		starbase_shipyard_build_speed_mult = 1.00
+# 	}
+# 	ship_modifier = {
+# 		ship_starting_experience_add = 200
+# 	}
+
+# 	potential = { solar_system = { has_megastructure = wsg_station2 } custom_tooltip = { fail_text = "Only 1 Shipyard Uplink Available" NOT = { solar_system = { starbase = { has_starbase_module = megashipyard_module } } } } }	
+# 	possible = { solar_system = { has_megastructure = wsg_station2 } custom_tooltip = { fail_text = "Only 1 Shipyard Uplink Available" NOT = { solar_system = { starbase = { has_starbase_module = megashipyard_module } } } } }	
+# 	ai_build_at_chokepoint = no
+# 	ai_build_outside_chokepoint = yes
+# 	ai_weight = { weight = 0 }
+# }
+wg_assembly = {
+	icon = "GFX_spaceport_module_wg_assembly"
+	construction_days = 360
+
+	potential = {
+		exists = owner
+		owner = { has_technology = "tech_wg_spaceport_module_assembly" }
+	}
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_starport"
+			has_starbase_size >= starbase_starport
+		}
+		custom_tooltip = {
+			fail_text = "requires_colonized_planet"
+			solar_system = {
+				any_system_planet = {
+					is_owned_by = from
+				}
+			}
+		}
+	}
+	system_modifier = {
+		planet_pop_assembly_organic_mult = 0.10
+	}
+
+	resources = {
+		category = starbase_buildings
+		cost = {
+			alloys = 200
+		}
+
+		upkeep = {
+			energy = 5
+			alloys = 1
+		}
+	}
+
+	show_in_tech = "tech_wg_spaceport_module_assembly"
+
+	ai_build_at_chokepoint = no
+	ai_build_outside_chokepoint = yes
+	ai_weight = {
+		weight = 50
+	}
+}
+
+wg_space_temple = {
+	icon = "GFX_spaceport_module_wg_space_temple"
+	construction_days = 720
+
+	potential = {
+		exists = owner
+		owner = { 
+			OR = {
+				has_authority = auth_warshipgirls 
+				has_authority = auth_shenhai
+			}
+			has_ethic = ethic_fanatic_spiritualist 
+		}	
+	}
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_starport"
+			has_starbase_size >= starbase_starport
+		}
+		custom_tooltip = {
+			fail_text = "requires_colonized_planet"
+			solar_system = {
+				any_system_planet = {
+					is_owned_by = from
+				}
+			}
+		}
+	}
+	system_modifier = {
+		planet_jobs_produces_mult = 0.05
+		planet_jobs_unity_produces_mult = 0.10
+	}
+
+	resources = {
+		category = starbase_buildings
+		cost = {
+			alloys = 300
+		}
+		
+		produces = {
+			unity = 15
+		}
+
+		upkeep = {
+			energy = 5
+		}
+	}
+
+	ai_build_at_chokepoint = no
+	ai_build_outside_chokepoint = yes
+	ai_weight = {
+		weight = 50
+	}
+}

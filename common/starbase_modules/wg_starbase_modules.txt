@@ -1,0 +1,161 @@
+neo_industory = {
+	icon = "GFX_spaceport_neo_industory"
+	section = "ASSEMBLYYARD_STARBASE_SECTION"
+	construction_days = 360
+	initial = yes
+	potential = {
+		exists = owner
+		owner = { has_technology = tech_building_wsg_neo }
+	}
+	show_in_tech = "tech_building_wsg_neo"
+	resources = {
+		category = starbase_modules
+		cost = {
+			alloys = 200
+		}
+
+		produces = {
+			sr_neo = 2
+		}
+
+		upkeep = {
+			energy = 5
+			minerals = 12
+		}
+	}
+
+	
+	ai_build_at_chokepoint = no
+	ai_build_outside_chokepoint = yes
+	ai_weight = {
+		weight = 50
+	#	modifier = {
+	#		factor = 100
+	#		NOT = { has_starbase_module = shipyard }
+	#	}
+	}
+}
+
+wsg_bungee_jumping = {
+	icon = "GFX_spaceport_wsg_bungee_jumping"
+	section = "ASSEMBLYYARD_STARBASE_SECTION"
+	construction_days = 180
+	
+	initial = yes
+	potential = {
+		exists = owner
+		owner = { has_wg_special_authority = yes }
+		solar_system = { has_star_flag = shop_system_home }
+	}
+
+	
+	resources = {
+		category = starbase_modules
+		cost = {
+			alloys = 100
+		}
+		produces = {
+			energy = 20
+		}
+	}
+	station_modifier = {
+		ship_armor_mult = -0.10
+		trade_value_add = 20
+	}
+	
+	ai_build_at_chokepoint = no
+	ai_build_outside_chokepoint = yes
+	ai_weight = {
+		weight = 50
+	#	modifier = {
+	#		factor = 100
+	#		NOT = { has_starbase_module = shipyard }
+	#	}
+	}
+}
+srse_industory = {
+	icon = "GFX_spaceport_srse_industory"
+	section = "ASSEMBLYYARD_STARBASE_SECTION"
+	construction_days = 360
+	initial = yes
+	potential = {
+		exists = owner
+		owner = { OR = {
+			has_technology = tech_sh_senergy 
+			has_technology = tech_wsg_senergy
+		}}
+	}
+	show_in_tech = "tech_wsg_senergy"
+	show_in_tech = "tech_sh_senergy"
+	resources = {
+		category = starbase_modules
+		cost = {
+			alloys = 200
+		}
+
+		produces = {
+			sr_se = 2
+		}
+
+		upkeep = {
+			energy = 16
+			sr_pantsu = 2
+		}
+	}
+
+	ai_build_at_chokepoint = no
+	ai_build_outside_chokepoint = yes
+	ai_weight = {
+		weight = 50
+	#	modifier = {
+	#		factor = 100
+	#		NOT = { has_starbase_module = shipyard }
+	#	}
+	}
+}
+
+shop_anchorage = {
+	icon = "GFX_wg_starbase_anchorage"
+	section = "ANCHORAGE_STARBASE_SECTION"
+	construction_days = 200
+
+	resources = {
+		category = starbase_modules
+		cost = {
+			alloys = 60
+		}
+
+		upkeep = {
+			energy = 1
+		}
+	}
+	potential = {
+		exists = owner
+		owner = { has_technology = tech_wg_shop_anchorage }
+	}
+	show_in_tech = "tech_wg_shop_anchorage"
+
+	country_modifier = {
+		country_naval_cap_add = 8
+	}
+	triggered_country_modifier = {
+		potential = { has_starbase_building = naval_logistics_office }
+		country_naval_cap_add = 2
+	}
+	station_modifier = {
+		ship_hull_mult = -0.05
+	}
+
+	ai_build_at_chokepoint = no
+	ai_build_outside_chokepoint = yes
+	ai_weight = {
+		weight = 20
+		modifier = {
+			factor = 2
+			count_starbase_modules = {
+				type = anchorage
+				count < 2
+			}
+		}
+	}
+}
