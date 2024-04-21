@@ -7,59 +7,80 @@ country_event = {
 	is_triggered_only = yes
 	trigger = {
 		has_authority = auth_shenhai
-		NOT = { has_country_flag = custom_start_parit }
 	}
 	immediate = {
-		random_owned_planet = {
-			limit = {
-				is_capital = yes
+		if = {
+			limit = { NOT = { has_country_flag = custom_start_parit } }
+			random_owned_planet = {
+				limit = {
+					is_capital = yes
+				}
+				add_deposit = r_sh_freezer
+				add_deposit = d_sh_db
+				add_building = building_sh_assembly_plant
 			}
-			add_deposit = r_sh_freezer
-			add_deposit = d_sh_db
-			add_building = building_sh_assembly_plant
+			add_modifier = {
+				modifier = sh_base
+				days = -1
+			}		
+			country_event = { id = shgancrel.1 days = 50 random = 100 }
 		}
-		add_modifier = {
-			modifier = sh_base
-			days = -1
-		}		
-		country_event = { id = shgancrel.1 days = 50 random = 100 }
+		#要塞姬
+		if = {
+			limit = { has_civic = civic_yaosai }
+			give_technology = { tech = tech_ftl_inhibitor message = no }	
+		}
+		#AI深海组装
+		if = {
+			limit = { is_ai = yes }
+			add_modifier = {
+				modifier = wg_ai_base
+				days = -1
+			}
+			add_modifier = {
+				modifier = wg_ai_base_amenities
+				days = -1
+			}
+			set_country_flag = no_machine_uprising
+			set_country_flag = synth_detector
+		}
 	}
 }
 
-#要塞姬
-country_event = {
-	id = sh.2
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = {
-		has_civic = civic_yaosai
-	}
-	immediate = {
-		give_technology = { tech = tech_ftl_inhibitor message = no }	
-	}
-}
-#AI深海组装
-country_event = {
-	id = sh.3
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = {
-		has_authority = auth_shenhai
-		is_ai = yes
-	}
-	immediate = {
-		add_modifier = {
-			modifier = wg_ai_base
-			days = -1
-		}
-		add_modifier = {
-			modifier = wg_ai_base_amenities
-			days = -1
-		}
-		set_country_flag = no_machine_uprising
-		set_country_flag = synth_detector
-	}
-}
+# #要塞姬
+# country_event = {
+# 	id = sh.2
+# 	hide_window = yes
+# 	is_triggered_only = yes
+# 	trigger = {
+# 		has_civic = civic_yaosai
+# 	}
+# 	immediate = {
+# 		give_technology = { tech = tech_ftl_inhibitor message = no }	
+# 	}
+# }
+# #AI深海组装
+# country_event = {
+# 	id = sh.3
+# 	hide_window = yes
+# 	is_triggered_only = yes
+# 	trigger = {
+# 		has_authority = auth_shenhai
+# 		is_ai = yes
+# 	}
+# 	immediate = {
+# 		add_modifier = {
+# 			modifier = wg_ai_base
+# 			days = -1
+# 		}
+# 		add_modifier = {
+# 			modifier = wg_ai_base_amenities
+# 			days = -1
+# 		}
+# 		set_country_flag = no_machine_uprising
+# 		set_country_flag = synth_detector
+# 	}
+# }
 #大和之嫁
 country_event = {
 	id = sh.4
@@ -2248,16 +2269,12 @@ country_event = {
 	is_triggered_only = yes
 	trigger = {
 		is_wg_empire = yes
+		resource_stockpile_compare = { resource = food value < 50 }
+		has_country_flag = origin_wg_fe_child_flag 
+		NOT = { has_country_flag = wg_fe_food_support }
 	}
 	immediate = {
-		if = {
-			limit = { 
-				resource_stockpile_compare = { resource = food value < 50 }
-				has_country_flag = origin_wg_fe_child_flag 
-				NOT = { has_country_flag = wg_fe_food_support }
-			}
-			country_event = { id = wg_origin.4 }
-		}
+		country_event = { id = wg_origin.4 }
 	}
 }
 
@@ -3101,6 +3118,7 @@ country_event = {
 		name = sh.3042.a
 		custom_tooltip = sh.3042.a.tooltip
 		set_country_flag = wg_juggernaut_event_owner
+		set_spawn_system_batch = begin
 		hidden_effect = {
 			capital_scope = {
 				closest_system = {
@@ -3125,7 +3143,8 @@ country_event = {
 					initializer = Sh_juggernaut_system
 				}
 			}
-		}		
+		}	
+		set_spawn_system_batch = end
 	}
 	option = {
 		name = sh.3042.b
@@ -4407,7 +4426,7 @@ country_event = {
 			}
 			set_timed_star_flag = { flag = can_spawn_sh_shield_system days = 1 }
 		}
-		
+		set_spawn_system_batch = begin
 		random_system = {
 			limit = { has_star_flag = can_spawn_sh_shield_system }
 			spawn_system = {
@@ -4419,6 +4438,7 @@ country_event = {
 			}
 			set_star_flag = shielded_sh_system
 		}
+		set_spawn_system_batch = end
 		set_global_flag = sh_shield_system_created
 	}
 }

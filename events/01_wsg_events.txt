@@ -5,18 +5,16 @@ country_event = {
 	id = wsg.1
 	hide_window = yes
 	is_triggered_only = yes
+
+	trigger = { has_wg_special_authority = yes }
 	
 	immediate = {
-		every_country = {
-			if= {
-				limit = { has_authority = auth_warshipgirls }
-				set_country_flag = f_wsg_country
-				capital_scope = {
-					planet_event = { id = wsg.3000 days = 720 random = 720 }
-				}
-			}
+		if = {
+			limit = { has_authority = auth_warshipgirls }
+			set_country_flag = f_wsg_country
+			capital_scope = { planet_event = { id = wsg.3000 days = 720 random = 720 } }
 		}
-		every_country = {
+		if = {
 			limit = {
 				has_wg_special_authority = yes
 				is_ai = no
@@ -36,6 +34,24 @@ country_event = {
 		# ??mod??flag
 		set_global_flag = has_wsg_mod
 		set_global_flag = wg_precursors_spawn_change
+		country_event = { id = wsg.3 }
+		country_event = { id = wsg.5 }
+		country_event = { id = wsg.6 }
+		country_event = { id = wsg.7 }
+		country_event = { id = wsg.8 }
+		country_event = { id = wsg.11 }
+		if = {
+			limit = { has_civic = civic_wgella }
+			country_event = { id = wsg.30311 days = 10  }
+		}
+		if = {
+			limit = { 
+				has_authority = auth_warshipgirls
+				NOT = { has_country_flag = finish_ovo_event }
+				is_ai = no 
+			}
+			country_event = { id = wsg.3036 days = 3600 random = 7200 } # for test, should be 3600 + random 7200 days
+		}
 	}
 }
 event = {
@@ -498,6 +514,7 @@ country_event = {
 				set_timed_star_flag = { flag = can_spawn_sol_system days = 1 }
 			}
 		}
+		set_spawn_system_batch = begin
 		random_system = {
 			limit = { has_star_flag = can_spawn_sol_system }
 			# 舰娘50%刷正常sol3 + 59星系，50%刷核爆版sol3
@@ -546,6 +563,7 @@ country_event = {
 			}
 			remove_star_flag = can_spawn_sol_system
 		}
+		set_spawn_system_batch = end
 	}
 
 }
@@ -2446,14 +2464,14 @@ country_event = {
         every_owned_planet = {
 			if = {
 				limit = { root = { has_civic = civic_sunflower }}
-				planet_event = { id = wsg.9911 days = 29 }
+				planet_event = { id = wsg.9911 }
 			}
 			if = {
 				limit = { OR = { 
 					has_building = building_alien_slicer_sh 
 					has_building = building_alien_slicer_wsg 
 				}}
-				planet_event = { id = wsg.9912 days = 29 }
+				planet_event = { id = wsg.9912 }
 			}
 		}
 	}	

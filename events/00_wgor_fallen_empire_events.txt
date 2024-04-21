@@ -1,79 +1,74 @@
 namespace = fallen_empires
-
 # Fallen Empire establishes communications
-country_event = {
+situation_event = {
 	id = fallen_empires.10
-	title = OK
-	desc = OK
-	
 	hide_window = yes
-	
-	mean_time_to_happen = {
-		months = 3
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			OR = {
+				is_country_type = fallen_empire
+				is_country_type = awakened_fallen_empire
+			}
+			is_at_war = no
+			any_playable_country = {
+				OR = {
+					is_country_type = default
+					is_country_type = fallen_empire
+				}
+				NOT = { has_communications = root.owner }
+				OR = {
+					AND = {
+						root.owner = { has_ai_personality = fallen_empire_spiritualist }
+						any_owned_planet = {
+							has_modifier = "holy_planet"
+						}
+					}
+					AND = {
+						root.owner = { has_ai_personality = fallen_empire_materialist }
+						OR = {
+							has_technology = tech_sapient_ai
+							has_technology = tech_synthetic_workers
+						}
+						any_system_within_border = {
+							distance = {
+								source = root.owner.capital_scope
+								max_distance <= 200
+							}
+						}
+					}
+					# if we're both fallen empires, we know of each other
+					is_country_type = fallen_empire
+					# also contact if we border them
+					any_system_within_border = {
+						any_neighbor_system = {
+							has_hyperlane_to = prev
+							is_owned_by = root.owner
+						}
+					}
+				}
+			}
+		}
 	}
 
-		trigger = {
-		OR = {
-			is_country_type = fallen_empire
-			is_country_type = awakened_fallen_empire
-		}
-		is_at_war = no
-		any_country = {
-			OR = {
-				is_country_type = default
-				is_country_type = fallen_empire
-			}
-			NOT = { has_communications = root }			
-			OR = {
-				AND = {
-					root = { has_ai_personality = fallen_empire_spiritualist }
-					any_owned_planet = {
-						has_modifier = "holy_planet"
-					}				
-				}
-				AND = {
-					root = { has_ai_personality = fallen_empire_materialist }
-					OR = {
-						has_technology = tech_sapient_ai
-						has_technology = tech_synthetic_workers
-					}
-					any_system_within_border = {
-						distance = {
-							source = root.capital_scope
-							max_distance <= 200				
-						}
-					}						
-				}
-				# if we're both fallen empires, we know of each other
-				is_country_type = fallen_empire
-				# also contact if we border them
-				any_system_within_border = {
-					any_neighbor_system = {
-						has_hyperlane_to = prev
-						is_owned_by = root
-					}
-				}
-			}
-		}
-	}
-	
 	immediate = {
-		random_country = {
+		random_playable_country = {
 			limit = {
 				OR = {
 					is_country_type = default
 					is_country_type = fallen_empire
-				}			
-				NOT = { has_communications = root }				
+				}
+				NOT = { has_communications = root.owner }
 				OR = {
 					AND = {
-						root = { has_ai_personality = fallen_empire_spiritualist }
+						root.owner = { has_ai_personality = fallen_empire_spiritualist }
 						any_owned_planet = {
 							has_modifier = "holy_planet"
-						}						
-					}					
+						}
+					}
 					AND = {
-						root = { has_ai_personality = fallen_empire_materialist }
+						root.owner = { has_ai_personality = fallen_empire_materialist }
 						OR = {
 							has_technology = tech_sapient_ai
 							has_technology = tech_synthetic_workers
@@ -81,10 +76,10 @@ country_event = {
 						any_system_within_border = {
 							distance = {
 								source = root.capital_scope
-								max_distance <= 200				
+								max_distance <= 200
 							}
-						}						
-					}	
+						}
+					}
 					# if we're both fallen empires, we know of each other
 					is_country_type = fallen_empire
 					# also contact if we border them
@@ -93,12 +88,11 @@ country_event = {
 							has_hyperlane_to = prev
 							is_owned_by = root
 						}
-					}						
-				}					
+					}
+				}
 			}
 
-			establish_communications_no_message = root	
-			root = { save_event_target_as = contact_empire }
+			establish_communications_no_message = root.owner
 			if = {
 				limit = { 
 					root = { is_wg_fallen_empire = yes }
@@ -123,7 +117,7 @@ country_event = {
 				ROOT = { save_event_target_as = contact_empire }
 				country_event = { id = action.1 }
 			}
-						
+			country_event = { id = action.1 }
 		}
 	}
 }
