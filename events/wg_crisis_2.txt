@@ -2392,52 +2392,52 @@ country_event = {
 # }
 
 # # 攻击舰队被击破，移除对应星球标记
-# country_event = {
-#     id = wg_crisis_2.46
-#     hide_window = yes
-# 	is_triggered_only = yes
+country_event = {
+    id = wg_crisis_2.46
+    hide_window = yes
+	is_triggered_only = yes
 
-# 	trigger = {
-# 		is_country_type = wg_crisis_country
-# 		FROMFROM = {
-# 			OR = {
-# 				AND = {
-# 					has_fleet_flag = attack_fleet
-# 					check_variable = { which = fleet_id value > 0 }
-# 				}
-# 				AND = {
-# 					has_fleet_flag = raider_fleet
-# 					check_variable = { which = uf_fleet_id value > 0 }
-# 				}
-# 			}
-# 		}
-# 	}
+	trigger = {
+		is_country_type = wg_crisis_country
+		FROMFROM = {
+			OR = {
+				AND = {
+					has_fleet_flag = attack_fleet
+					check_variable = { which = fleet_id value > 0 }
+				}
+				AND = {
+					has_fleet_flag = raider_fleet
+					check_variable = { which = uf_fleet_id value > 0 }
+				}
+			}
+		}
+	}
 
-# 	immediate = {
-# 		FROMFROM = { save_event_target_as = destroyed_fleet }
-# 		event_target:destroyed_fleet = {
-# 			if = {
-# 				limit = { has_fleet_flag = attack_fleet }
-# 				every_system = {
-# 					limit = {
-# 						check_variable = { which = fleet_id value = prev.fleet_id }
-# 					}
-# 					clear_variable = fleet_id
-# 					remove_star_flag = path@prev
-# 					remove_star_flag = path_end@prev
-# 				}
-# 			} else_if = {
-# 				limit = { has_fleet_flag = raider_fleet }
-# 				every_system = {
-# 					limit = {
-# 						check_variable = { which = uf_fleet_id value = prev.uf_fleet_id }
-# 					}
-# 					clear_variable = uf_fleet_id
-# 				}
-# 			}
-# 		}
-# 	}
-# }
+	immediate = {
+		FROMFROM = { save_event_target_as = destroyed_fleet }
+		event_target:destroyed_fleet = {
+			if = {
+				limit = { has_fleet_flag = attack_fleet }
+				every_system = {
+					limit = {
+						check_variable = { which = fleet_id value = prev.fleet_id }
+					}
+					clear_variable = fleet_id
+					remove_star_flag = path@prev
+					remove_star_flag = path_end@prev
+				}
+			} else_if = {
+				limit = { has_fleet_flag = raider_fleet }
+				every_system = {
+					limit = {
+						check_variable = { which = uf_fleet_id value = prev.uf_fleet_id }
+					}
+					clear_variable = uf_fleet_id
+				}
+			}
+		}
+	}
+}
 
 # # 归递算从目的地到起点的距离
 # system_event = {
