@@ -220,7 +220,17 @@ country_event = {
 								}
 							}
 							set_global_flag = is_allied_ag_kuat
-							country_event = { id = wg_crisis.23334 } 
+							every_country = {
+								limit = {
+									is_ai = no
+									NOR = {
+										has_global_flag = set_allied_ag_kuat
+										has_global_flag = is_enemy_ag_kuat
+										has_global_flag = wg_invasion_end
+									}
+								}
+								country_event = { id = wg_crisis.23334 } 
+							}
 						}
 						if = {
 							limit = { 
@@ -228,16 +238,26 @@ country_event = {
 									has_global_flag = activated_uf_hidden_diff 
 									has_global_flag = is_allied_ag_kuat
 								}
-								NOR = {
-									has_global_flag = exe_return_invasion_7_fired
+								NOT = { has_global_flag = exe_return_invasion_7_fired }
+								NOT = { any_country = { OR = {
 									kuat_is_enable_shadow_origin = yes
 									has_origin = origin_kuat_apocalyptic
 									has_origin = origin_eternalthrone
-								}
+								} } }
 							}
 							kuat_enable_settings_hell_tradition = yes
 							kuat_return_invasion_enable = yes
-							country_event = { id = wg_crisis.23334 } 
+							every_country = {
+								limit = {
+									is_ai = no
+									NOR = {
+										has_global_flag = set_allied_ag_kuat
+										has_global_flag = is_enemy_ag_kuat
+										has_global_flag = wg_invasion_end
+									}
+								}
+								country_event = { id = wg_crisis.23334 } 
+							}
 						}
 						country_event = { id = wg_crisis_2.15 days = 180 random = 360 }
 					}
