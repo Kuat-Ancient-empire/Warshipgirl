@@ -50,6 +50,7 @@ country_event = {
 			}
 			ignore_initial_colony_error = yes
 			effect = {
+                set_country_flag = protected_from_queen_storm
 				save_global_event_target_as = pantsu_shop_country
 				# 加基地设计，创建恒星基地用
 				create_ship_design = { design = "NAME_pantsu_shop_station" }
@@ -940,6 +941,32 @@ country_event = {
             sr_pantsu = -1000
         }
         give_technology = { tech = tech_pantsu_armor }
+        add_modifier = { modifier = wg_modifier_weapon_payment days = 90 }
+        hidden_effect = { country_event = { id = wsgranking.1005 }}
+    }
+	option = { 
+        custom_gui = "enclave_caravaneer_option"
+		custom_tooltip = "wg_shop_pc_habitat_habitability_desc"
+        name = wg_shop_pc_habitat_habitability
+        trigger = {
+            NOT = { has_modifier = wg_shop_pc_habitat_habitability }
+			has_origin = origin_wg_shop
+        }
+        allow = {
+            resource_stockpile_compare = { resource = sr_pantsu value >= 500 }
+            custom_tooltip = {
+				fail_text = too_low_rank_fail_50
+				check_variable = { which = "rankpts" value >= 50 }
+            }
+            custom_tooltip = {
+                NOT = { has_modifier = wg_modifier_weapon_payment }
+                fail_text = tech_cooldown_desc
+            }
+        }
+        add_resource = {
+            sr_pantsu = -500
+        }
+        add_modifier = { modifier = wg_shop_pc_habitat_habitability }
         add_modifier = { modifier = wg_modifier_weapon_payment days = 90 }
         hidden_effect = { country_event = { id = wsgranking.1005 }}
     }
