@@ -3,10 +3,6 @@
 ap_synthetic_evolution = {
 	on_enabled = {
 		custom_tooltip = "synthetic_evolution_tooltip"
-		add_research_option = tech_synthetic_leaders
-		hidden_effect = {
-			country_event = { id = utopia.2545  }
-		}
 		if = {
 			limit = {
 				has_origin = origin_necrophage
@@ -47,12 +43,8 @@ ap_synthetic_evolution = {
 			NOT = { has_trait = trait_mechanical }
 		}
 		custom_tooltip = {
-			fail_text = "requires_ascension_perks_1"
-			num_ascension_perks > 0
-		}
-		custom_tooltip = {
-			fail_text = "requires_technology_synthetic_workers"
-			has_technology = tech_synthetic_workers
+			fail_text = "requires_ascension_perks_2"
+			num_ascension_perks > 1
 		}
 		custom_tooltip = {
 			fail_text = "requires_not_ap_engineered_evolution"
@@ -68,38 +60,43 @@ ap_synthetic_evolution = {
 		}
 		custom_tooltip = {
 			fail_text = "requires_free_tradition_tree"
-			num_tradition_categories < 7
+			num_tradition_categories < @max_tradition_trees
 		}
 	}
 
 	potential = {
-		has_utopia = yes
+		OR = {
+			has_utopia = yes
+			has_machine_age_dlc = yes
+		}
 		NOR = {
 			has_ascension_perk = ap_synthetic_evolution
 			has_authority = "auth_machine_intelligence"
 			has_origin = origin_shroudwalker_apprentice
+			has_origin = origin_cybernetic_creed
+			has_origin = origin_synthetic_fertility
 			has_wg_and_uf_special_authority = yes
 		}
 		is_gestalt = no
 		is_mechanical_empire = no
+		is_natural_design_empire = no
+		NOT = { has_valid_civic = civic_augmentation_bazaars }
+		is_individual_machine = no
 	}
 
 	ai_weight = {
-		factor = 20
+		factor = @ascension_path_base_weight
 		modifier = {
-			factor = 0.1
-			NOR = {
-				has_ethic = ethic_materialist
-				has_ethic = ethic_fanatic_materialist
-			}
+			factor = @ascension_path_synergy_weight
+			has_synthetic_evolution_synergy = yes
+		}
+		modifier = {
+			factor = @ascension_path_anti_synergy_weight
+			has_synthetic_evolution_anti_synergy = yes
 		}
 		modifier = {
 			factor = 0
-			num_owned_planets < 6
-		}
-		modifier = {
-			factor = 0
-			has_origin = origin_necrophage
+			blocks_ai_synthetic_evolution = yes
 		}
 	}
 }
@@ -107,14 +104,18 @@ ap_synthetic_evolution = {
 ap_become_the_crisis = {
 	potential = {
 		has_nemesis = yes
-		NOT = { has_ascension_perk = ap_become_the_crisis }
-		has_wg_special_authority = no
+		NOR = {
+			has_ascension_perk = ap_become_the_crisis
+			has_ascension_perk = ap_cosmogenesis
+			has_origin = origin_slavers
+			has_wg_special_authority = no
+		}
 	}
 
 	possible = {
 		custom_tooltip = {
-			fail_text = "requires_ascension_perks_2"
-			num_ascension_perks > 1
+			fail_text = "requires_ascension_perks_3"
+			num_ascension_perks > 2
 		}
 		custom_tooltip = {
 			fail_text = "requires_independence"
@@ -141,16 +142,18 @@ ap_become_the_crisis = {
 		hidden_effect = {
 			set_ai_personality = became_the_crisis
 		}
-		activate_crisis_progression = yes
+		activate_crisis_progression = nemesis_path
 	}
 
 	ai_weight = {
 		factor = 7.5
 		modifier = {
 			factor = 0
-			is_militarist = no
-			is_xenophobe = no
-			is_gestalt = no
+			NOR = {
+				is_militarist = yes
+				is_xenophobe = yes
+				is_gestalt = yes
+			}
 		}
 		modifier = {
 			factor = 10
@@ -170,21 +173,20 @@ ap_become_the_crisis = {
 		}
 		modifier = {
 			factor = 0
-			num_ascension_perks >= 5
-		}
-		modifier = {
-			factor = 0
-			count_country = {
+			count_playable_country = {
 				count > 1
 				limit = {
 					has_ascension_perk = ap_become_the_crisis
 				}
 			}
 		}
+		modifier = {
+			factor = 0
+			blocks_disruptive_gameplay = yes
+		}
 	}
 }
 
-# ban ai 使用原版的理想城
 ap_arcology_project = {
 	potential = {
 		host_has_dlc = "Megacorp"
