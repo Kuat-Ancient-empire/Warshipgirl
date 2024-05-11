@@ -316,18 +316,134 @@ wg_raider_battleship = {
 	}
 	size_multiplier = 8
 	fleet_slot_size = 4
-	section_slots = { "bow" = { locator = "part2" } "mid" = { locator = "part2" } "mid1" = { locator = "part2" } "stern" = { locator = "part2" } }
+	section_slots = { "bow" = { locator = "part1" } "mid" = { locator = "part2" } "stern" = { locator = "part3" } }
 	num_target_locators = 4
 	is_space_station = no
 	icon = ship_size_uf_5
-	base_buildtime = 250
+	base_buildtime = 540
+	can_have_federation_design = no
+	enable_default_design = yes	#if yes, countries will have an auto-generated design at start
+	enable_3dview_in_ship_browser = no #if yes, ship design will have a 3d view in the ship browser
+    entity = "wsg_01_battleship_entity"
+	default_behavior = line
+    use_shipnames_from = battleship
+	prerequisites = { "tech_wg_raider_battleship" }
+
+	combat_disengage_chance = 1.25
+
+	class = shipclass_military
+	construction_type = starbase_shipyard
+	required_component_set = "power_core"
+	required_component_set = "ftl_components"
+	required_component_set = "thruster_components"
+	required_component_set = "sensor_components"
+	required_component_set = "combat_computers"
+
+	#components_add_to_cost = no
+
+	resources = {
+		category = ships
+		cost = {
+			alloys = 300
+		}
+		upkeep = {
+			energy = 1.5
+			alloys = 0.3
+		}
+	}
+	
+	potential_construction = {
+		OR = {
+			is_scope_type = starbase
+			AND = {
+				is_scope_type = megastructure
+				OR = {
+					is_megastructure_type = mega_shipyard_3
+					is_megastructure_type = mega_shipyard_restored
+					is_megastructure_type = wsg_station
+					is_megastructure_type = wg_khan_garbage_shipyard_1
+					is_megastructure_type = wg_khan_garbage_shipyard_2
+					is_megastructure_type = wg_fe_shipyard
+				}
+			}
+		}
+	}
+
+	possible_construction = {
+		custom_tooltip = {
+			fail_text = starbase_citadel_trigger
+			OR = {
+				AND = {
+					is_scope_type = megastructure
+					OR = {
+						is_megastructure_type = mega_shipyard_3
+						is_megastructure_type = mega_shipyard_restored
+						is_megastructure_type = wsg_station
+						is_megastructure_type = wg_khan_garbage_shipyard_1
+						is_megastructure_type = wg_khan_garbage_shipyard_2
+						is_megastructure_type = wg_fe_shipyard
+					}
+				}
+				AND = {
+					is_scope_type = starbase
+					has_starbase_size >= starbase_citadel
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = starbase_titan_yards_trigger
+			OR = {
+				AND = {
+					is_scope_type = megastructure
+					OR = {
+						is_megastructure_type = mega_shipyard_3
+						is_megastructure_type = mega_shipyard_restored
+						is_megastructure_type = wsg_station
+						is_megastructure_type = wg_khan_garbage_shipyard_1
+						is_megastructure_type = wg_khan_garbage_shipyard_2
+						is_megastructure_type = wg_fe_shipyard
+					}
+				}
+				AND = {
+					is_scope_type = starbase
+					has_starbase_building = titan_yards
+				}
+			}
+		}
+	}
+
+	min_upgrade_cost = {
+		alloys = 8
+	}
+}
+
+wg_ses_destroyer = {
+	formation_priority = @battleship_formation_priority
+	max_speed = 90
+	acceleration = 0.2
+	rotation_speed = 0.15
+	collision_radius = @battleship_collision_radius
+	max_hitpoints = 2500
+	modifier = {
+		ship_evasion_add = 4
+		ship_armor_add = 1000
+		ship_shield_add = 1000
+		ship_piracy_suppression_add = 12
+	}
+	size_multiplier = 8
+	fleet_slot_size = 4
+	section_slots = { "bow" = { locator = "part2" } "mid" = { locator = "part2" } "stern" = { locator = "part2" } }
+	num_target_locators = 4
+	is_space_station = no
+	icon = ship_size_uf_5
+	base_buildtime = 320
 	can_have_federation_design = no
 	enable_default_design = yes	#if yes, countries will have an auto-generated design at start
 	enable_3dview_in_ship_browser = no #if yes, ship design will have a 3d view in the ship browser
     entity = "wsg_ses_battleship_entity"
 	default_behavior = line
     use_shipnames_from = battleship
-	prerequisites = { "tech_wg_raider_battleship" }
+	prerequisites = { "tech_wg_ses_destroyer" }
 
 	combat_disengage_chance = 1.25
 
