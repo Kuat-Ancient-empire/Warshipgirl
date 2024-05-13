@@ -4078,17 +4078,26 @@ fleet_event = {
 					if = {
 						limit = {
 							has_fleet_flag = cannot_find_path 
-							any_system = { has_enenemy_target_system = { TARGET = root.owner } }
+							any_system = { OR = {
+								AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
+								any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
+							} }
 						}
 						random_system = {
-							limit = { has_enenemy_target_system = { TARGET = root.owner } }
+							limit = { OR = {
+								AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
+								any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
+							} }
                             random_system_planet = { ROOT = { set_location = { target = PREV distance = 5 angle = random } } }
 						} 
 						remove_fleet_flag = cannot_find_path
 					}
 					else_if = { 
 						limit = {
-							NOT = { any_system = { has_enenemy_target_system = { TARGET = root.owner } } }
+							NOT = { any_system = { OR = {
+								AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
+								any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
+							} } }
 						}
 						clear_orders = yes clear_fleet_actions = this 
 						random_list = {
