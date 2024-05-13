@@ -298,6 +298,13 @@ country_event = {
 								days = -1
 							}
 						}
+						event_target:global_event_country = {
+							get_galaxy_setup_value = {
+								which = wg_count_system
+								setting = num_stars
+								scale_by = 0.5
+							}
+						}
 						set_country_flag = wg_crisis_country
 						save_global_event_target_as = wg_crisis_country
 						set_faction_hostility = {
@@ -4058,52 +4065,52 @@ fleet_event = {
 	immediate = {
 		queue_actions = {
 			repeat = {
-				# effect = {
-				# 	id = wg_crisis.96.e0
-				# 	if = {
-				# 		limit = { count_system = { 
-				# 			count = all
-				# 			limit = { check_variable = { which = uf_fleet_id value > 0 } } 
-				# 		} }
-				# 		every_system = { 
-				# 			set_variable = { which = uf_fleet_id value = 0 }
-				# 			clear_variable = uf_fleet_id 
-				# 		}
-				# 	}
-				# 	if = {
-				# 		limit = {
-				# 			has_fleet_flag = cannot_find_path 
-				# 			any_system = { OR = {
-				# 				AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
-				# 				any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
-				# 			} }
-				# 		}
-				# 		random_system = {
-				# 			limit = { OR = {
-				# 				AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
-				# 				any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
-				# 			} }
-                #             random_system_planet = { ROOT = { set_location = { target = PREV distance = 5 angle = random } } }
-				# 		} 
-				# 		remove_fleet_flag = cannot_find_path
-				# 	}
-				# 	else_if = { 
-				# 		limit = {
-				# 			NOT = { any_system = { OR = {
-				# 				AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
-				# 				any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
-				# 			} } }
-				# 		}
-				# 		clear_orders = yes clear_fleet_actions = this 
-				# 		random_list = {
-				# 			1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 30 } }
-				# 			1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 60 } }
-				# 			1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 120 } }
-				# 			1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 240 } }
-				# 		}
-				# 		reroll_random = yes
-				# 	}
-				# }
+				effect = {
+					id = wg_crisis.96.e0.effect
+					if = {
+						limit = { count_system = { 
+							count > event_target:global_event_country.wg_count_system
+							limit = { check_variable = { which = uf_fleet_id value > 0 } } 
+						} }
+						every_system = { 
+							set_variable = { which = uf_fleet_id value = 0 }
+							clear_variable = uf_fleet_id 
+						}
+					}
+					if = {
+						limit = {
+							has_fleet_flag = cannot_find_path 
+							any_system = { OR = {
+								AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
+								any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
+							} }
+						}
+						random_system = {
+							limit = { OR = {
+								AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
+								any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
+							} }
+                            random_system_planet = { ROOT = { set_location = { target = PREV distance = 5 angle = random } } }
+						} 
+						remove_fleet_flag = cannot_find_path
+					}
+					else_if = { 
+						limit = {
+							NOT = { any_system = { OR = {
+								AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
+								any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
+							} } }
+						}
+						clear_orders = yes clear_fleet_actions = this 
+						random_list = {
+							1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 30 } }
+							1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 60 } }
+							1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 120 } }
+							1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 240 } }
+						}
+						reroll_random = yes
+					}
+				}
                 #寻找敌人的舰队
                 find_closest_fleet = {
                     trigger = {
@@ -4120,7 +4127,7 @@ fleet_event = {
                             root.owner = { change_variable = { which = wg_find_target_fleet_effct value = 1 } }
                             set_timed_fleet_flag = { flag = wg_find_target_fleet_effct_fleet_@root days = 15 }
                         }
-                        attack_fleet = { target = this allow_ftl = yes }
+                        move_to = this
                     }
 					#摧毁星球先，非首都
                     failed = { find_closest_system = { 
