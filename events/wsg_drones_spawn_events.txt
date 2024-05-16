@@ -510,19 +510,20 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 
+	trigger = {
+		any_controlled_ship = { has_component = SHIP_DC_DRONE }
+	}
+
 	immediate = {
 		FROMFROM = {
 			owner = { save_event_target_as = fleet_cur_owner }
 			remove_fleet_flag = SHIP_AURA_SE_UAV2
 			if = {
 				limit = {
-					count_owned_ship = {
-						limit = { has_component = SHIP_DC_DRONE }
-						count > 0
-					}
+					any_controlled_ship = { has_component = SHIP_DC_DRONE }
 				}
 				if = {
-					limit = { any_owned_ship = { 
+					limit = { any_controlled_ship = { 
 						OR = { 
 							has_component = SHIP_AURA_SE_UAV2 
 							has_component = SHIP_AURA_SH_SE_UAV2 
@@ -530,33 +531,7 @@ country_event = {
 					}}
 					set_fleet_flag = SHIP_AURA_SE_UAV2
 				}
-				every_owned_ship = {
-					limit = { has_component = SHIP_DC_DRONE }
-					ship_event = { id = mwsge_drone.32 days = 2 }
-				}
-			}
-		}
-
-		FROMFROMFROM = {
-			owner = { save_event_target_as = fleet_cur_owner }
-			remove_fleet_flag = SHIP_AURA_SE_UAV2
-			if = {
-				limit = {
-					count_owned_ship = {
-						limit = { has_component = SHIP_DC_DRONE }
-						count > 0
-					}
-				}
-				if = {
-					limit = { any_owned_ship = { 
-						OR = { 
-							has_component = SHIP_AURA_SE_UAV2 
-							has_component = SHIP_AURA_SH_SE_UAV2 
-						}
-					}}
-					set_fleet_flag = SHIP_AURA_SE_UAV2
-				}
-				every_owned_ship = {
+				every_controlled_ship = {
 					limit = { has_component = SHIP_DC_DRONE }
 					ship_event = { id = mwsge_drone.32 days = 2 }
 				}

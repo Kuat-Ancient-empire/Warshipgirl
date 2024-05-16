@@ -1,7 +1,32 @@
 entity = {
-	name = "lexT_dr_entity"
-	pdxmesh = "lexT_dr_mesh"
+	name = "wsg_dreadnought_entity"
+	pdxmesh = "arthropoid_01_titan_frame_mesh"
+	default_state = "idle"
 	scale = 0.5
+	state = { name = "idle" animation = "idle" 
+	
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_01" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_02" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_03" } }
+	
+	}
+	state = { name = "moving" animation = "idle"
+		event =  { trigger_once = yes sound = { soundeffect = "moving_out_titan" } }
+	}
+	state = { name = "death" animation = "death" looping = no 
+		event = { time = 2.5 node = "explosion_locator_01" particle = "kuat_s_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ship_explosion" } }
+		event = { time = 3.5 node = "explosion_locator_02" particle = "kuat_s_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ship_explosion" } }
+		event = { time = 5.5 node = "explosion_locator_03" particle = "kuat_s_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ship_explosion" } }
+		event = { time = 7.5 node = "explosion_locator_04" particle = "kuat_s_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ship_explosion" } }
+		event = { time = 9.5 node = "explosion_locator_05" particle = "kuat_s_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ship_explosion" } }
+		event = { time = 12.5 node = "ship_main" particle = "kuat_sd_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "amb_titan_ship_death" } }
+	}
+}
+
+entity = {
+	name = "Changzheng_dreadnought_normal_entity"
+	pdxmesh = "lexT_dr_mesh"
+	scale = 1.0
 	locator = { name = "large_gun_01" position = { 0 0 0 } }
 	locator = { name = "small_gun_01" position = { 0 0 0 } }
 	locator = { name = "medium_gun_01" position = { 0 0 0 } }

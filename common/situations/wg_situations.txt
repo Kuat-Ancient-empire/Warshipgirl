@@ -133,3 +133,70 @@ sh_planet_blaster_situation = {
 	}
 		
 }
+
+
+situation_research_wg_parit_hidden_tech = {
+	picture = GFX_evt_wsg_executor
+	complete_icon_frame = GFX_situation_outcome_frame_blue
+	complete_icon = GFX_situation_outcome_unknown
+	fail_icon_frame = GFX_situation_outcome_frame_red
+	fail_icon = GFX_situation_outcome_meh
+	on_progress_complete = {
+		custom_tooltip = situation_unknown_outcome_approach
+		hidden_effect = { situation_event = { id = wg_parit.64 } }
+		destroy_situation = this
+	}
+	stages = {
+		stage_1 = {
+			icon = GFX_situation_stage_1
+			icon_background = GFX_situation_stage_frame_blue
+			end = 100
+			custom_tooltip = situation_unknown_outcome_approach
+		}
+	}
+	approach = {
+		name = "situation_parit_on_to_revenge"
+		icon = GFX_situation_approach_research
+		icon_background = GFX_situation_approach_bg_green
+		resources = {
+			category = situations
+			upkeep = {
+				society_research = 1
+				engineering_research = 1
+				physics_research = 1
+				mult = target.trigger:num_pops
+			}
+		}
+		on_select = { custom_tooltip = approach_outcome_tooltip }
+	}
+	approach = {
+		name = "situation_parit_in_to_revenge"
+		icon = GFX_situation_approach_research
+		icon_background = GFX_situation_approach_bg_green
+		resources = {
+			category = situations
+			upkeep = {
+				society_research = 0.125
+				engineering_research = 0.125
+				physics_research = 0.125
+				mult = target.trigger:num_pops
+			}
+		}
+		default = yes
+		on_select = { custom_tooltip = approach_outcome_tooltip }
+	}
+	monthly_progress = { 
+		base = 0
+		modifier = {
+			set = 2.0
+			desc = approach_outcome_tooltip
+			current_situation_approach = situation_parit_on_to_revenge
+		}
+		modifier = {
+			set = 0.5
+			desc = approach_outcome_tooltip
+			current_situation_approach = situation_parit_in_to_revenge
+		}
+	}
+	abort_trigger = { NOT = { exists = owner } }
+}

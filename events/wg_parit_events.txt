@@ -1,5 +1,4 @@
 namespace = wg_parit
-
 #######################################
 # ???
 #######################################
@@ -9,61 +8,87 @@ country_event = {
 	is_triggered_only = yes
 	fire_only_once = yes
 	trigger = {
-		NOT = { has_global_flag = wg_parit_created }
-	}	
+		NOT = {
+			has_global_flag = wg_parit_created
+		}
+	}
 	immediate = {
 		if = {
-			limit = { exists = capital_scope }
-			capital_scope = { 
-				solar_system = { 
+			limit = {
+				exists = capital_scope
+			}
+			capital_scope = {
+				solar_system = {
 					if = {
-						limit = { NOT = { any_neighbor_system_euclidean = {
-							has_hyperlane_to = prev
-						}}}
+						limit = {
+							NOT = {
+								any_neighbor_system_euclidean = {
+									has_hyperlane_to = prev
+								}
+							}
+						}
 						save_event_target_as = spawn_parit_system_source
-					} else = {
+					}
+					else = {
 						random_neighbor_system_euclidean = {
-							limit = { NOR = { 
-								has_star_flag = sealed_system 
-								has_star_flag = wg_sealed_system
-								has_star_flag = can_spawn_boss_system
-							}}
+							limit = {
+								NOR = {
+									has_star_flag = sealed_system
+									has_star_flag = wg_sealed_system
+									has_star_flag = can_spawn_boss_system
+								}
+							}
 							save_event_target_as = spawn_parit_system_source
 						}
 					}
 				}
 			}
-		} else_if = {
-			limit = { 
+		}
+		else_if = {
+			limit = {
 				OR = {
 					has_origin = origin_ev_meg_homeless_ship_strat
-					is_country_type = default_ev 
+					is_country_type = default_ev
 				}
 			}
 			random_controlled_fleet = {
-				limit = { any_owned_ship = { is_any_type_homeless_ship = yes }}
-				solar_system = { 
+				limit = {
+					any_owned_ship = {
+						is_any_type_homeless_ship = yes
+					}
+				}
+				solar_system = {
 					if = {
-						limit = { NOT = { any_neighbor_system_euclidean = {
-							has_hyperlane_to = prev
-						}}}
+						limit = {
+							NOT = {
+								any_neighbor_system_euclidean = {
+									has_hyperlane_to = prev
+								}
+							}
+						}
 						save_event_target_as = spawn_parit_system_source
-					} else = {
+					}
+					else = {
 						random_neighbor_system_euclidean = {
-							limit = { NOR = { 
-								has_star_flag = sealed_system 
-								has_star_flag = wg_sealed_system
-								has_star_flag = can_spawn_boss_system
-							}}
+							limit = {
+								NOR = {
+									has_star_flag = sealed_system
+									has_star_flag = wg_sealed_system
+									has_star_flag = can_spawn_boss_system
+								}
+							}
 							save_event_target_as = spawn_parit_system_source
 						}
 					}
 				}
 			}
-		} else = {
-			random_controlled_fleet = { solar_system = {
-				save_event_target_as = spawn_parit_system_source
-			}}
+		}
+		else = {
+			random_controlled_fleet = {
+				solar_system = {
+					save_event_target_as = spawn_parit_system_source
+				}
+			}
 		}
 		every_system = {
 			limit = {
@@ -71,7 +96,7 @@ country_event = {
 					source = event_target:spawn_parit_system_source
 					min_jumps = 1
 					max_jumps = 4
-					type = hyperlane 
+					type = hyperlane
 					use_bypasses = no
 				}
 				NOR = {
@@ -84,23 +109,32 @@ country_event = {
 					has_star_flag = wg_sealed_system
 				}
 			}
-			set_timed_star_flag = { flag = can_spawn_parit_system days = 1 }
+			set_timed_star_flag = {
+				flag = can_spawn_parit_system
+				days = 1
+			}
 		}
-		country_event = { id = wg_parit.2 }
+		country_event = {
+			id = wg_parit.2
+		}
 	}
 }
+
 country_event = {
 	id = wg_parit.2
 	hide_window = yes
 	is_triggered_only = yes
 	fire_only_once = yes
 	trigger = {
-		NOT = { has_global_flag = wg_parit_created }
-	}	
-
+		NOT = {
+			has_global_flag = wg_parit_created
+		}
+	}
 	immediate = {
 		random_system = {
-			limit = { has_star_flag = can_spawn_parit_system }
+			limit = {
+				has_star_flag = can_spawn_parit_system
+			}
 			spawn_system = {
 				hyperlane = yes
 				is_discovered = no
@@ -114,12 +148,10 @@ country_event = {
 	}
 }
 
-
 fleet_event = {
 	id = wg_parit.3
 	hide_window = yes
 	is_triggered_only = yes
-
 	trigger = {
 		exists = from
 		from = {
@@ -131,11 +163,13 @@ fleet_event = {
 			is_ship_class = shipclass_science_ship
 		}
 	}
-
 	immediate = {
 		owner = {
-			country_event = { id = wg_parit.4 days = 5 }
-		}						
+			country_event = {
+				id = wg_parit.4
+				days = 5
+			}
+		}
 	}
 }
 
@@ -146,10 +180,8 @@ country_event = {
 	picture = GFX_evt_wsg_no_video
 	show_sound = event_red_alert
 	location = event_target:Parit_fleet_target
-	
 	is_triggered_only = yes
 	fire_only_once = yes
-	
 	immediate = {
 		every_galaxy_planet = {
 			limit = {
@@ -161,46 +193,36 @@ country_event = {
 			name = "NAME_Parit_fleet_country"
 			type = faction_wsg
 			flag = {
-                icon = {
-                    category = "warshipgirls"
-                    file = "wg_flags_08.dds"
-                }
-                background= {
-                    category = "backgrounds"
-                    file = "circle.dds"
-                }
-                colors={
-                    "dark_blue"
-                    "green"
-                    "null"
-                    "null"
-                }
-            }			
+				icon = {
+					category = "warshipgirls"
+					file = "wg_flags_08.dds"
+				}
+				background = {
+					category = "backgrounds"
+					file = "circle.dds"
+				}
+				colors = {
+					"dark_blue"
+					"green"
+					"null"
+					"null"
+				}
+			}
 			effect = {
 				set_country_flag = protected_from_queen_storm
 				establish_communications_no_message = root.owner
 				save_global_event_target_as = Parit_fleet_country
 				set_country_flag = Parit_fleet_country_flag
 			}
-		}		
+		}
 		create_fleet = {
 			name = "NAME_parit_fleet"
 			settings = {
 				spawn_debris = no
 				is_boss = yes
-			}			
-			effect = {			
-				set_owner = event_target:Parit_fleet_country			
-				create_ship = {
-					name = random
-					design = "NAME_Defensive_C_SH"
-					graphical_culture = "fallen_empire_03"
-				}
-				create_ship = {
-					name = random
-					design = "NAME_Defensive_C_SH"
-					graphical_culture = "fallen_empire_03"
-				}				
+			}
+			effect = {
+				set_owner = event_target:Parit_fleet_country
 				create_ship = {
 					name = random
 					design = "NAME_Defensive_C_SH"
@@ -223,42 +245,12 @@ country_event = {
 				}
 				create_ship = {
 					name = random
-					design = "NAME_Defensive_B_SH"
+					design = "NAME_Defensive_C_SH"
 					graphical_culture = "fallen_empire_03"
 				}
 				create_ship = {
 					name = random
-					design = "NAME_Defensive_B_SH"
-					graphical_culture = "fallen_empire_03"
-				}
-				create_ship = {
-					name = random
-					design = "NAME_Defensive_B_SH"
-					graphical_culture = "fallen_empire_03"
-				}
-				create_ship = {
-					name = random
-					design = "NAME_Defensive_B_SH"
-					graphical_culture = "fallen_empire_03"
-				}
-				create_ship = {
-					name = random
-					design = "NAME_Defensive_B_SH"
-					graphical_culture = "fallen_empire_03"
-				}
-				create_ship = {
-					name = random
-					design = "NAME_Defensive_B_SH"
-					graphical_culture = "fallen_empire_03"
-				}				
-				create_ship = {
-					name = random
-					design = "NAME_Defensive_B_SH"
-					graphical_culture = "fallen_empire_03"
-				}
-				create_ship = {
-					name = random
-					design = "NAME_Defensive_B_SH"
+					design = "NAME_Defensive_C_SH"
 					graphical_culture = "fallen_empire_03"
 				}
 				create_ship = {
@@ -320,99 +312,130 @@ country_event = {
 					name = random
 					design = "NAME_Defensive_B_SH"
 					graphical_culture = "fallen_empire_03"
-				}				
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
+				create_ship = {
+					name = random
+					design = "NAME_Defensive_B_SH"
+					graphical_culture = "fallen_empire_03"
+				}
 				add_modifier = {
 					modifier = sh_sanctuary_power3
 					days = -1
-				}				
+				}
 				set_location = {
 					target = event_target:Parit_fleet_target
 					distance = 5
 					angle = random
 				}
 			}
-		}		
+		}
 	}
-	
 	option = {
 		name = "wg_parit.4.a"
-	}	
-}	
+	}
+}
 
 country_event = {
 	id = wg_parit.5
 	title = "wg_parit.5.name"
 	desc = "wg_parit.5.desc"
-
 	is_triggered_only = yes
 	picture = GFX_evt_wsg_no_video
-
 	option = {
 		name = "wg_parit.5.a"
 	}
 }
+
 #没用了这个
-country_event = {
-	id = wg_parit.6
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		FROM = { is_country_type = default }
-		FROMFROM = { has_planet_flag = Parit_planet }
-		FROMFROM = { NOT = { has_planet_flag = Parit_planet } }
-	}
-
-	immediate = {
-		FROM = {
-			country_event = { id = wg_parit.7 days = 5 }
-		}
-	}
-}
-#没用了这个
-country_event = {
-	id = wg_parit.7
-	title = "wg_parit.7.name"
-	desc = "wg_parit.7.desc"
-	picture = GFX_evt_wsg_helldives
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = "wg_parit.7.a"
-		hidden_effect = {
-			country_event = { id = wg_parit.7 days = 10 }
-		}
-	}
-}
-
+# country_event = {
+# 	id = wg_parit.6
+# 	hide_window = yes
+# 	is_triggered_only = yes
+# 	trigger = {
+# 		FROM = { is_country_type = default }
+# 		FROMFROM = { has_planet_flag = Parit_planet }
+# 		FROMFROM = { NOT = { has_planet_flag = Parit_planet } }
+# 	}
+# 	immediate = {
+# 		FROM = {
+# 			country_event = { id = wg_parit.7 days = 5 }
+# 		}
+# 	}
+# }
+# #没用了这个
+# country_event = {
+# 	id = wg_parit.7
+# 	title = "wg_parit.7.name"
+# 	desc = "wg_parit.7.desc"
+# 	picture = GFX_evt_wsg_helldives
+# 	is_triggered_only = yes
+# 	option = {
+# 		name = "wg_parit.7.a"
+# 		hidden_effect = {
+# 			country_event = { id = wg_parit.7 days = 10 }
+# 		}
+# 	}
+# }
 country_event = {
 	id = wg_parit.8
 	title = wg_parit.8.name
 	desc = wg_parit.8.desc
 	picture = GFX_evt_fleet_from_surface
 	location = event_target:Parit_fleet_target
-	
 	is_triggered_only = yes
 	fire_only_once = yes
-	
 	immediate = {
 		every_galaxy_planet = {
 			limit = {
 				has_planet_flag = Parit_planet
 			}
-		save_event_target_as = Parit_fleet_target		
+			save_event_target_as = Parit_fleet_target
 		}
 		owner = {
 			save_event_target_as = Parit_fleet2_owner
-		}		
+		}
 	}
-	
 	option = {
 		name = "wg_parit.8.a"
 		hidden_effect = {
-			random_list = { 
-				20 = {#欧洲人必须死
+			random_list = {
+				20 = {
+					#欧洲人必须死
 					create_fleet = {
 						name = "NAME_parit_fleet2"
 						effect = {
@@ -440,7 +463,7 @@ country_event = {
 									design = "NAME_WG_FE_TITAN"
 									graphical_culture = "fallen_empire_03"
 								}
-							}				
+							}
 							set_location = {
 								target = event_target:Parit_fleet_target
 								distance = 5
@@ -449,9 +472,9 @@ country_event = {
 							add_modifier = {
 								modifier = wsg_free_fleet
 								days = -1
-							}								
-						}	
-					}		
+							}
+						}
+					}
 				}
 				40 = {
 					create_fleet = {
@@ -481,7 +504,7 @@ country_event = {
 									design = "NAME_WG_FE_TITAN"
 									graphical_culture = "fallen_empire_03"
 								}
-							}				
+							}
 							set_location = {
 								target = event_target:Parit_fleet_target
 								distance = 5
@@ -490,11 +513,12 @@ country_event = {
 							add_modifier = {
 								modifier = wsg_free_fleet
 								days = -1
-							}							
-						}	
-					}		
+							}
+						}
+					}
 				}
-				40 = {#非洲泪
+				40 = {
+					#非洲泪
 					create_fleet = {
 						name = "NAME_parit_fleet2"
 						effect = {
@@ -514,7 +538,7 @@ country_event = {
 									design = "NAME_WG_FE_BATTLE_CRUISE"
 									graphical_culture = "fallen_empire_03"
 								}
-							}				
+							}
 							set_location = {
 								target = event_target:Parit_fleet_target
 								distance = 5
@@ -523,28 +547,30 @@ country_event = {
 							add_modifier = {
 								modifier = wsg_free_fleet
 								days = -1
-							}							
-						}	
-					}		
-				}				
+							}
+						}
+					}
+				}
 			}
-		}	
-	}	
+		}
+	}
 }
+
 country_event = {
 	id = wg_parit.9
 	title = "wg_parit.9.name"
 	desc = "wg_parit.9.desc"
 	picture = GFX_evt_habitable_dig_site
-	
 	is_triggered_only = yes
-	
 	option = {
 		name = "wg_parit.9.a"
 		hidden_effect = {
-			country_event = { id = wg_parit.10 days = 5 }
+			country_event = {
+				id = wg_parit.10
+				days = 5
+			}
 		}
-	}	
+	}
 }
 
 country_event = {
@@ -552,21 +578,25 @@ country_event = {
 	title = "wg_parit.10.name"
 	desc = "wg_parit.10.desc"
 	picture = GFX_evt_generator_powerup
-	
 	is_triggered_only = yes
-	
 	option = {
 		name = "wg_parit.10.a"
 		hidden_effect = {
-			country_event = { id = wg_parit.11 days = 30 }
+			country_event = {
+				id = wg_parit.11
+				days = 30
+			}
 		}
 	}
 	option = {
 		name = "wg_parit.10.b"
 		hidden_effect = {
-			country_event = { id = wg_parit.11 days = 30 }
+			country_event = {
+				id = wg_parit.11
+				days = 30
+			}
 		}
-	}	
+	}
 }
 
 country_event = {
@@ -574,17 +604,16 @@ country_event = {
 	title = "wg_parit.11.name"
 	desc = "wg_parit.11.desc"
 	picture = GFX_evt_fallen_empire
-	
 	is_triggered_only = yes
 	immediate = {
 		set_country_flag = eddy_disoverer
-	}	
+	}
 	option = {
 		name = "wg_parit.11.a"
-        trigger = { 
-            has_wg_special_authority = yes
+		trigger = {
+			has_wg_special_authority = yes
 			has_country_flag = eddy_flag
-        }		
+		}
 		owner = {
 			add_monthly_resource_mult = {
 				resource = physics_research
@@ -603,21 +632,20 @@ country_event = {
 				value = @tier5researchreward
 				min = @tier5researchmin
 				max = @tier5researchmax
-			}			
-		}		
+			}
+		}
 		hidden_effect = {
 			capital_scope = {
 				closest_system = {
 					min_steps = 1
 					limit = {
 						has_access_fleet = root.owner
-						
 						has_owner = no
 						NOT = {
 							any_ship_in_system = {
-								owner = { 
+								owner = {
 									is_hostile = root.owner
-								}	
+								}
 							}
 						}
 					}
@@ -650,21 +678,20 @@ country_event = {
 				value = @tier5researchreward
 				min = @tier5researchmin
 				max = @tier5researchmax
-			}			
-		}		
+			}
+		}
 		hidden_effect = {
 			capital_scope = {
 				closest_system = {
 					min_steps = 1
 					limit = {
 						has_access_fleet = root.owner
-						
 						has_owner = no
 						NOT = {
 							any_ship_in_system = {
-								owner = { 
+								owner = {
 									is_hostile = root.owner
-								}	
+								}
 							}
 						}
 					}
@@ -697,14 +724,14 @@ country_event = {
 				value = @tier5researchreward
 				min = @tier5researchmin
 				max = @tier5researchmax
-			}			
-		}		
-    	owner = { 
-    		add_resource = {
-    			influence = 300
-    		}
-    	}
-	}	
+			}
+		}
+		owner = {
+			add_resource = {
+				influence = 300
+			}
+		}
+	}
 }
 
 country_event = {
@@ -713,22 +740,28 @@ country_event = {
 	desc = "wg_parit.12.desc"
 	is_triggered_only = yes
 	picture = GFX_evt_fallen_empire
-
 	option = {
 		name = "wg_parit.12.a"
-		add_resource = { unity = 10000 }
-		add_resource = { influence = 100 }
+		add_resource = {
+			unity = 10000
+		}
+		add_resource = {
+			influence = 100
+		}
 		hidden_effect = {
 			if = {
 				limit = {
-               	 	any_country = {			
-			       		has_country_flag = executorbuilding
-					}	
-            	}
-				country_event = { id = executor_build.100 days = 10 }
-			}	
-		}		
-	}	
+					any_country = {
+						has_country_flag = executorbuilding
+					}
+				}
+				country_event = {
+					id = executor_build.100
+					days = 10
+				}
+			}
+		}
+	}
 }
 
 # Stage 1 - 护盾封装
@@ -738,48 +771,48 @@ fleet_event = {
 	desc = "wg_parit.13.desc"
 	picture = GFX_evt_fallen_empire_awakes
 	show_sound = event_planetary_riot
-	
 	archaeology = yes
-
 	is_triggered_only = yes
-	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from = {
+			set_site_progress_locked = yes
+		}
 	}
-
-	after = { 
-		from = { set_site_progress_locked = no } 
+	after = {
+		from = {
+			set_site_progress_locked = no
+		}
 	}
-	
 	option = {
 		name = wg_parit.13.a
 		small_artifact_reward = yes
 	}
 }
+
 # Stage 2 - 1-1-4区域
 fleet_event = {
 	id = wg_parit.14
 	title = "wg_parit.14.name"
 	desc = "wg_parit.14.desc"
 	picture = GFX_evt_fallen_empire
-	
 	archaeology = yes
-
 	is_triggered_only = yes
-	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from = {
+			set_site_progress_locked = yes
+		}
 	}
-
-	after = { 
-		from = { set_site_progress_locked = no } 
+	after = {
+		from = {
+			set_site_progress_locked = no
+		}
 	}
-	
 	option = {
 		name = wg_parit.14.a
 		small_artifact_reward = yes
 	}
 }
+
 # Stage 3 - 恩多迪亚指南
 fleet_event = {
 	id = wg_parit.15
@@ -787,64 +820,72 @@ fleet_event = {
 	desc = "wg_parit.15.desc"
 	picture = GFX_evt_analyzing_artifacts
 	show_sound = event_structural_collapse
-	
 	archaeology = yes
-
 	is_triggered_only = yes
-	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from = {
+			set_site_progress_locked = yes
+		}
 	}
-
-	after = { 
-		from = { set_site_progress_locked = no } 
+	after = {
+		from = {
+			set_site_progress_locked = no
+		}
 	}
-	
 	option = {
 		name = wg_parit.15.a
 		large_artifact_reward = yes
-		owner = { add_relic = "r_eddy" }
+		owner = {
+			add_relic = "r_eddy"
+		}
 	}
 }
 
 country_event = {
 	id = wg_parit.2333
 	hide_window = yes
-	
 	is_triggered_only = yes
-	
 	immediate = {
-	    every_country = {
+		every_country = {
 			limit = {
 				OR = {
 					is_country_type = wg_crisis_country
 					is_country_type = wg_crisis_sub_gate_country
 				}
-				NOT = { has_modifier = uf_hidden_buff }
+				NOT = {
+					has_modifier = uf_hidden_buff
+				}
 			}
 			add_modifier = {
 				modifier = uf_hidden_buff
 				days = -1
-			}			
+			}
 		}
-	}	
+	}
 }
 
 fleet_event = {
 	id = wg_parit.16
 	hide_window = yes
 	is_triggered_only = yes
-
 	trigger = {
 		has_fleet_flag = astesia_back_home
-		owner = { NOT = { has_country_flag = triggered_astesia_back_home_event } }
-		from = { has_star_flag = wg_eddy_system }
+		owner = {
+			NOT = {
+				has_country_flag = triggered_astesia_back_home_event
+			}
+		}
+		from = {
+			has_star_flag = wg_eddy_system
+		}
 	}
-
 	immediate = {
 		owner = {
 			set_country_flag = triggered_astesia_back_home_event
-			country_event = { id = wg_parit.17 days = 5 }
+			country_event = {
+				id = wg_parit.17
+				days = 5
+			}
 		}
 	}
 }
@@ -855,15 +896,12 @@ country_event = {
 	desc = "wg_parit.17.desc"
 	show_sound = event_administrative_work
 	location = from.from.from
-
 	picture_event_data = {
 		room = no_video_feed_room
 	}
 	diplomatic = yes
 	force_open = yes
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.17.a
 		response_text = wg_parit.17.a.response
@@ -887,7 +925,9 @@ country_event = {
 	option = {
 		name = wg_parit.17.b
 		hidden_effect = {
-			country_event = { id = wg_parit.18 }
+			country_event = {
+				id = wg_parit.18
+			}
 		}
 	}
 }
@@ -898,15 +938,12 @@ country_event = {
 	desc = "wg_parit.18.desc"
 	show_sound = event_administrative_work
 	location = from.from.from
-
 	picture_event_data = {
 		room = no_video_feed_room
 	}
 	diplomatic = yes
 	force_open = yes
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.18.a
 	}
@@ -920,14 +957,22 @@ country_event = {
 	trigger = {
 		has_authority = auth_shenhai
 		has_country_flag = custom_start_parit
-		NOT = { has_country_flag = origin_parit_star_deposit }
+		NOT = {
+			has_country_flag = origin_parit_star_deposit
+		}
 	}
 	immediate = {
 		set_country_flag = has_origin_kuat_shadow
-	    set_country_flag = origin_parit_star_deposit
+		set_country_flag = origin_parit_star_deposit
 		set_country_flag = wg_custom_origin
-		country_event = { id = wg_parit.20 days = 5 }
-		country_event = { id = wg_parit.21 days = 7200 }
+		country_event = {
+			id = wg_parit.20
+			days = 5
+		}
+		country_event = {
+			id = wg_parit.21
+			days = 7200
+		}
 		random_owned_planet = {
 			limit = {
 				is_capital = yes
@@ -951,7 +996,7 @@ country_event = {
 				modifier = planet_Parit4
 				days = -1
 			}
-		}		
+		}
 	}
 }
 
@@ -960,15 +1005,16 @@ country_event = {
 	title = "wg_parit.20.name"
 	desc = "wg_parit.20.desc"
 	picture = GFX_evt_wg_parit
-	
 	is_triggered_only = yes
-	
 	option = {
 		name = "wg_parit.20.a"
 		hidden_effect = {
-			country_event = { id = wg_parit.38 days = 180 }
+			country_event = {
+				id = wg_parit.38
+				days = 180
+			}
 		}
-	}	
+	}
 }
 
 country_event = {
@@ -985,7 +1031,7 @@ country_event = {
 				has_planet_flag = Parit_home_planet
 			}
 			remove_deposit = d_Parit7
-		}		
+		}
 	}
 }
 
@@ -997,11 +1043,17 @@ country_event = {
 		has_authority = auth_shenhai
 		has_country_flag = custom_start_parit
 		has_technology = tech_terrestrial_sculpting
-		NOT = { has_country_flag = parit_terrestrial }
+		NOT = {
+			has_country_flag = parit_terrestrial
+		}
 	}
-	immediate = {	
-		country_event = { id = wg_parit.23 days = 10 random = 20 }
-		set_country_flag = parit_terrestrial		
+	immediate = {
+		country_event = {
+			id = wg_parit.23
+			days = 10
+			random = 20
+		}
+		set_country_flag = parit_terrestrial
 	}
 }
 
@@ -1011,7 +1063,6 @@ country_event = {
 	desc = "wg_parit.23.desc"
 	picture = GFX_evt_desert
 	is_triggered_only = yes
-
 	option = {
 		name = "wg_parit.23.a"
 		enable_special_project = {
@@ -1023,8 +1074,8 @@ country_event = {
 	option = {
 		name = "wg_parit.23.b"
 		add_resource = {
-    		influence = 100
-    	}
+			influence = 100
+		}
 	}
 }
 
@@ -1034,24 +1085,26 @@ planet_event = {
 	desc = "wg_parit.24.desc"
 	picture = GFX_evt_wsg_world_tree
 	location = root
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.24.a
 		if = {
-			limit = { NOR = {
-				is_planet_class = pc_relic
-				is_planet_class = pc_shenhai
-				is_planet_class = pc_wsg_port
-				is_planet_class = pc_wg_graygoo
-			}}
-			owner = { random_planet_within_border = {
-				limit = {
-					has_planet_flag = Parit_home_planet
+			limit = {
+				NOR = {
+					is_planet_class = pc_relic
+					is_planet_class = pc_shenhai
+					is_planet_class = pc_wsg_port
+					is_planet_class = pc_wg_graygoo
 				}
-				change_pc = pc_gaia
-			}}
+			}
+			owner = {
+				random_planet_within_border = {
+					limit = {
+						has_planet_flag = Parit_home_planet
+					}
+					change_pc = pc_gaia
+				}
+			}
 		}
 	}
 }
@@ -1062,11 +1115,9 @@ planet_event = {
 	desc = "wg_parit.25.desc"
 	picture = GFX_evt_desert
 	location = root
-
 	is_triggered_only = yes
-
 	option = {
-		name = wg_parit.25.a		
+		name = wg_parit.25.a
 	}
 }
 
@@ -1076,17 +1127,17 @@ planet_event = {
 	desc = "wg_parit.26.desc"
 	picture = GFX_evt_Pshenhai
 	location = root
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.26.a
-		owner = { random_planet_within_border = {
-			limit = {
-				has_planet_flag = Parit_home_planet
+		owner = {
+			random_planet_within_border = {
+				limit = {
+					has_planet_flag = Parit_home_planet
+				}
+				change_pc = pc_shenhai
 			}
-			change_pc = pc_shenhai
-		}}
+		}
 	}
 }
 
@@ -1096,14 +1147,15 @@ country_event = {
 	desc = "wg_parit.27.desc"
 	picture = GFX_evt_habitable_dig_site
 	location = root
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.27.a
 		hidden_effect = {
-			country_event = { id = wg_parit.28 days = 30 }
-		}		
+			country_event = {
+				id = wg_parit.28
+				days = 30
+			}
+		}
 	}
 }
 
@@ -1113,14 +1165,15 @@ country_event = {
 	desc = "wg_parit.28.desc"
 	picture = GFX_evt_habitable_dig_site
 	location = root
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.28.a
 		hidden_effect = {
-			country_event = { id = wg_parit.29 days = 60 }
-		}		
+			country_event = {
+				id = wg_parit.29
+				days = 60
+			}
+		}
 	}
 }
 
@@ -1130,16 +1183,14 @@ country_event = {
 	desc = "wg_parit.29.desc"
 	picture = GFX_evt_crusher_droid
 	location = root
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.29.a
 		enable_special_project = {
 			name = "WG_PARIT_PROJECT2"
 			location = event_target:Parit_home_target
 			owner = root
-		}		
+		}
 	}
 }
 
@@ -1149,13 +1200,10 @@ country_event = {
 	desc = "wg_parit.30.desc"
 	picture = GFX_evt_ancient_databank
 	location = root
-
 	is_triggered_only = yes
-	
-	immediate = {	
-		set_country_flag = parit_databank_discovered	
+	immediate = {
+		set_country_flag = parit_databank_discovered
 	}
-
 	option = {
 		name = wg_parit.30.a
 		custom_tooltip = wg_parit.30.tooltip
@@ -1174,13 +1222,12 @@ country_event = {
 					min_steps = 1
 					limit = {
 						has_access_fleet = root.owner
-						
 						has_owner = no
 						NOT = {
 							any_ship_in_system = {
-								owner = { 
+								owner = {
 									is_hostile = root.owner
-								}	
+								}
 							}
 						}
 					}
@@ -1196,8 +1243,8 @@ country_event = {
 	option = {
 		name = wg_parit.30.b
 		custom_tooltip = wg_parit.30.tooltip
-		trigger = { 
-            has_country_flag = has_parit_girl
+		trigger = {
+			has_country_flag = has_parit_girl
 		}
 		random_owned_planet = {
 			limit = {
@@ -1214,13 +1261,12 @@ country_event = {
 					min_steps = 1
 					limit = {
 						has_access_fleet = root.owner
-						
 						has_owner = no
 						NOT = {
 							any_ship_in_system = {
-								owner = { 
+								owner = {
 									is_hostile = root.owner
-								}	
+								}
 							}
 						}
 					}
@@ -1236,8 +1282,8 @@ country_event = {
 	option = {
 		name = wg_parit.30.c
 		custom_tooltip = wg_parit.30.tooltip
-		trigger = { 
-            has_global_flag = astesia_parit_helper
+		trigger = {
+			has_global_flag = astesia_parit_helper
 		}
 		random_owned_planet = {
 			limit = {
@@ -1254,13 +1300,12 @@ country_event = {
 					min_steps = 1
 					limit = {
 						has_access_fleet = root.owner
-						
 						has_owner = no
 						NOT = {
 							any_ship_in_system = {
-								owner = { 
+								owner = {
 									is_hostile = root.owner
-								}	
+								}
 							}
 						}
 					}
@@ -1282,48 +1327,48 @@ fleet_event = {
 	desc = "wg_parit.31.desc"
 	picture = GFX_evt_fallen_empire_awakes
 	show_sound = event_planetary_riot
-	
 	archaeology = yes
-
 	is_triggered_only = yes
-	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from = {
+			set_site_progress_locked = yes
+		}
 	}
-
-	after = { 
-		from = { set_site_progress_locked = no } 
+	after = {
+		from = {
+			set_site_progress_locked = no
+		}
 	}
-	
 	option = {
 		name = wg_parit.31.a
 		small_artifact_reward = yes
 	}
 }
+
 # Stage 2 - 1-1-4区域
 fleet_event = {
 	id = wg_parit.32
 	title = "wg_parit.32.name"
 	desc = "wg_parit.32.desc"
 	picture = GFX_evt_fallen_empire
-	
 	archaeology = yes
-
 	is_triggered_only = yes
-	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from = {
+			set_site_progress_locked = yes
+		}
 	}
-
-	after = { 
-		from = { set_site_progress_locked = no } 
+	after = {
+		from = {
+			set_site_progress_locked = no
+		}
 	}
-	
 	option = {
 		name = wg_parit.32.a
 		small_artifact_reward = yes
 	}
 }
+
 # Stage 3 - 恩多迪亚指南
 fleet_event = {
 	id = wg_parit.33
@@ -1331,23 +1376,24 @@ fleet_event = {
 	desc = "wg_parit.33.desc"
 	picture = GFX_evt_analyzing_artifacts
 	show_sound = event_structural_collapse
-	
 	archaeology = yes
-
 	is_triggered_only = yes
-	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from = {
+			set_site_progress_locked = yes
+		}
 	}
-
-	after = { 
-		from = { set_site_progress_locked = no } 
+	after = {
+		from = {
+			set_site_progress_locked = no
+		}
 	}
-	
 	option = {
 		name = wg_parit.33.a
 		large_artifact_reward = yes
-		owner = { add_relic = "r_eddy" }
+		owner = {
+			add_relic = "r_eddy"
+		}
 	}
 }
 
@@ -1357,14 +1403,17 @@ country_event = {
 	desc = "wg_parit.34.desc"
 	is_triggered_only = yes
 	picture = GFX_evt_fallen_empire
-
 	option = {
 		name = "wg_parit.34.a"
 		owner = {
-			add_resource = { unity = 10000 }
-			add_resource = { influence = 100 }
-		}		
-	}	
+			add_resource = {
+				unity = 10000
+			}
+			add_resource = {
+				influence = 100
+			}
+		}
+	}
 }
 
 country_event = {
@@ -1375,11 +1424,17 @@ country_event = {
 		has_authority = auth_shenhai
 		has_country_flag = custom_start_parit
 		has_technology = tech_shields_3
-		NOT = { has_country_flag = tech_parit_shields }
+		NOT = {
+			has_country_flag = tech_parit_shields
+		}
 	}
-	immediate = {	
-		country_event = { id = wg_parit.36 days =180 random = 360 }
-		set_country_flag = tech_parit_shields	
+	immediate = {
+		country_event = {
+			id = wg_parit.36
+			days = 180
+			random = 360
+		}
+		set_country_flag = tech_parit_shields
 	}
 }
 
@@ -1389,35 +1444,35 @@ country_event = {
 	desc = "wg_parit.36.desc"
 	picture = GFX_evt_wg_parit2
 	location = root
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.36.a
 		enable_special_project = {
 			name = "WG_PARIT_PROJECT3"
 			location = event_target:Parit_home_target
 			owner = root
-		}		
+		}
 	}
 }
+
 country_event = {
 	id = wg_parit.37
 	title = "wg_parit.37.name"
 	desc = "wg_parit.37.desc"
 	picture = GFX_evt_wg_parit2
 	location = root
-
 	is_triggered_only = yes
 	immediate = {
-	    event_target:parit_debris_object = {
+		event_target:parit_debris_object = {
 			destroy_ambient_object = this
 		}
 	}
 	option = {
 		name = wg_parit.37.a
 		owner = {
-			add_resource = { unity = 500 }
+			add_resource = {
+				unity = 500
+			}
 		}
 		random_owned_planet = {
 			limit = {
@@ -1434,10 +1489,7 @@ country_event = {
 	desc = "wg_parit.38.desc"
 	picture = GFX_evt_ship_in_orbit_3
 	location = root
-
 	is_triggered_only = yes
-
-
 	option = {
 		name = wg_parit.38.a
 		begin_event_chain = {
@@ -1468,12 +1520,12 @@ country_event = {
 		}
 	}
 	option = {
-		name = "wg_parit.38.b"		
-    	owner = { 
-    		add_resource = {
-    			influence = 50
-    		}
-    	}
+		name = "wg_parit.38.b"
+		owner = {
+			add_resource = {
+				influence = 50
+			}
+		}
 	}
 }
 
@@ -1483,9 +1535,7 @@ country_event = {
 	desc = "wg_parit.39.desc"
 	picture = GFX_evt_ship_in_orbit_3
 	location = root
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.39.a
 		owner = {
@@ -1495,57 +1545,64 @@ country_event = {
 				min = @tier5researchmin
 				max = @tier5researchmax
 			}
-			add_event_chain_counter = { 
-				event_chain = "parit_chain" 
-				counter = "wg_parit_home_porject_counter" 
-				amount = 1 
+			add_event_chain_counter = {
+				event_chain = "parit_chain"
+				counter = "wg_parit_home_porject_counter"
+				amount = 1
 			}
 		}
 		hidden_effect = {
 			if = {
 				limit = {
 					has_completed_event_chain_counter = {
-						event_chain = "parit_chain" 
-						counter = "wg_parit_home_porject_counter" 
+						event_chain = "parit_chain"
+						counter = "wg_parit_home_porject_counter"
 					}
-					NOT = { has_country_flag = parit_home_project_finished }
+					NOT = {
+						has_country_flag = parit_home_project_finished
+					}
 				}
-				country_event = { id = wg_parit.45 }
+				country_event = {
+					id = wg_parit.45
+				}
 			}
 		}
 	}
 }
+
 country_event = {
 	id = wg_parit.40
 	title = "wg_parit.40.name"
 	desc = "wg_parit.40.desc"
 	picture = GFX_evt_ship_in_orbit_3
 	location = root
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.40.a
-		owner = { 
-    		add_resource = {
-    			alloys = 500
-    		}
-			add_event_chain_counter = { 
-				event_chain = "parit_chain" 
-				counter = "wg_parit_home_porject_counter" 
-				amount = 1 
+		owner = {
+			add_resource = {
+				alloys = 500
 			}
-    	}
+			add_event_chain_counter = {
+				event_chain = "parit_chain"
+				counter = "wg_parit_home_porject_counter"
+				amount = 1
+			}
+		}
 		hidden_effect = {
 			if = {
 				limit = {
 					has_completed_event_chain_counter = {
-						event_chain = "parit_chain" 
-						counter = "wg_parit_home_porject_counter" 
+						event_chain = "parit_chain"
+						counter = "wg_parit_home_porject_counter"
 					}
-					NOT = { has_country_flag = parit_home_project_finished }
+					NOT = {
+						has_country_flag = parit_home_project_finished
+					}
 				}
-				country_event = { id = wg_parit.45 }
+				country_event = {
+					id = wg_parit.45
+				}
 			}
 		}
 	}
@@ -1557,42 +1614,44 @@ country_event = {
 	desc = "wg_parit.41.desc"
 	picture = GFX_evt_fallen_empire_awakes
 	location = root
-
 	is_triggered_only = yes
-		immediate = {
+	immediate = {
 		owner = {
 			save_event_target_as = parit_owner
 		}
 	}
-
 	option = {
 		name = wg_parit.41.a
-		owner = { 
-			add_event_chain_counter = { 
-				event_chain = "parit_chain" 
-				counter = "wg_parit_home_porject_counter" 
-				amount = 1 
+		owner = {
+			add_event_chain_counter = {
+				event_chain = "parit_chain"
+				counter = "wg_parit_home_porject_counter"
+				amount = 1
 			}
-    	}
+		}
 		hidden_effect = {
 			if = {
 				limit = {
 					has_completed_event_chain_counter = {
-						event_chain = "parit_chain" 
-						counter = "wg_parit_home_porject_counter" 
+						event_chain = "parit_chain"
+						counter = "wg_parit_home_porject_counter"
 					}
-					NOT = { has_country_flag = parit_home_project_finished }
+					NOT = {
+						has_country_flag = parit_home_project_finished
+					}
 				}
-				country_event = { id = wg_parit.45 }
+				country_event = {
+					id = wg_parit.45
+				}
 			}
 		}
 		create_fleet = {
 			name = "NAME_parit_fleet"
 			settings = {
 				spawn_debris = no
-			}			
-			effect = {			
-				set_owner = event_target:parit_owner		
+			}
+			effect = {
+				set_owner = event_target:parit_owner
 				create_ship = {
 					name = random
 					design = "NAME_Defensive_D_SH"
@@ -1613,12 +1672,16 @@ country_event = {
 			if = {
 				limit = {
 					has_completed_event_chain_counter = {
-						event_chain = "parit_chain" 
+						event_chain = "parit_chain"
 						counter = wg_parit_home_porject_counter
 					}
-					NOT = { has_country_flag = parit_home_project_finished }
+					NOT = {
+						has_country_flag = parit_home_project_finished
+					}
 				}
-				country_event = { id = wg_parit.45 }
+				country_event = {
+					id = wg_parit.45
+				}
 			}
 		}
 	}
@@ -1630,42 +1693,44 @@ country_event = {
 	desc = "wg_parit.42.desc"
 	picture = GFX_evt_fallen_empire_awakes
 	location = root
-
 	is_triggered_only = yes
-		immediate = {
+	immediate = {
 		owner = {
 			save_event_target_as = parit_owner
 		}
 	}
-
 	option = {
 		name = wg_parit.42.a
-		owner = { 
-			add_event_chain_counter = { 
-				event_chain = "parit_chain" 
-				counter = "wg_parit_home_porject_counter" 
-				amount = 1 
+		owner = {
+			add_event_chain_counter = {
+				event_chain = "parit_chain"
+				counter = "wg_parit_home_porject_counter"
+				amount = 1
 			}
-    	}
+		}
 		hidden_effect = {
 			if = {
 				limit = {
 					has_completed_event_chain_counter = {
-						event_chain = "parit_chain" 
-						counter = "wg_parit_home_porject_counter" 
+						event_chain = "parit_chain"
+						counter = "wg_parit_home_porject_counter"
 					}
-					NOT = { has_country_flag = parit_home_project_finished }
+					NOT = {
+						has_country_flag = parit_home_project_finished
+					}
 				}
-				country_event = { id = wg_parit.45 }
+				country_event = {
+					id = wg_parit.45
+				}
 			}
 		}
 		create_fleet = {
 			name = "NAME_parit_fleet"
 			settings = {
 				spawn_debris = no
-			}			
-			effect = {			
-				set_owner = event_target:parit_owner		
+			}
+			effect = {
+				set_owner = event_target:parit_owner
 				create_ship = {
 					name = random
 					design = "NAME_Defensive_E_SH"
@@ -1686,12 +1751,16 @@ country_event = {
 			if = {
 				limit = {
 					has_completed_event_chain_counter = {
-						event_chain = "parit_chain" 
+						event_chain = "parit_chain"
 						counter = wg_parit_home_porject_counter
 					}
-					NOT = { has_country_flag = parit_home_project_finished }
+					NOT = {
+						has_country_flag = parit_home_project_finished
+					}
 				}
-				country_event = { id = wg_parit.45 }
+				country_event = {
+					id = wg_parit.45
+				}
 			}
 		}
 	}
@@ -1703,7 +1772,6 @@ country_event = {
 	desc = "wg_parit.43.desc"
 	picture = GFX_evt_star_chart
 	location = root
-
 	is_triggered_only = yes
 	immediate = {
 		every_system = {
@@ -1721,7 +1789,7 @@ country_event = {
 			}
 		}
 	}
-    option = {
+	option = {
 		name = wg_parit.43.a
 		custom_tooltip = wg_parit.43.tooltip
 		add_monthly_resource_mult = {
@@ -1732,27 +1800,31 @@ country_event = {
 		}
 		add_monthly_resource_mult = {
 			resource = physics_research
-     		value = @tier3researchreward
+			value = @tier3researchreward
 			min = @tier3researchmin
 			max = @tier3researchmax
-     	}
-		owner = { 
-			add_event_chain_counter = { 
-				event_chain = "parit_chain" 
-				counter = "wg_parit_home_porject_counter" 
-				amount = 1 
+		}
+		owner = {
+			add_event_chain_counter = {
+				event_chain = "parit_chain"
+				counter = "wg_parit_home_porject_counter"
+				amount = 1
 			}
-    	}
+		}
 		hidden_effect = {
 			if = {
 				limit = {
 					has_completed_event_chain_counter = {
-						event_chain = "parit_chain" 
-						counter = "wg_parit_home_porject_counter" 
+						event_chain = "parit_chain"
+						counter = "wg_parit_home_porject_counter"
 					}
-					NOT = { has_country_flag = parit_home_project_finished }
+					NOT = {
+						has_country_flag = parit_home_project_finished
+					}
 				}
-				country_event = { id = wg_parit.45 }
+				country_event = {
+					id = wg_parit.45
+				}
 			}
 		}
 	}
@@ -1764,28 +1836,30 @@ country_event = {
 	desc = "wg_parit.44.desc"
 	picture = GFX_evt_cargoship_caravan
 	location = root
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.44.a
-		owner = { 
-			add_event_chain_counter = { 
-				event_chain = "parit_chain" 
-				counter = "wg_parit_home_porject_counter" 
-				amount = 1 
+		owner = {
+			add_event_chain_counter = {
+				event_chain = "parit_chain"
+				counter = "wg_parit_home_porject_counter"
+				amount = 1
 			}
-    	}
+		}
 		hidden_effect = {
 			if = {
 				limit = {
 					has_completed_event_chain_counter = {
-						event_chain = "parit_chain" 
-						counter = "wg_parit_home_porject_counter" 
+						event_chain = "parit_chain"
+						counter = "wg_parit_home_porject_counter"
 					}
-					NOT = { has_country_flag = parit_home_project_finished }
+					NOT = {
+						has_country_flag = parit_home_project_finished
+					}
 				}
-				country_event = { id = wg_parit.45 }
+				country_event = {
+					id = wg_parit.45
+				}
 			}
 		}
 	}
@@ -1797,9 +1871,7 @@ country_event = {
 	desc = "wg_parit.45.desc"
 	picture = GFX_evt_wg_parit
 	location = root
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.45.a
 		owner = {
@@ -1809,14 +1881,14 @@ country_event = {
 				min = @tier4influencemin
 				max = @tier4influencemax
 			}
-            add_monthly_resource_mult = {
+			add_monthly_resource_mult = {
 				resource = unity
 				value = @tier5unityreward
 				min = @tier5unitymin
 				max = @tier5unitymax
 			}
 		}
-		owner={
+		owner = {
 			end_event_chain = "parit_chain"
 		}
 		hidden_effect = {
@@ -1824,7 +1896,10 @@ country_event = {
 				limit = {
 					has_country_flag = has_parit_girl
 				}
-				country_event = { id = executor_build.258 days = 180 }
+				country_event = {
+					id = executor_build.258
+					days = 180
+				}
 			}
 		}
 	}
@@ -1837,19 +1912,23 @@ country_event = {
 	picture = GFX_evt_wsg_no_video
 	is_triggered_only = yes
 	fire_only_once = yes
-	
 	trigger = {
-		NOT = { has_global_flag = no_guardian_wg_think_tank }
-	}		
+		NOT = {
+			has_global_flag = no_guardian_wg_think_tank
+		}
+	}
 	option = {
 		name = "wg_boss.15.a"
 		hidden_effect = {
 			set_country_flag = astesia_chosen_one
 			owner = {
-				country_event = { id = wg_parit.47 days = 1 }
-			}			
-		}		
-	}	
+				country_event = {
+					id = wg_parit.47
+					days = 1
+				}
+			}
+		}
+	}
 }
 
 country_event = {
@@ -1858,13 +1937,11 @@ country_event = {
 	desc = "wg_parit.47.desc"
 	show_sound = event_administrative_work
 	location = from.from.from
-
 	picture_event_data = {
 		room = no_video_feed_room
 	}
 	diplomatic = yes
 	force_open = yes
-
 	is_triggered_only = yes
 	immediate = {
 		set_country_flag = eddy_flag
@@ -1882,7 +1959,9 @@ country_event = {
 	option = {
 		name = wg_parit.47.c
 		hidden_effect = {
-			country_event = { id = wg_parit.48 }
+			country_event = {
+				id = wg_parit.48
+			}
 		}
 	}
 }
@@ -1893,15 +1972,12 @@ country_event = {
 	desc = "wg_parit.48.desc"
 	show_sound = event_administrative_work
 	location = from.from.from
-
 	picture_event_data = {
 		room = no_video_feed_room
 	}
 	diplomatic = yes
 	force_open = yes
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.48.a
 		response_text = wg_parit.48.a.response
@@ -1910,7 +1986,9 @@ country_event = {
 	option = {
 		name = wg_parit.48.b
 		hidden_effect = {
-			country_event = { id = wg_parit.49 }
+			country_event = {
+				id = wg_parit.49
+			}
 		}
 	}
 }
@@ -1922,13 +2000,16 @@ country_event = {
 	picture = GFX_evt_think_tank
 	location = FROM
 	trackable = yes
-
 	is_triggered_only = yes
 	immediate = {
 		random_country = {
-			limit = { is_country_type = guardian_wg_think_tank }
+			limit = {
+				is_country_type = guardian_wg_think_tank
+			}
 			random_owned_fleet = {
-				limit = { has_fleet_flag = wsg_think_tank_fleet }
+				limit = {
+					has_fleet_flag = wsg_think_tank_fleet
+				}
 				save_event_target_as = wg_think_tank_location
 			}
 		}
@@ -1943,26 +2024,30 @@ country_event = {
 		hidden_effect = {
 			set_country_flag = astesia_helper
 			set_global_flag = astesia_parit_helper
-		}		
+		}
 	}
 }
 
 country_event = {
-    id = wg_parit.50
-    hide_window = yes
-    is_triggered_only = yes
+	id = wg_parit.50
+	hide_window = yes
+	is_triggered_only = yes
 	fire_only_once = yes
 	trigger = {
 		has_communications = event_target:sh_fallen_empire
 		exists = event_target:sh_fallen_empire
 		has_country_flag = custom_start_parit
-		NOT = { has_country_flag = triggered_parit_sh_fe_event }
+		NOT = {
+			has_country_flag = triggered_parit_sh_fe_event
+		}
 	}
-
-    immediate = {
-        country_event = { id = wg_parit.51 days = 360  }
+	immediate = {
+		country_event = {
+			id = wg_parit.51
+			days = 360
+		}
 		set_country_flag = triggered_parit_sh_fe_event
-    }
+	}
 }
 
 country_event = {
@@ -1972,18 +2057,21 @@ country_event = {
 	picture = GFX_evt_ship_in_orbit_3
 	is_triggered_only = yes
 	fire_only_once = yes
-	
 	trigger = {
 		exists = event_target:sh_fallen_empire
-	}		
+	}
 	option = {
 		name = "wg_parit.51.a"
 		hidden_effect = {
 			owner = {
-				country_event = { id = wg_parit.52 days = 180 random = 180 }
-			}			
-		}		
-	}	
+				country_event = {
+					id = wg_parit.52
+					days = 180
+					random = 180
+				}
+			}
+		}
+	}
 }
 
 country_event = {
@@ -1993,18 +2081,20 @@ country_event = {
 	picture = GFX_evt_ship_in_orbit_3
 	is_triggered_only = yes
 	fire_only_once = yes
-	
 	trigger = {
 		exists = event_target:sh_fallen_empire
-	}		
+	}
 	option = {
 		name = "wg_parit.52.a"
 		hidden_effect = {
 			owner = {
-				country_event = { id = wg_parit.53 days = 10 }
-			}			
-		}		
-	}	
+				country_event = {
+					id = wg_parit.53
+					days = 10
+				}
+			}
+		}
+	}
 }
 
 country_event = {
@@ -2015,7 +2105,6 @@ country_event = {
 	diplomatic = yes
 	force_open = yes
 	fire_only_once = yes
-
 	picture_event_data = {
 		portrait = event_target:sh_fallen_empire
 		planet_background = event_target:sh_fallen_empire
@@ -2023,7 +2112,6 @@ country_event = {
 		city_level = event_target:sh_fallen_empire
 		room = event_target:sh_fallen_empire.ruler
 	}
-
 	option = {
 		name = "wg_parit.53.a"
 		response_text = wg_parit.53.a.response
@@ -2032,7 +2120,9 @@ country_event = {
 	option = {
 		name = "wg_parit.53.b"
 		hidden_effect = {
-			country_event = { id = wg_parit.54 }
+			country_event = {
+				id = wg_parit.54
+			}
 		}
 	}
 }
@@ -2045,7 +2135,6 @@ country_event = {
 	diplomatic = yes
 	force_open = yes
 	fire_only_once = yes
-
 	picture_event_data = {
 		portrait = event_target:sh_fallen_empire
 		planet_background = event_target:sh_fallen_empire
@@ -2053,30 +2142,27 @@ country_event = {
 		city_level = event_target:sh_fallen_empire
 		room = event_target:sh_fallen_empire.ruler
 	}
-
 	option = {
 		name = "wg_parit.54.a"
 		hidden_effect = {
-			country_event = { id = wg_parit.55 }
+			country_event = {
+				id = wg_parit.55
+			}
 		}
 	}
 }
-
 
 country_event = {
 	id = wg_parit.55
 	title = "wg_parit.55.name"
 	desc = "wg_parit.55.desc"
 	location = from.from.from
-
 	picture_event_data = {
 		room = no_video_feed_room
 	}
 	diplomatic = yes
 	force_open = yes
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.55.a
 		response_text = wg_parit.55.a.response
@@ -2116,7 +2202,10 @@ country_event = {
 		name = wg_parit.55.f
 		response_text = wg_parit.55.f.response
 		hidden_effect = {
-			country_event = { id = wg_parit.56 days = 5 }
+			country_event = {
+				id = wg_parit.56
+				days = 5
+			}
 		}
 	}
 }
@@ -2128,13 +2217,14 @@ country_event = {
 	picture = GFX_evt_wg_parit
 	is_triggered_only = yes
 	fire_only_once = yes
-		
 	option = {
 		name = "wg_parit.56.a"
 		owner = {
-			add_resource = { unity = 2000 }
-		}		
-	}	
+			add_resource = {
+				unity = 2000
+			}
+		}
+	}
 }
 
 #执行者垂死病中惊坐起
@@ -2147,14 +2237,19 @@ country_event = {
 		has_country_flag = has_parit_girl
 		has_country_flag = custom_start_parit
 		has_technology = tech_kuat_THRUSTER
-		NOT = { has_country_flag = parit_kuat_executor }
+		NOT = {
+			has_country_flag = parit_kuat_executor
+		}
 	}
-	immediate = {	
-		country_event = { id = wg_parit.58 days = 180 random = 180 }
-		set_country_flag = parit_kuat_executor		
+	immediate = {
+		country_event = {
+			id = wg_parit.58
+			days = 180
+			random = 180
+		}
+		set_country_flag = parit_kuat_executor
 	}
 }
-
 
 country_event = {
 	id = wg_parit.58
@@ -2162,9 +2257,7 @@ country_event = {
 	desc = "wg_parit.58.desc"
 	picture = GFX_evt_wsg_executor
 	location = root
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.58.a
 		enable_special_project = {
@@ -2188,14 +2281,16 @@ country_event = {
 	desc = "wg_parit.59.desc"
 	is_triggered_only = yes
 	picture = GFX_evt_laser_grid
-
-
 	option = {
 		name = "wg_parit.59.a"
 		remove_modifier = parit_executor
 		hidden_effect = {
-			country_event = { id = wg_parit.60 days = 60 random = 30 }
-		}	
+			country_event = {
+				id = wg_parit.60
+				days = 60
+				random = 30
+			}
+		}
 	}
 }
 
@@ -2205,16 +2300,18 @@ country_event = {
 	desc = "wg_parit.60.desc"
 	is_triggered_only = yes
 	picture = GFX_evt_space_walk
-
-
 	option = {
 		name = "wg_parit.60.a"
 		owner = {
-			add_resource = { unity = 1000 }
+			add_resource = {
+				unity = 1000
+			}
 		}
 		hidden_effect = {
-			country_event = { id = wg_parit.61 }
-		}	
+			country_event = {
+				id = wg_parit.61
+			}
+		}
 	}
 }
 
@@ -2223,15 +2320,12 @@ country_event = {
 	title = "wg_parit.61.name"
 	desc = "wg_parit.61.desc"
 	location = from.from.from
-
 	picture_event_data = {
 		room = no_video_feed_room
 	}
 	diplomatic = yes
 	force_open = yes
-
 	is_triggered_only = yes
-
 	option = {
 		name = wg_parit.61.a
 		response_text = wg_parit.61.a.response
@@ -2261,7 +2355,10 @@ country_event = {
 		name = wg_parit.61.f
 		response_text = wg_parit.61.f.response
 		hidden_effect = {
-			country_event = { id = wg_parit.62 days = 2 }
+			country_event = {
+				id = wg_parit.62
+				days = 2
+			}
 		}
 	}
 }
@@ -2272,22 +2369,19 @@ country_event = {
 	desc = "wg_parit.62.desc"
 	is_triggered_only = yes
 	picture = GFX_evt_wsg_executor
-
-
-
 	option = {
 		name = "wg_parit.62.a"
 		create_fleet = {
 			name = "NAME_eddy_system"
 			settings = {
 				spawn_debris = no
-			}			
-			effect = {			
-				set_owner = root			
+			}
+			effect = {
+				set_owner = root
 				create_ship = {
 					name = random
 					design = "NAME_KUAT_EXECUTOR"
-				}				
+				}
 				set_location = {
 					target = event_target:executor_ship_object_target
 					distance = 5
@@ -2297,6 +2391,75 @@ country_event = {
 		}
 		event_target:executor_ship_object_target = {
 			destroy_ambient_object = this
+		}
+	}
+	after = {
+		set_global_flag = wg_parit_kuat_event_spawaned
+		country_event = { id = wg_parit.63 days = 1800 random = 720 }
+	}
+}
+
+country_event = {
+	id = wg_parit.63
+	title = "wg_parit.63.title"
+	desc = "wg_parit.63.desc"
+	diplomatic = yes
+	picture_event_data = {
+		room = no_video_feed_room
+	}
+	force_open = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		has_global_flag = install_kuat_mod
+		has_global_flag = wg_parit_kuat_event_spawaned
+	}
+
+	#日志1
+	option = {
+		name = wg_parit.63.a
+		response_text = wg_parit.63.a.res
+		is_dialog_only = yes
+	}
+	#日志2
+	option = {
+		name = wg_parit.63.b
+		response_text = wg_parit.63.b.res
+		is_dialog_only = yes
+	}
+	#日志3
+	option = {
+		name = wg_parit.63.c
+		response_text = wg_parit.63.c.res
+		is_dialog_only = yes
+	}
+	#日志4
+	option = {
+		name = wg_parit.63.d
+		response_text = wg_parit.63.d.res
+		is_dialog_only = yes
+	}
+	#继承
+	option = {
+		name = wg_parit.63.e
+		start_situation = { type = situation_research_wg_parit_hidden_tech target = root }
+	}
+}
+
+
+situation_event = {
+	id = wg_parit.64
+	title = "wg_parit.64.name"
+	desc = "wg_parit.64.desc"
+	picture = GFX_evt_wsg_executor
+	show_sound = event_celebration
+	is_triggered_only = yes
+	option = {
+		name = wg_parit.64.a
+		custom_tooltip = wg_parit.64.a.tooltip
+		hidden_effect = {
+			create_ship_design = { design = NAME_KUAT_EXECUTOR }
+			add_ship_design = last_created_design
 		}
 	}
 }
