@@ -1,0 +1,114 @@
+#########################################
+#										#
+# Cybernetic Creed Events & Situation	#
+# Haig Morrison
+#		 								#
+#########################################
+
+namespace = machine_age
+
+#No Creeds, No Need
+situation_event = {
+	id = machine_age.1100
+	title = "machine_age.1100.name"
+	desc = "machine_age.1100.desc"
+	picture = GFX_evt_cybernetic_creed
+	show_sound = event_mystic_reveal
+	event_chain = cybernetic_creed_chain
+
+	is_triggered_only = yes
+
+	immediate = {
+		owner = {
+			set_country_flag = cybernetics_traditions_unlocked
+		}
+	}
+
+	#Democratic
+	option = {
+		trigger = {
+			owner = {
+				has_authority = auth_democratic
+			}
+		}
+		name = "machine_age.1100.a"
+		custom_tooltip = "machine_age.1100.a.tooltip"
+	}
+
+	#Oligarchic
+	option = {
+		trigger = {
+			owner = {
+				has_authority = auth_oligarchic
+			}
+		}
+		name = "machine_age.1100.a"
+		custom_tooltip = "machine_age.1100.b.tooltip"
+	}
+
+	#Dictatorial
+	option = {
+		trigger = {
+			owner = {
+				has_authority = auth_dictatorial
+			}
+		}
+		name = "machine_age.1100.a"
+		custom_tooltip = "machine_age.1100.c.tooltip"
+	}
+
+	#Imperial
+	option = {
+		trigger = {
+			owner = {
+				has_authority = auth_imperial
+			}
+		}
+		name = "machine_age.1100.a"
+		custom_tooltip = "machine_age.1100.d.tooltip"
+	}
+
+	#Corporate
+	option = {
+		trigger = {
+			owner = {
+				has_authority = auth_corporate
+			}
+		}
+		name = "machine_age.1100.a"
+		custom_tooltip = "machine_age.1100.e.tooltip"
+	}
+
+	#other
+	option = {
+		trigger = {
+			owner = {
+				NAND = {
+					has_authority = auth_democratic
+					has_authority = auth_oligarchic
+					has_authority = auth_dictatorial
+					has_authority = auth_imperial
+					has_authority = auth_corporate
+				}
+			}
+		}
+		name = "machine_age.1100.a"
+		custom_tooltip = "machine_age.geneswaptooltip"
+	}
+	after = {
+		owner = {
+			add_modifier = {
+				modifier = cyber_creed_no_creed_robot_points_modifier
+				days = -1
+			}
+			end_event_chain = cybernetic_creed_chain
+		}
+		hidden_effect = {
+			destroy_situation = this
+			owner = {
+				set_country_flag = can_genemod_cyborg_ritualistic_pops
+				set_country_flag = cyber_creed_finished_situation
+			}
+		}
+	}
+}
