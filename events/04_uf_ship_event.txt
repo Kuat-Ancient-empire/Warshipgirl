@@ -4,11 +4,9 @@ ship_event = {
 	id = uf_ship.1
 	hide_window = yes
 	is_triggered_only = yes
-
 	trigger = {
 		is_ship_size = uf_mobile_portal
 	}
-
 	immediate = {
 		create_fleet = {
 			name = "NAME_uf_mobile_portal"
@@ -32,9 +30,16 @@ ship_event = {
 		if = {
 			limit = {
 				exists = fleet
-				fleet = { num_ships <= 1 }
+				fleet = {
+					num_ships <= 1
+				}
 			}
-			fleet = { delete_fleet = { target = this destroy_template = yes }}
+			fleet = {
+				delete_fleet = {
+					target = this
+					destroy_template = yes
+				}
+			}
 		}
 		delete_ship = this
 	}
@@ -49,10 +54,9 @@ country_event = {
 	location = from.solar_system
 	trackable = yes
 	picture = GFX_evt_uf_portal
-
 	trigger = {
-		NAND = { 
-			has_country_flag = uf_portal_deploying 
+		NAND = {
+			has_country_flag = uf_portal_deploying
 			has_active_event = {
 				uf_ship.2
 				uf_ship.3
@@ -65,22 +69,32 @@ country_event = {
 			solar_system = {
 				OR = {
 					has_global_flag = ignore_uf_portal_enemy_fleet_trigger
-					NOT = { any_fleet_in_system = {
-						# 不能有敌对舰队
-						owner = { is_hostile = prevprev.from }
-						any_owned_ship = { OR = {
-							is_ship_class = shipclass_military 
-							is_ship_class = shipclass_military_station
-						}}
-					}}
+					NOT = {
+						any_fleet_in_system = {
+							# 不能有敌对舰队
+							owner = {
+								is_hostile = prevprev.from
+							}
+							any_owned_ship = {
+								OR = {
+									is_ship_class = shipclass_military
+									is_ship_class = shipclass_military_station
+								}
+							}
+						}
+					}
 				}
 				# 星系内不能有其他星门
-				NOT = { any_system_megastructure = { OR = {
-					is_megastructure_type = uf_mobile_portal
-					is_megastructure_type = uf_mobile_portal_temp
-					is_megastructure_type = gateway_final
-					is_megastructure_type = gateway_restored
-				}}}
+				NOT = {
+					any_system_megastructure = {
+						OR = {
+							is_megastructure_type = uf_mobile_portal
+							is_megastructure_type = uf_mobile_portal_temp
+							is_megastructure_type = gateway_final
+							is_megastructure_type = gateway_restored
+						}
+					}
+				}
 			}
 			has_fleet_flag = uf_mobile_portal_fleet
 			any_owned_ship = {
@@ -88,31 +102,34 @@ country_event = {
 			}
 		}
 	}
-
 	immediate = {
 		set_country_flag = uf_portal_deploying
 		from.solar_system = {
 			save_event_target_as = portal_system
 		}
-		from = { random_owned_ship = {
-			export_trigger_value_to_variable = {
-				trigger = has_hp_percentage
-				variable = hp_percent
+		from = {
+			random_owned_ship = {
+				export_trigger_value_to_variable = {
+					trigger = has_hp_percentage
+					variable = hp_percent
+				}
+				fleet = {
+					set_variable = {
+						which = hp_percent
+						value = prev.hp_percent
+					}
+				}
 			}
-			fleet = { set_variable = {
-				which = hp_percent
-				value = prev.hp_percent
-			}}
-		}}
+		}
 	}
-
-	after = { remove_country_flag = uf_portal_deploying }
-
+	after = {
+		remove_country_flag = uf_portal_deploying
+	}
 	option = {
 		# 部署
 		name = uf_ship.2.a
 		custom_tooltip = uf_ship.2.a.tooltip
-		hidden_effect = { 
+		hidden_effect = {
 			event_target:portal_system = {
 				spawn_megastructure = {
 					type = uf_mobile_portal
@@ -130,7 +147,10 @@ country_event = {
 					name = "NAME_uf_portal_entity"
 					effect = {
 						set_owner = root
-						set_location = { target = event_target:uf_portal angle = 135 }
+						set_location = {
+							target = event_target:uf_portal
+							angle = 135
+						}
 						create_ship = {
 							design = "NAME_UF_Portal"
 							graphical_culture = owner
@@ -159,11 +179,13 @@ country_event = {
 				}
 			}
 			from = {
-				delete_fleet = { target = this destroy_template = yes }
+				delete_fleet = {
+					target = this
+					destroy_template = yes
+				}
 			}
 		}
 	}
-
 	option = {
 		name = uf_ship.2.b
 		custom_tooltip = uf_ship.2.b.tooltip
@@ -191,10 +213,14 @@ country_event = {
 					ai_ignore_strength = yes
 				}
 			}
-			from = { delete_fleet = { target = this destroy_template = yes } }
+			from = {
+				delete_fleet = {
+					target = this
+					destroy_template = yes
+				}
+			}
 		}
 	}
-
 	option = {
 		name = uf_ship.2.c
 		custom_tooltip = uf_ship.2.c.tooltip
@@ -210,10 +236,9 @@ country_event = {
 	location = from.solar_system
 	trackable = yes
 	picture = GFX_evt_uf_portal
-
 	trigger = {
-		NOR = { 
-			has_country_flag = uf_portal_deploying 
+		NOR = {
+			has_country_flag = uf_portal_deploying
 			has_active_event = {
 				uf_ship.2
 				uf_ship.3
@@ -225,41 +250,46 @@ country_event = {
 			is_in_combat = no
 			solar_system = {
 				# 有其他联合星门在此星系
-				any_system_megastructure = { OR = {
-					is_megastructure_type = uf_mobile_portal
-					is_megastructure_type = uf_mobile_portal_temp
-					is_megastructure_type = gateway_final
-					is_megastructure_type = gateway_restored
-				}}
+				any_system_megastructure = {
+					OR = {
+						is_megastructure_type = uf_mobile_portal
+						is_megastructure_type = uf_mobile_portal_temp
+						is_megastructure_type = gateway_final
+						is_megastructure_type = gateway_restored
+					}
+				}
 			}
 			has_fleet_flag = uf_mobile_portal_fleet
-			any_owned_ship = { is_ship_size = uf_mobile_portal }
+			any_owned_ship = {
+				is_ship_size = uf_mobile_portal
+			}
 		}
 	}
-
 	immediate = {
 		set_country_flag = uf_portal_deploying
 		from.solar_system = {
 			save_event_target_as = portal_system
 		}
-		from = { random_owned_ship = {
-			export_trigger_value_to_variable = {
-				trigger = has_hp_percentage
-				variable = hp_percent
+		from = {
+			random_owned_ship = {
+				export_trigger_value_to_variable = {
+					trigger = has_hp_percentage
+					variable = hp_percent
+				}
+				set_variable = {
+					which = hp_percent
+					value = fleet.hp_percent
+				}
 			}
-			set_variable = {
-				which = hp_percent
-				value = fleet.hp_percent
-			}
-		}}
+		}
 	}
-
-	after = { remove_country_flag = uf_portal_deploying }
-
+	after = {
+		remove_country_flag = uf_portal_deploying
+	}
 	option = {
 		name = OK
 		custom_tooltip = uf_ship.2.b.tooltip
-		hidden_effect = { 
+		hidden_effect = {
 			create_fleet = {
 				name = "NAME_uf_mobile_portal"
 				effect = {
@@ -283,15 +313,18 @@ country_event = {
 					ai_ignore_strength = yes
 				}
 			}
-			from = { delete_fleet = { target = this destroy_template = yes }}
+			from = {
+				delete_fleet = {
+					target = this
+					destroy_template = yes
+				}
+			}
 		}
 	}
-
 	option = {
 		name = uf_ship.2.c
 		custom_tooltip = uf_ship.2.c.tooltip
 	}
-
 }
 
 # 部署失败提示：有其他敌对舰队在此星系
@@ -303,10 +336,9 @@ country_event = {
 	location = from.solar_system
 	trackable = yes
 	picture = GFX_evt_uf_portal
-
 	trigger = {
-		NOR = { 
-			has_country_flag = uf_portal_deploying 
+		NOR = {
+			has_country_flag = uf_portal_deploying
 			has_active_event = {
 				uf_ship.2
 				uf_ship.3
@@ -314,24 +346,31 @@ country_event = {
 				uf_ship.5
 			}
 		}
-		NOT = { has_global_flag = ignore_uf_portal_enemy_fleet_trigger }
+		NOT = {
+			has_global_flag = ignore_uf_portal_enemy_fleet_trigger
+		}
 		from = {
 			is_in_combat = no
 			solar_system = {
 				any_fleet_in_system = {
 					# 有敌对舰队
-					owner = { is_hostile = prevprev.from }
-					any_owned_ship = { OR = {
-						is_ship_class = shipclass_military 
-						is_ship_class = shipclass_military_station
-					}}
+					owner = {
+						is_hostile = prevprev.from
+					}
+					any_owned_ship = {
+						OR = {
+							is_ship_class = shipclass_military
+							is_ship_class = shipclass_military_station
+						}
+					}
 				}
 			}
 			has_fleet_flag = uf_mobile_portal_fleet
-			any_owned_ship = { is_ship_size = uf_mobile_portal }
+			any_owned_ship = {
+				is_ship_size = uf_mobile_portal
+			}
 		}
 	}
-
 	immediate = {
 		set_country_flag = uf_portal_deploying
 		from.solar_system = {
@@ -348,13 +387,13 @@ country_event = {
 			}
 		}
 	}
-
-	after = { remove_country_flag = uf_portal_deploying }
-
+	after = {
+		remove_country_flag = uf_portal_deploying
+	}
 	option = {
 		name = OK
 		custom_tooltip = uf_ship.2.b.tooltip
-		hidden_effect = { 
+		hidden_effect = {
 			create_fleet = {
 				name = "NAME_uf_mobile_portal"
 				effect = {
@@ -378,15 +417,18 @@ country_event = {
 					ai_ignore_strength = yes
 				}
 			}
-			from = { delete_fleet = { target = this destroy_template = yes }}
+			from = {
+				delete_fleet = {
+					target = this
+					destroy_template = yes
+				}
+			}
 		}
 	}
-
 	option = {
 		name = uf_ship.2.c
 		custom_tooltip = uf_ship.2.c.tooltip
 	}
-
 }
 
 # 部署失败提示：正在操作其他棱镜平台
@@ -398,10 +440,9 @@ country_event = {
 	location = from.solar_system
 	trackable = yes
 	picture = GFX_evt_uf_portal
-
 	trigger = {
-		OR = { 
-			has_country_flag = uf_portal_deploying 
+		OR = {
+			has_country_flag = uf_portal_deploying
 			has_active_event = {
 				uf_ship.2
 				uf_ship.3
@@ -410,30 +451,31 @@ country_event = {
 			}
 		}
 	}
-
 	immediate = {
 		set_country_flag = uf_portal_deploying
 		from.solar_system = {
 			save_event_target_as = portal_system
 		}
-		from = { random_owned_ship = {
-			export_trigger_value_to_variable = {
-				trigger = has_hp_percentage
-				variable = hp_percent
+		from = {
+			random_owned_ship = {
+				export_trigger_value_to_variable = {
+					trigger = has_hp_percentage
+					variable = hp_percent
+				}
+				set_variable = {
+					which = hp_percent
+					value = fleet.hp_percent
+				}
 			}
-			set_variable = {
-				which = hp_percent
-				value = fleet.hp_percent
-			}
-		}}
+		}
 	}
-
-	after = { remove_country_flag = uf_portal_deploying }
-
+	after = {
+		remove_country_flag = uf_portal_deploying
+	}
 	option = {
 		name = OK
 		custom_tooltip = uf_ship.2.b.tooltip
-		hidden_effect = { 
+		hidden_effect = {
 			create_fleet = {
 				name = "NAME_uf_mobile_portal"
 				effect = {
@@ -457,10 +499,14 @@ country_event = {
 					ai_ignore_strength = yes
 				}
 			}
-			from = { delete_fleet = { target = this destroy_template = yes }}
+			from = {
+				delete_fleet = {
+					target = this
+					destroy_template = yes
+				}
+			}
 		}
 	}
-
 }
 
 # 传送门实体被摧毁，移除传送门
@@ -468,15 +514,17 @@ country_event = {
 	id = uf_ship.6
 	hide_window = yes
 	is_triggered_only = yes
-
 	trigger = {
-		fromfrom = { has_fleet_flag = uf_portal_entity_fleet }
+		fromfrom = {
+			has_fleet_flag = uf_portal_entity_fleet
+		}
 	}
-
 	immediate = {
 		fromfrom.solar_system = {
 			random_system_megastructure = {
-				limit = { is_megastructure_type = uf_mobile_portal }
+				limit = {
+					is_megastructure_type = uf_mobile_portal
+				}
 				remove_megastructure = this
 			}
 		}
@@ -490,11 +538,9 @@ country_event = {
 	desc = uf_ship.7.desc
 	is_triggered_only = yes
 	picture = GFX_evt_uf_portal
-
 	trigger = {
 		last_increased_tech = tech_uf_mobile_portal
 	}
-
 	option = {
 		name = uf_ship.7.a
 	}
@@ -506,20 +552,26 @@ country_event = {
 	id = uf_ship.8
 	hide_window = yes
 	is_triggered_only = yes
-
 	trigger = {
-		fromfrom = { has_fleet_flag = uf_mobile_portal_fleet }
+		fromfrom = {
+			has_fleet_flag = uf_mobile_portal_fleet
+		}
 	}
-
 	immediate = {
 		fromfrom.solar_system = {
 			if = {
-				limit = { NOT = { any_system_megastructure = { OR = {
-					is_megastructure_type = uf_mobile_portal
-					is_megastructure_type = uf_mobile_portal_temp
-					is_megastructure_type = gateway_final
-					is_megastructure_type = gateway_restored
-				}}}}
+				limit = {
+					NOT = {
+						any_system_megastructure = {
+							OR = {
+								is_megastructure_type = uf_mobile_portal
+								is_megastructure_type = uf_mobile_portal_temp
+								is_megastructure_type = gateway_final
+								is_megastructure_type = gateway_restored
+							}
+						}
+					}
+				}
 				spawn_megastructure = {
 					type = uf_mobile_portal_temp
 					planet = system_star
@@ -536,7 +588,10 @@ country_event = {
 					name = "NAME_uf_portal_entity"
 					effect = {
 						set_owner = root
-						set_location = { target = event_target:uf_portal angle = 135 }
+						set_location = {
+							target = event_target:uf_portal
+							angle = 135
+						}
 						create_ship = {
 							design = "NAME_UF_Portal"
 							graphical_culture = owner
@@ -563,8 +618,18 @@ country_event = {
 						ai_ignore_strength = yes
 					}
 				}
-				system_event = { id = uf_ship.9 days = 1800 }
-				root = { country_event = { id = uf_ship.11 scopes = { from = prev }}}
+				system_event = {
+					id = uf_ship.9
+					days = 1800
+				}
+				root = {
+					country_event = {
+						id = uf_ship.11
+						scopes = {
+							from = prev
+						}
+					}
+				}
 			}
 		}
 	}
@@ -574,15 +639,21 @@ system_event = {
 	id = uf_ship.9
 	hide_window = yes
 	is_triggered_only = yes
-
 	immediate = {
 		random_system_megastructure = {
-			limit = { is_megastructure_type = uf_mobile_portal_temp }
+			limit = {
+				is_megastructure_type = uf_mobile_portal_temp
+			}
 			remove_megastructure = this
 		}
 		random_fleet_in_system = {
-			limit = { has_fleet_flag = uf_portal_entity_fleet }
-			delete_fleet = { target = this destroy_template = yes }
+			limit = {
+				has_fleet_flag = uf_portal_entity_fleet
+			}
+			delete_fleet = {
+				target = this
+				destroy_template = yes
+			}
 		}
 	}
 }
@@ -597,7 +668,6 @@ country_event = {
 	show_sound = event_ship_explosion
 	location = FROM
 	trackable = YES
-
 	option = {
 		name = uf_ship.11.a
 	}
@@ -607,13 +677,13 @@ country_event = {
 	id = uf_ship.10
 	hide_window = yes
 	is_triggered_only = yes
-
 	trigger = {
-		from = { is_megastructure_type = uf_mobile_portal2 }
+		from = {
+			is_megastructure_type = uf_mobile_portal2
+		}
 	}
-
 	immediate = {
-		from = { 
+		from = {
 			create_fleet = {
 				name = "NAME_uf_mobile_portal"
 				effect = {
@@ -637,12 +707,17 @@ country_event = {
 					ai_ignore_strength = yes
 				}
 			}
-			remove_megastructure = this 
+			remove_megastructure = this
 		}
 		fromfrom = {
 			random_fleet_in_system = {
-				limit = { has_fleet_flag = uf_portal_entity_fleet }
-				delete_fleet = { target = this destroy_template = yes }
+				limit = {
+					has_fleet_flag = uf_portal_entity_fleet
+				}
+				delete_fleet = {
+					target = this
+					destroy_template = yes
+				}
 			}
 		}
 	}
@@ -653,55 +728,66 @@ country_event = {
 	id = uf_ship.12
 	hide_window = yes
 	is_triggered_only = yes
-
 	trigger = {
 		has_authority = auth_united_fleet
 	}
-
 	immediate = {
 		every_controlled_fleet = {
-			limit = { has_fleet_flag = uf_portal_entity_fleet }
-			solar_system = { if = {
-				limit = { 
-					exists = space_owner
-					space_owner = { 
-						NOT = { is_same_value = root }
-						has_closed_borders = root
-						NOT = { is_at_war_with = root }
-					}
-				}
-				random_system_megastructure = {
-					limit = { is_megastructure_type = uf_mobile_portal }
-					remove_megastructure = this
-				}
-				prev = {
-					save_event_target_as = portal_entity
-					create_fleet = {
-						name = "NAME_uf_mobile_portal"
-						effect = {
-							set_owner = root
-							set_location = event_target:portal_entity
-							create_ship = {
-								random_existing_design = uf_mobile_portal
-								graphical_culture = owner
-								prefix = yes
+			limit = {
+				has_fleet_flag = uf_portal_entity_fleet
+			}
+			solar_system = {
+				if = {
+					limit = {
+						exists = space_owner
+						space_owner = {
+							NOT = {
+								is_same_value = root
 							}
-							set_fleet_flag = uf_mobile_portal_fleet
-							# set_variable = {
-							# 	which = hp_percent
-							# 	value = prev.hp_percent
-							# }
-						}
-						settings = {
-							can_change_composition = no
-							can_change_leader = no
-							spawn_debris = no
-							ai_ignore_strength = yes
+							has_closed_borders = root
+							NOT = {
+								is_at_war_with = root
+							}
 						}
 					}
-					delete_fleet = { target = this destroy_template = yes }
+					random_system_megastructure = {
+						limit = {
+							is_megastructure_type = uf_mobile_portal
+						}
+						remove_megastructure = this
+					}
+					prev = {
+						save_event_target_as = portal_entity
+						create_fleet = {
+							name = "NAME_uf_mobile_portal"
+							effect = {
+								set_owner = root
+								set_location = event_target:portal_entity
+								create_ship = {
+									random_existing_design = uf_mobile_portal
+									graphical_culture = owner
+									prefix = yes
+								}
+								set_fleet_flag = uf_mobile_portal_fleet
+								# set_variable = {
+								# 	which = hp_percent
+								# 	value = prev.hp_percent
+								# }
+							}
+							settings = {
+								can_change_composition = no
+								can_change_leader = no
+								spawn_debris = no
+								ai_ignore_strength = yes
+							}
+						}
+						delete_fleet = {
+							target = this
+							destroy_template = yes
+						}
+					}
 				}
-			}}
+			}
 		}
 	}
 }
@@ -710,23 +796,32 @@ event = {
 	id = uf_ship.13
 	hide_window = yes
 	is_triggered_only = yes
-
 	trigger = {
-		any_megastructure = { OR = {
-			is_megastructure_type = uf_mobile_portal
-			is_megastructure_type = uf_mobile_portal_temp
-		}}
-	}
-
-	immediate = {
-		random_megastructure = {
-			limit = { OR = {
+		any_megastructure = {
+			OR = {
 				is_megastructure_type = uf_mobile_portal
 				is_megastructure_type = uf_mobile_portal_temp
-			}}
+			}
+		}
+	}
+	immediate = {
+		random_megastructure = {
+			limit = {
+				OR = {
+					is_megastructure_type = uf_mobile_portal
+					is_megastructure_type = uf_mobile_portal_temp
+				}
+			}
 			random_country = {
-				limit = { PREV = { has_megastructure_flag = uf_portal@PREV }}
-				country_event = { id = uf_ship.14 days = 1 }
+				limit = {
+					PREV = {
+						has_megastructure_flag = uf_portal@PREV
+					}
+				}
+				country_event = {
+					id = uf_ship.14
+					days = 1
+				}
 			}
 		}
 	}
@@ -737,14 +832,12 @@ country_event = {
 	id = uf_ship.14
 	hide_window = yes
 	is_triggered_only = yes
-
 	trigger = {
 		has_authority = auth_united_fleet
 	}
-
 	immediate = {
 		every_megastructure = {
-			limit = { 
+			limit = {
 				has_megastructure_flag = uf_portal@root
 				OR = {
 					is_megastructure_type = uf_mobile_portal
@@ -753,14 +846,23 @@ country_event = {
 			}
 			set_owner = root
 			if = {
-				limit = { solar_system = { NOT = { any_fleet_in_system = {
-					has_fleet_flag = uf_portal_entity_fleet
-				}}}}
+				limit = {
+					solar_system = {
+						NOT = {
+							any_fleet_in_system = {
+								has_fleet_flag = uf_portal_entity_fleet
+							}
+						}
+					}
+				}
 				create_fleet = {
 					name = "NAME_uf_portal_entity"
 					effect = {
 						set_owner = root
-						set_location = { target = prev angle = 135 }
+						set_location = {
+							target = prev
+							angle = 135
+						}
 						create_ship = {
 							design = "NAME_UF_Portal"
 							graphical_culture = owner
@@ -797,34 +899,39 @@ country_event = {
 		FROMFROM = {
 			is_ship_size = uf_science
 		}
-		NOT = { has_policy_flag = uf_science_ship_not_allowed_flag }
+		NOT = {
+			has_policy_flag = uf_science_ship_not_allowed_flag
+		}
 	}
 	immediate = {
 		if = {
 			limit = {
 				has_country_resource = {
-					type = alloys 
+					type = alloys
 					amount >= 80
-				} 
+				}
 				has_country_resource = {
-					type = influence 
+					type = influence
 					amount >= 50
-				} 
+				}
 				NOT = {
 					from = {
 						any_system = {
-								distance = { 
-									source = from
-									min_jumps = 1
-									max_jumps = 1
-									type = hyperlane 
-									use_bypasses = no
-								}
+							distance = {
+								source = from
+								min_jumps = 1
+								max_jumps = 1
+								type = hyperlane
+								use_bypasses = no
+							}
 							exists = owner
 							owner = {
 								OR = {
+									is_wg_fallen_empire = yes
+									is_sh_fallen_empire = yes
 									is_country_type = fallen_empire
 									is_country_type = awakened_fallen_empire
+									is_country_type = wg_awakened_fallen_empire
 								}
 								has_ethic = ethic_fanatic_xenophobe
 							}
@@ -832,8 +939,12 @@ country_event = {
 					}
 				}
 			}
-			add_resource = { alloys = -80 }
-			add_resource = { influence = -50 }
+			add_resource = {
+				alloys = -80
+			}
+			add_resource = {
+				influence = -50
+			}
 			from = {
 				create_starbase = {
 					size = starbase_outpost
@@ -850,7 +961,7 @@ country_event = {
 						}
 					}
 					if = {
-						limit = { 
+						limit = {
 							has_deposit_for = shipclass_research_station
 							has_research_station = no
 						}

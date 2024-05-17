@@ -1009,8 +1009,11 @@ country_event = {
 				OR = {
 					is_country_type = default
 					is_country_type = default_ev
+					is_wg_fallen_empire = yes
+					is_sh_fallen_empire = yes
 					is_country_type = fallen_empire
 					is_country_type = awakened_fallen_empire
+					is_country_type = wg_awakened_fallen_empire
 					is_country_type = primitive
 				}
 			}
@@ -1924,7 +1927,7 @@ country_event = {
 		if = {
 			limit = { exists = event_target:sh_fallen_empire }
 			event_target:sh_fallen_empire = {
-				set_country_type = awakened_fallen_empire
+				set_country_type = wg_awakened_fallen_empire
 				set_empire_name = "沉默守卫者"
 				if = {
 					limit = { 
@@ -2112,8 +2115,11 @@ country_event = {
 					NOT = { any_war_participant = {
 						is_ai = no
 						OR = {
+							is_wg_fallen_empire = yes
+							is_sh_fallen_empire = yes
 							is_country_type = fallen_empire
 							is_country_type = awakened_fallen_empire
+							is_country_type = wg_awakened_fallen_empire
 						}
 					}}
 				}
@@ -2124,8 +2130,11 @@ country_event = {
 					NOT = { any_war_participant = {
 						is_ai = no
 						OR = {
+							is_wg_fallen_empire = yes
+							is_sh_fallen_empire = yes
 							is_country_type = fallen_empire
 							is_country_type = awakened_fallen_empire
+							is_country_type = wg_awakened_fallen_empire
 						}
 					}}
 				}
@@ -4125,7 +4134,7 @@ country_event = {
 			limit = { any_war_participant = { is_same_value = ROOT }}
 			remove_war_participant = root
 		}
-		set_country_type = fallen_empire
+		set_country_type = wg_fallen_empire
 		change_government = {
 			civics = {
 				civic = civic_wg_fe
@@ -4800,7 +4809,10 @@ country_event = {
 		random_country = {
 			limit = { 
 				is_regular_empire = yes 
-				NOT = { is_country_type = fallen_empire }
+				NOR = {
+					is_country_type = wg_fallen_empire 
+					is_country_type = fallen_empire 
+				}
 				is_subject = no 
 			}
 		}
