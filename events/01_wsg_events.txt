@@ -60,20 +60,70 @@ event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_global_flag = april_fool
+		OR = {
+			has_global_flag = april_fool
+			any_country = {
+				OR = {
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+				}
+				OR = {
+					has_authority = auth_wg_fe
+					has_authority = auth_sh_fe
+				}
+			}
+		}
 	}
 
 	immediate = {
 		# 移除愚人节效果
-		remove_global_flag = april_fool
-		set_variable = {
-			which = wsg_lady_cloth
-			value = 0
+		if = {
+			limit = { has_global_flag = april_fool }
+			remove_global_flag = april_fool
+			set_variable = {
+				which = wsg_lady_cloth
+				value = 0
+			}
+			event_target:wsg_lady_own_country = {
+				every_owned_leader = {
+					limit = { has_leader_flag = wsg_lady_leader }
+					set_lady_portrait = yes
+				}
+			}
 		}
-		event_target:wsg_lady_own_country = {
-			every_owned_leader = {
-				limit = { has_leader_flag = wsg_lady_leader }
-				set_lady_portrait = yes
+		if = {
+			limit = { 
+				any_country = {
+					OR = {
+						is_country_type = fallen_empire
+						is_country_type = awakened_fallen_empire
+					}
+					OR = {
+						has_authority = auth_wg_fe
+						has_authority = auth_sh_fe
+					}
+				}
+			}
+			every_country = {
+				limit = {
+					any_country = {
+						OR = {
+							is_country_type = fallen_empire
+							is_country_type = awakened_fallen_empire
+						}
+						OR = {
+							has_authority = auth_wg_fe
+							has_authority = auth_sh_fe
+						}
+					}
+				}
+				if = {
+					limit = { is_country_type = fallen_empire }
+					set_country_type = wg_fallen_empire
+				}
+				else = {
+					set_country_type = wg_awakened_fallen_empire
+				}
 			}
 		}
 	}
