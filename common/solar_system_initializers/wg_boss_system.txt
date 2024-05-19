@@ -2874,3 +2874,187 @@ wg_old_god_system = {
 		}
 	}
 }
+
+wg_Deep_Eyes_White_Dragon_system = {
+	name = "NAME_wg_Deep_Eyes_White_Dragon_system"
+	class = "sc_black_hole"
+	usage = misc_system_init
+	flags = { wg_Deep_Eyes_White_Dragon_system_flag wg_event_system }
+	
+	usage_odds = 0
+	
+
+	prevent_anomalies = yes
+	planet = {
+		count = 1
+		class = "pc_black_hole"
+		orbit_distance = 0
+		orbit_angle = 1
+		size = { min = 20 max = 30 }
+		has_ring = no
+		init_effect = {
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = 0 max = 0 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 90
+					angle = 135
+				}
+			}
+			create_ambient_object = {
+				type = "large_debris_object"
+				entity_offset_height = { min = 0 max = 0 }
+				location = this
+			}
+			last_created_ambient_object = {
+				set_location = {
+					target = prev
+					distance = 90
+					angle = 315
+				}
+			}
+			create_country = {
+				name = "NAME_wg_Deep_Eyes_White_Dragon_Ship_design"
+				type = faction
+				flag = {
+					icon = {
+						category = "warshipgirls"
+						file = "wg_flags_06.dds"
+					}
+					background = {
+						category = "backgrounds"
+						file = "00_solid.dds"
+					}
+					colors={
+						"blue"
+						"blue"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					set_country_flag = protected_from_queen_storm
+					set_country_flag = wg_boss_country
+					establish_communications_no_message = root.owner
+					set_country_flag = wg_Deep_Eyes_White_Dragon_country_flag
+				}				
+			}
+			last_created_country = {
+				create_fleet = {
+					name = "NAME_wg_Deep_Eyes_White_Dragon_Ship_design"
+					settings = {
+						spawn_debris = no
+						is_boss = yes
+					}
+					effect = {
+						set_owner = prev
+						create_ship = {
+							name = "NAME_wg_Deep_Eyes_White_Dragon_Ship_design"
+							design = "NAME_wg_Deep_Eyes_White_Dragon_Ship_design"
+							effect = {
+								set_ship_flag = wg_Deep_Eyes_White_Dragon_Ship_boss_flag
+								set_disable_at_health = 0.01
+							}
+						}
+						set_fleet_flag = wg_Deep_Eyes_White_Dragon_fleet_flag
+						set_location = {
+							target = prevprev
+							distance = 0
+							angle = 0
+						}
+						add_modifier = {
+							modifier = uf_insane_buff
+							days = -1
+						}						
+						set_fleet_stance = passive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 100
+					}
+				}
+			}
+		}
+	}
+	
+	
+	change_orbit = 30
+	planet = {
+		class = pc_barren_cold
+		name = "NAME_wg_Deep_Eyes_White_Dragon_system_1"
+		orbit_distance = 0
+		orbit_angle = 0
+		modifiers = none
+		size = 15
+		init_effect = {
+			while = {
+				count = 8
+				add_deposit = d_minerals_1
+			}
+		}
+	}
+	planet = {
+		class = pc_barren_cold
+		name = "NAME_wg_Deep_Eyes_White_Dragon_system_2"
+		orbit_distance = 0
+		orbit_angle = 180
+		modifiers = none
+		size = 15
+		init_effect = {
+			while = {
+				count = 3
+				add_deposit = d_minerals_1
+			}
+		}
+	}
+	
+	change_orbit = 30
+	planet = {
+		class = pc_barren_cold
+		name = "NAME_wg_Deep_Eyes_White_Dragon_system_3"
+		orbit_distance = 0
+		orbit_angle = 60
+		modifiers = none
+		size = 15
+		init_effect = {
+			while = {
+				count = 2
+				add_deposit = d_minerals_1
+			}
+		}
+	}
+	planet = {
+		class = pc_barren_cold
+		name = "NAME_wg_Deep_Eyes_White_Dragon_system_4"
+		orbit_distance = 0
+		orbit_angle = 240
+		modifiers = none
+		size = 15
+		init_effect = {
+			while = {
+				count = 6
+				add_deposit = d_minerals_1
+			}
+		}
+	}
+
+	planet = {
+		class = pc_molten
+		name = "NAME_wg_Deep_Eyes_White_Dragon_system_5"
+		orbit_distance = 0
+		orbit_angle = 60
+		modifiers = none
+		size = 15
+	}
+	planet = {
+		class = pc_molten
+		name = "NAME_wg_Deep_Eyes_White_Dragon_system_6"
+		orbit_distance = 0
+		orbit_angle = 180
+		modifiers = none
+		size = 15
+	}
+	
+}

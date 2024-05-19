@@ -205,6 +205,9 @@ r_wg_Deep_Eyes_White_Dragon_Card = {
 			influence = 500
 		}
 	}
+	possible = {
+		always = yes
+	}
 
 	ai_weight = {
 		weight = 100
@@ -213,13 +216,37 @@ r_wg_Deep_Eyes_White_Dragon_Card = {
 		potential = {
 			always = yes
 		}
-		country_unity_produces_mult = 0.1
+		custom_tooltip = r_wg_Deep_Eyes_White_Dragon_Card_modifier
 	}
 
 	score = 1000
 
 	active_effect = {
 		custom_tooltip = r_wg_Deep_Eyes_White_Dragon_Card_active
+		create_fleet = {
+			name = "NAME_wg_Deep_Eyes_White_Dragon_Ship_design"
+			settings = {
+				spawn_debris = no
+			}
+			effect = {
+				set_owner = prev
+				create_ship = {
+					name = "NAME_wg_Deep_Eyes_White_Dragon_Ship_design"
+					design = "NAME_wg_Deep_Eyes_White_Dragon_Ship_design"
+					effect = {
+						set_disable_at_health = 0.01
+					}
+				}
+				set_location = {
+					target = prev.capital_scope
+					distance = 0
+					angle = 0
+				}
+				set_fleet_stance = passive
+				set_aggro_range_measure_from = self
+				set_aggro_range = 100
+			}
+		}
 	}
 
 }
