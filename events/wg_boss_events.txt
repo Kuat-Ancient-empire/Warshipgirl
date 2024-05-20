@@ -95,6 +95,22 @@ country_event = {
 				country_event = { id = wsgranking.1919 }#胖次商店
 				country_event = { id = wg_boss.91 }#仙女龙
 			}
+			if = {
+				limit = { NOT = { exists = event_target:wg_Deep_Eyes_White_Dragon_system_flag } }
+				random_system = {
+					limit = { distance = {
+						min_distance = 35
+						max_distance = 75
+						type = euclidean
+						source = prev.capital_scope
+					} }
+					spawn_system = {
+						hyperlane = yes
+						is_discovered = no
+						initializer = wg_Deep_Eyes_White_Dragon_system
+					}
+				}
+			}
 		}
 		random_country = {
 			limit = { 
@@ -10363,8 +10379,8 @@ ship_event = {
 	}
 	
 	immediate = {
-		ship_event = {
-			id = wg_boss.401 days = 2
+		fleet = { 
+			fleet_event = { id = wg_boss.401 days = 2 } 
 		}
 		solar_system = {
 			every_ship_in_system = {
@@ -10383,35 +10399,19 @@ ship_event = {
 		}
 		if = {
 			limit = { has_ship_flag = wg_Deep_Eyes_White_Dragon_Ship_boss_flag }
-			From.owner = {
-				country_event = {
-					id = wg_boss.403
-				}
-			}
+			from.owner = { country_event = { id = wg_boss.403 } }
 		}
-		else = {
-			owner = {
-				country_event = {
-					id = wg_boss.406
-				}
-			}
-		}
+		else = { owner = { country_event = { id = wg_boss.406 } } }
 	}
 }
-ship_event = {
+fleet_event = {
 	id = wg_boss.401
 	hide_window = yes
-	
 	is_triggered_only = yes
 	
+	trigger = { exists = this }
 	
-	trigger = {
-		is_ship_size = wg_Deep_Eyes_White_Dragon_Ship
-	}
-	
-	immediate = {
-		destroy_ship = this
-	}
+	immediate = { destroy_fleet = { target = this destroy_template = yes kill_leader = yes } }
 }
 
 country_event = {
