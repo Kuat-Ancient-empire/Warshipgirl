@@ -85,6 +85,7 @@ country_event = {
 					}
 				}
 				set_timed_star_flag = { flag = can_spawn_boss_system days = 1 }
+				set_timed_star_flag = { flag = can_spawn_boss_dragon_system days = 1 }
 			}
 			if = {
 				limit = {
@@ -94,22 +95,6 @@ country_event = {
 				country_event = { id = wg_boss.19 }#无人机之主
 				country_event = { id = wsgranking.1919 }#胖次商店
 				country_event = { id = wg_boss.91 }#仙女龙
-			}
-			if = {
-				limit = { NOT = { exists = event_target:wg_Deep_Eyes_White_Dragon_system_flag } }
-				random_system = {
-					limit = { distance = {
-						min_distance = 35
-						max_distance = 75
-						type = euclidean
-						source = prev.capital_scope
-					} }
-					spawn_system = {
-						hyperlane = yes
-						is_discovered = no
-						initializer = wg_Deep_Eyes_White_Dragon_system
-					}
-				}
 			}
 		}
 		random_country = {
@@ -122,7 +107,7 @@ country_event = {
 
 		# 龙星系
 		if = {
-			limit = { any_system = { NOT = { has_star_flag = guardians_dragon_system }}}
+			limit = { NOT = { any_system = { has_star_flag = guardians_dragon_system } } }
 			random_system = {
 				limit = { has_star_flag = can_spawn_boss_system }
 				remove_star_flag = can_spawn_boss_system
@@ -132,6 +117,21 @@ country_event = {
 					min_distance = 10
 					max_distance = 20
 					initializer = guardians_init_dragon
+				}
+			}
+		}
+		#渊眼白龙
+		if = {
+			limit = { NOT = { any_system = { has_star_flag = wg_Deep_Eyes_White_Dragon_system_flag } } }
+			random_system = {
+				limit = { has_star_flag = can_spawn_boss_dragon_system }
+				remove_star_flag = can_spawn_boss_dragon_system
+				spawn_system = {
+					hyperlane = yes
+					is_discovered = no
+					min_distance = 10
+					max_distance = 20
+					initializer = wg_Deep_Eyes_White_Dragon_system
 				}
 			}
 		}
@@ -10379,9 +10379,6 @@ ship_event = {
 	}
 	
 	immediate = {
-		fleet = { 
-			fleet_event = { id = wg_boss.401 days = 2 } 
-		}
 		solar_system = {
 			every_ship_in_system = {
 				limit = {
@@ -10393,6 +10390,7 @@ ship_event = {
 					days = 2
 				}
 			}
+			system_event = { id = wg_boss.401 days = 2 }
 		}
 		owner = {
 			change_variable = { which = wg_Deep_Eyes_White_Dragon_count value = 1 }
@@ -10404,14 +10402,21 @@ ship_event = {
 		else = { owner = { country_event = { id = wg_boss.406 } } }
 	}
 }
-fleet_event = {
+system_event = {
 	id = wg_boss.401
 	hide_window = yes
 	is_triggered_only = yes
 	
-	trigger = { exists = this }
+	trigger = { NOT = { has_global_flag = wg_Deep_Eyes_White_Dragon_Ship_Aura_1_temple } }
 	
-	immediate = { destroy_fleet = { target = this destroy_template = yes kill_leader = yes } }
+	immediate = { 
+		every_ship_in_system = {
+			limit = { is_ship_size = wg_Deep_Eyes_White_Dragon_Ship }
+			destroy_ship = this
+			set_global_flag = wg_Deep_Eyes_White_Dragon_Ship_Aura_1_temple
+		}
+		system_event = { id = wg_boss.401 days = 1 }
+	}
 }
 
 country_event = {
