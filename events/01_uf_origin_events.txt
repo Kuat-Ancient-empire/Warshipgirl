@@ -7,168 +7,161 @@ country_event = {
 	is_triggered_only = yes
 	fire_only_once = yes
 	trigger = {
-		any_country = { 
-			has_authority = auth_united_fleet 
-		}
+		has_authority = auth_united_fleet
+		NOT = { has_origin = origin_united_fleet_glory_world }
 	}
 	immediate = {
-		every_country = {
-			limit = { 
-				has_authority = auth_united_fleet
-				NOT = {has_origin = origin_united_fleet_glory_world}
+		set_global_flag = seismic_disturbance_global
+		set_global_flag = pheromonefrenzy_done_global
+		save_event_target_as = uf_origin_target
+		country_event = { id = uf_origin.30 days = 360 }
+		country_event = { id = uf_story.30 days = 720 }
+		country_event = { id = uf_origin.5 }
+		country_event = { id = uf_origin.10002 }
+		country_event = { id = uf_origin.10003 }
+		country_event = { id = uf_origin.10004 }
+		add_modifier = {
+			modifier = uf_administrator_modifier
+			days = -1
+		}
+		add_modifier = {
+			modifier = wg_uf_origin_base_resource
+			days = -1
+		}
+		#开局额外领袖
+		create_leader = {
+			class = scientist
+			species = owner_main_species
+			event_leader = yes
+			traits = {
+				trait = leader_trait_scientist_uf_survey
+				trait = leader_trait_scientist_uf	
+				trait = leader_trait_uf				
 			}
-			set_global_flag = seismic_disturbance_global
-			set_global_flag = pheromonefrenzy_done_global
-			save_event_target_as = uf_origin_target
-			country_event = { id = uf_origin.30 days = 360 }
-			country_event = { id = uf_story.30 days = 720 }
-			country_event = { id = uf_origin.5 }
-			country_event = { id = uf_origin.10002 }
-			country_event = { id = uf_origin.10003 }
-			country_event = { id = uf_origin.10004 }
-			add_modifier = {
-				modifier = uf_administrator_modifier
-				days = -1
-			}
-			add_modifier = {
-				modifier = wg_uf_origin_base_resource
-				days = -1
-			}
-			#开局额外领袖
-			create_leader = {
-				class = scientist
-				species = owner_main_species
-				event_leader = yes
-				traits = {
-					trait = leader_trait_scientist_uf_survey
-					trait = leader_trait_scientist_uf	
-					trait = leader_trait_uf				
+		}
+		set_variable = { which = num_waifu value = 0 }
+		wg_waifu_create_effect = yes
+		last_created_leader = {
+			save_event_target_as = uf_start_science_ship_leader
+		}
+		create_fleet = {
+			effect = {
+				set_owner = root
+				create_ship = {
+					name = random
+					random_existing_design = science
+				}
+				set_fleet_stance = evasive
+				set_location = root.capital_scope.star
+				if = {
+					limit = {
+						exists = event_target:uf_start_science_ship_leader
+					}
+					set_leader = event_target:uf_start_science_ship_leader
 				}
 			}
-			set_variable = { which = num_waifu value = 0 }
-			wg_waifu_create_effect = yes
-			last_created_leader = {
-				save_event_target_as = uf_start_science_ship_leader
+		}
+		
+		owner = {
+			add_resource = { sr_uf = 100 }
+			give_technology = { tech = tech_powered_exoskeletons message = no }
+			give_technology = { tech = tech_starbase_2 message = no }
+			give_technology = { tech = tech_lasers_2 message = no }
+			give_technology = { tech = tech_doctrine_fleet_size_1 message = no }
+			give_technology = { tech = tech_planetary_unification message = no }
+		}
+		capital_scope = {
+			clear_deposits = yes
+			add_deposit = d_bomb_crater
+			add_deposit = d_bomb_crater
+			add_deposit = d_decrepit_dwellings
+			add_deposit = d_failing_infrastructure
+			add_deposit = d_hot_springs
+			add_deposit = d_rushing_waterfalls
+			add_deposit = d_geothermal_vent
+			add_deposit = d_veiny_cliffs
+			add_deposit = d_mineral_fields
+			add_deposit = d_mineral_fields
+			add_deposit = d_submerged_ore_veins
+			add_deposit = d_submerged_ore_veins
+			add_deposit = d_submerged_ore_veins
+			add_deposit = d_black_soil
+			add_deposit = d_black_soil
+			add_deposit = d_tropical_island
+			remove_building = building_commercial_zone
+			add_building = building_uf_assembly
+			add_deposit = r_uf_food
+			add_building = building_uf_entertainment_center
+			while = {
+				count = 6
+				random_owned_pop = { kill_pop = yes }
 			}
-			create_fleet = {
-				effect = {
-					set_owner = root
-					create_ship = {
-						name = random
-						random_existing_design = science
-					}
-					set_fleet_stance = evasive
-					set_location = root.capital_scope.star
-					if = {
-						limit = {
-							exists = event_target:uf_start_science_ship_leader
-						}
-						set_leader = event_target:uf_start_science_ship_leader
-					}
-				}
-			}
-			
-			owner = {
-				add_resource = { sr_uf = 100 }
-				give_technology = { tech = tech_powered_exoskeletons message = no }
-				give_technology = { tech = tech_starbase_2 message = no }
-				give_technology = { tech = tech_lasers_2 message = no }
-				give_technology = { tech = tech_doctrine_fleet_size_1 message = no }
-				give_technology = { tech = tech_planetary_unification message = no }
+		}
+		if  = {
+			limit = {
+				has_civic = civic_uf_1
 			}
 			capital_scope = {
-				clear_deposits = yes
-				add_deposit = d_bomb_crater
-				add_deposit = d_bomb_crater
-				add_deposit = d_decrepit_dwellings
-				add_deposit = d_failing_infrastructure
-				add_deposit = d_hot_springs
-				add_deposit = d_rushing_waterfalls
-				add_deposit = d_geothermal_vent
-				add_deposit = d_veiny_cliffs
-				add_deposit = d_mineral_fields
-				add_deposit = d_mineral_fields
-				add_deposit = d_submerged_ore_veins
-				add_deposit = d_submerged_ore_veins
-				add_deposit = d_submerged_ore_veins
-				add_deposit = d_black_soil
-				add_deposit = d_black_soil
-				add_deposit = d_tropical_island
-				remove_building = building_commercial_zone
-				add_building = building_uf_assembly
-				add_deposit = r_uf_food
-				add_building = building_uf_entertainment_center
-				while = {
-					count = 6
-					random_owned_pop = { kill_pop = yes }
-				}
-			}
-			if  = {
-				limit = {
-					has_civic = civic_uf_1
-				}
-				capital_scope = {
-					save_event_target_as = uf_capital_target
-					solar_system = {
-						spawn_megastructure = {
-							type = "uf_ring_shipyard"
-							coords_from = event_target:uf_capital_target
-						}
-					}
-					set_planet_flag = has_megastructure
-					add_modifier = {
-						modifier = planet_uf_ring_shipyard
-						days = -1
+				save_event_target_as = uf_capital_target
+				solar_system = {
+					spawn_megastructure = {
+						type = "uf_ring_shipyard"
+						coords_from = event_target:uf_capital_target
 					}
 				}
-			}
-			if  = {
-				limit = {
-					has_civic = civic_uf_4
-				}
-				give_technology = { tech = tech_uf_assimilation message = no }	
-
-			}
-			random_planet_within_border = {
-				limit = { has_planet_flag = uf_home_second_planet }
-				set_owner = event_target:uf_origin_target
-				while = {
-					count = 6
-					create_pop = {
-						species = owner_main_species
-					}
-				}
-				clear_deposits = yes
-				add_deposit = d_decrepit_dwellings
-				add_deposit = r_mecha_wreckage
-				add_deposit = d_radioactive_wasteland
-				add_deposit = d_bomb_crater
-				add_deposit = d_bomb_crater
-				add_deposit = d_bomb_crater
-				add_deposit = d_bomb_crater
-				add_deposit = d_veiny_cliffs
-				add_deposit = d_mineral_fields
-				add_deposit = d_mineral_fields
-				add_deposit = d_mineral_fields
-				add_deposit = d_arid_highlands
-				add_deposit = d_underwater_vent
-				add_deposit = d_underwater_vent
-				add_deposit = d_geothermal_vent
-				add_deposit = d_geothermal_vent
-				add_deposit = d_fungal_caves
-				add_deposit = r_planetary_artillery
-				add_deposit = r_uf_hyperdimensional_matter
-				add_building = building_uf_residence_s
-				add_building = building_uf_research #我故意损坏的
-				add_building = building_uf_energy #我故意损坏的
-				add_district = district_farming
-				add_district = district_generator
-				add_district = district_generator
-				add_district = district_city
+				set_planet_flag = has_megastructure
 				add_modifier = {
-					modifier = planet_uf_ring_shipyard_damaged
+					modifier = planet_uf_ring_shipyard
 					days = -1
 				}
+			}
+		}
+		if  = {
+			limit = {
+				has_civic = civic_uf_4
+			}
+			give_technology = { tech = tech_uf_assimilation message = no }	
+
+		}
+		random_planet_within_border = {
+			limit = { has_planet_flag = uf_home_second_planet }
+			set_owner = event_target:uf_origin_target
+			while = {
+				count = 6
+				create_pop = {
+					species = owner_main_species
+				}
+			}
+			clear_deposits = yes
+			add_deposit = d_decrepit_dwellings
+			add_deposit = r_mecha_wreckage
+			add_deposit = d_radioactive_wasteland
+			add_deposit = d_bomb_crater
+			add_deposit = d_bomb_crater
+			add_deposit = d_bomb_crater
+			add_deposit = d_bomb_crater
+			add_deposit = d_veiny_cliffs
+			add_deposit = d_mineral_fields
+			add_deposit = d_mineral_fields
+			add_deposit = d_mineral_fields
+			add_deposit = d_arid_highlands
+			add_deposit = d_underwater_vent
+			add_deposit = d_underwater_vent
+			add_deposit = d_geothermal_vent
+			add_deposit = d_geothermal_vent
+			add_deposit = d_fungal_caves
+			add_deposit = r_planetary_artillery
+			add_deposit = r_uf_hyperdimensional_matter
+			add_building = building_uf_residence_s
+			add_building = building_uf_research #我故意损坏的
+			add_building = building_uf_energy #我故意损坏的
+			add_district = district_farming
+			add_district = district_generator
+			add_district = district_generator
+			add_district = district_city
+			add_modifier = {
+				modifier = planet_uf_ring_shipyard_damaged
+				days = -1
 			}
 		}
 	}
