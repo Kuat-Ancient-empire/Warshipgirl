@@ -1,24 +1,25 @@
 create_wg_fe_capital_fleet_and_admiral = {
-    create_wg_fe_admiral = yes
-    create_wg_fe_fleet = yes
 	create_wg_fe_admiral = yes
-    create_wg_fe_fleet2 = yes
-	create_wg_fe_admiral = yes
-    create_wg_fe_fleet2 = yes
-	create_wg_fe_admiral = yes
-    create_wg_fe_fleet2 = yes
-    create_wg_fe_construction_ship = yes	
+	create_wg_fe_fleet = yes
+	while = {
+        count = 2
+        create_wg_fe_admiral = yes
+	    create_wg_fe_fleet2 = yes
+    }
+	create_wg_fe_construction_ship = yes
 }
 
 create_wg_fe_fleet = {
 	if = {
 		limit = {
-			owner = { has_authority = auth_wg_fe }
+			owner = {
+				has_authority = auth_wg_fe
+			}
 		}
 		create_fleet = {
 			name = "NAME_WG_FE_CAPITAL_FLEET"
 			effect = {
-                set_owner = event_target:wg_fallen_empire
+				set_owner = event_target:wg_fallen_empire
 				create_ship = {
 					name = random
 					design = "NAME_WG_FE_WATCHKEEPER2"
@@ -29,480 +30,501 @@ create_wg_fe_fleet = {
 					design = "NAME_WG_FE_WATCHKEEPER2"
 					upgradable = no
 				}
-                while = {
-                    count = 8
-                    create_ship = {
-                        name = random
-                        design = "NAME_WG_FE_TITAN"
-                        graphical_culture = "fallen_empire_03"
-                        upgradable = no
-                    }
-                }
-                while = {
-                    count = 50
-                    create_ship = {
-                        name = random
-                        design = "NAME_WG_FE_BATTLE_CRUISE"
-                        graphical_culture = "fallen_empire_03"
-                        upgradable = no
-                    }
-                }
-                while = {
-                    count = 25
-                    create_ship = {
-                        name = random
-                        design = "NAME_WG_FE_ESCORTE"
-                        graphical_culture = "fallen_empire_03"
-                        upgradable = no
-                    }
-                }
 				while = {
-                     count = 10
-                     create_ship = {
-                         name = random
-                         design = "NAME_Fallen_uav_3"
-                         graphical_culture = "fallen_empire_03"
-                         upgradable = no
-                     }
+					count = 16
+					create_ship = {
+						name = random
+						design = "NAME_WG_FE_TITAN"
+						graphical_culture = "fallen_empire_03"
+						upgradable = no
+					}
+				}
+				while = {
+					count = 20
+					create_ship = {
+						name = random
+						design = "NAME_WG_FE_BATTLE_CRUISE"
+						graphical_culture = "fallen_empire_03"
+						upgradable = no
+					}
+				}
+				while = {
+					count = 24
+					create_ship = {
+						name = random
+						design = "NAME_WG_FE_ESCORTE"
+						graphical_culture = "fallen_empire_03"
+						upgradable = no
+					}
+				}
+				while = {
+					count = 10
+					create_ship = {
+						name = random
+						design = "NAME_Fallen_uav_3"
+						graphical_culture = "fallen_empire_03"
+						upgradable = no
+					}
+				}
+				while = {
+					count = 10
+					create_ship = {
+						name = random
+						design = "NAME_Fallen_uav_2"
+						graphical_culture = "fallen_empire_03"
+						upgradable = no
+					}
+				}
+				random_list = {
+                    1 = { set_location = { target = PREV distance = 5 angle = random } }
+                    1 = { set_location = { target = PREV distance = 15 angle = random } }
+                    1 = { set_location = { target = PREV distance = 25 angle = random } }
                 }
-		     	while = {
-                    count = 20
-                     create_ship = {
-                         name = random
-                         design = "NAME_Fallen_uav_2"
-                         graphical_culture = "fallen_empire_03"
-                         upgradable = no
-                     }
-                }
-                set_location = {
-                    target = PREV
-                    distance = 5
-                    angle = random
-                }
-                set_fleet_stance = aggressive
-                set_fleet_bombardment_stance = Galo
-                assign_leader = last_created_leader
-                #set_aggro_range_measure_from = self
-                #set_aggro_range = 500
-            }	
-        	settings = { 
-            	can_upgrade = no 
-            	uses_naval_capacity = yes
-            }
-		}						
-	}					
+				set_fleet_stance = aggressive
+				set_fleet_bombardment_stance = Galo
+				assign_leader = last_created_leader
+				#set_aggro_range_measure_from = self
+				#set_aggro_range = 500
+			}
+			settings = {
+				can_upgrade = no
+				uses_naval_capacity = yes
+			}
+		}
+	}
 }
-create_wg_fe_construction_ship = {					
-    create_fleet = {
-        name = "NAME_WG_FE_CONSTRUCTION"
-        effect = {
-            set_owner = event_target:wg_fallen_empire
-            create_ship = {
-                name = random
-                design = "NAME_WG_FE_CONSTRUCTION"
-                graphical_culture = "fallen_empire_03"
-                upgradable = no
-            }
-            set_location = {
-                target = PREV
-                distance = 15
-                angle = random
-            }
-        }
-        settings = { 
-            can_upgrade = no 
-            uses_naval_capacity = yes
-        }
-    }					
+
+create_wg_fe_construction_ship = {
+	create_fleet = {
+		name = "NAME_WG_FE_CONSTRUCTION"
+		effect = {
+			set_owner = event_target:wg_fallen_empire
+			create_ship = {
+				name = random
+				design = "NAME_WG_FE_CONSTRUCTION"
+				graphical_culture = "fallen_empire_03"
+				upgradable = no
+			}
+			set_location = {
+				target = PREV
+				distance = 15
+				angle = random
+			}
+		}
+		settings = {
+			can_upgrade = no
+			uses_naval_capacity = yes
+		}
+	}
 }
-create_wg_fe_colossus = {					
+
+create_wg_fe_colossus = {
 	if = {
 		limit = {
-			owner = { has_authority = auth_wg_fe }
+			owner = {
+				has_authority = auth_wg_fe
+			}
 		}
 		create_fleet = {
 			name = "NAME_WG_FE_COLOSSUS"
 			effect = {
-            set_owner = event_target:wg_fallen_empire
-            while = {
-                count = 1
-                create_ship = {
-                    name = random
-                    design = "NAME_WG_FE_COLOSSUS"
-					graphical_culture = "fallen_empire_03"
-                    upgradable = no
-                }
-            }					
-            set_location = {
-                target = PREV
-                distance = 30
-                angle = random
-                }
-            }
-            settings = { 
-                can_upgrade = no 
-                uses_naval_capacity = yes
-            }
-		}						
-	}					
+				set_owner = event_target:wg_fallen_empire
+				while = {
+					count = 1
+					create_ship = {
+						name = random
+						design = "NAME_WG_FE_COLOSSUS"
+						graphical_culture = "fallen_empire_03"
+						upgradable = no
+					}
+				}
+				set_location = {
+					target = PREV
+					distance = 30
+					angle = random
+				}
+			}
+			settings = {
+				can_upgrade = no
+				uses_naval_capacity = yes
+			}
+		}
+	}
 }
 
 create_wg_fe_fleet2 = {
 	if = {
 		limit = {
-			owner = { has_authority = auth_wg_fe }
+			owner = {
+				has_authority = auth_wg_fe
+			}
 		}
 		create_fleet = {
 			name = "NAME_WG_FE_COLONY_FLEET"
 			effect = {
-            set_owner = event_target:wg_fallen_empire
-            while = {
-                count = 3
-                create_ship = {
-                    name = random
-                    design = "NAME_WG_FE_TITAN"
-                    graphical_culture = "fallen_empire_03"
-                    upgradable = no
+				set_owner = event_target:wg_fallen_empire
+				while = {
+					count = 10
+					create_ship = {
+						name = random
+						design = "NAME_WG_FE_TITAN"
+						graphical_culture = "fallen_empire_03"
+						upgradable = no
+					}
+				}
+				while = {
+					count = 15
+					create_ship = {
+						name = random
+						design = "NAME_WG_FE_BATTLE_CRUISE"
+						graphical_culture = "fallen_empire_03"
+						upgradable = no
+					}
+				}
+				while = {
+					count = 20
+					create_ship = {
+						name = random
+						design = "NAME_WG_FE_ESCORTE"
+						graphical_culture = "fallen_empire_03"
+						upgradable = no
+					}
+				}
+				while = {
+					count = 10
+					create_ship = {
+						name = random
+						design = "NAME_Fallen_uav_3"
+						graphical_culture = "fallen_empire_03"
+						upgradable = no
+					}
+				}
+				while = {
+					count = 10
+					create_ship = {
+						name = random
+						design = "NAME_Fallen_uav_2"
+						graphical_culture = "fallen_empire_03"
+						upgradable = no
+					}
+				}
+				random_list = {
+                    1 = { set_location = { target = PREV distance = 60 angle = random } }
+                    1 = { set_location = { target = PREV distance = 80 angle = random } }
+                    1 = { set_location = { target = PREV distance = 100 angle = random } }
                 }
-            }
-            while = {
-                count = 40
-                create_ship = {
-                    name = random
-                    design = "NAME_WG_FE_BATTLE_CRUISE"
-                    graphical_culture = "fallen_empire_03"
-                    upgradable = no
-                }
-            }
-            while = {
-                count = 30
-                create_ship = {
-                    name = random
-                    design = "NAME_WG_FE_ESCORTE"
-                    graphical_culture = "fallen_empire_03"
-                    upgradable = no
-                }
-            }
-			while = {
-                count = 10
-                create_ship = {
-                    name = random
-                    design = "NAME_Fallen_uav_3"
-                    graphical_culture = "fallen_empire_03"
-                    upgradable = no
-                }
-            }
-			while = {
-                count = 20
-                create_ship = {
-                    name = random
-                    design = "NAME_Fallen_uav_2"
-                    graphical_culture = "fallen_empire_03"
-                    upgradable = no
-                }
-            }
-            set_location = {
-                target = PREV
-                distance = 80
-                angle = random
-            }
-            set_fleet_stance = aggressive
-            set_fleet_bombardment_stance = Galo
-			assign_leader = last_created_leader
-            #set_aggro_range_measure_from = self
-            #set_aggro_range = 500
-        }
-        settings = { 
-            can_upgrade = no 
-            uses_naval_capacity = yes
-            }
-		}						
-	}					
+				set_fleet_stance = aggressive
+				set_fleet_bombardment_stance = Galo
+				assign_leader = last_created_leader
+				#set_aggro_range_measure_from = self
+				#set_aggro_range = 500
+			}
+			settings = {
+				can_upgrade = no
+				uses_naval_capacity = yes
+			}
+		}
+	}
 }
+
 create_wg_fe_ark_fleet = {
-    create_wg_fe_ark = yes
-	
-}
-create_wg_fe_ark = {
 	if = {
 		limit = {
-			owner = { has_authority = auth_wg_fe }
+			owner = {
+				has_authority = auth_wg_fe
+			}
 		}
 		create_fleet = {
 			name = "NAME_WG_FE_ARK_FLEET"
 			effect = {
-            set_owner = event_target:wg_fallen_empire
-            while = {
-                count = 1
-                create_ship = {
-                    name = random
-                    design = "NAME_WG_FE_ARK"
-                    upgradable = no
-                }
-            }					
-            set_location = {
-                target = PREV
-                distance = 15
-                angle = random
-            }
-        }
-        settings = { 
-            can_upgrade = no 
-            uses_naval_capacity = yes
-            }
-		}						
-	}					
+				set_owner = event_target:wg_fallen_empire
+				create_ship = {
+					name = random
+					design = "NAME_WG_FE_ARK"
+					upgradable = no
+				}
+				set_location = {
+					target = PREV
+					distance = 15
+					angle = random
+				}
+			}
+			settings = {
+				can_upgrade = no
+				uses_naval_capacity = yes
+			}
+		}
+	}
 }
 
 create_wg_fe_citadel = {
 	create_starbase = {
 		size = "starbase_citadel"
-
 		module = "shipyard"
 		module = "anchorage"
 		module = "anchorage"
 		module = "hangar_bay"
 		module = "gun_battery"
 		module = "gun_battery"
-
 		building = "crew_quarters"
 		building = "command_center"
 		building = "target_uplink_computer"
 		building = "dark_matter_listening_post"
-		
 		effect = {
 			while = {
 				count = 15
 				create_wg_fallen_empire_platform = yes
 			}
-            create_fleet = {
-                name = "NAME_wg_fe_guard_station"
-                settings = { spawn_debris = no }
-                effect = {
-                    set_owner = prev.owner
-                    create_ship = {
-                        name = "NAME_wg_fe_guard_station"
-                        design = "NAME_wg_fe_guard_station"
-                        prefix = no
-                    }
-                    set_location = {
-                        target = prev
-                        distance = 150
-                        angle = 30 
-                    }
-                }
-            }
-            create_fleet = {
-                name = "NAME_wg_fe_guard_station"
-                settings = { spawn_debris = no }
-                effect = {
-                    set_owner = prev.owner
-                    create_ship = {
-                        name = "NAME_wg_fe_guard_station"
-                        design = "NAME_wg_fe_guard_station"
-                        prefix = no
-                    }
-                    set_location = {
-                        target = prev
-                        distance = 150
-                        angle = 60
-                    }
-                }
-            }
-            create_fleet = {
-                name = "NAME_wg_fe_guard_station"
-                settings = { spawn_debris = no }
-                effect = {
-                    set_owner = prev.owner
-                    create_ship = {
-                        name = "NAME_wg_fe_guard_station"
-                        design = "NAME_wg_fe_guard_station"
-                        prefix = no
-                    }
-                    set_location = {
-                        target = prev
-                        distance = 150
-                        angle = 90
-                    }
-                }
-            }
-            create_fleet = {
-                name = "NAME_wg_fe_guard_station"
-                settings = { spawn_debris = no }
-                effect = {
-                    set_owner = prev.owner
-                    create_ship = {
-                        name = "NAME_wg_fe_guard_station"
-                        design = "NAME_wg_fe_guard_station"
-                        prefix = no
-                    }
-                    set_location = {
-                        target = prev
-                        distance = 150
-                        angle = 120 
-                    }
-                }
-            }
-            create_fleet = {
-                name = "NAME_wg_fe_guard_station"
-                settings = { spawn_debris = no }
-                effect = {
-                    set_owner = prev.owner
-                    create_ship = {
-                        name = "NAME_wg_fe_guard_station"
-                        design = "NAME_wg_fe_guard_station"
-                        prefix = no
-                    }
-                    set_location = {
-                        target = prev
-                        distance = 150
-                        angle = 150 
-                    }
-                }
-            }
-            create_fleet = {
-                name = "NAME_wg_fe_guard_station"
-                settings = { spawn_debris = no }
-                effect = {
-                    set_owner = prev.owner
-                    create_ship = {
-                        name = "NAME_wg_fe_guard_station"
-                        design = "NAME_wg_fe_guard_station"
-                        prefix = no
-                    }
-                    set_location = {
-                        target = prev
-                        distance = 150
-                        angle = 180 
-                    }
-                }
-            }
-            create_fleet = {
-                name = "NAME_wg_fe_guard_station"
-                settings = { spawn_debris = no }
-                effect = {
-                    set_owner = prev.owner
-                    create_ship = {
-                        name = "NAME_wg_fe_guard_station"
-                        design = "NAME_wg_fe_guard_station"
-                        prefix = no
-                    }
-                    set_location = {
-                        target = prev
-                        distance = 150
-                        angle = 210 
-                    }
-                }
-            }
-            create_fleet = {
-                name = "NAME_wg_fe_guard_station"
-                settings = { spawn_debris = no }
-                effect = {
-                    set_owner = prev.owner
-                    create_ship = {
-                        name = "NAME_wg_fe_guard_station"
-                        design = "NAME_wg_fe_guard_station"
-                        prefix = no
-                    }
-                    set_location = {
-                        target = prev
-                        distance = 150
-                        angle = 240 
-                    }
-                }
-            }
-            create_fleet = {
-                name = "NAME_wg_fe_guard_station"
-                settings = { spawn_debris = no }
-                effect = {
-                    set_owner = prev.owner
-                    create_ship = {
-                        name = "NAME_wg_fe_guard_station"
-                        design = "NAME_wg_fe_guard_station"
-                        prefix = no
-                    }
-                    set_location = {
-                        target = prev
-                        distance = 150
-                        angle = 270 
-                    }
-                }
-            }
-            create_fleet = {
-                name = "NAME_wg_fe_guard_station"
-                settings = { spawn_debris = no }
-                effect = {
-                    set_owner = prev.owner
-                    create_ship = {
-                        name = "NAME_wg_fe_guard_station"
-                        design = "NAME_wg_fe_guard_station"
-                        prefix = no
-                    }
-                    set_location = {
-                        target = prev
-                        distance = 150
-                        angle = 300 
-                    }
-                }
-            }
-            create_fleet = {
-                name = "NAME_wg_fe_guard_station"
-                settings = { spawn_debris = no }
-                effect = {
-                    set_owner = prev.owner
-                    create_ship = {
-                        name = "NAME_wg_fe_guard_station"
-                        design = "NAME_wg_fe_guard_station"
-                        prefix = no
-                    }
-                    set_location = {
-                        target = prev
-                        distance = 150
-                        angle = 330 
-                    }
-                }
-            }
-            create_fleet = {
-                name = "NAME_wg_fe_guard_station"
-                settings = { spawn_debris = no }
-                effect = {
-                    set_owner = prev.owner
-                    create_ship = {
-                        name = "NAME_wg_fe_guard_station"
-                        design = "NAME_wg_fe_guard_station"
-                        prefix = no
-                    }
-                    set_location = {
-                        target = prev
-                        distance = 150
-                        angle = 360 
-                    }
-                }
-            }
+			create_fleet = {
+				name = "NAME_wg_fe_guard_station"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = prev.owner
+					create_ship = {
+						name = "NAME_wg_fe_guard_station"
+						design = "NAME_wg_fe_guard_station"
+						prefix = no
+					}
+					set_location = {
+						target = prev
+						distance = 150
+						angle = 30
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_wg_fe_guard_station"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = prev.owner
+					create_ship = {
+						name = "NAME_wg_fe_guard_station"
+						design = "NAME_wg_fe_guard_station"
+						prefix = no
+					}
+					set_location = {
+						target = prev
+						distance = 150
+						angle = 60
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_wg_fe_guard_station"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = prev.owner
+					create_ship = {
+						name = "NAME_wg_fe_guard_station"
+						design = "NAME_wg_fe_guard_station"
+						prefix = no
+					}
+					set_location = {
+						target = prev
+						distance = 150
+						angle = 90
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_wg_fe_guard_station"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = prev.owner
+					create_ship = {
+						name = "NAME_wg_fe_guard_station"
+						design = "NAME_wg_fe_guard_station"
+						prefix = no
+					}
+					set_location = {
+						target = prev
+						distance = 150
+						angle = 120
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_wg_fe_guard_station"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = prev.owner
+					create_ship = {
+						name = "NAME_wg_fe_guard_station"
+						design = "NAME_wg_fe_guard_station"
+						prefix = no
+					}
+					set_location = {
+						target = prev
+						distance = 150
+						angle = 150
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_wg_fe_guard_station"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = prev.owner
+					create_ship = {
+						name = "NAME_wg_fe_guard_station"
+						design = "NAME_wg_fe_guard_station"
+						prefix = no
+					}
+					set_location = {
+						target = prev
+						distance = 150
+						angle = 180
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_wg_fe_guard_station"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = prev.owner
+					create_ship = {
+						name = "NAME_wg_fe_guard_station"
+						design = "NAME_wg_fe_guard_station"
+						prefix = no
+					}
+					set_location = {
+						target = prev
+						distance = 150
+						angle = 210
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_wg_fe_guard_station"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = prev.owner
+					create_ship = {
+						name = "NAME_wg_fe_guard_station"
+						design = "NAME_wg_fe_guard_station"
+						prefix = no
+					}
+					set_location = {
+						target = prev
+						distance = 150
+						angle = 240
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_wg_fe_guard_station"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = prev.owner
+					create_ship = {
+						name = "NAME_wg_fe_guard_station"
+						design = "NAME_wg_fe_guard_station"
+						prefix = no
+					}
+					set_location = {
+						target = prev
+						distance = 150
+						angle = 270
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_wg_fe_guard_station"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = prev.owner
+					create_ship = {
+						name = "NAME_wg_fe_guard_station"
+						design = "NAME_wg_fe_guard_station"
+						prefix = no
+					}
+					set_location = {
+						target = prev
+						distance = 150
+						angle = 300
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_wg_fe_guard_station"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = prev.owner
+					create_ship = {
+						name = "NAME_wg_fe_guard_station"
+						design = "NAME_wg_fe_guard_station"
+						prefix = no
+					}
+					set_location = {
+						target = prev
+						distance = 150
+						angle = 330
+					}
+				}
+			}
+			create_fleet = {
+				name = "NAME_wg_fe_guard_station"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = prev.owner
+					create_ship = {
+						name = "NAME_wg_fe_guard_station"
+						design = "NAME_wg_fe_guard_station"
+						prefix = no
+					}
+					set_location = {
+						target = prev
+						distance = 150
+						angle = 360
+					}
+				}
+			}
 		}
 	}
 }
+
 create_wg_fe_home_citadel = {
 	create_starbase = {
 		size = "starbase_citadel"
-
 		module = "shipyard"
 		module = "shipyard"
-		module = "shipyard"			
+		module = "shipyard"
 		module = "hangar_bay"
 		module = "gun_battery"
-		module = "gun_battery"		
-
+		module = "gun_battery"
 		building = "target_uplink_computer"
 		building = "defense_grid"
 		building = "colossus_yards"
 		building = "titan_yards"
-		
 		effect = {
 			while = {
 				count = 30
 				create_wg_fallen_empire_platform = yes
-			}	
+			}
 		}
 	}
 }
@@ -510,13 +532,69 @@ create_wg_fe_home_citadel = {
 create_wg_fallen_empire_platform = {
 	if = {
 		limit = {
-			owner = { has_authority = auth_wg_fe }
+			owner = {
+				has_authority = auth_wg_fe
+			}
 		}
 		create_ship = {
 			name = random
 			design = "NAME_WG_FE_PLATFORM"
 			graphical_culture = owner
-		}						
-	}					
+		}
+	}
 }
 
+create_wg_fe_admiral = {
+    event_target:wg_fallen_empire = {
+        random_list = {
+            30 = {
+                create_leader = {
+                    class = commander
+                    species = event_target:fe_species_sh
+                    name = random
+                    skill = 10
+                    traits = {
+                        trait = leader_trait_shenhai2
+						trait = leader_trait_admiral_sh_weapon_master
+                    }
+                }
+            }
+            30 = {
+                create_leader = {
+                    class = commander
+                    species = event_target:fe_species_sh
+                    name = random
+                    skill = 10
+                    traits = {
+                        trait = leader_trait_shenhai2
+						trait = leader_trait_admiral_sh_armor
+                    }
+                }
+            }			
+            20 = {
+                create_leader = {
+                    class = commander
+                    species = event_target:fe_species_wsg
+                    name = random
+                    skill = 8
+                    traits = {
+                        trait = leader_trait_warshipgirls2 
+						trait = leader_trait_admiral_wsg_cannoneer
+                    }
+                }
+            }
+            20 = {
+                create_leader = {
+                    class = commander
+                    species = event_target:fe_species_wsg
+                    name = random
+                    skill = 8
+                    traits = {
+                        trait = leader_trait_warshipgirls2 
+						trait = leader_trait_admiral_wsg_sniper
+                    }
+                }
+            }
+        }
+    }
+}
