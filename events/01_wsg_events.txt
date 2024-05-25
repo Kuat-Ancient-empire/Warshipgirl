@@ -2269,176 +2269,95 @@ country_event = {
 		has_authority = auth_warshipgirls
 		is_ai = yes
 		OR = {
-			last_increased_tech = tech_building_wsg_research
-			has_technology = tech_building_wsg_research
-		}
-	}
-
-	immediate = {
-		every_owned_planet = {
-			limit = { has_vanilla_research_building = yes }
-			while = {
-				limit = { has_vanilla_research_building = yes }
-				switch = {
-					trigger = has_building
-					building_research_lab_1 = { remove_building = building_research_lab_1 }
-					building_research_lab_2 = { remove_building = building_research_lab_2 }
-					building_research_lab_3 = { remove_building = building_research_lab_3 }
-				}
-				if = {
-					limit = { root = { has_ascension_perk = ap_project_s }}
-					add_building = building_sep_research
-				} else = {
-					add_building = building_wsg_research
-				}
-			}
-		}
-	}
-}
-# ai用，自动将所有官僚替换成舰娘版
-country_event = {
-	id = wsg.4202
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_authority = auth_warshipgirls
-		is_ai = yes
-		OR = {
-			last_increased_tech = tech_wsg_military
 			has_technology = tech_wsg_military
-		}
-	}
-
-	immediate = {
-		every_owned_planet = {
-			limit = { has_vanilla_official_building = yes }
-			while = {
-				limit = { has_vanilla_official_building = yes }
-				switch = {
-					trigger = has_building
-					building_bureaucratic_1 = { remove_building = building_bureaucratic_1 }
-					building_bureaucratic_2 = { remove_building = building_bureaucratic_2 }
-				}
-				if = {
-					limit = { 
-						root = { has_civic = civic_wgella }
-						NOT = { has_building = building_wsg_ella_government }
-					}
-					add_building = building_wsg_ella_government
-				} else = {
-					add_building = building_wsg_military
-				}
-			}
-		}
-	}
-}
-# ai用，自动将所有合金厂替换成舰娘版
-country_event = {
-	id = wsg.4203
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_authority = auth_warshipgirls
-		is_ai = yes
-		OR = {
-			last_increased_tech = tech_building_wsg_foundry
-			has_technology = tech_building_wsg_foundry
-			last_increased_tech = tech_building_sep_foundry
+			has_technology = tech_building_wsg_research
 			has_technology = tech_building_sep_foundry
-		}
-	}
-
-	immediate = {
-		every_owned_planet = {
-			limit = { has_vanilla_foundry_building = yes }
-			switch = {
-				trigger = has_building
-				building_foundry_1 = { remove_building = building_foundry_1 }
-				building_foundry_2 = { remove_building = building_foundry_2 }
-				building_foundry_3 = { remove_building = building_foundry_3 }
-			}
-			if = {
-				limit = { root = { has_technology = tech_wsg_senergy }}
-				add_building = building_sep_foundry
-			} else = {
-				add_building = building_wsg_foundry
-			}
-		}
-	}
-}
-# ai用，自动将所有工厂替换成舰娘版
-country_event = {
-	id = wsg.4204
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_authority = auth_warshipgirls
-		is_ai = yes
-		OR = {
-			last_increased_tech = tech_building_sep_factory
+			has_technology = tech_building_wsg_foundry
 			has_technology = tech_building_sep_factory
-		}
-	}
-
-	immediate = {
-		every_owned_planet = {
-			limit = { has_vanilla_factory_building = yes }
-			wg_change_building_effect = { BUILDING1 = building_factory_1 BUILDING2 = building_sep_factory }
-			wg_change_building_effect = { BUILDING1 = building_factory_2 BUILDING2 = building_sep_factory }
-			wg_change_building_effect = { BUILDING1 = building_factory_3 BUILDING2 = building_sep_factory }
-		}
-	}
-}
-# ai用，自动将稀有资源厂替换成舰娘版
-country_event = {
-	id = wsg.4205
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_authority = auth_warshipgirls
-		has_technology = tech_wsg_senergy
-		is_ai = yes
-		OR = {
-			last_increased_tech = tech_building_wsg_rare_resource_factory
 			has_technology = tech_building_wsg_rare_resource_factory
-		}
-	}
-
-	immediate = {
-		every_owned_planet = {
-			limit = { has_vanilla_rare_resource_building = yes }
-			wg_change_building_effect = { BUILDING1 = building_crystal_plant BUILDING2 = building_wsg_rare_resource_factory }
-			wg_change_building_effect = { BUILDING1 = building_refinery BUILDING2 = building_wsg_rare_resource_factory }
-			wg_change_building_effect = { BUILDING1 = building_chemical_plant BUILDING2 = building_wsg_rare_resource_factory }
-		}
-	}
-}
-# ai用，自动将稀有资源厂替换成舰娘版
-country_event = {
-	id = wsg.4206
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_authority = auth_warshipgirls
-		has_technology = tech_building_wsg_neo
-		is_ai = yes
-		OR = {
-			last_increased_tech = tech_neo_exchange
 			has_technology = tech_neo_exchange
 		}
 	}
 
 	immediate = {
-		every_owned_planet = {
-			limit = { has_vanilla_rare_resource_building = yes }
-			wg_change_building_effect = { BUILDING1 = building_crystal_plant BUILDING2 = building_wsg_crystal_plant }
-			wg_change_building_effect = { BUILDING1 = building_refinery BUILDING2 = building_wsg_refinery }
-			wg_change_building_effect = { BUILDING1 = building_chemical_plant BUILDING2 = building_wsg_chemical_plant }
+		switch = {
+			trigger = has_technology
+			tech_building_wsg_research = { every_owned_planet = {
+				limit = { has_vanilla_research_building = yes }
+				while = {
+					limit = { has_vanilla_research_building = yes }
+					switch = {
+						trigger = has_building
+						building_research_lab_1 = { remove_building = building_research_lab_1 }
+						building_research_lab_2 = { remove_building = building_research_lab_2 }
+						building_research_lab_3 = { remove_building = building_research_lab_3 }
+					}
+					if = {
+						limit = { root = { has_ascension_perk = ap_project_s }}
+						add_building = building_sep_research
+					} else = {
+						add_building = building_wsg_research
+					}
+				}
+			} }
+			tech_wsg_military = { every_owned_planet = {
+				limit = { has_vanilla_official_building = yes }
+				while = {
+					limit = { has_vanilla_official_building = yes }
+					switch = {
+						trigger = has_building
+						building_bureaucratic_1 = { remove_building = building_bureaucratic_1 }
+						building_bureaucratic_2 = { remove_building = building_bureaucratic_2 }
+					}
+					if = {
+						limit = { 
+							root = { has_civic = civic_wgella }
+							NOT = { has_building = building_wsg_ella_government }
+						}
+						add_building = building_wsg_ella_government
+					} else = {
+						add_building = building_wsg_military
+					}
+				}
+			} }
+			tech_building_wsg_foundry = { every_owned_planet = {
+				limit = { has_vanilla_foundry_building = yes }
+				switch = {
+					trigger = has_building
+					building_foundry_1 = { remove_building = building_foundry_1 }
+					building_foundry_2 = { remove_building = building_foundry_2 }
+					building_foundry_3 = { remove_building = building_foundry_3 }
+				}
+				add_building = building_wsg_foundry
+			} }
+			tech_building_sep_foundry = { every_owned_planet = {
+				limit = { has_vanilla_foundry_building = yes }
+				switch = {
+					trigger = has_building
+					building_foundry_1 = { remove_building = building_foundry_1 }
+					building_foundry_2 = { remove_building = building_foundry_2 }
+					building_foundry_3 = { remove_building = building_foundry_3 }
+				}
+				add_building = building_sep_foundry
+			} }
+			tech_building_sep_factory = { every_owned_planet = {
+				limit = { has_vanilla_factory_building = yes }
+				wg_change_building_effect = { BUILDING1 = building_factory_1 BUILDING2 = building_sep_factory }
+				wg_change_building_effect = { BUILDING1 = building_factory_2 BUILDING2 = building_sep_factory }
+				wg_change_building_effect = { BUILDING1 = building_factory_3 BUILDING2 = building_sep_factory }
+			} }
+			tech_building_wsg_rare_resource_factory = { every_owned_planet = {
+				limit = { has_vanilla_rare_resource_building = yes }
+				wg_change_building_effect = { BUILDING1 = building_crystal_plant BUILDING2 = building_wsg_rare_resource_factory }
+				wg_change_building_effect = { BUILDING1 = building_refinery BUILDING2 = building_wsg_rare_resource_factory }
+				wg_change_building_effect = { BUILDING1 = building_chemical_plant BUILDING2 = building_wsg_rare_resource_factory }
+			} }
+			tech_neo_exchange = { every_owned_planet = {
+				limit = { has_vanilla_rare_resource_building = yes }
+				wg_change_building_effect = { BUILDING1 = building_crystal_plant BUILDING2 = building_wsg_crystal_plant }
+				wg_change_building_effect = { BUILDING1 = building_refinery BUILDING2 = building_wsg_refinery }
+				wg_change_building_effect = { BUILDING1 = building_chemical_plant BUILDING2 = building_wsg_chemical_plant }
+			} }
 		}
 	}
 }
@@ -2580,24 +2499,6 @@ planet_event = {
 	}
 }
 
-# 每年延后触发器
-country_event = {
-	id = wsg.9989
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		is_ai = no
-		is_wg_empire = yes
-	}
-
-	immediate = {
-		country_event = { id = wsg.9990 days = 5 }
-		country_event = { id = wsg.9992 days = 5 }
-		country_event = { id = wsg.9988 days = 6 }
-		country_event = { id = sh.3001 days = 6 }
-	}
-}
 # 自动给飞升人口上特质
 country_event = {
 	id = wsg.9988

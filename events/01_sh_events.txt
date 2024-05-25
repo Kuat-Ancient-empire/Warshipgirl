@@ -1485,66 +1485,37 @@ country_event = {
 		has_authority = auth_shenhai
 		is_ai = yes
 		OR = {
-			last_increased_tech = tech_sh_research
 			has_technology = tech_sh_research
-		}
-	}
-
-	immediate = {
-		every_owned_planet = {
-			limit = { has_vanilla_research_building = yes }
-			wg_change_building_effect = { BUILDING1 = building_research_lab_1 BUILDING2 = building_sh_research }
-			wg_change_building_effect = { BUILDING1 = building_research_lab_2 BUILDING2 = building_sh_research }
-			wg_change_building_effect = { BUILDING1 = building_research_lab_3 BUILDING2 = building_sh_research }
-		}
-	}
-}
-# ai用，自动将所有合金厂替换成舰娘版
-country_event = {
-	id = sh.4201
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_authority = auth_shenhai
-		is_ai = yes
-		OR = {
-			last_increased_tech = tech_sh_foundry
 			has_technology = tech_sh_foundry
-		}
-	}
-
-	immediate = {
-		every_owned_planet = {
-			limit = { has_vanilla_foundry_building = yes }
-			switch = {
-				trigger = has_building
-				building_foundry_1 = { remove_building = building_foundry_1 }
-				building_foundry_2 = { remove_building = building_foundry_2 }
-				building_foundry_3 = { remove_building = building_foundry_3 }
-			}
-			add_building = building_sh_foundry
-		}
-	}
-}
-# ai用，自动将稀有资源厂替换成舰娘版
-country_event = {
-	id = sh.4202
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_authority = auth_shenhai
-		is_ai = yes
-		OR = {
-			last_increased_tech = tech_building_sh_rare_resource_factory
 			has_technology = tech_building_sh_rare_resource_factory
 		}
 	}
 
 	immediate = {
-		every_owned_planet = {
-			limit = { has_vanilla_rare_resource_building = yes }
+		if = {
+			limit = { has_technology = tech_sh_research }
+			every_owned_planet = {
+				limit = { has_vanilla_research_building = yes }
+				wg_change_building_effect = { BUILDING1 = building_research_lab_1 BUILDING2 = building_sh_research }
+				wg_change_building_effect = { BUILDING1 = building_research_lab_2 BUILDING2 = building_sh_research }
+				wg_change_building_effect = { BUILDING1 = building_research_lab_3 BUILDING2 = building_sh_research }
+			}
+		}
+		if = {
+			limit = { has_technology = tech_sh_foundry }
+			every_owned_planet = {
+				limit = { has_vanilla_foundry_building = yes }
+				switch = {
+					trigger = has_building
+					building_foundry_1 = { remove_building = building_foundry_1 }
+					building_foundry_2 = { remove_building = building_foundry_2 }
+					building_foundry_3 = { remove_building = building_foundry_3 }
+				}
+				add_building = building_sh_foundry
+			}
+		}
+		if = {
+			limit = { has_technology = tech_building_sh_rare_resource_factory }
 			wg_change_building_effect = { BUILDING1 = building_crystal_plant BUILDING2 = building_sh_rare_resource_factory }
 			wg_change_building_effect = { BUILDING1 = building_refinery BUILDING2 = building_sh_rare_resource_factory }
 			wg_change_building_effect = { BUILDING1 = building_chemical_plant BUILDING2 = building_sh_rare_resource_factory }
