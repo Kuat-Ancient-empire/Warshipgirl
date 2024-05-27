@@ -354,35 +354,162 @@ can_spawn_debris = {
 	}
 }
 
-###_[z_fw/z_lctr/wsg/teif/ag/ws/smco/s_tnatc]	##################
-#_sys_trgr	ws_[is_ws_system]
-# this = system
-# root = country
-system_blocks_sensors = {
-	#_z_fw/z_lctr
-	root = {
-		NOR = {
-			has_modifier = z_lctr_mod_cntr_sensor			#_[z_lctr]
+# Root = claimer
+# This = system
+can_add_claim = {
+	hidden_trigger = {
+		if = {
+			limit = {
+				root = { NOT = { is_country_type = default } }
+			}
+			always = yes
 		}
 	}
-	OR = {
-		is_inside_nebula = yes
-		has_modifier = space_storm
-		has_modifier = zroni_storm
-		has_star_flag = lcluster
-		has_star_flag = sealed_system
-		has_star_flag = wg_sealed_system			#_wsg
-		has_star_flag = wg_psionic_systems			#_wsg
-		has_star_flag = fallen_sol_system			#_teif
-		root = { is_country_type = teif_primitive }	#_teif
-		has_star_flag = ag_no_sensor_system			#_ag
-		has_star_flag = bok_globules					#_smco
-		has_star_flag = star_flag_GAPS_sealed_system	#_smco
-		is_ws_system = yes			#_ws
-		AND = {#_s_tnatc
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_POLICY
+		OR = {
+			root = { has_policy_flag = unrestricted_wars }
+			AND = {
+				exists = owner
+				owner = { is_gestalt = yes }
+			}
+			AND = {
+				exists = owner
+				owner = {
+					any_war = {
+						any_attacker = { is_same_value = prevprev }
+						any_defender = { is_same_value = root }
+					}
+				}
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_NOT_VALID_EMPIRE
+		NAND = {
 			exists = owner
-			owner = { has_relic = r_invisibility_rune }
-			NOT = { root = { is_same_empire = prev.owner } }
+			owner = {
+				NOR = {
+					#wsg
+					is_country_type = wg_fallen_empire
+					is_country_type = wg_awakened_fallen_empire
+					is_country_type = default
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+				}
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_DEVOURING_SWARM
+		NAND = {
+			root = { has_valid_civic = civic_hive_devouring_swarm }
+			root = { is_lithoid_empire = no }
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_DEVOURING_SWARM_LITHOID
+		NAND = {
+			root = { has_valid_civic = civic_hive_devouring_swarm }
+			root = { is_lithoid_empire = yes }
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_ASSIMILATOR
+		NOT = { root = { has_valid_civic = civic_machine_assimilator } }
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_PURIFIERS
+		NAND = {
+			exists = owner
+			root = { has_valid_civic = civic_fanatic_purifiers }
+			NOT = {	owner = { is_same_species = root } }
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_EXTERMINATOR
+		NAND = {
+			exists = owner
+			root = { has_valid_civic = civic_machine_terminator }
+			owner = {
+				NOR = {
+					is_same_species = root
+					has_country_flag = synthetic_empire
+					has_authority = auth_machine_intelligence
+					is_individual_machine = yes
+				}
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_THEY_THREAT
+		NAND = {
+			exists = owner
+			owner = {
+				OR = {
+					has_valid_civic = civic_hive_devouring_swarm
+					has_valid_civic = civic_fanatic_purifiers
+					has_valid_civic = civic_machine_terminator
+					has_valid_civic = civic_machine_assimilator
+				}
+			}
+			root = {
+				NOR = {
+					has_valid_civic = civic_hive_devouring_swarm
+					has_valid_civic = civic_fanatic_purifiers
+					has_valid_civic = civic_machine_terminator
+					has_valid_civic = civic_machine_assimilator
+				}
+			}
+		}
+	}
+}
+
+# Root = taker country
+# This = giver country
+can_get_claim_from_lost_system = {
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_NOT_VALID_EMPIRE
+		OR = {
+			#wsg
+			is_country_type = wg_fallen_empire
+			is_country_type = wg_awakened_fallen_empire
+			is_country_type = default
+			is_country_type = fallen_empire
+			is_country_type = awakened_fallen_empire
+		}
+		root = {
+			OR = {
+				is_country_type = default
+				is_country_type = fallen_empire
+				is_country_type = awakened_fallen_empire
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_DEVOURING_SWARM
+		NOT = { has_valid_civic = civic_hive_devouring_swarm }
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_ASSIMILATOR
+		NOT = { has_valid_civic = civic_machine_assimilator }
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_PURIFIERS
+		NAND = {
+			has_valid_civic = civic_fanatic_purifiers
+			NOT = {	is_same_species = root }
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_EXTERMINATOR
+		NAND = {
+			has_valid_civic = civic_machine_terminator
+			NOR = {
+				is_same_species = root
+				has_country_flag = synthetic_empire
+				has_authority = auth_machine_intelligence
+			}
 		}
 	}
 }
