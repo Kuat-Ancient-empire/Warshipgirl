@@ -434,10 +434,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		OR = {
-			has_ascension_perk = ap_wg_crisis
-			FROM = { has_ascension_perk = ap_wg_crisis }
-		}
+		has_ascension_perk = ap_wg_crisis
 		NAND = {
 			FROMFROM = { has_fleet_flag = can_gain_wg_crisis_point }
 			FROMFROMFROM = { has_fleet_flag = can_gain_wg_crisis_point }
@@ -446,80 +443,38 @@ country_event = {
 
 	immediate = {
 		if = {
-			limit = { has_ascension_perk = ap_wg_crisis }
-			if = {
-				limit = { FROM = { is_enemy_country = yes }}
-				# 野怪自动判断可获得点数
-				FROMFROMFROM = { set_fleet_flag = can_gain_wg_crisis_point }
-			} else_if = {
-				limit = { always = yes }
-				FROMFROMFROM = {
-					clear_variable = count_ship_num
-					remove_fleet_flag = can_gain_wg_crisis_point
-					if = {
-						limit = { NOT = { has_fleet_flag = can_gain_wg_crisis_point }}
-						every_owned_ship = {
-							if = {
-								limit = { 
-									fleet = { NOT = { has_fleet_flag = can_gain_wg_crisis_point }}
-									# 舰队拥有主力舰以上级别的船，达成得分条件
-									OR = {
-										is_main_ship_size = yes 
-										is_super_ship_size = yes
-									}
+			limit = { FROM = { is_enemy_country = yes }}
+			# 野怪自动判断可获得点数
+			FROMFROMFROM = { set_fleet_flag = can_gain_wg_crisis_point }
+		} 
+		else = {
+			FROMFROMFROM = {
+				clear_variable = count_ship_num
+				remove_fleet_flag = can_gain_wg_crisis_point
+				if = {
+					limit = { NOT = { has_fleet_flag = can_gain_wg_crisis_point }}
+					every_owned_ship = {
+						if = {
+							limit = { 
+								fleet = { NOT = { has_fleet_flag = can_gain_wg_crisis_point }}
+								# 舰队拥有主力舰以上级别的船，达成得分条件
+								OR = {
+									is_main_ship_size = yes 
+									is_super_ship_size = yes
 								}
-								fleet = { set_fleet_flag = can_gain_wg_crisis_point }
 							}
-							PREV = { change_variable = { which = count_ship_num value = 1 }}
+							fleet = { set_fleet_flag = can_gain_wg_crisis_point }
 						}
-					}
-					if = {
-						limit = { 
-							# 舰队没有主力舰以上级别的船，但有至少5艘船，达成得分条件
-							NOT = { has_fleet_flag = can_gain_wg_crisis_point }
-							check_variable = { which = count_ship_num value >= 5 }
-						}
-						set_fleet_flag = can_gain_wg_crisis_point
+						PREV = { change_variable = { which = count_ship_num value = 1 }}
 					}
 				}
-			}
-		}
-		else_if = {
-			limit = { FROM = { has_ascension_perk = ap_wg_crisis }}
-			if = {
-				limit = { is_enemy_country = yes }
-				# 野怪自动判断可获得点数
-				FROMFROMFROM = { set_fleet_flag = can_gain_wg_crisis_point }
-			} else_if = {
-				limit = { always = yes }
-				FROMFROM = {
-					clear_variable = count_ship_num
-					remove_fleet_flag = can_gain_wg_crisis_point
-					if = {
-						limit = { NOT = { has_fleet_flag = can_gain_wg_crisis_point }}
-						every_owned_ship = {
-							if = {
-								limit = { 
-									fleet = { NOT = { has_fleet_flag = can_gain_wg_crisis_point }}
-									# 舰队拥有主力舰以上级别的船，达成得分条件
-									OR = {
-										is_main_ship_size = yes 
-										is_super_ship_size = yes
-									}
-								}
-								fleet = { set_fleet_flag = can_gain_wg_crisis_point }
-							}
-							PREV = { change_variable = { which = count_ship_num value = 1 }}
-						}
+				if = {
+					limit = { 
+						# 舰队没有主力舰以上级别的船，但有至少5艘船，达成得分条件
+						NOT = { has_fleet_flag = can_gain_wg_crisis_point }
+						check_variable = { which = count_ship_num value >= 5 }
 					}
-					if = {
-						limit = { 
-							# 舰队没有主力舰以上级别的船，但有至少5艘船，达成得分条件
-							NOT = { has_fleet_flag = can_gain_wg_crisis_point }
-							check_variable = { which = count_ship_num value >= 5 }
-						}
-						set_fleet_flag = can_gain_wg_crisis_point
-					}
+					set_fleet_flag = can_gain_wg_crisis_point
 				}
 			}
 		}

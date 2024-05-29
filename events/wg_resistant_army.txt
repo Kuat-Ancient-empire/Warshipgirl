@@ -152,7 +152,7 @@ country_event = {
             set_variable = { which = "reflesh_count" value = 10 } # 刷新将领次数
             establish_communications_no_message = event_target:wg_resistant_country
             country_event = { id = wg_crisis.22 } # 开场白
-            country_event = { id = wg_crisis.26 days = 1 } # CD显示时间刷新
+            country_event = { id = wg_crisis.26 days = 30 } # CD显示时间刷新
             country_event = { id = wg_crisis.69 days = 3600 } # 刷新将领次数重置CD
         }
     }
@@ -1558,47 +1558,44 @@ country_event = {
 	hide_window = yes
     is_triggered_only = yes
 
-    trigger = {
-        NOT = {
-            has_global_flag = wg_invasion_end
-        }
-    }
+    trigger = { NOT = { has_global_flag = wg_invasion_end } }
     immediate = {
         if = {
             limit = { check_variable = { which = "ra_fleet_cd1" value > 0 }}
-            change_variable = { which = "ra_fleet_cd1" value = -1 }
+            change_variable = { which = "ra_fleet_cd1" value = -30 }
         }
         if = {
             limit = { check_variable = { which = "ra_fleet_cd2" value > 0 }}
-            change_variable = { which = "ra_fleet_cd2" value = -1 }
+            change_variable = { which = "ra_fleet_cd2" value = -30 }
         }
         if = {
             limit = { check_variable = { which = "ra_construct_cd1" value > 0 }}
-            change_variable = { which = "ra_construct_cd1" value = -1 }
+            change_variable = { which = "ra_construct_cd1" value = -30 }
             if = {
-                limit = { check_variable = { which = "ra_construct_cd1" value = 0 }}
+                limit = { check_variable = { which = "ra_construct_cd1" value < 1 }}
+                set_variable = { which = "ra_construct_cd1" value = 0 }
                 country_event = { id = wg_crisis.29 }
             }
         }
         if = {
             limit = { check_variable = { which = "ra_construct_cd2" value > 0 }}
-            change_variable = { which = "ra_construct_cd2" value = -1 }
+            change_variable = { which = "ra_construct_cd2" value = -30 }
             if = {
-                limit = { check_variable = { which = "ra_construct_cd2" value = 0 }}
+                limit = { check_variable = { which = "ra_construct_cd2" value < 1 }}
+                set_variable = { which = "ra_construct_cd2" value = 0 }
                 country_event = { id = wg_crisis.29 }
             }
         }
         if = {
             limit = { check_variable = { which = "recruit_leader_cd" value > 0 }}
-            change_variable = { which = "recruit_leader_cd" value = -1 }
+            change_variable = { which = "recruit_leader_cd" value = -30 }
         }
         if = {
             limit = { check_variable = { which = "refresh_days" value > 0 }}
-            change_variable = { which = "refresh_days" value = -1 }
+            change_variable = { which = "refresh_days" value = -30 }
         }
-        country_event = { id = wg_crisis.26 days = 1}
+        country_event = { id = wg_crisis.26 days = 30 }
     }
-    
 }
 
 #检查分期付款的国家是不是曾经欠款
@@ -3785,27 +3782,14 @@ country_event = {
 
     trigger = {
         OR = {
-            AND = { FROMFROM = { has_fleet_flag = fleet_bought_from_resistance }}
-            AND = { FROMFROMFROM = { 
-                exists = this
-                has_fleet_flag = fleet_bought_from_resistance
-            }}
+            FROMFROM = { has_fleet_flag = fleet_bought_from_resistance }
+            FROMFROMFROM = { has_fleet_flag = fleet_bought_from_resistance }
         }
     }
 
     immediate = {
-        FROMFROM = {
-            if = {
-                limit = { has_fleet_flag = fleet_bought_from_resistance }
-                count_ra_fleet_ships = yes
-            }
-        }
-        FROMFROMFROM = {
-            if = {
-                limit = { has_fleet_flag = fleet_bought_from_resistance }
-                count_ra_fleet_ships = yes
-            }
-        }
+        FROMFROM = { count_ra_fleet_ships = yes }
+        FROMFROMFROM = { count_ra_fleet_ships = yes }
     }
 }
 

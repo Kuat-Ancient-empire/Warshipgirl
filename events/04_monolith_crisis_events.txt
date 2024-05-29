@@ -11,53 +11,44 @@ country_event = {
 		has_global_flag = monolith_crisis_invaded
 		NOT = { has_global_flag = monolith_crisis_end }
 		FROMFROM = { 
+			any_owned_ship = {
+				has_component = Monolith_aura
+			}
             NOT = { has_fleet_flag = monolith_drones }
         }
 	}
 
 	immediate = {
-		fromfrom = {
+		fromfromfrom = {
 			if = {
-				limit = { any_owned_ship = {
-					has_component = Monolith_aura
-				}}
-				every_combatant_fleet = {
-					limit = { 
-						exists = owner
-						owner = { NOT = { is_country_type = monolith_crisis_country }}
-						NOT = { has_fleet_flag = monolith_crisis_combat_fleet }
-					}
-					if = {
-						limit = { 
-							exists = owner
-							owner = { is_ai = no }
-						}
-						owner = {
-							country_event = { id = monolith_crisis.5 }
-							set_country_flag = triggered_monolith_crisis_explain
-						}
-					}
-					if = {
-						limit = { any_owned_ship = {
-							is_ship_size = uf_buffer_o
-						}}
-						fleet_event = { id = monolith_crisis.4 days = 20 } # 电子战20天
-						set_timed_fleet_flag = { flag = monolith_aura_debuff days = 20 }
-					} else_if = {
-						limit = { any_owned_ship = { OR = {
-							is_ship_size = uf_star_fortress
-							is_ship_size = uf_star_fortress_2
-							is_ship_size = uf_glory_o
-						}}}
-						fleet_event = { id = monolith_crisis.4 days = 15 } # 黑曜石，联合荣耀15天
-						set_timed_fleet_flag = { flag = monolith_aura_debuff days = 15 }
-					} else = {
-						fleet_event = { id = monolith_crisis.4 days = 30 }#无电子战，黑曜石，联合荣耀30天保护
-						set_timed_fleet_flag = { flag = monolith_aura_debuff days = 30 }
-					}
-					set_timed_fleet_flag = { flag = monolith_crisis_combat_fleet days = 40 }
+				limit = { 
+					exists = owner
+					owner = { is_ai = no }
+				}
+				owner = {
+					country_event = { id = monolith_crisis.5 }
+					set_country_flag = triggered_monolith_crisis_explain
 				}
 			}
+			if = {
+				limit = { any_owned_ship = {
+					is_ship_size = uf_buffer_o
+				}}
+				fleet_event = { id = monolith_crisis.4 days = 20 } # 电子战20天
+				set_timed_fleet_flag = { flag = monolith_aura_debuff days = 20 }
+			} else_if = {
+				limit = { any_owned_ship = { OR = {
+					is_ship_size = uf_star_fortress
+					is_ship_size = uf_star_fortress_2
+					is_ship_size = uf_glory_o
+				}}}
+				fleet_event = { id = monolith_crisis.4 days = 15 } # 黑曜石，联合荣耀15天
+				set_timed_fleet_flag = { flag = monolith_aura_debuff days = 15 }
+			} else = {
+				fleet_event = { id = monolith_crisis.4 days = 30 }#无电子战，黑曜石，联合荣耀30天保护
+				set_timed_fleet_flag = { flag = monolith_aura_debuff days = 30 }
+			}
+			set_timed_fleet_flag = { flag = monolith_crisis_combat_fleet days = 40 }
 		}
 	}
 }
@@ -72,44 +63,17 @@ country_event = {
         FROMFROM = { 
 			NOT = { has_fleet_flag = monolith_drones }
 		}
+		has_global_flag = monolith_crisis_invaded
+		NOT = { has_global_flag = monolith_crisis_end }
     }
 
     immediate = {
-        FROMFROMFROM = { 
-            every_combatant_fleet = {
-                fleet_event = { id = monolith_crisis.3 days = 1 }
-                set_fleet_flag = fleet1
-                set_variable = { which = "monolith_not_in_combat_days" value = 1 }
-            }
+        FROMFROM = { 
+			remove_fleet_flag = monolith_crisis_combat_fleet
+			set_fleet_flag = fleet1
+			set_variable = { which = "monolith_not_in_combat_days" value = 1 }
         }
     }
-}
-
-# 移除buff的事件
-# 带判断舰队是否仍然交战状态
-fleet_event = {
-    id = monolith_crisis.3
-    hide_window = yes
-    is_triggered_only = yes
-
-    trigger = { 
-        exists = this
-        check_variable = { which = "monolith_not_in_combat_days" value < 5 }
-    }
-
-	immediate = {
-		if = {
-            limit = { is_in_combat = no }
-			if = {
-				limit = { has_fleet_flag = monolith_crisis_combat_fleet }
-				remove_fleet_flag = monolith_crisis_combat_fleet
-			}
-		}
-		else = {
-			fleet_event = { id = monolith_crisis.3 days = 1 }
-            change_variable = { which = "monolith_not_in_combat_days" value = 1 }
-		}
-	}
 }
 
 # 特殊情况，需要对舰队进行一些操作
@@ -1269,21 +1233,6 @@ country_event = {
 	option = {
 		name = monolith_crisis.119.a
 	}
-}
-
-country_event = {
-    id = monolith_crisis.120
-    hide_window = yes
-    is_triggered_only = yes
-
-    trigger = { 
-        
-    }
-
-	immediate = {
-		
-	}
-
 }
 
 fleet_event = {

@@ -1,6 +1,7 @@
 
 
 reset_wg_lady_affection_variables = {
+	optimize_memory
 	set_variable = { which = "planets_no_affection_lady" value = 0 }
 	set_variable = { which = "systems_no_affection_lady" value = 0 }
 	set_variable = { which = "systems_no_affection_lady" value = 0 }
@@ -14,6 +15,7 @@ reset_wg_lady_affection_variables = {
 # 即直接加上[wsg_player_nickname.GetName]
 # 为避免bug，event target使用的是全局变量
 get_player_nickname = {
+	optimize_memory
 	if = {
 		limit = { has_country_flag = has_nickname }
 		event_target:wsg_lady_country = {
@@ -46,6 +48,7 @@ get_player_nickname = {
 }
 # scope: country
 check_dragonslayer_wsg_lady = {
+	optimize_memory
 	if = {
 		limit = { has_country_flag = dragonslayer_wsg_lady }
 		break = yes
@@ -61,6 +64,7 @@ check_dragonslayer_wsg_lady = {
 
 # scope: fleet
 create_wsg_lady_army_transport = {
+	optimize_memory
 	random_country = {
 		limit = { has_country_flag = gain_wsg_lady }
 		save_event_target_as = wsg_lady_own_country
@@ -136,6 +140,7 @@ create_wsg_lady_army_transport = {
 
 # scope: planet
 create_wsg_lady_army_troop = {
+	optimize_memory
 	random_country = {
 		limit = { has_country_flag = gain_wsg_lady }
 		save_event_target_as = wsg_lady_own_country
@@ -204,6 +209,7 @@ create_wsg_lady_army_troop = {
 }
 
 remove_lady_army = {
+	optimize_memory
 	last_created_army = { save_event_target_as = new_lady_army }
 	event_target:wsg_lady_own_country = {
 		every_owned_army = {
@@ -218,6 +224,7 @@ remove_lady_army = {
 
 # scope: leader
 set_lady_portrait = {
+	optimize_memory
 	if = {
 		limit = { has_global_flag = april_fool }
 		change_leader_portrait = wsglady_april_fool
@@ -277,12 +284,14 @@ set_lady_portrait = {
 }
 
 quit_lady_commu_effects = {
+	optimize_memory
 	hidden_effect = {
 		set_country_flag = finish_lady_talking
 		reset_lady_cloth = yes
 	}
 }
 talk_to_lady_option_effects = {
+	optimize_memory
 	hidden_effect = {
 		set_country_flag = talked_to_wsg_lady
 		reset_lady_cloth = yes
@@ -291,6 +300,7 @@ talk_to_lady_option_effects = {
 	}
 }
 set_lady_reply = {
+	optimize_memory
 	if = {
 		limit = { check_variable = { which = wsg_lady_talking value = 11 }}
 		set_variable = { which = talk_to_wsg_lady_option value = 101 }
@@ -372,6 +382,7 @@ set_lady_reply = {
 	}
 }
 lady_changing_effects = {
+	optimize_memory
 	hidden_effect = {
 		set_country_flag = wsg_lady_changing
 		remove_country_flag = talking_to_wsg_lady
@@ -380,6 +391,7 @@ lady_changing_effects = {
 	}
 }
 lady_diplo_immediate_effects = {
+	optimize_memory
 	# get_player_nickname = yes
 	random_list = {
 		1 = { set_variable = { which = wsg_lady_talking value = 1 }}
@@ -467,6 +479,7 @@ lady_diplo_immediate_effects = {
 	set_country_flag = talking_to_wsg_lady
 }
 lady_diplo_after_effects = {
+	optimize_memory
 	hidden_effect = {
 		if = {
 			limit = { NOT = { has_country_flag = talked_to_wsg_lady }}
@@ -492,6 +505,7 @@ lady_diplo_after_effects = {
 }
 
 reset_lady_cloth = {
+	optimize_memory
 	if = {
 		limit = { 
 			NOR = { 
@@ -524,6 +538,7 @@ reset_lady_cloth = {
 
 # scope: country
 remove_lady_colossus_weapon_flags = {
+	optimize_memory
 	remove_country_flag = lady_warship_cracker
 	remove_country_flag = lady_warship_shielder
 	remove_country_flag = lady_warship_neutron

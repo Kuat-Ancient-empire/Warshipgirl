@@ -6,19 +6,16 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 
+	trigger = {
+		has_country_flag = shoukaku_relic_returned
+		fromfrom = {
+			exists = leader
+			leader = { has_leader_flag = shoukaku }
+		}
+	}
+
 	immediate = {
 		FROMFROM = {
-			if = {
-				limit = {
-					ROOT = { has_country_flag = shoukaku_relic_returned }
-					leader = { has_leader_flag = shoukaku }
-				}
-				fleet_event = { id = mwsge_drone.2 days = 5 }
-			}
-		}
-
-		FROMFROMFROM = {
-			save_event_target_as = fleet_cur
 			if = {
 				limit = {
 					ROOT = { has_country_flag = shoukaku_relic_returned }
@@ -142,34 +139,17 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
+		fromfrom = {
+			count_owned_ship = {
+				limit = { is_ship_size = wg_carrier }
+				count > 0
+			}
+		}
 		NOT = { has_global_flag = wg_crisis_insane }
 	}
 
 	immediate = {
-		FROMFROM = {
-			if = {
-				limit = {
-					count_owned_ship = {
-						limit = { is_ship_size = wg_carrier }
-						count > 0
-					}
-				}
-				fleet_event = { id = mwsge_drone.12 days = 2 }
-			}
-		}
-
-		FROMFROMFROM = {
-			save_event_target_as = fleet_cur
-			if = {
-				limit = {
-					count_owned_ship = {
-						limit = { is_ship_size = wg_carrier }
-						count > 0
-					}
-				}
-				fleet_event = { id = mwsge_drone.12 days = 2 }
-			}
-		}
+		FROMFROM = { fleet_event = { id = mwsge_drone.12 days = 2 } }
 	}
 }
 
@@ -511,7 +491,9 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		any_controlled_ship = { has_component = SHIP_DC_DRONE }
+		fromfrom = {
+			any_controlled_ship = { has_component = SHIP_DC_DRONE }
+		}
 	}
 
 	immediate = {

@@ -1,0 +1,67 @@
+situation_Deep_white_eye_dragon_situation = {
+	picture = GFX_evt_society_research
+	complete_icon_frame = GFX_situation_outcome_frame_blue
+	complete_icon = GFX_situation_outcome_unknown
+	fail_icon_frame = GFX_situation_outcome_frame_red
+	fail_icon = GFX_situation_outcome_meh
+	on_progress_complete = {
+		custom_tooltip = situation_unknown_outcome_approach
+		hidden_effect = { owner = { country_event = { id = wg_boss.404 } } }
+	}
+	stages = {
+		stage_1 = {
+			icon = GFX_situation_stage_1
+			icon_background = GFX_situation_stage_frame_blue
+			end = 180
+			custom_tooltip = stage_unknown_effects
+		}
+	}
+	#Enlarge
+	approach = {
+		name = "situation_enlarge_research"
+		icon = GFX_situation_approach_research
+		icon_background = GFX_situation_approach_bg_green
+		resources = {
+			category = situations
+			upkeep = {
+				trigger = { NOT = { current_stage = stage_1 } }
+				physics_research = 1
+				society_research = 1
+				engineering_research = 1
+				multiplier = owner.trigger:num_pops
+			}
+		}
+		on_select = { custom_tooltip = approach_outcome_tooltip }
+	}
+	#Reduce
+	approach = {
+		name = "situation_reduce_research"
+		icon = GFX_situation_approach_research
+		icon_background = GFX_situation_approach_bg_yellow
+		resources = {
+			category = situations
+			upkeep = {
+				trigger = { NOT = { current_stage = stage_1 } }
+				physics_research = 0.25
+				society_research = 0.25
+				engineering_research = 0.25
+				multiplier = owner.trigger:num_pops
+			}
+		}
+		on_select = { custom_tooltip = approach_outcome_tooltip }
+	}
+	monthly_progress = {
+		base = 1
+		modifier = {
+			factor = 2
+			desc = "situation_enlarge_research_approach_toottip"
+			current_situation_approach = situation_enlarge_research
+		}
+		modifier = {
+			factor = 0.5
+			desc = "situation_reduce_research_approach_toottip"
+			current_situation_approach = situation_reduce_research
+		}
+	}
+	abort_trigger = { NOT = { exists = target } }
+}

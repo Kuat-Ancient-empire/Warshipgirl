@@ -1,4 +1,5 @@
 create_bubbles_official = {
+	optimize_memory
 	remove_bubbles_leader = yes
 	set_country_flag = bubbles_official_active
 	every_owned_planet = {
@@ -52,6 +53,7 @@ create_bubbles_official = {
 }
 
 create_bubbles_warship = {
+	optimize_memory
 	remove_bubbles_leader = yes
 	set_country_flag = bubbles_warship_active
 	create_bubbles_admiral = yes
@@ -120,6 +122,7 @@ create_bubbles_warship = {
 }
 
 create_bubbles_admiral = {
+	optimize_memory
 	create_leader = {
 		class = commander
 		species = event_target:bubbles_species
@@ -152,6 +155,7 @@ create_bubbles_admiral = {
 }
 
 remove_bubbles_leader = {
+	optimize_memory
 	every_owned_leader = {
 		limit = { has_leader_flag = bubbles_leader }
 		kill_leader = { show_notification = no }
@@ -159,6 +163,7 @@ remove_bubbles_leader = {
 }
 
 level_up_bubbles = {
+	optimize_memory
 	if = {
 		limit = { owner = { check_variable = { which = bubbles_level value = 2 }}}
 		set_skill = 2
@@ -191,7 +196,7 @@ level_up_bubbles = {
 
 # scope: fleet
 check_bubbles_planet_modifiers = {
-	set_update_modifiers_batch = begin
+	optimize_memory
 	solar_system = { 
 		every_system_planet = {
 			limit = { 
@@ -201,11 +206,10 @@ check_bubbles_planet_modifiers = {
 			add_bubbles_planet_modifer = yes
 		}
 	}
-	set_update_modifiers_batch = end
 }
 # scope: planet
 add_bubbles_planet_modifer = {
-	set_update_modifiers_batch = begin
+	optimize_memory
 	if = {
 		limit = { owner = { check_variable = { which = bubbles_level value = 5 }}}
 		if = {
@@ -258,11 +262,10 @@ add_bubbles_planet_modifer = {
 			}
 		} 
 	}
-	set_update_modifiers_batch = end
 }
 
 remove_all_bubbles_planet_modifiers = {
-	set_update_modifiers_batch = begin
+	optimize_memory
 	remove_modifier = planet_modifier_wg_bubbles_affection_lv1
 	remove_modifier = planet_modifier_wg_bubbles_affection_lv2
 	remove_modifier = planet_modifier_wg_bubbles_affection_lv3
@@ -270,5 +273,4 @@ remove_all_bubbles_planet_modifiers = {
 	remove_modifier = planet_modifier_wg_bubbles_affection_lv5
 	remove_deposit = PR_D_MOD_wg_bubbles_affection_lv1
 	remove_deposit = PR_D_MOD_wg_bubbles_affection_lv5
-	set_update_modifiers_batch = end
 }

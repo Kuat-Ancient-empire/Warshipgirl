@@ -349,8 +349,8 @@ country_event = {
 							add_modifier = { modifier = uf_insane_buff days = -1 }
 						}
 						country_event = { id = wg_crisis.200 }
-						country_event = { id = wg_crisis.90 days = 720 random = 720 } # for test, should be 1080 days
-						country_event = { id = wg_crisis.84 days = 720 random = 1440 } # 联合摧星者
+						country_event = { id = wg_crisis.90 days = 1800 random = 1800 } # for test, should be 1080 days
+						country_event = { id = wg_crisis.84 days = 360 random = 1800 } # 联合摧星者
 						country_event = { id = wg_crisis.99 days = 30 }
 						set_country_flag = creating_small_portal
 						set_country_flag = checked_all_fleet_once
@@ -529,23 +529,6 @@ country_event = {
 						country_event = { id = wg_crisis.14 days = 500 }
 					}
 				}
-				# # test
-				# while = { count = 10
-				# 	create_wg_crisis_raider_admiral = yes
-				# 	create_wg_crisis_raider_fleet = yes
-				# }
-				# event_target:first_dimensional_portal = {
-				# 	fleet_event = { id = wg_crisis.4 days = 50 }
-				# 	fleet_event = { id = wg_crisis.4 days = 51 }
-				# 	fleet_event = { id = wg_crisis.4 days = 52 }
-				# 	fleet_event = { id = wg_crisis.4 days = 53 }
-				# 	fleet_event = { id = wg_crisis.4 days = 54 }
-				# 	fleet_event = { id = wg_crisis.4 days = 55 }
-				# 	fleet_event = { id = wg_crisis.4 days = 56 }
-				# 	fleet_event = { id = wg_crisis.4 days = 57 }
-				# 	fleet_event = { id = wg_crisis.4 days = 58 }
-				# 	fleet_event = { id = wg_crisis.4 days = 59 }
-				# }
 				if = {
 					# 简单难度开局刷2队弱的进攻舰队,1队弱的守家舰队
 					limit = {
@@ -690,9 +673,6 @@ fleet_event = {
 
     trigger = {
 		NOT = { has_global_flag = wg_invasion_end }
-        event_target:wg_crisis_country = { any_owned_ship = {
-            is_ship_size = wg_dimensional_portal
-        } }
 	    exists = this
     }
 	immediate = {
@@ -717,14 +697,10 @@ fleet_event = {
 
     trigger = {
 		NOT = { has_global_flag = wg_invasion_end }
-        event_target:wg_crisis_country = { any_owned_ship = {
-            is_ship_size = wg_dimensional_portal
-        } }
 		exists = this
     }
 
 	immediate = {
-		set_update_modifiers_batch = begin
 		create_wg_crisis_greater_admiral = yes
 		create_wg_crisis_greater_fleet = yes
 		last_created_fleet = {
@@ -732,7 +708,6 @@ fleet_event = {
 			set_timed_fleet_flag = { flag = defence_fleet days = 4500 }
 			fleet_event = { id = wg_crisis.401 days = 4501 }
 		}
-		set_update_modifiers_batch = end
 	}
 }
 
@@ -3816,17 +3791,17 @@ country_event = {
 		country_event = { id = wg_crisis.91 }
 		if = {
 			limit = { has_global_flag = wg_crisis_normal }
-			country_event = { id = wg_crisis.90 days = 900 random = 720 }
+			country_event = { id = wg_crisis.90 days = 1800 random = 1800 }
 			break = yes
 		}
 		if = {
 			limit = { has_global_flag = wg_crisis_hard }
-			country_event = { id = wg_crisis.90 days = 1080 random = 360 }
+			country_event = { id = wg_crisis.90 days = 1440 random = 1440 }
 			break = yes
 		}
 		if = {
 			limit = { has_global_flag = wg_crisis_insane }
-			country_event = { id = wg_crisis.90 days = 1440 random = 270 }
+			country_event = { id = wg_crisis.90 days = 1200 random = 1200 }
 			break = yes
 		}
 	}
@@ -6744,7 +6719,12 @@ country_event = {
 		FROMFROM = { 
 			exists = leader
 			NOT = { has_fleet_flag = drones }
+			leader = { OR ={
+				has_leader_flag = uf_leader_trait_s1
+				has_leader_flag = uf_leader_trait_s2
+			} }
 		}
+		from = { is_invisable_faction = no }
 		NOT = { has_global_flag = wg_invasion_end }
 	}
 
@@ -6798,39 +6778,20 @@ country_event = {
     is_triggered_only = yes
 
     trigger = { 
-		has_global_flag = wg_invasion_happened
 		exists = fromfrom
         FROMFROM = { 
 			exists = leader
-			NOT = { has_fleet_flag = drones }
-		}
-	}
-
-	immediate = {
-		FROMFROMFROM = {
-			every_combatant_fleet = {
-				fleet_event = { id = wg_crisis.1102 days = 1 }
-				set_variable = { which = "not_in_combat_days" value = 1 }
+			OR = {
+				has_fleet_flag = uf_mirrored_fleet
+				has_fleet_flag = uf_leader_trait_s2_triggered
+				leader = { has_leader_flag = uf_leader_trait_s1 }
 			}
 		}
 	}
-}
 
-fleet_event = {
-    id = wg_crisis.1102
-    hide_window = yes
-	is_triggered_only = yes
-	
-	trigger = { 
-		has_global_flag = wg_invasion_happened
-        exists = this
-        check_variable = { which = "not_in_combat_days" value < 5 }
-	}
-	
 	immediate = {
-		if = {
-            limit = { is_in_combat = no }
-			set_variable = { which = "not_in_combat_days" value = 0 }
+		fromfrom = {
+			clear_variable = not_in_combat_days
 			if = {
 				limit = { leader = { has_leader_flag = uf_leader_trait_s1 }}
 				solar_system = { remove_star_flag = uf_leader_trait_s1_triggered }
@@ -6841,52 +6802,44 @@ fleet_event = {
 			}
 			if = {
 				limit = { has_fleet_flag = uf_mirrored_fleet }
-				delete_fleet = {
-					target = this
-					kill_leader = yes
-				}
+				delete_fleet = { target = this kill_leader = yes destroy_template = yes }
 			}
 		}
-		else_if = {
-			limit = { is_in_combat = yes }
-            fleet_event = { id = wg_crisis.1102 days = 1 }
-            change_variable = { which = "not_in_combat_days" value = 1 }
-        }
 	}
 }
 
-# on_fleet_combat_joined_attacker
-fleet_event = {
-	id = wg_crisis.1103
-    hide_window = yes
-	is_triggered_only = yes
+# # on_fleet_combat_joined_attacker
+# fleet_event = {
+# 	id = wg_crisis.1103
+#     hide_window = yes
+# 	is_triggered_only = yes
 
-	trigger = { 
-		has_global_flag = wg_invasion_happened
-        exists = leader
-        NAND = { 
-            has_fleet_flag = drones
-            FROM = { has_fleet_flag = drones }
-            FROMFROM = { has_fleet_flag = drones }
-        }
-	}
+# 	trigger = { 
+# 		has_global_flag = wg_invasion_happened
+#         exists = leader
+#         NAND = { 
+#             has_fleet_flag = drones
+#             FROM = { has_fleet_flag = drones }
+#             FROMFROM = { has_fleet_flag = drones }
+#         }
+# 	}
 	
-	immediate = {
-		every_combatant_fleet = {
-			limit = { exists = leader }
-			# 敌方舰队加入战斗，检查是否满足触发联合技能-联合迴路遮断器触发条件
-            if = {
-				limit = { 
-					NOT = { solar_system = { has_star_flag = uf_leader_trait_s1_triggered }}
-					leader = { has_leader_flag = uf_leader_trait_s1 }
-					any_combatant_fleet = { fleet_size > 200 }	
-				}
-				fleet_event = { id = wg_crisis.2010 }
-				solar_system = { set_star_flag = uf_leader_trait_s1_triggered }
-			}
-		}
-	}
-}
+# 	immediate = {
+# 		every_combatant_fleet = {
+# 			limit = { exists = leader }
+# 			# 敌方舰队加入战斗，检查是否满足触发联合技能-联合迴路遮断器触发条件
+#             if = {
+# 				limit = { 
+# 					NOT = { solar_system = { has_star_flag = uf_leader_trait_s1_triggered }}
+# 					leader = { has_leader_flag = uf_leader_trait_s1 }
+# 					any_combatant_fleet = { fleet_size > 200 }	
+# 				}
+# 				fleet_event = { id = wg_crisis.2010 }
+# 				solar_system = { set_star_flag = uf_leader_trait_s1_triggered }
+# 			}
+# 		}
+# 	}
+# }
 
 # 联合技能 联合迴路遮断器
 fleet_event = {
@@ -6938,41 +6891,20 @@ fleet_event = {
 					}
 					fleet_size > 15
 				}
-				every_owned_ship = {
-					set_disabled = yes
-				}
-				set_event_locked = yes
+				uf_clear_ship_modifier = { modifier = ship_weapon_damage change = 1 DAYS = 30 }
+				uf_clear_ship_modifier = { modifier = weapon_type_energy_weapon_damage_mult change = 1 DAYS = 30 }
+				uf_clear_ship_modifier = { modifier = weapon_type_kinetic_weapon_damage_mult change = 1 DAYS = 30 }
+				uf_clear_ship_modifier = { modifier = weapon_type_explosive_weapon_damage_mult change = 1 DAYS = 30 }
 				set_timed_fleet_flag = { flag = uf_leader_trait_s1 days = 30 }
-				fleet_event = { id = wg_crisis.2011 days = 1 }
-				fleet_event = { id = wg_crisis.2012 days = 30 }
 			}
-			fleet_event = { id = wg_crisis.2010 days = 45 }
-		} else = {
+			fleet_event = { id = wg_crisis.2010 days = 60 }
+		} 
+		else = {
 			solar_system = { remove_star_flag = uf_leader_trait_s1_triggered }
 		}
 	}
 }
 
-fleet_event = {
-	id = wg_crisis.2011
-	hide_window = yes
-	is_triggered_only = yes
-	immediate = {
-		every_owned_ship = {
-			set_disabled = no
-		}
-	}
-}
-
-fleet_event = {
-	id = wg_crisis.2012
-	hide_window = yes
-	is_triggered_only = yes
-
-	immediate = {
-		set_event_locked = no
-	}
-}
 fleet_event = {
 	id = wg_crisis.2013
 	hide_window = yes

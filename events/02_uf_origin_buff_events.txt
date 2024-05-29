@@ -10,6 +10,19 @@ country_event = {
 		# 关掉所有buff的触发
 		NOT = { has_global_flag = uf_buff_disabled }
 		FROMFROM = { 
+			OR = {
+				any_owned_ship = {
+					OR = {
+						has_component = UF_AURA_C
+						has_component = UF_AURA_D
+						has_component = UF_AURA_E
+						has_component = UF_AURA_F
+						has_component = UF_AURA_Glory
+					}
+				}
+				AND = { exists = leader leader = { has_leader_flag = uf_vv_admiral } }
+				AND = { exists = leader leader = { has_leader_flag = wg_a150_admiral } }
+			}
             NOT = { has_fleet_flag = drones }
         }
 	}
@@ -20,25 +33,21 @@ country_event = {
 				limit = { any_owned_ship = {
 					has_component = UF_AURA_C
 				}}
-				from = {
-					every_combatant_fleet = {
-						limit = { NOT = { has_fleet_flag = uf_buff_C }}
-						add_modifier = { modifier = uf_buff_C }
-						set_fleet_flag = uf_buff_C
-					}	
-				}
+				if = {
+					limit = { NOT = { has_fleet_flag = uf_buff_C }}
+					add_modifier = { modifier = uf_buff_C }
+					set_fleet_flag = uf_buff_C
+				}	
 			}
 		    if = {
 				limit = { any_owned_ship = {
 					has_component = UF_AURA_D
 				}}
-				from = {
-					every_combatant_fleet = {
-						limit = { NOT = { has_fleet_flag = uf_buff_D }}
-						add_modifier = { modifier = uf_buff_D days = 10 }
-						set_fleet_flag = uf_buff_D
-					}	
-				}
+				if = {
+					limit = { NOT = { has_fleet_flag = uf_buff_D }}
+					add_modifier = { modifier = uf_buff_D days = 10 }
+					set_fleet_flag = uf_buff_D
+				}	
 			}
 			if = {
 				limit = { any_owned_ship = {
@@ -58,12 +67,11 @@ country_event = {
 					limit = { NOT = { has_fleet_flag = uf_debuff_F }}
 					set_fleet_flag = uf_debuff_F
 				}
-
-				every_combatant_fleet = {
+				ROOT.fromfromfrom = { if = {
 					limit = { NOT = { has_fleet_flag = uf_debuff_F }}
 					add_modifier = { modifier = uf_debuff_F days = 10 }
 					set_fleet_flag = uf_debuff_F
-				}
+				} }
 			}
 			if = {
 				limit = { any_owned_ship = {
