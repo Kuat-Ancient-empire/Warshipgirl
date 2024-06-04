@@ -7,5 +7,5 @@ tags={
 }
 picture="thumbnail.png"
 version="0.1"
-supported_version="3.*.*"
+supported_version="*.*.*"
 remote_file_id="1747099270"
