@@ -375,13 +375,15 @@ reset_wg_dragon_affection_level = {
 	optimize_memory
 	if = {
 		limit = { ruler = { has_leader_flag = wg_dragon_leader }}
-		ruler = {
-			remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander } 
-			remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
-			remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = ruler }
-			add_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = ruler }
-		}
-	} else = {
+		no_events = yes
+		# ruler = {
+		# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander } 
+		# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
+		# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = ruler }
+		# 	add_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = ruler }
+		# }
+	} 
+	else = {
 		if = {
 			limit = { check_variable = { which = wg_dragon_active_type value = 1 }}
 			if = {
@@ -391,12 +393,14 @@ reset_wg_dragon_affection_level = {
 					save_global_event_target_as = wg_dragon_admiral
 				}
 			}
-			event_target:wg_dragon_admiral = {
-				remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander } 
-				remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
-				add_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander }
-			}
-		} else_if = {
+			no_events = yes
+			# event_target:wg_dragon_admiral = {
+			# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander } 
+			# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
+			# 	add_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander }
+			# }
+		} 
+		else_if = {
 			limit = { check_variable = { which = wg_dragon_active_type value = 2 }}
 			if = {
 				limit = { NOT = { exists = event_target:wg_dragon_warship }}
@@ -405,11 +409,12 @@ reset_wg_dragon_affection_level = {
 					save_global_event_target_as = wg_dragon_warship
 				}
 			}
-			event_target:wg_dragon_warship = {
-				remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
-				remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander } 
-				add_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
-			}
+			no_events = yes
+			# event_target:wg_dragon_warship = {
+			# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
+			# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander } 
+			# 	add_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
+			# }
 		}
 		
 		if = {
@@ -430,6 +435,7 @@ reset_wg_dragon_affection_level = {
 			remove_country_flag = wg_dragon_affection_max 
 			if = {
 				limit = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv4 }}
+				no_events = yes
 			}
 			else_if = {
 				limit = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}
@@ -442,6 +448,7 @@ reset_wg_dragon_affection_level = {
 			}
 			else_if = {
 				limit = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv2 }}
+				no_events = yes
 			}
 			else_if = {
 				limit = { check_variable = { which = wg_dragon_affection value < @wg_dragon_affection_to_lv2 }}

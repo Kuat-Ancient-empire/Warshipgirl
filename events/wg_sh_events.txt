@@ -2271,7 +2271,7 @@ planet_event = {
 			limit = { 
 				solar_system = { any_system_planet = {
 					has_owner = yes
-					owner = { NOT = { is_country_type = default_ev }}
+					#owner = { NOT = { is_country_type = default_ev }}
 				}}
 			}
 			solar_system = { random_system_planet = {
@@ -2406,7 +2406,7 @@ planet_event = {
 			limit = { 
 				solar_system = { any_system_planet = {
 					has_owner = yes
-					owner = { NOT = { is_country_type = default_ev }}
+					#owner = { NOT = { is_country_type = default_ev }}
 				}}
 			}
 			solar_system = { random_system_planet = {
@@ -2799,7 +2799,7 @@ planet_event = {
 			limit = {
 				exists = owner
 				owner = {
-					NOT = { is_country_type = default_ev }
+					#NOT = { is_country_type = default_ev }
 					NOT = {
 						any_owned_planet = {
 							NOT = { is_same_value = root }
@@ -4038,9 +4038,6 @@ country_event = {
 			}
 			# 给多一点科技吧，开局连个研究所都没
 			give_technology = { tech = tech_ftl_inhibitor message = no }
-			give_technology = { tech = "tech_society_1" message = no }
-			give_technology = { tech = "tech_engineering_1" message = no }
-			give_technology = { tech = "tech_physics_1" message = no }
 			give_technology = { tech = "tech_planetary_unification" message = no }
 			give_technology = { tech = tech_sh_weapon }
 			give_technology = { tech = tech_sh_weapon2 }
@@ -4357,31 +4354,33 @@ country_event = {
 					}
 				}
 			}
-		} else_if = {
-			limit = { 
-				OR = {
-					has_origin = origin_ev_meg_homeless_ship_strat
-					is_country_type = default_ev 
-				}
-			}
-			random_controlled_fleet = {
-				limit = { any_owned_ship = { is_any_type_homeless_ship = yes }}
-				solar_system = { 
-					if = {
-						limit = { any_neighbor_system_euclidean = { has_hyperlane_to = PREV }}
-						save_event_target_as = sh_capital_system
-					} else = {
-						random_neighbor_system_euclidean = {
-							limit = { NOR = { 
-								has_star_flag = sealed_system 
-								has_star_flag = wg_sealed_system
-							}}
-							save_event_target_as = sh_capital_system
-						}
-					}
-				}
-			}
-		} else = {
+		} 
+		# else_if = {
+		# 	limit = { 
+		# 		OR = {
+		# 			has_origin = origin_ev_meg_homeless_ship_strat
+		# 			is_country_type = default_ev 
+		# 		}
+		# 	}
+		# 	random_controlled_fleet = {
+		# 		limit = { any_owned_ship = { is_any_type_homeless_ship = yes }}
+		# 		solar_system = { 
+		# 			if = {
+		# 				limit = { any_neighbor_system_euclidean = { has_hyperlane_to = PREV }}
+		# 				save_event_target_as = sh_capital_system
+		# 			} else = {
+		# 				random_neighbor_system_euclidean = {
+		# 					limit = { NOR = { 
+		# 						has_star_flag = sealed_system 
+		# 						has_star_flag = wg_sealed_system
+		# 					}}
+		# 					save_event_target_as = sh_capital_system
+		# 				}
+		# 			}
+		# 		}
+		# 	}
+		# } 
+		else = {
 			random_controlled_fleet = { solar_system = {
 				save_event_target_as = sh_capital_system
 			}}
@@ -5117,7 +5116,7 @@ country_event = {
 	immediate = {
         every_owned_pop = {
 			limit = { 
-				has_trait = wsg_trait_shenhai
+				has_trait = sh_trait_shenhai
 			}
 			species = { 
 				save_event_target_as = sh_species 
