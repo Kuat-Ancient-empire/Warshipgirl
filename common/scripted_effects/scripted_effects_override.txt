@@ -35,8 +35,6 @@ create_gray_official = {
 		set_age = 0
 		traits = {
 			trait = leader_trait_wg_gray_legend
-			trait = subclass_governor_economist
-			trait = leader_trait_urbanist_3
 			trait = leader_trait_scrapper_2
 		}
 		effect = {
@@ -319,73 +317,3 @@ reset_gray_cloth = {
 		set_variable = { which = wg_gray_cloth value = 1 }
 	}
 }
-
-standard_archaeological_site_on_roll_failed = {
-	optimize_memory
-	switch = {
-		trigger = is_site_current_stage_score_no_die
-		-8 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-8 } }
-		-7 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-7 } }
-		-6 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-6 } }
-		-5 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-5 } }
-		-4 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-4 } }
-		-3 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-3 } }
-		-2 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-2 } }
-		-1 = { standard_archaeological_site_on_roll_failed_case = { SCORE=-1 } }
-		0 = { standard_archaeological_site_on_roll_failed_case = { SCORE=0 } }
-		1 = { standard_archaeological_site_on_roll_failed_case = { SCORE=1 } }
-		2 = { standard_archaeological_site_on_roll_failed_case = { SCORE=2 } }
-		3 = { standard_archaeological_site_on_roll_failed_case = { SCORE=3 } }
-		4 = { standard_archaeological_site_on_roll_failed_case = { SCORE=4 } }
-		5 = { standard_archaeological_site_on_roll_failed_case = { SCORE=5 } }
-		6 = { standard_archaeological_site_on_roll_failed_case = { SCORE=6 } }
-		7 = { standard_archaeological_site_on_roll_failed_case = { SCORE=7 } }
-		8 = { standard_archaeological_site_on_roll_failed_case = { SCORE=8 } }
-		9 = { standard_archaeological_site_on_roll_failed_case = { SCORE=9 } }
-		10 = { standard_archaeological_site_on_roll_failed_case = { SCORE=10 } }
-		11 = { standard_archaeological_site_on_roll_failed_case = { SCORE=11 } }
-		12 = { standard_archaeological_site_on_roll_failed_case = { SCORE=12 } }
-		13 = { standard_archaeological_site_on_roll_failed_case = { SCORE=13 } }
-		14 >= { standard_archaeological_site_on_roll_failed_case = { SCORE=14 } }
-	}
-	hidden_effect ={
-		switch = {
-			trigger = is_site_current_stage_score
-			5 <= {
-				prev = {
-					leader = { 
-						add_scientist_affection_arch = { CLUES=1 }
-						add_experience = @ARCHAEOLOGICAL_SITE_XP_0_CLUE 
-					}
-					random_list = {
-						120 = {}
-						10 = {
-							modifier = {
-								factor = 0
-								from = {
-									is_current_stage_clues = 0
-								}
-							}
-							$RANDOM_EVENTS$ = yes
-						}
-					}
-				}
-			}
-			10 <= { 
-				add_stage_clues = 1 
-				prev = { leader = { 
-					add_scientist_affection_arch = { CLUES=2 }
-					add_experience = @ARCHAEOLOGICAL_SITE_XP_1_CLUE 
-				}}
-			}
-			13 <= { 
-				add_stage_clues = 2 
-				prev = { leader = {
-					add_scientist_affection_arch = { CLUES=3 }
-					add_experience = @ARCHAEOLOGICAL_SITE_XP_2_CLUE 
-				}}
-			}
-		}
-	}
-}
-
