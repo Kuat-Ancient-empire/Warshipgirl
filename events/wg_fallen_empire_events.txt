@@ -1439,43 +1439,36 @@ country_event = {
 		set_global_flag = triggered_wgfe_crisis_event2
 		every_country = { # 舰娘/深海通知
 			limit = {
-				OR = {
-					has_authority = auth_warshipgirls
-					has_authority = auth_shenhai
-				}
-				OR = {
-					has_global_flag = wg_crisis_triggered
-					NOR = { 
-						has_global_flag = wg_crisis_triggered 
-						has_ascension_perk = ap_wg_crisis
+				is_ai = no
+			}
+			if = {
+				limit = {
+					OR = {
+						has_authority = auth_warshipgirls
+						has_authority = auth_shenhai
 					}
 				}
-				is_ai = no
-			}
-			country_event = { id = wg_fe.28 days = 3 }
-			if = {
-				limit = { end_game_years_passed >= 0 }
-				country_event = { id = wg_fe.32 days = 30 } # 跑路后送舰队
-			}
-		}
-		if = { # 焚飞帝国通知
-			limit = { 
-				exists = event_target:ap_wg_crisis_country 
-				NOT = { has_global_flag = wg_crisis_triggered }
-			}
-			event_target:ap_wg_crisis_country = {
-				country_event = { id = ap_wg_crisis.1037 days = 5 }
-			}
-		}
-		every_country = { # 其他帝国通知
-			limit = {
-				NOR = {
-					has_authority = auth_warshipgirls
-					has_authority = auth_shenhai
+				if = {
+					limit = {
+						NOR = {
+							has_ascension_perk = ap_wg_crisis
+							has_ascension_perk = ap_become_the_crisis
+							has_ascension_perk = ap_cosmogenesis
+						}
+					}
+					country_event = { id = wg_fe.28 days = 3 }
+					if = {
+						limit = { end_game_years_passed >= 0 }
+						country_event = { id = wg_fe.32 days = 30 } # 跑路后送舰队
+					}
 				}
-				is_ai = no
+				else = {
+					country_event = { id = ap_wg_crisis.1037 days = 5 }
+				}
 			}
-			country_event = { id = wg_fe.29 days = 3 }
+			else = { # 其他帝国通知
+				country_event = { id = wg_fe.29 days = 3 }
+			}
 		}
 		every_country = {
 			limit = {

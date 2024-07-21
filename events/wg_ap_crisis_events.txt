@@ -591,7 +591,7 @@ country_event = {
 			destroy_ambient_object = this
 			clear_global_event_target = wg_gateway_object
 		}
-		country_event = { id = ap_wg_crisis.1029 }
+		set_country_flag = wg_crisis_gateway
 		add_threat = { who = root amount = 1000 }
 		every_playable_country = {
 			limit = {
@@ -1402,19 +1402,48 @@ country_event = {
 	id = ap_wg_crisis.1029
 	hide_window = yes
 	is_triggered_only = yes
-
+	trigger = {
+		is_wg_empire = yes
+		OR = {
+			has_country_flag = wg_crisis_gateway
+			has_crisis_level = crisis_level_5
+			has_crisis_level = crisis_cosmogenesis_level_5
+		}
+		NOT = {
+			has_country_flag = wg_crisis_warned
+		}
+	}
 	immediate = {
+		set_country_flag = wg_crisis_warned
 		if = { # 堕落妈警告
 			limit = { exists = event_target:wg_fallen_empire }
-			country_event = { id = ap_wg_crisis.1025 days = 180 random = 90 }
+			country_event = { id = ap_wg_crisis.1025 days = 60 random = 90 }
+			if = {
+				limit = {
+					OR = {
+						has_crisis_level = crisis_level_5
+						has_crisis_level = crisis_cosmogenesis_level_5
+					}
+				}
+				country_event = { id = wg_fe.27 days = 180 random = 180 }
+			}
 		}
 		if = { # 深海爸警告
 			limit = { exists = event_target:sh_fallen_empire }
-			country_event = { id = ap_wg_crisis.1027 days = 90 random = 90 }
+			country_event = { id = ap_wg_crisis.1027 days = 30 random = 30 }
+			if = {
+				limit = {
+					OR = {
+						has_crisis_level = crisis_level_5
+						has_crisis_level = crisis_cosmogenesis_level_5
+					}
+				}
+				country_event = { id = ap_wg_crisis.1070 days = 180 random = 180 }
+			}
 		}
 		if = { # 奸商跑路
 			limit = { exists = event_target:pantsu_shop_country }
-			country_event = { id = ap_wg_crisis.10310 days = 360 random = 720 }
+			country_event = { id = ap_wg_crisis.10310 days = 180 random = 360 }
 		}
 	}
 }
