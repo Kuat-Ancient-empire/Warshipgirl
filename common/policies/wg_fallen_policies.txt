@@ -562,18 +562,150 @@ diplomatic_stance = {
 		}
 	}
 	option = {
-		name = "diplo_stance_primitive"
+		name = "diplo_stance_ignorant"
 		icon = "GFX_diplomatic_stance_isolationist"
+
 		potential = {
 			is_country_type = primitive
+			current_awareness_level < medium
+			capital_scope = {
+				NOT = { has_modifier = culture_shock_diplomacy }
+			}
 		}
+
 		policy_flags = {
-			diplo_stance_primitive
+			diplo_stance_ignorant
 		}
+
 		modifier = {
 		}
+
 		ai_weight = {
 			weight = 1
+		}
+	}
+
+	option = {
+		name = "diplo_stance_questioning"
+		icon = "GFX_diplomatic_stance_expansionist"
+
+		potential = {
+			is_country_type = primitive
+			current_awareness_level = medium
+			capital_scope = {
+				NOT = { has_modifier = culture_shock_diplomacy }
+			}
+		}
+
+		policy_flags = {
+			diplo_stance_questioning
+		}
+
+		modifier = {
+		}
+
+		ai_weight = {
+			weight = 1
+		}
+	}
+
+	option = {
+		name = "diplo_stance_eager"
+		icon = "GFX_diplomatic_stance_cooperative"
+
+		potential = {
+			is_country_type = primitive
+			current_awareness_level >= high
+			is_xenophile = yes
+			capital_scope = {
+				NOT = { has_modifier = culture_shock_diplomacy }
+			}
+		}
+
+		policy_flags = {
+			diplo_stance_eager
+		}
+
+		modifier = {
+		}
+
+		ai_weight = {
+			weight = 1
+		}
+	}
+
+	option = {
+		name = "diplo_stance_fearful"
+		icon = "GFX_diplomatic_stance_withdrawn"
+
+		potential = {
+			is_country_type = primitive
+			current_awareness_level >= high
+			is_xenophobe = yes
+			capital_scope = {
+				NOT = { has_modifier = culture_shock_diplomacy }
+			}
+		}
+
+		policy_flags = {
+			diplo_stance_fearful
+		}
+
+		modifier = {
+		}
+
+		ai_weight = {
+			weight = 1
+		}
+	}
+
+	option = {
+		name = "diplo_stance_uncertain"
+		icon = "GFX_diplomatic_stance_isolationist"
+
+		potential = {
+			is_country_type = primitive
+			current_awareness_level >= high
+			is_xenophile = no
+			is_xenophobe = no
+			capital_scope = {
+				NOT = { has_modifier = culture_shock_diplomacy }
+			}
+		}
+
+		policy_flags = {
+			diplo_stance_uncertain
+		}
+
+		modifier = {
+		}
+
+		ai_weight = {
+			weight = 1
+		}
+	}
+
+	option = {
+		name = "diplo_stance_culture_shock"
+		icon = "GFX_diplomatic_stance_belligerent"
+
+		potential = {
+			is_country_type = primitive
+			capital_scope = {
+				has_modifier = culture_shock_diplomacy
+			}
+		}
+
+		policy_flags = {
+			diplo_stance_culture_shock
+		}
+
+		modifier = {
+			diplo_action_acceptance_add = -100
+		}
+
+		ai_weight = {
+			weight = 100
 		}
 	}
 }
