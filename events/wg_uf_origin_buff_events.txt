@@ -22,6 +22,7 @@ country_event = {
 				}
 				AND = { exists = leader leader = { has_leader_flag = uf_vv_admiral } }
 				AND = { exists = leader leader = { has_leader_flag = wg_a150_admiral } }
+				AND = { exists = leader leader = { has_leader_flag = wg_montana_admiral } }
 			}
             NOT = { has_fleet_flag = drones }
         }
@@ -104,6 +105,17 @@ country_event = {
 					set_fleet_flag = wg_a150_admiral_fleet
 				}
 				fleet_event = { id = uf_buff.103 }
+			}
+			if = {#蒙大拿
+				limit = {
+					exists = leader
+					leader = { has_leader_flag = wg_montana_admiral }
+				}
+				if = {
+					limit = { NOT = { has_fleet_flag = wg_montana_admiral_fleet }}
+					set_fleet_flag = wg_montana_admiral_fleet
+				}
+				fleet_event = { id = uf_buff.104 }
 			}
 		}
 	}
@@ -489,9 +501,31 @@ fleet_event = {
     }
 
 	immediate = {
-		# 舰队铁幕，一段时间无敌
+		# A150强化buff
 		every_owned_ship = {
             add_modifier = { modifier = wg_a150_modifier days = 5 }
+        }
+	}
+}
+
+fleet_event = {
+	id = uf_buff.104
+    hide_window = yes
+    is_triggered_only = yes
+
+	trigger = {
+        is_in_combat = yes
+    }
+
+	immediate = {
+		# 舰队铁幕，一段时间无敌
+		every_owned_ship = {
+            limit = { NOT = { has_ship_flag = invincible }}
+			set_timed_ship_flag = { flag = invincible days = 3 }
+			#临时加生命避免一击秒杀
+			add_many_hp = { DAYS = 3 }
+			# 将船回满血
+			ship_event = { id = raa_skill.2021 }
         }
 	}
 }

@@ -2092,7 +2092,7 @@ country_event = {
             name = WG_A150
             plural = WG_A150
             class = WG_A150
-            portrait = wsg9967
+            portrait = wsg191
             namelist = ART1
 			allow_negative_traits = no
             effect = {
@@ -2193,7 +2193,7 @@ country_event = {
             name = WG_CV16
             plural = WG_CV16
             class = WG_CV16
-            portrait = wsg9966
+            portrait = wsg325_3
             namelist = ART1
 			allow_negative_traits = no
             effect = {
@@ -2281,7 +2281,7 @@ country_event = {
             name = WG_IMPAVIDO
             plural = WG_IMPAVIDO
             class = WG_IMPAVIDO
-            portrait = wsg9965
+            portrait = wsg559
             namelist = ART1
 			allow_negative_traits = no
             effect = {
@@ -2433,6 +2433,103 @@ country_event = {
 		name = HIRE
 		tag = hire_leader
 		custom_tooltip = wg_paragon.24.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#蒙大拿
+country_event = { 
+	id = wg_paragon.25
+	title = "wg_paragon.25.name"
+	desc = "wg_paragon.25.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_01_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = WG_MONTANA
+            plural = WG_MONTANA
+            class = WG_MONTANA
+            portrait = wsg520
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = wg_montana_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:wg_montana_species
+			immortal = yes
+			name = "NAME_WG_MONTANA"
+			set_age = 18
+			gender = female
+			hide_age = yes
+			background_ethic = ethic_militarist
+			custom_description = wg_montana_desc
+			custom_catch_phrase = wg_montana_catch_phrase
+			traits = {
+				trait = subclass_commander_admiral
+				trait = leader_trait_warshipgirls
+				trait = leader_trait_commander_montana
+				trait = leader_trait_cautious_2
+				trait = leader_trait_master_gunner
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				save_event_target_as = ethic_leader
+				set_leader_flag = legendary_leader
+				set_leader_flag = is_in_recruit_window
+				add_skill_without_trait_selection = 10
+			}
+		}
+		last_created_leader = {
+			if = {
+				limit = { owner = { has_country_flag = wsg_mist }}
+				add_trait_no_notify = leader_trait_mist
+			} else_if = {
+				limit = { owner = { has_country_flag = project_s_finish }}
+				add_trait_no_notify = leader_trait_warshipgirls2
+			}
+			set_variable = { which = affection value = 15 }
+			wg_affection_normal_system_launch = yes
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wg_paragon.25.a
+		response_text = wg_paragon.25.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.25.hire_custom_tooltip
 		hidden_effect = {
 			create_message = {
 				type = MESSAGE_RECRUITED_LEADER
@@ -2865,7 +2962,18 @@ country_event = {
 			random = {
 				chance = 30
 				set_country_flag = wg_paragon.1023
-				country_event = { id = wg_paragon.1023 days = 360 random = 360  }#随机拿大头目
+				country_event = { id = wg_paragon.1023 days = 360 random = 360  }#随机拿北卡
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_country_flag = wg_paragon.1024 }
+				end_game_years_passed >= 0
+			}
+			random = {
+				chance = 80
+				set_country_flag = wg_paragon.1024
+				country_event = { id = wg_paragon.1024 days = 360 random = 360  }#后期随机拿蒙大拿
 			}
 		}
 		if = {
@@ -2919,5 +3027,24 @@ country_event = {
 	}
 	option = {
 		name = "wg_paragon.1023.b"
+	}
+}
+country_event = {
+	id = wg_paragon.1024
+	title = "wg_paragon.1024.name"
+	desc = "wg_paragon.1024.desc"
+	picture = GFX_evt_wsg_rank4
+
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_paragon.1024.a"
+		custom_tooltip = wg_paragon.1024.a.tooltip
+		hidden_effect = { 
+			country_event = { id = wg_paragon.25 }
+		}
+	}
+	option = {
+		name = "wg_paragon.1024.b"
 	}
 }
