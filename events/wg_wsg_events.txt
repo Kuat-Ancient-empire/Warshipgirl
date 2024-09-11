@@ -2536,109 +2536,94 @@ country_event = {
 				controller = { is_same_value = root }
 			}
 			if = {
-				limit = { NOT = { has_modifier = planet_bison }}
-				root = { 
-					if = {
-						limit = { 
-							resource_stockpile_compare = {
-								resource = energy
-								value >= 1500
-							}
-						}
-						add_resource = { energy = -1500 }
-						PREV = {
-							add_modifier = { modifier = "planet_bison" days = 4800 }
-							planet_event = { id = wsg.9991 days = 4801 }
+				limit = { 
+					NOT = { has_modifier = planet_bison }
+					root = {
+						resource_stockpile_compare = {
+							resource = energy
+							value >= 1500
 						}
 					}
 				}
+				select_decision = { name = decision_bison }
 			}
 			if = {
-				limit = { NOT = { has_modifier = planet_lp }}
-				root = { 
-					if = {
-						limit = { 
-							resource_stockpile_compare = {
-								resource = consumer_goods
-								value >= 648
-							}
-							PREV = { any_owned_pop = {
-								OR = {
-									has_trait = wsg_trait_warshipgirls
-									has_trait = wsg_trait_warshipgirls1
-									has_trait = wsg_trait_warshipgirls2
-									has_trait = sh_trait_shenhai
-									has_trait = sh_trait_shenhai1
-									has_trait = sh_trait_shenhai2
-									has_trait = sh_trait_shenhai3				
-								}
-							}}
+				limit = { 
+					NOT = { has_modifier = planet_lp }
+					root = {
+						resource_stockpile_compare = {
+							resource = consumer_goods
+							value >= 648
 						}
-						PREV = { add_modifier = { modifier = "planet_lp" }}
-						add_resource = { consumer_goods = -648 }
+					}
+					any_owned_pop = {
+						OR = {
+							has_trait = wsg_trait_warshipgirls
+							has_trait = wsg_trait_warshipgirls1
+							has_trait = wsg_trait_warshipgirls2
+							has_trait = sh_trait_shenhai
+							has_trait = sh_trait_shenhai1
+							has_trait = sh_trait_shenhai2
+							has_trait = sh_trait_shenhai3				
+						}
 					}
 				}
+				select_decision = { name = decision_planet_lp }
 			}
 			if = {
-				limit = { NOT = { has_modifier = planet_noshoes }}
-				root = { 
-					if = {
-						limit = { resource_stockpile_compare = {
+				limit = { 
+					NOT = { has_modifier = planet_noshoes }
+					root = {
+						resource_stockpile_compare = {
 							resource = energy
 							value >= 1000
-						}}
-						PREV = { add_modifier = { modifier = "planet_noshoes" }}
-						add_resource = { energy = -1000 }
+						}
 					}
 				}
+				select_decision = { name = decision_planet_noshoes }
 			}
 			if = {
-				limit = { NOT = { has_modifier = planet_noshoes }}
-				root = { 
-					if = {
-						limit = {
-							has_technology = tech_building_wsg_neo
-							resource_stockpile_compare = {
-								resource = unity
-								value >= 300
-							}
-							resource_stockpile_compare = {
-								resource = sr_neo
-								value >= 500
-							}
+				limit = { 
+					NOT = { has_modifier = planet_noshoes }
+					root = {
+						has_technology = tech_building_wsg_neo
+						resource_stockpile_compare = {
+							resource = unity
+							value >= 300
 						}
-						PREV = { add_modifier = { modifier = "planet_mist" }}
-						add_resource = { unity = -300 }
-						add_resource = { sr_neo = -500 }
+						resource_stockpile_compare = {
+							resource = sr_neo
+							value >= 500
+						}
 					}
 				}
+				select_decision = { name = decision_planet_mist }
 			}
 		}
 	}
 }
 
 # 触发自动补buff后每4800天加buff扣电
-planet_event = {
-	id = wsg.9991
-	hide_window = yes
-	is_triggered_only = yes
+# planet_event = {
+# 	id = wsg.9991
+# 	hide_window = yes
+# 	is_triggered_only = yes
 
-	trigger = {
-		owner = { 
-			resource_stockpile_compare = {
-				resource = energy
-				value >= 1500
-			}
-			has_edict = wsg_auto_buffing
-		}
-		NOT = { has_modifier = planet_bison }
-	}
+# 	trigger = {
+# 		owner = { 
+# 			resource_stockpile_compare = {
+# 				resource = energy
+# 				value >= 1500
+# 			}
+# 			has_edict = wsg_auto_buffing
+# 		}
+# 		NOT = { has_modifier = planet_bison }
+# 	}
 
-	immediate = {
-		add_modifier = { modifier = "planet_bison" days = 4800 }
-		owner = { add_resource = { energy = -1500 }}
-	}
-}
+# 	immediate = {
+# 		select_decision = { name = decision_bison }
+# 	}
+# }
 
 # 深海，补buff
 country_event = {
@@ -2662,49 +2647,42 @@ country_event = {
 				controller = { is_same_value = root }
 			}
 			if = {
-				limit = { NOT = { has_modifier = planet_machine_factory }}
-				root = { 
-					if = {
-						limit = { 
-							resource_stockpile_compare = {
-								resource = energy
-								value >= 1000
-							}
-						}
-						add_resource = { energy = -1000 }
-						PREV = { 
-							add_modifier = { modifier = "planet_machine_factory" days = 4800 }
-							planet_event = { id = wsg.9993 days = 4801 }
+				limit = { 
+					NOT = { has_modifier = planet_machine_factory }
+					root = {
+						resource_stockpile_compare = {
+							resource = energy
+							value >= 1000
 						}
 					}
 				}
+				select_decision = { name = decision_planet_machine_factory }
 			}
 		}
 	}
 }
 
 # 深海触发自动补buff后每4800天加buff扣电
-planet_event = {
-	id = wsg.9993
-	hide_window = yes
-	is_triggered_only = yes
+# planet_event = {
+# 	id = wsg.9993
+# 	hide_window = yes
+# 	is_triggered_only = yes
 
-	trigger = {
-		owner = { 
-			resource_stockpile_compare = {
-				resource = energy
-				value >= 1000
-			}
-			has_edict = sh_auto_buffing
-		}
-		NOT = { has_modifier = planet_machine_factory }
-	}
+# 	trigger = {
+# 		owner = { 
+# 			resource_stockpile_compare = {
+# 				resource = energy
+# 				value >= 1000
+# 			}
+# 			has_edict = sh_auto_buffing
+# 		}
+# 		NOT = { has_modifier = planet_machine_factory }
+# 	}
 
-	immediate = {
-		add_modifier = { modifier = "planet_machine_factory" days = 4800 }
-		owner = { add_resource = { energy = -1500 }}
-	}
-}
+# 	immediate = {
+# 		select_decision = { name = decision_planet_machine_factory }
+# 	}
+# }
 
 # 星球殖民后加buff
 planet_event = {
@@ -2738,11 +2716,7 @@ planet_event = {
 						has_technology = tech_warshipgirl_assembly_plant
 						ROOT = { NOT = { has_modifier = planet_bison }}
 					}
-					add_resource = { energy = -1500 }
-					PREV = { 
-						add_modifier = { modifier = "planet_bison" days = 4800 }
-						planet_event = { id = wsg.9991 days = 4801 }
-					}
+					PREV = { select_decision = { name = decision_bison } }
 				}
 				if = {
 					limit = { 
@@ -2763,8 +2737,7 @@ planet_event = {
 						}}
 						ROOT = { NOT = { has_modifier = planet_lp }}
 					}
-					PREV = { add_modifier = { modifier = "planet_lp" }}
-					add_resource = { consumer_goods = -648 }
+					PREV = { select_decision = { name = decision_planet_lp } }
 				}
 				if = {
 					limit = { 
@@ -2774,8 +2747,7 @@ planet_event = {
 						}
 						ROOT = { NOT = { has_modifier = planet_noshoes }}
 					}
-					PREV = { add_modifier = { modifier = "planet_noshoes" }}
-					add_resource = { energy = -1000 }
+					PREV = { select_decision = { name = decision_planet_noshoes } }
 				}
 			} else_if = {
 				limit = { 
@@ -2791,11 +2763,7 @@ planet_event = {
 						has_technology = tech_warshipgirl_assembly_plant
 						ROOT = { NOT = { has_modifier = planet_machine_factory }}
 					}
-					add_resource = { energy = -1000 }
-					PREV = { 
-						add_modifier = { modifier = "planet_machine_factory" days = 4800 }
-						planet_event = { id = wsg.9993 days = 4801 }
-					}
+					PREV = { select_decision = { name = decision_planet_machine_factory }}
 				}
 			}
 		}
