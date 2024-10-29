@@ -230,27 +230,39 @@ decision_shenhai_project = {
 				limit = { is_ai = yes }
 				change_variable = { which = sh_pc_count value = 1 }
 			}}
-			clear_deposits = yes
+			wg_swap_districts_variable_effect = {
+				DISTRICT = district_city
+				VARIABLE = num_district_city
+			}
+			wg_swap_districts_variable_effect = {
+				DISTRICT = district_industrial
+				VARIABLE = num_district_industrial
+			}
+			wg_swap_districts_variable_effect = {
+				DISTRICT = district_mining
+				VARIABLE = num_district_mining
+			}
+			wg_swap_districts_variable_effect = {
+				DISTRICT = district_generator
+				VARIABLE = num_district_generator
+			}
 			change_pc = pc_shenhai
+			clear_deposits = yes
 			while = {
-				limit = { has_district = district_farming }
-				remove_district = district_farming
+				count = num_district_city
+				add_district = district_sh_city
 			}
-			swap_districts_effect = {
-				DISTRICT1 = district_city
-				DISTRICT2 = district_sh_city
+			while = {
+				count = num_district_industrial
+				add_district = district_sh_foundry_shpc
 			}
-			swap_districts_effect = {
-				DISTRICT1 = district_industrial
-				DISTRICT2 = district_sh_foundry_shpc
+			while = {
+				count = num_district_mining
+				add_district = district_sh_mining_uncapped
 			}
-			swap_districts_effect = {
-				DISTRICT1 = district_mining
-				DISTRICT2 = district_sh_mining_uncapped
-			}
-			swap_districts_effect = {
-				DISTRICT1 = district_generator
-				DISTRICT2 = district_sh_generator_uncapped
+			while = {
+				count = num_district_generator
+				add_district = district_sh_generator_uncapped
 			}
 			set_planet_entity = {
 				entity = "sh_ocean_planet"
