@@ -1152,6 +1152,36 @@ country_event = {
         add_modifier = { modifier = wg_modifier_weapon_payment days = 120 }
         hidden_effect = { country_event = { id = wsgranking.1005 }}
     }
+    option = { 
+        custom_gui = "enclave_caravaneer_option"
+        name = tech_wsg_f2h
+        custom_tooltip = "tech_wsg_f2h_desc"
+        trigger = {
+            has_authority = auth_warshipgirls
+            NOR = {
+                has_tech_option = tech_wsg_f2h
+                has_technology = tech_wsg_f2h
+            }
+        }
+        allow = {
+            resource_stockpile_compare = { resource = sr_pantsu value >= 2000 }
+            has_technology = tech_wsg_BTD
+            custom_tooltip = {
+				fail_text = too_low_rank_fail_90
+				check_variable = { which = "rankpts" value >= 90 }
+            }
+            custom_tooltip = {
+                NOT = { has_modifier = wg_modifier_weapon_payment }
+                fail_text = tech_cooldown_desc
+            }
+        }
+        add_resource = {
+            sr_pantsu = -2000
+        }
+        give_technology = { tech = tech_wsg_f2h }
+        add_modifier = { modifier = wg_modifier_weapon_payment days = 120 }
+        hidden_effect = { country_event = { id = wsgranking.1005 }}
+    }
 	option = {#审判 
 		custom_gui = "enclave_caravaneer_option"
 		custom_tooltip = tech_wg_doom_desc

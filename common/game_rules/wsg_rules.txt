@@ -10,7 +10,11 @@
 # This = Species
 species_has_happiness = {
 	NOR = {
-		has_trait = trait_machine_unit
+		AND = {
+			has_trait = trait_machine_unit
+			exists = from
+			from = { is_machine_empire = yes }
+		}
 		has_trait = trait_hive_mind
 		can_think = no
 		has_trait = trait_nerve_stapled
@@ -26,22 +30,26 @@ species_has_happiness = {
 		AND = {
 			has_trait = trait_mechanical
 			OR = {
-				has_trait = trait_mechanical
-				OR = {
-					NOT = { exists = from }
-					from = { has_authority = auth_machine_intelligence }
-					from = { NOT = { has_technology = tech_synthetic_workers } }
-					from = { has_policy_flag = ai_outlawed }
-				}
 				NOT = { exists = from }
+				from = { is_machine_empire = yes }
+				from = { NOT = { has_technology = tech_synthetic_workers } }
+				from = { has_policy_flag = ai_outlawed }
 			}
 		}
 		AND = {
 			has_trait = trait_cybernetic
 			exists = from
 			from = {
-				has_authority = auth_machine_intelligence
-				has_civic = civic_machine_assimilator # Assimilator empire
+				OR = {
+					AND = {
+						is_machine_empire = yes
+						has_civic = civic_machine_assimilator # Assimilator empire
+					}
+					AND = {
+						is_democratic_authority = yes
+						has_country_flag = cyber_collectivist
+					}
+				}
 			}
 		}
 	}
@@ -148,10 +156,6 @@ can_species_be_assembled = {
 						}
 					}
 				}
-			}
-			has_population_control = {
-				type = no
-				country = root.owner
 			}
 		}
 	}
@@ -318,53 +322,53 @@ can_orbital_bombard = {
 #_glbl_flg	[z_fw_flg_glbl_tech_overwhelm]	科技壁垒
 # this = ship
 # root = country that kills ship
-can_spawn_debris = {
-	root = { 
-		OR = {
-			is_country_type = default
-			is_country_type = default_ev		#_EV
-			is_country_type = teif_primitive	#_TEIF
-			is_country_type = ascended_empire	#_ZOFE
-			is_country_type = lost_empire		#_ZOFE
-		}
-	}
-	exists = owner
-	owner = {
-		NAND = {#_科技限制
-			OR = {
-				has_global_flag = z_fw_flg_glbl_tech_overwhelm	#_[z_fw]科技壁垒
-				has_global_flag = stability_MOD_installed		#_[teif]
-			}
-			relative_power = { who = root category = technology value >= superior }		#_[z_fw/teif]神一般的科技	superior
-		}
-		NAND = {#_[z_cm]无法获取堕落科技
-			OR = {
-				is_country_type = fallen_empire
-				is_country_type = awakened_fallen_empire
-			}
-			has_global_flag = z_cm_fallen_technology
-		}
-		#_+teif/wsg/ev/sofe/fq
-		NOR = {#_阵营限制
-			has_ascension_perk = ap_enigmatic_engineering
-			has_ethic = ethic_fanatic_communism				#_TEIF
-			has_country_flag = fallen_empire_6_human_2		#_TEIF
-			is_country_type = default_ev					#_EV
-			is_country_type = wg_crisis_country				#_WSG
-			AND = { #_WSG
-				has_global_flag = has_wsg_mod
-				is_khan_country_type = yes	
-			}			
-			has_government = "gov_eternal_continuum"		#_SOFE
-			has_valid_civic = civic_sofe_pursuit_answer		#_SOFE
-			is_country_type = original_empire				#_SOFE
-			is_country_type = original_empire_passive		#_SOFE
-			has_civic = civic_hive_strong_connection		#_fq
-			is_country_type = afk_crisis_country			#_swg
-			has_civic = civic_tw_atlantis					#_tk_a
-		}
-	}
-}
+# can_spawn_debris = {
+# 	root = { 
+# 		OR = {
+# 			is_country_type = default
+# 			is_country_type = default_ev		#_EV
+# 			is_country_type = teif_primitive	#_TEIF
+# 			is_country_type = ascended_empire	#_ZOFE
+# 			is_country_type = lost_empire		#_ZOFE
+# 		}
+# 	}
+# 	exists = owner
+# 	owner = {
+# 		NAND = {#_科技限制
+# 			OR = {
+# 				has_global_flag = z_fw_flg_glbl_tech_overwhelm	#_[z_fw]科技壁垒
+# 				has_global_flag = stability_MOD_installed		#_[teif]
+# 			}
+# 			relative_power = { who = root category = technology value >= superior }		#_[z_fw/teif]神一般的科技	superior
+# 		}
+# 		NAND = {#_[z_cm]无法获取堕落科技
+# 			OR = {
+# 				is_country_type = fallen_empire
+# 				is_country_type = awakened_fallen_empire
+# 			}
+# 			has_global_flag = z_cm_fallen_technology
+# 		}
+# 		#_+teif/wsg/ev/sofe/fq
+# 		NOR = {#_阵营限制
+# 			has_ascension_perk = ap_enigmatic_engineering
+# 			has_ethic = ethic_fanatic_communism				#_TEIF
+# 			has_country_flag = fallen_empire_6_human_2		#_TEIF
+# 			is_country_type = default_ev					#_EV
+# 			is_country_type = wg_crisis_country				#_WSG
+# 			AND = { #_WSG
+# 				has_global_flag = has_wsg_mod
+# 				is_khan_country_type = yes	
+# 			}			
+# 			has_government = "gov_eternal_continuum"		#_SOFE
+# 			has_valid_civic = civic_sofe_pursuit_answer		#_SOFE
+# 			is_country_type = original_empire				#_SOFE
+# 			is_country_type = original_empire_passive		#_SOFE
+# 			has_civic = civic_hive_strong_connection		#_fq
+# 			is_country_type = afk_crisis_country			#_swg
+# 			has_civic = civic_tw_atlantis					#_tk_a
+# 		}
+# 	}
+# }
 
 # Root = claimer
 # This = system
