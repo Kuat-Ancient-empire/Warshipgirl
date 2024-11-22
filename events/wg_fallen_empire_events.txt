@@ -1360,6 +1360,7 @@ country_event = {
 	}
 
 	immediate = {
+		set_global_flag = uf_ending_wgfe_run
 		every_playable_country = { # 舰娘/深海通知
 			limit = {
 				OR = {
@@ -1428,6 +1429,7 @@ country_event = {
 	trigger = {
 		OR = {
 			has_global_flag = uf_ending_wgfe
+			has_global_flag = uf_ending_wgfe_run
 			NOR = { 
 				has_global_flag = triggered_wgfe_crisis_event2
 				has_global_flag = wg_fallen_empire_awakened 
@@ -1450,10 +1452,9 @@ country_event = {
 				}
 				if = {
 					limit = {
-						NOR = {
-							has_ascension_perk = ap_wg_crisis
-							has_ascension_perk = ap_become_the_crisis
-							has_ascension_perk = ap_cosmogenesis
+						OR = {
+							has_global_flag = uf_ending_wgfe
+							has_global_flag = uf_ending_wgfe_run
 						}
 					}
 					country_event = { id = wg_fe.28 days = 3 }
