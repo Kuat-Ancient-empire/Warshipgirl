@@ -3025,13 +3025,19 @@ fleet_event = {
 			has_global_flag = wg_invasion_happened
 			has_global_flag = wg_invasion_2_happened
 		}
-		has_fleet_flag = raider_fleet
+		OR = {
+			has_fleet_flag = raider_fleet
+			has_fleet_flag = attack_fleet
+		}
 		#wg_crisis.96 fleet_flag change from eddy#
         owner = { is_country_type = wg_crisis_country }
 		from = {
 			any_fleet_in_system = {
 				NOT = { is_same_value = root }
-				has_fleet_flag = raider_fleet
+				OR = {
+					has_fleet_flag = raider_fleet
+					has_fleet_flag = attack_fleet
+				}
 			}
 		}
 	}
@@ -3562,11 +3568,15 @@ event = {
 			if = {
 				limit = { has_global_flag = wg_crisis_insane }
 				country_event = { id = wg_crisis.104 days = 12 }
-			} else = {
+			} 
+			else = {
 				country_event = { id = wg_crisis.100 days = 12 }
 			}
 			every_owned_fleet = {
-				limit = { has_fleet_flag = attack_fleet }
+				limit = { OR = {
+					has_fleet_flag = attack_fleet
+					has_fleet_flag = raider_fleet
+				} }
 				fleet_event = { id = wg_crisis.800 days = 13 }
 			}
 		}
