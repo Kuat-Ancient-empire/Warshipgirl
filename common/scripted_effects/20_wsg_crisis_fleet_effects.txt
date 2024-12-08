@@ -96,7 +96,8 @@ create_uf_fleet = {
     create_fleet = {
         [[NAME] name = $NAME$]
         effect = {
-            set_owner = event_target:wg_crisis_country
+            set_owner = event_target:$TARGET|wg_crisis_country$
+
             [[NUM_flagship] set_variable = { which = num_flagship value = $NUM_flagship$ }]
             [[NUM_flagship] change_variable = { which = num_ships value = num_flagship }]
             [[NUM_flagship] set_variable = { which = num_flagship_exist value = $NUM_flagship$ }]
@@ -151,19 +152,26 @@ create_uf_fleet = {
             set_aggro_range_measure_from = self
             set_aggro_range = 500
             assign_leader = last_created_leader
-            fleet_event = { id = wg_crisis.110 days = 60 } # 补船
+            [[ID] fleet_event = { id = $ID$.110 days = 60 } ]
             
-            [[GUARD_FLEET] if= { limit = { always = $GUARD_FLEET$ } set_fleet_flag = defence_fleet } ]
+            [[ACTION_TARGET]
+                set_variable = { which = "fleet_id" value = event_target:$ACTION_TARGET$.fleet_id } 
+                event_target:$ACTION_TARGET$ = { change_variable = { which = uf_fleet_id value = 1 }}
+                solar_system = { set_variable = { which = fleet_id value = prev.uf_fleet_id }}
+                set_variable = { which = "uf_fleet_id" value = event_target:$ACTION_TARGET$.uf_fleet_id }
+            ] 
 
-            [[ATTACK_FLEET] if = { limit = { always = $ATTACK_FLEET$ } set_fleet_flag = attack_fleet } 
-            fleet_event = { id = wg_crisis.96 } set_variable = { which = "fleet_id" value = event_target:wg_crisis_country.fleet_id } ]
-            # [[ATTACK_FLEET] fleet_event = { id = wg_crisis.42 days = 60 }]
-            # [[RAIDER_FLEET] event_target:wg_crisis_country = { change_variable = { which = "uf_raider_fleet_id" value = 1 }}]
-            event_target:wg_crisis_country = { change_variable = { which = uf_fleet_id value = 1 }}
-            solar_system = { set_variable = { which = fleet_id value = prev.uf_fleet_id }}
-            set_variable = { which = "uf_fleet_id" value = event_target:wg_crisis_country.uf_fleet_id }
-            [[RAIDER_FLEET] if = { limit = { always = $RAIDER_FLEET$ } set_fleet_flag = raider_fleet } 
-            fleet_event = { id = wg_crisis.96 } add_modifier = { modifier = uf_raider_buff days = -1 } ]
+            [[GUARD_FLEET] if = { limit = { always = $GUARD_FLEET$ } set_fleet_flag = defence_fleet } ]
+
+            [[ATTACK_FLEET] 
+                if = { limit = { always = $ATTACK_FLEET$ } set_fleet_flag = attack_fleet } 
+                fleet_event = { id = wg_crisis.96 } 
+            ]
+
+            [[RAIDER_FLEET] 
+                if = { limit = { always = $RAIDER_FLEET$ } set_fleet_flag = raider_fleet } 
+                fleet_event = { id = wg_crisis.96 } add_modifier = { modifier = uf_raider_buff days = -1 } 
+            ]
         }
         settings = {
             [[IS_BOSS] is_boss = $IS_BOSS$ ]
@@ -228,4 +236,388 @@ spawn_fleets_insane = {
     fleet_event = { id = wg_crisis.102 days = 9000 } #循环刷辅助守家舰队
 }
 
+uf_fleet_assult_fleet_action = {
+    queue_actions = {
+        repeat = {
+            effect = {
+                id = wg_crisis.96.e0.effect
+                if = {
+                    limit = { count_system = { 
+                        count > event_target:global_event_country.wg_count_system
+                        limit = { check_variable = { which = uf_fleet_id value > 0 } } 
+                    } }
+                    every_system = { 
+                        set_variable = { which = uf_fleet_id value = 0 }
+                        clear_variable = uf_fleet_id 
+                    }
+                }
+                if = {
+                    limit = { 
+                        has_fleet_flag = cannot_find_path 
+                        any_system = { OR = {
+                            AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
+                            any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
+                        } }
+                    }
+                    random_system = {
+                        limit = { OR = {
+                            AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
+                            any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
+                        }}
+                        closest_system = {
+                            min_steps = 1
+                            system_star = { ROOT = { set_location = { target = PREV distance = 5 angle = random } } }
+                        }
+                    } 
+                    remove_fleet_flag = cannot_find_path
+                }
+                else_if = { 
+                    limit = {
+                        count_system = {
+                            count = 0
+                            limit = { OR = {
+                                AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
+                                any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
+                            } }
+                        }
+                    }
+                    clear_orders = yes clear_fleet_actions = this 
+                    random_list = {
+                        1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 10 } }
+                        1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 20 } }
+                        1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 30 } }
+                    }
+                }
+            }
+            #寻找敌人的舰队
+            find_closest_system = {
+                trigger = {
+                    id = wg_crisis.96.find_closet_fleet
+                    any_fleet_in_system = {
+                        exists = controller
+                        is_ship_class = shipclass_military
+                        controller = { is_hostile = root.owner }
+                        NOT = { has_fleet_flag = wg_find_closet_fleet_target }
+                    }
+                    ROOT = { can_access_system = prev has_fleet_flag = raider_fleet }
+                }
+                found_system = { 
+                    effect = {
+                        id = wg_crisis.96.find_closet_fleet_effect
+                        random_fleet_in_system = {
+                            limit = {
+                                exists = controller
+                                controller = { is_hostile = root.owner }
+                                is_ship_class = shipclass_military
+                                NOT = { has_fleet_flag = wg_find_closet_fleet_target }
+                            }
+                            weights = {
+                                base = 10
+                                modifier = { add = 5 fleet_size > 400 }
+                                modifier = { factor = 1.25 fleet_power > 2000000 }
+                                modifier = { factor = 50 fleet_size > 800 }
+                            }
+                            set_timed_fleet_flag = { flag = wg_find_closet_fleet_target days = 55 }
+                        }
+                    }
+                    move_to = this
+                }
+                #找星球
+                failed = { find_closest_system = { 
+                    trigger = {
+                        id = wg_crisis.96.find_closest_colony
+                        any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
+                        ROOT = { can_access_system = prev }
+                        check_variable = { which = uf_fleet_id value < 1 }
+                    }
+                    found_system = {
+                        effect = {
+                            id = wg_crisis.96.find_closest_colony_effect
+                            set_variable = { which = uf_fleet_id value = root.fleet_id }
+                        }
+                        move_to = this
+                        repeat = {
+                            while = {
+                                id = wg_crisis.96.find_closest_colony_while
+                                any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
+                            }
+                            find_closest_planet = {
+                                trigger = {
+                                    id = wg_crisis.96.find_closest_colony_planet
+                                    OR = { is_colony = yes is_colonizable = yes }
+                                }
+                                found_planet = {
+                                    orbit_planet = this
+                                    effect = {
+                                        id = wg_crisis.96.find_closest_colony_planet_effect
+                                        ROOT = { set_fleet_flag = bombarding_planet }
+                                        if = {
+                                            #未殖民宜居星球过1个月炸掉
+                                            limit = { is_colony = no is_colonizable = yes }
+                                            set_planet_flag = target_planet
+                                            planet_event = { id = wg_crisis.43 days = 30 }
+                                        }
+                                        if = {
+                                            #已殖民宜居星球过3个月炸掉
+                                            limit = { is_colony = yes is_colonizable = yes }
+                                            set_planet_flag = target_planet
+                                            planet_event = { id = wg_crisis.43 days = 90 }
+                                        }
+                                        if = {
+                                            #高难度下炸球后概率跃迁
+                                            limit = {
+                                                OR = {
+                                                    has_global_flag = wg_crisis_hard
+                                                    has_global_flag = wg_crisis_insane
+                                                }
+                                            }
+                                            random = {
+                                                chance = 5
+                                                ROOT = { set_fleet_flag = cannot_find_path }
+                                            }
+                                        }
+                                    }
+                                    repeat = {
+                                        while = {
+                                            id = wg_crisis.96.find_closest_colony_planet_repeat_1
+                                            ROOT = { has_fleet_flag = bombarding_planet }
+                                        }
+                                        effect = {
+                                            id = wg_crisis.96.find_closest_colony_planet_repeat_2
+                                            if = {
+                                                limit = { is_colony = no is_colonizable = no }
+                                                ROOT = { remove_fleet_flag = bombarding_planet }
+                                            }
+                                        } 
+                                        wait = { duration = 5 random = 10 }
+                                    }
+                                }
+                            }
+                            move_to = this							# move away from the planet
+                            wait = { duration = 5 random = 10 }
+                        } 
+                        wait = { duration = 5 random = 10 }
+                    }		
+                    #找首都或者巨构			
+                    failed = { find_closest_system = {
+                        trigger = {
+                            id = wg_crisis.96.find_closest_starbase_and_megas
+                            exists = starbase 
+                            starbase = { controller = { is_hostile = root.owner } } 
+                            has_any_danger_target_megastructure = yes 
+                            ROOT = { can_access_system = prev }
+                            check_variable = { which = uf_fleet_id value < 1 }
+                        }
+                        found_system = {
+                            effect = {
+                                id = wg_crisis.96.find_closest_starbase_and_megas_effect
+                                set_variable = { which = uf_fleet_id value = root.fleet_id }
+                            }
+                            move_to = this
+                            repeat = {
+                                while = {
+                                    id = wg_crisis.96.find_closest_colony_while
+                                    any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
+                                }
+                                find_closest_planet = {
+                                    trigger = {
+                                        id = wg_crisis.96.find_closest_colony_planet
+                                        OR = { is_colony = yes is_colonizable = yes }
+                                    }
+                                    found_planet = {
+                                        orbit_planet = this
+                                        effect = {
+                                            id = wg_crisis.96.find_closest_colony_planet_effect
+                                            ROOT = { set_fleet_flag = bombarding_planet }
+                                            if = {
+                                                #未殖民宜居星球过1个月炸掉
+                                                limit = { is_colony = no is_colonizable = yes }
+                                                set_planet_flag = target_planet
+                                                planet_event = { id = wg_crisis.43 days = 30 }
+                                            }
+                                            if = {
+                                                #已殖民宜居星球过3个月炸掉
+                                                limit = { is_colony = yes is_colonizable = yes }
+                                                set_planet_flag = target_planet
+                                                planet_event = { id = wg_crisis.43 days = 90 }
+                                            }
+                                            if = {
+                                                #高难度下炸球后概率跃迁
+                                                limit = {
+                                                    OR = {
+                                                        has_global_flag = wg_crisis_hard
+                                                        has_global_flag = wg_crisis_insane
+                                                    }
+                                                }
+                                                random = {
+                                                    chance = 5
+                                                    ROOT = { set_fleet_flag = cannot_find_path }
+                                                }
+                                            }
+                                        }
+                                        repeat = {
+                                            while = {
+                                                id = wg_crisis.96.find_closest_colony_planet_repeat_1
+                                                ROOT = { has_fleet_flag = bombarding_planet }
+                                            }
+                                            effect = {
+                                                id = wg_crisis.96.find_closest_colony_planet_repeat_2
+                                                if = {
+                                                    limit = { is_colony = no is_colonizable = no }
+                                                    ROOT = { remove_fleet_flag = bombarding_planet }
+                                                }
+                                            } 
+                                            wait = { duration = 5 random = 10 }
+                                        }
+                                    }
+                                }
+                                move_to = this							# move away from the planet
+                                wait = { duration = 5 random = 10 }
+                            } 
+                            wait = { duration = 5 random = 10 }
+                        }
+                        #随便逛逛
+                        failed = { find_closest_system = {
+                            trigger = {
+                                id = wg_crisis.96.lesury_fleet_target
+                                ROOT = { can_access_system = prev }
+                                check_variable = { which = uf_fleet_id value < 1 }
+                            }
+                            found_system = {
+                                effect = {
+                                    id = wg_crisis.96.lesury_fleet_target_moving
+                                    set_variable = { which = uf_fleet_id value = root.fleet_id }
+                                }
+                                move_to = this
+                            }
+                            failed = { effect = { id = wg_crisis.96.notarget ROOT = { set_fleet_flag = cannot_find_path } } wait = 200 }
+                        } }
+                    } }
+                } }
+            }
+        }
+    }
+}
 
+uf_fleet_destory_planet_action = {
+    queue_actions = {
+        repeat = {
+            effect = {
+                id = wg_crisis.97.e0
+                if = {
+                    limit = { 
+                        any_system = { NOR = {
+                            check_variable = { which = uf_fleet_id value < 1 }
+                            # 打架后留下的星系
+                            check_variable = { which = uf_fleet_id value = root.uf_fleet_id }
+                        }}
+                    }
+                    solar_system = { clear_variable = uf_fleet_id }
+                }
+                # 等候一段时间后仍然找不到可通行路径，折跃
+                if = {
+                    limit = {
+                        has_fleet_flag = cannot_find_path
+                        NOT = {
+                            any_system = {
+                                NOT = { has_star_flag = uf_destroyed_system }
+                                ROOT = { can_access_system = PREV }
+                                OR = {
+                                    exists = starbase
+                                    any_system_planet = {
+                                        has_owner = yes
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    queue_actions = {
+                        find_random_system = {
+                            trigger = {
+                                id = wg_crisis.97.t01
+                                NOT = { has_star_flag = uf_destroyed_system }
+                                any_system_planet = { is_colony = no }
+                                closest_system = {
+                                    min_steps = 1
+                                    any_system_planet = {
+                                        has_owner = no
+                                    }
+                                }
+                            }
+                            found_system = { 
+                                effect = {
+                                    id = wg_crisis.97.e02
+                                    root = {
+                                        set_location = prev.star
+                                    }
+                                }
+                                wait = 100
+                            }
+                        }
+                    }
+                }
+            }
+            find_closest_system = {
+                trigger = {
+                    id = wg_crisis.97.t1
+                    NOT = { has_star_flag = uf_destroyed_system }
+                    ROOT = { can_access_system = prev }
+                    any_system_planet = { has_planet_flag = uf_target }
+                }
+                found_system = {
+                    effect = {
+                        id = wg_crisis.97.e1
+                        set_variable = { which = uf_fleet_id value = root.uf_fleet_id }
+                    }
+                    move_to = this
+                    find_closest_planet = {
+                        trigger = {
+                            id = wg_crisis.97.t3
+                            is_primary_star = yes
+                        }
+                        found_planet = {
+                            effect = {
+                                id = wg_crisis.97.e2
+                                # 提醒玩家
+                                if = {
+                                    limit = { solar_system = { any_system_planet = {
+                                        has_owner = yes
+                                        owner = { is_ai = no }
+                                    }}}
+                                    solar_system = { 
+                                        save_event_target_as = uf_colossus_arrived_system
+                                        random_system_planet = {
+                                            limit = {
+                                                has_owner = yes
+                                                owner = { is_ai = no }
+                                            }
+                                            owner = { country_event = { id = wg_crisis.89 }}
+                                        }
+                                    }
+                                }
+                            }
+                            destroy_planet = {
+                                target = THIS
+                                skip_rules = yes
+                            }
+                        }
+                    }			
+                    wait = 15
+                }					
+                failed = {
+                    # 找不到路
+                    effect = {
+                        id = wg_crisis.97.e13
+                        ROOT = { 
+                            set_fleet_flag = cannot_find_path
+                            set_timed_fleet_flag = {
+                                flag = orders_cooldown days = 200
+                            }
+                        }
+                    }
+                    wait = 200
+                }
+            }
+        }
+    }
+}

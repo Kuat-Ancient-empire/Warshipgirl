@@ -13,26 +13,16 @@ initialize_crisis_system_select = {
 	optimize_memory
 	every_system = {
 		limit = { 
-			OR = {
-				any_country = {
-					OR = {
-						is_country_type = fallen_empire
-						is_wg_fallen_empire = yes
-						is_sh_fallen_empire = yes
-						is_country_type = awakened_fallen_empire
-						is_country_type = wg_awakened_fallen_empire
-					}
-					any_system_within_border = {
-						is_same_value = PREVPREV
-					}
+			any_country = {
+				OR = {
+					is_country_type = fallen_empire
+					is_wg_fallen_empire = yes
+					is_sh_fallen_empire = yes
+					is_country_type = awakened_fallen_empire
+					is_country_type = wg_awakened_fallen_empire
 				}
-				any_country = {
-					is_country_type = default
-					capital_scope = {
-						solar_system = {
-							is_same_value = PREVPREVPREV
-						}
-					}
+				any_system_within_border = {
+					is_same_value = PREVPREV
 				}
 			}
 		}
@@ -266,4 +256,277 @@ uf_clear_ship_modifier = {
 	add_modifier = { modifier = wg_uf_skill_$modifier$ multiplier = $modifier$_value_iep days = $DAYS$ } 
 	clear_variable = $modifier$_value_iep
 	set_timed_ship_flag = { flag = uf_clear_ship_modifier_flag days = $DAYS$ } 
+}
+
+initial_uf_crisis_2_country = {
+	create_species = {
+		name = "NAME_WG_crisis_species"
+		class = "Warship_Girls"
+		portrait = "Warship_girls"
+		traits = random
+		immortal = yes
+		effect = { save_global_event_target_as = wg_crisis_species }
+	}
+	create_species = {
+		name = "NAME_WG_crisis_species_sh"
+		class = "ShenHai"
+		portrait = "shenhai"
+		traits = random
+		immortal = yes
+		effect = { save_global_event_target_as = wg_crisis_species_sh }
+	}
+	create_country = {
+		name = "NAME_WG_crisis_2_country"
+		type = "wg_crisis_country"
+		species = event_target:wg_crisis_species
+		name_list = "WSG"
+		flag = {
+			icon= {
+				category="warshipgirls"
+				file="wg_flags_06.dds"
+			}
+			background= {
+				category = "backgrounds"
+				file = "v.dds"
+			}
+			colors={
+				"yellow"
+				"black"
+				"null"
+				"null"
+			}
+		}
+		effect = {
+			set_country_flag = protected_from_queen_storm
+			if = {
+				limit = { has_global_flag = activated_uf_hidden_diff }
+				add_modifier = { modifier = uf_hidden_buff days = -1 }
+			}
+			set_country_flag = wg_crisis_2_country
+			save_global_event_target_as = wg_crisis_2_country
+			set_faction_hostility = {
+				target = event_target:wg_crisis_country
+				set_hostile = no
+				set_friendly = yes
+			}
+			set_faction_hostility = {
+				target = event_target:pantsu_shop_country
+				set_hostile = no
+				set_friendly = yes
+			}
+			set_graphical_culture = wsg_01
+			create_ship_design = { design = "NAME_WG_Starbase" }
+			add_ship_design = last_created_design
+			if = {
+				limit = { has_global_flag = wg_crisis_very_easy }
+				add_modifier = { modifier = uf_very_easy_debuff days = -1 }
+			}
+			else_if = {
+				limit = { 
+					has_global_flag = wg_crisis_easy
+				}
+				add_modifier = { modifier = uf_easy_buff days = -1 }
+			}
+			else_if = {
+				limit = { 
+					has_global_flag = wg_crisis_normal
+				}
+				add_modifier = { modifier = uf_normal_buff days = -1 }
+			}
+			else_if = {
+				limit = { 
+					has_global_flag = wg_crisis_hard
+				}
+				add_modifier = { modifier = uf_hard_buff days = -1 }
+			}
+			else_if = {
+				limit = { 
+					has_global_flag = wg_crisis_insane
+				}
+				add_modifier = { modifier = uf_insane_buff days = -1 }
+			}
+			country_event = { id = wg_crisis.200 }
+			country_event = { id = wg_crisis_2.90 days = 720 random = 720 } # for test, should be 1080 days
+			country_event = { id = wg_crisis_2.84 days = 720 random = 1440 } # 联合摧星者
+			country_event = { id = wg_crisis_2.99 days = 30 }
+			set_country_flag = creating_small_portal_2
+			set_country_flag = checked_all_fleet_once
+			if = {
+				limit = {
+					has_global_flag = install_kuat_mod
+					any_country = { OR = {
+						is_eternal_crisis = yes
+						is_infinite_faction = yes
+						is_kuat_contractor_faction = yes
+					} }
+				}
+				every_country = {
+					limit = { OR = {
+						is_eternal_crisis = yes
+						is_infinite_faction = yes
+						is_kuat_contractor_faction = yes
+					} }
+					set_faction_hostility = {
+						target = event_target:wg_crisis_2_country
+						set_hostile = no
+						set_friendly = yes
+					}
+				}
+				set_global_flag = is_allied_ag_kuat
+				every_country = {
+					limit = {
+						is_ai = no
+						NOR = {
+							has_global_flag = set_allied_ag_kuat
+							has_global_flag = is_enemy_ag_kuat
+							has_global_flag = wg_invasion_end
+						}
+					}
+					country_event = { id = wg_crisis.23334 } 
+				}
+			}
+			country_event = { id = wg_crisis_2.15 days = 180 random = 360 }
+		}
+	}
+}
+
+initial_uf_crisis_country = {
+	create_species = {
+		name = "NAME_WG_crisis_species"
+		class = "Warship_Girls"
+		portrait = "Warship_girls"
+		traits = random
+		immortal = yes
+		effect = { save_global_event_target_as = wg_crisis_species }
+		allow_negative_traits = no
+	}
+	create_species = {
+		name = "NAME_WG_crisis_species_sh"
+		class = "ShenHai"
+		portrait = "shenhai"
+		traits = random
+		immortal = yes
+		effect = { save_global_event_target_as = wg_crisis_species_sh }
+		allow_negative_traits = no
+	}
+	create_country = {
+		name = "NAME_WG_crisis_country"
+		type = "wg_crisis_country"
+		species = event_target:wg_crisis_species
+		name_list = "WSG"
+		flag = {
+			icon= {
+				category="warshipgirls"
+				file="wg_flags_06.dds"
+			}
+			background= {
+				category = "backgrounds"
+				file = "v.dds"
+			}
+			colors={
+				"yellow"
+				"black"
+				"null"
+				"null"
+			}
+		}
+		effect = {
+			set_country_flag = protected_from_queen_storm
+			if = {
+				limit = { has_global_flag = activated_uf_hidden_diff }
+				add_modifier = { modifier = uf_hidden_buff days = -1 } 
+			}
+			event_target:global_event_country = {
+				get_galaxy_setup_value = {
+					which = wg_count_system
+					setting = num_stars
+					scale_by = 0.5
+				}
+			}
+			set_country_flag = wg_crisis_country
+			save_global_event_target_as = wg_crisis_country
+			set_faction_hostility = {
+				target = event_target:wg_crisis_2_country
+				set_hostile = no
+				set_friendly = yes
+			}
+			set_faction_hostility = {
+				target = event_target:pantsu_shop_country
+				set_hostile = no
+				set_friendly = yes
+			}
+			set_graphical_culture = wsg_01
+			create_ship_design = { design = "NAME_WG_Starbase" }
+			add_ship_design = last_created_design
+			if = {
+				limit = { has_global_flag = wg_crisis_very_easy }
+				add_modifier = { modifier = uf_very_easy_debuff days = -1 }
+			}
+			else_if = {
+				limit = { 
+					has_global_flag = wg_crisis_easy
+				}
+				add_modifier = { modifier = uf_easy_buff days = -1 }
+			}
+			else_if = {
+				limit = { 
+					has_global_flag = wg_crisis_normal
+				}
+				add_modifier = { modifier = uf_normal_buff days = -1 }
+			}
+			else_if = {
+				limit = { 
+					has_global_flag = wg_crisis_hard
+				}
+				add_modifier = { modifier = uf_hard_buff days = -1 }
+			}
+			else_if = {
+				limit = { 
+					has_global_flag = wg_crisis_insane
+				}
+				add_modifier = { modifier = uf_insane_buff days = -1 }
+			}
+			country_event = { id = wg_crisis.200 }
+			country_event = { id = wg_crisis.90 days = 1800 random = 1800 } # for test, should be 1080 days
+			country_event = { id = wg_crisis.84 days = 360 random = 1800 } # 联合摧星者
+			country_event = { id = wg_crisis.99 days = 30 }
+			set_country_flag = creating_small_portal
+			set_country_flag = checked_all_fleet_once
+			if = {
+				limit = {
+					has_global_flag = install_kuat_mod
+					any_country = { OR = {
+						is_eternal_crisis = yes
+						is_infinite_faction = yes
+						is_kuat_contractor_faction = yes
+					} }
+				}
+				every_country = {
+					limit = { OR = {
+						is_eternal_crisis = yes
+						is_infinite_faction = yes
+						is_kuat_contractor_faction = yes
+					} }
+					set_faction_hostility = {
+						target = event_target:wg_crisis_country
+						set_hostile = no
+						set_friendly = yes
+					}
+				}
+				set_global_flag = is_allied_ag_kuat
+				every_country = {
+					limit = {
+						is_ai = no
+						NOR = {
+							has_global_flag = set_allied_ag_kuat
+							has_global_flag = is_enemy_ag_kuat
+							has_global_flag = wg_invasion_end
+						}
+					}
+					country_event = { id = wg_crisis.23334 } 
+				}
+			}
+			country_event = { id = wg_crisis.15 days = 180 random = 360 }
+		}
+	}
 }

@@ -250,149 +250,7 @@ country_event = {
 			set_star_flag = cannot_be_hit_by_aow_starfall_spear
 			save_global_event_target_as = first_portal_system
 			random_system_planet = {
-				create_species = {
-					name = "NAME_WG_crisis_species"
-					class = "Warship_Girls"
-					portrait = "Warship_girls"
-					traits = random
-					immortal = yes
-					effect = { save_global_event_target_as = wg_crisis_species }
-					allow_negative_traits = no
-				}
-                create_species = {
-					name = "NAME_WG_crisis_species_sh"
-					class = "ShenHai"
-					portrait = "shenhai"
-					traits = random
-					immortal = yes
-					effect = { save_global_event_target_as = wg_crisis_species_sh }
-					allow_negative_traits = no
-				}
-				create_country = {
-					name = "NAME_WG_crisis_country"
-					type = "wg_crisis_country"
-					species = event_target:wg_crisis_species
-					name_list = "WSG"
-					flag = {
-                        icon= {
-                            category="warshipgirls"
-                            file="wg_flags_06.dds"
-                        }
-                        background= {
-                            category = "backgrounds"
-                            file = "v.dds"
-                        }
-                        colors={
-							"yellow"
-							"black"
-                            "null"
-                            "null"
-                        }
-                    }
-					effect = {
-						set_country_flag = protected_from_queen_storm
-						if = {
-							limit = { has_global_flag = activated_uf_hidden_diff }
-							add_modifier = {
-								modifier = uf_hidden_buff
-								days = -1
-							}
-						}
-						event_target:global_event_country = {
-							get_galaxy_setup_value = {
-								which = wg_count_system
-								setting = num_stars
-								scale_by = 0.5
-							}
-						}
-						set_country_flag = wg_crisis_country
-						save_global_event_target_as = wg_crisis_country
-						set_faction_hostility = {
-							target = event_target:wg_crisis_2_country
-							set_hostile = no
-							set_friendly = yes
-						}
-						set_faction_hostility = {
-							target = event_target:pantsu_shop_country
-							set_hostile = no
-							set_friendly = yes
-						}
-						set_graphical_culture = wsg_01
-                        create_ship_design = { design = "NAME_WG_Starbase" }
-                        add_ship_design = last_created_design
-						if = {
-							limit = { has_global_flag = wg_crisis_very_easy }
-							add_modifier = { modifier = uf_very_easy_debuff days = -1 }
-						}
-						else_if = {
-							limit = { 
-								has_global_flag = wg_crisis_easy
-							}
-							add_modifier = { modifier = uf_easy_buff days = -1 }
-						}
-						else_if = {
-							limit = { 
-								has_global_flag = wg_crisis_normal
-							}
-							add_modifier = { modifier = uf_normal_buff days = -1 }
-						}
-						else_if = {
-							limit = { 
-								has_global_flag = wg_crisis_hard
-							}
-							add_modifier = { modifier = uf_hard_buff days = -1 }
-						}
-						else_if = {
-							limit = { 
-								has_global_flag = wg_crisis_insane
-							}
-							add_modifier = { modifier = uf_insane_buff days = -1 }
-						}
-						country_event = { id = wg_crisis.200 }
-						country_event = { id = wg_crisis.90 days = 1800 random = 1800 } # for test, should be 1080 days
-						country_event = { id = wg_crisis.84 days = 360 random = 1800 } # 联合摧星者
-						country_event = { id = wg_crisis.99 days = 30 }
-						set_country_flag = creating_small_portal
-						set_country_flag = checked_all_fleet_once
-						if = {
-							limit = {
-								has_global_flag = install_kuat_mod
-								any_country = { OR = {
-									is_eternal_crisis = yes
-									is_infinite_faction = yes
-									is_kuat_contractor_faction = yes
-									is_country_type = Kuat_Galatic_Empire_invasion_country
-								} }
-							}
-							every_country = {
-								limit = { OR = {
-									is_eternal_crisis = yes
-									is_infinite_faction = yes
-									is_kuat_contractor_faction = yes
-									is_country_type = Kuat_Galatic_Empire_invasion_country
-								} }
-								set_faction_hostility = {
-									target = event_target:wg_crisis_country
-									set_hostile = no
-									set_friendly = yes
-								}
-							}
-							set_global_flag = is_allied_ag_kuat
-							every_country = {
-								limit = {
-									is_ai = no
-									NOR = {
-										has_global_flag = set_allied_ag_kuat
-										has_global_flag = is_enemy_ag_kuat
-										has_global_flag = wg_invasion_end
-									}
-								}
-								country_event = { id = wg_crisis.23334 } 
-							}
-						}
-						country_event = { id = wg_crisis.15 days = 180 random = 360 }
-					}
-				}
+				initial_uf_crisis_country = yes
 				event_target:wg_crisis_country = {
 					create_fleet = {
 						name = "NAME_Dimensional_Portal"
@@ -413,11 +271,12 @@ country_event = {
 							# 萌新难度开门后再刷8队正常的
 							# 天灾难度开门后再刷10队正常的
 							fleet_event = { id = wg_crisis.4 days = 180 } 
-							fleet_event = { id = wg_crisis.4 days = 900 } 
+
 							if = {
 								limit = {
 									OR = {
 										has_global_flag = wg_crisis_easy
+										has_global_flag = wg_crisis_normal
 										has_global_flag = wg_crisis_hard
 										has_global_flag = wg_crisis_insane
 									}
@@ -437,8 +296,7 @@ country_event = {
 								}
 								fleet_event = { id = wg_crisis.4 days = 360 } 
 								fleet_event = { id = wg_crisis.4 days = 720 }  
-								fleet_event = { id = wg_crisis.4 days = 1500 } 
-								fleet_event = { id = wg_crisis.4 days = 1800 } 
+
 								while = { count = 2
 									create_wg_crisis_greater_admiral = yes
 									create_wg_crisis_greater_fleet = yes
@@ -460,20 +318,17 @@ country_event = {
 								}
 								fleet_event = { id = wg_crisis.4 days = 720 } 
 								fleet_event = { id = wg_crisis.4 days = 960 } 
-								if = {
-									limit = { has_global_flag = wg_crisis_hard }
-									fleet_event = { id = wg_crisis.102 days = 10800 } #循环刷辅助守家舰队
-								} else = {
-									fleet_event = { id = wg_crisis.102 days = 9000 } #循环刷辅助守家舰队
-								}
+								fleet_event = { id = wg_crisis.102 days = 10800 } #循环刷辅助守家舰队
 							}
+
 							if = {
-								# 天灾难度开门后再刷2+1+1队
+								# 天灾难度开门后再刷4队
 								limit = {
 									has_global_flag = wg_crisis_insane
 								}
 								fleet_event = { id = wg_crisis.4 days = 1500 } 
 								fleet_event = { id = wg_crisis.4 days = 2000 }
+
 								while = { count = 2
 									create_wg_crisis_greater_admiral = yes
 									create_wg_crisis_greater_fleet = yes
@@ -513,25 +368,17 @@ country_event = {
 						}
 					}
 					create_wg_crisis_greater_admiral = yes
-					PREV = { star = {
-						create_wg_crisis_weaker_guard_fleet = yes
-					}}
-					while = {
-						count = 2
-						create_wg_crisis_weaker_fleet_and_admiral = yes
-					}
+					PREV = { star = { create_wg_crisis_weaker_guard_fleet = yes }}
+					while = { count = 2 create_wg_crisis_weaker_fleet_and_admiral = yes }
 				}
 				if = {
 					# 普通难度开局刷4队弱的进攻舰队,1队弱的守家舰队
 					limit = { has_global_flag = wg_crisis_easy }
-					while = {
-						count = 2
-						create_wg_crisis_weaker_fleet_and_admiral = yes
-					}
+					while = { count = 2 create_wg_crisis_weaker_fleet_and_admiral = yes }
 				}
 				
 				if = {
-					# 困难难度开局刷6队突袭舰队,1队守家舰队
+					# 困难难度开局刷4队突袭舰队,1队守家舰队
 					limit = {
 						OR = {
 							has_global_flag = wg_crisis_normal
@@ -547,9 +394,7 @@ country_event = {
 						create_wg_crisis_greater_admiral = yes
 						PREV = { star = {
 							create_wg_crisis_guard_fleet = yes 
-							last_created_fleet = {
-								set_fleet_flag = first_portal_guard_fleet
-							}
+							last_created_fleet = { set_fleet_flag = first_portal_guard_fleet }
 						}}
 					}
 				}
@@ -566,7 +411,7 @@ country_event = {
 						limit = { is_primary_star = yes }
 						create_wg_crisis_guard_fleet = yes	
 					}}	
-					while = { count = 2
+					while = { count = 4
 						create_wg_crisis_raider_admiral = yes
 						create_wg_crisis_raider_fleet = yes
 					}
@@ -577,9 +422,7 @@ country_event = {
 						has_global_flag = wg_crisis_insane
 					}
 					create_wg_crisis_legendary_admiral = yes
-					PREV = { star = {
-						create_uf_glory = yes	
-					}}	
+					PREV = { star = { create_uf_glory = yes	}}	
 				}
 			}
 			if = {
@@ -1306,7 +1149,7 @@ country_event = {
 
 	trigger = {
 		exists = event_target:wg_crisis_country
-		is_country_type = wg_crisis_country
+		is_same_value = event_target:wg_crisis_country
 		has_global_flag = all_portal_destroyed
 		NOT = { has_country_flag = retreat }
 	}
@@ -1473,7 +1316,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		is_country_type = wg_crisis_country
+		is_same_value = event_target:wg_crisis_country
 		NOT = { has_global_flag = first_portal_destroyed }
 		NOT = { has_global_flag = wg_invasion_end }
 	}
@@ -1618,7 +1461,7 @@ country_event = {
 	hide_window = yes
 
 	trigger = {
-		is_country_type = wg_crisis_country
+		is_same_value = event_target:wg_crisis_country
 		OR = {
 			has_global_flag = wg_resistant_army_arrived
 			has_global_flag = first_portal_destroyed
@@ -1694,18 +1537,16 @@ country_event = {
 					country_event = { id = wg_crisis.18 days = 1200 } # Spawn Cycle starts
 				}
 				while = {
-					count = 3
+					count = 2
 					create_wg_crisis_greater_admiral = yes
 					PREV = { random_system_planet = {
 						limit = { is_primary_star = yes }
 						create_wg_crisis_guard_fleet = yes
-						last_created_fleet = {
-							set_fleet_flag = second_portal_guard_fleet
-						}
+						last_created_fleet = { set_fleet_flag = second_portal_guard_fleet }
 					}}
 				}
 				while = {
-					count = 10
+					count = 8
 					create_wg_crisis_fleet_and_admiral = yes
 				}
 				if = {
@@ -1750,7 +1591,7 @@ country_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		is_country_type = wg_crisis_country
+		is_same_value = event_target:wg_crisis_country
 		has_global_flag = second_portal_opened
 		NOT = { has_global_flag = wg_invasion_end }
 		OR = {
@@ -1815,9 +1656,7 @@ country_event = {
 					PREV = { random_system_planet = {
 						limit = { is_primary_star = yes }
 						create_wg_crisis_guard_fleet = yes
-						last_created_fleet = {
-							set_fleet_flag = third_portal_guard_fleet
-						}
+						last_created_fleet = { set_fleet_flag = third_portal_guard_fleet }
 					}}
 				}
 				while = {
@@ -1867,7 +1706,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		is_country_type = wg_crisis_country
+		is_same_value = event_target:wg_crisis_country
         NOT = { has_global_flag = second_portal_destroyed }
 		NOT = { has_global_flag = wg_invasion_end }
 	}
@@ -1897,7 +1736,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		is_country_type = wg_crisis_country
+		is_same_value = event_target:wg_crisis_country
         NOT = { has_global_flag = third_portal_destroyed }
 		NOT = { has_global_flag = wg_invasion_end }
 	}
@@ -2068,600 +1907,6 @@ country_event = {
     }
 }
 
-# # 舰队移动触发 [NO USED]
-# fleet_event = {
-# 	id = wg_crisis.40
-# 	hide_window = yes
-# 	is_triggered_only = yes
-
-#     trigger = {
-#         has_global_flag = wg_invasion_happened
-#         has_fleet_flag = attack_fleet
-# 		NOT = { has_global_flag = recheck_planet }
-#         owner = { is_country_type = wg_crisis_country }
-#         is_fleet_idle = yes
-#         NOT = { has_fleet_flag = orders_cooldown }
-#         any_system = {
-# 			any_system_planet = {
-# 				OR = {
-# 					OR = {
-# 						is_colonizable = yes
-# 						# 相位星球
-# 						has_planet_flag = phaseshifting_active
-# 					}
-# 					has_owner = yes
-# 				}
-#                 NOT = { has_planet_flag = target_planet }
-# 			}		
-# 		}
-#     }
-
-#     immediate = {
-# 		clear_fleet_actions = this
-# 		set_timed_fleet_flag = { flag = orders_cooldown days = 10 }
-# 		queue_actions = {
-# 			find_closest_system = {
-# 				trigger = {
-# 					id = wg_crisis.40.t1
-# 					if = {
-# 						limit = { 
-# 							OR = {
-# 								has_global_flag = all_portal_destroyed
-# 								has_global_flag = wg_crisis_insane
-# 							}
-# 						}
-# 						any_system_planet = {
-# 							is_colony = yes
-# 						}
-# 						check_variable = { which = fleet_id value < 1 }
-# 					} else = {
-# 						any_system_planet = {
-# 							OR = {
-# 								has_planet_flag = uf_target
-# 								is_colonizable = yes
-# 								is_colony = yes
-# 							}
-# 						}
-# 						check_variable = { which = fleet_id value < 1 }
-# 					}
-# 				}
-# 				found_system = {
-# 					effect = {
-# 						id = wg_crisis.40.e1
-# 						# 找到星球，调用寻路
-# 						set_star_flag = path_end@root
-# 						set_variable = { which = fleet_id value = root.fleet_id }
-# 						root = {
-# 							set_fleet_flag = moving_to_system
-# 							save_event_target_as = find_path_fleet
-# 							solar_system = {
-# 								set_timed_star_flag = { flag = path_start@root days = 1 }
-# 								system_event = { id = wg_crisis.47 }
-# 							}
-# 						}
-# 					}
-# 				}
-# 				failed = {
-# 					effect = {
-# 						id = wg_crisis.40.e2
-# 						# TODO:找舰队追
-# 						# 随便找个地方霍霍去
-# 						set_fleet_flag = cannot_find_path
-# 						fleet_event = { id = wg_crisis.10042 }
-# 					}
-# 				}
-# 			}
-# 		}
-# 	}
-# }
-
-# # 舰队移动触发 [NO USED]
-# fleet_event = {
-# 	id = wg_crisis.42
-# 	hide_window = yes
-# 	is_triggered_only = yes
-
-# 	trigger = {
-# 		exists = this
-# 		has_global_flag = wg_invasion_happened
-#         has_fleet_flag = attack_fleet
-# 		NOT = { has_global_flag = recheck_planet }
-#         owner = { is_country_type = wg_crisis_country }
-
-# 		any_system = {
-# 			any_system_planet = {
-# 				OR = {
-# 					OR = {
-# 						is_colonizable = yes
-# 						# 相位星球
-# 						has_planet_flag = phaseshifting_active
-# 					}
-# 					has_owner = yes
-# 				}
-#                 NOT = { has_planet_flag = target_planet }
-# 			}		
-# 		}
-# 	}
-
-# 	immediate = {
-# 		solar_system = {
-# 			remove_star_flag = path@root
-# 		}
-# 		queue_actions = {
-# 			repeat = {
-# 				while = {
-# 					id = wg_crisis.42.w1
-# 					any_system = {
-# 						has_star_flag = path_end@root
-# 					}
-# 					solar_system = { NOT = {
-# 						has_star_flag = path_end@root
-# 					}}
-# 				}
-# 				find_closest_system = {
-# 					trigger = {
-# 						id = wg_crisis.42.t1
-# 						# 先找周边一条是否有标记航线的星系
-# 						if = {
-# 							limit = {
-# 								distance = {
-# 									source = root
-# 									use_bypasses = yes
-# 									max_jumps = 1
-# 								}
-# 								has_star_flag = path@root
-# 							}
-# 							distance = {
-# 								source = root
-# 								use_bypasses = yes
-# 								max_jumps = 1
-# 							}
-# 							has_star_flag = path@root
-# 						} else_if = {
-# 							# 否则看看有没有其他标记航线的星系
-# 							limit = {
-# 								any_system = {
-# 									has_star_flag = path@root
-# 									root = { can_access_system = prev }
-# 								}
-# 							}
-# 							has_star_flag = path@root
-# 						}
-# 					}
-# 					found_system = {
-# 						move_to = this
-# 						effect = {
-# 							id = wg_crisis.42.t1e1
-# 							remove_star_flag = path@root
-# 						}
-# 						repeat = {
-# 							while = {
-# 								id = wg_crisis.42.t2w
-# 								root = { solar_system = {
-# 									any_system_planet = { is_colony = yes }
-# 								}}
-# 								# 以防万一
-# 								any_system = {
-# 									has_star_flag = path_end@root
-# 								}
-# 							}
-# 							find_closest_planet = {
-# 								trigger = {
-# 									id = wg_crisis.42.t3
-# 									if = {
-# 										# 先找不是正在被炸的星球
-# 										limit = { NOT = { solar_system = { any_system_planet = { 
-# 											has_planet_flag = planet_bombarding 
-# 										}}}}
-# 										is_colony = yes
-# 										NOT = { has_planet_flag = planet_bombarding }
-# 									} else = {
-# 										is_colony = yes
-# 									}
-# 									solar_system = { is_same_value = root.solar_system }
-# 								}
-# 								found_planet = {
-# 									orbit_planet = this
-# 									effect = {
-# 										id = wg_crisis.42.t3e1
-# 										ROOT = { 
-# 											set_fleet_flag = bombarding_planet
-# 										}
-# 										set_planet_flag = planet_bombarding
-# 									}
-# 									repeat = {
-# 										while = {
-# 											id = wg_crisis.42.t3w
-# 											OR = {
-# 												root = { has_fleet_flag = bombarding_planet }
-# 												is_colony = yes
-# 											}
-# 										}
-# 										orbit_planet = this
-# 										effect = {
-# 											id = wg_crisis.42.t3e2
-# 											if = {
-# 												# 星球被炸到没人，移除flag
-# 												limit = { OR = { is_colony = no is_colonizable = no }}
-# 												remove_planet_flag = planet_bombarding
-# 												ROOT = { remove_fleet_flag = bombarding_planet }
-# 											}
-# 										}
-# 										wait = 5
-# 									}
-# 								}
-# 							}
-# 							move_to = this	# move away from the planet
-# 						}
-# 					}
-# 					failed = {
-# 						# 检查是不是到达终点。
-# 						effect = {
-# 							id = wg_crisis.42.t1e2
-# 							if = {
-# 								limit = { solar_system = {
-# 									has_star_flag = path_end@root
-# 								}}
-# 								set_fleet_flag = arrived_target_system
-# 								fleet_event = { id = wg_crisis.10043 }
-# 							} else_if = {
-# 								limit = {
-# 									any_system = { 
-# 										has_star_flag = path_end@root
-# 									}
-# 									any_system = {
-# 										has_star_flag = path@root
-# 										root = { NOT = { can_access_system = prev }}
-# 									}
-# 								}
-# 								# 仍然检测到有目标星球，调用寻路事件
-# 								every_system = { 
-# 									limit = { has_star_flag = path@root }
-# 									remove_star_flag = path@root 
-# 								}
-# 								save_event_target_as = find_path_fleet
-# 								solar_system = {
-# 									set_timed_star_flag = { flag = path_start@root days = 1 }
-# 									system_event = { id = wg_crisis.47 }
-# 								} 
-# 								fleet_event = { id = wg_crisis.42 }
-# 							} else = {
-# 								# 完全找不到路，等候一会
-# 								ROOT = { 
-# 									set_fleet_flag = cannot_find_path
-# 								}
-# 							}
-# 						}
-# 						wait = 50
-# 					}
-# 				}
-# 				effect = {
-# 					id = wg_crisis.42.e1
-# 					if = {
-# 						limit = { NOT = { has_fleet_flag = arrived_target_system }}
-# 						if = {
-# 							# 到达目的地
-# 							limit = { solar_system = {
-# 								has_star_flag = path_end@root
-# 							}}
-# 							set_fleet_flag = arrived_target_system
-# 							fleet_event = { id = wg_crisis.10043 }
-# 						} else_if = {
-# 							limit = { has_fleet_flag = cannot_find_path }
-# 							# 未抵达目的地
-# 							fleet_event = { id = wg_crisis.10042 }
-# 						} else_if = {
-# 							# 找不到路
-# 							limit = { any_system = {
-# 								has_star_flag = path_end@root
-# 							}}
-# 							# 仍然检测到有目标星球，调用寻路事件
-# 							every_system = { 
-# 								limit = { has_star_flag = path@root }
-# 								remove_star_flag = path@root 
-# 							}
-# 							save_event_target_as = find_path_fleet
-# 							solar_system = {
-# 								set_timed_star_flag = { flag = path_start@root days = 1 }
-# 								system_event = { id = wg_crisis.47 }
-# 							} 
-# 							fleet_event = { id = wg_crisis.42 }
-# 						} else = {
-# 							# 重新寻路
-# 							clear_fleet_actions = root
-# 							fleet_event = { id = wg_crisis.40 }
-# 						}
-# 					}
-# 				}
-# 			}
-# 		}
-# 	}
-# }
-# # 找不到路，随机移动 # 舰队移动触发 [NO USED]
-# fleet_event = {
-#     id = wg_crisis.10042
-#     hide_window = yes
-# 	is_triggered_only = yes
-
-# 	trigger = {
-# 		exists = this
-# 		has_global_flag = wg_invasion_happened
-#         has_fleet_flag = attack_fleet
-# 		has_fleet_flag = cannot_find_path
-# 		NOT = { has_global_flag = recheck_planet }
-#         owner = { is_country_type = wg_crisis_country }
-# 	}
-
-# 	immediate = {
-# 		clear_fleet_actions = this
-# 		queue_actions = {
-# 			find_random_system = {
-# 				trigger = {
-# 					id = wg_crisis.10042.t02
-# 					if = {
-# 						limit = {  
-# 							closest_system = {
-# 								any_system_planet = {
-# 									has_owner = yes
-# 								}
-# 								min_steps = 1
-# 							}
-# 						}
-# 						closest_system = {
-# 							any_system_planet = {
-# 								has_owner = yes
-# 							}
-# 							min_steps = 1
-# 						}
-# 					}
-# 					root = { can_access_system = prev }
-# 				}
-# 				found_system = { 
-# 					move_to = this
-# 					effect = {
-# 						id = wg_crisis.10042.e01
-# 						root = { remove_fleet_flag = cannot_find_path }
-# 						random_system_planet = {
-# 							root = {
-# 								clear_fleet_actions = this
-# 								if = {
-# 									limit = { any_system = { OR = {
-# 										has_star_flag = path_end@root
-# 										has_star_flag = path@root
-# 									}}}
-# 									every_system = {
-# 										limit = { has_star_flag = path@root }
-# 										remove_star_flag = path@root
-# 									}
-# 									random_system = {
-# 										limit = { has_star_flag = path_end@root }
-# 										remove_star_flag = path_end@root
-# 									}
-# 									random_system = {
-# 										limit = { check_variable = {
-# 											which = fleet_id
-# 											value = root.fleet_id
-# 										}}
-# 										clear_variable = fleet_id
-# 									}
-# 								}
-# 								fleet_event = { id = wg_crisis.40 }
-# 							}
-# 						}
-# 					}
-# 				}
-# 			}
-# 		}
-# 	}
-
-# }
-# # 舰队移动触发 [NO USED]
-# fleet_event = {
-#     id = wg_crisis.10043
-#     hide_window = yes
-# 	is_triggered_only = yes
-
-# 	trigger = {
-# 		exists = this
-# 		has_global_flag = wg_invasion_happened
-#         has_fleet_flag = attack_fleet
-# 		has_fleet_flag = arrived_target_system
-# 		NOT = { has_global_flag = recheck_planet }
-#         owner = { is_country_type = wg_crisis_country }
-# 	}
-
-# 	immediate = {
-# 		remove_fleet_flag = arrived_target_system
-# 		remove_fleet_flag = moving_to_system
-# 		clear_fleet_actions = this
-# 		queue_actions = {
-# 			repeat = {
-# 				while = {
-# 					id = wg_crisis.10043.t0
-# 					solar_system = { any_system_planet = { OR = {
-# 						is_colonizable = yes
-# 						is_colony = yes
-# 						has_planet_flag = uf_target
-# 					}}}
-# 				}
-# 				find_closest_planet = {
-# 					trigger = {
-# 						id = wg_crisis.10043.t1
-# 						solar_system = {
-# 							is_same_value = root.solar_system
-# 						}
-# 						if = {
-# 							# 先找无主星球 （低难度）
-# 							limit = { 
-# 								NOR = {
-# 									has_global_flag = wg_crisis_hard
-# 									has_global_flag = wg_crisis_insane
-# 								}
-# 								solar_system = { any_system_planet = { 
-# 									is_colony = no 
-# 									OR = {
-# 										has_planet_flag = uf_target
-# 										is_colonizable = yes
-# 									}
-# 								}}
-# 							}
-# 							is_colony = no 
-# 							OR = {
-# 								has_planet_flag = uf_target
-# 								is_colonizable = yes
-# 							}
-# 						} else_if = {
-# 							# 然后找没有被炸的星球炸
-# 							limit = { NOT = { solar_system = { any_system_planet = { 
-# 								has_planet_flag = planet_bombarding 
-# 							}}}}
-# 							is_colony = yes
-# 							NOT = { has_planet_flag = planet_bombarding }
-# 						} else = {
-# 							# 随便找点东西
-# 							is_colony = yes
-# 						}
-# 					}
-# 					found_planet = {
-# 						orbit_planet = this
-# 						effect = {
-# 							id = wg_crisis.10043.t1e1
-# 							root = { remove_fleet_flag = moving_to_system }
-# 							if = {
-# 								limit = { OR = {
-# 									has_global_flag = wg_crisis_hard
-# 									has_global_flag = wg_crisis_insane
-# 								}}
-# 								if = {
-# 									limit = { is_colony = no }
-# 									root = { 
-# 										set_timed_fleet_flag = { flag = blowing_up_planet days = 35 }
-# 									}
-# 								}
-# 							}
-# 							else = {
-# 								if = {
-# 									limit = { is_colony = no }
-# 									root = { 
-# 										set_timed_fleet_flag = { flag = blowing_up_planet days = 50 }
-# 									}
-# 								}
-# 							}
-# 							if = {
-# 								limit = { 
-# 									is_scope_type = planet
-# 									is_colony = no
-# 									NOT = { has_planet_flag = destruction_cooldown }
-# 								}
-# 								ROOT = { set_timed_fleet_flag = { flag = blowing_up_planet days = 30 }}
-# 								set_planet_flag = target_planet
-# 								planet_event = { id = wg_crisis.41 }
-# 							}
-# 							else = {
-# 								ROOT = { set_fleet_flag = bombarding_planet }
-# 							}
-# 						}
-# 						repeat = {
-# 							while = {
-# 								id = wg_crisis.10043.t1w
-# 								OR = {
-# 									root = { 
-# 										has_fleet_flag = bombarding_planet 
-# 										has_fleet_flag = blowing_up_planet
-# 									}
-# 									is_colony = yes
-# 								}
-# 							}
-# 							orbit_planet = this
-# 							effect = {
-# 								id = wg_crisis.10043.t1e2
-# 								if = {
-# 									# 星球被炸到没人，移除flag
-# 									limit = { 
-# 										root = { has_fleet_flag = bombarding_planet }
-# 										OR = { is_colony = no is_colonizable = no }
-# 									}
-# 									ROOT = { 
-# 										remove_fleet_flag = bombarding_planet 
-# 										if = {
-# 											limit = { solar_system = { any_system_planet = { NOR = {
-# 												is_colonizable = yes
-# 												is_colony = yes
-# 											}}}}
-# 											every_system = { remove_star_flag = path@prev }
-# 											solar_system = { remove_star_flag = path_end@root }
-# 											ROOT = { fleet_event = { id = wg_crisis.40 }}
-# 										}
-# 									}
-# 									remove_planet_flag = planet_bombarding
-# 								} else_if = {
-# 									limit = { 
-# 										NOT = { root = { has_fleet_flag = blowing_up_planet }}
-# 										is_colonizable = no 
-# 									}
-# 									ROOT = { if = {
-# 										limit = { solar_system = { any_system_planet = { NOR = {
-# 											is_colonizable = yes
-# 											is_colony = yes
-# 										}}}}
-# 										every_system = { 
-# 											limit = { has_star_flag = path@prev }
-# 											remove_star_flag = path@prev 
-# 										}
-# 										solar_system = { remove_star_flag = path_end@root }
-# 										fleet_event = { id = wg_crisis.40 }
-# 									}}
-# 								}
-# 							}
-# 							wait = 5
-# 						}
-# 						wait = 15
-# 					}
-# 					failed = {
-# 						effect = {
-# 							id = wg_crisis.10043.e1
-# 							if = {
-# 								limit = { solar_system = { any_system_planet = {
-# 									is_colonizable = no
-# 									is_colony = no
-# 								}}}
-# 								every_system = { 
-# 									limit = { has_star_flag = path@root }
-# 									remove_star_flag = path@root 
-# 								}
-# 								random_system = {
-# 									limit = { has_star_flag = path_end@root }
-# 									remove_star_flag = path_end@root
-# 								}
-# 								fleet_event = { id = wg_crisis.40 }
-# 							}
-# 						}
-# 					}
-# 				}
-# 				effect = {
-# 					id = wg_crisis.10043.e2
-# 					if = {
-# 						limit = { solar_system = { any_system_planet = {
-# 							is_colonizable = no
-# 							is_colony = no
-# 						}}}
-# 						every_system = { 
-# 							limit = { has_star_flag = path@root }
-# 							remove_star_flag = path@root 
-# 						}
-# 						random_system = {
-# 							limit = { has_star_flag = path_end@root }
-# 							remove_star_flag = path_end@root
-# 						}
-# 						fleet_event = { id = wg_crisis.40 }
-# 					}
-# 				}
-# 			}
-# 		}
-# 	}
-
-# }
-
 # 攻击舰队被击破，移除对应星球标记
 country_event = {
     id = wg_crisis.46
@@ -2694,10 +1939,9 @@ country_event = {
 						check_variable = { which = fleet_id value = prev.fleet_id }
 					}
 					clear_variable = fleet_id
-					remove_star_flag = path@prev
-					remove_star_flag = path_end@prev
 				}
-			} else_if = {
+			} 
+			else_if = {
 				limit = { has_fleet_flag = raider_fleet }
 				every_system = {
 					limit = {
@@ -2709,213 +1953,6 @@ country_event = {
 		}
 	}
 }
-
-# 归递算从目的地到起点的距离
-# system_event = {
-# 	id = wg_crisis.47
-# 	hide_window = yes
-# 	is_triggered_only = yes
-
-# 	trigger = {
-# 		exists = event_target:find_path_fleet
-# 	}
-
-# 	immediate = {
-# 		random_system = {
-# 			limit = { has_star_flag = path_start@event_target:find_path_fleet }
-# 			save_event_target_as = path_start
-# 		}
-# 		random_system = {
-# 			limit = { has_star_flag = path_end@event_target:find_path_fleet }
-# 			save_event_target_as = path_end
-# 		}
-# 		# 设置已寻路标记
-# 		set_timed_star_flag = { flag = init_path@event_target:find_path_fleet days = 1 }
-# 		# 设置路径标记
-# 		set_star_flag = path@event_target:find_path_fleet
-# 		system_event = { id = wg_crisis.48 }
-# 		while = {
-# 			limit = {
-# 				any_system = { has_star_flag = frontier@event_target:find_path_fleet }
-# 				NOT = { has_global_flag = find_path@event_target:find_path_fleet }
-# 			}
-# 			every_system = {
-# 				limit = { has_star_flag = frontier@event_target:find_path_fleet }
-# 				system_event = { id = wg_crisis.48 }
-# 			}
-# 		}
-# 		# 逆向找路
-# 		random_system = {
-# 			limit = { has_star_flag = path_end@event_target:find_path_fleet }
-# 			system_event = { id = wg_crisis.49 }
-# 		}
-# 		# 移除flag
-# 		every_system = {
-# 			remove_star_flag = frontier@event_target:find_path_fleet
-# 			remove_star_flag = init_path@event_target:find_path_fleet
-# 		}
-# 		system_event = { id = wg_crisis.10048 }
-# 		while = {
-# 			limit = { any_system = { has_star_flag = frontier@event_target:find_path_fleet }}
-# 			every_system = {
-# 				limit = { has_star_flag = frontier@event_target:find_path_fleet }
-# 				system_event = { id = wg_crisis.10048 }
-# 			}
-# 		}
-# 		every_system = {
-# 			remove_star_flag = frontier@event_target:find_path_fleet
-# 		}
-# 		event_target:find_path_fleet = {
-# 			fleet_event = { id = wg_crisis.42 days = 1 }
-# 		}
-# 	}
-# }
-# # 舰队移动触发 [NO USED]
-# system_event = {
-# 	id = wg_crisis.48
-# 	hide_window = yes
-# 	is_triggered_only = yes
-
-# 	trigger = {
-# 		exists = event_target:find_path_fleet
-# 		NOT = { has_global_flag = find_path@event_target:find_path_fleet }
-# 	}
-
-# 	immediate = {
-# 		remove_star_flag = frontier@event_target:find_path_fleet
-# 		random_system = {
-# 			limit = { has_star_flag = path_end@event_target:find_path_fleet }
-# 			save_event_target_as = path_end
-# 		}
-# 		every_neighbor_system = {
-# 			limit = { NOT = { has_star_flag = init_path@event_target:find_path_fleet }}
-# 			set_timed_star_flag = { flag = camefrom@root days = 1 }
-# 			if = {
-# 				limit = { has_star_flag = path_end@event_target:find_path_fleet }
-# 				set_timed_global_flag = { flag = find_path@event_target:find_path_fleet days = 1 }
-# 				break = yes
-# 			} else = {
-# 				set_timed_star_flag = { flag = init_path@event_target:find_path_fleet days = 1 }
-# 				set_timed_star_flag = { flag = frontier@event_target:find_path_fleet days = 1 }
-# 			}
-# 		}
-# 		# 检查是否有星门虫洞等 
-# 		if = {
-# 			limit = { closest_system = {
-# 				max_steps = 1
-# 				use_bypasses = yes
-# 				limit = { 
-# 					NOT = { has_star_flag = init_path@event_target:find_path_fleet }
-# 					OR = {
-# 						# L门和虫洞可以穿，其他需要无主才能穿过
-# 						has_natural_wormhole = yes
-# 						has_megastructure = lgate_base
-# 						has_owner = no
-# 					}
-# 				}
-# 			}}
-# 			every_system = {
-# 				limit = { closest_system = {
-# 					max_steps = 1
-# 					use_bypasses = yes
-# 					limit = { 
-# 						NOT = { has_star_flag = init_path@event_target:find_path_fleet }
-# 						is_same_value = ROOT
-# 					}
-# 				}}
-# 				set_timed_star_flag = { flag = camefrom@root days = 1 }
-# 				if = {
-# 					limit = { has_star_flag = path_end@event_target:find_path_fleet }
-# 					set_timed_global_flag = { flag = find_path@event_target:find_path_fleet days = 1 }
-# 					break = yes
-# 				} else = {
-# 					set_timed_star_flag = { flag = init_path@event_target:find_path_fleet days = 1 }
-# 					set_timed_star_flag = { flag = frontier@event_target:find_path_fleet days = 1 }
-# 				}
-# 			}
-# 		}
-# 	}
-# }
-
-# 移除flag# # 舰队移动触发 [NO USED]
-# system_event = {
-# 	id = wg_crisis.10048
-# 	hide_window = yes
-# 	is_triggered_only = yes
-
-# 	trigger = {
-# 		exists = event_target:find_path_fleet
-# 	}
-
-# 	immediate = {
-# 		remove_star_flag = frontier@event_target:find_path_fleet
-# 		every_neighbor_system = {
-# 			limit = { has_star_flag = camefrom@root }
-# 			remove_star_flag = camefrom@root
-# 			set_timed_star_flag = { flag = frontier@event_target:find_path_fleet days = 1 }
-# 		}
-# 		# 检查是否有星门虫洞等 
-# 		if = {
-# 			limit = { OR = {
-# 				# L门和虫洞可以穿，其他需要无主才能穿过
-# 				has_natural_wormhole = yes
-# 				has_megastructure = lgate_base
-# 				has_owner = no
-# 			}}
-# 			every_system = {
-# 				limit = { 
-# 					closest_system = {
-# 						max_steps = 1
-# 						use_bypasses = yes
-# 						limit = { is_same_value = ROOT }
-# 					}
-# 					has_star_flag = camefrom@root
-# 				}
-# 				remove_star_flag = camefrom@root
-# 				set_timed_star_flag = { flag = frontier@event_target:find_path_fleet days = 1 }
-# 			}
-# 		}
-# 	}
-# }
-# 逆方向寻路# 舰队移动触发 [NO USED]
-# system_event = {
-# 	id = wg_crisis.49
-# 	hide_window = yes
-# 	is_triggered_only = yes
-
-# 	trigger = {
-# 		exists = event_target:find_path_fleet
-# 		NOT = { has_star_flag = path_start@event_target:find_path_fleet }
-# 	}
-
-# 	immediate = {
-# 		# 设置路径标记
-# 		set_star_flag = path@event_target:find_path_fleet
-# 		if = {
-# 			limit = {
-# 				NOT = { any_neighbor_system = { root = {
-# 					has_star_flag = camefrom@prev
-# 				}}}
-# 			}
-# 			random_system = {
-# 				limit = { closest_system = {
-# 					max_steps = 1
-# 					use_bypasses = yes
-# 					limit = { 
-# 						root = { has_star_flag = camefrom@prev }
-# 						is_same_value = ROOT
-# 					}
-# 				}}
-# 				system_event = { id = wg_crisis.49 }
-# 			}
-# 		} else = {
-# 			random_neighbor_system = {
-# 				limit = { root = { has_star_flag = camefrom@prev }}
-# 				system_event = { id = wg_crisis.49 }
-# 			}
-# 		}
-# 	}
-# }
 
 planet_event = {
     id = wg_crisis.41
@@ -2965,7 +2002,7 @@ planet_event = {
 		}
         solar_system = {
 			any_fleet_in_system = {
-				owner = { is_country_type = wg_crisis_country }
+				owner = { is_same_value = event_target:wg_crisis_country }
 			}
         }
     }
@@ -2987,34 +2024,8 @@ planet_event = {
 		every_fleet_in_orbit = {
 			remove_fleet_flag = blowing_up_planet
 			remove_fleet_flag = bombarding_planet
-			remove_fleet_flag = moving_to_system
 		}
 		event_target:wg_crisis_country = {
-			# 如果有其他舰队目标是此星球的星系，移除目标并重新寻路
-			every_owned_fleet = {
-				limit = { 
-					ROOT.solar_system = { 
-						any_system_planet = { NOR = {
-							is_same_value = root
-							is_colonizable = yes
-							is_colony = yes
-							has_planet_flag = uf_target
-						}}
-						check_variable = {
-							which = uf_fleet_id
-							value = PREV.uf_fleet_id
-						}
-					}
-				}
-				ROOT.solar_system = { 
-					clear_variable = fleet_id
-				}
-				clear_fleet_actions = this
-				fleet_event = { id = wg_crisis.96 days = 5 } ##wg_crisis.40 change from eddy#
-				fleet_event = { id = wg_crisis.800 days = 20 }
-			}
-		}
-		event_target:wg_crisis_2_country = {
 			# 如果有其他舰队目标是此星球的星系，移除目标并重新寻路
 			every_owned_fleet = {
 				limit = { 
@@ -3147,7 +2158,8 @@ country_event = {
 							add_modifier = { modifier = uf_convoy_fleet_speed_buff days = 2500 }
 						}
 					}}
-				} else_if = {
+				} 
+				else_if = {
 					# 全部门都死了，无家可归，继续炸
 					limit = {
 						OR = {
@@ -3171,7 +2183,8 @@ country_event = {
 					set_variable = { which = uf_fleet_id value = root.uf_fleet_id }
 					set_name = "NAME_Raider_Fleet"
 					fleet_event = { id = wg_crisis.96 }
-				} else = {
+				} 
+				else = {
 					# going homo
 					random_system = {
 						limit = { 
@@ -3241,11 +2254,6 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	#fire_only_once = yes
-
-    trigger = {
-        #is_country_type = wg_crisis_country
-		#NOT = { has_global_flag = wg_invasion_end }
-    }
 
     immediate = {
 		if = {
@@ -3687,40 +2695,6 @@ country_event = {
     }
 }
 
-country_event = { 
-	id = wg_crisis.80
-	hide_window = yes
-	is_triggered_only = yes 
-	trigger = {
-		is_country_type = wg_crisis_country
-		OR = {
-			has_global_flag = wg_crisis_easy
-			has_global_flag = wg_crisis_hard
-			has_global_flag = wg_crisis_insane
-		}
-		NOT = { has_global_flag = all_portal_destroyed }
-		always = no
-	}
-
-	immediate = {
-		every_playable_country = {
-			limit = {
-				is_ai = no
-				has_wg_special_authority = yes
-			}
-			ROOT = { random_owned_ship = {
-				limit = { is_ship_size = wg_dimensional_portal }
-				Fleet = {
-					while = { count = 3
-						create_wg_crisis_greater_admiral = yes
-						create_wg_crisis_greater_fleet = yes
-					}
-				}
-			}}
-		}
-	}
-}
-
 # 循环检查舰队是否卡死在星系
 fleet_event = {
 	id = wg_crisis.800
@@ -3932,7 +2906,7 @@ country_event = {
 	trigger = {
 		NOT = { has_global_flag = wg_crisis_disabled }
 		NOT = { has_global_flag = wg_invasion_end }
-		is_country_type = wg_crisis_country
+		is_same_value = event_target:wg_crisis_2_country
 		FROMFROM = { is_ship_size = wg_dimensional_small_portal }
 	}
 
@@ -4012,271 +2986,7 @@ fleet_event = {
         owner = { is_country_type = wg_crisis_country }
 	}
 
-	immediate = {
-		queue_actions = {
-			repeat = {
-				effect = {
-					id = wg_crisis.96.e0.effect
-					if = {
-						limit = { count_system = { 
-							count > event_target:global_event_country.wg_count_system
-							limit = { check_variable = { which = uf_fleet_id value > 0 } } 
-						} }
-						every_system = { 
-							set_variable = { which = uf_fleet_id value = 0 }
-							clear_variable = uf_fleet_id 
-						}
-					}
-					if = {
-						limit = {
-							has_fleet_flag = cannot_find_path 
-							any_system = { OR = {
-								AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
-								any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
-							} }
-						}
-						random_system = {
-							limit = { OR = {
-								AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
-								any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
-							} }
-                            random_system_planet = { ROOT = { set_location = { target = PREV distance = 5 angle = random } } }
-						} 
-						remove_fleet_flag = cannot_find_path
-					}
-					else_if = { 
-						limit = {
-							NOT = { any_system = { OR = {
-								AND = { exists = starbase starbase = { owner = { is_hostile = root.owner } } }
-								any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
-							} } }
-						}
-						clear_orders = yes clear_fleet_actions = this 
-						random_list = {
-							1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 30 } }
-							1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 60 } }
-							1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 120 } }
-							1 = { set_timed_fleet_flag = { flag = wg_lesury_fleet days = 240 } }
-						}
-						reroll_random = yes
-					}
-				}
-                #寻找敌人的舰队
-                find_closest_system = {
-					trigger = {
-						id = wg_crisis.96.find_closet_fleet
-						any_fleet_in_system = {
-							exists = controller
-							is_ship_class = shipclass_military
-							controller = { is_hostile = root.owner }
-							NOT = { has_fleet_flag = wg_find_closet_fleet_target_@root }
-						}
-						ROOT = { can_access_system = prev }
-						check_variable = { which = uf_fleet_id value < 1 }
-						root.owner = { check_variable = { which = wg_find_target_fleet_effct value < 10 } }
-					}
-					found_system = { 
-						effect = {
-							id = wg_crisis.96.find_closet_fleet_effect
-							random_fleet_in_system = {
-								limit = {
-									exists = controller
-									controller = { is_hostile = root.owner }
-									is_ship_class = shipclass_military
-									NOT = { has_fleet_flag = wg_find_closet_fleet_target_@root }
-								}
-								weights = {
-									base = 10
-									modifier = { add = 5 fleet_size > 400 }
-									modifier = { factor = 1.25 fleet_power > 2000000 }
-									modifier = { factor = 50 fleet_size > 800 }
-								}
-								set_timed_fleet_flag = { flag = wg_find_closet_fleet_target_@root days = 55 }
-							}
-							root.owner = { change_variable = { which = wg_find_target_fleet_effct value = 1 } }
-						}
-						move_to = this
-					}
-					#找星球
-					failed = { find_closest_system = { 
-						trigger = {
-							id = wg_crisis.96.find_closest_colony
-							any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
-							ROOT = { can_access_system = prev }
-							check_variable = { which = uf_fleet_id value < 1 }
-						}
-						found_system = {
-							effect = {
-								id = wg_crisis.96.find_closest_colony_effect
-								set_variable = { which = uf_fleet_id value = root.fleet_id }
-							}
-							move_to = this
-							repeat = {
-								while = {
-									id = wg_crisis.96.find_closest_colony_while
-									any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
-								}
-								find_closest_planet = {
-									trigger = {
-										id = wg_crisis.96.find_closest_colony_planet
-										OR = { is_colony = yes is_colonizable = yes }
-									}
-									found_planet = {
-										orbit_planet = this
-										effect = {
-											id = wg_crisis.96.find_closest_colony_planet_effect
-											ROOT = { set_fleet_flag = bombarding_planet }
-											if = {
-												#未殖民宜居星球过1个月炸掉
-												limit = { is_colony = no is_colonizable = yes }
-												set_planet_flag = target_planet
-												planet_event = { id = wg_crisis.43 days = 30 }
-											}
-											if = {
-												#已殖民宜居星球过3个月炸掉
-												limit = { is_colony = yes is_colonizable = yes }
-												set_planet_flag = target_planet
-												planet_event = { id = wg_crisis.43 days = 90 }
-											}
-											if = {
-												#高难度下炸球后概率跃迁
-												limit = {
-													OR = {
-														has_global_flag = wg_crisis_hard
-														has_global_flag = wg_crisis_insane
-													}
-												}
-												random = {
-													chance = 5
-													ROOT = { set_fleet_flag = cannot_find_path }
-												}
-											}
-										}
-										repeat = {
-											while = {
-												id = wg_crisis.96.find_closest_colony_planet_repeat_1
-												ROOT = { has_fleet_flag = bombarding_planet }
-											}
-											effect = {
-												id = wg_crisis.96.find_closest_colony_planet_repeat_2
-												if = {
-													limit = { is_colony = no is_colonizable = no }
-													ROOT = { remove_fleet_flag = bombarding_planet }
-												}
-											} 
-											wait = { duration = 5 random = 10 }
-										}
-									}
-								}
-								move_to = this							# move away from the planet
-								wait = { duration = 5 random = 10 }
-							} 
-							wait = { duration = 5 random = 10 }
-						}		
-						#找首都或者巨构			
-						failed = { find_closest_system = {
-							trigger = {
-								id = wg_crisis.96.find_closest_starbase_and_megas
-								OR = {
-									AND = { exists = starbase starbase = { controller = { is_hostile = root.owner } } }
-									AND = { 
-										exists = space_owner space_owner = { is_hostile = root.owner } 
-										has_any_danger_target_megastructure = yes 
-									}
-								}
-								ROOT = { can_access_system = prev }
-								check_variable = { which = uf_fleet_id value < 1 }
-							}
-							found_system = {
-								effect = {
-									id = wg_crisis.96.find_closest_starbase_and_megas_effect
-									set_variable = { which = uf_fleet_id value = root.fleet_id }
-								}
-								move_to = this
-								repeat = {
-									while = {
-										id = wg_crisis.96.find_closest_colony_while
-										any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
-									}
-									find_closest_planet = {
-										trigger = {
-											id = wg_crisis.96.find_closest_colony_planet
-											OR = { is_colony = yes is_colonizable = yes }
-										}
-										found_planet = {
-											orbit_planet = this
-											effect = {
-												id = wg_crisis.96.find_closest_colony_planet_effect
-												ROOT = { set_fleet_flag = bombarding_planet }
-												if = {
-													#未殖民宜居星球过1个月炸掉
-													limit = { is_colony = no is_colonizable = yes }
-													set_planet_flag = target_planet
-													planet_event = { id = wg_crisis.43 days = 30 }
-												}
-												if = {
-													#已殖民宜居星球过3个月炸掉
-													limit = { is_colony = yes is_colonizable = yes }
-													set_planet_flag = target_planet
-													planet_event = { id = wg_crisis.43 days = 90 }
-												}
-												if = {
-													#高难度下炸球后概率跃迁
-													limit = {
-														OR = {
-															has_global_flag = wg_crisis_hard
-															has_global_flag = wg_crisis_insane
-														}
-													}
-													random = {
-														chance = 5
-														ROOT = { set_fleet_flag = cannot_find_path }
-													}
-												}
-											}
-											repeat = {
-												while = {
-													id = wg_crisis.96.find_closest_colony_planet_repeat_1
-													ROOT = { has_fleet_flag = bombarding_planet }
-												}
-												effect = {
-													id = wg_crisis.96.find_closest_colony_planet_repeat_2
-													if = {
-														limit = { is_colony = no is_colonizable = no }
-														ROOT = { remove_fleet_flag = bombarding_planet }
-													}
-												} 
-												wait = { duration = 5 random = 10 }
-											}
-										}
-									}
-									move_to = this							# move away from the planet
-									wait = { duration = 5 random = 10 }
-								} 
-								wait = { duration = 5 random = 10 }
-							}
-							#随便逛逛
-							failed = { find_closest_system = {
-								trigger = {
-									id = wg_crisis.96.lesury_fleet_target
-									ROOT = { can_access_system = prev }
-									check_variable = { which = uf_fleet_id value < 1 }
-								}
-								found_system = {
-									effect = {
-										id = wg_crisis.96.lesury_fleet_target_moving
-										set_variable = { which = uf_fleet_id value = root.fleet_id }
-									}
-									move_to = this
-								}
-								failed = { effect = { id = wg_crisis.96.notarget ROOT = { set_fleet_flag = cannot_find_path } } wait = 200 }
-							} }
-						} }
-					} }
-				}
-			}
-		}
-	}
+	immediate = { uf_fleet_assult_fleet_action = yes }
 }
 
 
@@ -4296,133 +3006,39 @@ fleet_event = {
 		has_fleet_flag = colossus_fleet
 		NOT = { has_fleet_flag = evading_battle }
         owner = { is_country_type = wg_crisis_country }
-        any_system = {
-			exists = space_owner
-		}
+        any_system = { exists = space_owner }
 	}
 
 	immediate = {
 		clear_fleet_actions = this
-		queue_actions = {
-			repeat = {
-				effect = {
-					id = wg_crisis.97.e0
-					if = {
-						limit = { 
-							any_system = { NOR = {
-								check_variable = { which = uf_fleet_id value < 1 }
-								# 打架后留下的星系
-								check_variable = { which = uf_fleet_id value = root.uf_fleet_id }
-							}}
-						}
-						solar_system = { clear_variable = uf_fleet_id }
-					}
-					# 等候一段时间后仍然找不到可通行路径，折跃
-					if = {
-						limit = {
-							has_fleet_flag = cannot_find_path
-							NOT = {
-								any_system = {
-									NOT = { has_star_flag = uf_destroyed_system }
-									ROOT = { can_access_system = PREV }
-									OR = {
-										exists = starbase
-										any_system_planet = {
-											has_owner = yes
-										}
-									}
-								}
-							}
-						}
-						queue_actions = {
-							find_random_system = {
-								trigger = {
-									id = wg_crisis.97.t01
-									NOT = { has_star_flag = uf_destroyed_system }
-									any_system_planet = { is_colony = no }
-									closest_system = {
-										min_steps = 1
-										any_system_planet = {
-											has_owner = no
-										}
-									}
-								}
-								found_system = { 
-									effect = {
-										id = wg_crisis.97.e02
-										root = {
-											set_location = prev.star
-										}
-									}
-									wait = 100
-								}
-							}
-						}
-					}
-				}
-				find_closest_system = {
-					trigger = {
-						id = wg_crisis.97.t1
-						NOT = { has_star_flag = uf_destroyed_system }
-						ROOT = { can_access_system = prev }
-						any_system_planet = { has_planet_flag = uf_target }
-					}
-					found_system = {
-						effect = {
-							id = wg_crisis.97.e1
-							set_variable = { which = uf_fleet_id value = root.uf_fleet_id }
-						}
-						move_to = this
-						find_closest_planet = {
-							trigger = {
-								id = wg_crisis.97.t3
-								is_primary_star = yes
-							}
-							found_planet = {
-								effect = {
-									id = wg_crisis.97.e2
-									# 提醒玩家
-									if = {
-										limit = { solar_system = { any_system_planet = {
-											has_owner = yes
-											owner = { is_ai = no }
-										}}}
-										solar_system = { 
-											save_event_target_as = uf_colossus_arrived_system
-											random_system_planet = {
-												limit = {
-													has_owner = yes
-													owner = { is_ai = no }
-												}
-												owner = { country_event = { id = wg_crisis.89 }}
-											}
-										}
-									}
-								}
-								destroy_planet = {
-									target = THIS
-									skip_rules = yes
-								}
-							}
-						}			
-						wait = 15
-					}					
-					failed = {
-						# 找不到路
-						effect = {
-							id = wg_crisis.97.e13
-							ROOT = { 
-								set_fleet_flag = cannot_find_path
-								set_timed_fleet_flag = {
-									flag = orders_cooldown days = 200
-								}
-							}
-						}
-						wait = 200
-					}
-				}
+		uf_fleet_destory_planet_action = yes
+	}
+}
+
+#重置突袭舰队多舰队进入同星系
+fleet_event = {
+	id = wg_crisis.961
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_global_flag = wg_invasion_happened
+			has_global_flag = wg_invasion_2_happened
+		}
+		has_fleet_flag = raider_fleet
+		#wg_crisis.96 fleet_flag change from eddy#
+        owner = { is_country_type = wg_crisis_country }
+		from = {
+			any_fleet_in_system = {
+				NOT = { is_same_value = root }
+				has_fleet_flag = raider_fleet
 			}
 		}
+	}
+	immediate = {
+		clear_orders = yes
+		clear_fleet_actions = this
+		from = { random_neighbor_system = { system_star = { root = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } } } }
 	}
 }
 
@@ -6328,23 +4944,6 @@ event = {
 	}
 }
 
-# 弃用
-# country_event = {
-# 	id = wg_crisis.10003
-# 	hide_window = yes
-# 	is_triggered_only = yes
-
-# 	immediate = {
-		# remove_global_flag = wg_crisis_very_easy
-		# remove_global_flag = wg_crisis_easy
-		# remove_global_flag = wg_crisis_normal
-		# remove_global_flag = wg_crisis_hard
-		# remove_global_flag = wg_crisis_insane
-		# remove_global_flag = wg_crisis_disabled
-# 		country_event = { id = wg_crisis.10000 }
-# 	}
-# }
-
 event = {
 	id = wg_crisis.10004
 	hide_window = yes
@@ -6791,39 +5390,6 @@ country_event = {
 	}
 }
 
-# # on_fleet_combat_joined_attacker
-# fleet_event = {
-# 	id = wg_crisis.1103
-#     hide_window = yes
-# 	is_triggered_only = yes
-
-# 	trigger = { 
-# 		has_global_flag = wg_invasion_happened
-#         exists = leader
-#         NAND = { 
-#             has_fleet_flag = drones
-#             FROM = { has_fleet_flag = drones }
-#             FROMFROM = { has_fleet_flag = drones }
-#         }
-# 	}
-	
-# 	immediate = {
-# 		every_combatant_fleet = {
-# 			limit = { exists = leader }
-# 			# 敌方舰队加入战斗，检查是否满足触发联合技能-联合迴路遮断器触发条件
-#             if = {
-# 				limit = { 
-# 					NOT = { solar_system = { has_star_flag = uf_leader_trait_s1_triggered }}
-# 					leader = { has_leader_flag = uf_leader_trait_s1 }
-# 					any_combatant_fleet = { fleet_size > 200 }	
-# 				}
-# 				fleet_event = { id = wg_crisis.2010 }
-# 				solar_system = { set_star_flag = uf_leader_trait_s1_triggered }
-# 			}
-# 		}
-# 	}
-# }
-
 # 联合技能 联合迴路遮断器
 fleet_event = {
 	id = wg_crisis.2010
@@ -6874,13 +5440,13 @@ fleet_event = {
 					}
 					fleet_size > 15
 				}
-				uf_clear_ship_modifier = { modifier = ship_weapon_damage change = 1 DAYS = 30 }
-				uf_clear_ship_modifier = { modifier = weapon_type_energy_weapon_damage_mult change = 1 DAYS = 30 }
-				uf_clear_ship_modifier = { modifier = weapon_type_kinetic_weapon_damage_mult change = 1 DAYS = 30 }
-				uf_clear_ship_modifier = { modifier = weapon_type_explosive_weapon_damage_mult change = 1 DAYS = 30 }
-				set_timed_fleet_flag = { flag = uf_leader_trait_s1 days = 30 }
+				uf_clear_ship_modifier = { modifier = ship_weapon_damage change = 0.90 DAYS = 15 }
+				uf_clear_ship_modifier = { modifier = weapon_type_energy_weapon_damage_mult change = 0.90 DAYS = 15 }
+				uf_clear_ship_modifier = { modifier = weapon_type_kinetic_weapon_damage_mult change = 0.90 DAYS = 15 }
+				uf_clear_ship_modifier = { modifier = weapon_type_explosive_weapon_damage_mult change = 0.90 DAYS = 15 }
+				set_timed_fleet_flag = { flag = uf_leader_trait_s1 days = 15 }
 			}
-			fleet_event = { id = wg_crisis.2010 days = 60 }
+			fleet_event = { id = wg_crisis.2010 days = 75 }
 		} 
 		else = {
 			solar_system = { remove_star_flag = uf_leader_trait_s1_triggered }
@@ -6913,72 +5479,68 @@ fleet_event = {
 	immediate = {
 		leader = { save_event_target_as = uf_clone_leader }
 		owner = {
-			while = { count = 3
-				clone_leader = {
-					target = event_target:uf_clone_leader
-					class = commander
-					effect = {
-						save_event_target_as = uf_mirrored_leader
-						remove_leader_flag = uf_leader_trait_s2
-						remove_trait = leader_trait_admiral_uf_s2
-						add_trait_no_notify = leader_trait_admiral_uf_mirrored_fleet
-					}
+			clone_leader = {
+				target = event_target:uf_clone_leader
+				class = commander
+				effect = {
+					save_event_target_as = uf_mirrored_leader
+					remove_leader_flag = uf_leader_trait_s2
+					remove_trait = leader_trait_admiral_uf_s2
+					add_trait_no_notify = leader_trait_admiral_uf_mirrored_fleet
 				}
-				create_fleet = {
-					name = "NAME_UF_mirrored_fleet"
-					effect = {
-						set_owner = root.owner
-						set_variable = { which = num_carrier_exist value = root.num_carrier_exist }
-						set_variable = { which = num_titan_exist value = root.num_titan_exist }
-						set_variable = { which = num_bb_exist value = root.num_bb_exist }
-						set_variable = { which = num_bc_exist value = root.num_bc_exist }
-						set_variable = { which = num_ca_exist value = root.num_ca_exist }
-						set_variable = { which = num_dd_exist value = root.num_dd_exist }
-						set_variable = { which = num_dreadnought_exist value = root.num_dreadnought_exist }
-						set_variable = { which = num_bf_portal_exist value = root.num_bf_portal_exist }
-						set_variable = { which = num_bf_exist value = root.num_bf_exist }
-						set_variable = { which = num_juggernaut_exist value = root.num_juggernaut_exist }
-						set_variable = { which = num_flagship_exist value = root.num_flagship_exist }
-						create_uf_carrier = { NUM = num_carrier_exist }
-						create_uf_titan = { NUM = num_titan_exist }
-						create_uf_bb = { NUM = num_bb_exist }
-						create_uf_bc = { NUM = num_bc_exist }
-						create_uf_ca = { NUM = num_ca_exist }
-						create_uf_dd = { NUM = num_dd_exist }
-						create_uf_dreadnought = { NUM = num_dreadnought_exist }
-						create_uf_buffer = { NUM = num_bf_exist }
-						create_uf_buffer_portal = { NUM = num_bf_portal_exist }
-						create_uf_juggernaut = { NUM = num_juggernaut_exist }
-						create_uf_flagship = { NUM = num_flagship_exist }
-						set_location = {
-							target = ROOT
-							distance = 30
-							angle = random
-							direction = in_system
-						}
-						set_fleet_stance = aggressive
-						set_aggro_range_measure_from = self
-						set_aggro_range = 500
-						assign_leader = event_target:uf_mirrored_leader
-						set_fleet_flag = uf_mirrored_fleet
-						if = {
-							limit = { ROOT = { has_fleet_flag = raider_fleet }}
-							add_modifier = { modifier = uf_raider_buff days = -1 }
-						}
-						set_variable = { which = fleet_id value = ROOT.fleet_id }
-						fleet_event = {
-							id = wg_crisis.2013 days = 60
-						}
+			}
+			create_fleet = {
+				name = "NAME_UF_mirrored_fleet"
+				effect = {
+					set_owner = root.owner
+					set_variable = { which = num_carrier_exist value = root.num_carrier_exist }
+					set_variable = { which = num_titan_exist value = root.num_titan_exist }
+					set_variable = { which = num_bb_exist value = root.num_bb_exist }
+					set_variable = { which = num_bc_exist value = root.num_bc_exist }
+					set_variable = { which = num_ca_exist value = root.num_ca_exist }
+					set_variable = { which = num_dd_exist value = root.num_dd_exist }
+					set_variable = { which = num_dreadnought_exist value = root.num_dreadnought_exist }
+					set_variable = { which = num_bf_portal_exist value = root.num_bf_portal_exist }
+					set_variable = { which = num_bf_exist value = root.num_bf_exist }
+					set_variable = { which = num_juggernaut_exist value = root.num_juggernaut_exist }
+					set_variable = { which = num_flagship_exist value = root.num_flagship_exist }
+					create_uf_carrier = { NUM = num_carrier_exist }
+					create_uf_titan = { NUM = num_titan_exist }
+					create_uf_bb = { NUM = num_bb_exist }
+					create_uf_bc = { NUM = num_bc_exist }
+					create_uf_ca = { NUM = num_ca_exist }
+					create_uf_dd = { NUM = num_dd_exist }
+					create_uf_dreadnought = { NUM = num_dreadnought_exist }
+					create_uf_buffer = { NUM = num_bf_exist }
+					create_uf_buffer_portal = { NUM = num_bf_portal_exist }
+					create_uf_juggernaut = { NUM = num_juggernaut_exist }
+					create_uf_flagship = { NUM = num_flagship_exist }
+					set_location = {
+						target = ROOT
+						distance = 30
+						angle = random
+						direction = in_system
 					}
-					settings = { 
-						can_upgrade = no 
-						uses_naval_capacity = no
-						can_change_leader = no
-						can_change_composition = no
-						can_disband = no
-						spawn_debris = no
-						ai_ignore_strength = yes
+					set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 500
+					assign_leader = event_target:uf_mirrored_leader
+					set_fleet_flag = uf_mirrored_fleet
+					if = {
+						limit = { ROOT = { has_fleet_flag = raider_fleet }}
+						add_modifier = { modifier = uf_raider_buff days = -1 }
 					}
+					set_variable = { which = fleet_id value = ROOT.fleet_id }
+					fleet_event = { id = wg_crisis.2013 days = 60 }
+				}
+				settings = { 
+					can_upgrade = no 
+					uses_naval_capacity = no
+					can_change_leader = no
+					can_change_composition = no
+					can_disband = no
+					spawn_debris = no
+					ai_ignore_strength = yes
 				}
 			}
 		}
