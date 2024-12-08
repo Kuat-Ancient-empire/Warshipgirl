@@ -155,10 +155,9 @@ create_uf_fleet = {
             [[ID] fleet_event = { id = $ID$.110 days = 60 } ]
             
             [[ACTION_TARGET]
-                set_variable = { which = "fleet_id" value = event_target:$ACTION_TARGET$.fleet_id } 
                 event_target:$ACTION_TARGET$ = { change_variable = { which = uf_fleet_id value = 1 }}
-                solar_system = { set_variable = { which = fleet_id value = prev.uf_fleet_id }}
                 set_variable = { which = "uf_fleet_id" value = event_target:$ACTION_TARGET$.uf_fleet_id }
+                solar_system = { set_variable = { which = fleet_id value = prev.uf_fleet_id }}
             ] 
 
             [[GUARD_FLEET] if = { limit = { always = $GUARD_FLEET$ } set_fleet_flag = defence_fleet } ]
@@ -244,11 +243,11 @@ uf_fleet_assult_fleet_action = {
                 if = {
                     limit = { count_system = { 
                         count > event_target:global_event_country.wg_count_system
-                        limit = { check_variable = { which = uf_fleet_id value > 0 } } 
+                        limit = { check_variable = { which = fleet_id value > 0 } } 
                     } }
                     every_system = { 
-                        set_variable = { which = uf_fleet_id value = 0 }
-                        clear_variable = uf_fleet_id 
+                        set_variable = { which = fleet_id value = 0 }
+                        clear_variable = fleet_id 
                     }
                 }
                 if = {
@@ -328,12 +327,12 @@ uf_fleet_assult_fleet_action = {
                         id = wg_crisis.96.find_closest_colony
                         any_system_planet = { OR = { is_colony = yes is_colonizable = yes } }
                         ROOT = { can_access_system = prev }
-                        check_variable = { which = uf_fleet_id value < 1 }
+                        check_variable = { which = fleet_id value < 1 }
                     }
                     found_system = {
                         effect = {
                             id = wg_crisis.96.find_closest_colony_effect
-                            set_variable = { which = uf_fleet_id value = root.fleet_id }
+                            set_variable = { which = fleet_id value = root.uf_fleet_id }
                         }
                         move_to = this
                         repeat = {
@@ -406,12 +405,12 @@ uf_fleet_assult_fleet_action = {
                             starbase = { controller = { is_hostile = root.owner } } 
                             has_any_danger_target_megastructure = yes 
                             ROOT = { can_access_system = prev }
-                            check_variable = { which = uf_fleet_id value < 1 }
+                            check_variable = { which = fleet_id value < 1 }
                         }
                         found_system = {
                             effect = {
                                 id = wg_crisis.96.find_closest_starbase_and_megas_effect
-                                set_variable = { which = uf_fleet_id value = root.fleet_id }
+                                set_variable = { which = fleet_id value = root.uf_fleet_id }
                             }
                             move_to = this
                             repeat = {
@@ -481,12 +480,12 @@ uf_fleet_assult_fleet_action = {
                             trigger = {
                                 id = wg_crisis.96.lesury_fleet_target
                                 ROOT = { can_access_system = prev }
-                                check_variable = { which = uf_fleet_id value < 1 }
+                                check_variable = { which = fleet_id value < 1 }
                             }
                             found_system = {
                                 effect = {
                                     id = wg_crisis.96.lesury_fleet_target_moving
-                                    set_variable = { which = uf_fleet_id value = root.fleet_id }
+                                    set_variable = { which = fleet_id value = root.uf_fleet_id }
                                 }
                                 move_to = this
                             }
@@ -507,12 +506,12 @@ uf_fleet_destory_planet_action = {
                 if = {
                     limit = { 
                         any_system = { NOR = {
-                            check_variable = { which = uf_fleet_id value < 1 }
+                            check_variable = { which = fleet_id value < 1 }
                             # 打架后留下的星系
-                            check_variable = { which = uf_fleet_id value = root.uf_fleet_id }
+                            check_variable = { which = fleet_id value = root.uf_fleet_id }
                         }}
                     }
-                    solar_system = { clear_variable = uf_fleet_id }
+                    solar_system = { clear_variable = fleet_id }
                 }
                 # 等候一段时间后仍然找不到可通行路径，折跃
                 if = {
@@ -567,7 +566,7 @@ uf_fleet_destory_planet_action = {
                 found_system = {
                     effect = {
                         id = wg_crisis.97.e1
-                        set_variable = { which = uf_fleet_id value = root.uf_fleet_id }
+                        set_variable = { which = fleet_id value = root.uf_fleet_id }
                     }
                     move_to = this
                     find_closest_planet = {

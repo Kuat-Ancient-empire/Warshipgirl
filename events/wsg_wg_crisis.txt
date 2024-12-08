@@ -732,7 +732,7 @@ planet_event = {
 							has_planet_flag = uf_target
 						}}
 						check_variable = {
-							which = uf_fleet_id
+							which = fleet_id
 							value = PREV.uf_fleet_id
 						}
 					}
@@ -757,7 +757,7 @@ planet_event = {
 							has_planet_flag = uf_target
 						}}
 						check_variable = {
-							which = uf_fleet_id
+							which = fleet_id
 							value = PREV.uf_fleet_id
 						}
 					}
@@ -1919,7 +1919,7 @@ country_event = {
 			OR = {
 				AND = {
 					has_fleet_flag = attack_fleet
-					check_variable = { which = fleet_id value > 0 }
+					check_variable = { which = uf_fleet_id value > 0 }
 				}
 				AND = {
 					has_fleet_flag = raider_fleet
@@ -1933,23 +1933,17 @@ country_event = {
 		FROMFROM = { save_event_target_as = destroyed_fleet }
 		event_target:destroyed_fleet = {
 			if = {
-				limit = { has_fleet_flag = attack_fleet }
+				limit = { OR = {
+					has_fleet_flag = attack_fleet
+					has_fleet_flag = raider_fleet
+				} }
 				every_system = {
 					limit = {
-						check_variable = { which = fleet_id value = prev.fleet_id }
+						check_variable = { which = fleet_id value = prev.uf_fleet_id }
 					}
 					clear_variable = fleet_id
 				}
 			} 
-			else_if = {
-				limit = { has_fleet_flag = raider_fleet }
-				every_system = {
-					limit = {
-						check_variable = { which = uf_fleet_id value = prev.uf_fleet_id }
-					}
-					clear_variable = uf_fleet_id
-				}
-			}
 		}
 	}
 }
@@ -2037,7 +2031,7 @@ planet_event = {
 							has_planet_flag = uf_target
 						}}
 						check_variable = {
-							which = uf_fleet_id
+							which = fleet_id
 							value = PREV.uf_fleet_id
 						}
 					}
@@ -2180,7 +2174,7 @@ country_event = {
 					remove_fleet_flag = convoy_fleet
 					set_fleet_flag = attack_fleet
 					ROOT = { change_variable = { which = uf_fleet_id value = 1 }}
-					set_variable = { which = uf_fleet_id value = root.uf_fleet_id }
+					set_variable = { which = fleet_id value = root.uf_fleet_id }
 					set_name = "NAME_Raider_Fleet"
 					fleet_event = { id = wg_crisis.96 }
 				} 
@@ -3025,19 +3019,13 @@ fleet_event = {
 			has_global_flag = wg_invasion_happened
 			has_global_flag = wg_invasion_2_happened
 		}
-		OR = {
-			has_fleet_flag = raider_fleet
-			has_fleet_flag = attack_fleet
-		}
+		has_fleet_flag = raider_fleet
 		#wg_crisis.96 fleet_flag change from eddy#
         owner = { is_country_type = wg_crisis_country }
 		from = {
 			any_fleet_in_system = {
 				NOT = { is_same_value = root }
-				OR = {
-					has_fleet_flag = raider_fleet
-					has_fleet_flag = attack_fleet
-				}
+				has_fleet_flag = raider_fleet
 			}
 		}
 	}
@@ -3068,7 +3056,7 @@ planet_event = {
 			}
 		}
 		solar_system = {
-			clear_variable = uf_fleet_id
+			clear_variable = fleet_id
 			save_event_target_as = uf_destroyed_system
 			set_star_flag = uf_destroyed_system
 			if = {
@@ -3342,7 +3330,7 @@ country_event = {
 			has_fleet_flag = colossus_fleet 
 			# 已到达目的地，不需要回避
 			solar_system = { NOT = {
-				check_variable = { which = uf_fleet_id value = prevprev.uf_fleet_id }
+				check_variable = { which = fleet_id value = prevprev.uf_fleet_id }
 			}}
 		}
 		fromfromfrom = {
