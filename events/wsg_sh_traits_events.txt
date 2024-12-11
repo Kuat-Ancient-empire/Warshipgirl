@@ -382,7 +382,6 @@ country_event = {
 	id = sh_traits.5
 	hide_window = yes
 	is_triggered_only = yes
-
 	immediate = {
 		if = {
 			limit = {
@@ -404,5 +403,21 @@ country_event = {
 			}
 			remove_modifier = sh_modifier_knowledgeable2
 		}	
+		if = {
+			limit = { 
+				any_owned_leader = {
+					leader_class = scientist
+					NOT = { has_trait = leader_trait_scientist_shenhai_materialist }
+				}
+			}
+			every_owned_leader = {
+				limit = {
+					leader_class = scientist
+					NOT = { has_trait = leader_trait_scientist_shenhai_materialist }
+				}
+				add_trait_no_notify = leader_trait_scientist_shenhai_materialist
+				add_experience = 180
+			}
+		}
 	}
 }

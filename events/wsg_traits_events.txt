@@ -488,6 +488,21 @@ event = {
 	trigger = {
 		any_playable_country = {
 			is_wg_empire = yes
+			OR = {
+				has_modifier = wsg_trait_galatic_engineer_buff
+				has_modifier = wg_modifier_knowledgeable2
+				any_owned_leader = {
+					leader_class = scientist
+					NOT = { has_trait = leader_trait_scientist_warshipgirls_materialist }
+				}
+
+				has_modifier = sh_modifier_knowledgeable
+				has_modifier = sh_modifier_knowledgeable2
+				any_owned_leader = {
+					leader_class = scientist
+					NOT = { has_trait = leader_trait_scientist_shenhai_materialist }
+				}
+			}	
 		}
 	}
 
@@ -497,7 +512,8 @@ event = {
 			if = {
 				limit = { has_authority = auth_shenhai }
 				country_event = { id = sh_traits.5 }
-			} else = {
+			} 
+			else = {
 				country_event = { id = wg_traits.5 }
 			}
 		}
@@ -532,14 +548,20 @@ country_event = {
 			remove_modifier = wg_modifier_knowledgeable2
 		}
 		if = {
-			limit = {
-				OR = {
-					has_deficit = sr_se
-					NOT = { has_trait = wsg_trait_knowledgeable2 }
+			limit = { 
+				any_owned_leader = {
+					leader_class = scientist
+					NOT = { has_trait = leader_trait_scientist_warshipgirls_materialist }
 				}
-				has_modifier = wg_modifier_knowledgeable2
 			}
-			remove_modifier = wg_modifier_knowledgeable2
+			every_owned_leader = {
+				limit = {
+					leader_class = scientist
+					NOT = { has_trait = leader_trait_scientist_warshipgirls_materialist }
+				}
+				add_trait_no_notify = leader_trait_scientist_warshipgirls_materialist
+				add_experience = 180
+			}
 		}
 	}
 }
