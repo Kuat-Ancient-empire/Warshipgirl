@@ -510,10 +510,31 @@ event = {
 		every_playable_country = {
 			limit = { is_wg_empire = yes }
 			if = {
-				limit = { has_authority = auth_shenhai }
+				limit = { 
+					has_authority = auth_shenhai 
+					OR = {
+						has_modifier = sh_modifier_knowledgeable
+						has_modifier = sh_modifier_knowledgeable2
+						any_owned_leader = {
+							leader_class = scientist
+							NOT = { has_trait = leader_trait_scientist_shenhai_materialist }
+						}
+					}
+				}
 				country_event = { id = sh_traits.5 }
 			} 
-			else = {
+			else_if = {
+				limit = {
+					has_authority = auth_warshipgirls
+					OR = {
+						has_modifier = wsg_trait_galatic_engineer_buff
+						has_modifier = wg_modifier_knowledgeable2
+						any_owned_leader = {
+							leader_class = scientist
+							NOT = { has_trait = leader_trait_scientist_warshipgirls_materialist }
+						}
+					}
+				}
 				country_event = { id = wg_traits.5 }
 			}
 		}
