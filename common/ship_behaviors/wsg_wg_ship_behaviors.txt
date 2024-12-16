@@ -1,24 +1,46 @@
+# ship_behavior = {
+# 	name = "EXE_flagship"
+# 	preferred_attack_range = max			#舰船进攻模式下保持的进攻距离 #PS：舰船处于进攻模式下会保持该距离
+# 	formation_distance = max				#舰船被动模式下保持的攻击距离，如果小于该距离切换为进攻模式 #PS:当舰船处于被动模式将会保持该距离，一旦运动到低于该距离，强制转化为进攻模式
+# 	return_to_formation_distance = max		#抵达该距离之前，强制转化为被动模式 #PS:即任何比该数值要大的距离和包括该距离都是被动模式，包括进战
+# 	source_target_anchor_factor = 1.0		#目标和锚点之间坐标权重倍率，该值不能为0 不写该条目默认为1，最低值疑似为0.1或者0.01 数值越低锚点离自己舰船越近
+# 	combat_target_anchor = root				#以敌人舰队领袖船为目标锚点 parent是锁定目标敌舰 root是敌人舰队首位船
+
+# 	collision_awareness = 0.0 				#舰船运动意识，当舰船的移动半径运算结果要撞上去之前，有多高的移动概率，越大的船移动概率越低
+# 	collision_radius = 0					#舰船移动半径倍率，与舰船的定义半径进行相乘，这一数值应该优先修正舰船shipsize定义中的半径，使其与舰船的大小相近
+# 	collision_strafe = 0					#舰船位置冲突时，舰船会选择多大的角度进行回避，一般情况下拉高点舰船回避的速度越快，容易出现鬼畜，数值要适合
+# 	attack_move_pattern = charge			#舰船进攻模式
+# 	passive_move_pattern = stationary		#舰船被动模式
+# 	desc = "EXE_FLAGSHIP_DEFENSIVE_BEHAVIOR_DESC"
+# }
+
+
 ship_behavior = {
 	name = "WSGartillery"
-	preferred_attack_range = 180
-	formation_distance = 180
-	return_to_formation_distance = 190
-
+	preferred_attack_range = max
+	formation_distance = max
+	return_to_formation_distance = max
+	source_target_anchor_factor = 1.0
 	combat_target_anchor = root
 
 	collision_awareness = 0.2
 	collision_radius = 1.0							#collision_radius is a multiplier on the radius specified in the ship size
 	collision_strafe = 2.5							#collision_strafe allows the ship to move in any direction while colliding with another
-	attack_move_pattern = stay_at_range
-	passive_move_pattern = charge
 	
+	attack_move_pattern = stay_at_range
+	passive_move_pattern = maintain_distance
+
 	desc = "WG_ARTILLERY_BEHAVIOR_DESC"
 }
+
+
 ship_behavior = {
 	name = "WSGline"
-	preferred_attack_range = 150		#max/min/median/12/412..	#this is the distance to target the ship wants to keep when attacking
-	formation_distance = 150				#when orbing/following ship will try to keep this distance to assigned position	
-	return_to_formation_distance = 160	#when attacking the ship will switch to passive mode if distance to assigned position is greater that this
+	preferred_attack_range = median		#max/min/median/12/412..	#this is the distance to target the ship wants to keep when attacking
+	formation_distance = median				#when orbing/following ship will try to keep this distance to assigned position	
+	return_to_formation_distance = max	#when attacking the ship will switch to passive mode if distance to assigned position is greater that this
+	source_target_anchor_factor = 1.0
+	combat_target_anchor = root
 
 	collision_awareness = 0.75			
 	collision_radius = 1.0				
@@ -32,42 +54,45 @@ ship_behavior = {
 
 ship_behavior = {
 	name = "WGcarrier"
-	preferred_attack_range = 200
-	formation_distance = 200
-	return_to_formation_distance = 200
+	preferred_attack_range = max
+	formation_distance = max
+	return_to_formation_distance = max
 
 	combat_target_anchor = root
 
-	collision_awareness = 0.75
-	collision_radius = 1.0							#collision_radius is a multiplier on the radius specified in the ship size
-	collision_strafe = 2.5							#collision_strafe allows the ship to move in any direction while colliding with another
-	attack_move_pattern = stay_at_range
-	passive_move_pattern = stay_at_range
+	collision_awareness = 0
+	collision_radius = 0							#collision_radius is a multiplier on the radius specified in the ship size
+	collision_strafe = 0							#collision_strafe allows the ship to move in any direction while colliding with another
+	attack_move_pattern = charge
+	passive_move_pattern = stationary
 
 	desc = "WG_CARRIER_BEHAVIOR_DESC"
 }
 
 ship_behavior = {
 	name = "SHartillery"
-	preferred_attack_range = 180
-	formation_distance = 180
-	return_to_formation_distance = 190
-
+	preferred_attack_range = max
+	formation_distance = max
+	return_to_formation_distance = max
+	source_target_anchor_factor = 1.0
 	combat_target_anchor = root
 
 	collision_awareness = 0.2
 	collision_radius = 1.0							#collision_radius is a multiplier on the radius specified in the ship size
 	collision_strafe = 2.5							#collision_strafe allows the ship to move in any direction while colliding with another
 	attack_move_pattern = stay_at_range
-	passive_move_pattern = charge
+	passive_move_pattern = maintain_distance
 	
 	desc = "WG_ARTILLERY_BEHAVIOR_DESC"
 }
+
 ship_behavior = {
 	name = "SHline"
-	preferred_attack_range = 150		#max/min/median/12/412..	#this is the distance to target the ship wants to keep when attacking
-	formation_distance = 150				#when orbing/following ship will try to keep this distance to assigned position	
-	return_to_formation_distance = 160	#when attacking the ship will switch to passive mode if distance to assigned position is greater that this
+	preferred_attack_range = median		#max/min/median/12/412..	#this is the distance to target the ship wants to keep when attacking
+	formation_distance = median				#when orbing/following ship will try to keep this distance to assigned position	
+	return_to_formation_distance = max	#when attacking the ship will switch to passive mode if distance to assigned position is greater that this
+	source_target_anchor_factor = 1.0
+	combat_target_anchor = root
 
 	collision_awareness = 0.75			
 	collision_radius = 1.0				
@@ -80,17 +105,18 @@ ship_behavior = {
 }
 ship_behavior = {
 	name = "UFartillery"
-	preferred_attack_range = 200
-	formation_distance = 200
-	return_to_formation_distance = 210
-
+	preferred_attack_range = max
+	formation_distance = max
+	return_to_formation_distance = max
+	source_target_anchor_factor = 1.0
 	combat_target_anchor = root
 
 	collision_awareness = 0.2
 	collision_radius = 1.0							#collision_radius is a multiplier on the radius specified in the ship size
 	collision_strafe = 2.5							#collision_strafe allows the ship to move in any direction while colliding with another
+	
 	attack_move_pattern = stay_at_range
-	passive_move_pattern = charge
+	passive_move_pattern = maintain_distance
 	
 	desc = "UF_ARTILLERY_BEHAVIOR_DESC"
 }
@@ -98,14 +124,16 @@ ship_behavior = {
 ship_behavior = {
 	name = "UFcarrier"
 	preferred_attack_range = max
-	formation_distance = 400
-	return_to_formation_distance = 390
-	
-	collision_awareness = 1
-	collision_radius = 20
-	collision_strafe = 10
-	attack_move_pattern = follow #stationary
-	passive_move_pattern = stay_at_range #follow #charge
+	formation_distance = max
+	return_to_formation_distance = max
+
+	combat_target_anchor = root
+
+	collision_awareness = 0
+	collision_radius = 0							#collision_radius is a multiplier on the radius specified in the ship size
+	collision_strafe = 0							#collision_strafe allows the ship to move in any direction while colliding with another
+	attack_move_pattern = charge
+	passive_move_pattern = stationary
 	
 	desc = "UF_CV_BEHAVIOR_DESC"
 }
@@ -113,14 +141,16 @@ ship_behavior = {
 ship_behavior = {
 	name = "WGcarrier2"
 	preferred_attack_range = max
-	formation_distance = 300
-	return_to_formation_distance = 290
-	
-	collision_awareness = 1
-	collision_radius = 20
-	collision_strafe = 10
-	attack_move_pattern = follow #stationary
-	passive_move_pattern = stay_at_range #follow #charge
+	formation_distance = max
+	return_to_formation_distance = max
+
+	combat_target_anchor = root
+
+	collision_awareness = 0
+	collision_radius = 0							#collision_radius is a multiplier on the radius specified in the ship size
+	collision_strafe = 0							#collision_strafe allows the ship to move in any direction while colliding with another
+	attack_move_pattern = charge
+	passive_move_pattern = stationary
 	
 	desc = "WG_CV_BEHAVIOR_DESC"
 }
