@@ -186,6 +186,14 @@ destroy_system_uf = {
 
 destroy_system_ufs = {
 	optimize_memory
+	if = {
+		limit = { exists = event_target:crisis_country }
+		fire_on_action = {
+			on_action = on_destroy_star_system
+			scopes = { from = event_target:crisis_country }
+		}
+	}
+	else = { fire_on_action = { on_action = on_destroy_star_system } }
 	set_star_flag = star_cracked
 	set_star_class = sc_uf_hm
 	if = {
@@ -226,37 +234,83 @@ destroy_system_ufs = {
 			}
 		}
 	}
-	
+	root.from = { random_owned_fleet = { 
+		save_event_target_as = foa_target_fleet 
+		random_owned_ship = { save_event_target_as = foa_target_ship }
+	} }
 	every_fleet_in_system = {
-		limit = {
-			NOR = {
-				is_same_value = from
-				# except Extradimensionals
-				AND = {
-					exists = owner
-					owner = {
-						OR = {
-							is_country_type = portal_holder
-							is_country_type = extradimensional
-							is_country_type = extradimensional_2
-							is_country_type = extradimensional_3
-						}
-					}
-				}
-			}
+		limit = { 
+			exists = owner
+			owner = { 
+				NOR = { 
+					is_same_value = root.from 
+					exists = event_target:wg_crisis_country
+					is_invisable_faction = yes
+				} 
+			} 
 		}
-		if = {
-			limit = {
-				is_mobile = yes
-				owner = { is_default_and_fallen_country = yes }
-			}
-			set_mia = mia_return_home
-		}
-		else = {
-			destroy_fleet = this
-		}
+		uf_foa_effect_the_crisis_fleet = yes
+		uf_foa_effect_the_crisis_ship = yes
+		uf_foa_effect_the_crisis_starbase = yes
+		destroy_fleet = { target = this destroy_template = yes kill_leader = yes }
 	}
 	common_destroy_system_effect = yes
+}
+
+#scope: fleet
+uf_foa_effect_the_crisis_fleet = {
+	optimize_memory
+	root.from = { fire_on_action = {
+		on_action = on_fleet_destroyed_perp
+		scopes = {
+			from = prev.owner
+			fromfrom = event_target:foa_target_fleet
+			fromfromfrom = prev
+		}
+	} }
+	owner = { fire_on_action = {
+		on_action = on_fleet_destroyed_victim
+		scopes = {
+			from = root.from
+			fromfrom = prev
+			fromfromfrom = event_target:foa_target_fleet
+		}
+	} }
+}
+
+#scope: ship
+uf_foa_effect_the_crisis_ship = {
+	optimize_memory
+	every_owned_ship = {
+		root.from = { fire_on_action = {
+			on_action = on_ship_destroyed_perp
+			scopes = {
+				from = prev.owner
+				fromfrom = event_target:foa_target_ship
+				fromfromfrom = prev
+			}
+		} }
+		owner = { fire_on_action = {
+			on_action = on_ship_destroyed_victim
+			scopes = {
+				from = root.from
+				fromfrom = prev
+				fromfromfrom = event_target:foa_target_ship
+			}
+		} }
+	}
+}
+
+#scope: starbase
+uf_foa_effect_the_crisis_starbase = {
+	optimize_memory
+	if = {
+		limit = { is_ship_class = shipclass_starbase }
+		starbase = { fire_on_action = {
+			on_action = on_starbase_destroyed
+			scopes = { from = event_target:foa_target_fleet }
+		} }
+	}
 }
 
 common_destroy_system_effect = {
