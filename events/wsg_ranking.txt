@@ -94,54 +94,6 @@ country_event = {
     # save global event target 已经放进去了solar system initializer了，所以不用再save了
 }
 
-country_event = {
-    id = wsgranking.810
-    hide_window = yes
-    is_triggered_only = yes
-    fire_only_once = yes    
-
-    trigger = {
-        NOT = { has_global_flag = pantsu_shop_created }
-    }
-
-    immediate = {
-        
-    }
-}
-
-# 旧存档适配 （大概）
-# 已经宣布了不适配旧存档所以大概不需要这个了
-#event = {
-#    id = wsgranking.810
-#    hide_window = yes
-#    fire_only_once = yes
-#
-#    trigger = {
-#        NOT = { has_global_flag = pantsu_shop_created }
-#    }
-#
-#    immediate = {
-#        random_country = {
-#            limit = { is_country_type = global_event }
-#            country_event = { id = wsgranking.1919 }
-#        }
-#        # 旧存档如果已经有胖次科技直接联系
-#        every_playable_country = {
-#            limit = {
-#                OR = {
-#                    has_authority = auth_warshipgirls
-#                    has_authority = auth_shenhai
-#                }
-#                has_technology = tech_wsg_pantsu
-#                NOT = { has_communications = event_target:pantsu_shop_country }
-#            }
-#        }
-#        set_country_flag = establish_communicate_in_normal
-#        establish_communications_no_message = event_target:pantsu_shop_country
-#        country_event = { id = wsgranking.1000 }
-#    }
-#}
-
 # 初次联络事件
 country_event = {
 	id = wsgranking.994
@@ -738,12 +690,6 @@ country_event = {
         custom_gui = "enclave_caravaneer_option"
         # 兑换科技
         name = wsgranking.1004.a
-        # trigger = {
-        #     OR = {
-        #         has_technology = tech_wsg_203
-        #         has_technology = tech_sh_Lweapon
-        #     }
-        # }
         hidden_effect = {
             country_event = { id = wsgranking.1005 }
         }
@@ -1444,6 +1390,39 @@ country_event = {
         add_modifier = { modifier = wg_modifier_weapon_payment days = 90 }
         hidden_effect = { country_event = { id = wsgranking.1005 }}
 	}
+    # 星极涡轮炮
+    option = {
+        custom_gui = "enclave_caravaneer_option"
+        name = tech_boss_weapen_ion
+        custom_tooltip = "tech_boss_weapen_ion_desc"
+        trigger = {
+            has_authority = auth_shenhai
+            has_global_flag = wg_tech_boss_weapen_ion_access
+            NOR = { 
+                has_tech_option = tech_boss_weapen_ion
+                has_technology = tech_boss_weapen_ion
+            }
+        }
+        allow = {
+            resource_stockpile_compare = { resource = sr_pantsu value >= 2500 }
+            resource_stockpile_compare = { resource = sr_se value >= 2000 }
+            custom_tooltip = {
+                fail_text = too_low_rank_fail_210
+                check_variable = { which = "rankpts" value >= 150 }
+            }
+            custom_tooltip = {
+                NOT = { has_modifier = wg_modifier_weapon_payment }
+                fail_text = tech_cooldown_desc
+            }
+        }
+		add_resource = {
+			sr_pantsu = -2500
+			sr_se = -2000
+		}
+        give_technology = { tech = tech_boss_weapen_ion }
+        add_modifier = { modifier = wg_modifier_weapon_payment days = 180 }
+        hidden_effect = { country_event = { id = wsgranking.1005 }}
+    }
 	option = {#大波波科研船
 		custom_gui = "enclave_caravaneer_option"
         name = pantsu_shop_science_ship2

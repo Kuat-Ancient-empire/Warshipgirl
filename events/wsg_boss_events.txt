@@ -574,9 +574,7 @@ country_event = {
 			}			
 			if = {
 				limit = {
-				    OR = {
-						has_global_flag = wg_cheat_all_waifus
-					}	
+				  has_global_flag = wg_cheat_all_waifus
 				}#使用一键召唤老婆后星极必定失败
 				country_event = {
 					id = wg_boss.10
@@ -624,6 +622,38 @@ country_event = {
 			days = -1
 		}				
 	}
+
+	after = {
+		country_event = { id = wg_boss.1010 days = 1 random = 2 }
+	}
+}
+
+country_event = {
+	id = wg_boss.1010
+	title = pantsu_shop_name
+	desc = wg_boss.1010.desc
+    custom_gui = "enclave_caravaneer_window"
+	custom_gui_option = "enclave_caravaneer_option"
+	diplomatic = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = event_target:pantsu_shop_country
+		has_communications = event_target:pantsu_shop_country
+	}
+
+	picture_event_data = {
+		room = Ella_room
+	}
+
+    option = {
+        name = OK
+        trigger = { NOR = {
+            has_authority = auth_warshipgirls
+            has_authority = auth_shenhai
+        }}		
+		hidden_effect = { set_global_flag = wg_tech_boss_weapen_ion_access }
+    }
 }
 
 country_event = {
@@ -699,6 +729,10 @@ country_event = {
 			any_owned_ship = { is_ship_size = wg_think_tank }
 		}
 	}	
+
+	immediate = {
+		set_global_flag = wg_tech_boss_weapen_ion_access
+	}
 		
 	option = {
 		name = "wg_boss.12.a"
@@ -707,6 +741,7 @@ country_event = {
 		}		
 	}	
 }
+
 country_event = {
 	id = wg_boss.13
 	hide_window = yes
