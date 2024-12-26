@@ -10429,18 +10429,26 @@ ship_event = {
 		else = { owner = { country_event = { id = wg_boss.406 } } }
 	}
 }
+
 system_event = {
 	id = wg_boss.401
 	hide_window = yes
 	is_triggered_only = yes
-	
-	trigger = { NOT = { has_global_flag = wg_Deep_Eyes_White_Dragon_Ship_Aura_1_temple } }
+
+	trigger = {
+		any_ship_in_system = {
+			is_disabled = yes
+			is_ship_size = wg_Deep_Eyes_White_Dragon_Ship
+		}
+	}
 	
 	immediate = { 
 		every_ship_in_system = {
-			limit = { is_ship_size = wg_Deep_Eyes_White_Dragon_Ship }
+			limit = { 
+				is_disabled = yes
+				is_ship_size = wg_Deep_Eyes_White_Dragon_Ship 
+			}
 			destroy_ship = this
-			set_global_flag = wg_Deep_Eyes_White_Dragon_Ship_Aura_1_temple
 		}
 		system_event = { id = wg_boss.401 days = 1 }
 	}
