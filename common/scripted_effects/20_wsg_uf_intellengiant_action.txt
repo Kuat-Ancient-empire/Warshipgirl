@@ -3,20 +3,20 @@
 #ETERNAL AND CONTRACTOR ACTION
 uf_exe_invasion_jump_drive_planet_action  = {
 	random_list = {
-		80 = { prevprev = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
-		20 = {
+		99 = { prevprev = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
+		1 = {
 			modifier = {
 				factor = 0
-				prevprev = { any_owned_ship = { has_ship_flag = ag_jump_drive_cooldown } }
+				prevprev = { any_owned_ship = { has_ship_flag = uf_jump_drive_cooldown } }
 			}
 			prevprev = {
 				set_location = { target = prev distance = 300 angle = random }
 				every_owned_ship = { uf_create_jump_particle_effect = yes }
 				while = {
-					limit = { any_owned_ship = { NOT = { has_ship_flag = ag_jump_drive_cooldown } } }
+					limit = { any_owned_ship = { NOT = { has_ship_flag = uf_jump_drive_cooldown } } }
 					random_owned_ship = {
-						limit = { NOT = { has_ship_flag = ag_jump_drive_cooldown } }
-						set_timed_ship_flag = { flag = ag_jump_drive_cooldown days = 200 }
+						limit = { NOT = { has_ship_flag = uf_jump_drive_cooldown } }
+						set_timed_ship_flag = { flag = uf_jump_drive_cooldown days = 200 }
 						add_modifier = { modifier = "jump_drive_cooldown" days = 200 }
 					}
 				}
@@ -28,23 +28,23 @@ uf_exe_invasion_jump_drive_planet_action  = {
 
 uf_exe_invasion_jump_drive_fleet_action  = {
 	random_list = {
-		75 = { prevprev = { 
+		99 = { prevprev = { 
 			auto_follow_fleet = { target = prev attack_fleet = yes } 
 			#set_fleet_flag = kuat_disable_other_fleet_in_system
 		} }
-		25 = {
+		1 = {
 			modifier = {
 				factor = 0
-				prevprev = { any_owned_ship = { has_ship_flag = ag_jump_drive_cooldown } }
+				prevprev = { any_owned_ship = { has_ship_flag = uf_jump_drive_cooldown } }
 			}
 			prevprev = {
 				set_location = { target = prev distance = @uf_ge_fleet_jumpdrive_to_target_distance angle = random }
 				every_owned_ship = { uf_create_jump_particle_effect = yes }
 				while = {
-					limit = { any_owned_ship = { NOT = { has_ship_flag = ag_jump_drive_cooldown } } }
+					limit = { any_owned_ship = { NOT = { has_ship_flag = uf_jump_drive_cooldown } } }
 					random_owned_ship = {
-						limit = { NOT = { has_ship_flag = ag_jump_drive_cooldown } }
-						set_timed_ship_flag = { flag = ag_jump_drive_cooldown days = 200 }
+						limit = { NOT = { has_ship_flag = uf_jump_drive_cooldown } }
+						set_timed_ship_flag = { flag = uf_jump_drive_cooldown days = 200 }
 						add_modifier = { modifier = "jump_drive_cooldown" days = 200 }
 					}
 				}
@@ -76,7 +76,7 @@ uf_exe_invasion_fleet_wandering_action = {
 	clear_fleet_actions = this
 	random_list = {
 		#周围星系随机设置目标
-		75 = {
+		85 = {
 			solar_system = { random_neighbor_system = {
 				limit = { prevprev = { can_access_system = prev } }
 				save_event_target_as = $TYPE$_invasion_fleet_wandering_action_target
@@ -106,10 +106,10 @@ uf_exe_invasion_fleet_wandering_action = {
 			}
 		}
 		#找任意一个敌对目标，紧急跃迁，不需要debuff
-		25 = {
+		15 = {
 			modifier = { 
 				mult = 0 
-				any_owned_ship = { has_ship_flag = ag_jump_drive_cooldown } 
+				any_owned_ship = { has_ship_flag = uf_jump_drive_cooldown } 
 			}
 			modifier = {
 				mult = $TYPE$_fleet_none_target_var
