@@ -528,11 +528,6 @@ fleet_event = {
 		set_name = "NAME_Main_Fleet"
 		remove_fleet_flag = defence_fleet
 		set_fleet_flag = attack_fleet
-		owner = { change_variable = { which = uf_fleet_id value = 1 }}
-		if = {
-			limit = { is_scope_type = fleet }
-			set_variable = { which = fleet_id value = owner.uf_fleet_id }
-		}
 		fleet_event = { id = wg_crisis.96 }#wg_crisis.40 change from eddy#
 	}
 }
@@ -697,7 +692,6 @@ planet_event = {
 	}
 
 	immediate = {
-		set_update_modifiers_batch = begin
 		# 相位星球
 		event_target:wg_crisis_country = { 
 			subtract_variable = { 
@@ -709,56 +703,6 @@ planet_event = {
 			limit = { has_planet_flag = phaseshifting_active }
 			remove_planet_flag = phaseshifting_active
 			remove_modifier = phaseshifted
-		}
-		event_target:wg_crisis_country = {
-			# 如果有其他舰队目标是此星球的星系，移除目标并重新寻路
-			every_owned_fleet = {
-				limit = { 
-					ROOT.solar_system = { 
-						any_system_planet = { NOR = {
-							is_same_value = root
-							is_colonizable = yes
-							is_colony = yes
-							has_planet_flag = uf_target
-						}}
-						check_variable = {
-							which = fleet_id
-							value = PREV.uf_fleet_id
-						}
-					}
-				}
-				ROOT.solar_system = { 
-					clear_variable = fleet_id
-				}
-				clear_fleet_actions = this
-				fleet_event = { id = wg_crisis.96 days = 5 } ##wg_crisis.40 change from eddy#
-				fleet_event = { id = wg_crisis.800 days = 20 }
-			}
-		}
-		event_target:wg_crisis_2_country = {
-			# 如果有其他舰队目标是此星球的星系，移除目标并重新寻路
-			every_owned_fleet = {
-				limit = { 
-					ROOT.solar_system = { 
-						any_system_planet = { NOR = {
-							is_same_value = root
-							is_colonizable = yes
-							is_colony = yes
-							has_planet_flag = uf_target
-						}}
-						check_variable = {
-							which = fleet_id
-							value = PREV.uf_fleet_id
-						}
-					}
-				}
-				ROOT.solar_system = { 
-					clear_variable = fleet_id
-				}
-				clear_fleet_actions = this
-				fleet_event = { id = wg_crisis.96 days = 5 } ##wg_crisis.40 change from eddy#
-				fleet_event = { id = wg_crisis.800 days = 20 }
-			}
 		}
 		every_fleet_in_orbit = {
 			remove_fleet_flag = bombarding_planet
@@ -797,7 +741,38 @@ planet_event = {
 				}
 			}
 		}
-		set_update_modifiers_batch = end
+		solar_system = {
+			every_fleet_in_system = {
+				limit = {
+					exists = owner
+					owner = { is_country_type = wg_crisis_country }
+					OR = {
+						has_fleet_flag = attack_fleet
+						has_fleet_flag = raider_fleet
+					}
+					OR = {
+						AND = { exists = orbit orbit = { is_same_value = root } }
+						AND = {
+							is_fleet_idle = yes
+							NAND = {
+								exists = orbit
+								orbit = {
+									NOT = { is_star = yes }
+									exists = owner
+									owner = { OR = {
+										is_hostile = event_target:wg_crisis_country
+										is_hostile = event_target:wg_crisis_2_country
+									} }
+								}
+							}
+						}
+					}
+				}
+				clear_orders = yes
+				clear_fleet_actions = this
+				fleet_event = { id = wg_crisis.96 days = 1 random = 2 }
+			}
+		}
 	}
 
 	option = {
@@ -1888,7 +1863,7 @@ country_event = {
     }
 }
 
-# 攻击舰队被击破，移除对应星球标记
+# Attack fleet moving reset
 country_event = {
     id = wg_crisis.46
     hide_window = yes
@@ -1898,164 +1873,170 @@ country_event = {
 		is_country_type = wg_crisis_country
 		FROMFROM = {
 			OR = {
-				AND = {
-					has_fleet_flag = attack_fleet
-					check_variable = { which = uf_fleet_id value > 0 }
-				}
-				AND = {
-					has_fleet_flag = raider_fleet
-					check_variable = { which = uf_fleet_id value > 0 }
-				}
+				has_fleet_flag = attack_fleet
+				has_fleet_flag = raider_fleet
 			}
 		}
+		fromfromfrom = { OR = {
+			is_ship_class = shipclass_starbase
+			is_ship_class = shipclass_military
+		} }
 	}
 
 	immediate = {
-		FROMFROM = { save_event_target_as = destroyed_fleet }
-		event_target:destroyed_fleet = {
-			if = {
-				limit = { OR = {
-					has_fleet_flag = attack_fleet
-					has_fleet_flag = raider_fleet
-				} }
-				every_system = {
+		FROMFROM = { 
+			solar_system = {
+				every_fleet_in_system = {
 					limit = {
-						check_variable = { which = fleet_id value = prev.uf_fleet_id }
+						exists = owner
+						owner = { is_country_type = wg_crisis_country }
+						OR = {
+							has_fleet_flag = attack_fleet
+							has_fleet_flag = raider_fleet
+						}
 					}
-					clear_variable = fleet_id
+					clear_orders = yes
+					clear_fleet_actions = this
+					fleet_event = { id = wg_crisis.96 days = 3 random = 2 }
 				}
-			} 
-		}
-	}
-}
-
-planet_event = {
-    id = wg_crisis.41
-    hide_window = yes
-	is_triggered_only = yes
-	
-	pre_triggers = {
-        has_owner = no
-	}
-
-    trigger = {
-        is_colonizable = yes
-        has_planet_flag = target_planet
-    }
-
-    immediate = {
-		if = {
-			limit = { OR = {
-				has_global_flag = wg_crisis_hard
-				has_global_flag = wg_crisis_insane
-			}}
-			set_timed_planet_flag = { flag = destruction_cooldown days = 15 }
-			planet_event = { id = wg_crisis.43 days = 16 }
-		}
-		else = {
-			set_timed_planet_flag = { flag = destruction_cooldown days = 30 }
-			planet_event = { id = wg_crisis.43 days = 31 }
-		}
-    }
-}
-
-planet_event = {
-    id = wg_crisis.43
-    hide_window = yes
-	is_triggered_only = yes
-	
-	pre_triggers = {
-		has_owner = no
-	}
-
-    trigger = {
-		NOT = { has_global_flag = wg_invasion_end }
-		OR = {
-			is_colonizable = yes
-			# 相位星球
-			has_planet_flag = phaseshifting_active
-		}
-        solar_system = {
-			any_fleet_in_system = {
-				owner = { is_same_value = event_target:wg_crisis_country }
 			}
-        }
-    }
+		}
+	}
+}
 
-    immediate = {
-		event_target:wg_crisis_country = { 
-			subtract_variable = { 
-				which = wg_find_target_fleet_effct 
-				value = 1 
-			} 
+#Invasion fleet action on orbit planet. 
+country_event = {
+	id = wg_crisis.461
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_country_type = wg_crisis_country
+		OR = {
+			has_global_flag = wg_invasion_happened
+			has_global_flag = wg_invasion_2_happened
 		}
-		log = "planet without owner blowed up"
-		# 相位星球
-		if = {
-			limit = { has_planet_flag = phaseshifting_active }
-			remove_planet_flag = phaseshifting_active
-			remove_modifier = phaseshifted
+		from = { OR = {
+			has_fleet_flag = attack_fleet
+			has_fleet_flag = raider_fleet
+		} }
+		fromfrom = { OR = {
+			is_star = yes
+			NOT = { exists = owner }
+		} }
+	}
+	immediate = {
+		from = {
+			clear_orders = yes
+			clear_fleet_actions = this
+			fleet_event = { id = wg_crisis.96 days = 3 random = 2 }
 		}
-		every_fleet_in_orbit = {
-			remove_fleet_flag = blowing_up_planet
-			remove_fleet_flag = bombarding_planet
-		}
-		event_target:wg_crisis_country = {
-			# 如果有其他舰队目标是此星球的星系，移除目标并重新寻路
-			every_owned_fleet = {
-				limit = { 
-					ROOT.solar_system = { 
-						any_system_planet = { NOR = {
-							is_same_value = root
-							is_colonizable = yes
-							is_colony = yes
-							has_planet_flag = uf_target
-						}}
-						check_variable = {
-							which = fleet_id
-							value = PREV.uf_fleet_id
+	}
+}
+
+event = {
+	id = wg_crisis.462
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			AND = {
+				exists = event_target:wg_crisis_country
+				event_target:wg_crisis_country = {
+					any_owned_fleet = {
+						exists = this
+						is_fleet_idle = yes
+						OR = {
+							has_fleet_flag = attack_fleet
+							has_fleet_flag = raider_fleet
+						}
+						NAND = {
+							exists = orbit
+							orbit = {
+								NOT = { is_star = yes }
+								exists = controller
+								controller = { is_hostile = event_target:wg_crisis_country }
+							}
 						}
 					}
 				}
-				ROOT.solar_system = { 
-					clear_variable = fleet_id
+			}
+			AND = {
+				exists = event_target:wg_crisis_2_country
+				event_target:wg_crisis_2_country = {
+					any_owned_fleet = {
+						exists = this
+						is_fleet_idle = yes
+						OR = {
+							has_fleet_flag = attack_fleet
+							has_fleet_flag = raider_fleet
+						}
+						NAND = {
+							exists = orbit
+							orbit = {
+								NOT = { is_star = yes }
+								exists = controller
+								controller = { is_hostile = event_target:wg_crisis_2_country }
+							}
+						}
+					}
 				}
-				clear_fleet_actions = this
-				fleet_event = { id = wg_crisis.96 days = 5 } ##wg_crisis.40 change from eddy#
-				fleet_event = { id = wg_crisis.800 days = 20 }
 			}
 		}
-		every_fleet_in_orbit = {
-			remove_fleet_flag = bombarding_planet
-			owner = {
-				change_variable = { which = planet_count value = -1}
-				log = "planet destoryed! planet_count: [this.planet_count]"
+	}
+	immediate = {
+		if = {
+			limit = { exists = event_target:wg_crisis_country }
+			event_target:wg_crisis_country = {
+				every_owned_fleet = {
+					limit = {
+						exists = this
+						is_fleet_idle = yes
+						OR = {
+							has_fleet_flag = attack_fleet
+							has_fleet_flag = raider_fleet
+						}
+						NAND = {
+							exists = orbit
+							orbit = {
+								NOT = { is_star = yes }
+								exists = controller
+								controller = { is_hostile = event_target:wg_crisis_country }
+							}
+						}
+					}
+					clear_orders = yes
+					clear_fleet_actions = this
+					fleet_event = { id = wg_crisis.96 days = 3 random = 2 }
+				}
 			}
 		}
-		remove_planet_flag = target_planet
-		remove_planet_flag = uf_target
-		remove_planet_flag = planet_bombarding
-        if = {
-			limit = { is_ringworld_wg = yes }
-			change_pc = pc_ringworld_habitable_damaged
-            reset_planet = yes
-        }
-        else_if = {
-            limit = { is_habitat_wg = yes }
-			remove_planet = yes
-        }
-        else = {
-			change_pc = pc_shattered
-        }
-        every_country = {
-            limit = { has_event_chain = "wg_invasion_chain" }
-            add_event_chain_counter = {
-                event_chain = "wg_invasion_chain"
-                counter = "wg_invastor_planets"
-                amount = 1
-            }
-        }
-    }
+		if = {
+			limit = { exists = event_target:wg_crisis_2_country }
+			event_target:wg_crisis_2_country = {
+				every_owned_fleet = {
+					limit = {
+						exists = this
+						is_fleet_idle = yes
+						OR = {
+							has_fleet_flag = attack_fleet
+							has_fleet_flag = raider_fleet
+						}
+						NAND = {
+							exists = orbit
+							orbit = {
+								NOT = { is_star = yes }
+								exists = controller
+								controller = { is_hostile = event_target:wg_crisis_2_country }
+							}
+						}
+					}
+					clear_orders = yes
+					clear_fleet_actions = this
+					fleet_event = { id = wg_crisis.96 days = 3 random = 2 }
+				}
+			}
+		}
+	}
 }
 
 # Kill Count (HIDDEN)
@@ -2154,8 +2135,6 @@ country_event = {
 					}
 					remove_fleet_flag = convoy_fleet
 					set_fleet_flag = attack_fleet
-					ROOT = { change_variable = { which = uf_fleet_id value = 1 }}
-					set_variable = { which = fleet_id value = root.uf_fleet_id }
 					set_name = "NAME_Raider_Fleet"
 					fleet_event = { id = wg_crisis.96 }
 				} 
@@ -2670,30 +2649,6 @@ country_event = {
     }
 }
 
-# 循环检查舰队是否卡死在星系
-fleet_event = {
-	id = wg_crisis.800
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		owner = { is_country_type = wg_crisis_country }
-		OR = {
-			is_fleet_idle = yes
-			# 炸球卡主
-			AND = {
-				exists = orbit
-				orbit = { NOT = { has_planet_flag = uf_target }}
-				has_fleet_flag = bombarding_planet
-			}
-		}
-		NOT = { has_fleet_flag = wg_lesury_fleet }
-	}
-	immediate = {
-		fleet_event = { id = wg_crisis.96 } #wg_crisis.40 change from eddy#
-	}
-}
-
 
 # 创建小型传送门
 country_event = { 
@@ -2940,7 +2895,6 @@ country_event = {
 	option = {
 		name = WORRYING
 	}
-
 }
 
 fleet_event = {
@@ -2961,7 +2915,7 @@ fleet_event = {
         owner = { is_country_type = wg_crisis_country }
 	}
 
-	immediate = { uf_fleet_assult_fleet_action = yes }
+	immediate = { uf_exe_invasion_fleet_action = { ID = wg_crisis.96 TYPE = wg_crisis_uf OWNER = wg_crisis_country OWNER_2 = wg_crisis_2_country } }
 }
 
 
@@ -3001,12 +2955,14 @@ fleet_event = {
 			has_global_flag = wg_invasion_2_happened
 		}
 		has_fleet_flag = raider_fleet
-		#wg_crisis.96 fleet_flag change from eddy#
         owner = { is_country_type = wg_crisis_country }
 		from = {
 			any_fleet_in_system = {
 				NOT = { is_same_value = root }
-				has_fleet_flag = raider_fleet
+				OR = {
+					has_fleet_flag = raider_fleet
+					has_fleet_flag = attack_fleet
+				}
 			}
 		}
 	}
@@ -3540,13 +3496,6 @@ event = {
 			} 
 			else = {
 				country_event = { id = wg_crisis.100 days = 12 }
-			}
-			every_owned_fleet = {
-				limit = { OR = {
-					has_fleet_flag = attack_fleet
-					has_fleet_flag = raider_fleet
-				} }
-				fleet_event = { id = wg_crisis.800 days = 13 }
 			}
 		}
 	}
@@ -4219,12 +4168,7 @@ country_event = {
 		}
 		every_galaxy_planet = {
 			limit = { 
-				OR = {
-					has_owner = yes
-					is_colonizable = yes
-					has_planet_flag = phaseshifting_active
-					UF_target_planet = yes
-				}
+				is_colony = yes
 			}
 			set_planet_flag = uf_target
 			ROOT = { change_variable = { which = planet_count value = 1 }}
@@ -4777,22 +4721,6 @@ country_event = {
 	}
 	
 }
-#已废弃
-# country_event = {
-# 	id = wg_crisis.10001
-# 	is_triggered_only = yes
-# 	fire_only_once = yes
-# 	hide_window = yes
-
-# 	trigger = {
-# 		is_ai = no
-# 	}
-
-# 	immediate = {
-		
-# 	}
-# }
-
 
 # 额外天灾触发事件
 event = {

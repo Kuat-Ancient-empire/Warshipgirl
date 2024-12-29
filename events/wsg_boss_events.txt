@@ -8543,6 +8543,7 @@ country_event = {
 
 	trigger = {
 		is_ai = no
+		is_country_type = default
 	}
 
 	immediate = {
@@ -10413,20 +10414,18 @@ ship_event = {
 				}
 				add_modifier = {
 					modifier = wg_Deep_Eyes_White_Dragon_Ship_Aura_1
-					multiplier = root.owner.wg_Deep_Eyes_White_Dragon_count
+					multiplier = root.owner.value:wg_Deep_Eyes_White_Dragon_Ship_death
 					days = 2
 				}
 			}
 			system_event = { id = wg_boss.401 days = 2 }
 		}
-		owner = {
-			change_variable = { which = wg_Deep_Eyes_White_Dragon_count value = 1 }
-		}
+		root.owner = { change_variable = { which = wg_Deep_Eyes_White_Dragon_count value = 1 } }
 		if = {
 			limit = { has_ship_flag = wg_Deep_Eyes_White_Dragon_Ship_boss_flag }
 			from.owner = { country_event = { id = wg_boss.403 } }
 		}
-		else = { owner = { country_event = { id = wg_boss.406 } } }
+		else = { root.owner = { country_event = { id = wg_boss.406 } } }
 	}
 }
 
@@ -10487,9 +10486,7 @@ country_event = {
 	option = {
 		name = "wg_boss.404.a"
 		add_relic = r_wg_Deep_Eyes_White_Dragon_Card
-		hidden_effect = {
-			set_variable = { which = wg_Deep_Eyes_White_Dragon_count value = 0 }
-		}
+		hidden_effect = { set_variable = { which = wg_Deep_Eyes_White_Dragon_count value = 0 } }
 	}
 }
 country_event = {

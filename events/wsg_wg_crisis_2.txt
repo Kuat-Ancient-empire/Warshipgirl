@@ -401,11 +401,6 @@ fleet_event = {
 		set_name = "NAME_Main_Fleet"
 		remove_fleet_flag = defence_fleet
 		set_fleet_flag = attack_fleet
-		owner = { change_variable = { which = uf_fleet_id value = 1 }}
-		if = {
-			limit = { is_scope_type = fleet }
-			set_variable = { which = fleet_id value = owner.uf_fleet_id }
-		}
 		fleet_event = { id = wg_crisis.96 }#wg_crisis_2.40 change from eddy#
 	}
 }
@@ -1607,135 +1602,6 @@ country_event = {
     }
 }
 
-planet_event = {
-    id = wg_crisis_2.41
-    hide_window = yes
-	is_triggered_only = yes
-	
-	pre_triggers = {
-        has_owner = no
-	}
-
-    trigger = {
-        is_colonizable = yes
-        has_planet_flag = target_planet
-    }
-
-    immediate = {
-		if = {
-			limit = { OR = {
-				has_global_flag = wg_crisis_hard
-				has_global_flag = wg_crisis_insane
-			}}
-			set_timed_planet_flag = { flag = destruction_cooldown days = 15 }
-			planet_event = { id = wg_crisis_2.43 days = 16 }
-		}
-		else = {
-			set_timed_planet_flag = { flag = destruction_cooldown days = 30 }
-			planet_event = { id = wg_crisis_2.43 days = 31 }
-		}
-    }
-}
-
-planet_event = {
-    id = wg_crisis_2.43
-    hide_window = yes
-	is_triggered_only = yes
-	
-	pre_triggers = {
-		has_owner = no
-	}
-
-    trigger = {
-		NOT = { has_global_flag = wg_invasion_2_end }
-		OR = {
-			is_colonizable = yes
-			# 相位星球
-			has_planet_flag = phaseshifting_active
-		}
-        solar_system = {
-			any_fleet_in_system = {
-				owner = { is_same_value = event_target:wg_crisis_2_country }
-			}
-        }
-    }
-
-    immediate = {
-		event_target:wg_crisis_2_country = { 
-			subtract_variable = { 
-				which = wg_find_target_fleet_effct 
-				value = 1 
-			} 
-		}
-		log = "planet without owner blowed up"
-		# 相位星球
-		if = {
-			limit = { has_planet_flag = phaseshifting_active }
-			remove_planet_flag = phaseshifting_active
-			remove_modifier = phaseshifted
-		}
-		every_fleet_in_orbit = {
-			remove_fleet_flag = blowing_up_planet
-			remove_fleet_flag = bombarding_planet
-		}
-		event_target:wg_crisis_2_country = {
-			# 如果有其他舰队目标是此星球的星系，移除目标并重新寻路
-			every_owned_fleet = {
-				limit = { 
-					ROOT.solar_system = { 
-						any_system_planet = { NOR = {
-							is_same_value = root
-							is_colonizable = yes
-							is_colony = yes
-							has_planet_flag = uf_target
-						}}
-						check_variable = {
-							which = fleet_id
-							value = PREV.uf_fleet_id
-						}
-					}
-				}
-				ROOT.solar_system = { 
-					clear_variable = fleet_id
-				}
-				clear_fleet_actions = this
-				fleet_event = { id = wg_crisis.96 days = 5 } ##wg_crisis_2.40 change from eddy#
-				fleet_event = { id = wg_crisis.800 days = 20 }
-			}
-		}
-		every_fleet_in_orbit = {
-			remove_fleet_flag = bombarding_planet
-			owner = {
-				change_variable = { which = planet_count value = -1}
-				log = "planet destoryed! planet_count: [this.planet_count]"
-			}
-		}
-		remove_planet_flag = target_planet
-		remove_planet_flag = uf_target
-		remove_planet_flag = planet_bombarding
-        if = {
-			limit = { is_ringworld_wg = yes }
-			change_pc = pc_ringworld_habitable_damaged
-            reset_planet = yes
-        }
-        else_if = {
-            limit = { is_habitat_wg = yes }
-			remove_planet = yes
-        }
-        else = {
-			change_pc = pc_shattered
-        }
-        every_country = {
-            limit = { has_event_chain = "wg_invasion_chain" }
-            add_event_chain_counter = {
-                event_chain = "wg_invasion_chain"
-                counter = "wg_invastor_planets"
-                amount = 1
-            }
-        }
-    }
-}
-
 
 # 最后一个传送门被摧毁
 country_event = {
@@ -2500,15 +2366,9 @@ event = {
 			if = {
 				limit = { has_global_flag = wg_crisis_insane }
 				country_event = { id = wg_crisis_2.104 days = 12 }
-			} else = {
+			} 
+			else = {
 				country_event = { id = wg_crisis_2.100 days = 12 }
-			}
-			every_owned_fleet = {
-				limit = { OR = {
-					has_fleet_flag = attack_fleet
-					has_fleet_flag = raider_fleet
-				} }
-				fleet_event = { id = wg_crisis.800 days = 13 }
 			}
 		}
 	}
