@@ -49,32 +49,14 @@ destroy_system_wg = {
 				}
 			}
 		}
-		if = {
-			limit = {
-				exists = event_target:crisis_country #i.e. not final destruction of all matter
-				is_mobile = yes
-			}
-			set_mia = mia_return_home
-		}
-		else = {
-			destroy_fleet = this
-		}
+		destroy_fleet = this
 	}
 	common_destroy_system_effect = yes
 }
 
 destroy_system_uf = {
 	optimize_memory
-	if = {
-		limit = { exists = event_target:crisis_country }
-		fire_on_action = {
-			on_action = on_destroy_star_system
-			scopes = { from = event_target:crisis_country }
-		}
-	}
-	else = {
-		fire_on_action = { on_action = on_destroy_star_system }
-	}
+	fire_on_action = { on_action = on_destroy_star_system }
 	set_star_flag = star_cracked
 	set_star_class = sc_black_hole
 	every_system_ambient_object = {
@@ -186,14 +168,7 @@ destroy_system_uf = {
 
 destroy_system_ufs = {
 	optimize_memory
-	if = {
-		limit = { exists = event_target:crisis_country }
-		fire_on_action = {
-			on_action = on_destroy_star_system
-			scopes = { from = event_target:crisis_country }
-		}
-	}
-	else = { fire_on_action = { on_action = on_destroy_star_system } }
+	fire_on_action = { on_action = on_destroy_star_system }
 	set_star_flag = star_cracked
 	set_star_class = sc_uf_hm
 	if = {
@@ -329,16 +304,7 @@ common_destroy_system_effect = {
 			}
 		}
 	}
-	if = {
-		limit = { exists = event_target:crisis_country }
-		fire_on_action = {
-			on_action = on_destroy_star_system
-			scopes = { from = event_target:crisis_country }
-		}
-	}
-	else = {
-		fire_on_action = { on_action = on_destroy_star_system }
-	}
+	fire_on_action = { on_action = on_destroy_star_system }
 	every_system_ambient_object = {
 		limit = {
 			# Preserve Unbidden crisis effects

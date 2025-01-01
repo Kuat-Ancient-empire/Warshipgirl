@@ -2682,6 +2682,14 @@ country_event = {
 				}
 				save_event_target_as = lady_planet
 			}
+			create_species = {
+				name = "NAME_Contingency"
+				class = "ROBOT"
+				namelist = "AI"
+				portrait = "ai_crisis_1"
+				immortal = yes
+				effect = { save_global_event_target_as = lady_custodian_bot }
+			}
 			create_country = {
 				name = "NAME_lady_Contingency"
 				species = event_target:lady_custodian_bot
@@ -2707,7 +2715,7 @@ country_event = {
 				effect = {
 					create_leader = {
 						class = random_ruler
-						species = event_target:lady_contingency_bot
+						species = event_target:lady_custodian_bot
 						name = random
 						effect = {
 							save_event_target_as = lady_contingency_ruler
@@ -2721,7 +2729,7 @@ country_event = {
 						name = "NAME_lady_Contingency_fleet"
 						effect = {
 							set_owner = prev
-							assign_leader = event_target:contingency_fleet_leader
+							assign_leader = event_target:lady_contingency_ruler
 							create_ship = {
 								name = random
 								design = "NAME_Euthanizer"
@@ -2784,7 +2792,7 @@ country_event = {
 				effect = {
 					create_leader = {
 						class = random_ruler
-						species = event_target:lady_contingency_bot
+						species = event_target:lady_custodian_bot
 						name = random
 						effect = {
 							save_event_target_as = lady_contingency_ruler
@@ -2798,7 +2806,7 @@ country_event = {
 						name = "NAME_lady_Contingency_fleet"
 						effect = {
 							set_owner = prev
-							assign_leader = event_target:contingency_fleet_leader
+							assign_leader = event_target:lady_contingency_ruler
 							create_ship = {
 								name = random
 								design = "NAME_Euthanizer"
@@ -2904,7 +2912,7 @@ country_event = {
 			effect = {
 				create_leader = {
 					class = random_ruler
-					species = event_target:lady_contingency_bot
+					species = event_target:lady_custodian_bot
 					name = random
 					effect = {
 						save_event_target_as = lady_contingency_ruler
@@ -2918,7 +2926,7 @@ country_event = {
 					name = "NAME_lady_Contingency_fleet"
 					effect = {
 						set_owner = prev
-						assign_leader = event_target:contingency_fleet_leader
+						assign_leader = event_target:lady_contingency_ruler
 						create_ship = {
 							name = random
 							design = "NAME_Euthanizer"
@@ -3142,11 +3150,9 @@ country_event = {
 		}
 	}
 	immediate = {
-		owner = {
-			save_global_event_target_as = lady_contingency_owner
-			set_global_flag = lady_Contingency_created
-			set_country_flag = gain_lady_Contingency
-		}
+		save_global_event_target_as = lady_contingency_owner
+		set_global_flag = lady_Contingency_created
+		set_country_flag = gain_lady_Contingency
 		random_planet_within_border = {
 			limit = {
 				OR = {
@@ -3360,7 +3366,7 @@ country_event = {
 			has_authority = auth_warshipgirls
 		}
 		OR = {
-			is_same_value = event_target:lady_Contingency_owner
+			is_same_value = event_target:lady_contingency_owner
 			has_country_flag = gain_lady_Contingency
 		}
 		fromfrom = { 
@@ -3947,7 +3953,7 @@ country_event = {
 	
 	trigger = {
 		is_ai = no
-		event_target:primitive_civ = {
+		from = {
 			has_country_flag = wg_information_age
 		}
 	}

@@ -96,7 +96,7 @@ country_event = {
 					}
 				}
 			}
-			set_star_class = sc_wsg_uf2
+			set_star_class = sc_wsg_uf
 			set_star_flag = first_portal_2_system
 			set_star_flag = cannot_be_hit_by_aow_starfall_spear
 			save_global_event_target_as = first_portal_2_system
@@ -163,15 +163,9 @@ country_event = {
 									}
 								}
 								fleet_event = { id = wg_crisis_2.4 days = 720 } 
-
-								if = {
-									limit = { has_global_flag = wg_crisis_hard }
-									fleet_event = { id = wg_crisis_2.102 days = 10800 } #循环刷辅助守家舰队
-								} 
-								else = {
-									fleet_event = { id = wg_crisis_2.102 days = 9000 } #循环刷辅助守家舰队
-								}
+								fleet_event = { id = wg_crisis_2.102 days = 10800 } #循环刷辅助守家舰队
 							}
+
 							if = {
 								# 天灾难度开门后再刷2+1+1队
 								limit = {
@@ -197,14 +191,14 @@ country_event = {
 								has_global_flag = wg_crisis_easy
 							}
 						}
-						country_event = { id = wg_crisis_2.14 days = 750 }
+						country_event = { id = wg_crisis_2.14 days = 1080 }
 					}
 					else_if = {
 						limit = { has_global_flag = wg_crisis_normal }
-						country_event = { id = wg_crisis_2.14 days = 650 }
+						country_event = { id = wg_crisis_2.14 days = 900 }
 					}
 					else = {
-						country_event = { id = wg_crisis_2.14 days = 500 }
+						country_event = { id = wg_crisis_2.14 days = 720 }
 					}
 					country_event = { id = wg_crisis_2.2000 days = 5 }
 				}
@@ -234,16 +228,15 @@ country_event = {
 							has_global_flag = wg_crisis_insane
 						}
 					}
-					while = { count = 6
+					while = { count = 2
 						create_wg_crisis_2_raider_admiral = yes
 						create_wg_crisis_2_raider_fleet = yes
 					}
-					create_wg_crisis_2_greater_admiral = yes
+					
 					PREV = { star = {
+						create_wg_crisis_2_greater_admiral = yes
 						create_wg_crisis_2_guard_fleet = yes 
-						last_created_fleet = {
-							set_fleet_flag = first_portal_2_guard_fleet
-						}
+						last_created_fleet = { set_fleet_flag = first_portal_2_guard_fleet }
 					}}
 				}
 				if = {
@@ -254,21 +247,21 @@ country_event = {
 							has_global_flag = wg_crisis_insane
 						}
 					}
-					create_wg_crisis_2_greater_admiral = yes
+					
 					PREV = { random_system_planet = {
 						limit = { is_primary_star = yes }
+						create_wg_crisis_2_greater_admiral = yes
 						create_wg_crisis_2_guard_fleet = yes	
 					}}	
-					while = { count = 4
+
+					while = { count = 2
 						create_wg_crisis_2_raider_admiral = yes
 						create_wg_crisis_2_raider_fleet = yes
 					}
 				}
 				if = {
 					# 天灾刷联合荣耀
-					limit = {
-						has_global_flag = wg_crisis_insane
-					}
+					limit = { has_global_flag = wg_crisis_insane }
 					create_wg_crisis_2_legendary_admiral = yes
 					PREV = { star = { create_uf_glory_2 = yes }}	
 				}
@@ -282,12 +275,7 @@ country_event = {
 				create_starbase = {
 					size = wg_crisis_starbase
 					owner = event_target:wg_crisis_2_country
-					effect = {
-						while = {
-							count = 5
-							create_wg_crisis_platform = yes
-						}
-					}
+					effect = { while = { count = 5 create_wg_crisis_platform = yes } }
 				}
 			}
 		}
@@ -1084,14 +1072,14 @@ country_event = {
 						has_global_flag = wg_crisis_easy
 					}
 				}
-				country_event = { id = wg_crisis_2.14 days = 720 random = 720 } # Check again later
+				country_event = { id = wg_crisis_2.14 days = 1080 random = 720 } # Check again later
 			}
 			else_if = {
 				limit = { has_global_flag = wg_crisis_normal }
-				country_event = { id = wg_crisis_2.14 days = 540 random = 540 } # Check again later
+				country_event = { id = wg_crisis_2.14 days = 900 random = 540 } # Check again later
 			}
 			else = {
-				country_event = { id = wg_crisis_2.14 days = 360 random = 360 } # Check again later
+				country_event = { id = wg_crisis_2.14 days = 720 random = 360 } # Check again later
 			}
 		}
         else = {
@@ -1126,14 +1114,14 @@ country_event = {
 							has_global_flag = wg_crisis_easy
 						}
 					}
-					country_event = { id = wg_crisis_2.14 days = 360 random = 360 } # Check again later
+					country_event = { id = wg_crisis_2.14 days = 900 random = 900 } # Check again later
 				}
 				else_if = {
 					limit = { has_global_flag = wg_crisis_normal }
-					country_event = { id = wg_crisis_2.14 days = 180 random = 180 } # Check again later
+					country_event = { id = wg_crisis_2.14 days = 720 random = 720 } # Check again later
 				}
 				else = {
-					country_event = { id = wg_crisis_2.14 days = 360 random = 360 } # Check again later
+					country_event = { id = wg_crisis_2.14 days = 540 random = 540 } # Check again later
 				}
             }
             else = {
@@ -1144,14 +1132,14 @@ country_event = {
 							has_global_flag = wg_crisis_easy
 						}
 					}
-					country_event = { id = wg_crisis_2.14 days = 360 random = 360 } # Check again later
+					country_event = { id = wg_crisis_2.14 days = 900 random = 900 } # Check again later
 				}
 				else_if = {
 					limit = { has_global_flag = wg_crisis_normal }
-					country_event = { id = wg_crisis_2.14 days = 180 random = 180 } # Check again later
+					country_event = { id = wg_crisis_2.14 days = 720 random = 720 } # Check again later
 				}
 				else = {
-					country_event = { id = wg_crisis_2.14 days = 360 random = 360 } # Check again later
+					country_event = { id = wg_crisis_2.14 days = 540 random = 540 } # Check again later
 				}
             }
         }
@@ -1215,7 +1203,7 @@ country_event = {
 					}
 				}
 			}
-			set_star_class = sc_wsg_uf2
+			set_star_class = sc_wsg_uf
 			set_star_flag = second_portal_2_system
 			set_star_flag = cannot_be_hit_by_aow_starfall_spear
 			save_global_event_target_as = second_portal_2_system
@@ -1239,23 +1227,22 @@ country_event = {
 					}
 					country_event = { id = wg_crisis_2.18 days = 1200 } # Spawn Cycle starts
 				}
-				create_wg_crisis_2_greater_admiral = yes
+				
 				PREV = { random_system_planet = {
 					limit = { is_primary_star = yes }
+					create_wg_crisis_2_greater_admiral = yes
 					create_wg_crisis_2_guard_fleet = yes
-					last_created_fleet = {
-						set_fleet_flag = second_portal_2_guard_fleet
-					}
+					last_created_fleet = { set_fleet_flag = second_portal_2_guard_fleet }
 				}}
-				while = { count = 4 create_wg_crisis_2_fleet_and_admiral = yes }
+				while = { count = 2 create_wg_crisis_2_fleet_and_admiral = yes }
 				if = {
 					# 天灾刷联合荣耀
 					limit = {
 						has_global_flag = wg_crisis_insane
 					}
-					create_wg_crisis_2_legendary_admiral = yes
 					PREV = { random_system_planet = {
 						limit = { is_primary_star = yes }
+						create_wg_crisis_2_legendary_admiral = yes
 						create_uf_glory_2 = yes	
 					}}	
 				}
@@ -1267,12 +1254,7 @@ country_event = {
             create_starbase = {
                 size = wg_crisis_starbase
                 owner = event_target:wg_crisis_2_country
-				effect = {
-					while = {
-						count = 5
-						create_wg_crisis_platform = yes
-					}
-				}
+				effect = { while = { count = 5 create_wg_crisis_platform = yes } }
             }
 		}
 		every_playable_country = {
@@ -1325,7 +1307,7 @@ country_event = {
 					}
 				}
 			}
-			set_star_class = sc_wsg_uf2
+			set_star_class = sc_wsg_uf
 			set_star_flag = third_portal_2_system
 			set_star_flag = cannot_be_hit_by_aow_starfall_spear
 			save_global_event_target_as = third_portal_2_system
@@ -1349,24 +1331,22 @@ country_event = {
 					}
 					country_event = { id = wg_crisis_2.19 days = 1200 } # Spawn Cycle starts
 				}
-				create_wg_crisis_2_greater_admiral = yes
+				
 				PREV = { random_system_planet = {
 					limit = { is_primary_star = yes }
+					create_wg_crisis_2_greater_admiral = yes
 					create_wg_crisis_2_guard_fleet = yes
 					last_created_fleet = { set_fleet_flag = third_portal_2_guard_fleet }
 				}}
-				while = {
-					count = 5
-					create_wg_crisis_2_fleet_and_admiral = yes
-				}
+				while = { count = 2 create_wg_crisis_2_fleet_and_admiral = yes }
 				if = {
 					# 天灾刷联合荣耀
 					limit = {
 						has_global_flag = wg_crisis_insane
 					}
-					create_wg_crisis_2_legendary_admiral = yes
 					PREV = { random_system_planet = {
 						limit = { is_primary_star = yes }
+						create_wg_crisis_2_legendary_admiral = yes
 						create_uf_glory_2 = yes	
 					}}	
 				}
@@ -1378,12 +1358,7 @@ country_event = {
             create_starbase = {
                 size = wg_crisis_starbase
                 owner = event_target:wg_crisis_2_country
-				effect = {
-					while = {
-						count = 5
-						create_wg_crisis_platform = yes
-					}
-				}
+				effect = { while = { count = 5 create_wg_crisis_platform = yes } }
             }
 		}
 		every_playable_country = {
@@ -1413,13 +1388,13 @@ country_event = {
 				num_fleets >= 25
 				num_ships >= 1000
 			}}
-			country_event = { id = wg_crisis_2.18 days = 360 random = 360 } # Check again later
+			country_event = { id = wg_crisis_2.18 days = 720 random = 720 } # Check again later
 		}
         else = {
 			event_target:second_dimensional_portal_2 = {
 				create_wg_crisis_2_fleet_and_admiral = yes
 			}
-            country_event = { id = wg_crisis_2.18 days = 360 random = 360 } # Check again later
+            country_event = { id = wg_crisis_2.18 days = 720 random = 720 } # Check again later
         }
     }
 }
@@ -1443,13 +1418,13 @@ country_event = {
 				num_fleets >= 25
 				num_ships >= 1250
 			}}
-			country_event = { id = wg_crisis_2.19 days = 360 random = 360 } # Check again later
+			country_event = { id = wg_crisis_2.19 days = 720 random = 720 } # Check again later
 		}
         else = {
 			event_target:third_dimensional_portal_2 = {
 				create_wg_crisis_2_fleet_and_admiral = yes
 			}
-            country_event = { id = wg_crisis_2.19 days = 360 random = 360 } # Check again later
+            country_event = { id = wg_crisis_2.19 days = 720 random = 720 } # Check again later
         }
     }
 }
@@ -3397,7 +3372,6 @@ country_event = {
 				NOR = {
 					has_star_flag = forbit_spawn_system
 					has_star_flag = has_wg_crisis_2_megastructure
-					is_star_class = sc_wsg_uf2
 					is_star_class = sc_wsg_uf
 				}
 			}
@@ -3762,7 +3736,6 @@ country_event = {
 				NOR = {
 					has_star_flag = forbit_spawn_system
 					has_star_flag = has_wg_crisis_2_megastructure
-					is_star_class = sc_wsg_uf2
 					is_star_class = sc_wsg_uf
 				}
 			}
@@ -4436,7 +4409,7 @@ country_event = {
 				remove_point_of_interest = wg_invasion_2_false_uf_galaxy_gun_poi.1
 			}
 			while = {
-				count = 8
+				count = 4
 				create_wg_crisis_2_fleet_and_admiral = yes
 			}
 		}

@@ -41,8 +41,19 @@ uf_evolver = {
 		pop_happiness = 0.01
 		planet_uf_evolver_produces_mult = 0.01
 	}
-    weight = {
-		weight = 10
+	weight = {
+		weight = @specialist_job_weight # Fairly important job
+		mult = value:job_weights_modifier|JOB|uf_evolver|RESOURCE|minerals|
+		mult = value:job_weights_research_modifier|JOB|uf_evolver|
+		modifier = {
+			factor = 2
+			is_enslaved = yes
+			can_take_servant_job = no
+		}
+		modifier = {
+			factor = 5
+			has_job = uf_evolver
+		}
 	}
 }
 
@@ -126,8 +137,18 @@ uf_food_writer = {
 		}
 	}
 
-    weight = {
-		weight = 50		
+	weight = {
+		weight = @specialist_job_weight # Fairly important job
+		mult = value:job_weights_modifier|JOB|uf_food_writer|RESOURCE|unity|
+		modifier = {
+			factor = 2
+			is_enslaved = yes
+			can_take_servant_job = no
+		}
+		modifier = {
+			factor = 5
+			has_job = uf_food_writer
+		}
 	}
 }
 
@@ -229,10 +250,33 @@ uf_researcher = {
 			consumer_goods = 3.5
 		}	
 	}
-	
 	weight = {
-		weight = 50		
+		weight = @specialist_job_weight
+		mult = value:job_weights_research_modifier|JOB|uf_researcher|
+		modifier = {
+			factor = 0.2
+			has_citizenship_rights = no
+			NOT = { has_trait = trait_mechanical }
+		}
+		modifier = {
+			factor = 2
+			has_living_standard = { type = living_standard_academic_privilege }
+		}
+		modifier = {
+			factor = 0.1
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 5
+			has_job = uf_researcher
+		}
+		modifier = {
+			factor = 0.8
+			is_enslaved = yes
+			has_slavery_type = { type = slavery_indentured }
+		}
 	}
+	inline_script = "jobs/automodding_priority_research"
 }
 
 uf_hm = {
@@ -310,7 +354,19 @@ uf_hm = {
 		}
 
 	}	
-	weight = { weight = 80 }
+	weight = {
+		weight = @specialist_job_weight # Fairly important job
+		mult = value:job_weights_modifier|JOB|uf_hm|RESOURCE|sr_uf|
+		modifier = {
+			factor = 2
+			is_enslaved = yes
+			can_take_servant_job = no
+		}
+		modifier = {
+			factor = 5
+			has_job = uf_hm
+		}
+	}
 }
 
 
@@ -402,7 +458,17 @@ uf_hm_alloys = {
 	}
 	
 	weight = {
-		weight = 50		
+		weight = @specialist_job_weight # Fairly important job
+		mult = value:job_weights_modifier|JOB|uf_hm_alloys|RESOURCE|alloys|
+		modifier = {
+			factor = 2
+			is_enslaved = yes
+			can_take_servant_job = no
+		}
+		modifier = {
+			factor = 5
+			has_job = uf_hm_alloys
+		}
 	}
 }
 
@@ -653,7 +719,16 @@ uf_archaeologist = {
 	}
 	
 	weight = {
-		weight = 80
+		weight = @specialist_job_weight # Fairly important job
+		mult = value:job_weights_modifier|JOB|uf_archaeologist|RESOURCE|minor_artifacts|
+		modifier = {
+			factor = 2
+			is_enslaved = yes
+			can_take_servant_job = no
+		}
+		modifier = {
+			factor = 5
+			has_job = uf_archaeologist
+		}
 	}
-	
 }

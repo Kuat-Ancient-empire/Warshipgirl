@@ -68,8 +68,32 @@ sh_researcher = {
 	}	
 	 
 	weight = {
-		weight = 500
+		weight = @specialist_job_weight
+		mult = value:job_weights_research_modifier|JOB|sh_researcher|
+		modifier = {
+			factor = 0.2
+			has_citizenship_rights = no
+			NOT = { has_trait = trait_mechanical }
+		}
+		modifier = {
+			factor = 2
+			has_living_standard = { type = living_standard_academic_privilege }
+		}
+		modifier = {
+			factor = 0.1
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 5
+			has_job = sh_researcher
+		}
+		modifier = {
+			factor = 0.8
+			is_enslaved = yes
+			has_slavery_type = { type = slavery_indentured }
+		}
 	}
+	inline_script = "jobs/automodding_priority_research"
 }
 
 
@@ -109,7 +133,17 @@ sh_pantsu_maker = {
 		}
 	}
 	weight = {
-		weight = 15		
+		weight = @specialist_job_weight # Fairly important job
+		mult = value:job_weights_modifier|JOB|sh_pantsu_maker|RESOURCE|sr_pantsu|
+		modifier = {
+			factor = 2
+			is_enslaved = yes
+			can_take_servant_job = no
+		}
+		modifier = {
+			factor = 8
+			has_job = sh_pantsu_maker
+		}
 	}
 }
 
@@ -150,7 +184,17 @@ sh_foundry = {
 	}
 	
 	weight = {
-		weight = 15		
+		weight = @specialist_job_weight # Fairly important job
+		mult = value:job_weights_modifier|JOB|sh_foundry|RESOURCE|alloys|
+		modifier = {
+			factor = 2
+			is_enslaved = yes
+			can_take_servant_job = no
+		}
+		modifier = {
+			factor = 8
+			has_job = sh_foundry
+		}
 	}
 }
 
@@ -201,7 +245,17 @@ sh_foundry_shpc = {
 	}
 	
 	weight = {
-		weight = 15		
+		weight = @specialist_job_weight # Fairly important job
+		mult = value:job_weights_modifier|JOB|sh_foundry_shpc|RESOURCE|alloys|
+		modifier = {
+			factor = 2
+			is_enslaved = yes
+			can_take_servant_job = no
+		}
+		modifier = {
+			factor = 8
+			has_job = sh_foundry_shpc
+		}
 	}
 }
 
@@ -273,9 +327,18 @@ sh_senergy = {
 			sr_se = 0.75
 		}
 	}	
-	
 	weight = {
-		weight = 15
+		weight = @specialist_job_weight # Fairly important job
+		mult = value:job_weights_modifier|JOB|sh_senergy|RESOURCE|sr_se|
+		modifier = {
+			factor = 2
+			is_enslaved = yes
+			can_take_servant_job = no
+		}
+		modifier = {
+			factor = 5
+			has_job = sh_senergy
+		}
 		modifier = {
 			factor = 5
 			has_trait = wsg_trait_senergy_producer
@@ -499,37 +562,16 @@ sh_pool = {
 	}
 
 	weight = {
-		weight = 50
-		modifier = {
-			factor = 0.02
-			has_citizenship_rights = no
-		}
+		weight = @specialist_job_weight # Fairly important job
+		mult = value:job_weights_modifier|JOB|sh_pool|RESOURCE|unity|
 		modifier = {
 			factor = 2
-			has_trait = trait_robot_propaganda_machines
-			OR = {
-				is_non_sapient_robot = yes
-				is_shackled_robot = yes
-			}
+			is_enslaved = yes
+			can_take_servant_job = no
 		}
 		modifier = {
-			factor = 1.5
-			OR = {
-				has_trait = trait_robot_propaganda_machines
-				has_trait = trait_traditional
-			}
-		}
-		modifier = {
-			factor = 0.5
-			has_trait = trait_quarrelsome
-		}
-		modifier = {
-			factor = 0.1
-			can_take_servant_job = yes
-		}
-		modifier = {
-			factor = 1.5
-			has_job = sh_bureaucrat
+			factor = 5
+			has_job = sh_pool
 		}
 	}
 }
@@ -573,6 +615,16 @@ sh_AP_NET_manager = {
 		}
 	}
 	weight = {
-		weight = 15		
+		weight = @specialist_job_weight # Fairly important job
+		mult = value:job_weights_modifier|JOB|sh_AP_NET_manager|RESOURCE|consumer_goods|
+		modifier = {
+			factor = 2
+			is_enslaved = yes
+			can_take_servant_job = no
+		}
+		modifier = {
+			factor = 5
+			has_job = sh_AP_NET_manager
+		}
 	}
 }

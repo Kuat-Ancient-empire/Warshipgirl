@@ -1434,11 +1434,19 @@ country_event = {
 			has_fleet_flag = wg_gars_fleet_flag	
 		}
 	}
-	immediate = {	
+	immediate = {
+		every_galaxy_planet = {
+			limit = {
+				has_planet_flag = wg_machine_prision_flag
+			}
+			save_event_target_as = gars_location
+		}		
+	}	
+	after = {
 		From = {
 			country_event = { id = wg_boss.34 days = 5 }
-		}	
-	}	
+		}
+	}
 }
 
 country_event = {
@@ -2225,6 +2233,10 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		random_galaxy_planet = {
+			limit = { has_planet_flag = bugv_location_planet }
+			save_event_target_as = bugv_fix_location
+		}	
 		every_country = {
 			limit = {
 				NOT = {
@@ -2789,7 +2801,7 @@ country_event = {
 
 	after = {
 		hidden_effect = {
-			save_event_target_as = bugv_mad_from_country
+			set_country_flag = bugv_mad_from_country
 			set_global_flag = bugv_get_mad
 			random_country = {
 				limit = { has_country_flag = guardian_wg_bugv_country_flag }
@@ -2878,12 +2890,13 @@ country_event = {
 		set_country_flag = bugv_killer
 		if = {
 			limit = { 
-				NOT = { is_same_value = event_target:bugv_mad_from_country }
+				NOT = { has_country_flag = bugv_mad_from_country }
 				is_ai = no
 			}
 			country_event = { id = wg_boss.70 }
 		} 
-		event_target:bugv_mad_from_country = { 
+		if = {
+			limit = { has_country_flag = bugv_mad_from_country }
 			country_event = { id = wg_boss.69 }
 		}
 		remove_global_flag = bugv_get_mad
