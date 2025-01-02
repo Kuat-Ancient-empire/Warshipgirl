@@ -1,0 +1,582 @@
+@str_energy_target = 5000
+@str_science_target = 50000
+
+@str_target_requirement_max = 100
+@str_target_requirement_submax = 80
+@str_target_requirement_medium = 60
+@str_target_requirement_low = 40
+@str_target_requirement_pool = 20
+
+@str_rare_resource_target = 5
+
+@str_subplan_requirement_max = 50
+@str_subplan_requirement_submax = 40
+@str_subplan_requirement_medium = 30
+@str_subplan_requirement_low = 20
+@str_subplan_requirement_pool = 10
+basic_economy_plan = {
+	income = {
+		energy = @economic_plan_energy_target
+		minerals = @economic_plan_minerals_target
+	}
+
+	subplan = {
+		set_name = "base niviran income"
+		potential = {
+			is_nirvana_empire = yes
+		}
+
+		income = {
+			energy = @str_subplan_requirement_max
+			minerals = @str_subplan_requirement_max
+			food = @str_subplan_requirement_max
+			consumer_goods = @str_subplan_requirement_max
+		}
+	}
+
+	subplan = {
+		set_name = "base niviran alloys"
+		potential = {
+			is_nirvana_empire = yes
+			has_monthly_income = { resource = energy value > @str_subplan_requirement_max }			
+			has_monthly_income = { resource = minerals value > @str_subplan_requirement_max }	
+		}
+
+		income = {
+			alloys = @str_energy_target
+		}
+	}
+
+	subplan = {
+		set_name = "base niviran science"
+		potential = {
+			is_nirvana_empire = yes
+			has_monthly_income = { resource = energy value > @str_subplan_requirement_max }			
+			has_monthly_income = { resource = minerals value > @str_subplan_requirement_max }	
+		}
+
+		income = {
+			physics_research = @str_science_target
+			society_research = @str_science_target
+			engineering_research = @str_science_target
+		}
+		pops = 9000
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "niviran commander scaling"
+		potential = {
+			is_nirvana_empire = yes
+			has_monthly_income = { resource = energy value > @str_subplan_requirement_max }			
+			has_monthly_income = { resource = minerals value > @str_subplan_requirement_max }			
+		}
+
+		income = {
+			unity = @str_subplan_requirement_max
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "dragon food scaling"
+		potential = {
+			is_nirvana_empire_dragon = yes
+			has_monthly_income = { resource = food value > @str_subplan_requirement_max }				
+		}
+
+		income = {
+			food = @str_subplan_requirement_max
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "niviran alloys scaling"
+		potential = {
+			is_nirvana_empire = yes
+			has_monthly_income = { resource = alloys value > @str_energy_target }				
+		}
+
+		income = {
+			alloys = @str_subplan_requirement_max
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "niviran Science scaling"
+		potential = {
+			is_nirvana_empire = yes
+			has_monthly_income = { resource = physics_research value > @str_science_target }			
+			has_monthly_income = { resource = society_research value > @str_science_target }	
+			has_monthly_income = { resource = engineering_research value > @str_science_target }	
+		}
+
+		income = {
+			physics_research = @str_target_requirement_max
+			society_research = @str_target_requirement_max
+			engineering_research = @str_target_requirement_max
+		}
+	}
+
+	subplan = {
+		optional = yes
+		set_name = "niviran Rare resources"
+		potential = { 
+			is_nirvana_empire = yes 
+		}
+
+		income = {
+			sr_zro = @str_rare_resource_target
+			sr_dark_matter = @str_rare_resource_target
+		}
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Scaling sr zro"
+
+		potential = {
+			is_nirvana_empire = yes 
+			has_monthly_income = { resource = sr_zro value < @economic_plan_rare_resource_limit }
+		}
+
+		income = {
+			sr_zro = @economic_plan_scaling_rare_resource_target
+		}
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Scaling sr dark matter"
+
+		potential = {
+			is_nirvana_empire = yes 
+			has_monthly_income = { resource = sr_dark_matter value < @economic_plan_rare_resource_limit }
+		}
+
+		income = {
+			sr_dark_matter = @economic_plan_scaling_rare_resource_target
+		}
+	}
+
+
+###_香草_#######################################################
+	subplan = {
+		set_name = "base food"
+		potential = {
+			is_nirvana_empire = no
+			country_uses_food = yes
+		}
+
+		income = {
+			food = @economic_plan_food_target
+		}
+	}
+
+	subplan = {
+		set_name = "base science + unity organics"
+		potential = {
+			is_nirvana_empire = no
+			country_uses_consumer_goods = yes
+			has_monthly_income = { resource = consumer_goods value > @economic_plan_consumer_goods_target }
+		}
+		income = {
+			physics_research = @economic_plan_research_target
+			society_research = @economic_plan_research_target
+			engineering_research = @economic_plan_research_target
+			unity = @economic_plan_unity_target
+		}
+	}
+
+	subplan = {
+		set_name = "base unity hivemind"
+		potential = {
+			is_hive_empire = yes
+			has_monthly_income = { resource = energy value > @economic_plan_energy_target }
+		}
+		income = {
+			unity = @economic_plan_unity_target
+		}
+	}
+
+	subplan = {
+		set_name = "base science + unity machine empire"
+		potential = {
+			is_nirvana_empire = no
+			is_machine_empire = yes
+			has_monthly_income = { resource = energy value > @economic_plan_energy_target }
+		}
+		income = {
+			physics_research = @economic_plan_research_target
+			society_research = @economic_plan_research_target
+			engineering_research = @economic_plan_research_target
+			unity = @economic_plan_unity_target
+		}
+	}
+
+	subplan = {
+		set_name = "extended food"
+		potential = {
+			is_nirvana_empire = no
+			has_monthly_income = { resource = physics_research value > @economic_plan_research_target }
+			has_monthly_income = { resource = society_research value > @economic_plan_research_target }
+			has_monthly_income = { resource = engineering_research value > @economic_plan_research_target }
+			country_uses_food = yes
+		}
+
+		income = {
+			food = @economic_plan_food_target_extra
+		}
+	}
+
+	subplan = {
+		set_name = "base consumer goods"
+		potential = {
+			is_nirvana_empire = no
+			country_uses_consumer_goods = yes
+			has_monthly_income = { resource = minerals value > @economic_plan_minerals_target }
+			has_monthly_income = { resource = energy value > @economic_plan_energy_target }
+			if = {
+				limit = {
+					country_uses_food = yes
+				}
+				has_monthly_income = { resource = food value > @economic_plan_food_target }
+			}
+		}
+		income = {
+			consumer_goods = @economic_plan_consumer_goods_target
+		}
+	}
+
+
+	subplan = {
+		set_name = "base pops"
+		potential = {
+			is_nirvana_empire = no
+			has_monthly_income = { resource = energy value > @economic_plan_energy_target }
+			has_monthly_income = { resource = minerals value > @economic_plan_minerals_target }
+			has_monthly_income = { resource = physics_research value > @economic_plan_research_target }
+			has_monthly_income = { resource = society_research value > @economic_plan_research_target }
+			has_monthly_income = { resource = engineering_research value > @economic_plan_research_target }
+		}
+		pops = @economic_plan_pops_target
+	}
+
+	subplan = {
+		set_name = "clone origin pops"
+		potential = {
+			is_nirvana_empire = no
+			has_origin = origin_clone_army
+			NOT = {
+				has_country_flag = clone_army_fertility_unlocked
+			}
+			num_buildings = { type = building_clone_army_clone_vat value < 5 }
+		}
+		pops = @economic_plan_pops_target
+	}
+
+	#### SCALING SUBPLANS HERE ####
+	# Values in the scaling subplans are added to the base plan each time the AI reaches the target
+	# If base alloys = 10 and the AI reaches +12 per month, and it says alloys = 20 in the scaling subplan, the next target becomes alloys = 30
+	# All scaling subplans are cumulative
+
+	subplan = {
+		scaling = yes
+		set_name = "general scaling"
+		potential = {
+			is_nirvana_empire = no
+			has_monthly_income = { resource = energy value > @economic_plan_energy_target }
+			has_monthly_income = { resource = minerals value > @economic_plan_minerals_target }
+		}
+
+		income = {
+			alloys = 10
+			minerals = 10
+			energy = 10
+			physics_research = @economic_plan_scaling_research_target
+			society_research = @economic_plan_scaling_research_target
+			engineering_research = @economic_plan_scaling_research_target
+			unity = 20
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "general CG scaling"
+		potential = {
+			is_nirvana_empire = no
+			country_uses_consumer_goods = yes
+			has_monthly_income = { resource = energy value > @economic_plan_energy_target }
+			has_monthly_income = { resource = minerals value > @economic_plan_minerals_target }
+		}
+		income = {
+			consumer_goods = @economic_plan_scaling_consumer_goods_target
+		}
+	}
+
+	#### VOID DWELLER EXTRA ALLOYS ####
+	subplan = {
+		scaling = yes
+		set_name = "Void Dweller alloys"
+		potential = {
+			has_origin = origin_void_dwellers
+			is_nirvana_empire = no
+			has_monthly_income = { resource = energy value > @economic_plan_energy_target }
+			has_monthly_income = { resource = minerals value > @economic_plan_minerals_target }
+		}
+	
+		income = {
+			alloys = 10
+		}
+	}
+
+	#### MILITARIST EXTRA ALLOYS ####
+	subplan = {
+		scaling = yes
+		set_name = "Militarist alloys"
+		potential = {
+			is_nirvana_empire = no
+			OR = {
+				is_militarist = yes
+				is_homicidal = yes
+			}
+			has_monthly_income = { resource = energy value > @economic_plan_energy_target }
+			has_monthly_income = { resource = minerals value > @economic_plan_minerals_target }
+		}
+
+		income = {
+			alloys = 15
+		}
+	}
+
+	#### MATERIALIST SCIENCE ####
+	subplan = {
+		scaling = yes
+		set_name = "Materialist science"
+		potential = {
+			is_nirvana_empire = no
+			is_materialist = yes
+			has_monthly_income = { resource = energy value > @economic_plan_energy_target }
+			has_monthly_income = { resource = minerals value > @economic_plan_minerals_target }
+		}
+
+		income = {
+			physics_research = 15
+			society_research = 15
+			engineering_research = 15
+		}
+	}
+
+	#### SPIRITUALIST UNITY ####
+	subplan = {
+		scaling = yes
+		set_name = "Spiritualist unity"
+		potential = {
+			is_nirvana_empire = no
+			is_spiritualist = yes
+			has_monthly_income = { resource = energy value > @economic_plan_energy_target }
+			has_monthly_income = { resource = minerals value > @economic_plan_minerals_target }
+		}
+
+		income = {
+			unity = 15
+		}
+	}
+
+	# Optional subplans don't need to be fulfilled for the other scaling subplans to become active
+	subplan = {
+		scaling = yes
+		set_name = "Kaleidoscope"
+		potential = {
+			is_nirvana_empire = no
+			any_situation = {
+				is_situation_type = situation_kaleidoscope
+				NOT = { current_situation_approach = approach_no_food }
+			}
+			has_monthly_income = { resource = energy value > @economic_plan_energy_target }
+		}
+
+		income = {
+			energy = 15
+		}
+	}
+
+
+###_涅槃_#######################################################
+	subplan = {
+		scaling = yes
+		set_name = "naval cap scaling"
+		potential = {
+			num_repeatable_techs > 0 #make sure it isn't messing up the earlier development (this is for the late game)
+			has_monthly_income = { resource = energy value > @economic_plan_energy_target }
+			has_monthly_income = { resource = minerals value > @economic_plan_minerals_target }
+			has_monthly_income = { resource = alloys value > @economic_plan_fleet_cap_alloy_target }
+			used_naval_capacity_percent > 0.95
+			used_starbase_capacity_percent >= 1
+		}
+
+		naval_cap = 50
+	}
+
+	# Optional subplans don't need to be fulfilled for the other scaling subplans to become active
+	subplan = {
+		optional = yes
+		set_name = "Rare resources"
+		potential = {
+			always = yes
+		}
+
+		income = {
+			exotic_gases = @economic_plan_rare_resource_target
+			volatile_motes = @economic_plan_rare_resource_target
+			rare_crystals = @economic_plan_rare_resource_target
+		}
+	}
+
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Scaling exotic gases"
+
+		potential = {
+			has_monthly_income = { resource = exotic_gases value < @economic_plan_rare_resource_limit }
+		}
+
+		income = {
+			exotic_gases = @economic_plan_scaling_rare_resource_target
+		}
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Scaling volatile motes"
+
+		potential = {
+			has_monthly_income = { resource = volatile_motes value < @economic_plan_rare_resource_limit }
+		}
+
+		income = {
+			volatile_motes = @economic_plan_scaling_rare_resource_target
+		}
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Scaling rare crystals"
+
+		potential = {
+			has_monthly_income = { resource = rare_crystals value < @economic_plan_rare_resource_limit }
+		}
+
+		income = {
+			rare_crystals = @economic_plan_scaling_rare_resource_target
+		}
+	}
+
+###_舰娘_#######################################################
+	subplan = {
+		optional = yes
+		set_name = "Rare wg resources"
+		potential = {
+			OR = {
+				has_authority = auth_warshipgirls
+				has_authority = auth_shenhai
+			} 
+		}
+
+		income = {
+			sr_pantsu = @economic_plan_scaling_rare_resource_target
+			sr_se = @economic_plan_scaling_rare_resource_target
+		}
+	}			
+
+	subplan = {
+		optional = yes
+		set_name = "Rare wg resources"
+		potential = {
+			has_authority = auth_warshipgirls
+		}
+
+		income = {
+			sr_neo = @economic_plan_scaling_rare_resource_target
+			sr_alpha = @economic_plan_scaling_rare_resource_target
+		}
+	}	
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Scaling sr pantsu wg"
+
+		potential = {
+			OR = {
+				has_authority = auth_warshipgirls
+				has_authority = auth_shenhai
+			} 
+			has_monthly_income = { resource = sr_pantsu value < @economic_plan_rare_resource_limit }
+		}
+
+		income = {
+			sr_pantsu = @economic_plan_scaling_rare_resource_target
+		}
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Scaling sr neo wg"
+
+		potential = {
+			has_authority = auth_warshipgirls
+			has_monthly_income = { resource = sr_neo value < @economic_plan_rare_resource_limit }
+		}
+
+		income = {
+			sr_neo = @economic_plan_scaling_rare_resource_target
+		}
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Scaling sr alpha wg"
+
+		potential = {
+			has_authority = auth_warshipgirls 
+			has_monthly_income = { resource = sr_alpha value < @economic_plan_rare_resource_limit }
+		}
+
+		income = {
+			sr_alpha = @economic_plan_scaling_rare_resource_target
+		}
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Scaling sr se wg"
+
+		potential = {
+			OR = {
+				has_authority = auth_warshipgirls
+				has_authority = auth_shenhai
+			} 
+			has_monthly_income = { resource = sr_se value < @economic_plan_rare_resource_limit }
+		}
+
+		income = {
+			sr_se = @economic_plan_scaling_rare_resource_target
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
