@@ -310,22 +310,22 @@ country_event = {
 	}
 }
 
-country_event = {
-	id = wsgranking.20003
-	is_triggered_only = yes
-	hide_window = yes
-	trigger = {
-		last_increased_tech = tech_wg_buff_2
-        NOT = { has_country_flag = gain_tech_wg_shop_buff_2 }
-	}
-	immediate = {
-        set_country_flag = gain_tech_wg_shop_buff_2
-		change_variable = {
-			which = max_allowed_shop_buffs
-			value = 1
-		}
-	}
-}
+# country_event = {
+# 	id = wsgranking.20003
+# 	is_triggered_only = yes
+# 	hide_window = yes
+# 	trigger = {
+# 		last_increased_tech = tech_wg_buff_2
+#         NOT = { has_country_flag = gain_tech_wg_shop_buff_2 }
+# 	}
+# 	immediate = {
+#         set_country_flag = gain_tech_wg_shop_buff_2
+# 		change_variable = {
+# 			which = max_allowed_shop_buffs
+# 			value = 1
+# 		}
+# 	}
+# }
 
 #到期恢复商店BUFF上限
 country_event = {
@@ -566,33 +566,33 @@ country_event = {
 
 
 # 非舰娘帝国点进胖次商店
-country_event = {
-    id = wsgranking.1101
-	title = wsgranking.1101.title
-    desc = wsgranking.1101.desc
+# country_event = {
+#     id = wsgranking.1101
+# 	title = wsgranking.1101.title
+#     desc = wsgranking.1101.desc
 
-    custom_gui = "enclave_caravaneer_window"
-    diplomatic = yes
-    is_triggered_only = yes
+#     custom_gui = "enclave_caravaneer_window"
+#     diplomatic = yes
+#     is_triggered_only = yes
 
-    picture_event_data = {
-        room = Ella_room
-    }
+#     picture_event_data = {
+#         room = Ella_room
+#     }
     
-    trigger = {
-        NOR = {
-            has_authority = auth_shenhai
-            has_authority = auth_warshipgirls
-        }
-        from = { is_country_type = pantsu_shop }
-        NOT = { has_global_flag = pantsu_shop_disabled }
-    }
+#     trigger = {
+#         NOR = {
+#             has_authority = auth_shenhai
+#             has_authority = auth_warshipgirls
+#         }
+#         from = { is_country_type = pantsu_shop }
+#         NOT = { has_global_flag = pantsu_shop_disabled }
+#     }
     
-    option = { 
-        custom_gui = "enclave_caravaneer_option"
-        name = OK
-    }
-}
+#     option = { 
+#         custom_gui = "enclave_caravaneer_option"
+#         name = OK
+#     }
+# }
 
 # 敌对时联络
 country_event = {
@@ -2033,8 +2033,6 @@ country_event = {
                 NOT = { has_country_flag = pantsu_shop_contract_break }
                 fail_text = prohibit_contract_sign
             }
-        }
-		allow = { 
             custom_tooltip = {
                 has_country_flag = tr_wg_shop_5_adopt
                 fail_text = need_tr_wg_shop_5_adopt
@@ -4995,15 +4993,15 @@ country_event = {
                 country_event = { id = wsgranking.2001 } # notification
             }
         }
-        else = {
-            every_playable_country = { #通知胖次商店被炸掉而且跑了
-                limit = {
-                    has_communications = root.from
-                    NOT = { is_same_value = root }
-                }
-                country_event = { id = wsgranking.2004 } # notification
-            }
-        }
+        # else = {
+        #     every_playable_country = { #通知胖次商店被炸掉而且跑了
+        #         limit = {
+        #             has_communications = root.from
+        #             NOT = { is_same_value = root }
+        #         }
+        #         country_event = { id = wsgranking.2004 } # notification
+        #     }
+        # }
 	}
 
     # 击破者为普通帝国的选项
@@ -5065,61 +5063,61 @@ country_event = {
 }
 
 # 重建事件
-country_event = {
-    id = wsgranking.2003
-    title = wsgranking.2003.name
-    desc = wsgranking.2003.desc
-    picture = GFX_evt_caravaneers
-    location = root.capital_scope
+# country_event = {
+#     id = wsgranking.2003
+#     title = wsgranking.2003.name
+#     desc = wsgranking.2003.desc
+#     picture = GFX_evt_caravaneers
+#     location = root.capital_scope
 
-    is_triggered_only = yes
+#     is_triggered_only = yes
 
-    immediate = {
-        set_global_flag = pantsu_shop_rebuilt
-        every_country = {
-            limit = { has_country_flag = asked_for_immigration }
-            remove_country_flag = asked_for_immigration
-        }
-        capital_scope = { solar_system = {
-            random_system_planet = {
-                limit = { 
-                    is_star = no
-                    NOT = { is_same_value = PREVPREV }
-                }
-                #搞点舰队啥的
-                create_pantsu_shop_guard_fleets = yes
-            }
-            save_global_event_target_as = pantsu_shop_system
-        }}
-        remove_global_flag = pantsu_shop_disabled
-    }
+#     immediate = {
+#         set_global_flag = pantsu_shop_rebuilt
+#         every_country = {
+#             limit = { has_country_flag = asked_for_immigration }
+#             remove_country_flag = asked_for_immigration
+#         }
+#         capital_scope = { solar_system = {
+#             random_system_planet = {
+#                 limit = { 
+#                     is_star = no
+#                     NOT = { is_same_value = PREVPREV }
+#                 }
+#                 #搞点舰队啥的
+#                 create_pantsu_shop_guard_fleets = yes
+#             }
+#             save_global_event_target_as = pantsu_shop_system
+#         }}
+#         remove_global_flag = pantsu_shop_disabled
+#     }
 
-    option = {
-        name = OK
-    }
+#     option = {
+#         name = OK
+#     }
     
-}
+# }
 
 # 商店被炸掉并跑路的事件
-country_event = {
-    id = wsgranking.2004
-    title = wsgranking.2004.name
-    desc = wsgranking.2004.desc
-    picture = GFX_evt_wsg_no_video
+# country_event = {
+#     id = wsgranking.2004
+#     title = wsgranking.2004.name
+#     desc = wsgranking.2004.desc
+#     picture = GFX_evt_wsg_no_video
 
-    is_triggered_only = yes
+#     is_triggered_only = yes
 
-    immediate = {
-        #event_target:pantsu_shop_country = {
-        #    destroy_country = yes
-        #}
-        country_event = { id = wsgranking.2005 }
-    }
+#     immediate = {
+#         #event_target:pantsu_shop_country = {
+#         #    destroy_country = yes
+#         #}
+#         country_event = { id = wsgranking.2005 }
+#     }
 
-    option = {
-        name = OK
-    }
-}
+#     option = {
+#         name = OK
+#     }
+# }
 
 # 移除与胖次商店的所有buff
 country_event = {
@@ -6693,21 +6691,21 @@ country_event = {
 	}
 }
 
-country_event = {
-	id = wsgranking.8002
-	hide_window = yes
-	is_triggered_only = yes
-	fire_only_once = yes
-	trigger = {
-		last_increased_tech = tech_wg_buff_2
-	}
-	immediate = {
-		change_variable = {
-			which = max_allowed_shop_buffs
-			value = 1
-		}
-	}
-}
+# country_event = {
+# 	id = wsgranking.8002
+# 	hide_window = yes
+# 	is_triggered_only = yes
+# 	fire_only_once = yes
+# 	trigger = {
+# 		last_increased_tech = tech_wg_buff_2
+# 	}
+# 	immediate = {
+# 		change_variable = {
+# 			which = max_allowed_shop_buffs
+# 			value = 1
+# 		}
+# 	}
+# }
 
 # #wg_modifier_tertiary_industry
 #紧急战斗植入物

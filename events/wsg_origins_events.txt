@@ -696,14 +696,9 @@ country_event = {
 		name = "wg_origin.26.a"
 		hidden_effect = {
 			capital_scope = {
-				closest_system = {
-					min_steps = 2
-				}
 				spawn_system = {
 					min_distance = 10
 					max_distance = 30
-					min_jumps = 2
-					max_jumps = 4
 					initializer = wg_fe_gift_system
 				}
 			}
@@ -3685,7 +3680,7 @@ country_event = {
 #典范lex
 country_event = {
 	id = wg_origin.1010
-	title = "TRASMISSTION"
+	title = "NAME_wg_lex_warhammer"
 	desc = wg_origin.1010.desc
 	is_triggered_only = yes
 	event_window_type = leader_recruit
@@ -3800,7 +3795,7 @@ country_event = {
 #典范大和
 country_event = {
 	id = wg_origin.1011
-	title = "TRASMISSTION"
+	title = "NAME_wg_yamato_warhammer"
 	desc = wg_origin.1010.desc
 	is_triggered_only = yes
 	event_window_type = leader_recruit
@@ -4339,41 +4334,38 @@ planet_event = {
 	is_triggered_only = yes
 	picture = GFX_evt_wg_40k_chaos_gate
 	location = event_target:wg_warhammer_holy_harbor_target
-	is_triggered_only = yes
 	
     immediate = {
-		if = {
-			create_species = {
-				name = "NAME_wg_chaos"
-				class = random_non_machine
-				portrait = random
-				traits = random
+		create_species = {
+			name = "NAME_wg_chaos"
+			class = random_non_machine
+			portrait = random
+			traits = random
+		}
+		create_country = {
+			name = "NAME_wg_chaos_country"
+			type = faction
+			species = last_created_species
+			effect = {
+				set_country_flag = protected_from_queen_storm
+				establish_communications_no_message = root.owner
+				save_global_event_target_as = wg_chaos_country
+				set_country_flag = wg_chaos_country_flag
 			}
-			create_country = {
-				name = "NAME_wg_chaos_country"
-				type = faction
-				species = last_created_species
-				effect = {
-					set_country_flag = protected_from_queen_storm
-					establish_communications_no_message = root.owner
-					save_global_event_target_as = wg_chaos_country
-					set_country_flag = wg_chaos_country_flag
+			flag = {
+				icon = {
+					category = "wg_event_flags"
+					file = "wge_flags_08.dds"
 				}
-				flag = {
-					icon = {
-						category = "wg_event_flags"
-						file = "wge_flags_08.dds"
-					}
-					background = {
-						category = "backgrounds"
-						file = "00_solid.dds"
-					}
-					colors={
-						"red"
-						"red"
-						"null"
-						"null"
-					}
+				background = {
+					category = "backgrounds"
+					file = "00_solid.dds"
+				}
+				colors={
+					"red"
+					"red"
+					"null"
+					"null"
 				}
 			}
 		}
@@ -5504,30 +5496,20 @@ country_event = {
 		set_spawn_system_batch = begin
 		if = {
 			limit = { has_authority = auth_warshipgirls }
-			random_system = {
-				closest_system = {
-					min_steps = 5
-				}
+			random_system_within_border = {
 				spawn_system = {
 					min_distance = 10
 					max_distance = 20
-					min_jumps = 2
-					max_jumps = 5
 					initializer = wg_ork_sh_home_system
 				}
 			}
 		}
 		else_if = {
 			limit = { has_authority = auth_shenhai }
-			random_system = {
-				closest_system = {
-					min_steps = 5
-				}
+			random_system_within_border = {
 				spawn_system = {
 					min_distance = 10
 					max_distance = 30
-					min_jumps = 2
-					max_jumps = 5
 					initializer = wg_ork_wsg_home_system
 				}
 			}
@@ -6164,14 +6146,9 @@ country_event = {
 	immediate = {
 		set_spawn_system_batch = begin
 		capital_scope = {
-			closest_system = {
-				min_steps = 3
-			}
 			spawn_system = {
 				min_distance = 10
 				max_distance = 30
-				min_jumps = 2
-				max_jumps = 3
 				initializer = wg_macragge_system
 			}
 		}
@@ -6424,14 +6401,9 @@ country_event = {
 	immediate = {
 		set_spawn_system_batch = begin
 		event_target:wg_macragge_system_location = {
-			closest_system = {
-				min_steps = 2
-			}
 			spawn_system = {
 				min_distance = 10
 				max_distance = 30
-				min_jumps = 2
-				max_jumps = 3
 				initializer = wg_vulcanis_system
 			}
 		}
@@ -6705,8 +6677,6 @@ country_event = {
 			spawn_system = {
 				min_distance >= 20
 				max_distance <= 200
-				min_jumps = 1
-				max_jumps = 8
 				initializer = wg_baal_system
 			}
 		}
@@ -7211,7 +7181,7 @@ country_event = {
 #圣吉列斯
 country_event = {
 	id = wg_origin.256
-	title = TRASMISSTION
+	title = "NAME_wsg_sanguinius"
 	desc = wg_origin.256.desc
 	is_triggered_only = yes
 	event_window_type = leader_recruit
@@ -7289,7 +7259,7 @@ country_event = {
 #圣吉列斯
 country_event = {
 	id = wg_origin.258
-	title = "TRASMISSTION"
+	title = "NAME_sh_sanguinius"
 	desc = wg_origin.256.desc
 	is_triggered_only = yes
 	event_window_type = leader_recruit
@@ -7452,14 +7422,9 @@ country_event = {
 	immediate = {
 		set_spawn_system_batch = begin
 		capital_scope = {
-			closest_system = {
-				min_steps = 3
-			}
 			spawn_system = {
 				min_distance = 10
 				max_distance = 200
-				min_jumps = 1
-				max_jumps = 8
 				initializer = wg_krieg_system
 			}
 		}
@@ -8370,7 +8335,6 @@ country_event = {
 	is_triggered_only = yes
 	picture = GFX_evt_exploding_planet
 	location = event_target:wg_krieg_planet_location
-	is_triggered_only = yes
 	trigger = {
 		NOR = {
 			has_global_flag = wg_krieg_chaos_defeated
@@ -8501,60 +8465,61 @@ country_event = {
 	}
 }
 
-country_event = {
-	id = wg_origin.999
-	hide_window = yes
-	is_triggered_only = yes
-    trigger = {
-		has_authority = auth_warshipgirls
-	} 
-	immediate = {
-		create_species = {
-			name = Warship_Girls
-			plural = Warship_Girls
-			class = WG_WARMMER_WSG_LION
-			portrait = wsg9972
-			namelist = WSG2
-			allow_negative_traits = no
-			effect = {
-				save_global_event_target_as = wsg_lion_warhammer_species
-			}
-		}
-		create_leader = {
-			class = commander
-			species = event_target:wsg_lion_warhammer_species
-			name = "NAME_wsg_lion"
-			event_leader = yes
-			gender = female
-			immortal = yes
-			custom_description = wsg_lion_warhammer_desc
-			custom_catch_phrase = lion_warhammer_catch_phrase
-			skip_background_generation = yes
-			set_age = 126531
-			traits = {
-				#trait = leader_trait_warhammer_wsg_sanguinius
-				#trait = leader_trait_warhammer_wsg_sanguinius2
-			}
-			effect = {
-				change_leader_portrait = wsg9972
-				set_leader_flag = has_gained_level_trait
-				set_leader_flag = has_gained_trait
-				save_global_event_target_as = wsg_lion_warhammer_leader
-				add_skill_without_trait_selection = 10
-			}
-		}
-		last_created_leader = {
-			set_variable = { which = affection value = 60 }
-			if = {
-				limit = { owner = { has_country_flag = wsg_mist }}
-				add_trait_no_notify = leader_trait_mist
-			} else_if = {
-				limit = { owner = { has_country_flag = project_s_finish }}
-				add_trait_no_notify = leader_trait_warshipgirls2
-			} else_if = {
-				limit = { owner = { has_country_flag = wsg_project_r }}
-				add_trait_no_notify = leader_trait_warshipgirls
-			}
-		}
-	}
-}
+#TODO
+# country_event = {
+# 	id = wg_origin.999
+# 	hide_window = yes
+# 	is_triggered_only = yes
+#     trigger = {
+# 		has_authority = auth_warshipgirls
+# 	} 
+# 	immediate = {
+# 		create_species = {
+# 			name = Warship_Girls
+# 			plural = Warship_Girls
+# 			class = WG_WARMMER_WSG_LION
+# 			portrait = wsg9972
+# 			namelist = WSG2
+# 			allow_negative_traits = no
+# 			effect = {
+# 				save_global_event_target_as = wsg_lion_warhammer_species
+# 			}
+# 		}
+# 		create_leader = {
+# 			class = commander
+# 			species = event_target:wsg_lion_warhammer_species
+# 			name = "NAME_wsg_lion"
+# 			event_leader = yes
+# 			gender = female
+# 			immortal = yes
+# 			custom_description = wsg_lion_warhammer_desc
+# 			custom_catch_phrase = lion_warhammer_catch_phrase
+# 			skip_background_generation = yes
+# 			set_age = 126531
+# 			traits = {
+# 				#trait = leader_trait_warhammer_wsg_sanguinius
+# 				#trait = leader_trait_warhammer_wsg_sanguinius2
+# 			}
+# 			effect = {
+# 				change_leader_portrait = wsg9972
+# 				set_leader_flag = has_gained_level_trait
+# 				set_leader_flag = has_gained_trait
+# 				save_global_event_target_as = wsg_lion_warhammer_leader
+# 				add_skill_without_trait_selection = 10
+# 			}
+# 		}
+# 		last_created_leader = {
+# 			set_variable = { which = affection value = 60 }
+# 			if = {
+# 				limit = { owner = { has_country_flag = wsg_mist }}
+# 				add_trait_no_notify = leader_trait_mist
+# 			} else_if = {
+# 				limit = { owner = { has_country_flag = project_s_finish }}
+# 				add_trait_no_notify = leader_trait_warshipgirls2
+# 			} else_if = {
+# 				limit = { owner = { has_country_flag = wsg_project_r }}
+# 				add_trait_no_notify = leader_trait_warshipgirls
+# 			}
+# 		}
+# 	}
+# }

@@ -425,18 +425,7 @@ country_event = {
 	}
 
 	immediate = {
-		# every_owned_planet = {
-		# 	set_variable = { which = replace_building value = 0 }
-		# 	while = {
-		# 		limit = { 
-		# 			has_building = building_research_lab_2 
-		# 			check_variable = { which = replace_building value > 3 }
-		# 		}
-		# 		remove_building = building_research_lab_2
-		# 		add_building = building_wsg_research
-		# 		change_variable = { which = replace_building value = 1 }
-		# 	}
-		# }
+		set_spawn_system_batch = begin
 		set_global_flag = wg_solIII_created
 		random_country = {
 			limit = {
@@ -447,82 +436,26 @@ country_event = {
 				is_ai = no
 			}
 			save_event_target_as = player_country
-			if = {
-				limit = { exists = capital_scope }
-				capital_scope = { 
-					solar_system = { 
-						if = {
-							limit = { NOT = { any_neighbor_system_euclidean = { has_hyperlane_to = PREV }}}
+			capital_scope = {
+				solar_system = {
+					if = {
+						limit = { NOT = { any_neighbor_system_euclidean = { has_hyperlane_to = PREV }}}
+						save_event_target_as = spawn_sol_system_source
+					}
+					else = {
+						random_neighbor_system_euclidean = {
+							limit = { NOR = {
+								has_star_flag = sealed_system
+								has_star_flag = wg_sealed_system
+								has_star_flag = can_spawn_boss_system
+							}}
 							save_event_target_as = spawn_sol_system_source
-						} else = {
-							random_neighbor_system_euclidean = {
-								limit = { NOR = { 
-									has_star_flag = sealed_system 
-									has_star_flag = wg_sealed_system
-									has_star_flag = can_spawn_boss_system
-								}}
-								save_event_target_as = spawn_sol_system_source
-							}
 						}
 					}
 				}
-			} 
-			# else_if = {
-			# 	limit = { 
-			# 		OR = {
-			# 			has_origin = origin_ev_meg_homeless_ship_strat
-			# 			is_country_type = default_ev 
-			# 		}
-			# 	}
-			# 	random_controlled_fleet = {
-			# 		limit = { any_owned_ship = { is_any_type_homeless_ship = yes }}
-			# 		solar_system = { 
-			# 			if = {
-			# 				limit = { NOT = { any_neighbor_system_euclidean = { has_hyperlane_to = PREV }}}
-			# 				save_event_target_as = spawn_sol_system_source
-			# 			} else = {
-			# 				random_neighbor_system_euclidean = {
-			# 					limit = { NOR = { 
-			# 						has_star_flag = sealed_system 
-			# 						has_star_flag = wg_sealed_system
-			# 						has_star_flag = can_spawn_boss_system
-			# 					}}
-			# 					save_event_target_as = spawn_sol_system_source
-			# 				}
-			# 			}
-			# 		}
-			# 	}
-			# } 
-			else = {
-				random_controlled_fleet = { solar_system = {
-					save_event_target_as = spawn_sol_system_source
-				}}
-			}
-			every_system = {
-				limit = {
-					distance = {
-						source = event_target:spawn_sol_system_source
-						min_jumps = 0
-						max_jumps = 4
-						type = hyperlane 
-						use_bypasses = no
-					}
-					NOR = {
-						has_natural_wormhole = yes
-						exists = space_owner
-						has_star_flag = hostile_system
-						has_star_flag = guardian
-						has_star_flag = sealed_system
-						has_star_flag = wg_Parit_system
-						has_star_flag = wg_sealed_system
-					}
-				}
-				set_timed_star_flag = { flag = can_spawn_sol_system days = 1 }
 			}
 		}
-		set_spawn_system_batch = begin
-		random_system = {
-			limit = { has_star_flag = can_spawn_sol_system }
+		event_target:spawn_sol_system_source = {
 			# 舰娘50%刷正常sol3 + 59星系，50%刷核爆版sol3
 			# 非舰娘刷59星系
 			if = {
@@ -532,7 +465,6 @@ country_event = {
 						spawn_system = { 
 							min_distance = 10
 							max_distance = 30
-							hyperlane = yes
 							is_discovered = no
 							initializer = "lex_sol_system_nuked"
 						}
@@ -541,33 +473,28 @@ country_event = {
 						spawn_system = { 
 							min_distance = 10
 							max_distance = 30
-							hyperlane = yes
 							is_discovered = no
 							initializer = "lex_sol_system"
 						}
-						remove_star_flag = can_spawn_sol_system
-						random_system = {
-							limit = { has_star_flag = can_spawn_sol_system }
-							spawn_system = { 
-								min_distance = 10
-								max_distance = 30
-								hyperlane = yes
-								is_discovered = no
-								initializer = "wg_boss_59_system"
-							}
-						}	
+					}
+					1 = {
+						spawn_system = {
+							min_distance = 10
+							max_distance = 30
+							is_discovered = no
+							initializer = "wg_boss_59_system"
+						}
 					}
 				}
-			} else = {
+			}
+			else = {
 				spawn_system = { 
 					min_distance = 10
 					max_distance = 30
-					hyperlane = yes
 					is_discovered = no
 					initializer = "wg_boss_59_system"
 				}
 			}
-			remove_star_flag = can_spawn_sol_system
 		}
 		set_spawn_system_batch = end
 	}
@@ -1281,7 +1208,7 @@ country_event = {
 
 country_event = {
 	id = wsg.2015
-	title = "TRASMISSTION"
+	title = "RA_ADMIRAL_103"
 	desc = wsg.2015.desc
 	is_triggered_only = yes
 	event_window_type = leader_recruit
@@ -1300,7 +1227,7 @@ country_event = {
 
 country_event = {
 	id = wsg.2016
-	title = "TRASMISSTION"
+	title = "NAME_repulse"
 	desc = wsg.2016.desc
 	is_triggered_only = yes
 	event_window_type = leader_recruit
@@ -1386,19 +1313,18 @@ country_event = {
 			}
 		}
 		set_variable = { which = num_sr_se_pop_cost value = 0 }
-		every_owned_pop = {
-			ROOT = { change_variable = { which = num_sr_se_pop_cost value = 1 }}
-		}
-		divide_variable = { which = num_sr_se_pop_cost value = 250 }
+		change_variable = { which = num_sr_se_pop_cost value = trigger:num_pops }
+		multiply_variable = { which = num_sr_se_pop_cost value = 0.04 }
 		set_variable = { which = project_s_sr_se_cost value = 6 }
 		if = {
 			limit = { check_variable = { which = num_sr_se_pop_cost value > 6 }}
-			set_variable = { which = project_s_sr_se_cost value = num_sr_se_pop_cost.project_s_sr_se_cost }
+			set_variable = { which = project_s_sr_se_cost value = num_sr_se_pop_cost }
 		}
 		if = {
 			limit = { check_variable = { which = project_s_sr_se_cost value > 100 }}
 			divide_variable = { which = project_s_sr_se_cost value = 100 }
-			while = { count = project_s_sr_se_cost
+			while = { 
+				count = project_s_sr_se_cost
 				add_event_chain_counter = {
 					event_chain = wsg_project_s
 					counter = sr_se_cost_counter
@@ -1407,7 +1333,8 @@ country_event = {
 			}
 			multiply_variable = { which = project_s_sr_se_cost value = 100 }
 		}
-		while = { count = project_s_sr_se_cost
+		while = { 
+			count = project_s_sr_se_cost
 			add_event_chain_counter = {
 				event_chain = wsg_project_s
 				counter = sr_se_cost_counter
