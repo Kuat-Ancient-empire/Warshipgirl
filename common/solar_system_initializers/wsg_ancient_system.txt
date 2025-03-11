@@ -497,3 +497,92 @@ wg_relic_Andica_system = {
 		}
 	}
 }
+
+## Unsolve Soul 驱灵死域
+wg_unsolve_soul_ancient_system = {
+	name = "NAME_Unsolve_Soul"
+	class = sc_a
+	usage_odds = 0
+
+	flags = { wg_unsolve_soul_ancient_system }
+
+	prevent_anomalies = yes
+
+	planet = {
+		count = 1
+		class = pc_a_star
+		orbit_distance = 0
+		orbit_angle = 1
+		size = { min = 20 max = 30 }
+		has_ring = no
+	}
+
+	change_orbit = 45
+
+	planet = {
+		name = "NAME_Unsolve_Soul_1"
+		class = pc_relic
+		orbit_distance = 20
+		size = 30
+		init_effect = {
+			set_planet_flag = wg_unsolve_soul_ancient_planet
+			relic_world_deposits = yes
+		}
+	}
+
+	planet = {
+		name = "NAME_Unsolve_Soul_2"
+		class = random_non_colonizable
+		orbit_distance = 30
+		size = { min = 12 max = 25 }
+	}
+
+	planet = {
+		name = "NAME_Unsolve_Soul_3"
+		class = random_non_colonizable
+		orbit_distance = 10
+		size = { min = 20 max = 35 }
+		orbit_angle = { min = 90 max = 270 }
+
+		change_orbit = @base_moon_distance
+
+		moon = {
+			class = rl_unhabitable_planets
+			count = { min = 0 max = 1 }
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+
+	init_effect = {
+		while = {
+			count = 15
+			create_ambient_object = {
+				type = "large_debris_object"
+				location = solar_system
+			}
+		}
+		while = {
+			count = 10
+			create_ambient_object = {
+				type = "medium_debris_01_object"
+				location = solar_system
+			}
+		}
+		while = {
+			count = 20
+			create_ambient_object = {
+				type = "medium_debris_02_object"
+				location = solar_system
+			}
+		}
+		while = {
+			count = 30
+			create_ambient_object = {
+				type = "small_debris_object"
+				location = solar_system
+			}
+		}
+		save_global_event_target_as = wg_unsolve_soul_ancient_system
+	}
+}

@@ -3532,7 +3532,6 @@ country_event = {
 					name = "NAME_wg_custodian"
 					owner = root
 					type = "wg_custodian"
-					land_army = yes
 				}
 			}
 			while = {
@@ -3541,7 +3540,6 @@ country_event = {
 					name = "NAME_wg_space_marine"
 					owner = root
 					type = "wg_space_marine"
-					land_army = yes
 				}
 			}
 			while = {
@@ -3550,7 +3548,6 @@ country_event = {
 					name = "NAME_wg_astra_marine"
 					owner = root
 					type = "wg_astra_marine"
-					land_army = yes
 				}
 			}
 		}			
@@ -3586,7 +3583,6 @@ country_event = {
 					name = "NAME_wg_astra_marine2"
 					owner = root
 					type = "wg_astra_marine"
-					land_army = yes
 				}
 			}
 		}
@@ -5471,7 +5467,6 @@ planet_event = {
 				owner = starbase.owner
 				species = starbase.owner
 				type = "wg_ork_army"
-				land_army = yes
 			}
 		}
 	}
@@ -8182,6 +8177,7 @@ country_event = {
 	}
 	option = {
 		name = wg_origin.285.a
+		hidden_effect = { set_global_flag = wg_warhamme_krieg_win }
 		add_modifier = { modifier = wg_warhamme_krieg_win days = 7200 }
 	}
 }
@@ -8523,3 +8519,665 @@ country_event = {
 # 		}
 # 	}
 # }
+
+#驱灵死域 mtth3年 不明波动信号
+country_event = {
+	id = wg_origin.295
+	title = wg_origin.295.name
+	desc = wg_origin.295.desc
+	picture = GFX_evt_rift_sphere
+	show_sound = event_default
+	mean_time_to_happen = { years = 2 }
+	trigger = {
+		has_global_flag = wg_warhamme_krieg_win
+		has_origin = origin_wg_warhammer
+		NOT = { has_country_flag = wg_warhammer_unsolve_soul_area_nicron }
+	}
+	immediate = {
+		set_country_flag = wg_warhammer_unsolve_soul_area_nicron
+		capital_scope = { spawn_system = {
+			min_distance = 15
+			max_distance = 30
+			initializer = wg_unsolve_soul_ancient_system
+		} }
+	}
+	option = { name = wg_origin.295.a }
+}
+
+#进星系触发 “遭遇战”
+ship_event = {
+	id = wg_origin.296
+	title = wg_origin.296.name
+	desc = wg_origin.296.desc
+	picture = GFX_evt_hostile_infiltration
+	show_sound = event_default
+	is_triggered_only = yes
+	trigger = {
+		exists = owner
+		owner = {
+			has_origin = origin_wg_warhammer
+			has_global_flag = wg_warhamme_krieg_win
+		}
+		from = { has_star_flag = wg_unsolve_soul_ancient_system }
+	}
+	immediate = {
+		create_species = {
+			name = "NAME_wg_nicron"
+			class = NECROID
+			portrait = random
+			traits = random
+		}
+		create_country = {
+			name = "NAME_wg_nicron_country"
+			type = faction
+			auto_delete = no
+			species = last_created_species
+			effect = {
+				set_country_flag = protected_from_queen_storm
+				establish_communications_no_message = root.owner
+				save_global_event_target_as = wg_nicron_country
+				set_country_flag = wg_nicron_country_flag
+			}
+			flag = {
+				icon = {
+					category = "wg_event_flags"
+					file = "wge_flags_05.dds"
+				}
+				background = {
+					category = "backgrounds"
+					file = "00_solid.dds"
+				}
+				colors={ "green" "green" "null" "null" }
+			}
+		}
+		create_fleet = {
+			name = "NAME_wg_nicron_fleet"
+			settings = {
+				spawn_debris = no
+			}
+			effect = {
+				set_owner = event_target:wg_nicron_country
+				while = {
+					count = 4
+					create_ship = {
+						name = random
+						design = "NAME_WG_NICOID_SUPERJUGGERNAUT"
+					}
+				}
+				while = {
+					count = 35
+					create_ship = {
+						name = random
+						design = "NAME_WG_NICOID_JUGGERNAUT"
+					}
+				}
+				while = {
+					count = 50
+					create_ship = {
+						name = random
+						design = "NAME_WG_NICOID_GUNSHIP"
+					}
+				}
+				set_fleet_flag = wg_nicron_fleet_flag
+				set_location = event_target:wg_unsolve_soul_ancient_system.system_star
+			}
+		}
+	}
+	option = { name = wg_origin.296.a }
+}
+
+#“荣耀的决斗”
+country_event = {
+	id = wg_origin.297
+	title = "wg_origin.297.name"
+	desc = "wg_origin.297.desc"
+	picture = GFX_evt_crisis_defeated
+	is_triggered_only = yes
+	trigger = {
+		has_origin = origin_wg_warhammer
+		has_global_flag = wg_warhamme_krieg_win
+		from = { is_same_value = event_target:wg_nicron_country }
+		fromfromfrom = { has_fleet_flag = wg_nicron_fleet_flag }
+	}
+	immediate = {
+		event_target:wg_unsolve_soul_ancient_system = {
+			create_starbase = {
+				size = starbase_outpost
+				owner = root
+			}
+			every_system_planet = {
+				limit = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+				set_owner = root
+				set_controller = root
+				create_pop = {
+					count = 45
+					species = root.owner_species
+				}
+				while = {
+					count = 15
+					create_army = {
+						name = "wg_krieg"
+						owner = root
+						species = root.owner_species
+						type = "wg_krieg_defense"
+					}
+				}
+				while = {
+					count = 15
+					create_army = {
+						name = "wg_nicroid_army"
+						owner = event_target:wg_nicron_country
+						species = event_target:wg_nicron_country.owner_species
+						type = "wg_nicroid_army"
+					}
+				}
+				while = {
+					count = 5
+					create_army = {
+						name = "wg_nicroid_skeeper"
+						owner = event_target:wg_nicron_country
+						species = event_target:wg_nicron_country.owner_species
+						type = "wg_nicroid_skeeper"
+					}
+				}
+				while = {
+					count = 2
+					create_army = {
+						name = "wg_nicroid_death_battler"
+						owner = event_target:wg_nicron_country
+						species = event_target:wg_nicron_country.owner_species
+						type = "wg_nicroid_death_battler"
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_origin.297.a
+		hidden_effect = {
+			event_target:wg_unsolve_soul_ancient_system = {
+				every_system_planet = {
+					limit = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+					while = {
+						count = 30
+						create_army = {
+							name = "wg_astra_marine"
+							owner = root
+							species = root.owner_species
+							type = "wg_astra_marine"
+						}
+					}
+					while = {
+						count = 15
+						create_army = {
+							name = "wg_space_marine_2"
+							owner = root
+							species = root.owner_species
+							type = "wg_space_marine_2"
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+#“急眼了”
+country_event = {
+	id = wg_origin.298
+	title = "wg_origin.298.name"
+	desc = "wg_origin.298.desc"
+	picture = GFX_evt_burning_settlement
+	is_triggered_only = yes
+	trigger = {
+		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		has_origin = origin_wg_warhammer
+		NOT = { has_country_flag = wg_warhamme_unsolve_soul_win }
+		from = { is_same_value = event_target:wg_nicron_country }
+	}
+	immediate = {
+		set_update_modifiers_batch = begin
+		set_country_flag = wg_warhamme_unsolve_soul_win
+		event_target:wg_unsolve_soul_ancient_system = {
+			create_ambient_object = { type = nexus_storm location = star }
+			last_created_ambient_object = {
+				set_ambient_object_flag = wg_unsolve_soul_storm
+				set_location = { target = prev distance = 0 angle = random }
+			}
+			add_modifier = { modifier = wg_unsolve_soul_ancient_system_debuff }
+			every_fleet_in_system = {
+				limit = {
+					exists = owner
+					owner = { is_hostile = event_target:wg_nicron_country }
+				}
+				if = {
+					limit = { is_ship_class = shipclass_starbase }
+					destroy_fleet = this
+				}
+				else = { set_mia = mia_return_home }
+			}
+			create_fleet = {
+				name = "NAME_wg_nicron_fleet"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = event_target:wg_nicron_country
+					while = {
+						count = 8
+						create_ship = {
+							name = random
+							design = "NAME_WG_NICOID_SUPERJUGGERNAUT"
+						}
+					}
+					while = {
+						count = 30
+						create_ship = {
+							name = random
+							design = "NAME_WG_NICOID_JUGGERNAUT"
+						}
+					}
+					while = {
+						count = 30
+						create_ship = {
+							name = random
+							design = "NAME_WG_NICOID_GUNSHIP"
+						}
+					}
+					set_fleet_flag = wg_nicron_fleet_flag_2
+					set_location = prev.system_star
+				}
+			}
+			root.fromfrom = {
+				every_planet_army = { remove_army = yes }
+				set_owner = event_target:wg_nicron_country
+				set_controller = event_target:wg_nicron_country
+				add_deposit = d_city_ruins
+				add_deposit = d_bomb_crater
+				add_deposit = d_bomb_crater
+				add_deposit = d_bomb_crater
+				add_deposit = d_bomb_crater
+				add_deposit = d_bomb_crater
+				while = {
+					count = 5
+					create_army = {
+						name = "wg_nicroid_night_killer"
+						owner = event_target:wg_nicron_country
+						species = event_target:wg_nicron_country.owner_species
+						type = "wg_nicroid_night_killer"
+					}
+				}
+				while = {
+					count = 8
+					create_army = {
+						name = "wg_nicroid_skeeper"
+						owner = event_target:wg_nicron_country
+						species = event_target:wg_nicron_country.owner_species
+						type = "wg_nicroid_skeeper"
+					}
+				}
+				while = {
+					count = 10
+					create_army = {
+						name = "wg_nicroid_army"
+						owner = event_target:wg_nicron_country
+						species = event_target:wg_nicron_country.owner_species
+						type = "wg_nicroid_army"
+					}
+				}
+				change_pc = pc_nuked
+			}
+		}
+		set_update_modifiers_batch = end
+	}
+	option = { name = wg_origin.298.a }
+}
+
+#”神皇之光照耀着我们！"
+country_event = {
+	id = wg_origin.299
+	title = "wg_origin.299.name"
+	desc = "wg_origin.299.desc"
+	picture = GFX_evt_rift_sphere
+	is_triggered_only = yes
+	trigger = {
+		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		has_origin = origin_wg_warhammer
+		has_country_flag = wg_warhamme_unsolve_soul_win
+		NOT = { has_country_flag = wg_warhamme_unsolve_soul_win_twince }
+		from = { is_same_value = event_target:wg_nicron_country }
+	}
+	immediate = {
+		set_country_flag = wg_warhamme_unsolve_soul_win_twince
+		fromfrom = {
+			set_owner = root
+			set_controller = root
+		}
+	}
+	option = {
+		name = wg_origin.299.a
+		hidden_effect = {
+			country_event = {
+				id = wg_origin.300
+				days = 15
+				scopes = { fromfrom = root.fromfrom }
+			}
+		}
+	}
+}
+
+#支援到来
+country_event = {
+	id = wg_origin.300
+	title = "wg_origin.300.name"
+	desc = "wg_origin.300.desc"
+	picture = GFX_evt_interior_battle
+	is_triggered_only = yes
+	trigger = {
+		has_origin = origin_wg_warhammer
+		has_country_flag = wg_warhamme_unsolve_soul_win_twince
+	}
+	immediate = {
+		set_country_flag = wg_warhamme_unsolve_soul_win_third
+		fromfrom = {
+			while = {
+				count = 15
+				create_army = {
+					name = "wg_astra_marine"
+					owner = root
+					species = root.owner_species
+					type = "wg_astra_marine"
+				}
+			}
+			while = {
+				count = 15
+				create_army = {
+					name = "wg_space_marine_2"
+					owner = root
+					species = root.owner_species
+					type = "wg_space_marine_2"
+				}
+			}
+			while = {
+				count = 15
+				create_army = {
+					name = "wg_space_marine"
+					owner = root
+					species = root.owner_species
+					type = "wg_space_marine"
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_origin.300.a
+		add_modifier = { modifier = wg_warhamme_unsolve_soul_win_twince_buff days = 360 }
+	}
+	after = { event_target:wg_unsolve_soul_ancient_system = {
+		create_fleet = {
+			name = "NAME_wg_nicron_fleet"
+			settings = {
+				spawn_debris = no
+			}
+			effect = {
+				set_owner = event_target:wg_nicron_country
+				while = {
+					count = 8
+					create_ship = {
+						name = random
+						design = "NAME_WG_NICOID_SUPERJUGGERNAUT"
+					}
+				}
+				while = {
+					count = 30
+					create_ship = {
+						name = random
+						design = "NAME_WG_NICOID_JUGGERNAUT"
+					}
+				}
+				while = {
+					count = 30
+					create_ship = {
+						name = random
+						design = "NAME_WG_NICOID_GUNSHIP"
+					}
+				}
+				set_location = { target = prev.system_star distance = 220 angle = random direction = in_system }
+			}
+		}
+		every_system_planet = {
+			limit = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+			while = {
+				count = 5
+				create_army = {
+					name = "wg_nicroid_night_killer"
+					owner = event_target:wg_nicron_country
+					species = event_target:wg_nicron_country.owner_species
+					type = "wg_nicroid_night_killer"
+				}
+			}
+			while = {
+				count = 8
+				create_army = {
+					name = "wg_nicroid_skeeper"
+					owner = event_target:wg_nicron_country
+					species = event_target:wg_nicron_country.owner_species
+					type = "wg_nicroid_skeeper"
+				}
+			}
+			while = {
+				count = 10
+				create_army = {
+					name = "wg_nicroid_army"
+					owner = event_target:wg_nicron_country
+					species = event_target:wg_nicron_country.owner_species
+					type = "wg_nicroid_army"
+				}
+			}
+		}
+	} }
+}
+
+country_event = {
+	id = wg_origin.301
+	title = "wg_origin.301.name"
+	desc = "wg_origin.301.desc"
+	picture = GFX_evt_interior_battle
+	is_triggered_only = yes
+	trigger = {
+		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		has_origin = origin_wg_warhammer
+		has_country_flag = wg_warhamme_unsolve_soul_win_third
+		NOT = { has_country_flag = wg_warhamme_unsolve_soul_win_fourth }
+		from = { is_same_value = event_target:wg_nicron_country }
+	}
+	immediate = {
+		set_country_flag = wg_warhamme_unsolve_soul_win_fourth
+		fromfrom = {
+			while = {
+				count = 5
+				create_army = {
+					name = "wg_nicroid_night_killer"
+					owner = event_target:wg_nicron_country
+					species = event_target:wg_nicron_country.owner_species
+					type = "wg_nicroid_night_killer"
+				}
+			}
+			while = {
+				count = 8
+				create_army = {
+					name = "wg_nicroid_skeeper"
+					owner = event_target:wg_nicron_country
+					species = event_target:wg_nicron_country.owner_species
+					type = "wg_nicroid_skeeper"
+				}
+			}
+			while = {
+				count = 10
+				create_army = {
+					name = "wg_nicroid_army"
+					owner = event_target:wg_nicron_country
+					species = event_target:wg_nicron_country.owner_species
+					type = "wg_nicroid_army"
+				}
+			}
+		}
+	}
+	option = { name = wg_origin.301.a }
+}
+
+country_event = {
+	id = wg_origin.302
+	title = "wg_origin.302.name"
+	desc = "wg_origin.302.desc"
+	picture = GFX_evt_wsg_bombardment
+	is_triggered_only = yes
+	trigger = {
+		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		has_origin = origin_wg_warhammer
+		has_country_flag = wg_warhamme_unsolve_soul_win_fourth
+		NOT = { has_country_flag = wg_warhamme_unsolve_soul_win_fifth }
+		from = { is_same_value = event_target:wg_nicron_country }
+	}
+	immediate = {
+		set_country_flag = wg_warhamme_unsolve_soul_win_fifth
+	}
+	option = {
+		name = wg_origin.302.a
+		hidden_effect = {
+			fromfrom = {
+				set_variable_to_random_value = { which = wg_nicorid_warhammer_destoryed_var min = 1 max = 7 }
+				while = { count = wg_nicorid_warhammer_destoryed_var random_planet_army = { remove_army = yes } }
+				remove_all_buildings = yes
+				add_planet_devastation = 75
+			}
+			country_event = {
+				id = wg_origin.303
+				days = 30 scopes = { fromfrom = root.fromfrom }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_origin.303
+	title = "wg_origin.303.name"
+	desc = "wg_origin.303.desc"
+	picture = GFX_evt_rift_sphere
+	is_triggered_only = yes
+	trigger = {
+		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		has_origin = origin_wg_warhammer
+		has_country_flag = wg_warhamme_unsolve_soul_win_fifth
+	}
+	immediate = {
+		set_country_flag = wg_warhamme_unsolve_soul_win_sixth
+		fromfrom = {
+			while = {
+				count = 5
+				create_army = {
+					name = "wg_knight_titan"
+					owner = root
+					species = root.owner_species
+					type = "wg_knight_titan"
+				}
+			}
+			while = {
+				count = 10
+				create_army = {
+					name = "wg_space_marine"
+					owner = root
+					species = root.owner_species
+					type = "wg_space_marine"
+				}
+			}
+		}
+	}
+	option = {
+		name = wg_origin.303.a
+		hidden_effect = {
+			fromfrom = {
+				while = {
+					count = 1
+					create_army = {
+						name = "wg_nicroid_destroyer_master"
+						owner = event_target:wg_nicron_country
+						species = event_target:wg_nicron_country.owner_species
+						type = "wg_nicroid_destroyer_master"
+					}
+				}
+				while = {
+					count = 3
+					create_army = {
+						name = "wg_nicroid_monlinter"
+						owner = event_target:wg_nicron_country
+						species = event_target:wg_nicron_country.owner_species
+						type = "wg_nicroid_monlinter"
+					}
+				}
+				while = {
+					count = 5
+					create_army = {
+						name = "wg_nicroid_skeeper"
+						owner = event_target:wg_nicron_country
+						species = event_target:wg_nicron_country.owner_species
+						type = "wg_nicroid_skeeper"
+					}
+				}
+				while = {
+					count = 10
+					create_army = {
+						name = "wg_nicroid_army"
+						owner = event_target:wg_nicron_country
+						species = event_target:wg_nicron_country.owner_species
+						type = "wg_nicroid_army"
+					}
+				}
+				solar_system = {
+					every_fleet_in_system = {
+						limit = {
+							exists = owner
+							owner = { is_hostile = event_target:wg_nicron_country }
+						}
+						destroy_fleet = this
+					}
+				}
+				change_planet_size = -10
+			}
+		}
+	}
+}
+
+country_event = {
+	id = wg_origin.304
+	title = "wg_origin.304.name"
+	desc = "wg_origin.304.desc"
+	picture = GFX_evt_crisis_defeated
+	is_triggered_only = yes
+	trigger = {
+		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		has_origin = origin_wg_warhammer
+		has_country_flag = wg_warhamme_unsolve_soul_win_sixth
+		NOT = { has_country_flag = wg_warhamme_unsolve_soul_win_seventh }
+		from = { is_same_value = event_target:wg_nicron_country }
+	}
+	immediate = {
+		set_country_flag = wg_warhamme_unsolve_soul_win_seventh
+	}
+	option = {
+		name = wg_origin.304.a
+		add_modifier = { modifier = wg_warhamme_unsolve_soul_win_twince_buff_1 }
+		add_monthly_resource_mult = { resource = unity value = 12 }
+		custom_tooltip = "wg_warhamme_unsolve_soul_win_seventh_tooltip"
+		hidden_effect = {
+			fromfrom.solar_system = {
+				every_system_ambient_object = {
+					limit = { has_ambient_object_flag = wg_unsolve_soul_storm }
+					destroy_ambient_object = this
+				}
+				remove_modifier = wg_unsolve_soul_ancient_system_debuff
+			}
+			event_target:wg_nicron_country = { destroy_country = yes }
+		}
+	}
+}

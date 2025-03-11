@@ -748,19 +748,6 @@ country_event = {
 		add_resource = {
 			influence = 100
 		}
-		hidden_effect = {
-			if = {
-				limit = {
-					any_country = {
-						has_country_flag = executorbuilding
-					}
-				}
-				country_event = {
-					id = executor_build.100
-					days = 10
-				}
-			}
-		}
 	}
 }
 
@@ -1094,7 +1081,6 @@ planet_event = {
 					is_planet_class = pc_relic
 					is_planet_class = pc_shenhai
 					is_planet_class = pc_wsg_port
-					is_planet_class = pc_wg_graygoo
 				}
 			}
 			owner = {
@@ -1891,17 +1877,6 @@ country_event = {
 		owner = {
 			end_event_chain = "parit_chain"
 		}
-		hidden_effect = {
-			if = {
-				limit = {
-					has_country_flag = has_parit_girl
-				}
-				country_event = {
-					id = executor_build.258
-					days = 180
-				}
-			}
-		}
 	}
 }
 
@@ -2233,10 +2208,11 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		has_authority = auth_shenhai
-		has_country_flag = has_parit_girl
-		has_country_flag = custom_start_parit
-		has_technology = tech_kuat_THRUSTER
+		has_origin = origin_parit
+		OR = {
+			has_country_flag = kuat_unlock_the_flagship_designable
+			has_country_flag = kuat_debug_give_all_tech_flag
+		}
 		NOT = {
 			has_country_flag = parit_kuat_executor
 		}
@@ -2458,8 +2434,10 @@ situation_event = {
 		name = wg_parit.64.a
 		custom_tooltip = wg_parit.64.a.tooltip
 		hidden_effect = {
-			create_ship_design = { design = NAME_KUAT_EXECUTOR }
-			add_ship_design = last_created_design
+			owner = {
+				create_ship_design = { design = NAME_KUAT_EXECUTOR }
+				add_ship_design = last_created_design
+			}
 		}
 	}
 }
