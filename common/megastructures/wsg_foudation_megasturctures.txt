@@ -1002,6 +1002,84 @@ wg_mega_store_1 = {
 	}
 }
 
+wg_mega_store_2 = {
+	entity = "uf_megastructure_store_entity"
+	construction_entity = "uf_megastructure_store_entity"
+	portrait = "GFX_uf_mega_store_background"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	show_in_outliner = no
+	entity_offset = { x = -5 y = -5 }
+	build_time = 720
+	potential = {
+		OR = {
+			has_authority = auth_warshipgirls	
+			has_authority = auth_shenhai
+		}
+	}
+	prerequisites = { "tech_wg_mega_store" }
+	resources = {
+		category = megastructures
+		cost = { alloys = 50000 sr_dark_matter = 5000 }
+		upkeep = { 
+			energy = 100
+		}
+	}
+	country_modifier = {
+		country_resource_max_add = 500000
+		custom_tooltip = wg_mega_store_2_effects
+	}
+	station_modifier = {
+		trade_value_add = 20
+	}
+
+	upgrade_from = {
+		wg_mega_store_1
+	}
+	dismantle_cost = {
+		category = megastructures
+		cost = {
+			energy = 500
+		}
+	}
+
+	dismantle_time = 360
+
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_possible = {
+		always = yes
+	}
+
+	on_dismantle_complete = {
+		every_system_planet = {
+			limit = {
+				has_modifier = wg_mega_store_modifier
+			}
+			remove_modifier = wg_mega_store_modifier
+		}
+	}
+	ai_weight = { factor = 0 }
+	on_build_start = {}
+	on_build_cancel = {}
+	on_build_complete = {
+		every_system_planet = {
+			limit = { 
+				OR = {
+					check_modifier_value = { modifier = trade_value_add value > 0 }
+					is_colony = yes
+					is_colonizable = yes
+				}
+				NOT = { has_modifier = wg_mega_store_modifier }
+			}
+			add_modifier = { modifier = wg_mega_store_modifier }
+		}
+	}
+}
+
 kebab_seal = {
 	entity = "kebab_seal_full_entity"
 	construction_entity = "kebab_seal_full_entity"
