@@ -204,6 +204,7 @@ leader_event = {
 		wg_affection_wg_lady_system_check = yes
 		wg_affection_wg_rbq_dragon_system_check = yes
 		wg_affection_wg_shimakaze_system_check = yes
+		wg_affection_wsg_automated_dreadnought_system_check = yes
 	}
 }
 # 常规好感度增加
@@ -259,6 +260,7 @@ leader_event = {
 		wg_affection_wg_lady_system_launch = yes
 		wg_affection_wg_rbq_dragon_system_launch = yes
 		wg_affection_wg_shimakaze_system_launch = yes
+		wg_affection_wsg_automated_dreadnought_system_launch = yes
 	}
 }
 # 变成统治者时改成统治者好感度
@@ -1040,6 +1042,24 @@ country_event = {
 				}
 				break = yes
 			}
+			if = { #无畏舰
+				limit = { has_leader_flag = wsg_automated_dreadnought_leader }
+				ROOT = { 
+					country_event = { id = wg_affection.1034 }
+				}
+				event_target:resurrect_leader = {
+					set_leader_flag = not_has_wg_affection_normal
+					set_leader_flag = immune_to_negative_traits
+					save_global_event_target_as = wsg_automated_dreadnought_official
+					change_leader_portrait = wsg_automated_dreadnought_0
+					set_leader_flag = legendary_leader
+					set_leader_flag = immune_to_negative_traits
+					set_leader_flag = wsg_automated_dreadnought_official
+					# set_leader_flag = has_gained_level_trait
+					set_leader_flag = wsg_automated_dreadnought_leader
+				}
+				break = yes
+			}
 		}
 		event_target:resurrect_leader = {
 			if = {
@@ -1259,6 +1279,17 @@ country_event = {
 
 	option = {
 		name = wg_affection.1033.a
+	}
+}
+country_event = {
+	id = wg_affection.1034
+	title = wg_affection.1034.name
+	desc = wg_affection.1034.desc
+	picture = GFX_evt_revive_leader
+	is_triggered_only = yes
+
+	option = {
+		name = wg_affection.1034.a
 	}
 }
 # 第二次提醒事件

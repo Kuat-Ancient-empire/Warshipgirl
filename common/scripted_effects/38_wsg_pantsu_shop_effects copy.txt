@@ -1,0 +1,140 @@
+# scope = planet
+create_pantsu_shop_guard_fleets = {
+	optimize_memory
+    event_target:pantsu_shop_country = {
+		create_fleet = {
+			name = "NAME_pantsu_shop_guard"
+			settings = {
+				spawn_debris = no
+			}
+			effect = {
+				set_owner = PREV
+				while = { count = 10
+					create_ship = {
+						name = random
+						design = "NAME_shop_carrier"
+						graphical_culture = caravaneer_01
+						upgradable = no
+					}
+				}
+				while = { count = 20
+					create_ship = {
+						name = random
+						design = "NAME_shop_cruiser"
+						graphical_culture = caravaneer_01
+						upgradable = no
+					}
+				}
+				while = { count = 30
+					create_ship = {
+						name = random
+						design = "NAME_shop_destroyer"  
+						graphical_culture = caravaneer_01
+						upgradable = no
+					}
+				}
+				set_location = {
+					target = PREVPREV
+					distance = 40
+					angle = random
+				}
+				set_fleet_flag = pantsu_shop_guard
+			}
+		}
+	}
+}
+
+# create_laser_orbital_resources = {
+# 	optimize_memory
+# 	custom_tooltip = decision_laser_grill_effects
+# 	hidden_effect = {
+# 		set_planet_flag = laser_grilled
+# 		if = {
+# 			limit = { is_planet_class = pc_barren }
+# 			change_pc = pc_laser_grilled
+# 			add_deposit = d_minerals_6
+# 			add_deposit = d_alloys_3
+# 			random_list = {
+# 				50 = {
+# 					add_deposit = d_minerals_2
+# 				}
+# 				30 = {
+# 					add_deposit = d_minerals_4
+# 				}
+# 				10 = {
+# 					add_deposit = d_minerals_6
+# 					add_deposit = d_alloys_5
+# 				}
+# 				5 = {
+# 					add_deposit = d_minerals_8
+# 					add_deposit = d_alloys_5
+# 					add_deposit = d_alloys_3
+# 				}
+# 				3 = {
+# 					add_deposit = d_minerals_10
+# 					add_deposit = d_alloys_5
+# 					add_deposit = d_alloys_5
+# 				}
+# 				2 = {
+# 					add_deposit = d_rare_crystals_5
+# 				}
+# 			}
+# 			break = yes
+# 		}
+# 		if = {
+# 			limit = { is_planet_class = pc_toxic }
+# 			add_deposit = d_energy_6
+# 			random_list = {
+# 				50 = {
+# 					add_deposit = d_energy_4
+# 				}
+# 				30 = {
+# 					add_deposit = d_energy_6
+# 				}
+# 				10 = {
+# 					add_deposit = d_energy_10
+# 					add_deposit = d_exotic_gases_1
+# 				}
+# 				5 = {
+# 					add_deposit = d_energy_10
+# 					add_deposit = d_exotic_gases_2
+# 				}
+# 				3 = {
+# 					add_deposit = d_energy_10
+# 					add_deposit = d_exotic_gases_3
+# 				}
+# 				2 = {
+# 					add_deposit = d_exotic_gases_5
+# 				}
+# 			}
+# 			break = yes
+# 		}
+# 		if = {
+# 			limit = {
+# 				is_planet_class = pc_shrouded
+# 			}
+# 			random_list = {
+# 				80 = {
+# 					add_deposit = d_zro_deposit_1
+# 				}
+# 				18 = {
+# 					add_deposit = d_zro_deposit_2
+# 				}
+# 				2 = {
+# 					add_deposit = d_zro_deposit_3
+# 				}
+# 			}
+# 			break = yes
+# 		}
+# 	}
+# }
+
+default_pantsu_shop_buff_effects = {
+	optimize_memory
+	hidden_effect = { 
+		country_event = { id = wsgranking.20004 days = 7200 } 
+		country_event = { id = wsgranking.1200 days = 7201 } # 续buff
+		change_variable = { which = max_allowed_shop_buffs value = -1 }
+		[[eventID] country_event = { id = wsgranking.$eventID$ }]
+	}
+}

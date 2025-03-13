@@ -2878,3 +2878,93 @@ weapon_component_template = {
 		weight = 0
 	}
 }
+
+utility_component_template = {
+	key = "wsg_Automated_Dreadnought_REACTOR"
+	size = small
+	icon = "GFX_ship_part_sh_senergy_REACTOR"
+	icon_frame = 1
+	power = 200000
+	hidden = yes
+	prerequisites = {
+		"tech_UNITEDFLEET"
+	}
+	component_set = "power_core"
+	size_restriction = {
+	}
+	ship_modifier = {
+		ship_shield_add = 200000
+		ship_armor_add = 200000
+		ship_hull_add = 200000
+		ship_weapon_range_mult = 0.5
+		ship_armor_hardening_add = 2
+		ship_shield_hardening_add = 2
+	}
+	ai_weight = {
+		weight = 0
+	}
+}
+
+utility_component_template = {
+	key = "wsg_Automated_Dreadnought_AURA"
+	size = medium
+	icon = "GFX_UF_AURA_1"
+	icon_frame = 1
+	power = 0
+	hidden = yes
+	size_restriction = {
+	}
+	component_set = "ship_aura_components"
+	prerequisites = {
+		"tech_UNITEDFLEET"
+	}
+	hostile_aura = {
+		name = "aura_shield_dampener"
+		radius = @shipAuraRange
+		apply_on = ships
+		stack_info = {
+			id = wsg_Automated_Dreadnought_AURA_1
+			priority = 500
+		}
+		modifier = {
+			ship_shield_damage_mult = -0.3
+			ship_armor_damage_mult = -0.3
+			ship_hull_damage_mult = -0.3
+		}
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}
+	friendly_aura = {
+		name = "aura_shield_dampener"
+		radius = 500
+		apply_on = ships
+		stack_info = {
+			id = wsg_Automated_Dreadnought_AURA_2
+			priority = 200
+		}
+		modifier = {
+			ship_weapon_range_mult = 0.5
+		}
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}
+	ai_weight = {
+		weight = 0
+	}
+}

@@ -1,0 +1,694 @@
+namespace = wsg_automated_dreadnought
+
+
+
+fleet_event = {
+	id = wsg_automated_dreadnought.100
+	title = "wsg_automated_dreadnought.100.name"
+	desc = "wsg_automated_dreadnought.100.desc"
+	picture = GFX_evt_sabotaged_ship
+	show_sound = event_mystic_reveal
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = wsg_automated_dreadnought.100.a
+		small_artifact_reward = yes		
+	}
+	option = {
+		name = wsg_automated_dreadnought.100.b
+		small_artifact_reward = yes		
+	}
+}
+
+fleet_event = {
+	id = wsg_automated_dreadnought.101
+	title = "wsg_automated_dreadnought.101.name"
+	desc = "wsg_automated_dreadnought.101.desc"
+	picture = GFX_evt_synth_sabotage
+	show_sound = event_mystic_reveal
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = wsg_automated_dreadnought.101.a
+		small_artifact_reward = yes		
+	}
+	option = {
+		name = wsg_automated_dreadnought.101.b
+		small_artifact_reward = yes		
+	}
+}
+fleet_event = {
+	id = wsg_automated_dreadnought.102
+	title = "wsg_automated_dreadnought.102.name"
+	desc = "wsg_automated_dreadnought.102.desc"
+	picture = GFX_evt_astral_rift_corridors
+	show_sound = event_mystic_reveal
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = wsg_automated_dreadnought.102.a
+		small_artifact_reward = yes		
+	}
+	option = {
+		name = wsg_automated_dreadnought.102.b
+		small_artifact_reward = yes		
+	}
+}
+fleet_event = {
+	id = wsg_automated_dreadnought.103
+	title = "wsg_automated_dreadnought.103.name"
+	desc = "wsg_automated_dreadnought.103.desc"
+	picture = GFX_evt_partition
+	show_sound = event_mystic_reveal
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+	
+	option = {
+		name = wsg_automated_dreadnought.103.a
+		small_artifact_reward = yes		
+	}
+	option = {
+		name = wsg_automated_dreadnought.103.b
+		small_artifact_reward = yes		
+	}
+}
+fleet_event = {
+	id = wsg_automated_dreadnought.104
+	title = "wsg_automated_dreadnought.104.name"
+	desc = "wsg_automated_dreadnought.104.desc"
+	picture = GFX_evt_the_last_stormshelter
+	show_sound = event_mystic_reveal
+	
+	archaeology = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+		destroy_ambient_object = event_target:disabled_dreadnought_object
+	}
+	
+	option = {
+		name = wsg_automated_dreadnought.104.a
+		small_artifact_reward = yes
+		hidden_effect = { owner = { country_event = { id = wsg_automated_dreadnought.1 }}}
+	}
+	option = {
+		name = wsg_automated_dreadnought.104.b
+		small_artifact_reward = yes		
+		hidden_effect = { owner = { country_event = { id = wsg_automated_dreadnought.1 }}}
+	}
+}
+
+country_event = { 
+	id = wsg_automated_dreadnought.1
+	title = "wsg_automated_dreadnought.1.name"
+	desc = "wsg_automated_dreadnought.1.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_01_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+	trigger = {
+		NOT = { has_country_flag = get_wsg_automated_dreadnought }
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { any_country = { has_country_flag = get_wsg_automated_dreadnought }}}
+			create_species = {
+				name = NAME_wsg_automated_dreadnought
+				plural = NAME_wsg_automated_dreadnought
+				class = "Warship_Girls"
+				portrait = wsg_automated_dreadnought_0
+				name_list = WSG
+				effect = {
+					save_global_event_target_as = wsg_automated_dreadnought_species
+				}
+			}
+			create_country = {
+				name = "NAME_wsg_automated_dreadnought"
+				species = event_target:wsg_automated_dreadnought_species
+				type = wsg_automated_dreadnought
+				flag = {
+					icon = {
+						category = "wg_event_flags"
+						file = "wge_flags_12.dds"
+					}
+					background={
+						category="backgrounds"
+						file="stripes.dds"
+					}
+					colors={
+						"blue"
+						"indigo"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					save_global_event_target_as = wsg_automated_dreadnought_country
+					set_country_flag = wsg_automated_dreadnought_country	
+				}
+			}
+		}
+		event_target:wsg_automated_dreadnought_country = {
+			establish_communications_no_message = root
+		}
+		save_global_event_target_as = wsg_automated_dreadnought_own_country
+		set_variable = { which = wsg_automated_dreadnought_affection value = 100 }
+		set_variable = { which = wsg_automated_dreadnought_level value = 10 }
+		set_variable = { which = wsg_automated_dreadnought_cloth value = 0 }
+		set_country_flag = get_wsg_automated_dreadnought
+		create_leader = {							#创建无畏舰总督
+			class = official
+			species = event_target:wsg_automated_dreadnought_species
+			name = "NAME_wsg_automated_dreadnought"
+			skip_background_generation = yes
+			custom_catch_phrase = wsg_automated_dreadnought_catch_phrase
+			custom_description = wsg_automated_dreadnought_backstory
+			background_ethic = ethic_gestalt_consciousness
+			gender = female
+			immortal = yes
+			event_leader = yes
+			skill = 1
+			set_age = 7 #——800000
+			traits = {
+				trait = leader_trait_legend_sh
+				trait = leader_trait_wsg_automated_dreadnought_1
+			}
+			effect = {
+				set_leader_flag = not_has_wg_affection_normal
+				set_leader_flag = immune_to_negative_traits
+				save_global_event_target_as = wsg_automated_dreadnought_official
+				change_leader_portrait = wsg_automated_dreadnought_0
+				set_leader_flag = legendary_leader
+				set_leader_flag = immune_to_negative_traits
+				set_leader_flag = wsg_automated_dreadnought_official
+				# set_leader_flag = has_gained_level_trait
+				set_leader_flag = wsg_automated_dreadnought_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = legendary_leader
+				set_leader_flag = is_in_recruit_window
+			}
+		}
+		random_owned_leader = {
+			limit = { has_leader_flag = wsg_automated_dreadnought_official }
+			leader_event = {
+				id = wg_affection.8
+			}
+			add_skill_without_trait_selection = 10
+			set_wsg_automated_dreadnought_portrait = yes
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wsg_automated_dreadnought.1.a
+		response_text = wsg_automated_dreadnought.1.a.response
+		is_dialog_only = yes
+	}
+    option = {
+		name = wsg_automated_dreadnought.1.b
+		response_text = wsg_automated_dreadnought.1.b.response
+		is_dialog_only = yes
+	}
+    option = {
+		name = wsg_automated_dreadnought.1.c
+		response_text = wsg_automated_dreadnought.1.c.response
+		is_dialog_only = yes
+	}
+    option = {
+		name = wsg_automated_dreadnought.1.d
+		response_text = wsg_automated_dreadnought.1.d.response
+		is_dialog_only = yes
+	}
+    option = {
+		name = wsg_automated_dreadnought.1.e
+		response_text = wsg_automated_dreadnought.1.e.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wsg_automated_dreadnought.1.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+#对话界面
+country_event = {
+	id = wsg_automated_dreadnought.3
+	title = wsg_automated_dreadnought
+	is_triggered_only = yes
+	diplomatic = yes
+	desc = {
+		trigger = {
+			NOT = { has_country_flag = married_wsg_automated_dreadnought }
+		}
+		text = wsg_automated_dreadnought.3.desc.1
+		text = wsg_automated_dreadnought.3.desc.2
+		text = wsg_automated_dreadnought.3.desc.3
+		text = wsg_automated_dreadnought.3.desc.4
+		text = wsg_automated_dreadnought.3.desc.5
+		text = wsg_automated_dreadnought.3.desc.6
+		text = wsg_automated_dreadnought.3.desc.7
+		text = wsg_automated_dreadnought.3.desc.8
+		text = wsg_automated_dreadnought.3.desc.9
+		text = wsg_automated_dreadnought.3.desc.10
+	}
+	desc = {
+		trigger = {
+			NOT = { has_country_flag = married_wsg_automated_dreadnought }
+			has_country_flag = wsg_automated_dreadnought_official_active
+		}
+		text = wsg_automated_dreadnought.3.desc.11
+		text = wsg_automated_dreadnought.3.desc.12
+		text = wsg_automated_dreadnought.3.desc.13
+		text = wsg_automated_dreadnought.3.desc.14
+		text = wsg_automated_dreadnought.3.desc.15
+	}
+	desc = {
+		trigger = {
+			NOT = { has_country_flag = married_wsg_automated_dreadnought }
+			has_country_flag = wsg_automated_dreadnought_warship_active
+		}
+		text = wsg_automated_dreadnought.3.desc.16
+		text = wsg_automated_dreadnought.3.desc.17
+		text = wsg_automated_dreadnought.3.desc.18
+		text = wsg_automated_dreadnought.3.desc.19
+		text = wsg_automated_dreadnought.3.desc.20
+	}
+	desc = {
+		trigger = {
+			NOT = { has_country_flag = married_wsg_automated_dreadnought }
+			has_country_flag = wsg_automated_dreadnought_army_active
+		}
+		text = wsg_automated_dreadnought.3.desc.21
+		text = wsg_automated_dreadnought.3.desc.22
+		text = wsg_automated_dreadnought.3.desc.23
+		text = wsg_automated_dreadnought.3.desc.24
+		text = wsg_automated_dreadnought.3.desc.25
+	}
+	desc = {
+		trigger = {
+			#NOT = { has_country_flag = married_wsg_automated_dreadnought }
+			event_target:wsg_automated_dreadnought_warship_ship = { is_scope_type = ship has_hp_percentage < 1 }
+		}
+		text = wsg_automated_dreadnought.3.desc.26
+		text = wsg_automated_dreadnought.3.desc.27
+		text = wsg_automated_dreadnought.3.desc.28
+		text = wsg_automated_dreadnought.3.desc.29
+		text = wsg_automated_dreadnought.3.desc.30
+	}
+	desc = {
+		trigger = {
+			has_country_flag = married_wsg_automated_dreadnought
+		}
+		text = wsg_automated_dreadnought.3.desc.31
+		text = wsg_automated_dreadnought.3.desc.32
+		text = wsg_automated_dreadnought.3.desc.33
+		text = wsg_automated_dreadnought.3.desc.34
+		text = wsg_automated_dreadnought.3.desc.35
+		text = wsg_automated_dreadnought.3.desc.36
+		text = wsg_automated_dreadnought.3.desc.37
+		text = wsg_automated_dreadnought.3.desc.38
+		text = wsg_automated_dreadnought.3.desc.39
+		text = wsg_automated_dreadnought.3.desc.40
+	}
+	desc = {
+		trigger = {
+			has_country_flag = married_wsg_automated_dreadnought
+			has_country_flag = wsg_automated_dreadnought_official_active
+		}
+		text = wsg_automated_dreadnought.3.desc.41
+		text = wsg_automated_dreadnought.3.desc.42
+		text = wsg_automated_dreadnought.3.desc.43
+		text = wsg_automated_dreadnought.3.desc.44
+		text = wsg_automated_dreadnought.3.desc.45
+	}
+	desc = {
+		trigger = {
+			has_country_flag = married_wsg_automated_dreadnought
+			has_country_flag = wsg_automated_dreadnought_warship_active
+		}
+		text = wsg_automated_dreadnought.3.desc.46
+		text = wsg_automated_dreadnought.3.desc.47
+		text = wsg_automated_dreadnought.3.desc.48
+		text = wsg_automated_dreadnought.3.desc.49
+		text = wsg_automated_dreadnought.3.desc.50
+	}
+	desc = {
+		trigger = {
+			has_country_flag = married_wsg_automated_dreadnought
+			has_country_flag = wsg_automated_dreadnought_army_active
+		}
+		text = wsg_automated_dreadnought.3.desc.51
+		text = wsg_automated_dreadnought.3.desc.52
+		text = wsg_automated_dreadnought.3.desc.53
+		text = wsg_automated_dreadnought.3.desc.54
+		text = wsg_automated_dreadnought.3.desc.55
+	}
+	custom_gui = wsg_automated_dreadnought_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	trigger = {
+		from = { OR = {
+			is_country_type = wsg_automated_dreadnought 
+			is_same_value = ROOT
+		}}
+		OR = {
+			wsg_automated_dreadnought_active_diplo = no
+			NOT = { has_country_flag = wsg_automated_dreadnought_engaged }
+		}
+		wsg_automated_dreadnought_available = yes
+	}
+
+	immediate = {
+		set_country_flag = wsg_automated_dreadnought_engaged
+	}
+	
+	after = {
+		hidden_effect = { 
+			remove_country_flag = wsg_automated_dreadnought_engaged 
+			# random_owned_leader = {
+			# 	limit = { has_leader_flag = wsg_automated_dreadnought_leader } 
+			# 	change_wsg_automated_dreadnought_portrait = yes
+			# }
+		}
+	}
+
+	option = {
+		name = wsg_automated_dreadnought.3.a
+		trigger = {
+			NOT = { has_country_flag = wsg_automated_dreadnought_official_active }
+		}
+		hidden_effect = {
+			create_wsg_automated_dreadnought_official = yes
+			# country_event = {
+			# 	id = wsg_automated_dreadnought.5
+			# }
+		}
+	}
+	option = {
+		name = wsg_automated_dreadnought.3.b
+		trigger = {
+			NOT = { has_country_flag = wsg_automated_dreadnought_warship_active }
+		}
+		hidden_effect = {
+			create_wsg_automated_dreadnought_warship = yes
+			# country_event = {
+			# 	id = wsg_automated_dreadnought.5
+			# }
+		}
+	}
+	option = {
+		name = wsg_automated_dreadnought.3.c
+		trigger = {
+			NOT = { has_country_flag = wsg_automated_dreadnought_army_active }
+		}
+		hidden_effect = {
+			create_wsg_automated_dreadnought_army = yes
+			# country_event = {
+			# 	id = wsg_automated_dreadnought.5
+			# }
+		}
+	}
+	option = {
+		name = wsg_automated_dreadnought.3.d
+		hidden_effect = {
+			country_event = {
+				id = wsg_automated_dreadnought.3
+			}
+		}
+	}
+	
+	option = {
+		name = wsg_automated_dreadnought.3.e
+		trigger = {
+			NOT = {
+				has_country_flag = married_wsg_automated_dreadnought
+			}
+		}
+		allow = {
+			custom_tooltip = {
+				check_variable = { which = wsg_rings value >= 1 }
+				fail_text = not_enough_engagement_rings
+			}
+		}
+		subtract_variable = { which = wsg_rings value = 1 }
+		hidden_effect = {
+			set_country_flag = married_wsg_automated_dreadnought
+			set_variable = { which = wsg_automated_dreadnought_affection value = 200 }
+			country_event = { id = wsg_automated_dreadnought.7 }
+		}
+	}
+	option = {
+		name = wsg_automated_dreadnought_talk_exit
+		hidden_effect = {
+			remove_country_flag = wsg_automated_dreadnought_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+#对话界面
+country_event = {
+	id = wsg_automated_dreadnought.4
+	title = wsg_automated_dreadnought
+	is_triggered_only = yes
+	diplomatic = yes
+	desc = wsg_automated_dreadnought.4.desc
+	custom_gui = wsg_automated_dreadnought_new_commu_window
+	custom_gui_option = wg_new_commu_option
+	trigger = {
+		from = { OR = {
+			is_country_type = wsg_automated_dreadnought 
+			is_same_value = ROOT
+		}}
+		OR = {
+			wsg_automated_dreadnought_active_diplo = no
+			NOT = { has_country_flag = wsg_automated_dreadnought_engaged }
+		}
+		wsg_automated_dreadnought_available = no
+	}
+
+	immediate = {
+		set_country_flag = wsg_automated_dreadnought_engaged
+	}
+	
+	after = {
+		hidden_effect = { 
+			remove_country_flag = wsg_automated_dreadnought_engaged 
+			# random_owned_leader = {
+			# 	limit = { has_leader_flag = wsg_automated_dreadnought_leader } 
+			# 	change_wsg_automated_dreadnought_portrait = yes
+			# }
+		}
+	}
+
+	option = {
+		name = wsg_automated_dreadnought_talk_exit
+		hidden_effect = {
+			remove_country_flag = wsg_automated_dreadnought_engaged
+		}
+		default_hide_option = yes
+	}
+}
+
+# 大破
+country_event = {
+	id = wsg_automated_dreadnought.7
+	title = ""
+	desc = wsg_automated_dreadnought.7.desc
+	is_triggered_only = yes
+	diplomatic = yes
+
+	custom_gui = wsg_automated_dreadnought_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+	}
+
+	option = {
+		name = wsg_automated_dreadnought.7.a
+	}
+}
+
+
+# 战斗时大破
+country_event = {
+	id = wsg_automated_dreadnought.10
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = wsg_automated_dreadnought_warship_active
+		wsg_automated_dreadnought_available = yes
+		FROMFROM = { has_fleet_flag = wsg_automated_dreadnought_fleet }
+	}
+
+	immediate = {
+		country_event = { id = wsg_automated_dreadnought.601 }
+	}
+}
+
+# 陆军船被毁
+country_event = {
+	id = wsg_automated_dreadnought.11
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = wsg_automated_dreadnought_army_active
+		wsg_automated_dreadnought_available = yes
+		NOT = { any_owned_army = { 
+			army_type = wsg_automated_dreadnought_army
+			OR = {
+				exists = planet
+				AND = {
+					exists = fleet
+					fleet = { num_ships > 0 }
+				}
+			}
+		}}
+	}
+
+	immediate = {
+		country_event = { id = wsg_automated_dreadnought.601 }
+	}
+}
+
+# 地面战斗失败
+country_event = {
+	id = wsg_automated_dreadnought.12
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = wsg_automated_dreadnought_army_active
+		wsg_automated_dreadnought_available = yes
+		NOT = { any_owned_army = { 
+			army_type = wsg_automated_dreadnought_army
+			OR = {
+				exists = planet
+				AND = {
+					exists = fleet
+					fleet = { num_ships > 0 }
+				}
+			}
+		}}
+	}
+
+	immediate = {
+		country_event = { id = wsg_automated_dreadnought.601 }
+	}
+}
+
+# 解散陆军
+country_event = {
+	id = wsg_automated_dreadnought.13
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = wsg_automated_dreadnought_army_active
+		wsg_automated_dreadnought_available = yes
+		NOT = { any_owned_army = { army_type = wsg_automated_dreadnought_army }}
+	}
+
+	immediate = {
+		set_variable = { which = wsg_automated_dreadnought_active_type value = 0 }
+	}
+}
+
+# 大破
+country_event = {
+	id = wsg_automated_dreadnought.601
+	title = ""
+	desc = wsg_automated_dreadnought.601.desc
+	is_triggered_only = yes
+	diplomatic = yes
+
+	custom_gui = wsg_automated_dreadnought_new_commu_window
+	custom_gui_option = wg_new_commu_option
+
+	immediate = {
+	}
+
+	option = {
+		name = UNFORTUNATE
+		hidden_effect = {
+			set_timed_country_flag = {
+				flag = wsg_automated_dreadnought_recover_cd days = 1800
+			}
+		}
+		custom_tooltip = wsg_automated_dreadnought.601.tooltip
+	}
+}

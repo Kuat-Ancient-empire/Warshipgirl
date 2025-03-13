@@ -380,3 +380,36 @@ wg_affection_wg_shimakaze_system_check = {
 		set_variable = { which = affection value = owner.wg_shimakaze_affection }
 	}
 }
+#无畏战舰
+wg_affection_wsg_automated_dreadnought_system_launch = {
+	optimize_memory
+	if = {
+		limit = { has_leader_flag = wsg_automated_dreadnought_leader }
+		set_leader_flag = has_wg_affection
+		set_leader_flag = has_wg_affection_wsg_automated_dreadnought
+		set_leader_flag = wg_affection_auto_change_no
+		add_trait_no_notify = leader_trait_wsg_automated_dreadnought_affection
+		set_variable = { which = affection value = owner.wsg_automated_dreadnought_affection }
+		set_variable = { which = wg_leader_affection_to_lv2 value = @wsg_automated_dreadnought_affection_to_lv2 }
+		set_variable = { which = wg_leader_affection_to_lv3 value = @wsg_automated_dreadnought_affection_to_lv3 }
+		set_variable = { which = wg_leader_affection_to_lv4 value = @wsg_automated_dreadnought_affection_to_lv4 }
+		set_variable = { which = wg_leader_affection_to_lv5 value = @wsg_automated_dreadnought_affection_to_lv5 }
+		set_variable = { which = wg_leader_affection_reduce value = @wsg_automated_dreadnought_affection_reduce }
+		set_variable = { which = wg_leader_affection_increase value = @wsg_automated_dreadnought_affection_increase }
+	}
+}
+wg_affection_wsg_automated_dreadnought_system_check = {
+	optimize_memory
+	if = {
+		limit = {
+			has_leader_flag = has_wg_affection_wsg_automated_dreadnought
+		}
+		if = {
+			limit = {
+				owner = { has_country_flag = married_wsg_automated_dreadnought }
+			}
+			set_leader_flag = married
+		}
+		set_variable = { which = affection value = owner.wsg_automated_dreadnought_affection }
+	}
+}

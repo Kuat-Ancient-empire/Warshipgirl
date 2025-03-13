@@ -90,3 +90,79 @@ country_event = {
 		add_resource = { influence = 300 }
 	}
 }
+
+
+# Dreadnought Disabled
+country_event = {
+	id = leviathans.3102
+	title = "leviathans.3102"
+	desc = "leviathans.3102.desc"
+	picture = GFX_evt_automated_dreadnought
+	show_sound = event_ship_bridge
+	location = event_target:guardians_dreadnought_system
+	trackable = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = "leviathans.3102.a"
+		event_target:disabled_dreadnought_object = {
+			enable_special_project = {
+				name = "DISABLED_DREADNOUGHT_PROJECT"
+				location = THIS
+				owner = ROOT
+			}
+		}
+	}
+	option = {
+		name = "leviathans.3102.b"
+		add_resource = {
+			alloys = 1000
+			energy = 5000
+		}
+		add_monthly_resource_mult = {
+			resource = engineering_research
+			value = 30
+			min = 1000
+			max = 5000
+		}
+	}
+	option = {
+		name = "leviathans.3102.c"
+
+		trigger = {
+			can_harvest_parts = yes
+		}
+
+		set_country_flag = harvested_dreadnought_parts
+		add_research_option = tech_leviathan_techgenesis
+	}
+	option = {
+		name = "leviathans.3102.wg"
+		trigger = {
+			has_wg_special_authority = yes
+		}
+		set_country_flag = harvested_dreadnought_parts
+		add_research_option = tech_leviathan_techgenesis
+		event_target:disabled_dreadnought_object = {
+			create_archaeological_site = site_wsg_automated_dreadnought
+			save_global_event_target_as = site_wsg_automated_dreadnought
+		}
+	}
+	after = {
+		if = {
+			limit = {
+				num_owned_planets > 0
+			}
+			generate_parade_city = yes
+			start_situation = {
+				type = leviathan_celebration_opportunity
+				target = event_target:parade_city
+				effect = {
+					set_situation_flag = celebration_automated_dreadnought
+					set_situation_flag = standard_unity_reward
+				}
+			}
+		}
+	}
+}
