@@ -3807,6 +3807,28 @@ country_event = {
 	}
 	immediate = {
 		country_event = { id = wg_great_ming.112 days = 1800 }
+		if = {
+			limit = { has_country_flag = has_wg_great_ming_leader }
+			if = {
+				limit = {
+					NOT = {
+						any_owned_leader = {
+							has_trait = leader_trait_wg_great_ming_leader1
+							has_trait = leader_trait_wg_great_ming_leader2
+							has_trait = leader_trait_wg_great_ming_leader3
+							has_trait = leader_trait_wg_great_ming_leader4
+							has_trait = leader_trait_wg_great_ming_leader5
+							has_trait = leader_trait_wg_great_ming_leader6A
+							has_trait = leader_trait_wg_great_ming_leader6B
+							has_trait = leader_trait_wg_great_ming_leader7
+						}
+					}
+				}
+				country_event = {
+					id = wg_great_ming.124
+				}
+			}
+		}
 		change_variable = {
 			which = origin_wg_great_ming_subject_point
 			value = 10
@@ -3861,14 +3883,15 @@ country_event = {
 			}
 		}
 		hidden_effect = {
-			event_target:great_ming_country = {
+			event_target:great_ming_trade_country = {
 				steal_specimens = {
 					who = root
-					category = all
+					category = any
 					count = 1
 					show_notification = no
 				}
 			}
+			#remove_specimen = random
 			change_variable = {
 				which = origin_wg_great_ming_subject_point
 				value = 20
@@ -4224,6 +4247,58 @@ country_event = {
 		}
     }
     option = { 
+        name = wg_great_ming.121.f
+		custom_tooltip = wg_great_ming.121.f.tooltip
+		trigger = {
+			OR = {
+				NOT = { has_country_flag = has_wg_great_ming_leader }
+				AND = {
+					has_country_flag = origin_wg_great_ming_subject_after_uf
+					NOT = { has_country_flag = has_wg_great_ming_leader_uf }
+				}
+			}
+			OR = {
+				has_ascension_perk = ap_mist
+				has_ascension_perk = ap_project_s
+				has_ascension_perk = ap_shenhai_icebreaking
+			}
+			NAND = {
+				has_global_flag = has_wg_great_ming_leader1
+				has_global_flag = has_wg_great_ming_leader2
+				has_global_flag = has_wg_great_ming_leader3
+				has_global_flag = has_wg_great_ming_leader4
+				has_global_flag = has_wg_great_ming_leader5
+				has_global_flag = has_wg_great_ming_leader6
+				has_global_flag = has_wg_great_ming_leader7
+			}
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = "wg_great_ming.121.fail_text"
+				check_variable = {
+					which = origin_wg_great_ming_subject_point
+					value >= 200
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { has_country_flag = has_wg_great_ming_leader }
+				set_country_flag = has_wg_great_ming_leader_uf
+			}
+			else = {
+				set_country_flag = has_wg_great_ming_leader
+			}
+			change_variable = {
+				which = origin_wg_great_ming_subject_point
+				value = -200
+			}
+			country_event = {
+				id = wg_great_ming.122
+			}
+		}
+    }
+    option = { 
         name = wg_great_ming.120.e
 		hidden_effect = {
 			country_event = { id = wg_great_ming.16 }
@@ -4231,8 +4306,372 @@ country_event = {
     }
 }
 
+country_event = { 
+	id = wg_great_ming.122
+	title = "wg_great_ming.122.name"
+	desc = "wg_great_ming.122.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_01_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
 
+	event_window_type = leader_recruit
+	trigger = {
+	}
+	immediate = {
+		random_list = {
+			20 = {
+				modifier = {
+					factor = 0
+					has_global_flag = has_wg_great_ming_leader1
+				}
+				set_global_flag = has_wg_great_ming_leader1
+				create_leader = {
+					class = official
+					species = event_target:great_ming_wsg_species
+					name = "NAME_wg_great_ming_leader1"
+					skip_background_generation = yes
+					custom_catch_phrase = wg_great_ming_leader_catch_phrase
+					custom_description = wg_great_ming_leader1_backstory
+					#background_ethic = ethic_gestalt_consciousness
+					gender = female
+					immortal = yes
+					event_leader = yes
+					skill = 1
+					set_age = 17
+					traits = {
+						trait = leader_trait_wg_great_ming_leader1
+					}
+					effect = {
+						set_leader_flag = immune_to_negative_traits
+						change_leader_portrait = wsg581
+						set_leader_flag = legendary_leader
+						save_event_target_as = ethic_leader
+						set_leader_flag = is_in_recruit_window
+						add_skill_without_trait_selection = 10
+						leader_event = {
+							id = wg_affection.8
+						}
+					}
+				}
+			}
+			20 = {
+				modifier = {
+					factor = 0
+					has_global_flag = has_wg_great_ming_leader2
+				}
+				set_global_flag = has_wg_great_ming_leader2
+				create_leader = {
+					class = scientist
+					species = event_target:great_ming_wsg_species
+					name = "NAME_wg_great_ming_leader2"
+					skip_background_generation = yes
+					custom_catch_phrase = wg_great_ming_leader_catch_phrase
+					custom_description = wg_great_ming_leader2_backstory
+					#background_ethic = ethic_gestalt_consciousness
+					gender = female
+					immortal = yes
+					event_leader = yes
+					skill = 1
+					set_age = 17
+					traits = {
+						trait = leader_trait_wg_great_ming_leader2
+					}
+					effect = {
+						set_leader_flag = immune_to_negative_traits
+						change_leader_portrait = wsg112_1
+						set_leader_flag = legendary_leader
+						save_event_target_as = ethic_leader
+						set_leader_flag = is_in_recruit_window
+						add_skill_without_trait_selection = 10
+						leader_event = {
+							id = wg_affection.8
+						}
+					}
+				}
+			}
+			20 = {
+				modifier = {
+					factor = 0
+					has_global_flag = has_wg_great_ming_leader3
+				}
+				set_global_flag = has_wg_great_ming_leader3
+				create_leader = {
+					class = scientist
+					species = event_target:great_ming_wsg_species
+					name = "NAME_wg_great_ming_leader3"
+					skip_background_generation = yes
+					custom_catch_phrase = wg_great_ming_leader_catch_phrase
+					custom_description = wg_great_ming_leader3_backstory
+					#background_ethic = ethic_gestalt_consciousness
+					gender = female
+					immortal = yes
+					event_leader = yes
+					skill = 1
+					set_age = 17
+					traits = {
+						trait = leader_trait_wg_great_ming_leader3
+					}
+					effect = {
+						set_leader_flag = immune_to_negative_traits
+						change_leader_portrait = wsg513_1
+						set_leader_flag = legendary_leader
+						save_event_target_as = ethic_leader
+						set_leader_flag = is_in_recruit_window
+						add_skill_without_trait_selection = 10
+						leader_event = {
+							id = wg_affection.8
+						}
+					}
+				}
+			}
+			20 = {
+				modifier = {
+					factor = 0
+					has_global_flag = has_wg_great_ming_leader4
+				}
+				set_global_flag = has_wg_great_ming_leader4
+				create_leader = {
+					class = scientist
+					species = event_target:great_ming_wsg_species
+					name = "NAME_wg_great_ming_leader4"
+					skip_background_generation = yes
+					custom_catch_phrase = wg_great_ming_leader_catch_phrase
+					custom_description = wg_great_ming_leader4_backstory
+					#background_ethic = ethic_gestalt_consciousness
+					gender = female
+					immortal = yes
+					event_leader = yes
+					skill = 1
+					set_age = 17
+					traits = {
+						trait = leader_trait_wg_great_ming_leader4
+					}
+					effect = {
+						set_leader_flag = immune_to_negative_traits
+						change_leader_portrait = wsg57_1
+						set_leader_flag = legendary_leader
+						save_event_target_as = ethic_leader
+						set_leader_flag = is_in_recruit_window
+						add_skill_without_trait_selection = 10
+						leader_event = {
+							id = wg_affection.8
+						}
+					}
+				}
+			}
+			20 = {
+				modifier = {
+					factor = 0
+					has_global_flag = has_wg_great_ming_leader5
+				}
+				set_global_flag = has_wg_great_ming_leader5
+				create_leader = {
+					class = official
+					species = event_target:great_ming_wsg_species
+					name = "NAME_wg_great_ming_leader5"
+					skip_background_generation = yes
+					custom_catch_phrase = wg_great_ming_leader_catch_phrase
+					custom_description = wg_great_ming_leader5_backstory
+					#background_ethic = ethic_gestalt_consciousness
+					gender = female
+					immortal = yes
+					event_leader = yes
+					skill = 1
+					set_age = 17
+					traits = {
+						trait = leader_trait_wg_great_ming_leader5
+					}
+					effect = {
+						set_leader_flag = immune_to_negative_traits
+						change_leader_portrait = wsg30_1
+						set_leader_flag = legendary_leader
+						save_event_target_as = ethic_leader
+						set_leader_flag = is_in_recruit_window
+						add_skill_without_trait_selection = 10
+						leader_event = {
+							id = wg_affection.8
+						}
+					}
+				}
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					has_global_flag = has_wg_great_ming_leader6
+				}
+				set_global_flag = has_wg_great_ming_leader6
+				create_leader = {
+					class = official
+					species = event_target:great_ming_wsg_species
+					name = "NAME_wg_great_ming_leader6"
+					skip_background_generation = yes
+					custom_catch_phrase = wg_great_ming_leader_catch_phrase
+					custom_description = wg_great_ming_leader6_backstory
+					#background_ethic = ethic_gestalt_consciousness
+					gender = female
+					immortal = yes
+					event_leader = yes
+					skill = 1
+					set_age = 17
+					traits = {
+						trait = leader_trait_wg_great_ming_leader6A
+					}
+					effect = {
+						set_leader_flag = immune_to_negative_traits
+						change_leader_portrait = wsg9995
+						set_leader_flag = legendary_leader
+						save_event_target_as = ethic_leader
+						set_leader_flag = is_in_recruit_window
+						add_skill_without_trait_selection = 10
+						leader_event = {
+							id = wg_great_ming.123 days = 3
+						}
+						leader_event = {
+							id = wg_affection.8
+						}
+					}
+				}
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					has_global_flag = has_wg_great_ming_leader7
+				}
+				set_global_flag = has_wg_great_ming_leader7
+				create_leader = {
+					class = official
+					species = event_target:great_ming_wsg_species
+					name = "NAME_wg_great_ming_leader7"
+					skip_background_generation = yes
+					custom_catch_phrase = wg_great_ming_leader_catch_phrase
+					custom_description = wg_great_ming_leader7_backstory
+					#background_ethic = ethic_gestalt_consciousness
+					gender = female
+					immortal = yes
+					event_leader = yes
+					skill = 1
+					set_age = 17
+					traits = {
+						trait = leader_trait_wg_great_ming_leader7
+					}
+					effect = {
+						set_leader_flag = immune_to_negative_traits
+						change_leader_portrait = wsg586_1
+						set_leader_flag = legendary_leader
+						save_event_target_as = ethic_leader
+						set_leader_flag = is_in_recruit_window
+						add_skill_without_trait_selection = 10
+						leader_event = {
+							id = wg_affection.8
+						}
+					}
+				}
+			}
+		}
+	}
 
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+    option = {
+		name = wg_great_ming.122.a
+		response_text = wg_great_ming.122.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_great_ming.122.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
+
+leader_event = {
+	id = wg_great_ming.123
+	title = "wg_great_ming.123.name"
+	desc = "wg_great_ming.123.desc"
+	picture = GFX_evt_wg_badseal
+	event_window_type = leader_story
+
+	picture_event_data = {
+		portrait = this
+		room = root.owner
+	}
+	is_triggered_only = yes
+	trigger = {
+	}
+	immediate = {
+		
+    }
+	option = {
+		name = "wg_great_ming.123.a"
+		trigger = {
+		}
+		hidden_effect = {
+			remove_trait = leader_trait_wg_great_ming_leader6A
+			add_trait = leader_trait_wg_great_ming_leader6B
+			change_leader_portrait = wsg9968
+		}
+	}
+	option = {
+		name = "wg_great_ming.123.b"
+		trigger = {
+		}
+		hidden_effect = {
+		}
+	}
+}
+
+country_event = {
+	id = wg_great_ming.124
+	title = "wg_great_ming.13.title"
+	desc = "wg_great_ming.124.desc"
+	is_triggered_only = yes
+	diplomatic = yes
+	force_open = yes
+	trigger = {
+		has_origin = origin_wg_great_ming_subject
+	}
+	picture_event_data = {
+		room = wg_great_ming_03_room
+	}
+	immediate = {
+	}
+	after = {
+		remove_modifier = wg_great_ming_vassal_country_3 #停止朝贡
+		remove_country_flag = wg_has_tributed
+		set_country_flag = wg_has_war_with_great_ming #与大明打停止朝贡战争
+		set_timed_country_flag = { flag = wg_great_ming_surrender_cd days = 360 }
+		set_variable = { which = great_ming_affection value = 0 } #好感清零
+		country_event = { id = wg_great_ming.33 days = 30  } #锦衣卫进攻
+		abort_special_project = { type = "WG_GREAT_MING_DRG_MISSION" }
+	}
+	option = {
+		name = "wg_great_ming.124.a"
+	}
+	option = {
+		name = "wg_great_ming.124.b"
+	}
+}
 country_event = {
 	id = wg_great_ming.131
 	title = "wg_great_ming.13.title"
