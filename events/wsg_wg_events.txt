@@ -332,7 +332,7 @@ country_event = {
 			}	
 			while = {
 				count = 6
-				create_pop = {
+				create_pop_group = {
 					species = event_target:wsg_ice_breaking_species_sh
 				}	
 			}			
@@ -400,7 +400,7 @@ country_event = {
 			while = {
 				count = 3
 				#limit = { free_housing > 0 }
-				create_pop = {
+				create_pop_group = {
 					species = event_target:wsg_sunflowe_species
 				}				
 			}
@@ -1731,7 +1731,7 @@ country_event = {
 	}
 	
 	immediate = {
-		random_owned_pop = {
+		random_owned_pop_group = {
 			limit = { has_trait = wsg_trait_mist }
 			species = { save_event_target_as = ai_wsg_species }
 		}
@@ -1906,7 +1906,7 @@ country_event = {
 	}
 	
 	immediate = {
-		random_owned_pop = {
+		random_owned_pop_group = {
 			limit = { has_trait = wsg_trait_warshipgirls2 }
 			species = { save_event_target_as = ai_wsg_species }
 		}
@@ -2259,7 +2259,7 @@ country_event = {
 	}
 
 	immediate = {
-		random_owned_pop = {
+		random_owned_pop_group = {
 			limit = { OR = {
 				has_trait = wsg_trait_warshipgirls
 				has_trait = wsg_trait_warshipgirls1
@@ -2337,7 +2337,7 @@ planet_event = {
 
 	immediate = {
 		if = {
-			limit = { count_owned_pop = {
+			limit = { count_owned_pop_group = {
 				count >= 1
 				limit = { species = { has_trait = trait_wg_sunflower }}
 			}}
@@ -2356,7 +2356,7 @@ planet_event = {
 	immediate = {
 		if = {
 			limit = {
-				any_owned_pop = {
+				any_owned_pop_group = {
 					is_being_purged = yes
 					NOR = { 
 						has_purge_type = { country = root.owner type = purge_displacement }
@@ -2371,7 +2371,7 @@ planet_event = {
 		}
 		if = {
 			limit = {
-				any_owned_pop = {
+				any_owned_pop_group = {
 					species = {
 						has_slavery_type = { country = root.owner type = slavery_livestock }
 					}
@@ -2485,7 +2485,7 @@ country_event = {
 							value >= 648
 						}
 					}
-					any_owned_pop = {
+					any_owned_pop_group = {
 						OR = {
 							has_trait = wsg_trait_warshipgirls
 							has_trait = wsg_trait_warshipgirls1
@@ -2653,7 +2653,7 @@ planet_event = {
 							resource = consumer_goods
 							value >= 648
 						}
-						PREV = { any_owned_pop = {
+						PREV = { any_owned_pop_group = {
 							OR = {
 								has_trait = wsg_trait_warshipgirls
 								has_trait = wsg_trait_warshipgirls1
@@ -2710,7 +2710,7 @@ country_event = {
 
 	immediate = {
 		if = {
-			limit = { any_owned_pop_species = {
+			limit = { any_owned_pop_group_species = {
 				has_wg_traits = no
 				NOR = {
 					is_same_species = ROOT.owner_main_species
@@ -2721,7 +2721,7 @@ country_event = {
 			# 限制每天只改造一个人口
 			if = {
 				limit = { NOT = { has_country_flag = join_cts_enabled }}
-				random_owned_pop = {
+				random_owned_pop_group = {
 					limit = {
 						has_wg_traits = no
 						NOR = {
@@ -2730,10 +2730,10 @@ country_event = {
 							has_trait = trait_wg_sunflower
 						}
 					}
-					planet = { create_pop = {
+					planet = { create_pop_group = {
 						species = ROOT.owner_main_species
 					}}
-					kill_pop = yes
+					kill_pop_group = { pop_group = this }
 				}
 				set_timed_country_flag = { flag = join_cts_enabled days = 1 }
 				country_event = { id = wsg.9996 days = 1 }
@@ -3429,7 +3429,7 @@ country_event = {
 				}
 				while = {
 					count = 5
-					random_owned_pop = { kill_pop = yes }
+					random_owned_pop_group = { kill_pop_group = { pop_group = this } }
 				}
 				prev.overlord = {
 					remove_modifier = ptc_alien_slicer_modifier
@@ -3447,7 +3447,7 @@ country_event = {
 				}
 				while = {
 					count = 1
-					random_owned_pop = { kill_pop = yes }
+					random_owned_pop_group = { kill_pop_group = { pop_group = this } }
 				} 
 			}
 			if = {
@@ -3456,7 +3456,7 @@ country_event = {
 				}
 				while = {
 					count = 3
-					random_owned_pop = { kill_pop = yes }
+					random_owned_pop_group = { kill_pop_group = { pop_group = this } }
 				}  
 			}
 			if = {
@@ -3465,7 +3465,7 @@ country_event = {
 				}
 				while = {
 					count = 3
-					random_owned_pop = { kill_pop = yes }
+					random_owned_pop_group = { kill_pop_group = { pop_group = this } }
 				}
 			}
 		}
@@ -3528,7 +3528,7 @@ country_event = {
 	}
 
 	immediate = {
-        every_owned_pop = {
+        every_owned_pop_group = {
 			limit = { 
 				has_trait = wsg_trait_warshipgirls 
 			}
@@ -3583,7 +3583,7 @@ country_event = {
 	}
 
 	immediate = {
-        every_owned_pop = {
+        every_owned_pop_group = {
 			limit = { 
 				has_trait = wsg_trait_warshipgirls 
 			}
@@ -3634,14 +3634,14 @@ country_event = {
 	hide_window = yes
 
 	immediate = {
-		every_owned_pop = {
+		every_owned_pop_group = {
 			limit = { 
 				species = {
 					is_robotic_species = yes
 					NOT = { is_same_species = owner.owner_main_species }
 				}	
 			}
-			kill_pop = yes
+			kill_pop_group = { pop_group = this }
 		}
 	}
 }

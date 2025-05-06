@@ -2214,7 +2214,7 @@ planet_event = {
 			1 = { 
 				modifier = {
 					factor = 0
-					NOT = { any_owned_pop = { is_organic_species = yes }}
+					NOT = { any_owned_pop_group = { is_organic_species = yes }}
 				}
 				planet_event = { id = monolith_crisis.203 }
 			}
@@ -2248,8 +2248,8 @@ planet_event = {
 		owner = {
 			country_event = { id = monolith_crisis.204 scopes = { from = root }}
 		}
-		every_owned_pop = {
-			kill_pop = yes
+		every_owned_pop_group = {
+			kill_pop_group = { pop_group = this }
 		}
 		monolith_crisis_reset_planet_effect = yes
 	}
@@ -2266,7 +2266,7 @@ planet_event = {
 		NOT = { has_global_flag = monolith_crisis_end }
 		exists = owner
 		is_colony = yes
-		any_owned_pop = {
+		any_owned_pop_group = {
 			is_organic_species = yes
 		}
 	}
@@ -2277,7 +2277,7 @@ planet_event = {
 			country_event = { id = monolith_crisis.205 scopes = { from = root }}
 		}
 		# 先以其中一个人口为模版创土著人口，再清除星球
-		random_owned_pop = {
+		random_owned_pop_group = {
 			create_species = {
 				name = random
 				class = this
@@ -2320,7 +2320,7 @@ planet_event = {
 		clear_deposits = yes
 		clear_planet_modifiers = yes
 		reroll_planet = yes
-		every_owned_pop = { kill_pop = yes }
+		every_owned_pop_group = { kill_pop_group = { pop_group = this } }
 		# 创造土著
 		create_country = {
 			name = random
@@ -2349,7 +2349,7 @@ planet_event = {
 		}
 		while = {
 			count = 2
-			create_pop = { species = event_target:new_presapient_species }
+			create_pop_group = { species = event_target:new_presapient_species }
 		}
 		add_building = building_crude_huts
 		add_building = building_crude_huts
@@ -4522,18 +4522,18 @@ country_event = {
 				count = kill_pop_num_min
 				if = {
 					# 杀到最后三个不杀
-					limit = { count_owned_pop = { count > 3 }}
-					random_owned_pop = { kill_pop = yes }
+					limit = { count_owned_pop_group = { count > 3 }}
+					random_owned_pop_group = { kill_pop_group = { pop_group = this } }
 				}
 			}
 			while = {
 				count = kill_pop_num_random
 				if = {
 					# 杀到最后三个不杀
-					limit = { count_owned_pop = { count > 3 }}
+					limit = { count_owned_pop_group = { count > 3 }}
 					# 50%杀
 					random_list = {
-						1 = { random_owned_pop = { kill_pop = yes }}
+						1 = { random_owned_pop_group = { kill_pop_group = { pop_group = this } }}
 						1 = { }
 					}
 				}

@@ -465,7 +465,7 @@ country_event = {
 			set_species_identity = owner_main_species
 		}
 		change_dominant_species = { species = event_target:sh_species change_all = yes }
-		every_owned_pop = {
+		every_owned_pop_group = {
 			limit = { is_same_species = root }
 			change_species = event_target:sh_species
 		}
@@ -642,7 +642,7 @@ country_event = {
 			set_species_identity = owner_main_species
 		}
 		change_dominant_species = { species = event_target:sh_species change_all = yes }
-		every_owned_pop = {
+		every_owned_pop_group = {
 			limit = { is_same_species = root }
 			change_species = event_target:sh_species
 		}
@@ -825,7 +825,7 @@ country_event = {
 	}
 	
 	immediate = {
-		random_owned_pop = {
+		random_owned_pop_group = {
 			limit = { species = { has_trait = sh_trait_shenhai2 }}
 			species = { save_event_target_as = sh_species }
 		}
@@ -1151,7 +1151,7 @@ country_event = {
 	}
 	
 	immediate = {
-		random_owned_pop = {
+		random_owned_pop_group = {
 			limit = { species = { has_trait = sh_trait_shenhai3 }}
 			species = { save_event_target_as = sh_species }
 		}
@@ -1455,7 +1455,7 @@ country_event = {
 	}
 
 	immediate = {
-		random_owned_pop = {
+		random_owned_pop_group = {
 			limit = { OR = {
 				has_trait = sh_trait_shenhai
 				has_trait = sh_trait_shenhai1
@@ -1930,7 +1930,7 @@ planet_event = {
 		else = {
 			set_owner = from.owner
 		}
-		every_owned_pop = {
+		every_owned_pop_group = {
 			limit = {
 				is_valid_pop_for_PLANET_KILLER_CM = yes
 			}
@@ -1941,7 +1941,7 @@ planet_event = {
 				change_scoped_species = yes
 			}
 		}
-		every_owned_pop = {
+		every_owned_pop_group = {
 			limit = {
 				OR = {
 					has_trait = trait_hive_mind
@@ -1949,15 +1949,15 @@ planet_event = {
 					has_trait = trait_machine_unit
 				}
 			}
-			kill_pop = yes
+			kill_pop_group = { pop_group = this }
 		}
-		every_owned_pop = {
+		every_owned_pop_group = {
 			limit = {
 				has_modifier = pop_recently_conquered
 			}
 			remove_modifier = pop_recently_conquered
 		}
-		every_owned_pop = {
+		every_owned_pop_group = {
 			set_citizenship_type = {
 				type = citizenship_full_machine
 				cooldown = yes
@@ -2714,7 +2714,7 @@ country_event = {
 			remove_district = district_industrial
 			while = {
 				count = 24
-				create_pop = {
+				create_pop_group = {
 					species = owner_species
 				}
 			}
@@ -2857,8 +2857,8 @@ planet_event = {
 			change_pc = pc_broken
         }
 		remove_all_buildings = yes
-		every_owned_pop = {
-			kill_pop = yes
+		every_owned_pop_group = {
+			kill_pop_group = { pop_group = this }
 		}
 		clear_planet_modifiers = yes
 		set_planet_flag = wg_doom_flag
@@ -4158,7 +4158,7 @@ country_event = {
 			add_deposit = d_hot_springs
 			while = {
 				count = 7
-				create_pop = {
+				create_pop_group = {
 					species = event_target:shielded_sh_country.owner_main_species
 					ethos = random
 				}
@@ -4527,7 +4527,7 @@ planet_event = {
 		} 
 	}
 	immediate = {
-		random_owned_pop = {
+		random_owned_pop_group = {
 			limit = {
 				OR = {
 					has_trait = sh_trait_shenhai1
@@ -4539,7 +4539,7 @@ planet_event = {
 				add_trait = sh_trait_anomaly
 				change_scoped_species = no
 				effect = {
-					ROOT = { every_owned_pop = {
+					ROOT = { every_owned_pop_group = {
 						limit = { OR = {
 							has_trait = sh_trait_shenhai1
 							has_trait = sh_trait_shenhai
@@ -4572,7 +4572,7 @@ planet_event = {
 	}
 	option = {
 		name = "sh.3071.b"
-		every_owned_pop = {
+		every_owned_pop_group = {
 			limit = {
 				species = { has_trait = sh_trait_anomaly }
 			}
@@ -4646,8 +4646,8 @@ situation_event = {
 			add_planet_devastation = 50 
 			while = {
 				count = 3
-				limit = { count_owned_pop = { count > 1 }}
-				random_owned_pop = { kill_pop = yes }
+				limit = { count_owned_pop_group = { count > 1 }}
+				random_owned_pop_group = { kill_pop_group = { pop_group = this } }
 			}
 		}
 	}
@@ -4658,8 +4658,8 @@ situation_event = {
 			add_planet_devastation = 50 
 			while = {
 				count = 3
-				limit = { count_owned_pop = { count > 1 }}
-				random_owned_pop = { kill_pop = yes }
+				limit = { count_owned_pop_group = { count > 1 }}
+				random_owned_pop_group = { kill_pop_group = { pop_group = this } }
 			}
 		}}
 	}
@@ -4678,8 +4678,8 @@ situation_event = {
 			add_planet_devastation = 50 
 			while = {
 				count = 5
-				limit = { count_owned_pop = { count > 1 }}
-				random_owned_pop = { kill_pop = yes }
+				limit = { count_owned_pop_group = { count > 1 }}
+				random_owned_pop_group = { kill_pop_group = { pop_group = this } }
 			}
 		}
 	}
@@ -4690,8 +4690,8 @@ situation_event = {
 			add_planet_devastation = 50 
 			while = {
 				count = 5
-				limit = { count_owned_pop = { count > 1 }}
-				random_owned_pop = { kill_pop = yes }
+				limit = { count_owned_pop_group = { count > 1 }}
+				random_owned_pop_group = { kill_pop_group = { pop_group = this } }
 			}
 		}}
 	}
@@ -4718,7 +4718,7 @@ situation_event = {
 			}
 			remove_all_buildings = yes
 			remove_all_districts = yes
-			every_owned_pop = { kill_pop = yes }
+			every_owned_pop_group = { kill_pop_group = { pop_group = this } }
 			destroy_colony = yes
 			clear_deposits = yes
 			if = {
@@ -5121,7 +5121,7 @@ country_event = {
 	}
 
 	immediate = {
-        every_owned_pop = {
+        every_owned_pop_group = {
 			limit = { 
 				has_trait = sh_trait_shenhai
 			}

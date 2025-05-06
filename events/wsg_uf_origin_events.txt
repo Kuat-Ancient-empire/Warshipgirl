@@ -94,7 +94,7 @@ country_event = {
 			add_building = building_uf_entertainment_center
 			while = {
 				count = 6
-				random_owned_pop = { kill_pop = yes }
+				random_owned_pop_group = { kill_pop_group = { pop_group = this } }
 			}
 		}
 		if  = {
@@ -128,7 +128,7 @@ country_event = {
 			set_owner = event_target:uf_origin_target
 			while = {
 				count = 6
-				create_pop = {
+				create_pop_group = {
 					species = owner_main_species
 				}
 			}
@@ -234,7 +234,7 @@ country_event = {
 	}
 
 	immediate = {
-		random_owned_pop = {
+		random_owned_pop_group = {
 			limit = { 
 				has_trait = uf_trait_united_fleet 
 			}
@@ -1725,7 +1725,7 @@ country_event = {
 	hide_window = yes
 
 	immediate = {
-		every_owned_pop = {
+		every_owned_pop_group = {
 			limit = { 
 				OR = { 
 					has_trait = uf_trait_united_fleet 
@@ -2661,16 +2661,16 @@ planet_event = {
 		else = {
 			set_owner = from.owner
 		}
-		every_owned_pop = {
+		every_owned_pop_group = {
 			change_species = from.owner_main_species
 		}
-		every_owned_pop = {
+		every_owned_pop_group = {
 			limit = {
 				has_modifier = pop_recently_conquered
 			}
 			remove_modifier = pop_recently_conquered
 		}
-		every_owned_pop = {
+		every_owned_pop_group = {
 			set_citizenship_type = {
 				type = citizenship_full_machine
 				cooldown = yes
@@ -2989,7 +2989,7 @@ country_event = {
 			set_owner = event_target:uf_owner
 			while = {
 				count = 10
-				create_pop = {
+				create_pop_group = {
 					species = owner_main_species
 				}
 			}
@@ -3070,7 +3070,7 @@ country_event = {
 			set_owner = root
 			while = {
 				count = 10
-				create_pop = {
+				create_pop_group = {
 					species = owner_main_species
 				}
 			}
@@ -3382,7 +3382,7 @@ planet_event = {
 		NOT = {
 			has_planet_flag = uf_planet_no_assimilation_flag
 		}
-		any_owned_pop = { species = {
+		any_owned_pop_group = { species = {
 			NOT = {
 				is_same_species = root.owner_main_species
 			}
@@ -3392,23 +3392,23 @@ planet_event = {
 	immediate = {
 		# 判断异族人口是否少于6个
 		if = {
-			limit = { count_owned_pop = {
+			limit = { count_owned_pop_group = {
 				limit = { species = {
 					NOT = { is_same_species = root.owner_main_species }
 				}}
 				count <= 6
 			}}
 			while = {
-				limit = { any_owned_pop = { species = {
+				limit = { any_owned_pop_group = { species = {
 					NOT = { is_same_species = root.owner_main_species }
 				}}}
-				random_owned_pop = {
+				random_owned_pop_group = {
 					limit = {
 						NOT = { is_same_species = root.owner_main_species }
 					}
-					kill_pop = yes
+					kill_pop_group = { pop_group = this }
 				}
-				create_pop = {
+				create_pop_group = {
 					species = owner_main_species
 				}
 			}
@@ -3417,13 +3417,13 @@ planet_event = {
 				1 = { # 6 pops
 					while = {
 						count = 6
-						random_owned_pop = {
+						random_owned_pop_group = {
 							limit = { species = {
 								NOT = { is_same_species = root.owner_main_species }
 							}}
-							kill_pop = yes
+							kill_pop_group = { pop_group = this }
 						}
-						create_pop = {
+						create_pop_group = {
 							species = owner_main_species
 						}
 					}
@@ -3432,13 +3432,13 @@ planet_event = {
 				1 = { # 12 pops
 					while = {
 						count = 12
-						random_owned_pop = {
+						random_owned_pop_group = {
 							limit = { species = {
 								NOT = { is_same_species = owner.owner_main_species }
 							}}
-							kill_pop = yes
+							kill_pop_group = { pop_group = this }
 						}
-						create_pop = {
+						create_pop_group = {
 							species = owner_main_species
 						}
 					}
@@ -3446,13 +3446,13 @@ planet_event = {
 				1 = { # 20 pops
 					while = {
 						count = 20
-						random_owned_pop = {
+						random_owned_pop_group = {
 							limit = { species = {
 								NOT = { is_same_species = owner.owner_main_species }
 							}}
-							kill_pop = yes
+							kill_pop_group = { pop_group = this }
 						}
-						create_pop = {
+						create_pop_group = {
 							species = owner_main_species
 						}
 					}
@@ -3508,8 +3508,8 @@ country_event = {
 					set_star_class = sc_black_hole
 				}
 			}
-			every_owned_pop = {
-				kill_pop = yes
+			every_owned_pop_group = {
+				kill_pop_group = { pop_group = this }
 			}
 			every_owned_fleet = {
 				delete_fleet = this
@@ -3628,8 +3628,8 @@ planet_event = {
 			change_pc = pc_shattered
         }
 		remove_all_buildings = yes
-		every_owned_pop = {
-			kill_pop = yes
+		every_owned_pop_group = {
+			kill_pop_group = { pop_group = this }
 		}
 		clear_planet_modifiers = yes
 		set_planet_flag = uf_doom_flag
@@ -3693,7 +3693,7 @@ planet_event = {
 	immediate = {
 		while = {
 			count = 9
-			create_pop = {
+			create_pop_group = {
 				species = owner_main_species
 			}
 		}
@@ -3770,12 +3770,11 @@ country_event = {
 		}
 		set_spawn_system_batch = end
 		event_target:uf_mega_habitat_origin_old_start_planet = {
-			every_owned_pop = {
-				resettle_pop = {
-					pop = this
-					planet = event_target:uf_mega_habitat_origin_start_home_planet
+			every_owned_pop_group = {
+				resettle_pop_group = {
+					POP_GROUP = this
+					PLANET = event_target:uf_mega_habitat_origin_start_home_planet
 				}
-				unemploy_pop = yes
 			}
 			change_pc = pc_barren_cold
 			set_name = "King Heaven"
@@ -3806,7 +3805,7 @@ country_event = {
 			set_capital = yes
 			while = {
 				count = 22
-				create_pop = {
+				create_pop_group = {
 					species = owner_main_species
 				}
 			}
@@ -3835,7 +3834,7 @@ country_event = {
 			set_controller = root
 			while = {
 				count = 25
-				create_pop = {
+				create_pop_group = {
 					species = owner_main_species
 				}
 			}
@@ -3855,7 +3854,7 @@ country_event = {
 			set_controller = root
 			while = {
 				count = 25
-				create_pop = {
+				create_pop_group = {
 					species = owner_main_species
 				}
 			}
@@ -3875,7 +3874,7 @@ country_event = {
 			set_controller = root
 			while = {
 				count = 25
-				create_pop = {
+				create_pop_group = {
 					species = owner_main_species
 				}
 			}
@@ -3895,7 +3894,7 @@ country_event = {
 			set_controller = root
 			while = {
 				count = 25
-				create_pop = {
+				create_pop_group = {
 					species = owner_main_species
 				}
 			}
