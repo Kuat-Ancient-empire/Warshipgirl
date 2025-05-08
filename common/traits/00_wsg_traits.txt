@@ -28,12 +28,12 @@ wsg_trait_warshipgirls={
 		always = no
 	}
 
-	triggered_pop_modifier = {
+	triggered_pop_group_modifier = {
 		potential = {
 			exists = owner
 			owner = { has_deficit = food }
 		}
-		planet_jobs_produces_mult = -0.10
+		pop_bonus_workforce_mult = -0.10
 	}
 	triggered_planet_growth_habitability_modifier = {
 		potential = {
@@ -44,7 +44,6 @@ wsg_trait_warshipgirls={
 	}
 	custom_tooltip_with_modifiers = wsg_trait_warshipgirls_tooltip
 	modifier = {
-	    planet_jobs_engineering_research_produces_mult = 0.15
 		pop_environment_tolerance = 0.25
 		pop_demotion_time_mult = -0.5
 	    logistic_growth_mult = -0.2
@@ -82,12 +81,12 @@ wsg_trait_warshipgirls1={
 		exists = from
 		from = { has_ascension_perk = ap_project_r }
 	}
-	triggered_pop_modifier = {
+	triggered_pop_group_modifier = {
 		potential = {
 			exists = owner
 			owner = { has_deficit = food }
 		}
-		planet_jobs_produces_mult = -0.10
+		pop_bonus_workforce_mult = -0.10
 	}
 	triggered_planet_growth_habitability_modifier = {
 		potential = {
@@ -98,7 +97,6 @@ wsg_trait_warshipgirls1={
 	}
 	custom_tooltip_with_modifiers = wsg_trait_warshipgirls_tooltip
 	modifier = {
-		planet_jobs_engineering_research_produces_mult = 0.25
 		pop_environment_tolerance = 0.5
 		pop_demotion_time_mult = -0.5
 	}
@@ -127,10 +125,8 @@ trait_intelligent_galo ={
 		logistic_growth_mult = 0.10
 		pop_environment_tolerance = 0.5
 		pop_demotion_time_mult = -0.5
-		planet_jobs_energy_produces_mult = 0.05
-		planet_jobs_minerals_produces_mult = 0.15
-		planet_jobs_food_produces_mult = 0.15
-		planet_livestock_food_produces_add = 4
+		worker_and_simple_drone_cat_bonus_workforce_mult = 0.05
+		pop_livestock_bonus_workforce_add = 4
 	}
 }
 trait_wg_sunflower ={
@@ -145,12 +141,12 @@ trait_wg_sunflower ={
 	species_possible_remove = { always = no }
 	species_possible_merge_add = { always = no }
 	modifier={
-		pop_category_rulers_energy_produces_add = 5
-		pop_category_specialists_energy_produces_add = 5
-		pop_category_workers_energy_produces_add = 5	
-		pop_category_slave_energy_produces_add = 5
-		planet_livestock_food_produces_add = 2
-		planet_livestock_energy_produces_add = 5
+	}
+	resources = {
+		category = planet_pops
+		produces = {
+			energy = 5
+		}
 	}
 }
 wsg_trait_GALO={
@@ -177,23 +173,23 @@ wsg_trait_ocean = {
     custom_tooltip_with_modifiers = wsg_trait_ocean_tooltip
 	species_potential_add = {  }
 
-	triggered_pop_modifier = {
+	triggered_pop_group_modifier = {
 		potential = {
 			exists = planet
 			planet = { is_planet_class = pc_ocean }
 		}
-		planet_jobs_produces_mult = 0.05
+		pop_bonus_workforce_mult = 0.05
 		pop_housing_usage_mult = -0.05
 		planet_pops_consumer_goods_upkeep_mult = -0.10
 	}
-	triggered_pop_modifier = {
+	triggered_pop_group_modifier = {
 		potential = {
 			exists = planet
 			planet = { is_planet_class = pc_shenhai }
 		}
-		planet_jobs_produces_mult = 0.10
+		pop_bonus_workforce_mult = 0.10
 	}
-	triggered_pop_modifier = {
+	triggered_pop_group_modifier = {
 		potential = {
 			exists = planet
 			planet = { OR = {
@@ -201,12 +197,12 @@ wsg_trait_ocean = {
 				is_planet_class = pc_ringworld_habitable_wsg
 			} }
 		}
-		planet_jobs_produces_mult = 0.02
+		pop_bonus_workforce_mult = 0.02
 	}
 	allowed_planet_classes = {
 		pc_ocean pc_shenhai pc_wsg_port pc_swim pc_ringworld_habitable_wsg pc_ringworld_habitable_swim
 	}
-	triggered_pop_modifier = {
+	triggered_pop_group_modifier = {
 		potential = {
 			exists = planet
 			planet = { OR = {
@@ -215,8 +211,7 @@ wsg_trait_ocean = {
 			}}
 		}
 		planet_pops_consumer_goods_upkeep_mult = -0.10
-		planet_jobs_energy_produces_mult = 0.15
-		planet_jobs_unity_produces_mult = 0.15
+		pop_bonus_workforce_mult = 0.10
 	}
 }
 wsg_trait_mind_control={
@@ -228,7 +223,7 @@ wsg_trait_mind_control={
 		can_remove_beneficial_traits = yes
 	}
 	modifier={
-		planet_jobs_unity_produces_mult = 0.15
+		bureaucrat_jobs_bonus_workforce_mult = 0.15
 	}
 	opposites = { "wsg_trait_mind_control_2" }
 }
@@ -242,7 +237,7 @@ wsg_trait_mind_control_2={
 		can_remove_beneficial_traits = yes
 	}
 	modifier={
-		planet_jobs_unity_produces_mult = 0.30
+		bureaucrat_jobs_bonus_workforce_mult = 0.30
 	}
 	opposites = { "wsg_trait_mind_control" }
 }
@@ -255,8 +250,7 @@ wsg_trait_migrate = {
 		can_remove_beneficial_traits = yes
 	}
 	modifier={
-		pop_growth_from_immigration = 0.15
-		pop_resettlement_cost_mult = -0.25
+		pop_resettlement_cost_mult = -0.45
 	}
 }
 wsg_trait_Vodka={
@@ -313,7 +307,7 @@ wsg_trait_Epolicy={
 		can_remove_beneficial_traits = yes
 	}
 	modifier={
-		pop_job_trade_mult = 0.25
+		trader_jobs_bonus_workforce_mult = 0.25
 	}
 	opposites = { "wsg_trait_galatic_engineer"  }
 }
@@ -322,16 +316,15 @@ wsg_trait_alloys = {
 	potential_crossbreeding_chance = 1.0
 	icon="gfx/interface/icons/traits/wsg_alloys.dds"
 	allowed_archetypes={WARSHIPGIRL}
-	custom_tooltip = TRAIT_WSG_ALLOYS_EFFECT
 	species_possible_remove = {
 		can_remove_beneficial_traits = yes
 	}
-	modifier={
-		pop_category_rulers_alloys_produces_add = 0.1
-		pop_category_specialists_alloys_produces_add = 0.1
-		pop_category_workers_alloys_produces_add = 0.1
-		pop_category_slave_alloys_produces_add = 0.1
-	}	
+	resources = {
+		category = planet_pops
+		produces = {
+			alloys = 0.1
+		}
+	}
 	slave_cost = {
 		energy = 100
 	}
@@ -343,16 +336,15 @@ wsg_trait_alloys_2 = {
 	potential_crossbreeding_chance = 1.0
 	icon="gfx/interface/icons/traits/wsg_alloys_2.dds"
 	allowed_archetypes={WARSHIPGIRL}
-	custom_tooltip = TRAIT_WSG_ALLOYS_EFFECT_2
 	species_possible_remove = {
 		can_remove_beneficial_traits = yes
 	}
-	modifier={
-		pop_category_rulers_alloys_produces_add = 0.25
-		pop_category_specialists_alloys_produces_add = 0.25
-		pop_category_workers_alloys_produces_add = 0.25
-		pop_category_slave_alloys_produces_add = 0.25
-	}	
+	resources = {
+		category = planet_pops
+		produces = {
+			alloys = 0.25
+		}
+	}
 	slave_cost = {
 		energy = 100
 	}
@@ -396,7 +388,7 @@ wsg_trait_satellite={
 	}
 	modifier = {
 		logistic_growth_mult = 0.20
-		planet_jobs_worker_produces_mult = 0.05
+		worker_and_simple_drone_cat_bonus_workforce_mult = 0.05
 	}
 }
 wsg_trait_overtime={
@@ -408,7 +400,7 @@ wsg_trait_overtime={
 		can_remove_beneficial_traits = yes
 	}
 	modifier={
-		planet_jobs_produces_mult = 0.05
+		pop_bonus_workforce_mult = 0.05
 	}
 	opposites = { "wsg_trait_extreme_efficient" "wsg_trait_overtime_2" }
 }
@@ -422,7 +414,7 @@ wsg_trait_overtime_2={
 		can_remove_beneficial_traits = yes
 	}
 	modifier={
-		planet_jobs_produces_mult = 0.10
+		pop_bonus_workforce_mult = 0.10
 	}
 	opposites = { "wsg_trait_extreme_efficient" "wsg_trait_overtime" }
 }
@@ -436,7 +428,7 @@ wsg_trait_agrarian = {
 		can_remove_beneficial_traits = yes
 	}
 	modifier = {
-		planet_jobs_food_produces_mult = 0.15
+		farmer_jobs_bonus_workforce_mult = 0.15
 	}
 	slave_cost = {
 		energy = 50
@@ -452,7 +444,7 @@ wsg_trait_ingenious = {
 		can_remove_beneficial_traits = yes
 	}
 	modifier = {
-		planet_jobs_energy_produces_mult = 0.15
+		technician_jobs_bonus_workforce_mult = 0.15
 	}
 	slave_cost = {
 		energy = 50
@@ -469,7 +461,7 @@ wsg_trait_industrious = {
 		can_remove_beneficial_traits = yes
 	}
 	modifier = {
-		planet_jobs_minerals_produces_mult = 0.15
+		miner_jobs_bonus_workforce_mult = 0.15
 	}
 	slave_cost = {
 		energy = 50
@@ -499,8 +491,7 @@ wsg_trait_Nelson={#增加宜居度
 	}
 	modifier={
 		pop_environment_tolerance = 0.25
-		pop_growth_from_immigration = 0.10
-		pop_resettlement_cost_mult = -0.10
+		pop_resettlement_cost_mult = -0.25
 	}
 }
 
@@ -514,9 +505,7 @@ wsg_trait_knowledgeable={
 		can_remove_beneficial_traits = yes
 	}
 	modifier={
-		planet_jobs_engineering_research_produces_mult = 0.25
-		planet_jobs_physics_research_produces_mult = 0.25
-		planet_jobs_society_research_produces_mult = 0.25
+		specialist_and_complex_drone_cat_bonus_workforce_mult = 0.15
 		species_leader_exp_gain = 0.25
 	}
 }
@@ -583,7 +572,7 @@ wsg_trait_game={
 	sorting_priority = 30
 	icon="gfx/interface/icons/traits/game.dds"
 	modifier={
-		planet_jobs_produces_mult = -0.05
+		pop_bonus_workforce_mult = -0.05
 		pop_resettlement_cost_mult = 0.2
 	}
 }
@@ -604,8 +593,7 @@ wsg_trait_vulgar={
 	sorting_priority = 30
 	icon="gfx/interface/icons/traits/wsg_vulgar.dds"
 	modifier={
-		planet_jobs_unity_produces_mult = -0.1
-		planet_culture_workers_produces_mult = -0.10
+		bureaucrat_jobs_bonus_workforce_mult = -0.1
 	}
 }
 wsg_trait_missile={
@@ -615,7 +603,7 @@ wsg_trait_missile={
 	icon="gfx/interface/icons/traits/missile.dds"
 	modifier={
 		pop_housing_usage_mult = 0.1
-		pop_amenities_usage_no_happiness_mult = 0.1
+		pop_amenities_usage_mult = 0.1
 	}
 }
 wsg_trait_gugu={
@@ -624,7 +612,7 @@ wsg_trait_gugu={
 	sorting_priority = 30
 	icon="gfx/interface/icons/traits/gugu.dds"
 	modifier={
-		planet_jobs_produces_mult = -0.1
+		pop_bonus_workforce_mult = -0.1
 	}
 }
 wsg_trait_mist={
@@ -649,7 +637,7 @@ wsg_trait_mist={
 		from = { has_ascension_perk = ap_mist }
 	}
 	modifier={
-        planet_jobs_produces_mult=0.25
+		pop_bonus_workforce_mult = 0.25
 		pop_environment_tolerance = 2.0
 		pop_demotion_time_mult = -0.5
 		bonus_pop_growth_mult = 0.2
@@ -665,9 +653,6 @@ wsg_trait_neo = {
 	icon="gfx/interface/icons/traits/neo.dds"
 	allowed_archetypes = { WARSHIPGIRL }
 	prerequisites = { tech_wsg_genetic_resequencing }
-	
-	custom_tooltip_with_modifiers = wsg_trait_neo_tooltip
-
 	triggered_planet_growth_habitability_modifier = {
 		potential = { exists = owner }
 		bonus_pop_growth_mult = 0.45
@@ -710,7 +695,7 @@ wsg_trait_muno = {
 		from = { has_ascension_perk = ap_mist }
 	}
 	modifier = {
-		planet_jobs_produces_mult=0.25
+		pop_bonus_workforce_mult = 0.25
 	}
 }
 
@@ -728,9 +713,7 @@ wsg_trait_alpha = {
 		from = { has_ascension_perk = ap_mist }
 	}
 	modifier = {
-		planet_jobs_engineering_research_produces_mult = 0.45
-		planet_jobs_physics_research_produces_mult = 0.45
-		planet_jobs_society_research_produces_mult = 0.45
+		specialist_and_complex_drone_cat_bonus_workforce_mult = 0.25
 		species_leader_exp_gain = 0.5
 	}
 }
@@ -740,13 +723,14 @@ wsg_trait_consumer_goods = {
 	potential_crossbreeding_chance = 1.0
 	icon="gfx/interface/icons/traits/wsg_consumer_goods.dds"
 	allowed_archetypes={WARSHIPGIRL}
-	custom_tooltip = TRAIT_WSG_GOODS_EFFECT
 	modifier={
 		pop_happiness = -0.20
-		pop_category_rulers_consumer_goods_produces_add = 0.2
-		pop_category_specialists_consumer_goods_produces_add = 0.2
-		pop_category_workers_consumer_goods_produces_add = 0.2
-		pop_category_slave_consumer_goods_produces_add = 0.2
+	}
+	resources = {
+		category = planet_pops
+		upkeep = {
+			consumer_goods = 0.2
+		}
 	}
 
 	slave_cost = {
@@ -759,8 +743,8 @@ wsg_trait_money={
 	sorting_priority = 30
 	icon="gfx/interface/icons/traits/money.dds"
 	modifier={
-		pop_job_trade_mult = -0.20
-		planet_jobs_energy_produces_mult = 0.05
+		trader_jobs_bonus_workforce_mult = -0.20
+		technician_jobs_bonus_workforce_mult = 0.05
 		pop_happiness = 0.05
 	}
 	opposites = { "wsg_trait_ingenious" }
@@ -780,7 +764,7 @@ wsg_trait_no_pantsu={
 	sorting_priority = 30
 	icon="gfx/interface/icons/traits/no_pantsu.dds"
 	modifier={
-		planet_jobs_sr_pantsu_produces_mult = -0.1
+		wsg_pantsu_jobs_bonus_workforce_mult = -0.1
 		logistic_growth_mult = 0.35
 		pop_happiness = 0.10
 	}
@@ -848,7 +832,7 @@ wsg_trait_warshipgirls2={
 	#custom_tooltip_with_modifiers = wsg_trait_warshipgirls2_tooltip
 
 	modifier = {
-		planet_jobs_produces_mult = 0.35
+		pop_bonus_workforce_mult = 0.35
 		pop_environment_tolerance = 2.0
 		bonus_pop_growth_mult = 0.3
 		pop_demotion_time_mult = -1.0
@@ -870,13 +854,12 @@ wsg_trait_senergy_producer = {
 	icon = "gfx/interface/icons/traits/wsg_trait_senergy_producer.dds"
 	allowed_archetypes = { WARSHIPGIRL }
 	prerequisites = { "tech_wsg_genetic_resequencing_s" }
-	custom_tooltip = TRAIT_WSG_SENERGY_PRODUCER_EFFECT
 	species_potential_add = {
 		exists = from
 		from = { has_ascension_perk = ap_project_s }
 	}
 	modifier = {
-		
+		wsg_sr_se_jobs_bonus_workforce_mult = 0.25
 	}
 }
 
@@ -909,7 +892,7 @@ wsg_trait_self_assembly = {
 	icon="gfx/interface/icons/traits/wsg_trait_self_assembly.dds"
 	allowed_archetypes = { WARSHIPGIRL }
 	prerequisites = { "tech_wsg_genetic_resequencing_s" }
-	custom_tooltip = TRAIT_WSG_SELF_ASSEMBLY_EFFECT
+
 	species_potential_add = {
 		exists = from
 		from = { has_ascension_perk = ap_project_s }
@@ -917,12 +900,11 @@ wsg_trait_self_assembly = {
 	assembling_modifier = {
 		bonus_pop_growth = 3
 	}
-	
-	modifier = {
-		pop_category_rulers_sr_se_upkeep_add = 0.2
-		pop_category_specialists_sr_se_upkeep_add = 0.2
-		pop_category_workers_sr_se_upkeep_add = 0.2
-		pop_category_slave_sr_se_upkeep_add = 0.2
+	resources = {
+		category = planet_pops
+		upkeep = {
+			sr_se = 0.2
+		}
 	}
 	opposites = { "wsg_trait_mass_assembly" }
 }
@@ -939,19 +921,25 @@ wsg_trait_galatic_engineer = {
 		exists = from
 		from = { has_ascension_perk = ap_project_s }
 	}
-	triggered_pop_modifier = {
+	triggered_pop_group_modifier = {
 		potential = {
 			exists = owner
 			owner = { has_edict = wg_sr_se_trait_enable }
 		}
-		pop_job_trade_mult = 1.3
-		pop_category_rulers_sr_se_upkeep_add = 0.2
-		pop_category_specialists_sr_se_upkeep_add = 0.2
-		pop_category_workers_sr_se_upkeep_add = 0.2
-		pop_category_slave_sr_se_upkeep_add = 0.2		
+		trader_jobs_bonus_workforce_mult = 0.7
 	}
 	modifier = {
-		pop_job_trade_mult = 0.2
+		trader_jobs_bonus_workforce_mult = 0.1
+	}
+	resources = {
+		category = planet_pops
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { has_edict = wg_sr_se_trait_enable }
+			}
+			sr_se = 0.2
+		}
 	}
 	opposites = { "wsg_trait_Epolicy"  }
 }
@@ -969,19 +957,25 @@ wsg_trait_extreme_efficient = {
 		exists = from
 		from = { has_ascension_perk = ap_project_s }
 	}
-	triggered_pop_modifier = {
+	triggered_pop_group_modifier = {
 		potential = {
 			exists = owner
 			owner = { has_edict = wg_sr_se_trait_enable }
 		}
-		planet_jobs_produces_mult = 0.30
-		pop_category_rulers_sr_se_upkeep_add = 0.3
-		pop_category_specialists_sr_se_upkeep_add = 0.3
-		pop_category_workers_sr_se_upkeep_add = 0.3
-		pop_category_slave_sr_se_upkeep_add = 0.3
+		pop_bonus_workforce_mult = 0.30
 	}
 	modifier = {
-		planet_jobs_produces_mult = 0.05
+		pop_bonus_workforce_mult = 0.05
+	}
+	resources = {
+		category = planet_pops
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { has_edict = wg_sr_se_trait_enable }
+			}
+			sr_se = 0.3
+		}
 	}
 }
 
@@ -1000,24 +994,26 @@ wsg_trait_knowledgeable2 = {
 		exists = from
 		from = { has_ascension_perk = ap_project_s }
 	}
-	triggered_pop_modifier = {
+	triggered_pop_group_modifier = {
 		potential = {
 			exists = owner
 			owner = { has_edict = wg_sr_se_trait_enable }
 		}
 		species_leader_exp_gain = 0.6
-		planet_jobs_engineering_research_produces_mult = 0.50
-		planet_jobs_physics_research_produces_mult = 0.50
-		planet_jobs_society_research_produces_mult = 0.50
-		pop_category_rulers_sr_se_upkeep_add = 0.3
-		pop_category_specialists_sr_se_upkeep_add = 0.3
-		pop_category_workers_sr_se_upkeep_add = 0.3
-		pop_category_slave_sr_se_upkeep_add = 0.3
+		specialist_and_complex_drone_cat_bonus_workforce_mult = 0.3
 	}
 	modifier = {
-		planet_jobs_engineering_research_produces_mult = 0.05
-		planet_jobs_physics_research_produces_mult = 0.05
-		planet_jobs_society_research_produces_mult = 0.05
+		specialist_and_complex_drone_cat_bonus_workforce_mult = 0.05
+	}
+	resources = {
+		category = planet_pops
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { has_edict = wg_sr_se_trait_enable }
+			}
+			sr_se = 0.3
+		}
 	}
 }
 
@@ -1026,7 +1022,7 @@ wsg_trait_pantsu_experts = {
 	initial = no
 	randomized = no
 	#advanced_trait = yes
-	opposites = { "wsg_trait_overtime"  }
+	opposites = {  }
 	icon = "gfx/interface/icons/traits/wsg_trait_pantsu_experts.dds"
 	allowed_archetypes = { WARSHIPGIRL }
 	prerequisites = { "tech_wsg_genetic_resequencing_s" }
@@ -1035,7 +1031,7 @@ wsg_trait_pantsu_experts = {
 		from = { has_ascension_perk = ap_project_s }
 	}
 	modifier = {
-		planet_jobs_sr_pantsu_produces_mult = 0.4
+		wsg_pantsu_jobs_bonus_workforce_mult = 0.4
 	}
 	opposites = {
 		"wsg_trait_no_pantsu"
@@ -1056,9 +1052,7 @@ wsg_trait_advance_producer = {
 		from = { has_ascension_perk = ap_project_s }
 	}
 	modifier = {
-		planet_jobs_energy_produces_mult = 0.3
-		planet_jobs_minerals_produces_mult = 0.3
-		planet_jobs_food_produces_mult = 0.3
+		worker_and_simple_drone_cat_bonus_workforce_mult = 0.3
 	}
 	opposites = {
 		"wsg_trait_agrarian" "wsg_trait_ingenious" "wsg_trait_industrious"
