@@ -1,0 +1,726 @@
+
+zone_wsg_city = {
+	icon = GFX_colony_type_urban
+	base_buildtime = @zone_buildtime
+	potential = { is_wsg_ufs_zone_trigger = yes }
+
+	unlock = { is_wsg_ufs_zone_trigger = yes }
+
+	#uses_district_set = port_world
+	triggered_district_planet_modifier = {
+		potential = {
+			uses_district_set = port_world
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_maintenance_drone_add = 100
+		}
+	}
+	triggered_district_planet_modifier = {
+		potential = {
+			uses_district_set = port_world
+			exists = owner
+			owner = { 
+				is_fallen_empire = no
+				is_regular_empire = yes 
+			}
+		}
+		modifier = {
+			job_wsg_idol_add = 100
+			job_clerk_add = 100
+			job_barthroom_worker_add = 100
+		}
+	}
+	#uses_district_set = rw_port_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = rw_port_world }
+		job_wsg_idol_add = 200
+		job_clerk_add = 200
+		job_barthroom_worker_add = 200
+	}
+	#uses_district_set = swim_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = swim_world }
+		job_barthroom_worker_add = 100
+		job_wg_tourism_add = 100
+	}
+	#AND = { uses_district_set = habitat has_planet_flag = pantsu_habitat }
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = habitat
+			has_planet_flag = pantsu_habitat
+		}
+		job_wsg_shop_pantsu_collector_add = 100
+	}
+	#uses_district_set = rw_swim_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = rw_swim_world }
+		job_barthroom_worker_add = 200
+		job_wg_tourism_add = 200
+	}
+	#uses_district_set = dyson_ring_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = dyson_ring_world }
+		job_clerk_add = 200
+	}
+	#uses_district_set = rw_sh_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = rw_sh_world }
+		job_sh_clerk_add = 200
+	}
+	#uses_district_set = sh_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = sh_world }
+		job_clerk_add = 200
+	}
+	#uses_district_set = wg_hive_city_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = wg_hive_city_world }
+		bonus_pop_growth = 0.05
+	}
+	#uses_district_set = wg_forge_world
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = wg_forge_world 
+			OR = {
+				has_active_building = building_sep_foundry
+				has_active_building = building_sep_foundry2
+			}
+		}
+		job_sep_foundry_add = 100
+	}
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = wg_forge_world 
+			OR = {
+				has_active_building = building_sh_foundry
+				has_active_building = building_sh_foundryU
+			}
+		}
+		job_sh_foundry_add = 100
+	}
+
+	resources = {
+		category = planet_zones
+		cost = { minerals = @zone_cost }
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = 6
+	}
+
+	max_buildings = 6
+
+	include = {
+		all
+	}
+
+	excluded_building_sets = {
+		fallen_empire_generator
+	}
+}
+
+zone_wsg_1 = {
+	icon = GFX_colony_type_urban
+	base_buildtime = @zone_buildtime
+	potential = { is_wsg_ufs_zone_trigger = yes }
+
+	unlock = { is_wsg_ufs_zone_trigger = yes }
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	#uses_district_set = port_world
+	triggered_district_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+			uses_district_set = port_world
+		}
+		modifier = {
+			job_maintenance_drone_add = 100
+		}
+	}
+	triggered_district_planet_modifier = {
+		potential = {
+			uses_district_set = port_world
+			exists = owner
+			owner = { NOR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+		}
+		modifier = {
+			job_wsg_foundry_add = 100
+			job_wsg_factory_add = 100
+		}
+	}
+	triggered_district_planet_modifier = {
+		potential = {
+			uses_district_set = port_world
+			exists = owner
+			owner = { OR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+		}
+		modifier = {
+			job_sep_foundry_add = 100
+			job_sep_artisan_add = 100
+		}
+	}
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = port_world
+			exists = owner
+			owner = { OR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+			colony_type = col_wsg_port_factory
+		}
+		job_sep_artisan_add = 100
+	}
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = port_world
+			exists = owner
+			owner = { NOR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+			colony_type = col_wsg_port_factory
+		}
+		job_wsg_factory_add = 100
+	}
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = port_world
+			exists = owner
+			owner = { OR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+			colony_type = col_wsg_port_neo
+		}
+		job_sep_foundry_add = 100
+	}
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = port_world
+			exists = owner
+			owner = { NOR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+			colony_type = col_wsg_port_neo
+		}
+		job_wsg_foundry_add = 100
+	}
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = port_world
+			exists = owner
+			owner = { OR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+			OR = {
+				has_active_building = building_sep_foundry
+				has_active_building = building_sep_foundry2
+				has_active_building = building_foundry_1 
+				has_active_building = building_foundry_2 
+				has_active_building = building_foundry_3 
+			}
+		}
+		job_sep_foundry_add = 100
+	}
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = port_world
+			exists = owner
+			owner = { NOR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+			OR = {
+				has_active_building = building_wsg_foundry
+				has_active_building = building_foundry_1 
+				has_active_building = building_foundry_2 
+				has_active_building = building_foundry_3 
+			}
+		}
+		job_wsg_foundry_add = 100
+	}
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = port_world
+			exists = owner
+			owner = { OR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+			OR = {
+				has_active_building = building_sep_factory
+				has_active_building = building_factory_1
+				has_active_building = building_factory_2
+				has_active_building = building_factory_3
+			}
+		}
+		job_sep_artisan_add = 100
+	}
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = port_world
+			exists = owner
+			owner = { NOR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+			OR = {
+				has_active_building = building_wsg_factory
+				has_active_building = building_factory_1
+				has_active_building = building_factory_2
+				has_active_building = building_factory_3
+			}
+		}
+		job_wsg_factory_add = 100
+	}
+	#uses_district_set = rw_port_world
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = rw_port_world
+			exists = owner
+			owner = { NOR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}} 
+		}
+		job_wsg_foundry_add = 400
+		job_wsg_factory_add = 100
+	}
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = rw_port_world
+			exists = owner
+			owner = { OR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+		}
+		job_sep_foundry_add = 400
+		job_sep_artisan_add = 100
+	}
+	#uses_district_set = swim_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = swim_world }
+		job_technician_add = 100
+	}
+	#uses_district_set = rw_swim_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = rw_swim_world }
+		job_technician_add = 200
+	}
+	#uses_district_set = dyson_ring_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = dyson_ring_world }
+		job_technician_add = 200
+	}
+	#uses_district_set = rw_sh_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = rw_sh_world }
+		job_sh_foundry_add = 300
+	}
+	#uses_district_set = sh_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = sh_world }
+		job_technician_add = 200
+	}
+	#uses_district_set = wg_hive_city_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = wg_hive_city_world }
+		job_wg_hive_city_soldier_add = 100
+	}
+	#uses_district_set = wg_forge_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = wg_forge_world }
+		job_wg_forge_research_add = 100
+		job_wg_forge_head_research_add = 100
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = 3
+	}
+
+	max_buildings = 3
+
+	include = {
+		all
+	}
+
+	excluded_building_sets = {
+		fallen_empire_generator
+	}
+}
+
+zone_wsg_2 = {
+	icon = GFX_colony_type_urban
+	base_buildtime = @zone_buildtime
+	potential = { is_wsg_ufs_zone_trigger = yes }
+
+	unlock = { is_wsg_ufs_zone_trigger = yes }
+
+	planet_modifier = {
+		zone_building_slots_add = 3
+	}
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	#uses_district_set = port_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = port_world }
+		job_wsg_researcher_add = 100
+	}
+	#uses_district_set = rw_port_world
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = rw_port_world
+		}
+		job_wsg_researcher_add = 200
+	}
+	#uses_district_set = swim_world
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = swim_world 
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		job_wsg_idol_add = 100
+		job_sh_pool_add = 100
+	}
+	#uses_district_set = rw_swim_world
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = rw_swim_world 
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		job_wsg_idol_add = 200
+		job_sh_pool_add = 200
+	}
+	#uses_district_set = dyson_ring_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = dyson_ring_world }
+		job_dyson_ring_researcher_add = 200
+	}
+	#uses_district_set = rw_sh_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = rw_sh_world }
+		job_sh_researcher_add = 300
+	}
+	#uses_district_set = sh_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = sh_world }
+		job_miner_add = 200
+	}
+
+	max_buildings = 3
+
+	include = {
+		all
+	}
+
+	excluded_building_sets = {
+		fallen_empire_generator
+	}
+}
+
+zone_wsg_3 = {
+	icon = GFX_colony_type_urban
+	base_buildtime = @zone_buildtime
+	potential = { is_wsg_ufs_zone_trigger = yes }
+
+	unlock = { is_wsg_ufs_zone_trigger = yes }
+
+	planet_modifier = {
+		zone_building_slots_add = 3
+	}
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+	#uses_district_set = port_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = port_world }
+		modifier = { job_wsg_soldier_add = 100 }
+	}
+	#uses_district_set = rw_port_world
+	triggered_district_planet_modifier = {
+		potential = {
+			uses_district_set = rw_port_world
+			exists = owner
+			owner = { NOR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+		}
+		modifier = {
+			job_wsg_gas_refiner_add = 100
+			job_wsg_chemist_add = 100
+			job_wsg_translucer_add = 100
+			job_wsg_pantsu_maker_add = 100
+			job_wsg_neo_producer_add = 100
+			job_wsg_alpha_add = 100
+		}
+	}
+	triggered_district_planet_modifier = {
+		potential = {
+			uses_district_set = rw_port_world
+			exists = owner
+			owner = { OR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+		}
+		modifier = {
+			job_wsg_pantsu_maker_add = 100
+			job_wsg_senergy_add = 100
+			job_wsg_rare_resource_manufacturer_add = 100
+		}
+	}
+	#uses_district_set = dyson_ring_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = dyson_ring_world }
+		job_artisan_add = 200
+		job_foundry_add = 200
+	}
+	#uses_district_set = rw_sh_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = rw_sh_world }
+		job_sh_soldier_add = 300
+	}
+	#uses_district_set = sh_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = sh_world }
+		job_sh_foundry_shpc_add = 200
+	}
+
+	max_buildings = 3
+
+	include = {
+		all
+	}
+
+	excluded_building_sets = {
+		fallen_empire_generator
+	}
+}
+
+zone_wsg_4 = {
+	icon = GFX_colony_type_urban
+	base_buildtime = @zone_buildtime
+	potential = { is_wsg_ufs_zone_trigger = yes }
+
+	unlock = { is_wsg_ufs_zone_trigger = yes }
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = 3
+	}
+
+	#uses_district_set = port_world
+	triggered_district_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				has_ascension_perk = ap_mist
+				NOT = { has_country_flag = wg_ascension_path_project_s }
+			}
+			uses_district_set = port_world
+		}
+		job_wsg_neo_producer_add = 100
+		job_wsg_alpha_add = 100
+	}
+	triggered_district_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { OR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+			uses_district_set = port_world
+		}
+		job_wsg_pantsu_maker_add = 100
+		job_wsg_senergy_add = 100
+	}
+	triggered_district_planet_modifier = {
+		potential = {
+			colony_type = col_wg_neo_alpha
+			uses_district_set = port_world
+		}
+		job_wsg_neo_producer_add = 100
+		job_wsg_alpha_add = 100
+	}
+	triggered_district_planet_modifier = {
+		potential = {
+			colony_type = col_wg_pantsu
+			uses_district_set = port_world
+		}
+		job_wsg_pantsu_maker_add = 100
+	}
+	triggered_district_planet_modifier = {
+		potential = {
+			colony_type = col_sh_srse
+			uses_district_set = port_world
+		}
+		job_wsg_senergy_add = 100
+	}
+	#uses_district_set = dyson_ring_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = dyson_ring_world }
+		job_dyson_ring_roller_coaster_add = 200
+	}
+	#uses_district_set = sh_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = sh_world }
+		job_sh_pantsu_maker_add = 200
+	}
+
+	max_buildings = 3
+
+	include = {
+		all
+	}
+
+	excluded_building_sets = {
+		fallen_empire_generator
+	}
+}
+
+zone_wsg_5 = {
+	icon = GFX_colony_type_urban
+	base_buildtime = @zone_buildtime
+	potential = { is_wsg_ufs_zone_trigger = yes }
+
+	unlock = { is_wsg_ufs_zone_trigger = yes }
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	max_buildings = 3
+
+	include = {
+		all
+	}
+
+	#uses_district_set = sh_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = sh_world }
+		job_sh_researcher_add = 200
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = 3
+	}
+
+	excluded_building_sets = {
+		fallen_empire_generator
+	}
+}
+
+zone_wsg_6 = {
+	icon = GFX_colony_type_urban
+	base_buildtime = @zone_buildtime
+	potential = { is_wsg_ufs_zone_trigger = yes }
+
+	unlock = { is_wsg_ufs_zone_trigger = yes }
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	max_buildings = 3
+
+	include = {
+		all
+	}
+
+	triggered_district_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		job_Kuat_soldier_add = 100
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = 3
+	}
+
+	excluded_building_sets = {
+		fallen_empire_generator
+	}
+}
+
+zone_wsg_7 = {
+	icon = GFX_colony_type_urban
+	base_buildtime = @zone_buildtime
+	potential = { is_wsg_ufs_zone_trigger = yes }
+
+	unlock = { is_wsg_ufs_zone_trigger = yes }
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	max_buildings = 3
+
+	include = {
+		all
+	}
+
+	triggered_district_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		job_Kuat_soldier_add = 100
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = 3
+	}
+
+	excluded_building_sets = {
+		fallen_empire_generator
+	}
+}
