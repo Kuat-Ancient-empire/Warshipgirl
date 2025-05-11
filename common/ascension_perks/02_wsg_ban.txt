@@ -1,5 +1,6 @@
 
 
+# Synthetic Ascension (regular empires)
 ap_synthetic_evolution = {
 	on_enabled = {
 		custom_tooltip = "synthetic_evolution_tooltip"
@@ -63,7 +64,6 @@ ap_synthetic_evolution = {
 			num_tradition_categories < @max_tradition_trees
 		}
 	}
-
 	potential = {
 		OR = {
 			has_utopia = yes
@@ -84,9 +84,10 @@ ap_synthetic_evolution = {
 		is_natural_design_empire = no
 		NOT = { has_valid_civic = civic_augmentation_bazaars }
 		is_individual_machine = no
-		owner_species = { NOT = { has_trait = trait_unplugged_decyberized } }
+		owner_species = {
+			NOT = { has_trait = trait_unplugged_decyberized }
+		}
 	}
-
 	ai_weight = {
 		factor = @ascension_path_base_weight
 		modifier = {
@@ -114,10 +115,12 @@ ap_become_the_crisis = {
 		NOR = {
 			has_ascension_perk = ap_become_the_crisis
 			has_ascension_perk = ap_cosmogenesis
-			has_ascension_perk = ap_wg_crisis
+			has_ascension_perk = ap_behemoths
 			has_ascension_perk = ap_defender_of_the_galaxy
 			has_origin = origin_slavers
+			has_ascension_perk = ap_wg_crisis
 		}
+		is_wilderness_empire = no
 	}
 
 	possible = {
@@ -143,12 +146,14 @@ ap_become_the_crisis = {
 			has_ethic = ethic_pacifist
 			has_ethic = ethic_fanatic_pacifist
 			has_civic = civic_machine_servitor
+			has_valid_civic = civic_hive_familiar_face
 		}
 	}
 
 	on_enabled = {
 		hidden_effect = {
 			set_ai_personality = became_the_crisis
+			country_event = { id = timeline.69 } # Timeline Become the crisis
 		}
 		activate_crisis_progression = nemesis_path
 	}
@@ -196,7 +201,7 @@ ap_become_the_crisis = {
 }
 
 #################
-# Cybernetics ASCENSION PERKS
+# MACHINE AGE ASCENSION PERKS
 #################
 
 ap_cosmogenesis = {
@@ -205,10 +210,12 @@ ap_cosmogenesis = {
 		NOR = {
 			has_ascension_perk = ap_become_the_crisis
 			has_ascension_perk = ap_cosmogenesis
-			has_ascension_perk = ap_wg_crisis
 			has_ascension_perk = ap_defender_of_the_galaxy
+			has_ascension_perk = ap_behemoths
 			has_origin = origin_slavers # No crisis for MSI
+			has_ascension_perk = ap_wg_crisis
 		}
+		is_wilderness_empire = no
 	}
 
 	possible = {
@@ -231,6 +238,12 @@ ap_cosmogenesis = {
 	}
 
 	on_enabled = {
+		hidden_effect = {
+			set_variable = {
+				which = cosmogenesis_world_advanced_logic_produced
+				value = 0
+			}
+		}
 		activate_crisis_progression = cosmogenesis_path
 	}
 
@@ -267,6 +280,107 @@ ap_cosmogenesis = {
 		modifier = {
 			factor = 10
 			has_country_flag = whisperers_covenant_confirmed
+		}
+		modifier = {
+			factor = 0
+			galaxy_percentage < 0.1
+		}
+		modifier = {
+			factor = 2
+			galaxy_percentage > 0.2
+		}
+	}
+}
+
+#################
+# BIOGENESIS
+#################
+
+ap_behemoths = {
+	potential = {
+		has_biogenesis_dlc = yes
+		NOR = {
+			has_ascension_perk = ap_become_the_crisis
+			has_ascension_perk = ap_cosmogenesis
+			has_ascension_perk = ap_behemoths
+			has_ascension_perk = ap_defender_of_the_galaxy
+			has_origin = origin_slavers # No crisis for MSI
+			is_wilderness_empire = yes
+			has_ascension_perk = ap_wg_crisis
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_ascension_perks_3"
+			num_ascension_perks > 2
+		}
+		custom_tooltip = {
+			fail_text = "requires_independence"
+			is_subject = no
+		}
+		custom_tooltip = {
+			fail_text = "must_not_be_custodian"
+			is_galactic_custodian = no
+		}
+		custom_tooltip = {
+			fail_text = "must_not_be_emperor"
+			is_galactic_emperor = no
+		}
+		custom_tooltip = {
+			fail_text = "must_use_bioships"
+			country_uses_bio_ships = yes
+		}
+		NOR = {
+			has_ethic = ethic_xenophile
+			has_ethic = ethic_fanatic_xenophile
+			has_ethic = ethic_pacifist
+			has_ethic = ethic_fanatic_pacifist
+		}
+	}
+
+	on_enabled = {
+		activate_crisis_progression = behemoth_path
+	}
+
+	ai_weight = {
+		factor = 7.5
+		modifier = {
+			factor = 0
+			is_xenophile = yes
+			is_spiritualist = yes
+		}
+
+		modifier = {
+			factor = 0.5
+			is_lithoid = yes
+		}
+
+		modifier = {
+			factor = 4
+			is_homicidal = yes
+		}
+
+		modifier = {
+			factor = 6
+			has_civic = civic_hive_devouring_swarm
+		}
+
+		modifier = {
+			factor = 2
+			has_tradition = tr_enmity_finish
+		}
+		modifier = {
+			factor = 2
+			has_ascension_perk = ap_engineered_evolution
+		}
+		modifier = {
+			factor = 2
+			has_ascension_perk = ap_nihilistic_acquisition
+		}
+		modifier = {
+			factor = 10
+			has_country_flag = eater_covenant_confirmed
 		}
 		modifier = {
 			factor = 0
