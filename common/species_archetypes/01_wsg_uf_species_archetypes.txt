@@ -1,5 +1,23 @@
 UNITED_FLEET = {
 	species_trait_points = 6
 	species_max_traits = 12
-	inherit_traits_from = { STARSHIPGIRLS CG_compatible_species_archetype }
+	resources = {
+		category = planet_pops
+		# Regular food, mineral and energy upkeep.
+		upkeep = {
+			trigger = { wsg_has_food_upkeep = yes }
+			food = @living_standard_food_normal
+		}
+		# Resource production from other sources
+		inline_script = "pop_resources/pop_misc_production"
+		produces = {
+			trigger = {
+				exists = planet
+				planet = { has_modifier = astralnomical_interest_modifier }
+				is_enslaved = no
+			}
+			physics_research = 1
+		}
+	}
+	inherit_traits_from = { STARSHIPGIRLS CG_compatible_species_archetype ELF }
 }
