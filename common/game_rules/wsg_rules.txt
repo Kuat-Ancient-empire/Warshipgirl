@@ -204,59 +204,6 @@ can_orbital_bombard = {
 	}
 }
 
-###_[z_fw/z_cm/teif/ev/wsg/swg/zofe/sofe/fq/tk_a]	##################
-#_glbl_flg	[z_fw_flg_glbl_tech_overwhelm]	科技壁垒
-# this = ship
-# root = country that kills ship
-# can_spawn_debris = {
-# 	root = { 
-# 		OR = {
-# 			is_country_type = default
-# 			is_country_type = default_ev		#_EV
-# 			is_country_type = teif_primitive	#_TEIF
-# 			is_country_type = ascended_empire	#_ZOFE
-# 			is_country_type = lost_empire		#_ZOFE
-# 		}
-# 	}
-# 	exists = owner
-# 	owner = {
-# 		NAND = {#_科技限制
-# 			OR = {
-# 				has_global_flag = z_fw_flg_glbl_tech_overwhelm	#_[z_fw]科技壁垒
-# 				has_global_flag = stability_MOD_installed		#_[teif]
-# 			}
-# 			relative_power = { who = root category = technology value >= superior }		#_[z_fw/teif]神一般的科技	superior
-# 		}
-# 		NAND = {#_[z_cm]无法获取堕落科技
-# 			OR = {
-# 				is_country_type = fallen_empire
-# 				is_country_type = awakened_fallen_empire
-# 			}
-# 			has_global_flag = z_cm_fallen_technology
-# 		}
-# 		#_+teif/wsg/ev/sofe/fq
-# 		NOR = {#_阵营限制
-# 			has_ascension_perk = ap_enigmatic_engineering
-# 			has_ethic = ethic_fanatic_communism				#_TEIF
-# 			has_country_flag = fallen_empire_6_human_2		#_TEIF
-# 			is_country_type = default_ev					#_EV
-# 			is_country_type = wg_crisis_country				#_WSG
-# 			AND = { #_WSG
-# 				has_global_flag = has_wsg_mod
-# 				is_khan_country_type = yes	
-# 			}			
-# 			has_government = "gov_eternal_continuum"		#_SOFE
-# 			has_valid_civic = civic_sofe_pursuit_answer		#_SOFE
-# 			is_country_type = original_empire				#_SOFE
-# 			is_country_type = original_empire_passive		#_SOFE
-# 			has_civic = civic_hive_strong_connection		#_fq
-# 			is_country_type = afk_crisis_country			#_swg
-# 			has_civic = civic_tw_atlantis					#_tk_a
-# 		}
-# 	}
-# }
-
-
 ###_[z_fw/teif/ag/wsg/kuat/sofe/giga/ehof/seooc]	##################
 # Root = country attempting to target system for movement
 # This = system being targeted
@@ -360,7 +307,6 @@ can_build_branch_offices = {
 		}
 	}
 }
-
 
 ###_[swg/gsf/azl/zofe/sofe]	##################
 # This = country
@@ -599,76 +545,6 @@ can_build_branch_office_on_planet = {
 		}
 	}
 }
-# Can the country have robot pop
-# root: country
-can_have_robot_pops = {
-	exists = this
-	is_hive_empire = no
-	NOT = { has_policy_flag = robots_outlawed }
-	has_wg_and_uf_special_authority = no
-}
-###_[z_pf2/fq]	##################
-# This = planet
-can_crossbreed_species_on_planet = {
-	exists = owner
-	#_	z_pf2
-	NAND = {
-		owner = { is_ai = yes }
-		has_global_flag = z_pf2_no_ai_hybird
-	}
-	#_wsg 禁止ntr
-	any_owned_species = { NOR = {
-		is_archetype = WARSHIPGIRL
-		is_archetype = NANITES_CROP
-		is_archetype = SHENHAI
-		is_archetype = UNITED_FLEET 
-	}}
-	AND = {
-		owner = { has_ascension_perk = ap_xeno_compatibility }
-		count_species = {
-			limit = { is_crossbreeding_possible = yes }
-			count >= 2
-		}
-	}
-}
-
-# This = species one
-# Root = species two
-can_crossbreed_species = {
-	is_crossbreeding_possible = yes
-	root = { is_crossbreeding_possible = yes }
-	NOR = {
-		is_subspecies = root
-		root = { is_subspecies = prev }
-	}
-	#_wsg 禁止ntr
-	NOR = {
-		is_archetype = WARSHIPGIRL
-		is_archetype = NANITES_CROP
-		is_archetype = SHENHAI
-		is_archetype = UNITED_FLEET
-	}
-	root = { NOR = {
-		is_archetype = WARSHIPGIRL
-		is_archetype = NANITES_CROP
-		is_archetype = SHENHAI
-		is_archetype = UNITED_FLEET
-	}}
-}
-###_[aup/ptep]	如果有问题就恢复vanilla
-#_pop_trgr	[ariphaos_patch_slaves_expel]
-# ROOT = country
-# THIS = pop
-can_be_sold_on_slave_market = {
-	species = { NOR = {
-		is_archetype = WARSHIPGIRL
-		is_archetype = NANITES_CROP
-		is_archetype = SHENHAI
-		is_archetype = UNITED_FLEET
-	}}
-	is_crossbreeding_possible = yes
-}
-
 
 ###_[ev/zofe/sofe/ur]	##################
 # This = country
@@ -796,225 +672,31 @@ can_be_part_of_galactic_council = {
 	}
 }
 
-# this = leader
-can_dismiss_leader = {
-	if = {
-		limit = {
-			leader_class = commander
-			is_idle = no
-			# Rulers and heirs can't be dismissed any way and can be non-idle
-			is_ruler = no
-			is_heir = no
-		}
-		custom_tooltip = {
-			fail_text = "requires_fleet_control"
-			exists = fleet
-			fleet = {
-				controller = {
-					is_same_value = prev.owner
-					is_same_value = prevprev.owner
-				}
-			}
-		}
-	}
-	if = {
-		limit = {
-			OR = {
-				is_heir = yes
-				is_ruler = yes
-			}
-		}
-		custom_tooltip = {
-			always = no
-			fail_text = "can_not_dismiss_rulers"
-		}
-	}
-	# custom_tooltip = {
-	# 	fail_text = "jiaohua_seal"
-	# 	NOT = { has_leader_flag = badseal_flag }
-	# }
-	custom_tooltip = {
-		fail_text = "cannot_fire_wg_leader"
-		NOT = { has_leader_flag = wsg_event_leader }
-		is_special_affection_leader = no
-	}
-	if = {
-		limit = {
-			leader_class = scientist
-		}
-		custom_tooltip = {
-			fail_text = "can_not_dismiss_rift_explorer"
-			NAND = {
-				exists = fleet
-				fleet = {
-					has_fleet_order = explore_astral_rift_fleet_order
-				}
-			}
-		}
-	}
-	if = {
-		limit = {
-			leader_class = commander
-		}
-		custom_tooltip = {
-			fail_text = "no_dismissing_tacs"
-			NOT = { has_trait = leader_trait_tactical_algorithms }
-		}
-	}
-	if = {
-		limit = {
-			has_leader_flag = manifesti_divine_leader
-		}
-		custom_tooltip = {
-			fail_text = "manifesti_leader_tt"
-			NOT = { has_leader_flag = manifesti_divine_leader }
-		}
-	}
-}
-
-# This = leader, leader we'd like to trade
-# Root = country, country that owns the leader currently
-# From = country, country that would receive the leader
-can_trade_leader = {
-	custom_tooltip = {
-		fail_text = "cannot_sold_wg_leader"
-		is_special_affection_leader = no
-		is_wg_event_leader = no
-	}
-	
-	# The leader must have a trait from a specialist subject type.
-	this = {
-		has_specialist_subject_leader_trait = yes
-		is_councilor = no
-		is_heir = no
-	}
-	OR = {
-		AND = { # Either from subject to Overlord
-			ROOT = {
-				is_subject = yes
-			}
-			FROM = {
-				is_overlord_to = ROOT
-			}
-		}
-		AND = { # Or from a tactical cogitator empire to a NON tactical cogitator empire
-			ROOT = { has_valid_civic = civic_machine_tactical_algorithms }
-			FROM = {
-				NOT = { has_valid_civic = civic_machine_tactical_algorithms }
-				is_fallen_empire = no
-				NOT = {
-					any_owned_leader = {
-						has_trait = leader_trait_tactical_algorithms
-					}
-				}
-			}
-		}
-	}
-	# The subject and overlord must both be regular empires, machine intelligences or hive-minds.
-	OR = {
-		AND = {
-			ROOT = {
-				is_regular_empire = yes
-			}
-			FROM = {
-				is_regular_empire = yes
-			}
-		}
-		AND = {
-			ROOT = {
-				has_authority = auth_machine_intelligence
-			}
-			FROM = {
-				has_authority = auth_machine_intelligence
-			}
-		}
-		AND = {
-			ROOT = {
-				has_authority = auth_hive_mind
-			}
-			FROM = {
-				has_authority = auth_hive_mind
-			}
-		}
-		AND = { # Tactical Cogitator option
-			ROOT = {
-				has_valid_civic = civic_machine_tactical_algorithms
-			}
-			FROM = {
-				OR = {
-					is_regular_empire = yes
-					has_authority = auth_hive_mind
-					has_authority = auth_machine_intelligence
-				}
-				NOT = { has_country_flag = no_murdering_tactical_leaders }
-				NOT = {
-					any_owned_leader = {
-						has_trait = leader_trait_tactical_algorithms
-					}
-				}
-			}
-		}
-	}
-	# Can't trade gestalt nodes
-	is_gestalt_node = no
-	# The overlord can't be a fallen or awakened empire.
-	ROOT = {
-		NAND = {
-			is_overlord = yes
-			OR = {
-				is_wg_fallen_empire = yes
-				is_sh_fallen_empire = yes
-				is_country_type = fallen_empire
-				is_country_type = awakened_fallen_empire
-			}
-		}
-	}
-	NOR = {
-		has_trait = leader_trait_fotd_scientist
-		has_trait = leader_trait_fotd_commander
-	}
-}
-
-# This = fleet, fleet we'd like to trade
-# Root = country, country that owns the fleet currently
-# From = country, country that would receive the fleet
-can_trade_fleet = {
-	custom_tooltip = {
-		fail_text = "cannot_sold_wg_fleet"
-		any_owned_ship = {
-			is_wg_event_limit_ships = no
-		}
-	}
-	ROOT = {
-		NAND = {
-			is_overlord = yes
-			OR = {
-				is_wg_fallen_empire = yes
-				is_sh_fallen_empire = yes
-				is_country_type = fallen_empire
-				is_country_type = awakened_fallen_empire
-			}
-		}
-	}
-	NOT = { has_fleet_flag = dimensional_fleet }
-}
-
 #This, root = country
 can_add_advanced_traits = {
-	has_utopia = yes
 	OR = {
-		has_tradition = tr_genetics_creation
+		has_tradition = tr_genetics_enhanced_expression
+		has_active_tradition = tr_purity_exemplary_genetics
+		has_active_tradition = tr_cloning_somatic_synthesization
+		has_active_tradition = tr_cloning_somatic_synthesization_clone_army
+		has_active_tradition = tr_mutation_unnatural_selection
 		has_wsg_genemodding_tech = yes
 	}
 }
 
 #This, root = country
 can_add_negative_traits_organic = {
-	has_utopia = yes
+	OR = {
+		has_utopia = yes
+		has_biogenesis_dlc = yes
+	}
 	OR = {
 		has_tradition = tr_genetics_resequencing
-		has_tradition = tr_cybernetics_integrated_anatomy
-		has_tradition = tr_cybernetics_assimilator_integrated_anatomy
+		has_active_tradition = tr_cybernetics_integrated_anatomy
+		has_active_tradition = tr_cybernetics_assimilator_integrated_anatomy
+		has_active_tradition = tr_purity_genotype_regeneration
+		has_active_tradition = tr_purity_genotype_regeneration_wilderness
+		has_active_tradition = tr_mutation_unnatural_selection
 		has_wsg_genemodding_tech = yes
 	}
 }
@@ -1023,11 +705,19 @@ can_add_negative_traits_organic = {
 can_remove_positive_traits_organic = {
 	OR = {
 		AND = {
-			has_utopia = yes
+			OR = {
+				has_utopia = yes
+				has_biogenesis_dlc = yes
+			}
 			OR = {
 				has_tradition = tr_genetics_resequencing
-				has_tradition = tr_cybernetics_integrated_anatomy
-				has_tradition = tr_cybernetics_assimilator_integrated_anatomy
+				has_active_tradition = tr_cybernetics_integrated_anatomy
+				has_active_tradition = tr_cybernetics_assimilator_integrated_anatomy
+				has_active_tradition = tr_purity_genotype_regeneration
+				has_active_tradition = tr_purity_genotype_regeneration_wilderness
+				has_active_tradition = tr_cloning_somatic_synthesization
+				has_active_tradition = tr_cloning_somatic_synthesization_clone_army
+				has_active_tradition = tr_mutation_unnatural_selection
 				has_wsg_genemodding_tech = yes
 			}
 		}
@@ -1035,15 +725,19 @@ can_remove_positive_traits_organic = {
 			has_toxoids = yes
 			has_origin = origin_overtuned
 		}
+		has_technology = tech_gene_expressions
 		has_technology = tech_epigenetic_triggers
 	}
 }
 
 #This, root = country
 can_modify_organic_portraits = {
-	has_utopia = yes
 	OR = {
-		has_tradition = tr_genetics_enhanced_expression
+		has_tradition = tr_genetics_creation
+		has_tradition = tr_purity_exemplary_genetics
+		has_active_tradition = tr_cloning_somatic_synthesization
+		has_active_tradition = tr_cloning_somatic_synthesization_clone_army
+		has_tradition = tr_mutation_unnatural_selection
 		has_wsg_genemodding_tech = yes
 	}
 }
