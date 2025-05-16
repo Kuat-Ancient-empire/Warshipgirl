@@ -1106,8 +1106,8 @@ country_event = {
 	trigger = {
 		years_passed <= 25
 		any_owned_planet = {
-			count_owned_pop_group = { count > 5 } 
-			any_owned_species = {
+			any_owned_pop_group = {
+				pop_group_size > 500
 				is_same_species = root.owner_main_species
 			}
 		}
@@ -1134,14 +1134,17 @@ country_event = {
 			clear_variable = requested_salary
 			random_owned_planet = {
 				limit = { 
-					count_owned_pop_group = { count > 5 } 
-					any_owned_species = {
+					any_owned_pop_group = {
+						pop_group_size > 500
 						is_same_species = root.owner_main_species
 					}
 				}
 				random_owned_pop_group = {
-					limit = { is_same_species = root.owner_main_species }
-					kill_pop_group = { pop_group = this percentage = 1 }
+					limit  = {
+						pop_group_size > 500
+						is_same_species = root.owner_main_species
+					}
+					kill_single_pop = yes
 				}
 			}
 		}
@@ -1235,14 +1238,17 @@ country_event = {
 			clear_variable = requested_salary
 			random_owned_planet = {
 				limit = { 
-					count_owned_pop_group = { count > 5 } 
-					any_owned_species = {
+					any_owned_pop_group = {
+						pop_group_size > 500
 						is_same_species = root.owner_main_species
 					}
 				}
 				random_owned_pop_group = {
-					limit = { is_same_species = root.owner_main_species }
-					kill_pop_group = { pop_group = this percentage = 1 }
+					limit  = {
+						pop_group_size > 500
+						is_same_species = root.owner_main_species
+					}
+					kill_single_pop = yes
 				}
 			}
 			country_event = { id = wg_origin.35 days = 3600 }
@@ -1270,6 +1276,7 @@ country_event = {
 		capital_scope = {
 			create_pop_group = {
 				species = root
+				size = 100
 			}
 		}
 	}

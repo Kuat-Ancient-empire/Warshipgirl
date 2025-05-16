@@ -10771,15 +10771,49 @@ planet_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		pop_amount > 1000
+		pop_amount > 1500
 	}
 
 	immediate = {
-		while = {
-			limit = { pop_amount > 1000 }
-			random_owned_pop_group = {
-				kill_pop_group = { pop_group = this percentage = 1 }
+		planet = {
+			export_trigger_value_to_variable = {
+				trigger = pop_amount
+				variable = kp_pop_amount
 			}
+			subtract_variable = { which = kp_pop_amount value = 1000 }
+			set_variable = { which = kp_pop_amount_total value = kp_pop_amount }
+			multiply_variable = { which = kp_pop_amount_total value = 0.1 }
+		}
+		every_owned_pop_group = {
+			if = {
+				limit = {
+					planet = {
+						check_variable = { which = kp_pop_amount value > 0 }
+					}
+				}
+				if = {
+					limit = {
+						pop_group_size < planet.kp_pop_amount
+					}
+					planet = {
+						subtract_variable = { which = kp_pop_amount value = prev.trigger:pop_group_size }
+					}
+					kill_all_pop = yes
+				}
+				else = {
+					planet = {
+						clear_variable = kp_pop_amount
+					}
+					kill_pop_group = {
+						pop_group = this
+						amount = prev.kp_pop_amount
+					}
+					break = yes
+				}
+			}
+		}
+		while = {
+			count = kp_pop_amount_total
 			owner = {
 				add_monthly_resource_mult = {
 					resource = physics_research
@@ -10798,6 +10832,7 @@ planet_event = {
 				}
 			}
 		}
+		clear_variable = kp_pop_amount_total
 	}
 }
 
