@@ -525,8 +525,50 @@ utility_component_template = {
 	component_set = "combat_computers"
     prerequisites = { "tech_uf_mobile_portal" }	
 	
-	ai_weight = {
-		weight = 0
+	ai_weight = { weight = 0 }
+
+	scripted_action = {
+		scope = self
+
+		button_visible = {
+			is_ship_size = uf_mobile_portal
+		}
+
+		button_clickable = {
+			custom_tooltip = {
+				is_in_combat = no
+				is_ship_size = uf_mobile_portal
+				exists = solar_system
+				solar_system = {
+					OR = {
+						has_global_flag = ignore_uf_portal_enemy_fleet_trigger
+						NOT = { any_fleet_in_system = { exists = owner owner = { is_hostile = prevprev.from } } }
+					}
+					NOT = {
+						any_system_megastructure = {
+							OR = {
+								is_megastructure_type = uf_mobile_portal
+								is_megastructure_type = uf_mobile_portal_temp
+								is_megastructure_type = gateway_final
+								is_megastructure_type = gateway_restored
+							}
+						}
+					}
+				}
+			}
+		}
+
+		name = on_wg_uf_mobile_gateway_activated
+		tooltip = wg_uf_mobile_gateway_button
+		icon = GFX_fleet_order_button_ground_support_wg_doom
+		icon_selected = GFX_fleet_order_button_ground_support_wg_doom_selected
+		activity_key = wg_uf_mobile_gateway_activity_key
+		context_menu_name = wg_uf_mobile_gateway_menu_title
+		progress_activity_key = wg_uf_mobile_gateway_progress_activity_key
+		cooldown = 30
+
+		shortcut = "SHIFT+Q"
+		slot = 1
 	}
 }
 
