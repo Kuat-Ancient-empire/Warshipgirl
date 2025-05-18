@@ -1318,7 +1318,7 @@ country_event = {
 			}
 		}
 		set_variable = { which = num_sr_se_pop_cost value = 0 }
-		change_variable = { which = num_sr_se_pop_cost value = trigger:pop_amount }
+		change_variable = { which = num_sr_se_pop_cost value = value:wg_pop_amount }
 		multiply_variable = { which = num_sr_se_pop_cost value = 0.04 }
 		set_variable = { which = project_s_sr_se_cost value = 6 }
 		if = {
@@ -3426,9 +3426,9 @@ country_event = {
 						owner = prev.overlord
 					}
 				}
-				while = {
-					count = 5
-					random_owned_pop_group = { kill_pop_group = { pop_group = this percentage = 1 } }
+				random_owned_pop_group = { 
+					limit = { pop_group_size > 600 }
+					kill_pop_group = { pop_group = this amount = 600 } 
 				}
 				prev.overlord = {
 					remove_modifier = ptc_alien_slicer_modifier
@@ -3444,28 +3444,19 @@ country_event = {
 				limit = {
 					has_planet_flag = timed_1_kill_pop_ptc_flag
 				}
-				while = {
-					count = 1
-					random_owned_pop_group = { kill_pop_group = { pop_group = this percentage = 1 } }
-				} 
+				random_owned_pop_group = { limit = { pop_group_size > 100 } kill_pop_group = { pop_group = this amount = 100 } } 
 			}
 			if = {
 				limit = {
 					has_planet_flag = timed_3_kill_pop_ptc_flag
 				}
-				while = {
-					count = 3
-					random_owned_pop_group = { kill_pop_group = { pop_group = this percentage = 1 } }
-				}  
+				random_owned_pop_group = { limit = { pop_group_size > 200 } kill_pop_group = { pop_group = this amount = 200 } } 
 			}
 			if = {
 				limit = {
 					has_planet_flag = timed_3_2_kill_pop_ptc_flag
 				}
-				while = {
-					count = 3
-					random_owned_pop_group = { kill_pop_group = { pop_group = this percentage = 1 } }
-				}
+				random_owned_pop_group = { limit = { pop_group_size > 300 } kill_pop_group = { pop_group = this amount = 300 } }
 			}
 		}
   	    #country_event = { id = wsg.12001 days = 720 }  	
