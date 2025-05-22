@@ -1,4 +1,222 @@
-#开局科技
+#################
+#####事件科技#####
+#################
+tech_uf_archaeology = {
+	cost = @tier3cost1
+	area = society
+	tier = 2
+	category = { statecraft }
+	weight = 0
+	is_rare = yes
+
+	potential = {
+		has_authority = auth_united_fleet
+	}
+}
+
+tech_uf_assimilation = {
+	cost = @tier4cost3
+	area = society
+	tier = 3
+	category = { biology }
+	weight = 0
+	is_rare = yes
+	prereqfor_desc = {
+		diplo_action = {
+			title = "uf_assimilation_diplo"
+			desc = "uf_assimilation_diplo_desc"
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+	}
+}
+
+tech_uf_large_shipyard = {
+	icon = tech_uf_large_shipyard
+	cost = @tier3cost3
+	area = engineering	
+	tier = 3
+	weight = 0
+	category = { propulsion }
+	is_reverse_engineerable = no
+	prereqfor_desc = {
+		diplo_action = {
+			title = "uf_large_shipyard_diplo"
+			desc = "uf_large_shipyard_diplo_desc"
+		}
+	}
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+}
+
+tech_uf_genetic_resequencing = {
+	cost = @tier5cost3
+	area = society
+	tier = 5
+	is_rare = yes
+	icon = tech_wsg_genetic_resequencing_s
+	category = { biology }	
+	weight = 0
+	feature_flags = {
+		advanced_gene_modding #no longer does anything except make a tooltip, handled in game rules
+		add_advanced_traits #ditto
+	}
+	
+	gateway = biological
+	prereqfor_desc = {
+		diplo_action = {
+			title = "wsg_genetic_edicts"
+			desc = "wsg_genetic_edicts_desc"
+		}
+	}	
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_2
+		has_country_flag = ap_uf_2_chain_finished
+	}
+}
+
+tech_uf_evolver = {
+	cost = @wg_tier5cost4
+	area = society
+	tier = 5
+	is_rare = yes
+	icon = tech_uf_evolver
+	prerequisites = { "tech_uf_genetic_resequencing" }
+	category = { biology }	
+	weight = 10
+	
+	gateway = biological
+
+	prereqfor_desc = {
+		diplo_action = {
+			title = "uf_evolver_diplo"
+			desc = "uf_evolver_diplo_desc"
+		}
+	}	
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_2
+		has_country_flag = ap_uf_2_chain_finished
+	}
+}
+
+tech_uf_tradition_ship_section = {
+	cost = 0
+	area = engineering
+	icon = tech_uf_ship_section
+	tier = 0
+	category = { voidcraft }	
+	weight = 0
+	is_rare = yes
+	is_reverse_engineerable = no
+	
+	potential = {
+		has_authority = auth_united_fleet
+		has_tradition = tr_uf_megastructure_3
+	}	
+}
+
+tech_uf_ia3 = {
+    area = physics
+	cost = @wg_tier5cost12
+	tier = 5
+	category = { particles }
+	weight = 0
+	is_rare = yes
+	is_dangerous = yes
+	is_reverse_engineerable = no
+	
+	
+	potential = {
+		has_authority = auth_united_fleet
+		has_global_flag = monolith_crisis_invaded
+	}	
+}
+
+tech_uf_weapon_monolith_large = {
+    area = physics
+    icon = tech_uf_weapon_monolith_large
+	cost = @wg_tier5cost11
+	tier = 5
+	category = { particles }
+	weight = 0
+	is_rare = yes
+	is_dangerous = yes
+	is_reverse_engineerable = no
+	
+	gateway = energy_weapons
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_global_flag = monolith_crisis_invaded
+	}	
+}
+
+tech_uf_weapon_extra_large2 = {
+    area = physics
+    icon = tech_uf_weapon_extra_large2
+	cost = @wg_tier5cost12
+	tier = 5
+	category = { particles }
+	weight = 0
+	is_rare = yes
+	is_dangerous = yes
+	is_reverse_engineerable = no
+	
+	gateway = energy_weapons
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_global_flag = monolith_crisis_invaded
+	}	
+}
+
+tech_uf_weapon_titanic2 = {
+    area = physics
+    icon = tech_uf_weapon_titanic2
+	cost = @wg_tier5cost12
+	tier = 5
+	category = { particles }
+	weight = 0
+	is_rare = yes
+	is_dangerous = yes
+	is_reverse_engineerable = no
+	
+	gateway = energy_weapons
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_global_flag = monolith_crisis_invaded
+	}	
+}
+
+tech_uf_subject_weapon = {
+    area = physics
+    icon = tech_uf_weapon_titanic
+	cost = 30000
+	tier = 5
+	category = { particles }
+	weight = 0
+	is_rare = yes
+	is_dangerous = yes
+	is_reverse_engineerable = no
+	
+	gateway = energy_weapons
+
+	potential = {
+		any_agreement = { agreement_preset = preset_uf_subject }
+	}	
+}
+
+#################
+#####开局科技#####
+#################
 tech_uf_start = {
 	icon = tech_uf_start
 	cost = 0
@@ -14,187 +232,24 @@ tech_uf_start = {
 	}		
 }
 
-tech_uf_hyperdimensional_matter_application = {
-	cost = @tier3cost3
-	area = physics
-	category = { particles }
-	tier = 3
-	prerequisites = { "tech_uf_hyperdimensional_matter" }
-	weight = @tier3weight3
-	is_rare = yes
-	modifier = {
-		planet_buildings_upkeep_mult = -0.05
-		planet_districts_upkeep_mult = -0.05
-	}
-    weight_modifier = {
-		factor = 2
-		modifier = {
-			factor = 1.25
-			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
-		}
-	}
-	potential = {
-		has_authority = auth_united_fleet
-	}
-}
-
-#超维通讯
-tech_uf_hm_communication = {
-	cost = @tier4cost3
-	area = physics
-	category = { particles }
-	tier = 3
-	prerequisites = { "tech_uf_hyperdimensional_matter_application" }
-	weight = @tier3weight3
-	is_rare = yes
-	modifier = {
-		tradition_cost_empire_size_mult = -0.20
-		tech_cost_empire_size_mult = -0.20
-	}
-    weight_modifier = {
-		factor = 2
-		modifier = {
-			factor = 1.25
-			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
-		}
-	}
-	potential = {
-		has_authority = auth_united_fleet
-	}
-}
-#超维网络
-tech_uf_hm_network = {
-	cost = @tier4cost2
-	area = physics
-	category = { particles }
-	tier = 3
-	prerequisites = { "tech_uf_hm_communication" }
-	weight = @tier3weight2
-	is_rare = yes
-	modifier = {
-		country_naval_cap_add = 50
-		command_limit_add = 50
-		country_edict_fund_add = 100
-		empire_size_pops_mult = -0.15
-	}
-    weight_modifier = {
-		factor = 2
-		modifier = {
-			factor = 1.25
-			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
-		}
-	}
-	potential = {
-		has_authority = auth_united_fleet
-		OR = {
-			has_country_flag = hyperdimensional_matter_tech_allowed
-			has_country_flag = finished_uf_archaeological
-		}
-	}
-}
-#远程搭建
-tech_uf_hm_network_3 = {
-	cost = @tier5cost1
-	area = physics
-	category = { computing }
-	tier = 4
-	prerequisites = { "tech_uf_hm_network" }
-	weight = @tier4weight1
-	is_rare = yes
-	modifier = {
-		planet_building_build_speed_mult = 0.25
-		planet_decision_enact_speed_mult = 0.25
-		megastructure_build_speed_mult = 0.25
-		country_megastructure_build_cap_add = 1
-	}
-    weight_modifier = {
-		factor = 2
-		modifier = {
-			factor = 1.25
-			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
-		}
-	}
-	potential = {
-		has_authority = auth_united_fleet
-		has_ascension_perk = ap_uf_1
-		has_country_flag = ap_uf_2_chain_finished
-	}
-}
-
-tech_uf_hyperlane = {
-	cost = @tier4cost1
-	area = physics
-	category = { particles }
-	tier = 3
-	prerequisites = { "tech_uf_hyperdimensional_matter" }
-	weight = @tier3weight2
-	is_rare = yes
-	prereqfor_desc = {
-		diplo_action = {
-			title = "tech_uf_hyperlane_edicts"
-			desc = "tech_uf_hyperlane_edicts"
-		}
-	}
-    weight_modifier = {
-		factor = 2
-		modifier = {
-			factor = 1.25
-			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
-		}
-	}
-	potential = {
-		has_authority = auth_united_fleet
-		has_ascension_perk = ap_uf_1
-		has_country_flag = hyperdimensional_matter_tech_allowed
-	}
-}
-tech_uf_hm_network_2 = {
-	cost = 100000
-	area = physics
-	category = { particles }
-	tier = 5
-	prerequisites = { "tech_uf_hm_network" }
-	weight = @tier5weight2
-	is_rare = yes
-	modifier = {
-		command_limit_add = 100
-	}
-    weight_modifier = {
-		factor = 2
-		modifier = {
-			factor = 1.25
-			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
-		}
-	}
-	potential = {
-		has_authority = auth_united_fleet
-		has_ascension_perk = ap_uf_2
-		has_country_flag = ap_uf_2_chain_finished
-	}
-}
-
-tech_uf_doom = {
-	cost = @tier4cost2
-	area = engineering
-	tier = 3
-	category = { propulsion }
-	weight = @tier2weight1
-	is_rare = yes
-	is_dangerous = yes
-	prerequisites = { "tech_uf_hyperdimensional_matter_application" }
+tech_uf_constructrue = {
+    icon = tech_uf_constructrue
+	cost = 0
+	area = engineering	
+	start_tech = yes
+	category = { voidcraft }
+	prerequisites = { "tech_starbase_2" }
+	tier = 0
+	is_reverse_engineerable = no
 	
-	prereqfor_desc = {
-		diplo_action = {
-			title = "uf_doom_edicts"
-			desc = "uf_doom_edicts_desc"
-		}
-	}	
 	potential = {
 		has_authority = auth_united_fleet
-		has_ascension_perk = ap_uf_1
-	}
+	}	
 }
 
+#################
+#####孤立科技#####
+#################
 tech_uf_subject = {
 	cost = @tier3cost1
 	area = society
@@ -225,13 +280,631 @@ tech_uf_subject = {
 	}
 }
 
-################建筑
+#################
+#####主干科技#####
+#################
+tech_uf_hyperdimensional_matter = {
+	cost = @tier3cost1
+	area = physics
+	category = { particles }
+	tier = 2
+	prerequisites = { "tech_basic_science_lab_1" }
+	weight = @tier2weight1
+	is_rare = yes
+	weight_modifier = {
+		factor = 2
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+	}
+}
+
+tech_uf_hyperdimensional_matter_2 = {
+	cost = @tier5cost1
+	area = physics
+	category = { particles }
+	tier = 3
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
+	weight = @tier3weight3
+	is_rare = yes
+	weight_modifier = {
+		factor = 2
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_1
+		has_country_flag = hyperdimensional_matter_tech_allowed
+	}
+}
+
+tech_uf_hyperdimensional_matter_upgrade_1 = {
+    icon = tech_uf_hyperdimensional_matter_upgrade
+	cost = @tier3cost3
+	area = society
+	category = { biology }
+	tier = 3
+	prerequisites = { "tech_uf_hyperdimensional_matter_2" }
+	weight = @tier4weight1
+	is_rare = yes
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_hyperdimensional_matter_upgrade_1_diplo"
+			desc = "tech_uf_hyperdimensional_matter_upgrade_1_diplo"
+		}
+	}
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_voidcraft" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_1
+		has_country_flag = ap_uf_1_chain_finished
+	}
+}
+
+tech_uf_hyperdimensional_matter_upgrade_2 = {
+    icon = tech_uf_hyperdimensional_matter_upgrade
+	cost = @tier5cost1
+	area = society
+	category = { biology }
+	tier = 5
+	prerequisites = { "tech_uf_hyperdimensional_matter_upgrade_1" }
+	weight = 20
+	is_rare = yes
+	is_dangerous = yes
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_hyperdimensional_matter_upgrade_2_diplo"
+			desc = "tech_uf_hyperdimensional_matter_upgrade_2_diplo"
+		}
+	}
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_voidcraft" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_2
+		has_country_flag = ap_uf_2_chain_finished
+	}
+}
+
+tech_uf_hyperdimensional_matter_application = {
+	cost = @tier3cost3
+	area = physics
+	category = { particles }
+	tier = 3
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
+	weight = @tier3weight3
+	is_rare = yes
+	modifier = {
+		planet_buildings_upkeep_mult = -0.05
+		planet_districts_upkeep_mult = -0.05
+	}
+    weight_modifier = {
+		factor = 2
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		has_authority = auth_united_fleet
+	}
+}
+
+#################
+###主干延申科技###
+#################
+tech_uf_auto_building_upgrade = {
+    icon = tech_uf_auto_building_upgrade
+	cost = @tier3cost3
+	area = engineering
+	tier = 3
+	category = { materials }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
+	weight = @tier3weight3
+	is_rare = yes
+	
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_auto_building_upgrade_diplo"
+			desc = "tech_uf_auto_building_upgrade_diplo"
+		}
+	}
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_materials" }			
+		}
+	}
+	
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_1
+		has_country_flag = ap_uf_1_chain_finished
+	}
+}
+
+tech_uf_auto_building_decision = {
+	icon = tech_uf_auto_building_decision
+	area = physics
+	category = { computing }
+	tier = 2
+	cost = @tier2cost3
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
+	weight = @tier2weight3
+	
+    prereqfor_desc = {
+		diplo_action = {
+			title = "uf_auto_building_decision_diplo"
+			desc = "uf_auto_building_decision_diplo"
+		}
+	}
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}
+
+	ai_weight = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}
+	potential = {
+		has_authority = auth_united_fleet
+	}	
+}
+
+tech_uf_rare_resource = {
+	cost = @tier4cost3
+	area = society
+	tier = 3
+	category = { biology }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
+	weight = @tier3weight1
+	is_rare = yes
+	prereqfor_desc = {
+		diplo_action = {
+			title = "uf_rare_resource"
+			desc = "uf_rare_resource"
+		}
+	}		
+	weight_modifier = {
+		modifier = {
+			factor = 0
+			NOR = {
+				has_technology = tech_mine_exotic_gases
+				has_technology = tech_exotic_gases
+				has_technology = tech_volatile_motes
+				has_technology = tech_mine_volatile_motes
+				has_technology = tech_mine_exotic_gases
+				has_technology = tech_rare_crystals
+				has_technology = tech_mine_rare_crystals
+			}
+		}
+		modifier = {
+			factor = 1.5
+			has_technology = tech_mine_exotic_gases
+		}
+		modifier = {
+			factor = 1.5
+			has_technology = tech_exotic_gases
+		}
+		modifier = {
+			factor = 1.5
+			has_technology = tech_volatile_motes
+		}
+		modifier = {
+			factor = 1.5
+			has_technology = tech_mine_volatile_motes
+		}
+		modifier = {
+			factor = 1.5
+			has_technology = tech_rare_crystals
+		}
+		modifier = {
+			factor = 1.5
+			has_technology = tech_mine_rare_crystals
+		}
+	}
+	potential = {
+		has_authority = auth_united_fleet
+	}
+}
+
+tech_uf_mozheng = {
+	cost = 200000
+	area = engineering
+	tier = 5
+	is_rare = yes
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
+	is_dangerous = yes
+	weight = 15
+	
+	ai_update_type = military
+	category = { voidcraft }
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_mozheng_diplo"
+			desc = "tech_uf_mozheng_diplo"
+		}
+	}
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_3
+	}
+}
+
+tech_uf_hyperlane = {
+	cost = @tier4cost1
+	area = physics
+	category = { particles }
+	tier = 3
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
+	weight = @tier3weight2
+	is_rare = yes
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_hyperlane_edicts"
+			desc = "tech_uf_hyperlane_edicts"
+		}
+	}
+    weight_modifier = {
+		factor = 2
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_1
+		has_country_flag = hyperdimensional_matter_tech_allowed
+	}
+}
+
+tech_uf_energy_upgrade_1 = {
+    icon = tech_uf_energy_upgrade
+	cost = @tier3cost1
+	area = physics
+	category = { particles }
+	tier = 3
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
+	weight = @tier2weight1
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_energy_upgrade_1_diplo"
+			desc = "tech_uf_energy_upgrade_1_diplo"
+		}
+	}
+	weight_modifier = {
+		factor = 2
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_1
+		has_country_flag = hyperdimensional_matter_tech_allowed
+	}
+}
+
+tech_uf_energy_upgrade_2 = {
+    icon = tech_uf_energy_upgrade
+	cost = @tier4cost3
+	area = physics
+	category = { particles }
+	tier = 4
+	prerequisites = { "tech_uf_energy_upgrade_1" }
+	weight = @tier4weight3
+	is_rare = yes
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_energy_upgrade_2_diplo"
+			desc = "tech_uf_energy_upgrade_2_diplo"
+		}
+	}
+	weight_modifier = {
+		factor = 2
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_1
+		has_country_flag = hyperdimensional_matter_tech_allowed
+		has_country_flag = ap_uf_1_chain_finished
+	}
+}
+
+tech_uf_energy_upgrade_3 = {
+    icon = tech_uf_energy_upgrade
+	cost = @wg_tier5cost4
+	area = physics
+	category = { particles }
+	tier = 5
+	prerequisites = { "tech_uf_energy_upgrade_2" }
+	weight = @tier5weight3
+	is_rare = yes
+	is_dangerous = yes
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_energy_upgrade_3_diplo"
+			desc = "tech_uf_energy_upgrade_3_diplo"
+		}
+	}
+	weight_modifier = {
+		factor = 2
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_2
+		has_country_flag = ap_uf_2_chain_finished
+	}
+}
+
+tech_uf_energy_upgrade_4 = {
+    icon = tech_uf_energy_upgrade
+	cost = @wg_tier5cost4
+	area = physics
+	category = { particles }
+	tier = 5
+	prerequisites = { "tech_uf_energy_upgrade_3" }
+	weight = 5
+	is_rare = yes
+	is_dangerous = yes
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_energy_upgrade_4_diplo"
+			desc = "tech_uf_energy_upgrade_4_diplo"
+		}
+	}
+	weight_modifier = {
+		factor = 2
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_2
+		has_country_flag = ap_uf_2_chain_finished
+	}
+}
+
+tech_uf_dyson_cloud_upgrade_1 = {
+    icon = tech_uf_dyson_cloud_upgrade
+	cost = @tier3cost1
+	area = engineering
+	category = { voidcraft }
+	tier = 2
+	prerequisites = { "tech_uf_dyson_cloud" }
+	weight = @tier2weight1
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_dyson_cloud_upgrade_1_edicts"
+			desc = "tech_uf_dyson_cloud_upgrade_1_edicts"
+		}
+	}	
+	
+    weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_voidcraft" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_country_flag = dyson_cloud_built_flag
+	}
+}
+
+tech_uf_dyson_cloud_upgrade_2 = {
+    icon = tech_uf_dyson_cloud_upgrade
+	cost = @tier4cost2
+	area = engineering
+	category = { voidcraft }
+	tier = 4
+	prerequisites = { "tech_uf_dyson_cloud_upgrade_1" }
+	is_rare = yes
+	weight = @tier4weight1
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_dyson_cloud_upgrade_2_edicts"
+			desc = "tech_uf_dyson_cloud_upgrade_2_edicts"
+		}
+	}	
+	
+    weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_voidcraft" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_1
+		has_country_flag = hyperdimensional_matter_tech_allowed
+		has_country_flag = dyson_cloud_built_flag
+	}
+}
+
+#################
+###主干延申科技###
+#################
+tech_uf_doom = {
+	cost = @tier4cost2
+	area = engineering
+	tier = 3
+	category = { propulsion }
+	weight = @tier2weight1
+	is_rare = yes
+	is_dangerous = yes
+	prerequisites = { "tech_uf_hyperdimensional_matter_application" }
+	
+	prereqfor_desc = {
+		diplo_action = {
+			title = "uf_doom_edicts"
+			desc = "uf_doom_edicts_desc"
+		}
+	}	
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_1
+	}
+}
+
+tech_uf_hm_communication = {
+	cost = @tier4cost3
+	area = physics
+	category = { particles }
+	tier = 3
+	prerequisites = { "tech_uf_hyperdimensional_matter_application" }
+	weight = @tier3weight3
+	is_rare = yes
+	modifier = {
+		tradition_cost_empire_size_mult = -0.20
+		tech_cost_empire_size_mult = -0.20
+	}
+    weight_modifier = {
+		factor = 2
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		has_authority = auth_united_fleet
+	}
+}
+
+tech_uf_hm_network = {
+	cost = @tier4cost2
+	area = physics
+	category = { particles }
+	tier = 3
+	prerequisites = { "tech_uf_hm_communication" }
+	weight = @tier3weight2
+	is_rare = yes
+	modifier = {
+		country_naval_cap_add = 50
+		command_limit_add = 50
+		country_edict_fund_add = 100
+		empire_size_pops_mult = -0.15
+	}
+    weight_modifier = {
+		factor = 2
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		has_authority = auth_united_fleet
+		OR = {
+			has_country_flag = hyperdimensional_matter_tech_allowed
+			has_country_flag = finished_uf_archaeological
+		}
+	}
+}
+
+tech_uf_hm_network_2 = {
+	cost = 100000
+	area = physics
+	category = { particles }
+	tier = 5
+	prerequisites = { "tech_uf_hm_network" }
+	weight = @tier5weight2
+	is_rare = yes
+	modifier = {
+		command_limit_add = 100
+	}
+    weight_modifier = {
+		factor = 2
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
+		}
+	}
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_2
+		has_country_flag = ap_uf_2_chain_finished
+	}
+}
+
+tech_uf_hm_network_3 = {
+	cost = @tier5cost1
+	area = physics
+	category = { computing }
+	tier = 4
+	prerequisites = { "tech_uf_hm_network" }
+	weight = @tier4weight1
+	is_rare = yes
+	modifier = {
+		planet_building_build_speed_mult = 0.25
+		planet_decision_enact_speed_mult = 0.25
+		megastructure_build_speed_mult = 0.25
+		country_megastructure_build_cap_add = 1
+	}
+    weight_modifier = {
+		factor = 2
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
+		}
+	}
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_1
+		has_country_flag = ap_uf_2_chain_finished
+	}
+}
+
+#################
+#####建筑科技#####
+#################
 tech_uf_admin = {
 	cost = @tier5cost1
 	area = society
 	tier = 3
 	category = { statecraft }
-	prerequisites = { "tech_uf_hm_network" }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
 	weight = @tier3weight3
 	is_rare = yes
 
@@ -274,87 +947,6 @@ tech_uf_fortress = {
 	}
 }
 
-tech_uf_archaeology = {
-	cost = @tier3cost1
-	area = society
-	tier = 2
-	category = { statecraft }
-	weight = 0
-	is_rare = yes
-
-	potential = {
-		has_authority = auth_united_fleet
-	}
-}
-tech_uf_hyperdimensional_matter = {
-	cost = @tier3cost1
-	area = physics
-	category = { particles }
-	tier = 2
-	prerequisites = { "tech_basic_science_lab_1" }
-	weight = @tier2weight1
-	is_rare = yes
-	weight_modifier = {
-		factor = 2
-		modifier = {
-			factor = 1.25
-			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
-		}
-	}
-
-	potential = {
-		has_authority = auth_united_fleet
-	}
-}
-
-#组装厂
-tech_uf_constructrue = {
-    icon = tech_uf_constructrue
-	cost = @tier4cost1
-	area = engineering
-	tier = 3
-	category = { materials }
-	prerequisites = { "tech_basic_science_lab_1" }
-	weight = @tier3weight1
-	
-	
-	weight_modifier = {
-		factor = 1.25
-		modifier = {
-			factor = 1.25
-			has_trait_in_council = { TRAIT = "leader_trait_expertise_materials" }
-		}
-	}
-	potential = {
-		has_authority = auth_united_fleet
-	}
-}
-
-tech_uf_hyperdimensional_matter_2 = {
-	cost = @tier5cost1
-	area = physics
-	category = { particles }
-	tier = 3
-	prerequisites = { "tech_uf_hyperdimensional_matter" }
-	weight = @tier3weight3
-	is_rare = yes
-	weight_modifier = {
-		factor = 2
-		modifier = {
-			factor = 1.25
-			has_trait_in_council = { TRAIT = "leader_trait_expertise_particles" }
-		}
-	}
-	potential = {
-		has_authority = auth_united_fleet
-		has_ascension_perk = ap_uf_1
-		has_country_flag = hyperdimensional_matter_tech_allowed
-	}
-}
-
-
-
-#组装厂
 tech_uf_assembly_2 = {
     icon = tech_uf_assembly_2
 	cost = @tier5cost3
@@ -378,7 +970,7 @@ tech_uf_assembly_2 = {
 		has_country_flag = hyperdimensional_matter_tech_allowed
 	}
 }
-#二级科研
+
 tech_uf_research_2 = {
 	icon = tech_uf_research_2
 	area = physics
@@ -407,7 +999,7 @@ tech_uf_research_2 = {
 		has_country_flag = hyperdimensional_matter_tech_allowed
 	}	
 }
-#三级科研
+
 tech_uf_research_3 = {
 	icon = tech_uf_research_3
 	area = physics
@@ -439,14 +1031,100 @@ tech_uf_research_3 = {
 	}	
 }
 
-#科研总站
+tech_uf_research_upgrade_1 = {
+    icon = tech_uf_research_upgrade
+	cost = @tier4cost3
+	area = society
+	category = { biology }
+	tier = 4
+	prerequisites = { "tech_uf_research_3" }
+	weight = @tier4weight1
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_research_upgrade_1_diplo"
+			desc = "tech_uf_research_upgrade_1_diplo"
+		}
+	}
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_voidcraft" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_1
+		has_country_flag = ap_uf_1_chain_finished
+	}
+}
+
+tech_uf_research_upgrade_2 = {
+    icon = tech_uf_research_upgrade
+	cost = @tier5cost2
+	area = society
+	category = { biology }
+	tier = 5
+	is_rare = yes
+	prerequisites = { "tech_uf_research_upgrade_1" }
+	weight = @tier5weight3
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_research_upgrade_2_diplo"
+			desc = "tech_uf_research_upgrade_2_diplo"
+		}
+	}
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_voidcraft" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_2
+		has_country_flag = ap_uf_2_chain_finished
+	}
+}
+
+tech_uf_research_upgrade_3 = {
+    icon = tech_uf_research_upgrade
+	cost = 70000
+	area = society
+	category = { biology }
+	tier = 5
+	prerequisites = { "tech_uf_research_upgrade_2" }
+	weight = 15
+	is_rare = yes
+	is_dangerous = yes
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_research_upgrade_3_diplo"
+			desc = "tech_uf_research_upgrade_3_diplo"
+		}
+	}
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_voidcraft" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_2
+		has_country_flag = ap_uf_2_chain_finished
+	}
+}
+
 tech_uf_science_center = {
 	icon = tech_uf_science_center
 	area = physics
 	category = { computing }
 	tier = 4
 	cost = @wg_tier5cost6
-	prerequisites = { "tech_uf_research_2" "tech_uf_research_upgrade_1" }
+	prerequisites = { "tech_uf_research_upgrade_1" }
 	weight = @tier4weight1
 	is_dangerous = yes
 	is_rare = yes
@@ -470,6 +1148,7 @@ tech_uf_science_center = {
 		has_country_flag = ap_uf_1_chain_finished
 	}	
 }
+
 tech_uf_hm_foundry = {
     icon = tech_uf_hm_foundry_2
 	cost = @tier3cost3
@@ -493,7 +1172,6 @@ tech_uf_hm_foundry = {
 	}
 }
 
-#二级合金
 tech_uf_hm_foundry_2 = {
     icon = tech_uf_hm_foundry_2
 	cost = @wg_tier5cost5
@@ -519,53 +1197,103 @@ tech_uf_hm_foundry_2 = {
 	}
 }
 
-#超维物质大型船坞
-tech_uf_large_shipyard = {
-	icon = tech_uf_large_shipyard
-	cost = @tier3cost3
-	area = engineering	
-	tier = 3
-	weight = 0
-	category = { propulsion }
-	prerequisites = { "tech_uf_battlecrusier" }
-	is_reverse_engineerable = no
-	prereqfor_desc = {
-		diplo_action = {
-			title = "uf_large_shipyard_diplo"
-			desc = "uf_large_shipyard_diplo_desc"
-		}
-	}
-	potential = {
-		has_authority = auth_united_fleet
-	}	
-}
-
-tech_uf_assimilation = {
-	cost = @tier4cost3
+tech_uf_hm_foundry_upgrade_1 = {
+    icon = tech_uf_hm_foundry_upgrade
+	cost = @tier4cost2
 	area = society
-	tier = 3
 	category = { biology }
-	weight = 0
-	is_rare = yes
+	tier = 4
+	prerequisites = { "tech_uf_hm_foundry_2" }
+	weight = @tier3weight3
 	prereqfor_desc = {
 		diplo_action = {
-			title = "uf_assimilation_diplo"
-			desc = "uf_assimilation_diplo_desc"
+			title = "tech_uf_hm_foundry_upgrade_1_diplo"
+			desc = "tech_uf_hm_foundry_upgrade_1_diplo"
+		}
+	}
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_voidcraft" }
 		}
 	}
 
 	potential = {
 		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_1
+		has_country_flag = ap_uf_1_chain_finished
 	}
 }
-############飞船
+
+tech_uf_hm_foundry_upgrade_2 = {
+    icon = tech_uf_hm_foundry_upgrade
+	cost = @tier5cost3
+	area = society
+	category = { biology }
+	is_rare = yes
+	tier = 5
+	prerequisites = { "tech_uf_hm_foundry_upgrade_1" }
+	weight = @tier4weight3
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_hm_foundry_upgrade_2_diplo"
+			desc = "tech_uf_hm_foundry_upgrade_2_diplo"
+		}
+	}
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_voidcraft" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_2
+		has_country_flag = ap_uf_2_chain_finished
+	}
+}
+
+tech_uf_hm_foundry_upgrade_3 = {
+    icon = tech_uf_hm_foundry_upgrade
+	cost = 55000
+	area = society
+	category = { biology }
+	is_rare = yes
+	is_dangerous = yes
+	tier = 5
+	prerequisites = { "tech_uf_hm_foundry_upgrade_2" }
+	weight = 10
+	prereqfor_desc = {
+		diplo_action = {
+			title = "tech_uf_hm_foundry_upgrade_3_diplo"
+			desc = "tech_uf_hm_foundry_upgrade_3_diplo"
+		}
+	}
+	weight_modifier = {
+		modifier = {
+			factor = 1.25
+			has_trait_in_council = { TRAIT = "leader_trait_expertise_voidcraft" }
+		}
+	}
+
+	potential = {
+		has_authority = auth_united_fleet
+		has_ascension_perk = ap_uf_2
+		has_country_flag = ap_uf_2_chain_finished
+	}
+}
+
+#################
+#####舰船科技#####
+#################
 tech_uf_colonization = {
 	cost = @tier3cost1
 	area = engineering
 	tier = 3
 	ai_update_type = military
 	category = { voidcraft }	
-	prerequisites = { "tech_basic_science_lab_1" }
+	prerequisites = { "tech_uf_start" }
 	weight = @tier1weight3
 	is_rare = yes
 	is_reverse_engineerable = no
@@ -595,13 +1323,14 @@ tech_uf_colonization = {
 		has_authority = auth_united_fleet
 	}	
 }
+
 tech_uf_science = {
 	cost = @tier1cost3
 	area = engineering
 	tier = 1
 	ai_update_type = military
 	category = { voidcraft }	
-	prerequisites = { "tech_basic_science_lab_1" }
+	prerequisites = { "tech_uf_start" }
 	weight = @tier1weight3
 	is_rare = yes
 	is_reverse_engineerable = no
@@ -631,13 +1360,14 @@ tech_uf_science = {
 		has_authority = auth_united_fleet
 	}	
 }
+
 tech_uf_corvette = {
 	cost = @tier2cost1
 	area = engineering
 	tier = 1
 	ai_update_type = military
 	category = { voidcraft }	
-	prerequisites = { "tech_basic_science_lab_1" }
+	prerequisites = { tech_corvettes }
 	weight = @tier1weight3
 	is_reverse_engineerable = no
     weight_modifier = {
@@ -988,7 +1718,7 @@ tech_uf_heavy_carrier = {
 		has_country_flag = ap_uf_2_chain_finished
 	}	
 }
-#联合X头
+
 tech_uf_ship_section = {
 	cost = 100000
 	area = engineering
@@ -1026,13 +1756,13 @@ tech_uf_ship_section = {
 		has_country_flag = ap_uf_2_chain_finished
 	}	
 }
-#联合主宰
+
 tech_uf_juggernaut = {
 	cost = @wg_tier5cost6
 	area = engineering
 	tier = 5
 	category = { voidcraft }	
-	prerequisites = { "tech_uf_ship_section" }
+	prerequisites = { "tech_uf_dreadnought" }
 	weight = 5
 	is_rare = yes
 	is_dangerous = yes
@@ -1066,6 +1796,7 @@ tech_uf_juggernaut = {
 		has_ascension_perk = ap_uf_3
 	}	
 }
+
 tech_uf_flagship = {
 	cost = @wg_tier5cost7
 	area = engineering
@@ -1183,7 +1914,6 @@ tech_uf_star_glory = {
 	}	
 }
 
-#联合电子战
 tech_uf_buffer = {
 	cost = 600000
 	area = engineering
@@ -1220,64 +1950,10 @@ tech_uf_buffer = {
 		has_ascension_perk = ap_uf_3
 	}	
 }
-###
-tech_uf_rare_resource = {
-	cost = @tier4cost3
-	area = society
-	tier = 3
-	category = { biology }
-	prerequisites = { "tech_uf_hyperdimensional_matter" }
-	weight = @tier3weight1
-	is_rare = yes
-	prereqfor_desc = {
-		diplo_action = {
-			title = "uf_rare_resource"
-			desc = "uf_rare_resource"
-		}
-	}		
-	weight_modifier = {
-		modifier = {
-			factor = 0
-			NOR = {
-				has_technology = tech_mine_exotic_gases
-				has_technology = tech_exotic_gases
-				has_technology = tech_volatile_motes
-				has_technology = tech_mine_volatile_motes
-				has_technology = tech_mine_exotic_gases
-				has_technology = tech_rare_crystals
-				has_technology = tech_mine_rare_crystals
-			}
-		}
-		modifier = {
-			factor = 1.5
-			has_technology = tech_mine_exotic_gases
-		}
-		modifier = {
-			factor = 1.5
-			has_technology = tech_exotic_gases
-		}
-		modifier = {
-			factor = 1.5
-			has_technology = tech_volatile_motes
-		}
-		modifier = {
-			factor = 1.5
-			has_technology = tech_mine_volatile_motes
-		}
-		modifier = {
-			factor = 1.5
-			has_technology = tech_rare_crystals
-		}
-		modifier = {
-			factor = 1.5
-			has_technology = tech_mine_rare_crystals
-		}
-	}
-	potential = {
-		has_authority = auth_united_fleet
-	}
-}
-###巨构科技
+
+#################
+#####巨构科技#####
+#################
 tech_uf_dyson_cloud = {
 	cost = @tier2cost2
 	area = engineering
@@ -1335,6 +2011,7 @@ tech_uf_mining_station = {
 		has_authority = auth_united_fleet
 	}	
 }
+
 tech_uf_ews = {
 	cost = @tier3cost3
 	area = engineering
@@ -1365,6 +2042,7 @@ tech_uf_ews = {
 		has_country_flag = hyperdimensional_matter_tech_allowed
 	}	
 }
+
 tech_uf_polymer_matrix = {
 	cost = @tier4cost1
 	area = engineering
@@ -1395,6 +2073,7 @@ tech_uf_polymer_matrix = {
 		has_country_flag = hyperdimensional_matter_tech_allowed
 	}	
 }
+
 tech_uf_space_city = {
 	cost = @tier3cost3
 	area = engineering
@@ -1425,7 +2104,6 @@ tech_uf_space_city = {
 		has_country_flag = hyperdimensional_matter_tech_allowed
 	}	
 }
-
 
 tech_uf_galactic_university = {
 	cost = @tier4cost1
@@ -1488,6 +2166,7 @@ tech_uf_space_farm = {
 		has_country_flag = ap_uf_1_chain_finished
 	}	
 }
+
 tech_uf_hyperdimensional_matter_core = {
 	cost = @wg_tier5cost6
 	area = engineering
@@ -1511,13 +2190,13 @@ tech_uf_hyperdimensional_matter_core = {
 		has_ascension_perk = ap_uf_3
 	}	
 }
-#联合黑曜石
+
 tech_uf_star_fortress = {
 	cost = @wg_tier5cost8
 	area = engineering
 	tier = 5
 	category = { voidcraft }	
-	prerequisites = { "tech_uf_hm_reactor" }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
 	weight = 5
 	is_rare = yes
 	is_dangerous = yes
@@ -1541,7 +2220,7 @@ tech_uf_resource_ring = {
 	area = engineering
 	tier = 5
 	category = { voidcraft }	
-	prerequisites = { "tech_uf_hyperdimensional_matter" "tech_uf_mozheng" }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
 	weight = 5
 	is_rare = yes
 	is_dangerous = yes
@@ -1559,13 +2238,13 @@ tech_uf_resource_ring = {
 		has_ascension_perk = ap_uf_3
 	}	
 }
-#魔怔船坞
+
 tech_uf_mega_shipyard = {
 	cost = @wg_tier5cost9
 	area = engineering
 	tier = 5
 	category = { voidcraft }	
-	prerequisites = { "tech_uf_juggernaut" }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
 	weight = 10
 	is_rare = yes
 	is_dangerous = yes
@@ -1583,13 +2262,13 @@ tech_uf_mega_shipyard = {
 		has_ascension_perk = ap_uf_3
 	}	
 }
-#魔怔荣耀世界
+
 tech_uf_mega_habitat = {
 	cost = @wg_tier5cost10
 	area = engineering
 	tier = 5
 	category = { voidcraft }	
-	prerequisites = { "tech_uf_juggernaut" }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
 	weight = 10
 	is_rare = yes
 	is_dangerous = yes
@@ -1607,7 +2286,7 @@ tech_uf_mega_habitat = {
 		has_ascension_perk = ap_uf_3
 	}	
 }
-#魔怔之剑
+
 tech_uf_sword = {
 	cost = @wg_tier5cost10
 	area = engineering
@@ -1636,6 +2315,7 @@ tech_uf_sword = {
 		}
 	}	
 }
+
 tech_uf_sword_1 = {
 	cost = @wg_tier5cost10
 	icon = tech_uf_sword
@@ -1786,7 +2466,6 @@ tech_uf_sword_5 = {
 	}	
 }
 
-
 tech_uf_ring_shipyard_upgrade = {
 	cost = @wg_tier5cost4
 	area = engineering
@@ -1807,7 +2486,7 @@ tech_uf_ring_shipyard_upgrade = {
 		has_ascension_perk = ap_uf_3
 	}	
 }
-#联合荣耀前置
+
 tech_uf_mega_starship = {
 	icon = tech_uf_mega_starship
 	cost = 1000000
@@ -1817,7 +2496,7 @@ tech_uf_mega_starship = {
 	is_rare = yes
 	is_dangerous = yes
 	category = { propulsion }
-	prerequisites = { "tech_uf_star_fortress" "tech_uf_flagship" }
+	prerequisites = { "tech_uf_flagship" }
 	is_reverse_engineerable = no
 	prereqfor_desc = {
 		diplo_action = {
@@ -1830,39 +2509,17 @@ tech_uf_mega_starship = {
 		has_ascension_perk = ap_uf_3
 	}	
 }
-##魔怔起来了
-tech_uf_mozheng = {
-	cost = 200000
-	area = engineering
-	tier = 5
-	is_rare = yes
-	prerequisites = { "tech_uf_hm_reactor" }
-	is_dangerous = yes
-	weight = 15
-	
-	ai_update_type = military
-	category = { voidcraft }
-	prereqfor_desc = {
-		diplo_action = {
-			title = "tech_uf_mozheng_diplo"
-			desc = "tech_uf_mozheng_diplo"
-		}
-	}
-	potential = {
-		has_authority = auth_united_fleet
-		has_ascension_perk = ap_uf_3
-	}
-}
 
-#武器组件
-#P和S
+#################
+#####武器科技#####
+#################
 tech_weapon_uf_small = {
     area = physics
     icon = tech_weapon_uf_small
 	cost = @tier4cost3
 	tier = 4
 	category = { particles }
-	prerequisites = { "tech_uf_battlecrusier" "tech_lasers_4" }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
 	weight = @tier4weight1
 	is_rare = yes
 	is_reverse_engineerable = no
@@ -1887,11 +2544,9 @@ tech_weapon_uf_small = {
 	potential = {
 		has_authority = auth_united_fleet
 		has_country_flag = hyperdimensional_matter_tech_allowed
-		#has_country_flag = ap_uf_1_chain_finished
 	}	
 }
 
-#鱼雷
 tech_uf_weapon_missile = {
 	icon = tech_uf_weapon_missile 
 	area = engineering
@@ -1899,7 +2554,7 @@ tech_uf_weapon_missile = {
 	tier = 4
 	category = { propulsion }
 	ai_update_type = military
-	prerequisites = { "tech_uf_battlecrusier" }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
 	weight = @tier4weight2
 	is_rare = yes
 	is_reverse_engineerable = no
@@ -1922,10 +2577,9 @@ tech_uf_weapon_missile = {
 	potential = {
 		has_authority = auth_united_fleet
 		has_country_flag = hyperdimensional_matter_tech_allowed
-		#has_country_flag = ap_uf_1_chain_finished
 	}		
 }
-#M和L
+
 tech_uf_weapon_med_large = {
     area = physics
     icon = tech_uf_weapon_med_large
@@ -1956,11 +2610,10 @@ tech_uf_weapon_med_large = {
 
 	potential = {
 		has_authority = auth_united_fleet
-		#has_country_flag = hyperdimensional_matter_tech_allowed
 		has_country_flag = ap_uf_1_chain_finished
 	}	
 }
-#X炮
+
 tech_uf_weapon_extra_large = {
     area = physics
     icon = tech_uf_weapon_extra_large
@@ -1991,12 +2644,10 @@ tech_uf_weapon_extra_large = {
 
 	potential = {
 		has_authority = auth_united_fleet
-		#has_country_flag = hyperdimensional_matter_tech_allowed
 		has_country_flag = ap_uf_1_chain_finished
 	}	
 }
 
-#T炮
 tech_uf_weapon_titanic = {
     area = physics
     icon = tech_uf_weapon_titanic
@@ -2032,7 +2683,6 @@ tech_uf_weapon_titanic = {
 	}	
 }
 
-#耀斑
 tech_uf_weapon_glory = {
     area = physics
     icon = tech_uf_weapon_glory
@@ -2074,7 +2724,7 @@ tech_uf_weapon_glory = {
 		has_ascension_perk = ap_uf_3
 	}	
 }
-#耀斑
+
 tech_uf_weapon_glory_2 = {
     area = physics
     icon = tech_uf_weapon_glory
@@ -2116,7 +2766,10 @@ tech_uf_weapon_glory_2 = {
 		has_ascension_perk = ap_uf_3
 	}	
 }
-#战斗机和轰炸机
+
+#################
+#####舰载科技#####
+#################
 tech_uf_weapon_craft = {
 	cost = @tier4cost3
 	area = engineering
@@ -2140,17 +2793,16 @@ tech_uf_weapon_craft = {
 	potential = {
 		has_authority = auth_united_fleet
 		has_country_flag = hyperdimensional_matter_tech_allowed
-		#has_country_flag = ap_uf_1_chain_finished
 	}	
 }
-#火鹰轰炸机
+
 tech_uf_weapon_craft_2 = {
 	cost = @tier5cost3
 	area = engineering
 	tier = 5
 	ai_update_type = military
 	category = { voidcraft }	
-	prerequisites = { "tech_uf_weapon_craft" "tech_uf_hm_reactor" }
+	prerequisites = { "tech_uf_weapon_craft" }
 	weight = @tier5weight3
 	is_reverse_engineerable = no
 		
@@ -2171,12 +2823,15 @@ tech_uf_weapon_craft_2 = {
 	}	
 }
 
+#################
+#####防御科技#####
+#################
 tech_uf_ia = {
     area = physics
 	cost = @tier5cost1
 	tier = 4
 	category = { particles }
-	prerequisites = { "tech_uf_hm_reactor" }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
 	weight = @tier4weight3
 	is_rare = yes
 	is_reverse_engineerable = no
@@ -2201,9 +2856,9 @@ tech_uf_ia = {
 	potential = {
 		has_authority = auth_united_fleet
 		has_country_flag = hyperdimensional_matter_tech_allowed
-		#has_country_flag = ap_uf_1_chain_finished
 	}	
 }
+
 tech_uf_ia2 = {
     area = physics
 	cost = 55000
@@ -2236,7 +2891,9 @@ tech_uf_ia2 = {
 	}	
 }
 
-#联合反应堆
+#################
+#####组件科技#####
+#################
 tech_uf_hm_reactor = {
     icon = tech_uf_hm_reactor
 	cost = @wg_tier5cost6
@@ -2252,13 +2909,10 @@ tech_uf_hm_reactor = {
 
 	potential = {
 		has_authority = auth_united_fleet
-		#has_country_flag = hyperdimensional_matter_tech_allowed
-		#has_country_flag = ap_uf_1_chain_finished
 		has_ascension_perk = ap_uf_1
 	}	
 }
 
-#
 tech_uf_hm_thruster = {
     icon = tech_uf_hm_thruster
 	cost = @wg_tier5cost5
@@ -2268,7 +2922,7 @@ tech_uf_hm_thruster = {
 	weight = @tier5weight3
 	is_rare = yes
 	is_dangerous = yes
-	prerequisites = { "tech_uf_hm_reactor" }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
 	is_reverse_engineerable = no
 	
     weight_modifier = {
@@ -2280,12 +2934,10 @@ tech_uf_hm_thruster = {
 	}
 	potential = {
 		has_authority = auth_united_fleet
-		#has_country_flag = hyperdimensional_matter_tech_allowed
 		has_country_flag = ap_uf_1_chain_finished
 	}	
 }
 
-#
 tech_uf_hm_jump_drive = {
     icon = tech_uf_hm_jump_drive
 	cost = @wg_tier5cost5
@@ -2295,12 +2947,11 @@ tech_uf_hm_jump_drive = {
 	weight = @tier5weight3
 	is_rare = yes
 	is_dangerous = yes
-	prerequisites = { "tech_uf_hm_reactor" }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
 	is_reverse_engineerable = no
 
 	potential = {
 		has_authority = auth_united_fleet
-		#has_country_flag = hyperdimensional_matter_tech_allowed
 		has_country_flag = ap_uf_1_chain_finished
 	}	
 }
@@ -2314,7 +2965,7 @@ tech_uf_hm_sensor = {
 	weight = @tier5weight3
 	is_rare = yes
 	is_dangerous = yes
-	prerequisites = { "tech_uf_hm_reactor" }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
 	is_reverse_engineerable = no
     weight_modifier = {
 		modifier = {
@@ -2328,7 +2979,6 @@ tech_uf_hm_sensor = {
 	}
 	potential = {
 		has_authority = auth_united_fleet
-		#has_country_flag = hyperdimensional_matter_tech_allowed
 		has_country_flag = ap_uf_1_chain_finished
 	}	
 }
@@ -2342,7 +2992,7 @@ tech_uf_hm_computer = {
 	weight = @tier5weight3
 	is_rare = yes
 	is_dangerous = yes
-	prerequisites = { "tech_uf_hm_reactor" }
+	prerequisites = { "tech_uf_hyperdimensional_matter" }
 	is_reverse_engineerable = no
     weight_modifier = {
 		modifier = {
@@ -2352,12 +3002,13 @@ tech_uf_hm_computer = {
 	}
 	potential = {
 		has_authority = auth_united_fleet
-		#has_country_flag = hyperdimensional_matter_tech_allowed
 		has_country_flag = ap_uf_1_chain_finished
 	}	
 }
 
-#陆军
+#################
+#####陆军科技#####
+#################
 tech_uf_hm_army = {
     icon = tech_uf_hm_army
 	cost = @tier3cost3
@@ -2381,7 +3032,7 @@ tech_uf_hm_army = {
 		has_country_flag = hyperdimensional_matter_tech_allowed
 	}
 }
-#陆军2
+
 tech_uf_hm_army_2 = {
     icon = tech_uf_hm_army_2
 	cost = @wg_tier5cost4
@@ -2399,59 +3050,6 @@ tech_uf_hm_army_2 = {
 			has_trait_in_council = { TRAIT = "leader_trait_expertise_voidcraft" }
 		}
 	}
-
-	potential = {
-		has_authority = auth_united_fleet
-		has_ascension_perk = ap_uf_2
-		has_country_flag = ap_uf_2_chain_finished
-	}
-}
-tech_uf_genetic_resequencing = {
-	cost = @tier5cost3
-	area = society
-	tier = 5
-	is_rare = yes
-	icon = tech_wsg_genetic_resequencing_s
-	category = { biology }	
-	weight = 0
-	feature_flags = {
-		advanced_gene_modding #no longer does anything except make a tooltip, handled in game rules
-		add_advanced_traits #ditto
-	}
-	
-	gateway = biological
-	prereqfor_desc = {
-		diplo_action = {
-			title = "wsg_genetic_edicts"
-			desc = "wsg_genetic_edicts_desc"
-		}
-	}	
-
-	potential = {
-		has_authority = auth_united_fleet
-		has_ascension_perk = ap_uf_2
-		has_country_flag = ap_uf_2_chain_finished
-	}
-}
-
-tech_uf_evolver = {
-	cost = @wg_tier5cost4
-	area = society
-	tier = 5
-	is_rare = yes
-	icon = tech_uf_evolver
-	prerequisites = { "tech_uf_genetic_resequencing" }
-	category = { biology }	
-	weight = 10
-	
-	gateway = biological
-
-	prereqfor_desc = {
-		diplo_action = {
-			title = "uf_evolver_diplo"
-			desc = "uf_evolver_diplo_desc"
-		}
-	}	
 
 	potential = {
 		has_authority = auth_united_fleet
@@ -2499,148 +3097,5 @@ tech_uf_mobile_portal = {
 		has_authority = auth_united_fleet
 		has_ascension_perk = ap_uf_1
 		has_country_flag = hyperdimensional_matter_tech_allowed
-	}	
-}
-
-#生产模式切换
-tech_uf_auto_building_decision = {
-	icon = tech_uf_auto_building_decision
-	area = physics
-	category = { computing }
-	tier = 2
-	cost = @tier2cost3
-	prerequisites = { "tech_uf_hyperdimensional_matter" }
-	weight = @tier2weight3
-	
-    prereqfor_desc = {
-		diplo_action = {
-			title = "uf_auto_building_decision_diplo"
-			desc = "uf_auto_building_decision_diplo"
-		}
-	}
-	weight_modifier = {
-		modifier = {
-			factor = 1.25
-			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
-		}
-	}
-
-	ai_weight = {
-		modifier = {
-			factor = 1.25
-			has_trait_in_council = { TRAIT = "leader_trait_expertise_computing" }
-		}
-	}
-	potential = {
-		has_authority = auth_united_fleet
-	}	
-}
-
-#传统船体
-tech_uf_tradition_ship_section = {
-	cost = 0
-	area = engineering
-	icon = tech_uf_ship_section
-	tier = 0
-	category = { voidcraft }	
-	weight = 0
-	is_rare = yes
-	is_reverse_engineerable = no
-	
-	potential = {
-		has_authority = auth_united_fleet
-		has_tradition = tr_uf_megastructure_3
-	}	
-}
-
-tech_uf_ia3 = {
-    area = physics
-	cost = @wg_tier5cost12
-	tier = 5
-	category = { particles }
-	weight = 0
-	is_rare = yes
-	is_dangerous = yes
-	is_reverse_engineerable = no
-	
-	
-	potential = {
-		has_authority = auth_united_fleet
-		has_global_flag = monolith_crisis_invaded
-	}	
-}
-
-tech_uf_weapon_monolith_large = {
-    area = physics
-    icon = tech_uf_weapon_monolith_large
-	cost = @wg_tier5cost11
-	tier = 5
-	category = { particles }
-	weight = 0
-	is_rare = yes
-	is_dangerous = yes
-	is_reverse_engineerable = no
-	
-	gateway = energy_weapons
-
-	potential = {
-		has_authority = auth_united_fleet
-		has_global_flag = monolith_crisis_invaded
-	}	
-}
-
-tech_uf_weapon_extra_large2 = {
-    area = physics
-    icon = tech_uf_weapon_extra_large2
-	cost = @wg_tier5cost12
-	tier = 5
-	category = { particles }
-	weight = 0
-	is_rare = yes
-	is_dangerous = yes
-	is_reverse_engineerable = no
-	
-	gateway = energy_weapons
-
-	potential = {
-		has_authority = auth_united_fleet
-		has_global_flag = monolith_crisis_invaded
-	}	
-}
-
-tech_uf_weapon_titanic2 = {
-    area = physics
-    icon = tech_uf_weapon_titanic2
-	cost = @wg_tier5cost12
-	tier = 5
-	category = { particles }
-	weight = 0
-	is_rare = yes
-	is_dangerous = yes
-	is_reverse_engineerable = no
-	
-	gateway = energy_weapons
-
-	potential = {
-		has_authority = auth_united_fleet
-		has_global_flag = monolith_crisis_invaded
-	}	
-}
-
-tech_uf_subject_weapon = {
-    area = physics
-    icon = tech_uf_weapon_titanic
-	cost = 30000
-	tier = 5
-	category = { particles }
-	weight = 0
-	is_rare = yes
-	is_dangerous = yes
-	is_reverse_engineerable = no
-	
-	gateway = energy_weapons
-
-	potential = {
-		any_agreement = { agreement_preset = preset_uf_subject }
 	}	
 }
