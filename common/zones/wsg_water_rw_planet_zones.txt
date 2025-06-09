@@ -1,0 +1,149 @@
+zone_wsg_rw_water_generator = {
+	icon = GFX_colony_type_generator
+	base_buildtime = @zone_buildtime
+	potential = { uses_district_set = rw_swim_world }
+
+	unlock = { uses_district_set = rw_swim_world }
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	#uses_district_set = rw_swim_world
+	triggered_district_planet_modifier = {
+		potential = { uses_district_set = rw_swim_world }
+		job_technician_add = 200
+		planet_housing_add = 200
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = 3
+	}
+
+	max_buildings = 3
+
+	include = {
+		all
+	}
+
+	exclude = {
+		building_automation_city_1
+		building_automation_generator_1
+		building_automation_mining_1
+		building_automation_farming_1
+	}
+}
+
+zone_wsg_rw_water_food = {
+	icon = GFX_colony_type_farm
+	base_buildtime = @zone_buildtime
+	potential = { uses_district_set = rw_swim_world }
+
+	unlock = { uses_district_set = rw_swim_world }
+
+	planet_modifier = {
+		zone_building_slots_add = 3
+	}
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	#uses_district_set = rw_swim_world
+	triggered_district_planet_modifier = {
+		potential = { 
+			uses_district_set = rw_swim_world 
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		job_wsg_idol_add = 200
+		job_sh_pool_add = 200
+		planet_housing_add = 400
+	}
+
+	max_buildings = 3
+
+	include = {
+		all
+	}
+
+	exclude = {
+		building_automation_city_1
+		building_automation_generator_1
+		building_automation_mining_1
+		building_automation_farming_1
+	}
+}
+
+zone_wsg_rw_water_ktv = {
+	icon = GFX_colony_type_wsg_idol
+	base_buildtime = @zone_buildtime
+	potential = { uses_district_set = rw_swim_world }
+
+	unlock = { uses_district_set = rw_swim_world }
+
+	planet_modifier = {
+		zone_building_slots_add = 3
+	}
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+	triggered_district_planet_modifier = {
+		potential = {
+			uses_district_set = rw_port_world
+			exists = owner
+			owner = { NOR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+		}
+		modifier = {
+			job_wsg_gas_refiner_add = 100
+			job_wsg_chemist_add = 100
+			job_wsg_translucer_add = 100
+			job_wsg_pantsu_maker_add = 100
+			job_wsg_neo_producer_add = 100
+			job_wsg_alpha_add = 100
+			planet_housing_add = 600
+		}
+	}
+	triggered_district_planet_modifier = {
+		potential = {
+			uses_district_set = rw_port_world
+			exists = owner
+			owner = { OR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+		}
+		modifier = {
+			job_wsg_pantsu_maker_add = 100
+			job_wsg_senergy_add = 100
+			job_wsg_rare_resource_manufacturer_add = 100
+			planet_housing_add = 300
+		}
+	}
+
+	max_buildings = 3
+
+	include = {
+		all
+	}
+
+	exclude = {
+		building_automation_city_1
+		building_automation_generator_1
+		building_automation_mining_1
+		building_automation_farming_1
+	}
+}

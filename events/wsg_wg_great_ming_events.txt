@@ -1035,7 +1035,7 @@ country_event = {
 		}
 	}
 	immediate = {
-		country_event = { id = wg_great_ming.44 }#检测大明的狗
+		set_global_flag = wg_great_ming_upload_permission
 		country_event = { id = wg_great_ming.61 }#随机几个AI国家伪装成大明的上贡国
 		if = {
 			limit = { 
@@ -2587,8 +2587,9 @@ country_event = {
 		name = "wg_great_ming.43.a"
 	}
 }    
-#大明的萝卜（3年一检） 
-country_event = {
+
+#大明的萝卜(5年统一触发) 
+event = {
 	id = wg_great_ming.44
 	hide_window = yes
 	is_triggered_only = yes
@@ -2597,10 +2598,15 @@ country_event = {
         NOT = {
 			has_global_flag = wg_great_ming_defeated 
 		}
+		has_global_flag = wg_great_ming_upload_permission
+		any_playable_country = {
+			is_ai = no
+			has_country_flag = wg_has_tributed
+			NOT = { has_country_flag = wg_has_war_with_great_ming }
+		}
     }
 
 	immediate = {
-		country_event = { id = wg_great_ming.44 days = 1080 }
 		every_playable_country = {
 			limit = {
 				is_ai = no
@@ -2639,6 +2645,8 @@ country_event = {
 					country_event = { id = wg_great_ming.45 }#奖励事件
 				}
 				40 = { 
+					modifier = { mult = 3 years_passed < 20 }
+					no_events = yes
 				}
 				30 = { 
 					modifier = {
@@ -4362,6 +4370,7 @@ country_event = {
 						trait = leader_trait_wg_great_ming_leader1
 					}
 					effect = {
+						freeze_leader_age = yes
 						set_leader_flag = immune_to_negative_traits
 						change_leader_portrait = wsg581
 						set_leader_flag = legendary_leader
@@ -4397,6 +4406,7 @@ country_event = {
 						trait = leader_trait_wg_great_ming_leader2
 					}
 					effect = {
+						freeze_leader_age = yes
 						set_leader_flag = immune_to_negative_traits
 						change_leader_portrait = wsg112_1
 						set_leader_flag = legendary_leader
@@ -4432,6 +4442,7 @@ country_event = {
 						trait = leader_trait_wg_great_ming_leader3
 					}
 					effect = {
+						freeze_leader_age = yes
 						set_leader_flag = immune_to_negative_traits
 						change_leader_portrait = wsg513_1
 						set_leader_flag = legendary_leader
@@ -4467,6 +4478,7 @@ country_event = {
 						trait = leader_trait_wg_great_ming_leader4
 					}
 					effect = {
+						freeze_leader_age = yes
 						set_leader_flag = immune_to_negative_traits
 						change_leader_portrait = wsg57_1
 						set_leader_flag = legendary_leader
@@ -4502,6 +4514,7 @@ country_event = {
 						trait = leader_trait_wg_great_ming_leader5
 					}
 					effect = {
+						freeze_leader_age = yes
 						set_leader_flag = immune_to_negative_traits
 						change_leader_portrait = wsg30_1
 						set_leader_flag = legendary_leader
@@ -4537,6 +4550,7 @@ country_event = {
 						trait = leader_trait_wg_great_ming_leader6A
 					}
 					effect = {
+						freeze_leader_age = yes
 						set_leader_flag = immune_to_negative_traits
 						change_leader_portrait = wsg9995
 						set_leader_flag = legendary_leader
@@ -4575,6 +4589,7 @@ country_event = {
 						trait = leader_trait_wg_great_ming_leader7
 					}
 					effect = {
+						freeze_leader_age = yes
 						set_leader_flag = immune_to_negative_traits
 						change_leader_portrait = wsg586_1
 						set_leader_flag = legendary_leader
