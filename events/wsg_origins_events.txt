@@ -8729,12 +8729,15 @@ country_event = {
 	trigger = {
 		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
 		has_origin = origin_wg_warhammer
-		NOT = { has_country_flag = wg_warhamme_unsolve_soul_win }
+		NOT = { is_variable_set = wg_warhamme_unsolve_soul_win }
 		from = { is_same_value = event_target:wg_nicron_country }
 	}
 	immediate = {
 		set_update_modifiers_batch = begin
-		set_country_flag = wg_warhamme_unsolve_soul_win
+		if = {
+			limit = { NOT = { is_variable_set = wg_warhamme_unsolve_soul_win } }
+			change_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
+		}
 		event_target:wg_unsolve_soul_ancient_system = {
 			create_ambient_object = { type = nexus_storm location = star }
 			last_created_ambient_object = {
@@ -8842,12 +8845,14 @@ country_event = {
 	trigger = {
 		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
 		has_origin = origin_wg_warhammer
-		has_country_flag = wg_warhamme_unsolve_soul_win
-		NOT = { has_country_flag = wg_warhamme_unsolve_soul_win_twince }
+		check_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
 		from = { is_same_value = event_target:wg_nicron_country }
 	}
 	immediate = {
-		set_country_flag = wg_warhamme_unsolve_soul_win_twince
+		change_variable = {
+			which = wg_warhamme_unsolve_soul_win
+			value = 1
+		}
 		fromfrom = {
 			set_owner = root
 			set_controller = root
@@ -8874,7 +8879,7 @@ country_event = {
 	is_triggered_only = yes
 	trigger = {
 		has_origin = origin_wg_warhammer
-		has_country_flag = wg_warhamme_unsolve_soul_win_twince
+		check_variable = { which = wg_warhamme_unsolve_soul_win value = 2 }
 	}
 	immediate = {
 		fromfrom = {
@@ -8977,7 +8982,7 @@ country_event = {
 				}
 			}
 		} 
-		set_country_flag = wg_warhamme_unsolve_soul_win_third 
+		change_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
 	}
 }
 
@@ -8990,8 +8995,7 @@ country_event = {
 	trigger = {
 		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
 		has_origin = origin_wg_warhammer
-		has_country_flag = wg_warhamme_unsolve_soul_win_third
-		NOT = { has_country_flag = wg_warhamme_unsolve_soul_win_fourth }
+		check_variable = { which = wg_warhamme_unsolve_soul_win value = 3 }
 		from = { is_same_value = event_target:wg_nicron_country }
 	}
 	option = { name = wg_origin.301.a }
@@ -9061,7 +9065,7 @@ country_event = {
 				}
 			}
 		} 
-		set_country_flag = wg_warhamme_unsolve_soul_win_fourth 
+		change_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
 	}
 }
 
@@ -9074,12 +9078,11 @@ country_event = {
 	trigger = {
 		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
 		has_origin = origin_wg_warhammer
-		has_country_flag = wg_warhamme_unsolve_soul_win_fourth
-		NOT = { has_country_flag = wg_warhamme_unsolve_soul_win_fifth }
+		check_variable = { which = wg_warhamme_unsolve_soul_win value = 4 }
 		from = { is_same_value = event_target:wg_nicron_country }
 	}
 	immediate = {
-		set_country_flag = wg_warhamme_unsolve_soul_win_fifth
+		change_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
 	}
 	option = {
 		name = wg_origin.302.a
@@ -9108,10 +9111,10 @@ country_event = {
 		exists = from
 		from = { has_planet_flag = wg_unsolve_soul_ancient_planet }
 		has_origin = origin_wg_warhammer
-		has_country_flag = wg_warhamme_unsolve_soul_win_fifth
+		check_variable = { which = wg_warhamme_unsolve_soul_win value = 5 }
 	}
 	immediate = {
-		set_country_flag = wg_warhamme_unsolve_soul_win_sixth
+		change_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
 		from = {
 			while = {
 				count = 5
@@ -9197,12 +9200,11 @@ country_event = {
 	trigger = {
 		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
 		has_origin = origin_wg_warhammer
-		has_country_flag = wg_warhamme_unsolve_soul_win_sixth
-		NOT = { has_country_flag = wg_warhamme_unsolve_soul_win_seventh }
+		check_variable = { which = wg_warhamme_unsolve_soul_win value = 6 }
 		from = { is_same_value = event_target:wg_nicron_country }
 	}
 	immediate = {
-		set_country_flag = wg_warhamme_unsolve_soul_win_seventh
+		change_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
 	}
 	option = {
 		name = wg_origin.304.a
@@ -9218,6 +9220,209 @@ country_event = {
 				remove_modifier = wg_unsolve_soul_ancient_system_debuff
 			}
 			event_target:wg_nicron_country = { destroy_country = yes }
+		}
+	}
+}
+
+country_event = {
+	id = wg_origin.305
+	title = "wg_origin.305.name"
+	desc = {
+		trigger = {
+			success_text = {
+				check_variable = { which = wg_warhamme_unsolve_soul_win value = 3 }
+				text = "wg_origin.305.a.desc"
+			}
+			success_text = {
+				check_variable = { which = wg_warhamme_unsolve_soul_win value = 4 }
+				text = "wg_origin.305.b.desc"
+			}
+			success_text = {
+				check_variable = { which = wg_warhamme_unsolve_soul_win value = 6 }
+				text = "wg_origin.305.c.desc"
+			}
+		}
+	}
+	picture = GFX_evt_interior_battle
+	is_triggered_only = yes
+	trigger = {
+		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		has_origin = origin_wg_warhammer
+		OR = {
+			check_variable = { which = wg_warhamme_unsolve_soul_win value = 3 }
+			check_variable = { which = wg_warhamme_unsolve_soul_win value = 4 }
+			check_variable = { which = wg_warhamme_unsolve_soul_win value = 6 }
+		}
+		from = { is_same_value = event_target:wg_nicron_country }
+	}
+	immediate = {
+		event_target:wg_unsolve_soul_ancient_system = {
+			every_system_planet = {
+				limit = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+				if = {
+					limit = { check_variable = { which = wg_warhamme_unsolve_soul_win value = 3 } }
+					while = {
+						count = 10
+						create_army = {
+							name = "wg_astra_marine"
+							owner = root
+							species = root.owner_species
+							type = "wg_astra_marine"
+						}
+					}
+					while = {
+						count = 15
+						create_army = {
+							name = "wg_space_marine_2"
+							owner = root
+							species = root.owner_species
+							type = "wg_space_marine_2"
+						}
+					}
+					while = {
+						count = 25
+						create_army = {
+							name = "wg_space_marine"
+							owner = root
+							species = root.owner_species
+							type = "wg_space_marine"
+						}
+					}
+				}
+				else_if = {
+					limit = { check_variable = { which = wg_warhamme_unsolve_soul_win value = 4 } }
+					while = {
+						count = 10
+						create_army = {
+							name = "wg_astra_marine"
+							owner = root
+							species = root.owner_species
+							type = "wg_astra_marine"
+						}
+					}
+					while = {
+						count = 15
+						create_army = {
+							name = "wg_space_marine_2"
+							owner = root
+							species = root.owner_species
+							type = "wg_space_marine_2"
+						}
+					}
+					while = {
+						count = 20
+						create_army = {
+							name = "wg_space_marine"
+							owner = root
+							species = root.owner_species
+							type = "wg_space_marine"
+						}
+					}
+				}
+				else_if = {
+					limit = { check_variable = { which = wg_warhamme_unsolve_soul_win value = 6 } }
+					while = {
+						count = 10
+						create_army = {
+							name = "wg_astra_marine"
+							owner = root
+							species = root.owner_species
+							type = "wg_astra_marine"
+						}
+					}
+					while = {
+						count = 10
+						create_army = {
+							name = "wg_space_marine_2"
+							owner = root
+							species = root.owner_species
+							type = "wg_space_marine_2"
+						}
+					}
+					while = {
+						count = 15
+						create_army = {
+							name = "wg_space_marine"
+							owner = root
+							species = root.owner_species
+							type = "wg_space_marine"
+						}
+					}
+				}
+			}
+		} 
+	}
+	option = { name = wg_origin.305.a }
+}
+
+#DEBUG:旧存档兼容
+event = {
+	id = wg_origin.306
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		any_country = {
+			OR = {
+				has_country_flag = wg_warhamme_unsolve_soul_win
+				has_country_flag = wg_warhamme_unsolve_soul_win_twince
+				has_country_flag = wg_warhamme_unsolve_soul_win_third
+				has_country_flag = wg_warhamme_unsolve_soul_win_fourth
+				has_country_flag = wg_warhamme_unsolve_soul_win_fifth
+				has_country_flag = wg_warhamme_unsolve_soul_win_sixth
+				has_country_flag = wg_warhamme_unsolve_soul_win_seventh
+			}
+			NOT = { is_variable_set = wg_warhamme_unsolve_soul_win }
+		}
+	}
+	immediate = {
+		every_country = {
+			limit = {
+				OR = {
+					has_country_flag = wg_warhamme_unsolve_soul_win
+					has_country_flag = wg_warhamme_unsolve_soul_win_twince
+					has_country_flag = wg_warhamme_unsolve_soul_win_third
+					has_country_flag = wg_warhamme_unsolve_soul_win_fourth
+					has_country_flag = wg_warhamme_unsolve_soul_win_fifth
+					has_country_flag = wg_warhamme_unsolve_soul_win_sixth
+					has_country_flag = wg_warhamme_unsolve_soul_win_seventh
+				}
+				NOT = { is_variable_set = wg_warhamme_unsolve_soul_win }
+			}
+			if = {
+				limit = { has_country_flag = wg_warhamme_unsolve_soul_win }
+				change_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
+				remove_country_flag = wg_warhamme_unsolve_soul_win
+			}
+			if = {
+				limit = { has_country_flag = wg_warhamme_unsolve_soul_win_twince }
+				change_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
+				remove_country_flag = wg_warhamme_unsolve_soul_win_twince
+			}
+			if = {
+				limit = { has_country_flag = wg_warhamme_unsolve_soul_win_third }
+				change_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
+				remove_country_flag = wg_warhamme_unsolve_soul_win_third
+			}
+			if = {
+				limit = { has_country_flag = wg_warhamme_unsolve_soul_win_fourth }
+				change_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
+				remove_country_flag = wg_warhamme_unsolve_soul_win_fourth
+			}
+			if = {
+				limit = { has_country_flag = wg_warhamme_unsolve_soul_win_fifth }
+				change_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
+				remove_country_flag = wg_warhamme_unsolve_soul_win_fifth
+			}
+			if = {
+				limit = { has_country_flag = wg_warhamme_unsolve_soul_win_sixth }
+				change_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
+				remove_country_flag = wg_warhamme_unsolve_soul_win_sixth
+			}
+			if = {
+				limit = { has_country_flag = wg_warhamme_unsolve_soul_win_seventh }
+				change_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
+				remove_country_flag = wg_warhamme_unsolve_soul_win_seventh
+			}
 		}
 	}
 }
