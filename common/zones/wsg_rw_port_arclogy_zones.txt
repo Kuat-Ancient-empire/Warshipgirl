@@ -100,7 +100,7 @@ zone_wsg_arcology_rw_science = {
 }
 
 zone_wsg_arcology_rw_soildier = {
-	icon = GFX_colony_type_fortress
+	icon = GFX_colony_type_pantsu
 	base_buildtime = @zone_buildtime
 	potential = { uses_district_set = rw_port_world }
 
@@ -118,9 +118,37 @@ zone_wsg_arcology_rw_soildier = {
 	}
 	#uses_district_set = rw_port_world
 	triggered_district_planet_modifier = {
-		potential = { uses_district_set = rw_port_world }
-		job_wsg_soldier_add = 200
-		planet_housing_add = 200
+		potential = {
+			exists = owner
+			owner = { NOR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+		}
+		modifier = {
+			planet_housing_add = 1500
+			job_wsg_gas_refiner_add = 100
+			job_wsg_chemist_add = 100
+			job_wsg_translucer_add = 100
+			job_wsg_pantsu_maker_add = 400
+			job_wsg_neo_producer_add = 400
+			job_wsg_alpha_add = 300
+		}
+	}
+	triggered_district_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { OR = {
+				has_technology = tech_wsg_senergy
+				has_country_flag = wg_ascension_path_project_s
+			}}
+		}
+		modifier = {
+			planet_housing_add = 1500
+			job_wsg_pantsu_maker_add = 900
+			job_wsg_senergy_add = 400
+			job_wsg_rare_resource_manufacturer_add = 200
+		}
 	}
 
 	max_buildings = 3
