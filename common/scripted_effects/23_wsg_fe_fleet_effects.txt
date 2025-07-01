@@ -3,10 +3,10 @@ create_wg_fe_capital_fleet_and_admiral = {
 	create_wg_fe_admiral = yes
 	create_wg_fe_fleet = yes
 	while = {
-        count = 2
-        create_wg_fe_admiral = yes
-	    create_wg_fe_fleet2 = yes
-    }
+		count = 2
+		create_wg_fe_admiral = yes
+		create_wg_fe_fleet2 = yes
+	}
 	create_wg_fe_construction_ship = yes
 }
 
@@ -78,10 +78,28 @@ create_wg_fe_fleet = {
 					}
 				}
 				random_list = {
-                    1 = { set_location = { target = PREV distance = 5 angle = random } }
-                    1 = { set_location = { target = PREV distance = 15 angle = random } }
-                    1 = { set_location = { target = PREV distance = 25 angle = random } }
-                }
+					1 = {
+						set_location = {
+							target = PREV
+							distance = 5
+							angle = random
+						}
+					}
+					1 = {
+						set_location = {
+							target = PREV
+							distance = 15
+							angle = random
+						}
+					}
+					1 = {
+						set_location = {
+							target = PREV
+							distance = 25
+							angle = random
+						}
+					}
+				}
 				set_fleet_stance = aggressive
 				set_fleet_bombardment_stance = Galo
 				assign_leader = last_created_leader
@@ -214,10 +232,28 @@ create_wg_fe_fleet2 = {
 					}
 				}
 				random_list = {
-                    1 = { set_location = { target = PREV distance = 60 angle = random } }
-                    1 = { set_location = { target = PREV distance = 80 angle = random } }
-                    1 = { set_location = { target = PREV distance = 100 angle = random } }
-                }
+					1 = {
+						set_location = {
+							target = PREV
+							distance = 60
+							angle = random
+						}
+					}
+					1 = {
+						set_location = {
+							target = PREV
+							distance = 80
+							angle = random
+						}
+					}
+					1 = {
+						set_location = {
+							target = PREV
+							distance = 100
+							angle = random
+						}
+					}
+				}
 				set_fleet_stance = aggressive
 				set_fleet_bombardment_stance = Galo
 				assign_leader = last_created_leader
@@ -555,56 +591,140 @@ create_wg_fallen_empire_platform = {
 
 create_wg_fe_admiral = {
 	optimize_memory
-    event_target:wg_fallen_empire = {
-        random_list = {
-            30 = {
-                create_leader = {
-                    class = commander
-                    species = event_target:fe_species_sh
-                    name = random
-                    skill = 10
-                    traits = {
-                        trait = leader_trait_shenhai2
+	event_target:wg_fallen_empire = {
+		random_list = {
+			30 = {
+				create_leader = {
+					class = commander
+					species = event_target:fe_species_sh
+					name = random
+					skill = 10
+					traits = {
+						trait = leader_trait_shenhai2
 						trait = leader_trait_admiral_sh_weapon_master
-                    }
-                }
-            }
-            30 = {
-                create_leader = {
-                    class = commander
-                    species = event_target:fe_species_sh
-                    name = random
-                    skill = 10
-                    traits = {
-                        trait = leader_trait_shenhai2
+					}
+				}
+			}
+			30 = {
+				create_leader = {
+					class = commander
+					species = event_target:fe_species_sh
+					name = random
+					skill = 10
+					traits = {
+						trait = leader_trait_shenhai2
 						trait = leader_trait_admiral_sh_armor
-                    }
-                }
-            }			
-            20 = {
-                create_leader = {
-                    class = commander
-                    species = event_target:fe_species_wsg
-                    name = random
-                    skill = 8
-                    traits = {
-                        trait = leader_trait_warshipgirls2 
+					}
+				}
+			}
+			20 = {
+				create_leader = {
+					class = commander
+					species = event_target:fe_species_wsg
+					name = random
+					skill = 8
+					traits = {
+						trait = leader_trait_warshipgirls2
 						trait = leader_trait_admiral_wsg_cannoneer
-                    }
-                }
-            }
-            20 = {
-                create_leader = {
-                    class = commander
-                    species = event_target:fe_species_wsg
-                    name = random
-                    skill = 8
-                    traits = {
-                        trait = leader_trait_warshipgirls2 
+					}
+				}
+			}
+			20 = {
+				create_leader = {
+					class = commander
+					species = event_target:fe_species_wsg
+					name = random
+					skill = 8
+					traits = {
+						trait = leader_trait_warshipgirls2
 						trait = leader_trait_admiral_wsg_sniper
-                    }
-                }
-            }
-        }
-    }
+					}
+				}
+			}
+		}
+	}
+}
+
+uf_fe_fleet_retargeting = {
+	optimize_memory
+	if = {
+		limit = {
+			NOT = {
+				has_global_flag = first_portal_destroyed
+			}
+			exists = event_target:first_portal_system
+		}
+		event_target:first_portal_system = {
+			save_event_target_as = portal_system
+		}
+	}
+	else_if = {
+		limit = {
+			NOT = {
+				has_global_flag = first_portal_2_destroyed
+			}
+			exists = event_target:first_portal_2_system
+		}
+		event_target:first_portal_2_system = {
+			save_event_target_as = portal_system
+		}
+	}
+	else_if = {
+		limit = {
+			NOT = {
+				has_global_flag = second_portal_destroyed
+			}
+			exists = event_target:second_portal_system
+		}
+		event_target:second_portal_system = {
+			save_event_target_as = portal_system
+		}
+	}
+	else_if = {
+		limit = {
+			NOT = {
+				has_global_flag = second_portal_2_destroyed
+			}
+			exists = event_target:second_portal_2_system
+		}
+		event_target:second_portal_2_system = {
+			save_event_target_as = portal_system
+		}
+	}
+	else_if = {
+		limit = {
+			NOT = {
+				has_global_flag = third_portal_destroyed
+			}
+			exists = event_target:third_portal_system
+		}
+		event_target:third_portal_system = {
+			save_event_target_as = portal_system
+		}
+	}
+	else_if = {
+		limit = {
+			NOT = {
+				has_global_flag = third_portal_2_destroyed
+			}
+			exists = event_target:third_portal_2_system
+		}
+		event_target:third_portal_2_system = {
+			save_event_target_as = portal_system
+		}
+	}
+	event_target:portal_system = {
+		closest_system = {
+			limit = {
+				any_ship_in_system = {
+					exists = owner
+					owner = { NOT = { is_country_type = wg_crisis_country } }
+				}
+			}
+			min_steps = 4
+			random_system_planet = {
+				save_event_target_as = spawn_resistance_fleet_location
+			}
+		}
+	}
 }

@@ -129,76 +129,6 @@ country_event = {
 # 	}
 # }
 
-# 泛多维宇宙善良同盟
-country_event = {
-	id = wg_crisis.23334
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		is_ai = no
-		NOR = {
-			has_global_flag = set_allied_ag_kuat
-			has_global_flag = is_enemy_ag_kuat
-			has_global_flag = wg_invasion_end
-		}
-	}
-
-	immediate = {
-		if = {
-			limit = { OR = {
-				has_global_flag = has_eternal_fleet_country 
-				has_global_flag = kuat_spawned
-			}}
-			country_event = { id = wg_crisis.23335 }
-		} else = {
-			country_event = { id = wg_crisis.23334 days = 180 }
-		}
-	}
-}
-
-country_event = {
-	id = wg_crisis.23335
-	title = wg_crisis.23335.name
-	desc = wg_crisis.23335.desc
-	picture = GFX_evt_em_war_1
-	is_triggered_only = yes
-
-	trigger = {
-		NOR = {
-			has_global_flag = is_allied_ag_kuat
-			has_global_flag = is_enemy_ag_kuat
-			has_global_flag = wg_invasion_end
-		}
-	}
-
-	option = {
-		name = wg_crisis.23335.a
-		custom_tooltip = wg_crisis.23335.a.tooltip
-		hidden_effect = {
-			set_global_flag = set_allied_ag_kuat
-			set_global_flag = is_allied_ag_kuat
-		}
-	}
-	option = {
-		name = wg_crisis.23335.b
-		custom_tooltip = wg_crisis.23335.b.tooltip
-		hidden_effect = {
-			set_global_flag = is_enemy_ag_kuat
-			remove_global_flag = set_allied_ag_kuat
-			remove_global_flag = is_allied_ag_kuat
-			if = {
-				limit = { has_global_flag = has_eternal_fleet_country }
-				set_faction_hostility = {
-					target = event_target:eternal_fleet_country
-					set_hostile = yes
-					set_friendly = no
-				}
-			}
-		}
-	}
-}
-
 country_event = {
 	id = wg_crisis.3
 	hide_window = yes
@@ -4782,27 +4712,6 @@ event = {
 					has_global_flag = wg_crisis_normal
 					has_global_flag = wg_crisis_hard
 					has_global_flag = wg_crisis_insane
-				}
-			}
-			if = { # 狡猾同盟
-				limit = {
-					any_country = {
-						has_wg_special_authority = yes
-						is_ai = no
-					}
-				}
-				random_country = {
-					limit = { 
-						has_wg_special_authority = yes
-						is_ai = no
-					}
-					country_event = { id = wg_crisis.23334 }
-				}
-			} else_if = {
-				limit = { any_country = { is_ai = no }}
-				random_country = {
-					limit = { is_ai = no }
-					country_event = { id = wg_crisis.23334 }
 				}
 			}
 			

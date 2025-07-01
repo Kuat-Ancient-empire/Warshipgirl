@@ -1670,55 +1670,7 @@ country_event = {
 
     immediate = {
         set_timed_global_flag = { flag = resistance_reinforce_cooldown days = 800 }
-        if = {
-            limit = { NOT = { has_global_flag = first_portal_destroyed }}
-            event_target:first_portal_system = {
-                save_event_target_as = portal_system
-            }
-        }
-        else_if = {
-            limit = { NOT = { has_global_flag = first_portal_2_destroyed }}
-            event_target:first_portal_2_system = {
-                save_event_target_as = portal_system
-            }
-        }
-        else_if = {
-            limit = { NOT = { has_global_flag = second_portal_destroyed }}
-            event_target:second_portal_system = {
-                save_event_target_as = portal_system
-            }
-        }
-        else_if = {
-            limit = { NOT = { has_global_flag = second_portal_2_destroyed }}
-            event_target:second_portal_2_system = {
-                save_event_target_as = portal_system
-            }
-        }
-        else_if = {
-            limit = { NOT = { has_global_flag = third_portal_2_destroyed }}
-            event_target:third_portal_system = {
-                save_event_target_as = portal_system
-            }
-        }
-        else_if = {
-            limit = { NOT = { has_global_flag = third_portal_destroyed }}
-            event_target:third_portal_2_system = {
-                save_event_target_as = portal_system
-            }
-        }
-        event_target:portal_system = {
-            closest_system = {
-                limit = {
-                    any_ship_in_system = {
-                        owner = {
-                            NOT = { is_country_type = wg_crisis_country }
-                        }
-                    }
-                }
-                min_steps = 8
-                random_system_planet = { save_event_target_as = spawn_resistance_fleet_location }
-            }
-        }
+        uf_fe_fleet_retargeting = yes
         event_target:wg_resistant_country = {
             if = {
                 limit = { has_global_flag = wg_crisis_easy }
@@ -2533,7 +2485,13 @@ country_event = {
         if = {
             limit = { NOT = { has_global_flag = first_portal_destroyed }}
             event_target:first_portal_system = {
-                save_event_target_as = portal_system
+                random_fleet_in_system = {
+                    limit = {
+                        exists = owner
+                        owner = { is_hostile = root }
+                    }
+                    save_event_target_as = portal_fleet
+                }
             }
         }
         else_if = {
@@ -2541,20 +2499,38 @@ country_event = {
             if = {
                 limit = { NOT = { has_global_flag = second_portal_destroyed }}
                 event_target:second_portal_system = {
-                    save_event_target_as = portal_system
+                    random_fleet_in_system = {
+                        limit = {
+                            exists = owner
+                            owner = { is_hostile = root }
+                        }
+                        save_event_target_as = portal_fleet
+                    }
                 }
             }
             else_if = {
                 limit = { NOT = { has_global_flag = third_portal_destroyed }}
                 event_target:third_portal_system = {
-                    save_event_target_as = portal_system
+                    random_fleet_in_system = {
+                        limit = {
+                            exists = owner
+                            owner = { is_hostile = root }
+                        }
+                        save_event_target_as = portal_fleet
+                    }
                 }
             }
         }
         if = {
             limit = { NOT = { has_global_flag = first_portal_2_destroyed }}
             event_target:first_portal_2_system = {
-                save_event_target_as = portal_system
+                random_fleet_in_system = {
+                    limit = {
+                        exists = owner
+                        owner = { is_hostile = root }
+                    }
+                    save_event_target_as = portal_fleet
+                }
             }
         }
         else_if = {
@@ -2562,13 +2538,25 @@ country_event = {
             if = {
                 limit = { NOT = { has_global_flag = second_portal_2_destroyed }}
                 event_target:second_portal_2_system = {
-                    save_event_target_as = portal_system
+                    random_fleet_in_system = {
+                        limit = {
+                            exists = owner
+                            owner = { is_hostile = root }
+                        }
+                        save_event_target_as = portal_fleet
+                    }
                 }
             }
             else_if = {
                 limit = { NOT = { has_global_flag = third_portal_2_destroyed }}
                 event_target:third_portal_2_system = {
-                    save_event_target_as = portal_system
+                    random_fleet_in_system = {
+                        limit = {
+                            exists = owner
+                            owner = { is_hostile = root }
+                        }
+                        save_event_target_as = portal_fleet
+                    }
                 }
             }
         }
@@ -2577,9 +2565,7 @@ country_event = {
 				has_fleet_flag = resistance_attack_fleet
 				is_fleet_idle = yes
 			}
-			queue_actions = {
-                move_to = event_target:portal_system
-			}
+			auto_follow_fleet = { target = event_target:portal_fleet attack_fleet = yes }
 		}
     }
 }

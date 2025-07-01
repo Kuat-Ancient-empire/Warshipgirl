@@ -3806,7 +3806,7 @@ country_event = {
 				plural = "PRESCRIPTED_species_plural_sh1"
 				adjective = "PRESCRIPTED_species_adjective_sh1"
 				class = "ShenHai"
-				name_list = "SH"
+				namelist = "SH"
 				portrait = "sh"
 				traits = {
 					trait = trait_pc_ocean_preference
@@ -4375,7 +4375,8 @@ planet_event = {
 		if = {
 			limit = { owner = { check_variable = { which = sh_anomaly_event_count value < 2 }}}
 			owner = { change_variable = { which = sh_anomaly_event_count value = 1 }}
-		} else = {
+		} 
+		else = {
 			planet_event = { id = sh.3067 days = 10 }
 			set_global_flag = sh_anomaly_event_triggered
 		}
@@ -4391,7 +4392,6 @@ planet_event = {
 
 	immediate = {
 		save_global_event_target_as = sh_anomaly_planet_target
-		set_planet_flag = sh_anomaly_event_planet
 	}
 	option = {
 		name = "sh.3067.a"
@@ -4405,7 +4405,7 @@ planet_event = {
 	picture = GFX_evt_colony_settlement
 	is_triggered_only = yes
 	trigger = {
-		has_planet_flag = sh_anomaly_event_planet 
+		is_same_value = event_target:sh_anomaly_planet_target
 	}
 	option = {
 		name = "sh.3068.a"
@@ -4501,6 +4501,9 @@ planet_event = {
 				remove_trait = sh_trait_anomaly
 			}
 		}
+	}
+	after = {
+		clear_global_event_target = sh_anomaly_planet_target
 	}
 }
 # 测试用

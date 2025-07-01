@@ -9864,12 +9864,9 @@ planet_event = {
 	trigger = {
 		exists = owner
 		owner = {
-			OR = {
-				is_wg_empire = yes
-				has_authority = auth_united_fleet
-			}
+			has_wg_and_uf_special_authority = yes
 		}
-        has_planet_flag	= wg_old_god_planet_flag 	
+        is_same_value = event_target:wg_old_god_planet_target
 	}
 
 	immediate = {
@@ -9889,7 +9886,6 @@ planet_event = {
 		owner = { NOT = { has_country_flag = wg_old_god_event_triggered }} 
 	}
 	immediate = {
-		
 		random_ambient_object = {
 			limit = { has_ambient_object_flag = bug_object_flag }
 			destroy_ambient_object = this
@@ -9900,20 +9896,11 @@ planet_event = {
 		hidden_effect = {
 			owner = {
 				set_country_flag = wg_old_god_event_triggered
-				country_event = { id = wg_boss.35222 }
+				random_ambient_object = {
+					limit = { has_ambient_object_flag = wg_old_god_psi_storm_flag }
+					destroy_ambient_object = this
+				}
 			}			
-		}
-	}
-}
-country_event = {
-	id = wg_boss.35222
-	hide_window = yes
-	is_triggered_only = yes
-
-	immediate = {
-		random_ambient_object = {
-			limit = { has_ambient_object_flag = wg_old_god_psi_storm_flag }
-			destroy_ambient_object = this
 		}
 	}
 }
@@ -9929,12 +9916,10 @@ planet_event = {
 	trigger = {
 		exists = owner
 		owner = {
-			OR = {
-				is_wg_empire = yes
-				has_authority = auth_united_fleet
-			}
+			has_wg_and_uf_special_authority = yes
+			NOT = { has_country_flag = building_wg_sacrilege_altar_allowed }
 		}
-        has_planet_flag	= wg_old_god_planet_flag 	
+        is_same_value = event_target:wg_old_god_planet_target
 	}
 
 	option = {
@@ -10177,12 +10162,6 @@ country_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		every_galaxy_planet = {
-			limit = {
-				has_planet_flag = wg_old_god_planet_flag
-			}
-			save_event_target_as = wg_old_god_planet_location
-		}	
 		create_country = {
 			name = "NAME_WG_OLD_GOD"
 			type = guardian_wg_old_god
@@ -10225,7 +10204,7 @@ country_event = {
 					}
 				}				
 				set_location = {
-					target = event_target:wg_old_god_planet_location
+					target = event_target:wg_old_god_planet_target
 					distance = 10
 					angle = 270
 				}
@@ -10248,7 +10227,7 @@ country_event = {
 					}
 				}				
 				set_location = {
-					target = event_target:wg_old_god_planet_location
+					target = event_target:wg_old_god_planet_target
 					distance = 30
 					angle = 90
 				}
@@ -10271,7 +10250,7 @@ country_event = {
 					}
 				}				
 				set_location = {
-					target = event_target:wg_old_god_planet_location
+					target = event_target:wg_old_god_planet_target
 					distance = 40
 					angle = 180
 				}
