@@ -2647,6 +2647,121 @@ country_event = {
 		}
 	}
 }
+
+
+country_event = { 
+	id = wg_paragon.27
+	title = "wg_paragon.27.name"
+	desc = "wg_paragon.27.desc"
+	is_triggered_only = yes
+	
+	picture = GFX_leader_wg_12_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+            name = SH_SchleswigHolstein
+            plural = SH_SchleswigHolstein
+            class = SH_SchleswigHolstein
+            portrait = sh43
+            namelist = ART1
+			allow_negative_traits = no
+            effect = {
+                save_global_event_target_as = sh_SchleswigHolstein_species
+            }
+		}
+		create_leader = {
+			class = commander
+			species = event_target:sh_SchleswigHolstein_species
+			name = "Name_SH_SchleswigHolstein"
+			set_age = 27
+			immortal = yes
+			gender = female
+			custom_description = sh_SchleswigHolstein_desc
+			custom_catch_phrase = sh_SchleswigHolstein_catch_phrase
+			traits = {
+				trait = subclass_commander_admiral
+				trait = leader_trait_shenhai
+				trait = leader_trait_sh_SchleswigHolstein_paragon
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				set_leader_flag = wsg_event_leader
+				save_event_target_as = ethic_leader
+				set_leader_flag = renowned_leader
+				set_leader_flag = is_in_recruit_window
+				set_variable = { which = leader_pending_negative_traits_unmodified value = 1 }
+				add_skill_without_trait_selection = 5
+			}				
+		}
+		last_created_leader = {
+			if = {
+				limit = { owner = { 
+					OR = {
+						has_ascension_perk = ap_shenhai_silent
+						has_civic = civic_CM
+					} 
+				}}
+				add_trait = { trait = leader_trait_shenhai1 show_message = no }
+				remove_trait = leader_trait_shenhai
+				fire_on_action = {
+					on_action = on_wg_affection_system_end
+				}
+			}
+			else_if = {
+				limit = { owner = { has_ascension_perk = ap_shenhai_icebreaking }}
+				add_trait = { trait = leader_trait_shenhai2 show_message = no }
+				remove_trait = leader_trait_shenhai
+				set_variable = { which = affection value = 35 }
+			}
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+	option = {
+		name = DISMISS
+		tag = dismiss_leader
+		hidden_effect = {
+			last_created_leader = {
+				kill_leader = { show_notification = no fire = yes }
+			}
+		}
+	}
+    option = {
+		name = wg_paragon.27.a
+		response_text = wg_paragon.27.a.response
+		is_dialog_only = yes
+	}
+
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.27.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
 ####典范获得事件
 country_event = {
 	id = wg_paragon.1000
@@ -2774,6 +2889,14 @@ country_event = {
 				chance = 80
 				set_country_flag = wg_paragon.1009
 				country_event = { id = wg_paragon.1009 days = 360 random = 360  }#随机拿大头目
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = wg_paragon.1026 } }
+			random = {
+				chance = 80
+				set_country_flag = wg_paragon.1026
+				country_event = { id = wg_paragon.1026 days = 360 random = 360  }#随机拿石勒苏益格
 			}
 		}
 		if = {
@@ -3173,5 +3296,22 @@ country_event = {
 	}
 	option = {
 		name = "wg_paragon.1025.b"
+	}
+}
+
+country_event = {
+	id = wg_paragon.1026
+	title = "wg_paragon.1026.name"
+	desc = "wg_paragon.1026.desc"
+	picture = GFX_evt_SH1
+
+	is_triggered_only = yes
+
+	option = {
+		name = "wg_paragon.1026.a"
+		custom_tooltip = wg_paragon.1026.a.tooltip
+		hidden_effect = { 
+			country_event = { id = wg_paragon.27 }
+		}
 	}
 }
