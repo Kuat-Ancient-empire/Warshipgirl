@@ -61,6 +61,37 @@ country_event = {
 				}
 			}
 		}
+
+		if = {
+			limit = { OR = {
+				graphical_culture = wsg_01
+				graphical_culture = wsg_05
+			} }
+			random_owned_leader = {
+				limit = { leader_class = commander }
+				save_event_target_as = uf_start_commad_ship_leader
+			}
+			create_fleet = {
+				effect = {
+					set_owner = root
+					while = {
+						count = 3
+						create_ship = {
+							name = random
+							random_existing_design = uf_corvette
+						}
+					}
+					set_fleet_stance = evasive
+					set_location = root.capital_scope.star
+					if = {
+						limit = {
+							exists = event_target:uf_start_commad_ship_leader
+						}
+						set_leader = event_target:uf_start_commad_ship_leader
+					}
+				}
+			}
+		}
 		
 		owner = {
 			add_resource = { sr_uf = 100 }
@@ -323,16 +354,12 @@ planet_event = {
 
 	is_triggered_only = yes
 
-	trigger = {
-		has_building = building_uf_hyperdimensional_matter	
-	}
 	option = {
 		name = uf_origin.7.a
-		owner = {
-			add_resource = { unity = 100 }
-		}		
+		owner = { add_resource = { unity = 100 } }		
 	}
 }
+
 #联合一飞改特性
 country_event = {
 	id = uf_origin.8
@@ -1156,7 +1183,7 @@ planet_event = {
 
 	is_triggered_only = yes
 	trigger = {
-		has_building = building_uf_monument	
+		exists = owner
 		owner = {
 			NOT = { has_country_flag = uf_monument_event_triggered }
 		}	
