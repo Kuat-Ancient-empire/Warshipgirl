@@ -61,6 +61,37 @@ country_event = {
 				}
 			}
 		}
+
+		if = {
+			limit = { OR = {
+				graphical_culture = wsg_01
+				graphical_culture = wsg_05
+			} }
+			random_owned_leader = {
+				limit = { leader_class = commander }
+				save_event_target_as = uf_start_commad_ship_leader
+			}
+			create_fleet = {
+				effect = {
+					set_owner = root
+					while = {
+						count = 3
+						create_ship = {
+							name = random
+							random_existing_design = uf_corvette
+						}
+					}
+					set_fleet_stance = evasive
+					set_location = root.capital_scope.star
+					if = {
+						limit = {
+							exists = event_target:uf_start_commad_ship_leader
+						}
+						set_leader = event_target:uf_start_commad_ship_leader
+					}
+				}
+			}
+		}
 		
 		owner = {
 			add_resource = { sr_uf = 100 }
