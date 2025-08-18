@@ -1786,47 +1786,6 @@ country_event = {
     }
 }
 
-# Attack fleet moving reset
-country_event = {
-    id = wg_crisis.46
-    hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		is_country_type = wg_crisis_country
-		FROMFROM = {
-			OR = {
-				has_fleet_flag = attack_fleet
-				has_fleet_flag = raider_fleet
-			}
-		}
-		fromfromfrom = { OR = {
-			is_ship_class = shipclass_starbase
-			is_ship_class = shipclass_military
-		} }
-	}
-
-	immediate = {
-		FROMFROM = { 
-			solar_system = {
-				every_fleet_in_system = {
-					limit = {
-						exists = owner
-						owner = { is_country_type = wg_crisis_country }
-						OR = {
-							has_fleet_flag = attack_fleet
-							has_fleet_flag = raider_fleet
-						}
-					}
-					clear_orders = yes
-					clear_fleet_actions = this
-					fleet_event = { id = wg_crisis.96 days = 3 random = 2 }
-				}
-			}
-		}
-	}
-}
-
 #Invasion fleet action on orbit planet. 
 country_event = {
 	id = wg_crisis.461

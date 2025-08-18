@@ -7,10 +7,6 @@ country_event = {
 	fire_only_once = yes
 
 	immediate = {
-		# random_country = {
-		# 	limit = { is_country_type = global_event }
-		# 	country_event = { id = wg_khan.100 } # 初始化变量和event target
-		# }
 		set_global_flag = wg_khan_crisis_active
 		event_target:WG_Khan_gate_system_target = {
 			random_system_planet = {
@@ -1605,27 +1601,77 @@ event = {
 ###############################
 # 舰队行为
 ###############################
-# country_event = {
-# 	id = wg_khan.100
-# 	hide_window = yes
-# 	is_triggered_only = yes
+#Invasion fleet action on orbit planet. 
+country_event = {
+	id = wg_khan.461
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_khan_country_type = yes
+		has_global_flag = wg_khan_crisis_active
+		from = { has_fleet_flag = Khan_attack_fleet }
+		fromfrom = { OR = { is_star = yes NOT = { exists = owner } } }
+	}
+	immediate = {
+		from = {
+			clear_orders = yes
+			clear_fleet_actions = this
+			fleet_event = { id = wg_khan.96 days = 3 random = 2 }
+		}
+	}
+}
 
-# 	trigger = {
-# 		is_country_type = global_event
-# 	}
-
-# 	immediate = {
-# 		set_variable = { which = system_id value = 0 }
-# 		every_system = {
-# 			ROOT = { change_variable = { which = system_id value = 1 }}
-# 			set_variable = { which = system_id value = ROOT }
-# 			save_system = { ID = system_id }
-# 		}
-# 	}
-# }
+event = {
+	id = wg_khan.462
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		exists = event_target:WG_Khan_country
+		event_target:WG_Khan_country = {
+			any_owned_fleet = {
+				exists = this
+				is_fleet_idle = yes
+				has_fleet_flag = Khan_attack_fleet
+				NAND = {
+					exists = orbit
+					orbit = {
+						NOT = { is_star = yes }
+						exists = controller
+						controller = { is_hostile = event_target:WG_Khan_country }
+					}
+				}
+			}
+		}
+	}
+	immediate = {
+		if = {
+			limit = { exists = event_target:WG_Khan_country }
+			event_target:WG_Khan_country = {
+				every_owned_fleet = {
+					limit = {
+						exists = this
+						is_fleet_idle = yes
+						has_fleet_flag = Khan_attack_fleet
+						NAND = {
+							exists = orbit
+							orbit = {
+								NOT = { is_star = yes }
+								exists = controller
+								controller = { is_hostile = event_target:WG_Khan_country }
+							}
+						}
+					}
+					clear_orders = yes
+					clear_fleet_actions = this
+					fleet_event = { id = wg_khan.96 days = 3 random = 2 }
+				}
+			}
+		}
+	}
+}
 
 fleet_event = {
-	id = wg_khan.100
+	id = wg_khan.96
 	hide_window = yes
 	is_triggered_only = yes
 
@@ -1633,224 +1679,10 @@ fleet_event = {
 		exists = this
 		has_fleet_flag = Khan_attack_fleet
 		owner = { is_khan_country_type = yes }
-		any_system = {
-			any_system_planet = {
-				OR = {
-					OR = {
-						is_colonizable = yes
-						# 相位星球
-						has_planet_flag = phaseshifting_active
-					}
-					has_owner = yes
-				}
-				NOT = { has_planet_flag = wg_khan_target_planet }
-			}
-		}
 		has_global_flag = wg_khan_crisis_active
-		NOT = { has_fleet_flag = orders_cooldown }
 	}
 
-	immediate = {
-		queue_actions = {
-			repeat = {
-				effect = {
-					id = wg_khan.100.e0
-					if = {
-						limit = { NOT = { any_system = { check_variable = { which = wg_khan_fleet_id value < 1 }}}}
-						solar_system = { set_variable = { which = wg_khan_fleet_id value = 0 }}
-					}
-				}
-				# 等候一段时间后仍然找不到可通行路径，就跑去随机星系霍霍
-				repeat = {
-					while = {
-						id = wg_khan.100.t0
-						has_fleet_flag = cannot_find_path
-						NOT = {
-							any_system = {
-								ROOT = { can_access_system = PREV }
-								OR = {
-									exists = starbase
-									any_system_planet = {
-										is_colony = yes
-										owner = { is_wg_default_country = yes }
-									}
-								}
-							}
-						}
-					}
-					find_random_system = {
-						trigger = {
-							id = wg_khan.100.t01
-							any_system_planet = { is_colony = no }
-							closest_system = {
-								min_steps = 1
-								any_system_planet = {
-									is_colony = no
-									owner = { is_wg_default_country = yes }
-								}
-							}
-						}
-						found_system = { 
-							move_to = this
-							effect = {
-								id = wg_khan.100.e01
-								root = { remove_fleet_flag = cannot_find_path }
-							}
-						}
-					}
-				}
-				find_closest_system = {
-					trigger = {
-						id = wg_khan.100.t1
-						if = {
-							limit = { any_system_planet = {
-								is_colony = yes
-								owner = { is_wg_default_country = yes }
-								owner = { is_hostile = root.owner }
-							}}
-							any_system_planet = {
-								is_colony = yes
-								owner = { is_wg_default_country = yes }
-								owner = { is_hostile = root.owner }
-							}
-						} else = {
-							exists = starbase
-							starbase = { has_starbase_size >= starbase_outpost }
-							starbase = { owner = { is_hostile = root.owner } }
-						}
-						ROOT = { can_access_system = prev }
-						check_variable = { which = wg_khan_fleet_id value < 1 }
-					}
-					found_system = {
-						effect = {
-							id = wg_khan.100.e1
-							set_variable = { which = wg_khan_fleet_id value = root.fleet_id }
-						}
-						move_to = this
-						repeat = {
-							while = {
-								id = wg_khan.100.t2
-								any_system_planet = {
-									is_colony = yes
-									owner = { is_wg_default_country = yes }
-									controller = { is_same_value = PREV.owner }
-								}
-							}
-							find_closest_planet = {
-								trigger = {
-									id = wg_khan.100.t3
-									is_colony = yes
-									owner = { is_wg_default_country = yes }
-								}
-								found_planet = {
-									orbit_planet = this
-									effect = {
-										id = wg_khan.100.e2
-										ROOT = { set_fleet_flag = bombarding_planet }
-										set_planet_flag = wg_khan_target_planet
-										solar_system = { if = {
-											limit = { check_variable = { which = fleet_id value < 1 }}
-											set_variable = { which = fleet_id value = root.fleet_id }
-										}}
-									}
-									repeat = {
-										while = {
-											id = wg_khan.100.t4
-											ROOT = { has_fleet_flag = bombarding_planet }
-										}
-										effect = {
-											id = wg_khan.100.e3
-											if = {
-												# 星球被炸到没人，移除flag
-												limit = { OR = { is_colony = no is_colonizable = no }}
-												ROOT = { remove_fleet_flag = bombarding_planet }
-											}
-										} 
-										wait = 5
-									}
-								}
-							}
-							move_to = this							# move away from the planet
-							wait = 5
-						} 
-						wait = 15
-					}					
-					failed = {
-						# 找不到路，先去附近有舰队的星系帮忙炸球
-						find_closest_system = {
-							trigger = {
-								id = wg_khan.100.t9
-								ROOT = { can_access_system = prev }
-								check_variable = { which = wg_khan_fleet_id value < 1 }
-							}
-							found_system = {
-								effect = {
-									id = wg_khan.100.t91
-									set_variable = { which = wg_khan_fleet_id value = root.fleet_id }
-								}
-								move_to = this
-								repeat = {
-									while = {
-										id = wg_khan.100.t92
-										any_system_planet = {
-											is_colony = yes
-											owner = { is_wg_default_country = yes }
-											controller = { is_same_value = PREV.owner }
-										}
-									}
-									find_closest_planet = {
-										trigger = {
-											id = wg_khan.100.t93
-											is_colony = yes
-											owner = { is_wg_default_country = yes }
-										}
-										found_planet = {
-											orbit_planet = this
-											effect = {
-												id = wg_khan.100.e92
-												ROOT = { set_fleet_flag = bombarding_planet }
-											}
-											repeat = {
-												while = {
-													id = wg_khan.100.t94
-													ROOT = { has_fleet_flag = bombarding_planet }
-												}
-												effect = {
-													id = wg_khan.100.e93
-													if = {
-														# 星球被炸到没人，移除flag
-														limit = { OR = { is_colony = no is_colonizable = no }}
-														ROOT = { remove_fleet_flag = bombarding_planet }
-													}
-												} 
-												wait = 5
-											}
-										}
-									}
-									move_to = this							# move away from the planet
-									wait = 5
-								} 
-								wait = 15
-							}
-							failed = {
-								# 完全找不到路，等候一会
-								effect = {
-									id = wg_khan.100.e13
-									ROOT = { 
-										set_fleet_flag = cannot_find_path
-										set_timed_fleet_flag = {
-											flag = orders_cooldown days = 200
-										}
-									}
-								}
-								wait = 200
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	immediate = { uf_exe_invasion_fleet_action = { ID = wg_khan.96 TYPE = wg_crisis_khan OWNER = WG_Khan_country OWNER_2 = WG_Khan_country } }
 }
 
 #攻击舰队被击破，移除对应目标星系变量
@@ -2661,7 +2493,7 @@ country_event = {
 	}
 
 	immediate = {
-		FROMFROM = { every_combatant_fleet = {
+		FROMFROMFROM = { if = {
 			limit = { 
 				has_fleet_flag = Khan_attack_fleet
 				NOT = { has_fleet_flag = khan_jammer_applied }
@@ -2855,43 +2687,19 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		OR = {
-			FROMFROM = { 
-				has_fleet_flag = super_sukhbaatar_fleet
-				NOT = { has_fleet_flag = in_battle }
-				owner = { any_owned_ship = {
-					fleet = { is_same_value = PREVPREVPREV }
-					NOT = { is_ship_class = shipclass_science_ship }
-				}}
-			}
-			FROMFROMFROM = { 
-				has_fleet_flag = super_sukhbaatar_fleet
-				NOT = { has_fleet_flag = in_battle }
-				owner = { any_owned_ship = {
-					fleet = { is_same_value = PREVPREVPREV }
-					NOT = { is_ship_class = shipclass_science_ship }
-				}}
-			}
+		FROMFROM = { 
+			has_fleet_flag = super_sukhbaatar_fleet
+			NOT = { has_fleet_flag = in_battle }
+			owner = { any_owned_ship = {
+				fleet = { is_same_value = root.fromfrom }
+				NOT = { is_ship_class = shipclass_science_ship }
+			}}
 		}
 	}
 
 	immediate = {
 		FROMFROM = {
 			if = {
-				limit = { has_fleet_flag = super_sukhbaatar_fleet }
-				set_fleet_flag = in_battle
-				save_global_event_target_as = khan_star_destroyer_fleet
-				leader = { save_global_event_target_as = WG_Sukhbaatar_target }
-				solar_system = {
-					save_global_event_target_as = wg_Da_Khan_system_home_target
-				}
-				owner = {
-					save_global_event_target_as = wg_Da_Khan_home_country
-				}
-			}
-		}
-		FROMFROMFROM = {
-			if = { 
 				limit = { has_fleet_flag = super_sukhbaatar_fleet }
 				set_fleet_flag = in_battle
 				save_global_event_target_as = khan_star_destroyer_fleet
@@ -2975,15 +2783,13 @@ country_event = {
 		event_target:wg_Da_Khan_system_home_target = {
 			set_star_flag = wg_khan_iron_curtain_created
 			every_fleet_in_system = {
-				limit = { 
-					NOR = { 
-						has_fleet_flag = wg_khan_iron_curtain 
-						has_fleet_flag = super_sukhbaatar_fleet
-						has_fleet_flag = khan_fleet 
-					}
-				}
+				limit = { OR = { 
+					has_fleet_flag = wg_khan_iron_curtain 
+					has_fleet_flag = super_sukhbaatar_fleet
+					has_fleet_flag = khan_fleet 
+				} }
 				set_timed_fleet_flag = { flag = wg_khan_iron_curtain days = 30 }
-				add_modifier = { modifier = khan_iron_curtain_to_enemy_debuff days = 30 }
+				add_modifier = { modifier = khan_iron_curtain_to_enemy_buff days = 30 }
 			}
 		}
 		country_event = { id = wg_khan.301 days = 120 }
@@ -3463,11 +3269,9 @@ country_event = {
 					name = "NAME_Khan_boss"
 					design = "NAME_WG_Khan_star_destroyer_boss"
 					upgradable = no
-					effect = {
-						set_ship_flag = khan_star_destroyer
-						add_modifier = {
-							modifier = khan_iron_curtain_to_enemy_debuff
-						}
+					effect = { 
+						set_ship_flag = khan_star_destroyer 
+						add_modifier = { modifier = khan_iron_curtain_to_enemy_debuff }
 					}
 				}
 				set_location = {
@@ -3475,9 +3279,7 @@ country_event = {
 					distance = 180
 					angle = 100
 				}
-				add_modifier = {
-					modifier = khan_iron_curtain_to_enemy_debuff
-				}
+				add_modifier = { modifier = khan_iron_curtain_to_enemy_debuff }
 				set_fleet_flag = wg_khan_fleet
 				set_fleet_flag = super_sukhbaatar_fleet
 				save_global_event_target_as = khan_star_destroyer_fleet
