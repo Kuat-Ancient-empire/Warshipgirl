@@ -1685,26 +1685,6 @@ fleet_event = {
 	immediate = { uf_exe_invasion_fleet_action = { ID = wg_khan.96 TYPE = wg_crisis_khan OWNER = WG_Khan_country OWNER_2 = WG_Khan_country } }
 }
 
-#攻击舰队被击破，移除对应目标星系变量
-country_event = {
-	id = wg_khan.99
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = {
-		is_khan_country_type = yes
-		FROMFROM = { has_fleet_flag = Khan_attack_fleet }
-	}
-	immediate = {
-		FROMFROM = { save_event_target_as = destroyed_fleet }
-		random_system = {
-			limit = {
-				check_variable = { which = wg_khan_fleet_id value = event_target:destroyed_fleet.fleet_id }
-			}
-			set_variable = { which = wg_khan_fleet_id value = 0 }
-		}
-	}
-}
-
 # Colony Bombarded ( stage 1 )
 planet_event = {
 	id = wg_khan.101
@@ -2913,6 +2893,8 @@ country_event = {
 		event_target:wg_Da_Khan_system_home_target = {
 			every_fleet_in_system = {
 				limit = { 
+					exists = owner
+					owner = { is_invisable_faction = no }
 					NOR = { 
 						has_fleet_flag = super_sukhbaatar_fleet 
 						has_fleet_flag = khan_fleet 
@@ -2932,69 +2914,26 @@ country_event = {
 					}
 				}
 			}
-			random_fleet_in_system = { save_event_target_as = largest_fleet }
-			every_fleet_in_system = {
+			ordered_fleet_in_system = {
+				position = 0
+				order_by = fleet_force
 				limit = { 
+					exists = owner
+					owner = { is_invisable_faction = no }
 					NOR = { 
-						has_fleet_flag = khan_fleet 
 						has_fleet_flag = super_sukhbaatar_fleet 
-						is_same_value = event_target:largest_fleet
+						has_fleet_flag = khan_fleet 
 					}
 				}
-				if = {
-					limit = { check_variable = { which = fleet_force value > event_target:largest_fleet.fleet_force }}
-					save_event_target_as = largest_fleet
-				}
+				save_event_target_as = largest_fleet
 			}
-			# every_fleet_in_system = {
-			# 	limit = { NOT = { has_fleet_flag = super_sukhbaatar_fleet }}
-			# 	set_variable = { which = fleet_force value = 0 }
-			# }
 		}
 		event_target:largest_fleet = {
-			every_owned_ship = {
-				set_disabled = yes
-			}
-			set_event_locked = yes
+			set_confused = yes
 			set_timed_fleet_flag = { flag = wg_khan_psychic_dominator days = 30 }
-			fleet_event = { id = wg_khan.304 days = 1 }
 			fleet_event = { id = wg_khan.305 days = 30 }
 		}
 		country_event = { id = wg_khan.303 days = 120 }
-	}
-}
-
-fleet_event = {
-	id = wg_khan.304
-	hide_window = yes
-	is_triggered_only = yes
-	immediate = {
-		every_owned_ship = {
-			set_disabled = no
-		}
-		queue_actions = {
-			find_random_system = {
-				trigger = {
-					id = wg_khan.303.t1
-					space_owner = { is_same_value = ROOT.owner }
-					has_access_fleet = root.owner
-				}
-				found_system = {
-					move_to = this
-				}
-				failed = {
-					find_random_system = {
-						trigger = {
-							id = wg_khan.303.t2
-							has_access_fleet = root.owner
-						}
-						found_system = { 
-							move_to = this
-						}
-					}
-				}
-			}
-		}
 	}
 }
 
@@ -3005,7 +2944,7 @@ fleet_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		set_event_locked = no
+		set_confused = no
 		event_target:WG_Sukhbaatar_target = {
 			add_timed_trait = { trait = leader_trait_khan_psychic_dominator days = 90 }
 		}

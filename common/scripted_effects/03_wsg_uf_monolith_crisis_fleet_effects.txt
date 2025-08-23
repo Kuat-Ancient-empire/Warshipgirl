@@ -20,12 +20,8 @@ common_monolith_crisis_fleet_create_effect = {
                 angle = random
             }
             set_fleet_stance = aggressive
-            set_fleet_bombardment_stance = Galo
-            #assign_leader = last_created_leader
-            #set_aggro_range_measure_from = self
-            #set_aggro_range = 500
-            owner = { change_variable = { which = MonoC_fleet_id value = 1 }}
-            set_variable = { which = MonoC_fleet_id value = owner.MonoC_fleet_id }
+            set_fleet_bombardment_stance = indiscriminate
+            set_fleet_flag = monolith_attack_fleet
             fleet_event = { id = monolith_crisis.121 }
         }	
         settings = { 
@@ -154,4 +150,26 @@ create_monolith_crisis_titan = {
             upgradable = no
         }
     }
+}
+
+monilith_crisis_destroy_planet = {
+	set_timed_fleet_flag = { flag = monolith_crisis_ordered days = 90 }
+	prev = { 
+		if = {
+			limit = { NOT = { has_planet_flag = monolith_crisis_bombarmenting } }
+			planet_event = { id = monolith_crisis.201 days = 90 scopes = { from = root } } 
+		}
+		set_timed_planet_flag = { flag = monolith_crisis_bombarmenting days = 90 }
+	}
+}
+
+monilith_crisis_building_the_starbase = {
+	set_timed_fleet_flag = { flag = monolith_crisis_ordered days = 30 }
+	solar_system = {
+		if = {
+			limit = { NOT = { has_star_flag = monolith_crisis_building_temple } }
+			system_event = { id = monolith_crisis.200 days = 30 }
+		}
+		set_timed_star_flag = { flag = monolith_crisis_building_temple days = 30 }
+	}
 }

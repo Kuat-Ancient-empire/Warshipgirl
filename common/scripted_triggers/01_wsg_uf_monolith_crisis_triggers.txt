@@ -5,13 +5,16 @@ monolith_target_system_trigger = {
 		has_star_flag = monolith_crisis_systems
 	}
 	OR = {
-		NOT = { exists = space_owner }
 		AND = {
 			exists = space_owner
-			space_owner = { NOT = { is_country_type = monolith_crisis_country }}
+			space_owner = { NOR = { 
+				is_same_value = event_target:$OWNER$ 
+				is_same_value = event_target:$OWNER_2$ 
+			}}
 		}
 		any_system_planet = { 
-			monolith_target_planet_trigger = yes
+			has_owner = yes 
+			owner = { NOT = { is_country_type = primitive }}
 		}
 	}
 }

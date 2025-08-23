@@ -419,3 +419,23 @@ is_ban_vanilla_ap_country = {
 		has_authority = "auth_united_fleet"
 	}
 }
+
+uf_standard_system_target_triggers = {
+	optimize_memory
+	exists = controller
+	controller = { OR = { is_hostile = event_target:$OWNER$ is_hostile = event_target:$OWNER_2$ } }
+	OR = { is_colony = yes is_under_colonization = yes }
+	count_fleet_in_orbit = { count = 0 limit = {
+		exists = owner
+		owner = { OR = { is_same_value = event_target:$OWNER$ is_same_value = event_target:$OWNER_2$ } }
+		NOT = { is_same_value = root }
+	} }
+}
+
+uf_standard_ship_target_triggers = {
+	optimize_memory
+	exists = owner
+	owner = { OR = { is_hostile = event_target:$OWNER$ is_hostile = event_target:$OWNER_2$ } }
+	is_disabled = no 
+	OR = { is_ship_class = shipclass_military is_ship_class = shipclass_starbase }
+}

@@ -1231,6 +1231,64 @@ country_event = {
 	}
 }
 
+###############################
+# 舰队行为
+###############################
+#Invasion fleet action on orbit planet. 
+country_event = {
+	id = monolith_crisis.1211
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_country_type = monolith_crisis_country
+		has_global_flag = monolith_crisis_invaded
+		from = { has_fleet_flag = monolith_attack_fleet }
+		fromfrom = { OR = { is_star = yes NOT = { exists = owner } } }
+	}
+	immediate = {
+		from = {
+			clear_orders = yes
+			clear_fleet_actions = this
+			fleet_event = { id = monolith_crisis.121 days = 3 random = 2 }
+		}
+	}
+}
+
+event = {
+	id = monolith_crisis.1212
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		exists = event_target:monolith_crisis_country
+		event_target:monolith_crisis_country = {
+			any_owned_fleet = {
+				exists = this
+				is_fleet_idle = yes
+				has_fleet_flag = monolith_attack_fleet
+				NOT = { has_fleet_flag = monolith_crisis_ordered }
+			}
+		}
+	}
+	immediate = {
+		if = {
+			limit = { exists = event_target:monolith_crisis_country }
+			event_target:monolith_crisis_country = {
+				every_owned_fleet = {
+					limit = {
+						exists = this
+						is_fleet_idle = yes
+						has_fleet_flag = monolith_attack_fleet
+						NOT = { has_fleet_flag = monolith_crisis_ordered }
+					}
+					clear_orders = yes
+					clear_fleet_actions = this
+					fleet_event = { id = monolith_crisis.121 days = 3 random = 2 }
+				}
+			}
+		}
+	}
+}
+
 fleet_event = {
 	id = monolith_crisis.121
 	hide_window = yes
@@ -1240,292 +1298,15 @@ fleet_event = {
 		has_global_flag = monolith_crisis_invaded
 		NOT = { has_global_flag = monolith_crisis_end }
 		is_fleet_idle = yes
-        owner = { is_country_type = monolith_crisis_country }
-        any_system = {
-			monolith_target_system_trigger = yes	
-		}
+		NOT = { has_fleet_flag = monolith_crisis_ordered }
+		has_fleet_flag = monolith_attack_fleet
 	}
 
-	immediate = {
-		clear_fleet_actions = this
-		queue_actions = {
-			repeat = {
-				while = {
-					id = monolith_crisis.121.w0
-					NOT = { has_global_flag = monolith_crisis_end }
-				}
-				effect = {
-					id = monolith_crisis.121.e0
-					if = {
-						limit = { NOT = { any_system = { check_variable = { which = MonoC_fleet_id value < 1 }}}}
-						root.solar_system = { clear_variable = MonoC_fleet_id }
-					}
-					# 等候一段时间后仍然找不到可通行路径，就跑去随机星系霍霍
-					if = {
-						limit = {
-							has_fleet_flag = cannot_find_path
-							NOT = {
-								any_system = {
-									ROOT = { can_access_system = PREV }
-									monolith_target_system_trigger = yes
-								}
-							}
-						}
-						queue_actions = {
-							find_random_system = {
-								trigger = {
-									id = monolith_crisis.121.t01
-									closest_system = {
-										min_steps = 1
-										limit = { monolith_target_system_trigger = yes }
-									}
-								}
-								found_system = { 
-									move_to = this
-									effect = {
-										id = monolith_crisis.121.e01
-										root = { remove_fleet_flag = cannot_find_path }
-									}
-								}
-								failed = {
-									# 完全找不到路，折跃
-									effect = {
-										id = monolith_crisis.121.e02
-										random_system = {
-											limit = { monolith_target_system_trigger = yes }
-										}
-									}
-									wait = 100
-								}
-							}
-						}
-					}
-				}
-				find_closest_system = {
-					trigger = {
-						id = monolith_crisis.121.t1
-						monolith_target_system_trigger = yes
-						ROOT = { can_access_system = prev }
-						check_variable = { which = MonoC_fleet_id value < 1 }
-					}
-					found_system = {
-						effect = {
-							id = monolith_crisis.121.e1
-							set_variable = { which = MonoC_fleet_id value = root.MonoC_fleet_id }
-						}
-						move_to = this
-						repeat = {
-							while = {
-								id = monolith_crisis.121.t2
-								# 找球炸
-								any_system_planet = { monolith_target_planet_trigger = yes }
-							}
-							find_closest_planet = {
-								trigger = {
-									id = monolith_crisis.121.t3
-									solar_system = { is_same_value = prevprev }
-									monolith_target_planet_trigger = yes
-								}
-								found_planet = {
-									orbit_planet = this
-									effect = {
-										id = monolith_crisis.121.e2
-										ROOT = { set_fleet_flag = bombarding_planet }
-										set_planet_flag = target_planet
-										set_planet_flag = planet_bombarding
-										root = { set_timed_fleet_flag = { flag = blowing_up_planet days = 90 }}
-									}
-									repeat = {
-										while = {
-											id = monolith_crisis.121.e2w
-											OR = {
-												AND = {
-													root = { has_fleet_flag = bombarding_planet }
-													monolith_target_planet_trigger = yes
-												}
-												AND = {
-													root = { has_fleet_flag = blowing_up_planet }
-													is_colony = no is_colonizable = no
-												}
-											}
-										}
-										orbit_planet = this
-										effect = {
-											id = monolith_crisis.121.e3
-											if = {
-												# 结束战斗后重新开始倒计时
-												limit = { root = { 
-													has_fleet_flag = in_combat 
-													is_in_combat = no
-												}}
-												root = { 
-													remove_fleet_flag = in_combat
-													set_timed_fleet_flag = { flag = blowing_up_planet days = 84 }
-												}
-											}
-											else_if = {
-												# 如果战斗中，就暂停轰炸计时
-												limit = { root = { is_in_combat = yes }}
-												root = { 
-													remove_fleet_flag = blowing_up_planet
-													set_fleet_flag = in_combat
-												}
-											} else_if = {
-												limit = { is_colony = no }
-												# 星球被炸到没人，移除flag并跑路
-												remove_planet_flag = planet_bombarding
-												root = { 
-													remove_fleet_flag = bombarding_planet 
-													remove_fleet_flag = blowing_up_planet
-												}
-											} else_if = {
-												limit = {
-													root = { 
-														has_fleet_flag = bombarding_planet
-														NOT = { has_fleet_flag = blowing_up_planet }
-													}
-												}
-												# 执行炸球事件
-												planet_event = { id = monolith_crisis.201 scopes = { from = root }}
-												remove_planet_flag = planet_bombarding
-											}
-										}
-										wait = 5
-									}
-								}
-							}
-							move_to = this							# move away from the planet
-							wait = 5
-						} 
-						effect = {
-							id = monolith_crisis.121.e4
-							# 尝试建立恒星基地
-							system_event = { id = monolith_crisis.200 }
-						}
-						wait = 30
-					}					
-					failed = {
-						# 找不到路，先去附近有舰队的星系帮忙炸球
-						find_closest_system = {
-							trigger = {
-								id = monolith_crisis.121.t9
-								ROOT = { can_access_system = prev }
-								check_variable = { which = MonoC_fleet_id value < 1 }
-							}
-							found_system = {
-								effect = {
-									id = monolith_crisis.121.t91
-									set_variable = { which = MonoC_fleet_id value = root.MonoC_fleet_id }
-								}
-								move_to = this
-								repeat = {
-									while = {
-										id = monolith_crisis.121.t92
-										# 找球炸
-										any_system_planet = { monolith_target_planet_trigger = yes }
-									}
-									find_closest_planet = {
-										trigger = {
-											id = monolith_crisis.121.t93
-											solar_system = { is_same_value = prevprev }
-											monolith_target_planet_trigger = yes
-										}
-										found_planet = {
-											orbit_planet = this
-											effect = {
-												id = monolith_crisis.121.e92
-												ROOT = { set_fleet_flag = bombarding_planet }
-												set_planet_flag = target_planet
-												set_planet_flag = planet_bombarding
-												root = { set_timed_fleet_flag = { flag = blowing_up_planet days = 89 }}
-											}
-											repeat = {
-												while = {
-													id = monolith_crisis.121.e92w
-													OR = {
-														AND = {
-															root = { has_fleet_flag = bombarding_planet }
-															monolith_target_planet_trigger = yes
-														}
-														AND = {
-															root = { has_fleet_flag = blowing_up_planet }
-															is_colony = no is_colonizable = no
-														}
-													}
-												}
-												orbit_planet = this
-												effect = {
-													id = monolith_crisis.121.e93
-													if = {
-														# 结束战斗后重新开始倒计时
-														limit = { root = { 
-															has_fleet_flag = in_combat 
-															is_in_combat = no
-														}}
-														root = { 
-															remove_fleet_flag = in_combat
-															set_timed_fleet_flag = { flag = blowing_up_planet days = 84 }
-														}
-													}
-													else_if = {
-														# 如果战斗中，就暂停轰炸计时
-														limit = { root = { is_in_combat = yes }}
-														root = { 
-															remove_fleet_flag = blowing_up_planet
-															set_fleet_flag = in_combat
-														}
-													} else_if = {
-														limit = { is_colony = no }
-														# 星球被炸到没人，移除flag并跑路
-														remove_planet_flag = planet_bombarding
-														root = { 
-															remove_fleet_flag = bombarding_planet 
-															remove_fleet_flag = blowing_up_planet
-														}
-													} else_if = {
-														limit = {
-															root = { 
-																has_fleet_flag = bombarding_planet
-																NOT = { has_fleet_flag = blowing_up_planet }
-															}
-														}
-														# 执行炸球事件
-														planet_event = { id = monolith_crisis.201 scopes = { from = root }}
-														remove_planet_flag = planet_bombarding
-													}
-												}
-												wait = 5
-											}
-										}
-									}
-									move_to = this							# move away from the planet
-									wait = 5
-								} 
-								effect = {
-									# 尝试建立恒星基地
-									id = monolith_crisis.121.e94
-									system_event = { id = monolith_crisis.200 }
-								}
-								wait = 30
-							}
-							failed = {
-								# 完全找不到路，等候一会
-								effect = {
-									id = monolith_crisis.121.e13
-									ROOT = { 
-										set_fleet_flag = cannot_find_path
-										set_timed_fleet_flag = {
-											flag = orders_cooldown days = 200
-										}
-									}
-								}
-								wait = 200
-							}
-						}
-					}
-				}
-			}
-		}
+	immediate = { 
+		uf_exe_invasion_fleet_action = { 
+			ID = monolith_crisis.121 TYPE = wg_crisis_monolith 
+			OWNER = monolith_crisis_country OWNER_2 = monolith_crisis_country 
+		} 
 	}
 }
 # 舰队进入到护盾星系，将其遣送回家
@@ -1547,7 +1328,8 @@ fleet_event = {
 		if = {
 			limit = { owner = { is_default_and_fallen_country = yes }}
 			set_mia = mia_return_home
-		} else = {
+		} 
+		else = {
 			# 不是玩家的，遣送到随机星系
 			random_system = {
 				limit = { 
@@ -1558,9 +1340,7 @@ fleet_event = {
 						kuat_is_kuat_system = yes
 					}
 				}
-				random_system_planet = {
-					root = { set_location = prev }
-				}
+				random_system_planet = { root = { set_location = prev } }
 			}
 		}
 	}
@@ -1580,9 +1360,7 @@ ship_event = {
 		}
 	}
 
-	option = {
-		name = monolith_crisis.151.a
-	}
+	option = { name = monolith_crisis.151.a }
 }
 
 event = {
@@ -1813,10 +1591,7 @@ system_event = {
 			# 不存在任何非天灾舰队
 			any_fleet_in_system = {
 				exists = owner
-				owner = {
-					NOT = { is_country_type = monolith_crisis_country }
-					is_hostile = event_target:monolith_crisis_country
-				}
+				owner = { is_hostile = event_target:monolith_crisis_country }
 			}
 			# 不存在任何非土著球
 			any_system_planet = {
@@ -2198,10 +1973,15 @@ planet_event = {
 	is_triggered_only = yes
 
 	trigger = {
+		from = { is_scope_type = fleet }
+		exists = orbit
+		is_colony = yes
+		orbit = { any_fleet_in_orbit = { is_same_value = prevprev.from } }
 		NOT = { has_global_flag = monolith_crisis_end }
 	}
 
 	immediate = {
+		set_update_modifiers_batch = begin
 		# 相位星球
 		if = {
 			limit = { has_planet_flag = phaseshifting_active }
@@ -2210,13 +1990,126 @@ planet_event = {
 		}
 		# 50%概率炸球，50%变土著
 		random_list = {
-			1 = { planet_event = { id = monolith_crisis.202 }}
+			# 炸球
+			# 删除所有区划建筑人口，球直接还原成原版非废土宜居球
+			1 = { 
+				owner = {
+					country_event = { id = monolith_crisis.204 scopes = { from = root }}
+				}
+				every_owned_pop_group = {
+					kill_pop_group = { pop_group = this percentage = 1 }
+				}
+				reset_planet = yes
+				destroy_colony = yes
+				if = {
+					limit = {
+						OR = {
+							is_wg_habitat = no
+							is_ringworld = no
+						}
+					}
+					random_list = {
+						1 = { change_pc = pc_alpine }
+						1 = { change_pc = pc_arctic }
+						1 = { change_pc = pc_arid }
+						1 = { change_pc = pc_continental }
+						1 = { change_pc = pc_desert }
+						1 = { change_pc = pc_ocean }
+						1 = { change_pc = pc_savannah }
+						1 = { change_pc = pc_tropical }
+						1 = { change_pc = pc_tundra }
+						1 = { change_pc = pc_gaia }
+					}
+					reroll_planet = yes
+				}
+			}
+			# 炸球
+			# 变成土著，球直接还原成原版非废土宜居球
 			1 = { 
 				modifier = {
 					factor = 0
 					NOT = { any_owned_pop_group = { is_organic_species = yes }}
 				}
-				planet_event = { id = monolith_crisis.203 }
+				owner = {
+					country_event = { id = monolith_crisis.205 scopes = { from = root }}
+				}
+				# 先以其中一个人口为模版创土著人口，再清除星球
+				random_owned_pop_group = {
+					create_species = {
+						name = random
+						class = this
+						homeworld = root
+						immortal = no
+						clear_parent_species_link = yes
+						traits = {
+							trait = trait_presapient_proles
+						}
+						effect = {
+							change_species_characteristics = {
+								portrait = prev.species
+							}
+							save_event_target_as = new_presapient_species
+						}
+					}
+				}
+				if = {
+					limit = {
+						is_wg_habitat = no
+						is_ringworld = no
+					}
+					random_list = {
+						1 = { change_pc = pc_alpine }
+						1 = { change_pc = pc_arctic }
+						1 = { change_pc = pc_arid }
+						1 = { change_pc = pc_continental }
+						1 = { change_pc = pc_desert }
+						1 = { change_pc = pc_ocean }
+						1 = { change_pc = pc_savannah }
+						1 = { change_pc = pc_tropical }
+						1 = { change_pc = pc_tundra }
+						1 = { change_pc = pc_gaia }
+					}
+				}
+				# 清除星球
+				remove_all_armies = yes
+				remove_all_districts = yes
+				remove_all_buildings = yes
+				clear_deposits = yes
+				clear_planet_modifiers = yes
+				reroll_planet = yes
+				every_owned_pop_group = { kill_pop_group = { pop_group = this percentage = 1 } }
+				# 创造土著
+				create_country = {
+					name = random
+					authority = random
+					day_zero_contact = no
+					civics = {
+						civic = civic_secret_of_fire
+						civic = civic_the_wheel
+					}
+					species = event_target:new_presapient_species
+					ethos = random
+					origin = "origin_enlightened" # Should only be visible if they become spacefaring
+					type = primitive
+					effect = {
+						set_pre_ftl_age = stone_age
+						set_country_flag = stone_age
+						set_graphical_culture = preindustrial_01
+						save_event_target_as = new_presapient_country
+					}
+				}
+				set_owner = last_created_country
+				set_capital = yes
+				every_deposit = {
+					limit = { is_deposit_type = d_dangerous_wildlife_blocker }
+					clear_blocker = yes
+				}
+				while = {
+					count = 2
+					create_pop_group = { species = event_target:new_presapient_species }
+				}
+				add_building = building_crude_huts
+				add_building = building_crude_huts
 			}
 		}
 		# 刷舰队
@@ -2228,134 +2121,10 @@ planet_event = {
 				amount = 1
 			}
 		}
-	}
-}
-
-# 炸球
-# 删除所有区划建筑人口，球直接还原成原版非废土宜居球
-planet_event = {
-	id = monolith_crisis.202
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		NOT = { has_global_flag = monolith_crisis_end }
-		exists = owner
-		is_colony = yes
-	}
-
-	immediate = {
-		owner = {
-			country_event = { id = monolith_crisis.204 scopes = { from = root }}
-		}
-		every_owned_pop_group = {
-			kill_pop_group = { pop_group = this percentage = 1 }
-		}
-		monolith_crisis_reset_planet_effect = yes
-	}
-}
-
-# 炸球
-# 变成土著，球直接还原成原版非废土宜居球
-planet_event = {
-	id = monolith_crisis.203
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		NOT = { has_global_flag = monolith_crisis_end }
-		exists = owner
-		is_colony = yes
-		any_owned_pop_group = {
-			is_organic_species = yes
-		}
-	}
-
-	immediate = {
-		set_update_modifiers_batch = begin
-		owner = {
-			country_event = { id = monolith_crisis.205 scopes = { from = root }}
-		}
-		# 先以其中一个人口为模版创土著人口，再清除星球
-		random_owned_pop_group = {
-			create_species = {
-				name = random
-				class = this
-				homeworld = root
-				immortal = no
-				clear_parent_species_link = yes
-				traits = {
-					trait = trait_presapient_proles
-				}
-				effect = {
-					change_species_characteristics = {
-						portrait = prev.species
-					}
-					save_event_target_as = new_presapient_species
-				}
-			}
-		}
-		if = {
-			limit = {
-				is_wg_habitat = no
-				is_ringworld = no
-			}
-			random_list = {
-				1 = { change_pc = pc_alpine }
-				1 = { change_pc = pc_arctic }
-				1 = { change_pc = pc_arid }
-				1 = { change_pc = pc_continental }
-				1 = { change_pc = pc_desert }
-				1 = { change_pc = pc_ocean }
-				1 = { change_pc = pc_savannah }
-				1 = { change_pc = pc_tropical }
-				1 = { change_pc = pc_tundra }
-				1 = { change_pc = pc_gaia }
-			}
-		}
-		# 清除星球
-		remove_all_armies = yes
-		remove_all_districts = yes
-		remove_all_buildings = yes
-		clear_deposits = yes
-		clear_planet_modifiers = yes
-		reroll_planet = yes
-		every_owned_pop_group = { kill_pop_group = { pop_group = this percentage = 1 } }
-		# 创造土著
-		create_country = {
-			name = random
-			authority = random
-			day_zero_contact = no
-			civics = {
-				civic = civic_secret_of_fire
-				civic = civic_the_wheel
-			}
-			species = event_target:new_presapient_species
-			ethos = random
-			origin = "origin_enlightened" # Should only be visible if they become spacefaring
-			type = primitive
-			effect = {
-				set_pre_ftl_age = stone_age
-				set_country_flag = stone_age
-				set_graphical_culture = preindustrial_01
-				save_event_target_as = new_presapient_country
-			}
-		}
-		set_owner = last_created_country
-		set_capital = yes
-		every_deposit = {
-			limit = { is_deposit_type = d_dangerous_wildlife_blocker }
-			clear_blocker = yes
-		}
-		while = {
-			count = 2
-			create_pop_group = { species = event_target:new_presapient_species }
-		}
-		add_building = building_crude_huts
-		add_building = building_crude_huts
 		set_update_modifiers_batch = end
 	}
 }
+
 # 通知事件（球完全被炸回原型）
 country_event = {
 	id = monolith_crisis.204
@@ -2408,7 +2177,6 @@ starbase_event = {
 			}
 		}
 		solar_system = {
-			clear_variable = MonoC_fleet_id
 			if = {
 				limit = { has_star_flag = monolith_crisis_shield_system }
 				set_star_flag = comfirm_destroyed
