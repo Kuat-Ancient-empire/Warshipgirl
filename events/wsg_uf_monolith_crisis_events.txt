@@ -1235,25 +1235,6 @@ country_event = {
 # 舰队行为
 ###############################
 #Invasion fleet action on orbit planet. 
-country_event = {
-	id = monolith_crisis.1211
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = {
-		is_country_type = monolith_crisis_country
-		has_global_flag = monolith_crisis_invaded
-		from = { has_fleet_flag = monolith_attack_fleet }
-		fromfrom = { OR = { is_star = yes NOT = { exists = owner } } }
-	}
-	immediate = {
-		from = {
-			clear_orders = yes
-			clear_fleet_actions = this
-			fleet_event = { id = monolith_crisis.121 days = 3 random = 2 }
-		}
-	}
-}
-
 event = {
 	id = monolith_crisis.1212
 	hide_window = yes
@@ -1280,8 +1261,6 @@ event = {
 						has_fleet_flag = monolith_attack_fleet
 						NOT = { has_fleet_flag = monolith_crisis_ordered }
 					}
-					clear_orders = yes
-					clear_fleet_actions = this
 					fleet_event = { id = monolith_crisis.121 days = 3 random = 2 }
 				}
 			}
@@ -1303,6 +1282,8 @@ fleet_event = {
 	}
 
 	immediate = { 
+		clear_orders = yes
+		clear_fleet_actions = this
 		uf_exe_invasion_fleet_action = { 
 			ID = monolith_crisis.121 TYPE = wg_crisis_monolith 
 			OWNER = monolith_crisis_country OWNER_2 = monolith_crisis_country 
@@ -1973,10 +1954,8 @@ planet_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		from = { is_scope_type = fleet }
-		exists = orbit
 		is_colony = yes
-		orbit = { any_fleet_in_orbit = { is_same_value = prevprev.from } }
+		any_fleet_in_orbit = { is_same_value = prev.from }
 		NOT = { has_global_flag = monolith_crisis_end }
 	}
 

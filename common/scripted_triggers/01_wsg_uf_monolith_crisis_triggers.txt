@@ -5,6 +5,7 @@ monolith_target_system_trigger = {
 		has_star_flag = monolith_crisis_systems
 	}
 	OR = {
+		NOT = { exists = space_owner }
 		AND = {
 			exists = space_owner
 			space_owner = { NOR = { 
@@ -15,6 +16,11 @@ monolith_target_system_trigger = {
 		any_system_planet = { 
 			has_owner = yes 
 			owner = { NOT = { is_country_type = primitive }}
+			count_fleet_in_orbit = { count = 0 limit = {
+				exists = owner
+				owner = { OR = { is_same_value = event_target:$OWNER$ is_same_value = event_target:$OWNER_2$ } }
+				NOT = { is_same_value = root }
+			} }
 		}
 	}
 }
@@ -22,6 +28,11 @@ monolith_target_system_trigger = {
 monolith_target_planet_trigger = {
 	has_owner = yes 
 	owner = { NOT = { is_country_type = primitive }}
+	count_fleet_in_orbit = { count = 0 limit = {
+		exists = owner
+		owner = { OR = { is_same_value = event_target:$OWNER$ is_same_value = event_target:$OWNER_2$ } }
+		NOT = { is_same_value = root }
+	} }	
 }
 # scope = system
 has_any_monolith_bypass_flag = {
