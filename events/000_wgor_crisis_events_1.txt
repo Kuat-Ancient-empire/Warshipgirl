@@ -7,12 +7,27 @@
 ############################
 
 namespace = crisis
-
+#无选项问题的处理，通用选项
 # Vanguard Arrives
 country_event = {
 	id = crisis.18
 	title = "crisis.18.name"
-	desc = "crisis.18.desc"
+	desc = {
+		trigger = {
+			owner = {
+				country_uses_bio_ships = no
+			}
+		}
+		text = "crisis.18.desc"
+	}
+	desc = {
+		trigger = {
+			owner = {
+				country_uses_bio_ships = yes
+			}
+		}
+		text = "crisis.18.desc.bio"
+	}
 	picture = GFX_evt_physics_research
 	show_sound = event_alien_nature
 	location = event_target:prethoryn_invasion_system
@@ -111,7 +126,7 @@ country_event = {
 			OR = {
 				has_government = gov_megacorporation
 				has_government = gov_trade_league
-				has_authority = auth_corporate
+				is_megacorp = yes
 			}
 			NOR = {
 				has_ethic = "ethic_fanatic_egalitarian"
@@ -198,9 +213,6 @@ country_event = {
 	}
 	option = {
 		name = crisis.18.f
-		trigger = {
-			has_wg_and_uf_authority = yes
-		}
 		end_event_chain = "coming_storm_chain"
 		begin_event_chain = {
 			event_chain = "prethoryn_scourge_chain"
@@ -208,7 +220,7 @@ country_event = {
 		}
 	}
 }
-
+#无选项问题的处理，通用选项
 # Prethoryn Defeated
 country_event = {
 	id = crisis.211
@@ -228,14 +240,6 @@ country_event = {
 				has_ethic = "ethic_fanatic_xenophobe"
 			}
 		}
-		add_modifier = {
-			modifier = "prethoryn_defeated"
-			days = 3600
-		}
-		add_monthly_resource_mult = {
-			resource = unity
-			value = @tier5unityreward
-		}
 		end_event_chain = "prethoryn_scourge_chain"
 	}
 	option = { # Militarist Response
@@ -246,14 +250,6 @@ country_event = {
 				has_ethic = "ethic_fanatic_xenophile"
 				has_ethic = "ethic_fanatic_xenophobe"
 			}
-		}
-		add_modifier = {
-			modifier = "prethoryn_defeated"
-			days = 3600
-		}
-		add_monthly_resource_mult = {
-			resource = unity
-			value = @tier5unityreward
 		}
 		end_event_chain = "prethoryn_scourge_chain"
 	}
@@ -266,14 +262,6 @@ country_event = {
 				has_ethic = "ethic_fanatic_xenophobe"
 			}
 		}
-		add_modifier = {
-			modifier = "prethoryn_defeated"
-			days = 3600
-		}
-		add_monthly_resource_mult = {
-			resource = unity
-			value = @tier5unityreward
-		}
 		end_event_chain = "prethoryn_scourge_chain"
 	}
 	option = { # Pacifist Response
@@ -285,14 +273,6 @@ country_event = {
 				has_ethic = "ethic_fanatic_xenophobe"
 			}
 		}
-		add_modifier = {
-			modifier = "prethoryn_defeated"
-			days = 3600
-		}
-		add_monthly_resource_mult = {
-			resource = unity
-			value = @tier5unityreward
-		}
 		end_event_chain = "prethoryn_scourge_chain"
 	}
 	option = { # Corporate Response
@@ -301,49 +281,22 @@ country_event = {
 			OR = {
 				has_government = gov_megacorporation
 				has_government = gov_trade_league
-				has_authority = auth_corporate
+				is_megacorp = yes
 			}
 			NOR = {
 				has_ethic = "ethic_fanatic_xenophile"
 				has_ethic = "ethic_fanatic_xenophobe"
 			}
-		}
-		add_modifier = {
-			modifier = "prethoryn_defeated"
-			days = 3600
-		}
-		add_monthly_resource_mult = {
-			resource = unity
-			value = @tier5unityreward
 		}
 		end_event_chain = "prethoryn_scourge_chain"
 	}
 	option = { # Default Response
 		name = crisis.211.f
 		trigger = {
-			OR = {
-				has_generic_government = yes
-				has_government = gov_enlightened_monarchy
-				has_government = gov_elective_monarchy
-				has_government = gov_hive_mind
-				has_government = gov_parasitic_overmind
-				has_government = gov_successor_khanate
-				has_government = gov_diadochi
-				has_ethic = ethic_gestalt_consciousness
-				is_fallen_empire = yes
-			}
 			NOR = {
 				has_ethic = "ethic_fanatic_xenophile"
 				has_ethic = "ethic_fanatic_xenophobe"
 			}
-		}
-		add_modifier = {
-			modifier = "prethoryn_defeated"
-			days = 3600
-		}
-		add_monthly_resource_mult = {
-			resource = unity
-			value = @tier5unityreward
 		}
 		end_event_chain = "prethoryn_scourge_chain"
 	}
@@ -352,14 +305,6 @@ country_event = {
 		trigger = {
 			has_ethic = "ethic_fanatic_xenophobe"
 		}
-		add_modifier = {
-			modifier = "prethoryn_defeated"
-			days = 3600
-		}
-		add_monthly_resource_mult = {
-			resource = unity
-			value = @tier5unityreward
-		}
 		end_event_chain = "prethoryn_scourge_chain"
 	}
 	option = { # Xenophile Response
@@ -367,37 +312,28 @@ country_event = {
 		trigger = {
 			has_ethic = "ethic_fanatic_xenophile"
 		}
-		add_modifier = {
-			modifier = "prethoryn_defeated"
-			days = 3600
-		}
-		add_monthly_resource_mult = {
-			resource = unity
-			value = @tier5unityreward
-		}
-		end_event_chain = "prethoryn_scourge_chain"
-	}
-	option = {
-		name = crisis.211.f
-		trigger = {
-			has_wg_and_uf_authority = yes
-		}
-		add_modifier = {
-			modifier = "prethoryn_defeated"
-			days = 3600
-		}
-		add_monthly_resource_mult = {
-			resource = unity
-			value = @tier5unityreward
-		}
 		end_event_chain = "prethoryn_scourge_chain"
 	}
 	after = {
+		add_modifier = {
+			modifier = "prethoryn_defeated"
+			days = 3600
+		}
+		add_monthly_resource_mult = {
+			resource = unity
+			value = @tier5unityreward
+		}
 		if = {
 			limit = {
 				has_origin = origin_fear_of_the_dark
 			}
 			country_event = { id = origin.6136 }
+		}
+		if = {
+			limit = {
+				country_uses_bio_ships = yes
+			}
+			set_country_flag = flesh_adapts_achievement
 		}
 	}
 }
