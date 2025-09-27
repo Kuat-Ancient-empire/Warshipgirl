@@ -8248,8 +8248,10 @@ country_event = {
 	location = event_target:wg_krieg_planet_location
 	#is_triggered_only = yes
 	trigger = {
+		exists = event_target:wg_krieg_planet_location
 		event_target:wg_krieg_planet_location = {
 			has_planet_flag = wg_krieg_planet_chaos_won 
+			is_colony = yes
 		}	
 		NOT = {
 			has_global_flag = wg_krieg_chaos_defeated
@@ -8347,6 +8349,8 @@ country_event = {
 			has_global_flag = wg_krieg_chaos_defeated
 			has_global_flag = wg_chaos_gate_fleet_defeated
 		}
+		exists = event_target:wg_krieg_planet_location
+		event_target:wg_krieg_planet_location = { is_colony = yes }
 	}
 	immediate = {
 		event_target:wg_krieg_planet_location = {
@@ -9089,7 +9093,10 @@ country_event = {
 	picture = GFX_evt_wsg_bombardment
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		fromfrom = { 
+			is_colony = yes
+			has_planet_flag = wg_unsolve_soul_ancient_planet 
+		}
 		has_origin = origin_wg_warhammer
 		check_variable = { which = wg_warhamme_unsolve_soul_win value = 4 }
 		from = { is_same_value = event_target:wg_nicron_country }
