@@ -449,15 +449,14 @@ ap_wg_crisis = {
 		# has_nemesis = yes 憨批才会要dlc
 		has_wg_special_authority = yes
 		NOR = { 
-			wsg_has_ap_crisis_path = yes #先留着
-			check_modifier_value = {
-				modifier = block_any_other_crisis_path
-				value > 0
-			}
+			has_ascension_perk = ap_become_the_crisis
+			has_ascension_perk = ap_cosmogenesis
+			has_ascension_perk = ap_behemoths
 			has_ascension_perk = ap_defender_of_the_galaxy
 		}
-		is_ai = no # 不给ai用，免得发生奇奇怪怪的东西
+		NOT = { check_modifier_value = { modifier = block_any_other_crisis_path value > 0 } }
 	}
+
 	modifier = {
 		block_any_other_crisis_path = 1
 	}
@@ -553,9 +552,12 @@ ap_wsg_galactic_empire = {
 		has_global_flag = has_swgs_mod
 		NOR = { 
 			has_ascension_perk = ap_wsg_galactic_empire 
-			wsg_has_ap_crisis_path = yes # 皇帝和灾飞冲突
+			has_ascension_perk = ap_become_the_crisis
+			has_ascension_perk = ap_cosmogenesis
+			has_ascension_perk = ap_behemoths
 		}
 		is_wg_empire = yes
+		NOT = { check_modifier_value = { modifier = block_any_other_crisis_path value > 0 } }
 	}
 
 	possible = {
@@ -579,11 +581,5 @@ ap_wsg_galactic_empire = {
 		}
 	}
 
-	ai_weight = {
-		factor = 0
-		modifier = {
-			factor = 0
-			always = yes
-		}
-	}
+	ai_weight = { weight = 0 modifier = { set = 0 } }
 }
