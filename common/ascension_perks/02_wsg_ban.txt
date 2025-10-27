@@ -1,5 +1,8 @@
 
-
+@ascension_path_base_weight = 100
+@ascension_path_synergy_weight = 2
+@ascension_path_anti_synergy_weight = 0.5
+@ascension_path_mindwardens_present = 0.3
 # Synthetic Ascension (regular empires)
 ap_synthetic_evolution = {
 	on_enabled = {
@@ -57,7 +60,7 @@ ap_synthetic_evolution = {
 		}
 		custom_tooltip = {
 			fail_text = "requires_not_ap_mind_over_matter"
-			NOT = { has_ascension_perk = ap_mind_over_matter }
+			has_psionic_ascension = no
 		}
 		custom_tooltip = {
 			fail_text = "requires_free_tradition_tree"
@@ -77,7 +80,12 @@ ap_synthetic_evolution = {
 			has_origin = origin_synthetic_fertility
 			has_origin = origin_evolutionary_predators
 			has_origin = origin_endbringers
-			is_ban_vanilla_ap_country = yes
+			has_tradition = tr_cybernetics_adopt
+			check_modifier_value = {
+				modifier = block_ap_synthetic_evolution
+				value > 0
+			}
+			is_ban_vanilla_ap_country = yes #先留着，也可以删
 			is_nirvana_empire = yes
 		}
 		is_gestalt = no
@@ -91,6 +99,7 @@ ap_synthetic_evolution = {
 		is_chosen_empire = no
 		is_entropy_drinkers_empire = no
 	}
+	
 	ai_weight = {
 		factor = @ascension_path_base_weight
 		modifier = {
@@ -100,6 +109,12 @@ ap_synthetic_evolution = {
 		modifier = {
 			factor = @ascension_path_anti_synergy_weight
 			has_synthetic_evolution_anti_synergy = yes
+		}
+		modifier = {
+			factor = @ascension_path_mindwardens_present
+			any_country = {
+				has_origin = origin_mindwardens
+			}
 		}
 		modifier = {
 			factor = 0
@@ -116,18 +131,26 @@ ap_become_the_crisis = {
 	potential = {
 		has_nemesis = yes
 		NOR = {
-			wsg_has_ap_crisis_path = yes
+			wsg_has_ap_crisis_path = yes #先留着
+			check_modifier_value = {
+				modifier = block_ap_become_the_crisis
+				value > 0
+			}
+			check_modifier_value = {
+				modifier = block_any_other_crisis_path
+				value > 0
+			}
 			has_ascension_perk = ap_defender_of_the_galaxy
-			has_origin = origin_slavers
+			has_origin = origin_slavers # No crisis for MSI
+			has_origin = origin_endbringers # No additional crisis for Endbringers
 		}
 		is_wilderness_empire = no
 	}
+	modifier = {
+		block_any_other_crisis_path = 1
+	}
 
 	possible = {
-		custom_tooltip = {
-			fail_text = "requires_ascension_perks_3"
-			num_ascension_perks > 2
-		}
 		custom_tooltip = {
 			fail_text = "requires_independence"
 			is_subject = no
@@ -140,16 +163,45 @@ ap_become_the_crisis = {
 			fail_text = "must_not_be_emperor"
 			is_galactic_emperor = no
 		}
-		NOR = {
-			has_ethic = ethic_xenophile
-			has_ethic = ethic_fanatic_xenophile
-			has_ethic = ethic_pacifist
-			has_ethic = ethic_fanatic_pacifist
-			has_civic = civic_machine_servitor
-			has_valid_civic = civic_hive_familiar_face
+		custom_tooltip = {
+			fail_text = "must_finish_shroud_forged_situation"
+			OR = {
+				NOT = { has_origin = origin_shroud_forged }
+				NOT = {
+					any_situation = {
+						is_situation_type = situation_shroud_forged
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "locked_by_shroud_forged_situation"
+			OR = {
+				NOT = { has_origin = origin_shroud_forged }
+				NOT = { has_country_flag = finish_shroud_forged_liberation_flag }
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_origin = origin_shroud_forged }
+					NOT = { has_country_flag = shroud_forged_can_become_the_crisis }
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_ascension_perks_3"
+				num_ascension_perks > 2
+			}
+			NOR = {
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_pacifist
+				has_civic = civic_machine_servitor
+				has_valid_civic = civic_hive_familiar_face
+			}
 		}
 	}
-
 	on_enabled = {
 		hidden_effect = {
 			set_ai_personality = became_the_crisis
@@ -208,11 +260,23 @@ ap_cosmogenesis = {
 	potential = {
 		has_machine_age_dlc = yes
 		NOR = {
-			wsg_has_ap_crisis_path = yes
+			wsg_has_ap_crisis_path = yes #先留着
+			check_modifier_value = {
+				modifier = block_ap_cosmogenesis
+				value > 0
+			}
+			check_modifier_value = {
+				modifier = block_any_other_crisis_path
+				value > 0
+			}
 			has_ascension_perk = ap_defender_of_the_galaxy
 			has_origin = origin_slavers # No crisis for MSI
+			has_origin = origin_endbringers # No additional crisis for Endbringers
 		}
 		is_wilderness_empire = no
+	}
+	modifier = {
+		block_any_other_crisis_path = 1
 	}
 
 	possible = {
@@ -297,10 +361,22 @@ ap_behemoths = {
 	potential = {
 		has_biogenesis_dlc = yes
 		NOR = {
-			wsg_has_ap_crisis_path = yes
+			wsg_has_ap_crisis_path = yes #先留着
+			check_modifier_value = {
+				modifier = block_ap_behemoths
+				value > 0
+			}
+			check_modifier_value = {
+				modifier = block_any_other_crisis_path
+				value > 0
+			}
 			has_ascension_perk = ap_defender_of_the_galaxy
 			has_origin = origin_slavers # No crisis for MSI
+			has_origin = origin_endbringers # No additional crisis for Endbringers
 		}
+	}
+	modifier = {
+		block_any_other_crisis_path = 1
 	}
 
 	possible = {
