@@ -4705,7 +4705,10 @@ country_event = {
 		set_spawn_system_batch = end
 		event_target:wg_psi_1_system = {
 			every_fleet_in_system = {
-				fleet_event = { id = wg_boss.134 }
+				limit = {
+					NOT = { has_modifier = wg_timeline_invisable }
+				}
+				add_many_hp = { DAYS = 5 }
 			}
 			add_hyperlane = {
 				from = event_target:wg_psi_1_system
@@ -4714,7 +4717,10 @@ country_event = {
 		}
 		event_target:wg_psi_2_system = {
 			every_fleet_in_system = {
-				fleet_event = { id = wg_boss.134 }
+				limit = {
+					NOT = { has_modifier = wg_timeline_invisable }
+				}
+				add_many_hp = { DAYS = 5 }
 			}
 			add_hyperlane = {
 				from = event_target:wg_psi_2_system
@@ -4723,7 +4729,10 @@ country_event = {
 		}
 		event_target:wg_psi_3_system = {
 			every_fleet_in_system = {
-				fleet_event = { id = wg_boss.134 }
+				limit = {
+					NOT = { has_modifier = wg_timeline_invisable }
+				}
+				add_many_hp = { DAYS = 5 }
 			}
 			add_hyperlane = {
 				from = event_target:wg_psi_1_system
@@ -5188,22 +5197,6 @@ country_event = {
 
 	option = {
 		name = BATTLESTATIONS
-	}
-}
-
-# 无敌10天防止乱杀
-fleet_event = {
-	id = wg_boss.134
-	hide_window = yes
-	is_triggered_only = yes
-
-	immediate = {
-		every_owned_ship = {
-			set_timed_ship_flag = { flag = invincible days = 5 }
-			#临时加生命避免一击秒杀
-			add_many_hp = { DAYS = 5 }
-			ship_event = { id = raa_skill.2021 }
-		}
 	}
 }
 

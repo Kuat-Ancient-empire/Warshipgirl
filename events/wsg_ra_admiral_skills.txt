@@ -304,7 +304,14 @@ country_event = {
             # VV
             else_if = { 
                 limit = { leader = { has_leader_flag = ra_VV } }
-                fleet_event = { id = raa_skill.2020 }
+                every_owned_ship = {
+                    limit = {
+                        is_ship_size_corvette = no
+                        NOT = { has_modifier = wg_timeline_invisable }
+                    }
+                    #临时加生命避免一击秒杀
+                    add_many_hp = { DAYS = 6 }
+                }
             }
             # 塞猫
             else_if = { 
@@ -652,10 +659,6 @@ fleet_event = {
             limit = { has_fleet_flag = hutton_buff }
             remove_modifier = hutton_buff_to_enemy
             remove_fleet_flag = hutton_buff
-        }
-        if = {
-            limit = { has_fleet_flag = hutton_skill_triggered }
-            remove_fleet_flag = hutton_skill_triggered
         }
         if = {
             limit = { 
@@ -1098,13 +1101,9 @@ fleet_event = {
 
     immediate = {
         every_owned_ship = {
+            limit = { NOT = { has_modifier = wg_timeline_invisable } }
             random_list = {
-                1 = {
-                    set_timed_ship_flag = { flag = invincible days = 3 }
-                    #临时加生命避免一击秒杀
-                    add_many_hp = { DAYS = 3 }
-                    ship_event = { id = raa_skill.2021 }
-                }
+                1 = { add_many_hp = { DAYS = 3 } }
                 9 = {}
             }
         }
@@ -1351,14 +1350,9 @@ fleet_event = {
 
     immediate = {
         every_owned_ship = {
-            limit = { NOT = { has_ship_flag = invincible }}
+            limit = { NOT = { has_modifier = wg_timeline_invisable } }
             random_list = {
-                1 = {
-                    set_timed_ship_flag = { flag = invincible days = 3 }
-                    #临时加生命避免一击秒杀
-                    add_many_hp = { DAYS = 3 }
-                    ship_event = { id = raa_skill.2021 }
-                }
+                1 = { add_many_hp = { DAYS = 3 } }
                 7 = {}
             }
         }
@@ -1583,23 +1577,20 @@ fleet_event = {
     is_triggered_only = yes
 
     trigger = {
-        NOT = { has_fleet_flag = hutton_skill_triggered }
+        is_in_combat = yes
     }
 
     immediate = {
-        random_list = {
-            1 = {
-                set_fleet_flag = hutton_skill_triggered
-                every_owned_ship = {
-                    limit = { is_ship_size_corvette = no }
-                    set_timed_ship_flag = { flag = invincible days = 3 }
-                    #临时加生命避免一击秒杀
-                    add_many_hp = { DAYS = 3 }
-                    ship_event = { id = raa_skill.2021 }
-                }
+        every_owned_ship = {
+            limit = { 
+                is_ship_size_corvette = no
+                NOT = { has_modifier = wg_timeline_invisable } 
             }
-            7 = {}
-        }
+            random_list = {
+                1 = { add_many_hp = { DAYS = 3 } }
+                7 = {}
+            }
+        }        
         fleet_event = { id = raa_skill.1100 days = 5 }
     }
 }
@@ -1671,44 +1662,6 @@ fleet_event = {
             set_ship_flag = enterprise_damage_control
             set_disable_at_health = 0.1
         }
-    }
-}
-
-fleet_event = {
-    id = raa_skill.2020
-    hide_window = yes
-    is_triggered_only = yes
-
-    trigger = {
-        NOT = { has_fleet_flag = VV_skill_triggered }
-    }
-
-    immediate = {
-        set_fleet_flag = VV_skill_triggered
-        every_owned_ship = {
-            limit = {
-                is_ship_size_corvette = no
-            }
-            set_timed_ship_flag = { flag = invincible days = 7 }
-            #临时加生命避免一击秒杀
-            add_many_hp = { DAYS = 6 }
-            ship_event = { id = raa_skill.2021 }
-        }
-    }
-}
-
-ship_event = {
-    id = raa_skill.2021
-    hide_window = yes
-    is_triggered_only = yes
-
-    trigger = {
-        has_ship_flag = invincible
-    }
-
-    immediate = {
-        repair_ship = yes
-        ship_event = { id = raa_skill.2021 days = 5 }
     }
 }
 
@@ -1897,11 +1850,11 @@ ship_event = {
             set_disable_at_health = -1
             add_modifier = { modifier = cobot_buff days = 20 }
             remove_ship_flag = cobot_skill
-            set_timed_ship_flag = { flag = invincible days = 3 }
-            #临时加生命避免一击秒杀
-            add_many_hp = { DAYS = 3 }
+            if = {
+                limit = { NOT = { has_modifier = wg_timeline_invisable } }
+                add_many_hp = { DAYS = 3 }
+            }
             repair_ship = yes
-            ship_event = { id = raa_skill.2021 }
             ship_event = { id = raa_skill.10031 days = 4 }
         }
         else_if = {

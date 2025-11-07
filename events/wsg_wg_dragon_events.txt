@@ -742,7 +742,7 @@ fleet_event = {
 
 	immediate = {
 		if = {
-			limit = { NOT = { has_fleet_flag = invincible }}
+			limit = { NOT = { has_modifier = wg_timeline_invisable }}
 			random_list = {
 				2 = {
 					modifier = {
@@ -794,31 +794,30 @@ fleet_event = {
 					if = {
 						limit = { owner = { special_leader_affection_lv5_trigger = { LEADER = wg_dragon MARRIED_FLAG = married_wg_dragon }}}
 						every_owned_ship = {
-							set_timed_ship_flag = { flag = invincible days = 4 }
-							#临时加生命避免一击秒杀
+							limit = { NOT = { has_modifier = wg_timeline_invisable } }
 							add_many_hp = { DAYS = 5 }
-							ship_event = { id = raa_skill.2021 }
 							ship_event = { id = wg_dragon.18 days = 5 }
 						}
-					} else_if = {
+					} 
+					else_if = {
 						limit = { always = yes }
 						every_owned_ship = {
-							set_timed_ship_flag = { flag = invincible days = 2 }
-							#临时加生命避免一击秒杀
+							limit = { NOT = { has_modifier = wg_timeline_invisable } }
 							add_many_hp = { DAYS = 3 }
-							ship_event = { id = raa_skill.2021 }
 							ship_event = { id = wg_dragon.18 days = 3 }
 						}
 					}
 					if = {
 						limit = { 
 							any_owned_ship = { has_hp_percentage < 0.3 }
+							NOT = { has_modifier = wg_timeline_invisable }
 							owner = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv4 }}
 						}
-						set_timed_fleet_flag = { flag = invincible days = 60 }
-					} else_if = {
-						limit = { always = yes }
-						set_timed_fleet_flag = { flag = invincible days = 30 }
+						add_many_hp = { DAYS = 60 }
+					} 
+					else_if = {
+						limit = { NOT = { has_modifier = wg_timeline_invisable } }
+						add_many_hp = { DAYS = 30 }
 					}
 				}
 				98 = {

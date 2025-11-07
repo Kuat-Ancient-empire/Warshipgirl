@@ -31,151 +31,86 @@ country_event = {
 
 	immediate = {
 		fromfrom = {
-			if = {
-				limit = { any_owned_ship = {
-					has_component = UF_AURA_C
-				}}
-				if = {
-					limit = { NOT = { has_fleet_flag = uf_buff_C }}
-					add_modifier = { modifier = uf_buff_C }
-					set_fleet_flag = uf_buff_C
-				}	
-			}
 		    if = {
-				limit = { any_owned_ship = {
-					has_component = UF_AURA_D
-				}}
-				if = {
-					limit = { NOT = { has_fleet_flag = uf_buff_D }}
-					add_modifier = { modifier = uf_buff_D days = 10 }
-					set_fleet_flag = uf_buff_D
-				}	
+				limit = { 
+					any_owned_ship = {
+						has_component = UF_AURA_C
+					}
+					NOT = { has_modifier = uf_buff_C }
+				}
+				add_modifier = { modifier = uf_buff_C days = 10 }	
+			}			
+		    if = {
+				limit = { 
+					any_owned_ship = {
+						has_component = UF_AURA_D
+					}
+					NOT = { has_modifier = uf_buff_D }
+				}
+				add_modifier = { modifier = uf_buff_D days = 10 }	
 			}
 			if = {
-				limit = { any_owned_ship = {
-					has_component = UF_AURA_E
-				}}
-				if = {
-					limit = { NOT = { has_fleet_flag = uf_buff_E }}
-					set_fleet_flag = uf_buff_E
+				limit = { 
+					any_owned_ship = {
+						has_component = UF_AURA_E
+					}
+					NOT = { has_modifier = wg_timeline_invisable }
 				}
-				fleet_event = { id = uf_buff.100 }
+				add_many_hp = { DAYS = 10 }
 			}
 			if = {
-				limit = { any_owned_ship = {
-					has_component = UF_AURA_F
-				}}
-				if = {
-					limit = { NOT = { has_fleet_flag = uf_debuff_F }}
-					set_fleet_flag = uf_debuff_F
+				limit = { 
+					any_owned_ship = {
+						has_component = UF_AURA_F
+					}
+					ROOT.fromfromfrom = { NOT = {
+						has_modifier = uf_debuff_F
+					} }
 				}
-				ROOT.fromfromfrom = { if = {
-					limit = { NOT = { has_fleet_flag = uf_debuff_F }}
-					add_modifier = { modifier = uf_debuff_F days = 10 }
-					set_fleet_flag = uf_debuff_F
-				} }
+				ROOT.fromfromfrom = { add_modifier = { modifier = uf_debuff_F days = 10 } }
 			}
 			if = {
-				limit = { any_owned_ship = {
-					has_component = UF_AURA_Glory
-				}}
-				if = {
-					limit = { NOT = { has_fleet_flag = uf_buff_Glory }}
-					set_fleet_flag = uf_buff_Glory
+				limit = { 
+					any_owned_ship = {
+						has_component = UF_AURA_Glory
+					}
+					NOT = { has_modifier = wg_timeline_invisable }
 				}
-				fleet_event = { id = uf_buff.101 }
+				add_many_hp = { DAYS = 30 }
 			}
 			if = {
 				limit = {
 					exists = leader
 					leader = { has_leader_flag = uf_vv_admiral }
+					NOT = { has_modifier = wg_timeline_invisable }
 				}
-				if = {
-					limit = { NOT = { has_fleet_flag = uf_buff_vv_fleet }}
-					set_fleet_flag = uf_buff_vv_fleet
-				}
-				fleet_event = { id = uf_buff.102 }
+				add_many_hp = { DAYS = 5 }
 			}
 			if = {#超大和
 				limit = {
 					exists = leader
 					leader = { has_leader_flag = wg_a150_admiral }
+					NOT = { has_modifier = wg_a150_modifier }
 				}
-				if = {
-					limit = { NOT = { has_fleet_flag = wg_a150_admiral_fleet }}
-					set_fleet_flag = wg_a150_admiral_fleet
-				}
-				fleet_event = { id = uf_buff.103 }
+				add_modifier = { modifier = wg_a150_modifier days = 5 }
 			}
 			if = {#蒙大拿
 				limit = {
 					exists = leader
 					leader = { has_leader_flag = wg_montana_admiral }
+					NOT = { has_modifier = wg_timeline_invisable }
 				}
-				if = {
-					limit = { NOT = { has_fleet_flag = wg_montana_admiral_fleet }}
-					set_fleet_flag = wg_montana_admiral_fleet
-				}
-				fleet_event = { id = uf_buff.104 }
+				add_many_hp = { DAYS = 3 }
 			}
 			if = {#Vector
 				limit = {
 					exists = leader
 					leader = { has_leader_flag = sh_Vector_leader }
+					NOT = { has_modifier = wg_timeline_invisable }
 				}
 				add_many_hp = { DAYS = 3 }
-				add_modifier = {
-					modifier = sh_Vector_modifier
-					days = 3
-				}
+				add_modifier = { modifier = sh_Vector_modifier days = 3 }
 			}
-		}
-	}
-}
-
-# 移除buff的事件
-# 带判断舰队是否仍然交战状态
-fleet_event = {
-    id = uf_buff.3
-    hide_window = yes
-    is_triggered_only = yes
-
-    trigger = { 
-        exists = this
-        NOT = { has_global_flag = uf_buff_disabled }
-    }
-
-	immediate = {
-		if = {
-			limit = { has_fleet_flag = uf_buff_C }
-			remove_fleet_flag = uf_buff_C
-			remove_modifier = uf_buff_C
-		}
-		if = {
-			limit = { has_fleet_flag = uf_buff_D }
-			remove_fleet_flag = uf_buff_D
-			remove_modifier = uf_buff_D
-		}
-		if = {
-			limit = { has_fleet_flag = uf_buff_E }
-			remove_fleet_flag = uf_buff_E
-		}
-		if = {
-			limit = { has_fleet_flag = uf_debuff_F }
-			remove_fleet_flag = uf_debuff_F
-			remove_modifier = uf_debuff_F
-		}
-		if = {
-			limit = { has_fleet_flag = uf_buff_Glory }
-			remove_fleet_flag = uf_buff_Glory
-		}
-		if = {
-			limit = { has_fleet_flag = uf_buff_vv_fleet }
-			remove_fleet_flag = uf_buff_vv_fleet
-		}
-		if = {
-			limit = { has_fleet_flag = wg_a150_admiral_fleet }
-			remove_fleet_flag = wg_a150_admiral_fleet
 		}
 	}
 }
@@ -433,109 +368,5 @@ country_event = {
 		name = uf_buff.401.b
 		custom_tooltip = uf_buff.402_tooltip
 		set_country_flag = uf_star_fortress_stop_notice
-	}
-}
-# 特殊情况，需要对舰队进行一些操作
-fleet_event = {
-	id = uf_buff.100
-    hide_window = yes
-    is_triggered_only = yes
-
-	trigger = {
-        is_in_combat = yes
-    }
-
-	immediate = {
-		# 舰队铁幕，一段时间无敌
-		every_owned_ship = {
-            limit = { NOT = { has_ship_flag = invincible }}
-			set_timed_ship_flag = { flag = invincible days = 10 }
-			#临时加生命避免一击秒杀
-			add_many_hp = { DAYS = 10 }
-			# 将船回满血
-			ship_event = { id = raa_skill.2021 }
-        }
-	}
-}
-
-fleet_event = {
-	id = uf_buff.101
-    hide_window = yes
-    is_triggered_only = yes
-
-	trigger = {
-        is_in_combat = yes
-    }
-
-	immediate = {
-		# 舰队铁幕，一段时间无敌
-		every_owned_ship = {
-            limit = { NOT = { has_ship_flag = invincible }}
-			set_timed_ship_flag = { flag = invincible days = 30 }
-			#临时加生命避免一击秒杀
-			add_many_hp = { DAYS = 30 }
-			# 将船回满血
-			ship_event = { id = raa_skill.2021 }
-        }
-	}
-}
-fleet_event = {
-	id = uf_buff.102
-    hide_window = yes
-    is_triggered_only = yes
-
-	trigger = {
-        is_in_combat = yes
-    }
-
-	immediate = {
-		# 舰队铁幕，一段时间无敌
-		every_owned_ship = {
-            limit = { NOT = { has_ship_flag = invincible }}
-			set_timed_ship_flag = { flag = invincible days = 5 }
-			#临时加生命避免一击秒杀
-			add_many_hp = { DAYS = 5 }
-			# 将船回满血
-			ship_event = { id = raa_skill.2021 }
-        }
-	}
-}
-
-fleet_event = {
-	id = uf_buff.103
-    hide_window = yes
-    is_triggered_only = yes
-
-	trigger = {
-        is_in_combat = yes
-    }
-
-	immediate = {
-		# A150强化buff
-		every_owned_ship = {
-            add_modifier = { modifier = wg_a150_modifier days = 5 }
-        }
-	}
-}
-
-fleet_event = {
-	id = uf_buff.104
-    hide_window = yes
-    is_triggered_only = yes
-
-	trigger = {
-        is_in_combat = yes
-    }
-
-	immediate = {
-		# 舰队铁幕，一段时间无敌
-		every_owned_ship = {
-            limit = { NOT = { has_ship_flag = invincible }}
-			set_timed_ship_flag = { flag = invincible days = 3 }
-			#临时加生命避免一击秒杀
-			add_many_hp = { DAYS = 3 }
-			# 将船回满血
-			ship_event = { id = raa_skill.2021 }
-        }
 	}
 }
