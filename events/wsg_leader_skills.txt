@@ -77,7 +77,6 @@ country_event = {
 					leader = { has_leader_flag = projectS_missouri }
 				}
 				set_fleet_flag = projectS_missouri_fleet
-				fleet_event = { id = wg_leader.112 days = 30 }
 			}
 		}
 	}
@@ -287,9 +286,6 @@ country_event = {
 			else_if = {
 				limit = { has_fleet_flag = projectS_missouri_fleet }
 				remove_fleet_flag = projectS_missouri_fleet
-				every_owned_ship = {
-					remove_modifier = sr_se_ship_upkeep_modifier
-				}
 			}
 		}
     }
@@ -375,33 +371,5 @@ fleet_event = {
 			multiplier = renown_debuff_level
 		}
 		fleet_event = { id = wg_leader.111 days = 30 }
-	}
-}
-
-fleet_event = {
-	id = wg_leader.112
-    hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_fleet_flag = projectS_missouri_fleet
-		is_in_combat = yes
-	}
-
-	immediate = {
-		every_owned_ship = {
-			remove_modifier = sr_se_ship_upkeep_modifier
-			if = {
-				limit = { is_ship_size_small = yes }
-				add_modifier = {
-					modifier = sr_se_ship_upkeep_modifier
-				}
-			} else = {
-				add_modifier = {
-					modifier = sr_se_ship_upkeep_modifier
-					multiplier = 2.5
-				}
-			}
-		}
 	}
 }
