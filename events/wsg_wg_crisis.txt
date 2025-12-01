@@ -195,37 +195,21 @@ country_event = {
 							save_global_event_target_as = first_dimensional_portal
 							set_fleet_flag = first_dimensional_portal
 							set_event_locked = yes
-							# 简单难度开门后再刷2队弱的
-							# 普通难度开门后再刷4队弱的
-							# 困难难度开门后再刷4队正常的
-							# 萌新难度开门后再刷8队正常的
-							# 天灾难度开门后再刷10队正常的
+							#基础2个普通入侵舰队
 							fleet_event = { id = wg_crisis.4 days = 180 } 
+							fleet_event = { id = wg_crisis.4 days = 360 } 
 
 							if = {
+								# 普通以上难度开门后额外刷2队舰队
 								limit = {
 									OR = {
-										has_global_flag = wg_crisis_easy
 										has_global_flag = wg_crisis_normal
 										has_global_flag = wg_crisis_hard
 										has_global_flag = wg_crisis_insane
 									}
 								}
 								fleet_event = { id = wg_crisis.4 days = 540 } 
-							}
 
-							if = {
-								# 困难以上难度开门后额外刷4队舰队
-								limit = {
-									OR = {
-										has_global_flag = wg_crisis_normal
-										has_global_flag = wg_crisis_hard
-										has_global_flag = wg_crisis_insane
-									}
-								}
-								fleet_event = { id = wg_crisis.4 days = 360 } 
-
-								create_wg_crisis_greater_admiral = yes
 								create_wg_crisis_greater_fleet = yes
 								last_created_fleet = {
 									set_name = "NAME_auxiliary_guard_fleet"
@@ -243,17 +227,17 @@ country_event = {
 									}
 								}
 								fleet_event = { id = wg_crisis.4 days = 720 } 
+								fleet_event = { id = wg_crisis.4 days = 900 } 
 								fleet_event = { id = wg_crisis.102 days = 10800 } #循环刷辅助守家舰队
 							}
 
 							if = {
-								# 天灾难度开门后再刷4队
-								limit = {
-									has_global_flag = wg_crisis_insane
-								}
-								fleet_event = { id = wg_crisis.4 days = 1500 } 
+								# 天灾难度开门后再刷1队
+								limit = { has_global_flag = wg_crisis_insane }
 
-								create_wg_crisis_greater_admiral = yes
+								fleet_event = { id = wg_crisis.4 days = 1080 } 
+								fleet_event = { id = wg_crisis.4 days = 1260 } 
+
 								create_wg_crisis_greater_fleet = yes
 								last_created_fleet = {
 									set_name = "NAME_auxiliary_guard_fleet"
@@ -271,10 +255,14 @@ country_event = {
 								has_global_flag = wg_crisis_easy
 							}
 						}
-						country_event = { id = wg_crisis.14 days = 1080 }
+						country_event = { id = wg_crisis.14 days = 1260 }
 					}
 					else_if = {
 						limit = { has_global_flag = wg_crisis_normal }
+						country_event = { id = wg_crisis.14 days = 1080 }
+					}
+					else_if = {
+						limit = { has_global_flag = wg_crisis_hard }
 						country_event = { id = wg_crisis.14 days = 900 }
 					}
 					else = {
@@ -289,7 +277,6 @@ country_event = {
 							has_global_flag = wg_crisis_easy
 						}
 					}
-					create_wg_crisis_greater_admiral = yes
 					create_wg_crisis_weaker_fleet_and_admiral = yes
 				}
 				if = {
@@ -297,7 +284,6 @@ country_event = {
 					limit = { has_global_flag = wg_crisis_easy }
 					create_wg_crisis_weaker_fleet_and_admiral = yes
 				}
-				
 				if = {
 					# 困难难度开局刷2队突袭舰队,1队守家舰队
 					limit = {
@@ -307,13 +293,12 @@ country_event = {
 							has_global_flag = wg_crisis_insane
 						}
 					}
-					while = { count = 2
-						create_wg_crisis_raider_admiral = yes
+					while = { 
+						count = 2
 						create_wg_crisis_raider_fleet = yes
 					}
 					
 					PREV = { star = {
-						create_wg_crisis_greater_admiral = yes
 						create_wg_crisis_guard_fleet = yes 
 						last_created_fleet = { set_fleet_flag = first_portal_guard_fleet }
 					}}
@@ -327,14 +312,13 @@ country_event = {
 						}
 					}	
 
-					while = { count = 2
-						create_wg_crisis_raider_admiral = yes
+					while = { 
+						count = 2
 						create_wg_crisis_raider_fleet = yes
 					}
 
 					PREV = { random_system_planet = {
 						limit = { is_primary_star = yes }
-						create_wg_crisis_greater_admiral = yes
 						create_wg_crisis_guard_fleet = yes	
 					}}
 				}
@@ -436,7 +420,6 @@ fleet_event = {
     }
 
 	immediate = {
-		create_wg_crisis_greater_admiral = yes
 		create_wg_crisis_greater_fleet = yes
 		last_created_fleet = {
 			set_name = "NAME_auxiliary_guard_fleet"
@@ -1439,11 +1422,13 @@ country_event = {
 				}
 				PREV = { random_system_planet = {
 					limit = { is_primary_star = yes }
-					create_wg_crisis_greater_admiral = yes
 					create_wg_crisis_guard_fleet = yes
 					last_created_fleet = { set_fleet_flag = second_portal_guard_fleet }
 				}}
-				while = { count = 2 create_wg_crisis_fleet_and_admiral = yes }
+				while = { 
+					count = 2 
+					create_wg_crisis_fleet_and_admiral = yes 
+				}
 				if = {
 					# 天灾刷联合荣耀
 					limit = {
@@ -1542,7 +1527,6 @@ country_event = {
 				}
 				PREV = { random_system_planet = {
 					limit = { is_primary_star = yes }
-					create_wg_crisis_greater_admiral = yes
 					create_wg_crisis_guard_fleet = yes
 					last_created_fleet = { set_fleet_flag = third_portal_guard_fleet }
 				}}
@@ -2606,14 +2590,12 @@ country_event = {
 						}
 						last_created_fleet = {
 							while = { count = 3
-								create_wg_crisis_raider_admiral = yes
 								create_wg_crisis_raider_fleet = yes
 							}
 							# 天灾难度刷6队
 							if = {
 								limit = { has_global_flag = wg_crisis_insane }
 								while = { count = 3
-									create_wg_crisis_raider_admiral = yes
 									create_wg_crisis_raider_fleet = yes
 								}
 							}
@@ -2680,7 +2662,6 @@ fleet_event = {
 				}
 				num_ships < 2500
 			}}}
-			create_wg_crisis_raider_admiral = yes
 			create_wg_crisis_raider_fleet = yes
 		}
 		if = {
@@ -3038,7 +3019,6 @@ country_event = {
 				random_fleet_in_system = {
 					while = {
 						count = 2
-						create_wg_crisis_greater_admiral = yes
 						create_wg_crisis_convoy_fleet = yes
 						last_created_fleet = {
 							set_fleet_flag = convoy_fleet
@@ -3083,7 +3063,6 @@ country_event = {
 					create_wg_crisis_colossus = yes
 					while = {
 						count = 2
-						create_wg_crisis_greater_admiral = yes
 						create_wg_crisis_convoy_fleet = yes
 						last_created_fleet = {
 							set_fleet_flag = convoy_fleet
@@ -3109,7 +3088,6 @@ country_event = {
 					limit = { any_owned_ship = {
 						has_ship_flag = wg_portal
 					}}
-					create_wg_crisis_greater_admiral = yes
 					create_wg_crisis_convoy_fleet = yes
 					last_created_fleet = {
 						set_fleet_flag = convoy_fleet
@@ -3487,7 +3465,6 @@ country_event = {
 						fleet_event = { id = wg_crisis.4 days = 420 } 
 						fleet_event = { id = wg_crisis.4 days = 450 } 
 						while = { count = 1
-							create_wg_crisis_greater_admiral = yes
 							create_wg_crisis_greater_fleet = yes
 							last_created_fleet = {
 								set_name = "NAME_auxiliary_guard_fleet"
@@ -3524,7 +3501,6 @@ country_event = {
 						fleet_event = { id = wg_crisis.4 days = 480 } 
 						fleet_event = { id = wg_crisis.4 days = 495 }
 						while = { count = 1
-							create_wg_crisis_greater_admiral = yes
 							create_wg_crisis_greater_fleet = yes
 							last_created_fleet = {
 								set_name = "NAME_auxiliary_guard_fleet"
