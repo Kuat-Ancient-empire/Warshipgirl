@@ -18,8 +18,6 @@ country_event = {
 		country_event = { id = uf_story.30 days = 720 }
 		country_event = { id = uf_origin.5 }
 		country_event = { id = uf_origin.10002 }
-		country_event = { id = uf_origin.10003 }
-		country_event = { id = uf_origin.10004 }
 		add_modifier = {
 			modifier = uf_administrator_modifier
 			days = -1
@@ -190,6 +188,7 @@ country_event = {
 				days = -1
 			}
 		}
+		country_event = { id = uf_story.28 }
 	}
 }
 
@@ -261,22 +260,78 @@ country_event = {
 
 	immediate = {
 		random_owned_pop_group = {
-			limit = { 
-				has_trait = uf_trait_united_fleet 
-			}
+			limit = { has_trait = uf_trait_united_fleet }
 			species = { save_event_target_as = uf_species }
 		}
 		every_owned_leader = {
 			limit = {
-				OR = {
-					is_same_species = event_target:uf_species
-				}
+				exists = event_target:uf_species
+				is_same_species = event_target:uf_species
 			}
 			add_trait = { trait = leader_trait_uf show_message = no }
 			if = {
 				limit = { leader_class = scientist }
 				add_trait = { trait = leader_trait_scientist_uf show_message = no }
 			}
+		}
+		#清理狡猾舰娘
+		every_country = {
+			limit = { 
+				has_wg_authority = yes
+				is_ai = yes
+			}
+			capital_scope = {
+				solar_system = {
+				    set_name = "Cunning Hell"
+					star = {
+						change_pc = pc_black_hole
+						set_planet_size = 13
+						set_name = "Cunning Hell"
+					}
+					set_star_class = sc_black_hole
+				}
+			}
+			every_owned_pop_group = {
+				kill_pop_group = { pop_group = this percentage = 1 }
+			}
+			every_owned_fleet = {
+				delete_fleet = this
+			}
+            every_planet_within_border = {
+				limit = {
+					is_colony = yes
+				}
+				remove_all_buildings = yes
+				remove_all_districts = yes
+				clear_deposits = yes
+				destroy_colony = yes
+				change_pc = pc_barren
+			}
+			destroy_country = yes
+		}
+		#章小姐事件
+		country_event = { id = uf_origin.10004 }
+		#事件链启动
+		country_event = { id = uf_story.1 }
+
+		#巨乳vv
+		if = {
+			limit = { has_origin = origin_united_fleet_glory_world }
+			country_event = { id = uf_story.37 }
+			country_event = { id = uf_origin.10011 }
+		}
+		#超维探险
+		country_event = { id = uf_story.47 days = 720 random = 720 }
+
+		#多人
+		if = {
+			limit = { is_multiplayer = yes }
+			set_global_flag = uf_rebuilding_homeworld_chain_global_finished
+		}
+		#卓越领袖
+		if = {
+			limit = { has_civic = civic_uf_5 }
+			country_event = { id = uf_origin.10013 }
 		}
 	}
 }
@@ -3489,51 +3544,6 @@ country_event = {
 }
 
 country_event = {
-	id = uf_origin.10003
-	hide_window = yes
-	is_triggered_only = yes
-    trigger = {
-		any_country = { has_authority = auth_united_fleet }
-	}
-    immediate = {
-		every_country = {
-			limit = { 
-				is_wg_empire = yes
-				is_ai = yes
-			}
-			capital_scope = {
-				solar_system = {
-				    set_name = "Cunning Hell"
-					star = {
-						change_pc = pc_black_hole
-						set_planet_size = 13
-						set_name = "Cunning Hell"
-					}
-					set_star_class = sc_black_hole
-				}
-			}
-			every_owned_pop_group = {
-				kill_pop_group = { pop_group = this percentage = 1 }
-			}
-			every_owned_fleet = {
-				delete_fleet = this
-			}
-            every_planet_within_border = {
-				limit = {
-					is_colony = yes
-				}
-				remove_all_buildings = yes
-				remove_all_districts = yes
-				clear_deposits = yes
-				destroy_colony = yes
-				change_pc = pc_barren
-			}
-			destroy_country = yes
-		}
-	}
-}
-
-country_event = {
 	id = uf_origin.10004
 	title = uf_origin.10004.name
 	desc = uf_origin.10004.desc
@@ -3981,26 +3991,9 @@ country_event = {
 }
 
 country_event = {
-	id = uf_origin.10012
-	hide_window = yes
-    trigger = {
-		has_authority = auth_united_fleet
-		is_multiplayer = yes 
-	}
-	is_triggered_only = yes
-    immediate = {
-		set_global_flag = uf_rebuilding_homeworld_chain_global_finished
-	}
-}
-
-country_event = {
 	id = uf_origin.10013
 	hide_window = yes
 	is_triggered_only = yes
-    trigger = {
-		has_authority = auth_united_fleet
-		has_civic = civic_uf_5
-	}
 	immediate = {
 		every_owned_leader = {
 			add_experience = 800

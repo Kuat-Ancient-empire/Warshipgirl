@@ -1941,7 +1941,7 @@ country_event = {
 				}
 			
 				any_system_planet = {
-					habitable_planet = yes
+					is_colonizable = yes
 					has_anomaly = no
 					is_colony = no
 					is_capital = no
@@ -1953,7 +1953,7 @@ country_event = {
 			}
 			random_system_planet = {
 				limit = {
-					habitable_planet = yes
+					is_colonizable = yes
 					has_owner = no	
 					has_anomaly = no
 					is_colony = no
@@ -3219,26 +3219,6 @@ country_event = {
 	}
 }
 
-# 开局刷大小姐事件，全局唯一
-event = {
-	id = wsg.3076
-	hide_window = yes
-	is_triggered_only = yes
-	fire_only_once = yes
-	immediate = {
-		random_country = {
-			limit = {
-				OR = {
-					has_authority = auth_shenhai
-					has_authority = auth_warshipgirls
-				}
-				is_ai = no
-			}
-			set_country_flag = triggered_lady_contingency_event
-			country_event = { id = wsg.3066 days = 7200 random = 5400 }
-		}
-	}
-}
 #星球级誓约
 planet_event = {
 	id = wsg.3077
@@ -4291,31 +4271,6 @@ country_event = {
 }
 #####BADSEAL
 country_event = {
-	id = wsg.3111
-	hide_window = yes
-	is_triggered_only = yes
-	fire_only_once = yes
-	trigger = {
-		any_country = {
-			has_wg_special_authority = yes
-			is_ai = no
-		}
-		NOT = { has_global_flag = wg_badseal_flag }
-	}
-	
-	immediate = {
-		set_global_flag = wg_badseal_flag
-		random_list = { 
-			10 = {
-				country_event = { id = wsg.3112 days = 720 } # for test, should be 720 days and 10%
-			}
-			90 = {
-			}	
-		}
-	}
-}
-
-country_event = {
 	id = wsg.3112
 	title = "wsg.3112.name"
 	desc = "wsg.3112.desc"
@@ -5327,75 +5282,28 @@ country_event = {
 		remove_modifier = wsg_super_harbor_no_war_2
 		remove_modifier = wsg_super_harbor_no_war_3
 		remove_modifier = wsg_super_harbor_no_war_4
-		country_event = {
-			id = wsg.3301 days = 1080
-		}
-		country_event = {
-			id = wsg.3312 days = 1080 #交战满3年
-		}
+		country_event = { id = wsg.3312 days = 1080 }
 	}
 	option = {
 		name = wsg.3300.a
-		add_modifier = {
-			modifier = wsg_super_harbor_at_war
-		}
+		add_modifier = { modifier = wsg_super_harbor_at_war }
 	}
 }
-#战争状态自检，三年一次
+#战争状态检查，二年一次
 country_event = {
 	id = wsg.3301
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
 		has_civic = civic_wsg_super_harbor
+		is_at_war = no
+		NOT = { any_country = {
+			is_crisis_faction = yes
+			is_country_type = wg_crisis_country
+		} }
+		years_passed > 5
 	}
-	immediate = {
-		if = {
-			limit = {
-				is_at_war = no
-				NOT = { any_country = {
-					is_crisis_faction = yes
-					is_country_type = wg_crisis_country
-				} }
-			}
-			country_event = {
-				id = wsg.3303
-			}
-		}
-		else = {
-			country_event = {
-				id = wsg.3301 days = 1080
-			}
-		}
-	}
-}
-#结束交战触发器
-country_event = {
-	id = wsg.3302
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = {
-		OR = {
-			has_civic = civic_wsg_super_harbor
-			from = { has_civic = civic_wsg_super_harbor }
-		}
-	}
-	immediate = {
-		if = {
-			limit = { has_civic = civic_wsg_super_harbor }
-			country_event = {
-				id = wsg.3303 days = 1080 #1080
-			}
-		}
-		from = {
-			if = {
-				limit = { has_civic = civic_wsg_super_harbor }
-				country_event = {
-					id = wsg.3303 days = 1080 #1080
-				}
-			}
-		}
-	}
+	immediate = { country_event = { id = wsg.3303 } }
 }
 #不交战给debuff
 country_event = {
@@ -5418,9 +5326,7 @@ country_event = {
 			remove_modifier = wsg_super_harbor_at_war #交战buff
 			remove_modifier = wsg_super_harbor_at_war_2 #交战buff
 			remove_country_flag = wsg_at_war
-			country_event = {
-				id = wsg.3304 days = 1800 #1800
-			}
+			country_event = { id = wsg.3304 days = 1800 }
 		}
 	}
 	option = {
@@ -5547,7 +5453,8 @@ country_event = {
 	}
 	immediate = {
 		country_event = {
-			id = wsg.3303 days = 1800 #开局5年后提醒该去打仗了
+			id = wsg.3303 
+			days = 1800 
 		}
 		set_country_flag = wsg_at_war
 		capital_scope = {
@@ -5556,11 +5463,8 @@ country_event = {
 			add_deposit = d_wsg_eagleopolis
 			add_deposit = r_wsg_dss
 		}
-
 	}
-	option = {
-		name = "wsg.3311.a"
-	}
+	option = { name = "wsg.3311.a" }
 }
 
 country_event = {
@@ -5759,34 +5663,6 @@ country_event = {
 					country_event = { id = wsg.3329 days = 30 random = 30 }
 				}
 				2 = {
-				}
-			}
-		}
-	}
-}
-
-country_event = {
-	id = wsg.3328
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = { has_civic = civic_wsg_drg }
-
-	immediate = {
-		random_planet_within_border = {
-			limit = { has_planet_flag = wg_civic_drg_planet }
-			save_event_target_as = wg_drg_planet_target
-			set_planet_flag = megastructure
-			clear_deposits = yes
-			if = {
-				limit = { has_orbital_station = yes }
-				orbital_station = {
-					dismantle = yes
-				}
-			}
-			solar_system = {
-				spawn_megastructure = {
-					type = "wg_drg_station"
-					coords_from = event_target:wg_drg_planet_target
 				}
 			}
 		}

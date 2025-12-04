@@ -2,22 +2,6 @@
 
 namespace = wsgancrel
 
-country_event = {
-	id = wsgancrel.3
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = {
-		is_ai = no
-		has_authority = auth_warshipgirls
-	}
-	immediate = {
-		capital_scope = {
-			planet_event = { id = wsgancrel.4 days = 360 random = 720 }
-		}
-		country_event = { id = wsgancrel.31 days = 3600 random = 1800 }
-	}
-}
-
 planet_event ={
 	id = wsgancrel.4
 	hide_window = no
@@ -1782,23 +1766,6 @@ country_event = {
 }
 ######
 country_event = {
-	id = wsgancrel.1191
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		exists = capital_scope
-		capital_scope = {
-			has_planet_flag = port_home
-			NOT = { has_planet_flag = cts_home }
-		}
-	}
-
-	immediate = {
-		set_country_flag = clovertheater_planet_flag
-	}
-}
-country_event = {
 	id = wsgancrel.120
 	hide_window = yes
 	is_triggered_only = yes
@@ -3050,117 +3017,7 @@ country_event = {
 		}
 	}	
 }
-######################################################################
-# 生成盒子星系
-event = {
-	id = wsgancrel.234
-	hide_window = yes
-	is_triggered_only = yes
-	fire_only_once = yes
 
-	trigger = {
-		NOT = { any_country = {
-			has_authority = auth_united_fleet
-		}}
-		any_country = {
-			has_wg_special_authority = yes
-			is_ai = no
-		}
-	}
-	
-	immediate = {
-		random_country = {
-			limit = {
-				has_wg_special_authority = yes
-				is_ai = no
-			}
-			if = {
-				limit = { exists = capital_scope }
-				capital_scope = { 
-					solar_system = { 
-						if = {
-							limit = { any_neighbor_system_euclidean = { has_hyperlane_to = PREV }}
-							save_event_target_as = spawn_box_system_source
-						} else = {
-							random_neighbor_system_euclidean = {
-								limit = { NOR = { 
-									has_star_flag = sealed_system 
-									has_star_flag = wg_sealed_system
-								}}
-								save_event_target_as = spawn_box_system_source
-							}
-						}
-					}
-				}
-			} 
-			# else_if = {
-			# 	limit = { 
-			# 		OR = {
-			# 			has_origin = origin_ev_meg_homeless_ship_strat
-			# 			is_country_type = default_ev 
-			# 		}
-			# 	}
-			# 	random_controlled_fleet = {
-			# 		limit = { any_owned_ship = { is_any_type_homeless_ship = yes }}
-			# 		solar_system = { 
-			# 			if = {
-			# 				limit = { any_neighbor_system_euclidean = { has_hyperlane_to = PREV }}
-			# 				save_event_target_as = spawn_box_system_source
-			# 			} else = {
-			# 				random_neighbor_system_euclidean = {
-			# 					limit = { NOR = { 
-			# 						has_star_flag = sealed_system 
-			# 						has_star_flag = wg_sealed_system
-			# 					}}
-			# 					save_event_target_as = spawn_box_system_source
-			# 				}
-			# 			}
-			# 		}
-			# 	}
-			# } 
-			else = {
-				random_controlled_fleet = { solar_system = {
-					save_event_target_as = spawn_box_system_source
-				}}
-			}
-			every_system = {
-				limit = { 
-					distance = { 
-						source = event_target:spawn_box_system_source
-						min_jumps = 4
-						max_jumps = 6
-						type = hyperlane 
-						use_bypasses = no
-					}
-					NOR = { 
-						closest_system = {
-							exists = space_owner
-							min_steps = 0
-							max_steps = 1
-						}
-						has_natural_wormhole = yes
-						has_star_flag = guardian
-						has_star_flag = sealed_system
-						has_star_flag = wg_sealed_system
-						exists = space_owner
-					}
-				}
-				set_timed_star_flag = { flag = can_spawn_box_system days = 1 }
-			}
-			random_system = {
-				limit = { has_star_flag = can_spawn_box_system }
-				spawn_system = {
-					hyperlane = yes
-					is_discovered = no
-					min_distance = 10
-					max_distance = 20
-					initializer = wg_box_system
-				}
-			}
-		}
-	}
-}
-##
 ######################################################################
 # 星极联动事件
 # Stage 1 - 科研船计算机

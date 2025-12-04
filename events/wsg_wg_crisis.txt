@@ -1672,12 +1672,7 @@ country_event = {
         name = wg_crisis.20.b.a
         is_dialog_only = yes
         response_text = wg_crisis.20.b.a.response
-        trigger = {
-			OR = {
-				has_authority = auth_shenhai
-				has_authority = auth_warshipgirls
-			}
-		}
+        trigger = { has_wg_authority = yes }
     }
 
 	option = {
@@ -4678,51 +4673,6 @@ event = {
 	}
 }
 
-event = {
-	id = wg_crisis.10004
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		any_country = {
-			has_wg_special_authority = yes
-		}
-	}
-
-	immediate = {
-		if = { #玩家是舰娘国家
-			limit = { any_country = {
-				has_wg_special_authority = yes
-				is_ai = no
-			}}
-			set_global_flag = wg_crisis_hard
-			random_country = {
-				limit = {
-					has_wg_special_authority = yes
-					is_ai = no
-				}
-				country_event = { id = wg_crisis.10000 }
-			}
-		}
-		else_if = { #有AI舰娘国家
-			limit = { 
-				any_country = {
-					has_wg_special_authority = yes
-					is_ai = yes
-				}
-			}
-			set_global_flag = wg_crisis_hard
-			random_country = {
-				limit = {
-					is_ai = no
-				}
-				set_country_flag = can_adjust_wg_crisis_diff
-				country_event = { id = wg_crisis.10000 }
-			}
-		}
-	}
-}
-
 country_event = {
 	id = wg_crisis.10005
 	title = "wsg.3047.name"
@@ -4794,24 +4744,6 @@ country_event = {
 			modifier = "wg_very_hard" 	
 			days = -1
 		}
-	}
-}
-
-# 狡豹要的flag
-event = {
-	id = wg_crisis.10006
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		any_country = {
-			has_authority = auth_united_fleet
-		}
-	}
-
-	immediate = {
-		set_global_flag = wg_crisis_disabled
-		set_global_flag = activated_uf_hidden_diff
 	}
 }
 
@@ -5019,9 +4951,7 @@ country_event = {
 		set_variable = { which = wg_lady_affection_level value = 1 }
 	}
 	
-	option = {
-		name = OK
-	}
+	option = { name = OK }
 }
 
 # 联合领袖技能总触发器

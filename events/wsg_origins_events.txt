@@ -11,9 +11,7 @@ country_event = {
 	immediate = {
 		every_playable_country = {
 			limit = {
-				OR = {
-					has_country_flag = origin_wg_fe_child_flag
-				}
+				has_country_flag = origin_wg_fe_child_flag
 				NOT = { has_communications = root }
 			}
 			establish_communications_no_message = root
@@ -81,27 +79,6 @@ country_event = {
 			has_authority = auth_shenhai
 		}
 		name = wg_origin.2.b
-	}
-}
-
-country_event = {
-	id = wg_origin.3
-	hide_window = yes
-	
-	is_triggered_only = yes
-	trigger = {
-		any_country = {
-			has_country_flag = origin_wg_fe_child_flag
-		}
-	}
-
-	immediate = {
-		random_country = {
-			limit = {
-				is_wg_fallen_empire = yes
-			}
-			country_event = { id = wg_origin.1 days = 1 }
-		}
 	}
 }
 
@@ -2078,156 +2055,6 @@ country_event = {
 	}
 	option = { 
 		name = wg_origin.59.b
-	}
-}
-
-event = {
-	id = wg_origin.60
-	hide_window = yes
-	is_triggered_only = yes
-	fire_only_once = yes
-
-	trigger = {
-		any_country = { is_ai = no has_origin = origin_waterb }
-	}
-
-	immediate = {
-		random_country = {
-			limit = {
-				is_ai = no
-				has_origin = origin_waterb
-			}
-			remove_country_flag = human_1
-			remove_country_flag = human_2
-			set_country_flag = custom_start_screen
-			set_country_flag = wg_custom_origin
-			set_country_flag = origin_waterb
-			save_global_event_target_as = origin_waterb_country
-			# 设置中立 
-			every_country = {
-				establish_communications_no_message = event_target:wg_rbq_dragon_country
-				if = {
-					limit = {
-						has_origin = origin_waterb
-						NOT = { is_same_value = root }
-						is_ai = no
-						NOT = { has_country_flag = origin_waterb }
-					}
-					country_event = { id = wg_origin.96 }
-				}
-			}
-			country_event = { id = wg_origin.10060 days = 1 }
-			country_event = { id = wg_origin.62 days = 180 random = 60 }
-			capital_scope = {
-				clear_deposits = yes
-				add_deposit = d_toxic_kelp
-				add_deposit = d_decrepit_dwellings
-				add_deposit = d_failing_infrastructure
-				add_deposit = d_failing_infrastructure
-				add_deposit = d_underwater_vent
-				add_deposit = d_underwater_vent
-				add_deposit = d_crystal_reef
-				add_deposit = d_submerged_ore_veins
-				add_deposit = d_submerged_ore_veins
-				add_deposit = d_submerged_ore_veins
-				add_deposit = d_great_river
-				add_deposit = d_tropical_island
-				add_deposit = d_teeming_reef
-				add_deposit = d_teeming_reef
-				add_deposit = d_water_b
-				add_deposit = d_water_b_2
-				add_modifier = { modifier = wg_origin_waterb_planet_modifier }
-			}
-			set_country_flag = add_dragon_deposit
-			capital_star = {
-				solar_system = {
-					every_system_planet = {
-						if = {
-							limit = {
-								has_deposit_for = shipclass_mining_station
-								has_mining_station = no
-							}
-							create_mining_station = { owner = prevprevprev }
-						}
-						if = {
-							limit = {
-								has_deposit_for = shipclass_research_station
-								has_research_station = no
-							}
-							create_research_station = { owner = prevprevprev }
-						}
-					}
-				}
-				create_country = {
-					name = "NAME_wg_rbq_dragon_country"
-					type = faction_wsg_neutral_no_auto_delete
-					flag = {
-						icon = {
-							category = "domination"
-							file = "domination_16.dds"
-						}
-						background = {
-							category = "backgrounds"
-							file = "00_solid.dds"
-						}
-						colors={
-							"blue"
-							"blue"
-							"null"
-							"null"
-						}
-					}
-					effect = {
-						set_country_flag = protected_from_queen_storm
-						set_country_flag = wg_boss_country
-						set_country_flag = wg_rbq_dragon_country_flag
-						save_global_event_target_as = wg_rbq_dragon_country
-						if = {
-							limit = {
-								NOT = {
-									has_modifier = wg_rbq_dragon_power
-								}
-							}
-							add_modifier = {
-								modifier = wg_rbq_dragon_power
-								days = -1
-							}
-						}	
-					}				
-				}
-				event_target:wg_rbq_dragon_country = {		
-					create_fleet = {
-						name = "NAME_wg_rbq_dragon1"
-						settings = {
-							spawn_debris = no
-							can_change_composition = no
-							can_change_leader = no
-							can_disband = no
-							can_upgrade = no
-							uses_naval_capacity = no
-							is_boss = yes
-						}
-						effect = {
-							set_owner = prev
-							save_global_event_target_as = wg_rbq_dragon_fleet
-							create_ship = {
-								name = "NAME_wg_rbq_dragon"
-								design = "NAME_wg_rbq_dragon"
-							}
-							set_fleet_flag = wg_rbq_dragon_fleet
-							set_location = {
-								target = prevprev
-								distance = 15
-								angle = 0
-							}
-							set_fleet_stance = passive
-							set_aggro_range_measure_from = self
-							set_aggro_range = 100
-						}
-					}
-				}
-			}
-		}
 	}
 }
 

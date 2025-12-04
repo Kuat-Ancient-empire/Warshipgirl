@@ -5,25 +5,17 @@ country_event = {
 	id = sh.1
 	hide_window = yes
 	is_triggered_only = yes
-	trigger = {
-		has_authority = auth_shenhai
-	}
+	trigger = { has_authority = auth_shenhai }
 	immediate = {
 		if = {
 			limit = { NOT = { has_country_flag = custom_start_parit } }
-			random_owned_planet = {
-				limit = {
-					is_capital = yes
-				}
+			capital_scope = {
 				add_deposit = r_sh_freezer
 				add_deposit = d_sh_db
 				add_building = building_sh_assembly_plant
 				add_building = building_sh_precinct_house
 			}
-			add_modifier = {
-				modifier = sh_base
-				days = -1
-			}		
+			add_modifier = { modifier = sh_base }		
 			country_event = { id = shgancrel.1 days = 50 random = 100 }
 		}
 		#要塞姬
@@ -34,16 +26,113 @@ country_event = {
 		#AI深海组装
 		if = {
 			limit = { is_ai = yes }
-			add_modifier = {
-				modifier = wg_ai_base
-				days = -1
-			}
-			add_modifier = {
-				modifier = wg_ai_base_amenities
-				days = -1
-			}
+			add_modifier = { modifier = wg_ai_base }
+			add_modifier = { modifier = wg_ai_base_amenities }
 			set_country_flag = no_machine_uprising
 			set_country_flag = synth_detector
+		}
+		#深海主宰
+		if = {
+			limit = { has_origin = origin_sh_juggernaut }
+			create_fleet = {
+				name = "NAME_sh_juggernaut"
+				effect = {
+					set_owner = root
+					set_fleet_flag = sh_juggernaut_origin_flag
+					create_ship = {
+						name = random
+						design = "NAME_sh_juggernaut"
+						graphical_culture = "mammalian_01"
+						upgradable = no
+					}
+					add_modifier = { modifier = sh_juggernaut }
+					set_location = { target = root.capital_scope distance = 20 angle = random }
+				}
+				settings = {
+					spawn_debris = no
+					can_change_composition = no
+					can_upgrade = no
+					can_disband = no
+				}
+			}
+			country_event = { id = sh.3035 days = 15 } 
+		}
+		#帕里特
+		if = {
+			limit = { 
+				has_country_flag = custom_start_parit
+				NOT = { has_country_flag = origin_parit_star_deposit }
+			}
+			set_country_flag = has_origin_kuat_shadow
+			set_country_flag = origin_parit_star_deposit
+			set_country_flag = wg_custom_origin
+			country_event = { id = wg_parit.20 days = 5 }
+			country_event = { id = wg_parit.21 days = 7200 }
+			capital_scope = {
+				set_name = "NAME_Parit_system"
+				add_deposit = d_Parit7
+				add_deposit = d_Parit8
+				add_deposit = d_Parit6
+				add_deposit = d_rich_mountain
+				add_deposit = d_ore_rich_caverns
+				remove_deposit = d_great_river
+				remove_deposit = d_marvelous_oasis
+				add_building = building_energy_Parit
+				add_building = building_minerlas_Parit
+				add_building = building_food_Parit
+				add_modifier = { modifier = planet_Parit2 }
+				add_modifier = { modifier = planet_Parit4 }
+			}
+		}
+		#深海追赶者
+		if = {
+			limit = { has_origin = origin_sh_chaser }
+			set_country_flag = wg_custom_origin
+			ruler = {
+				set_name = NAME_origin_Chaser
+				add_trait = { trait = leader_trait_origin_sh_chaser show_message = no }
+				set_skill = 4
+				set_leader_flag = leader_death_events_blocked
+				set_leader_flag = immune_to_negative_traits
+				switch = {
+					trigger = leader_class
+					official = {
+						add_trait = { trait = subclass_official_economy_councilor show_message = no }
+					}
+					scientist = {
+						add_trait = { trait = subclass_scientist_councilor show_message = no }
+					}
+					commander = {
+						add_trait = { trait = subclass_commander_councilor show_message = no }
+					}
+				}
+			}
+			set_variable = { which = origin_sh_chaser_value value = 3 }
+			country_event = { id = wg_origin_sh_chaser.2 }
+		}
+		#反客为主
+		if = {
+			limit = { has_origin = origin_sh_invaded }
+			capital_scope = {
+				if = {
+					limit = { NOT = { has_planet_flag = wg_ring_world_start_planet } }
+					add_district = district_generator
+					add_building = building_urban_dwellings_sh
+				}
+				add_deposit = d_bomb_crater
+				add_deposit = d_bomb_crater
+				remove_deposit = d_decrepit_dwellings
+				add_modifier = { modifier = sh_invaded_origin days = -1 }			
+			}
+			add_resource = { sr_pantsu = 300 }
+		}
+		#深海2舰队
+		if = {
+			limit = { 
+				is_ai = no
+				NOT = { has_country_flag = custom_start_parit }
+			}
+			country_event = { id = sh.3017 }
 		}
 	}
 }
@@ -83,23 +172,6 @@ country_event = {
 # 	}
 # }
 #大和之嫁
-country_event = {
-	id = sh.4
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = {
-		has_ascension_perk = ap_shenhai_icebreaking
-	}
-	immediate = {
-		country_event = { id = sh.5 days = 60  }
-		# if = {
-		# 	limit = {
-		# 		has_modifier = planet_Parit5
-		# 	}
-		# 	remove_modifier = planet_Parit5
-		# }
-	}
-}
 country_event = {
 	id = sh.5
 	title = "sh.5.name"
@@ -1690,7 +1762,11 @@ planet_event = {
 			}
 		}
 		else_if = {
-			limit = { habitable_planet = yes }
+			limit = { 
+				is_colony = yes
+				is_ringworld = no
+				is_wg_habitat = no
+			}
 			change_pc = pc_shenhai
 			clear_deposits = yes
 		}
@@ -2257,7 +2333,7 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		is_wg_empire = yes
+		has_wg_authority = yes
 		resource_stockpile_compare = { resource = food value < 50 }
 		has_country_flag = origin_wg_fe_child_flag 
 		NOT = { has_country_flag = wg_fe_food_support }
@@ -2835,57 +2911,6 @@ country_event = {
 		custom_tooltip = bombed_to_broken_world
 	}
 }
-#主宰开局
-country_event = {
-	id = sh.3034
-	hide_window = yes
-	location = event_target:sh_juggernaut
-	
-	is_triggered_only = yes
-	trigger = {
-		has_country_flag = origin_sh_juggernaut
-	}	
-	immediate = {
-		owner = {
-			save_event_target_as = sh_juggernaut_owner
-		}
-		random_owned_planet = {
-			limit = {
-				is_capital = yes
-			}
-			save_event_target_as = sh_juggernaut
-		}
-		create_fleet = {
-			name = "NAME_sh_juggernaut"
-			effect = {
-				set_owner = event_target:sh_juggernaut_owner
-				set_fleet_flag = sh_juggernaut_origin_flag
-				create_ship = {
-					name = random
-					design = "NAME_sh_juggernaut"
-					graphical_culture = "mammalian_01"
-					upgradable = no
-				}
-				add_modifier = {
-					modifier = sh_juggernaut
-					days = -1
-				}
-				set_location = {
-					target = event_target:sh_juggernaut
-					distance = 20
-					angle = 10
-				}
-			}
-			settings = {
-				spawn_debris = no
-				can_change_composition = no
-				can_upgrade = no
-				can_disband = no
-			}
-		}
-		country_event = { id = sh.3035 days = 15 } 
-	}
-}
 
 country_event = {
 	id = sh.3035
@@ -2964,43 +2989,6 @@ country_event = {
 	}
 }
 
-country_event = {
-	id = sh.3038
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = {
-		has_country_flag = origin_sh_invaded
-	}
-
-	immediate = {
-		random_owned_planet = {
-			limit = {
-				is_capital = yes
-				NOT = { has_planet_flag = wg_ring_world_start_planet }
-			}
-			add_district = district_generator
-		}
-		random_owned_planet = {
-			limit = {
-				is_capital = yes
-				NOT = { has_planet_flag = wg_ring_world_start_planet }
-			}
-			add_building = building_urban_dwellings_sh
-		}	
-		random_owned_planet = {
-			limit = {
-				is_capital = yes
-			}			
-			add_deposit = d_bomb_crater
-			add_deposit = d_bomb_crater
-			remove_deposit = d_decrepit_dwellings
-			add_modifier = { modifier = sh_invaded_origin days = -1 }			
-		}
-		owner = {
-			add_resource = { sr_pantsu = 300 }
-		}		
-	}		
-}
 #####深海猫领袖
 country_event = {
 	id = sh.3039
@@ -5031,41 +5019,6 @@ country_event = {
 }
 
 ##########################
-country_event = {
-	id = sh.3500
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_authority = auth_shenhai
-		has_origin = origin_wg_warhammer
-	}
-
-	immediate = {
-        every_owned_pop_group = {
-			limit = { 
-				has_trait = sh_trait_shenhai
-			}
-			species = { 
-				save_event_target_as = sh_species 
-			}
-		}
-		every_pool_leader = {
-			limit = {
-				OR = {
-					is_same_species = event_target:sh_species
-				}
-			}
-			switch = {
-				trigger = leader_class
-				commander = { add_trait = { trait = leader_trait_commander_sh_warhammer show_message = no }}				
-				official = { add_trait = { trait = leader_trait_official_sh_warhammer show_message = no }}
-				scientist = { add_trait = { trait = leader_trait_scientist_wg_warhammer show_message = no } }	
-			}
-		}
-	}
-}
-
 country_event = {
 	id = sh.3501
 	is_triggered_only = yes

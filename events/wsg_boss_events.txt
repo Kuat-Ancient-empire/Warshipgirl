@@ -1887,57 +1887,23 @@ planet_event = {
 			kill_pop_group = { pop_group = this percentage = 1 }
 		}		
 		if = {
-			limit = {
-				is_wg_habitat = yes
-			}
+			limit = { is_wg_habitat = yes }
 			spawn_habitat_cracker_effect = yes
 			remove_planet = yes
 		}
 		else_if = {
-			limit = {
-				is_ringworld = yes	
-			}
+			limit = { is_ringworld = yes }
 			change_pc = pc_ringworld_habitable_water
 			clear_deposits = yes
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3			
+			while = { count = 20 add_deposit = d_society_3 }		
 		}		
-		else_if = {
-			limit = { habitable_planet = yes }
-			change_pc = pc_wg_water
-			clear_deposits = yes
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3
-			add_deposit = d_society_3			
-		}
 		else = {
 			change_pc = pc_wg_water
 			clear_deposits = yes
+			if = {
+				limit = { is_colony = yes }
+				while = { count = 10 add_deposit = d_society_3 }
+			}
 		}
 	}
 }
@@ -7617,7 +7583,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		is_wg_empire = yes
+		has_wg_authority = yes
 	}
 
 	option = {
@@ -7690,7 +7656,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		is_wg_empire = yes
+		has_wg_authority = yes
 		NOR = {
 			has_civic = civic_CM
 			has_ascension_perk = ap_shenhai_silent
@@ -8034,7 +8000,7 @@ country_event = {
 		}
 		add_resource = { minerals = 5000 }
 		if = {
-			limit = { is_wg_empire = yes }
+			limit = { has_wg_authority = yes }
 			change_variable = { which = rankpts value = 3 }
 		}
 	}
@@ -10819,79 +10785,6 @@ planet_event = {
 
 
 ###########################################
-event = { #生成星系
-	id = wg_boss.1000
-	hide_window = yes
-	is_triggered_only = yes
-	fire_only_once = yes
-	immediate = {
-		if = {
-			limit = { any_country = {
-				has_country_flag = custom_start_parit
-			}}
-			set_global_flag = wg_Parit_origin
-		}
-		if = {
-			limit = { any_country = {
-				has_authority = auth_united_fleet
-			}}
-			set_global_flag = wg_auth_united_fleet_origin
-		}
-		if = {
-			limit = { any_country = {
-				has_wg_and_uf_special_authority = yes
-				is_ai = no
-			}}
-			random_country = {
-				limit = {
-					has_wg_and_uf_special_authority = yes
-					is_ai = no
-				}
-				country_event = { id =  wg_boss.1 } #boss
-				if = {  
-					limit = { has_wg_special_authority = yes  }
-					country_event = { id = wg_khan.2 } #大可汗
-				}
-				random_list = {
-					60 = { 
-						modifier = { factor = 0 OR = {
-							has_global_flag = wg_Parit_origin
-							has_global_flag = wg_auth_united_fleet_origin
-						} }
-						country_event = { id = wg_parit.1 }
-					}
-					40 = {
-						modifier = { 
-							factor = 0 
-							has_global_flag = wg_cheat_all_bosses 
-							NOT = { has_global_flag = wg_Parit_origin }
-						}
-					}
-				}
-			}
-		}
-		if = {
-			limit = { any_country = {
-				OR = {
-					is_wg_empire = yes
-					has_authority = auth_united_fleet
-				}
-				is_ai = no
-			}}
-			random_country = {
-				limit = {
-					OR = {
-						is_wg_empire = yes
-						has_authority = auth_united_fleet
-					}
-					is_ai = no
-				}
-				country_event = { id = wsg.4 } #sol3
-			}
-		}
-	}
-}
-
 # 检查所有boss星系是否正确生成
 country_event = {
 	id = wg_boss.1001
@@ -11454,7 +11347,7 @@ ship_event = {
 			lex_sol_nuked = {
 				root.owner = { if = {
 					limit = { 
-						is_wg_empire = yes
+						has_wg_authority = yes
 						NOT = { has_country_flag = triggered_lex_sol_event }
 						NOT = { has_global_flag = finish_lex_sol_III_event }
 					}

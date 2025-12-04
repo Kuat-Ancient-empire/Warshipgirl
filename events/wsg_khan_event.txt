@@ -183,44 +183,18 @@ country_event = {
 		set_global_flag = wg_Khan_created
 		capital_scope = {
 			solar_system = {
-				if = {
-					limit = {
-						NOT = { any_neighbor_system = { has_hyperlane_to = PREV } }
-					}
-					save_event_target_as = spawn_khan_system_source
-				}
-				else = { random_neighbor_system = {
+				random_neighbor_system_euclidean = {
 					limit = { NOR = {
 						has_star_flag = sealed_system
 						has_star_flag = wg_sealed_system
 						has_star_flag = can_spawn_boss_system
 					}}
 					save_event_target_as = spawn_khan_system_source
-				} }
+				}
 			}
 		}
 		if = {
-			limit = { any_system = {
-				distance = { 
-					source = event_target:spawn_khan_system_source
-					min_jumps = 7
-					max_jumps = 12
-					type = hyperlane 
-					use_bypasses = no
-				}
-				NOR = { 
-					closest_system = {
-						exists = space_owner
-						max_steps = 2
-					}
-					has_natural_wormhole = yes
-					has_star_flag = hostile_system
-					has_star_flag = guardian
-					has_star_flag = sealed_system
-					has_star_flag = wg_sealed_system
-					has_presence = no
-				}
-			} }
+			limit = { exists = event_target:spawn_khan_system_source }
 			every_system = {
 				limit = { 
 					distance = { 

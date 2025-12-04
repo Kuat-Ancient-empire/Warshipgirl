@@ -2,15 +2,248 @@ namespace = wg_kuat
 event = {
 	id = wg_kuat.1
 	hide_window = yes
+	fire_only_once = yes
 	is_triggered_only = yes
-
-    trigger = {
-		any_country = {
-			has_wg_special_authority = yes
-		}
-	}
 
     immediate = {
         set_global_flag = has_wg_country	
+		# 时虫
+		if = {
+			limit = { any_country = { has_wg_special_authority = yes } }
+			random_list = {
+				7 = { random_system = {
+					limit = {
+						is_star_class = sc_black_hole
+						is_fe_cluster = no
+						NOR = {
+							exists = starbase
+							has_star_flag = guardian
+							has_star_flag = empire_cluster
+						}
+					}
+					set_star_flag = horizonsignal_spawn
+				} }
+				3 = { every_system = {
+					limit = {
+						is_star_class = sc_black_hole
+						is_fe_cluster = no
+						NOR = {
+							exists = starbase
+							has_star_flag = guardian
+							has_star_flag = empire_cluster
+							has_star_flag = horizonsignal_spawn
+						}
+					}
+					set_star_flag = horizonsignal_spawn
+				} }
+			}
+		}
+
+		# 开局刷大小姐事件，全局唯一 战神
+		if = {
+			limit = { any_country = { has_wg_authority = yes } }
+			# 开局刷大小姐事件，全局唯一
+			random_country = {
+				limit = {
+					has_wg_authority = yes
+					is_ai = no
+				}
+				set_country_flag = triggered_lady_contingency_event
+				country_event = { id = wsg.3066 days = 7200 random = 5400 }
+			}
+			# 战神
+			every_country = {	
+				limit = {
+					OR = {
+						has_trait = "wsg_trait_africa_star"
+						has_trait = "sh_trait_africa_star"
+					}
+					NOT = { has_technology = tech_wsg_afrcia_star }
+				}
+				give_technology = { tech = tech_wsg_afrcia_star }
+			}
+		}
+
+		#野怪星系初始化
+		if = {
+			limit = { any_country = {
+				has_country_flag = custom_start_parit
+			}}
+			set_global_flag = wg_Parit_origin
+		}
+		if = {
+			limit = { any_country = {
+				has_authority = auth_united_fleet
+			}}
+			set_global_flag = wg_auth_united_fleet_origin
+		}
+		if = {
+			limit = { any_country = {
+				has_wg_and_uf_special_authority = yes
+				is_ai = no
+			}}
+			random_country = {
+				limit = {
+					has_wg_and_uf_special_authority = yes
+					is_ai = no
+				}
+				country_event = { id =  wg_boss.1 } #boss
+				if = {  
+					limit = { has_wg_special_authority = yes  }
+					country_event = { id = wg_khan.2 } #大可汗
+				}
+				random_list = {
+					60 = { 
+						modifier = { factor = 0 OR = {
+							has_global_flag = wg_Parit_origin
+							has_global_flag = wg_auth_united_fleet_origin
+						} }
+						country_event = { id = wg_parit.1 }
+					}
+					40 = {
+						modifier = { 
+							factor = 0 
+							has_global_flag = wg_cheat_all_bosses 
+							NOT = { has_global_flag = wg_Parit_origin }
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = { any_country = {
+				has_wg_and_uf_authority = yes
+				is_ai = no
+				NOT = { has_origin = origin_wg_warhammer }
+			}}
+			random_country = {
+				limit = {
+					has_wg_and_uf_authority = yes
+					is_ai = no
+					NOT = { has_origin = origin_wg_warhammer }
+				}
+				country_event = { id = wsg.4 } #sol3
+			}
+		}
+
+		#危机界面初始化
+		if = {
+			limit = { any_country = { has_wg_special_authority = yes } }
+			if = { #玩家是舰娘国家
+				limit = { any_country = {
+					has_wg_special_authority = yes
+					is_ai = no
+				}}
+				set_global_flag = wg_crisis_hard
+				random_country = {
+					limit = {
+						has_wg_special_authority = yes
+						is_ai = no
+					}
+					country_event = { id = wg_crisis.10000 }
+				}
+			}
+			else_if = { #有AI舰娘国家
+				limit = { 
+					any_country = {
+						has_wg_special_authority = yes
+						is_ai = yes
+					}
+				}
+				set_global_flag = wg_crisis_hard
+				random_country = {
+					limit = { is_ai = no }
+					set_country_flag = can_adjust_wg_crisis_diff
+					country_event = { id = wg_crisis.10000 }
+				}
+			}
+		}
+
+		# 生成盒子星系
+		if = {
+			limit = { 
+				NOT = { any_country = { has_authority = auth_united_fleet }}
+				any_country = { has_wg_special_authority = yes is_ai = no }
+			}
+			random_country = {
+				limit = {
+					has_wg_special_authority = yes
+					is_ai = no
+				}
+				if = {
+					limit = { exists = capital_scope }
+					capital_scope = { 
+						solar_system = { 
+							if = {
+								limit = { any_neighbor_system_euclidean = { has_hyperlane_to = PREV }}
+								save_event_target_as = spawn_box_system_source
+							} 
+							else = {
+								random_neighbor_system_euclidean = {
+									limit = { NOR = { 
+										has_star_flag = sealed_system 
+										has_star_flag = wg_sealed_system
+									}}
+									save_event_target_as = spawn_box_system_source
+								}
+							}
+						}
+					}
+				} 
+				else = { random_controlled_fleet = { solar_system = { save_event_target_as = spawn_box_system_source }} }
+				every_system = {
+					limit = { 
+						distance = { 
+							source = event_target:spawn_box_system_source
+							min_jumps = 4
+							max_jumps = 6
+							type = hyperlane 
+							use_bypasses = no
+						}
+						NOR = { 
+							closest_system = {
+								exists = space_owner
+								min_steps = 0
+								max_steps = 1
+							}
+							has_natural_wormhole = yes
+							has_star_flag = guardian
+							has_star_flag = sealed_system
+							has_star_flag = wg_sealed_system
+							exists = space_owner
+						}
+					}
+					set_timed_star_flag = { flag = can_spawn_box_system days = 1 }
+				}
+				random_system = {
+					limit = { has_star_flag = can_spawn_box_system }
+					spawn_system = {
+						hyperlane = yes
+						is_discovered = no
+						min_distance = 10
+						max_distance = 20
+						initializer = wg_box_system
+					}
+				}
+			}
+		}
+
+		#shuib起源
+		if = {
+			limit = { any_country = { is_ai = no has_origin = origin_waterb } }
+			random_country = {
+				limit = { is_ai = no has_origin = origin_waterb }
+				remove_country_flag = human_1
+				remove_country_flag = human_2
+				set_country_flag = custom_start_screen
+				set_country_flag = wg_custom_origin
+			}
+		}
+
+		#联合舰队 # 狡豹要的flag
+		if = {
+			limit = { any_country = { has_authority = auth_united_fleet } }
+			set_global_flag = wg_crisis_disabled set_global_flag = activated_uf_hidden_diff
+		}
     }
 }  

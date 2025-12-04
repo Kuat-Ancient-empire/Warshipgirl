@@ -12,34 +12,504 @@ country_event = {
 		if = {
 			limit = { has_authority = auth_warshipgirls }
 			set_country_flag = f_wsg_country
+			give_technology = { tech = tech_powered_exoskeletons message = no } #外骨骼动力
 			capital_scope = { planet_event = { id = wsg.3000 days = 720 random = 720 } }
 		}
 		if = {
-			limit = {
-				has_wg_special_authority = yes
-				is_ai = no
-			} # 防机械叛乱
-			set_variable = { which = num_wg_waifu value = 0 }
-			set_country_flag = situation_machine_uprising_started
-			set_country_flag = synth_detector
-			#不再提示
-			set_country_flag = ban_notice_wsgranking
-			# 锁性别
-			country_event = { id = wsg.9 }
-			add_modifier = {
-				modifier = wg_player_base_resource
-				days = -1
+			limit = { 
+				exists = capital_scope
+				capital_scope = { OR = {
+					is_planet_class = pc_dyson_ring
+					has_planet_flag = port_home
+				} }
+			}
+			if = {
+				limit = { capital_scope = { is_planet_class = pc_dyson_ring } }
+				set_global_flag = spawned_wg_dyson_ring
+			}
+			if = {
+				limit = { capital_scope = { has_planet_flag = port_home } }
+				set_country_flag = clovertheater_planet_flag
 			}
 		}
-		# ??mod??flag
+		if = {
+			limit = { has_wg_special_authority = yes } 
+			# 防机械叛乱
+			if = {
+				limit = { is_ai = no }
+				set_variable = { which = num_wg_waifu value = 0 }
+				set_country_flag = situation_machine_uprising_started
+				set_country_flag = synth_detector
+				#不再提示
+				set_country_flag = ban_notice_wsgranking
+				# 锁性别
+				country_event = { id = wsg.9 } #周期性检查
+				add_modifier = { modifier = wg_player_base_resource days = -1 }
+				if = {
+					limit = { NOT = { has_global_flag = wg_badseal_flag } }
+					set_global_flag = wg_badseal_flag
+					random_list = { 
+						10 = {
+							country_event = { id = wsg.3112 days = 720 }
+						}
+						90 = { }	
+					}
+				}
+				#翔鹤镰刀遗物事件
+				if = {
+					limit = { has_authority = auth_warshipgirls }
+					capital_scope = {
+						planet_event = { id = wsgancrel.4 days = 360 random = 720 }
+					}
+					country_event = { id = wsgancrel.31 days = 3600 random = 1800 }
+				}
+			}
+			#舰娘AI
+			if = {
+				limit = { is_ai = yes has_authority = auth_warshipgirls }
+				add_modifier = { modifier = wg_ai_base days = -1 }
+				add_modifier = { modifier = wg_ai_base_amenities days = -1 }
+				set_country_flag = no_machine_uprising
+				set_country_flag = synth_detector
+				# ai用，开局决定走路线
+				if = {
+					limit = { NOR = {
+						has_technology = tech_wsg_senergy
+						has_technology = tech_building_wsg_neo
+					} }
+					locked_random_list = {
+						50 = { set_country_flag = wg_ascension_path_project_s }
+						50 = {}
+					}
+				}
+			}
+			#破冰初始化
+			if = {
+				limit = {
+					has_authority = auth_warshipgirls
+					has_country_flag = origin_wsg_ice_breaking_flag
+				}
+				capital_scope = {
+					if = {
+						limit = { NOT = { has_planet_flag = wg_ring_world_start_planet } }
+						add_district = district_farming
+						add_district = district_generator
+						add_district = district_mining
+					}
+					create_species = {
+						name = "NAME_ice_breaking_species_SH"
+						class = "ShenHai"
+						portrait = "sh"
+						traits = {
+							trait = sh_trait_shenhai3
+							trait = sh_trait_together
+						}				
+						immortal = yes
+						effect = { save_global_event_target_as = wsg_ice_breaking_species_sh }
+					}	
+					create_pop_group = { size = 600 species = event_target:wsg_ice_breaking_species_sh }	
+				}
+				give_specimen = { key = wg_specimen_musashi_horn origin = origin_wsg_ice_breaking }
+			}
+			#港区开局
+			if = {
+				limit = { 
+					has_authority = auth_warshipgirls  
+					NOT = { has_country_flag = port_home_deposit }
+					capital_scope = { has_planet_flag = port_home }
+				}
+				set_country_flag = port_home_deposit
+				capital_scope = {
+					clear_deposits = yes
+					add_deposit = r_neoforce_remain	
+					add_deposit = r_port_pilan_ruins
+					add_deposit = r_DM
+					add_deposit = r_hp_shipyard
+					add_deposit = r_cherry_tree
+					add_deposit = d_dp_obelisk
+					add_deposit = d_satellite_group
+					add_deposit = d_plant_reaper
+					add_deposit = d_bison_power_station
+					add_deposit = d_dp_mining_station
+				}
+			}
+			#向日葵开局
+			if = {
+				limit = { has_civic = civic_sunflower }
+				capital_scope = {
+					set_planet_flag = sunflower_lv1
+					set_planet_flag = sunflower_lv2
+					add_building = building_sunflower_temple
+					create_species = {
+						name = "NAME_xie_sunflower"
+						class = PLANT
+						portrait = wsg9993
+						traits = { trait = trait_wg_sunflower }
+						homeworld = this
+						effect = { save_global_event_target_as = wsg_sunflowe_species }				
+					}
+					create_pop_group = { size = 300 species = event_target:wsg_sunflowe_species }
+					add_modifier = { modifier = planet_wg_sunflower2 days = -1 }
+				}
+			}
+			#超港
+			if = {
+				limit = { has_civic = civic_wsg_super_harbor }
+				country_event = { id = wsg.3311 }
+				every_owned_pop_group = {
+					limit = { has_trait = wsg_trait_warshipgirls }
+					species = {  save_event_target_as = wsg_species }
+				}
+				every_pool_leader = {
+					limit = {
+						exists = event_target:wsg_species
+						is_same_species = event_target:wsg_species
+					}
+					switch = {
+						trigger = leader_class
+						admiral = { add_trait = { 
+							trait = leader_trait_admiral_wg_super_harbor 
+							show_message = no 
+						} }
+						general = { add_trait = { 
+							trait = leader_trait_general_wg_super_harbor 
+							show_message = no 
+						} }				
+					}
+				}
+			}
+			#骑士团
+			if = {
+				limit = { has_civic = civic_wg_knight }
+				capital_scope = {
+					add_building = building_wg_knight_castle
+					add_modifier = { modifier = wg_knight_home_modifier }
+					add_modifier = { modifier = wg_knight_modifier }
+				}
+			}
+			#深岩集团
+			if = {
+				limit = { has_civic = civic_wsg_drg }
+				random_planet_within_border = {
+					limit = { has_planet_flag = wg_civic_drg_planet }
+					save_event_target_as = wg_drg_planet_target
+					set_planet_flag = megastructure
+					clear_deposits = yes
+					if = {
+						limit = { has_orbital_station = yes }
+						orbital_station = { dismantle = yes }
+					}
+					solar_system = {
+						spawn_megastructure = {
+							type = "wg_drg_station"
+							coords_from = event_target:wg_drg_planet_target
+						}
+					}
+				}
+			}
+			#妈宝
+			if = {
+				limit = { has_origin = origin_wg_fe_child }
+				random_country = {
+					limit = {
+						is_wg_fallen_empire = yes
+					}
+					country_event = { id = wg_origin.1 }
+				}
+			}
+			#深海狂热思潮
+			if = {
+				limit = { 
+					has_authority = auth_shenhai
+					has_ethic = ethic_fanatic_materialist
+				}
+				every_owned_leader = {
+					limit = { leader_class = scientist }
+					add_trait = { 
+						trait = leader_trait_scientist_shenhai_materialist 
+						show_message = no 
+					}
+					add_experience = 180
+				}
+			}
+			#舰娘狂热思潮
+			if = {
+				limit = { 
+					has_authority = auth_warshipgirls
+					has_ethic = ethic_fanatic_materialist
+				}
+				every_owned_leader = {
+					limit = { leader_class = scientist }
+					add_trait = { 
+						trait = leader_trait_scientist_warshipgirls_materialist 
+						show_message = no 
+					}
+					add_experience = 180
+				}
+			}
+			#大明王朝
+			if = {
+				limit = { has_origin = origin_wg_great_ming_subject }
+				set_country_flag = wg_custom_origin
+				if = {
+					limit = { NOT = { has_global_flag = wg_great_ming_created } }
+					set_spawn_system_batch = begin
+					capital_scope = {
+						closest_system = { min_steps = 1 }
+						spawn_system = {
+							min_distance = 10
+							max_distance = 30
+							min_jumps = 1
+							max_jumps = 1
+							initializer = Great_ming_sol_system
+						}
+					}
+					set_spawn_system_batch = end
+					every_playable_country = {
+						establish_communications_no_message = event_target:great_ming_country
+						event_target:great_ming_system = {
+							set_surveyed = { surveyed = yes surveyor = root }
+						}
+					}
+					event_target:great_ming_country = {
+						every_country = {
+							prev = {
+								set_closed_borders = {
+									who = prev
+									status = yes
+								}
+							}
+						}
+					}
+				}
+				country_event = { id = wg_great_ming.101 }
+			}
+			# 此处有泷
+			if = {
+				limit = { has_origin = origin_waterb is_ai = no }
+				set_country_flag = origin_waterb
+				save_global_event_target_as = origin_waterb_country
+				every_country = {
+					establish_communications_no_message = event_target:wg_rbq_dragon_country
+					if = {
+						limit = {
+							has_origin = origin_waterb
+							NOT = { is_same_value = root }
+							is_ai = no
+							NOT = { has_country_flag = origin_waterb }
+						}
+						country_event = { id = wg_origin.96 }
+					}
+				}
+				country_event = { id = wg_origin.10060 days = 1 }
+				country_event = { id = wg_origin.62 days = 180 random = 60 }
+				capital_scope = {
+					clear_deposits = yes
+					add_deposit = d_toxic_kelp
+					add_deposit = d_decrepit_dwellings
+					add_deposit = d_failing_infrastructure
+					add_deposit = d_failing_infrastructure
+					add_deposit = d_underwater_vent
+					add_deposit = d_underwater_vent
+					add_deposit = d_crystal_reef
+					add_deposit = d_submerged_ore_veins
+					add_deposit = d_submerged_ore_veins
+					add_deposit = d_submerged_ore_veins
+					add_deposit = d_great_river
+					add_deposit = d_tropical_island
+					add_deposit = d_teeming_reef
+					add_deposit = d_teeming_reef
+					add_deposit = d_water_b
+					add_deposit = d_water_b_2
+					add_modifier = { modifier = wg_origin_waterb_planet_modifier }
+				}
+				set_country_flag = add_dragon_deposit
+				capital_star = {
+					solar_system = {
+						every_system_planet = {
+							if = {
+								limit = {
+									has_deposit_for = shipclass_mining_station
+									has_mining_station = no
+								}
+								create_mining_station = { owner = prevprevprev }
+							}
+							if = {
+								limit = {
+									has_deposit_for = shipclass_research_station
+									has_research_station = no
+								}
+								create_research_station = { owner = prevprevprev }
+							}
+						}
+					}
+					create_country = {
+						name = "NAME_wg_rbq_dragon_country"
+						type = faction_wsg_neutral_no_auto_delete
+						flag = {
+							icon = {
+								category = "domination"
+								file = "domination_16.dds"
+							}
+							background = {
+								category = "backgrounds"
+								file = "00_solid.dds"
+							}
+							colors={ "blue" "blue" "null" "null" }
+						}
+						effect = {
+							set_country_flag = protected_from_queen_storm
+							set_country_flag = wg_boss_country
+							set_country_flag = wg_rbq_dragon_country_flag
+							save_global_event_target_as = wg_rbq_dragon_country
+							if = {
+								limit = { NOT = { has_modifier = wg_rbq_dragon_power } }
+								add_modifier = { modifier = wg_rbq_dragon_power }
+							}	
+						}				
+					}
+					event_target:wg_rbq_dragon_country = {		
+						create_fleet = {
+							name = "NAME_wg_rbq_dragon1"
+							settings = {
+								spawn_debris = no
+								can_change_composition = no
+								can_change_leader = no
+								can_disband = no
+								can_upgrade = no
+								uses_naval_capacity = no
+								is_boss = yes
+							}
+							effect = {
+								set_owner = prev
+								save_global_event_target_as = wg_rbq_dragon_fleet
+								create_ship = {
+									name = "NAME_wg_rbq_dragon"
+									design = "NAME_wg_rbq_dragon"
+								}
+								set_fleet_flag = wg_rbq_dragon_fleet
+								set_location = {
+									target = prevprev
+									distance = 15
+									angle = 0
+								}
+								set_fleet_stance = passive
+								set_aggro_range_measure_from = self
+								set_aggro_range = 100
+							}
+						}
+					}
+				}
+			}
+			# 神皇20K
+			if = {
+				limit = { has_origin = origin_wg_warhammer }
+				if = {
+					limit = { has_authority = auth_warshipgirls }
+					every_owned_pop_group = {
+						limit = { has_trait = wsg_trait_warshipgirls }
+						species = { save_event_target_as = wsg_species }
+					}
+					every_pool_leader = {
+						limit = {
+							exists = event_target:wsg_species
+							is_same_species = event_target:wsg_species
+						}
+						switch = {
+							trigger = leader_class
+							commander = { add_trait = { 
+								trait = leader_trait_commander_wsg_warhammer 
+								show_message = no 
+							} }				
+							official = { add_trait = { 
+								trait = leader_trait_official_wsg_warhammer 
+								show_message = no 
+							} }
+							scientist = { add_trait = { 
+								trait = leader_trait_scientist_wg_warhammer 
+								show_message = no 
+							} }	
+						}
+					}
+				}
+				if = {
+					limit = { has_authority = auth_shenhai }
+					every_owned_pop_group = {
+						limit = { has_trait = sh_trait_shenhai }
+						species = { save_event_target_as = sh_species }
+					}
+					every_pool_leader = {
+						limit = {
+							exists = event_target:sh_species
+							is_same_species = event_target:sh_species
+						}
+						switch = {
+							trigger = leader_class
+							commander = { add_trait = { 
+								trait = leader_trait_commander_sh_warhammer 
+								show_message = no 
+							} }				
+							official = { add_trait = { 
+								trait = leader_trait_official_sh_warhammer 
+								show_message = no 
+							} }
+							scientist = { add_trait = { 
+								trait = leader_trait_scientist_wg_warhammer 
+								show_message = no 
+							} }	
+						}
+					}
+				}
+			}
+			#威尼斯商店
+			if = {
+				limit = { has_origin = origin_wg_shop }
+				country_event = { id = wg_origin.30 }
+			}
+		}
+		#舰娘初始化替换建筑
+		if = {
+			limit = { has_wg_and_uf_authority = yes }
+			capital_scope = {
+				validate_and_repair_planet_buildings_and_districts = yes
+				if = {
+					limit = { has_building = building_research_lab_1 }
+					remove_building = building_research_lab_1	
+					if = {
+						limit = { ROOT = { has_authority = auth_warshipgirls } }
+						add_building = building_wsg_research
+					}
+					if = {
+						limit = { ROOT = { has_authority = auth_shenhai } }
+						add_building = building_sh_research
+					}
+					if = {
+						limit = { ROOT = { has_authority = auth_united_fleet } }		
+						add_building = building_uf_research
+					}
+				}
+				if = {
+					limit = { has_planet_flag = wg_ring_world_start_planet }
+					while = {
+						count = 2
+						remove_district = district_rw_commercial
+						add_district = district_rw_sh_city
+						add_district = district_rw_sh_alloys
+					}
+					add_building = building_wg_fe_senergy
+					add_building = building_wg_fe_food
+					add_building = building_wg_fe_dimensional_fabricator
+					add_building = building_wg_fe_foundry
+					owner = { change_variable = { which = building_wg_fe_energy_count value = 1 } }
+					add_building = building_wg_fe_energy
+					owner = { subtract_variable = { which = building_wg_fe_energy_count value = 1 } }
+				}
+				validate_and_repair_planet_buildings_and_districts = yes
+			}
+		}
+		# 初始化标识
 		set_global_flag = has_wsg_mod
 		set_global_flag = wg_precursors_spawn_change
-		country_event = { id = wsg.3 }
-		country_event = { id = wsg.5 }
-		country_event = { id = wsg.6 }
-		country_event = { id = wsg.7 }
-		country_event = { id = wsg.8 }
-		country_event = { id = wsg.11 }
 		if = {
 			limit = { has_civic = civic_wgella }
 			country_event = { id = wsg.30311 days = 10  }
@@ -54,6 +524,7 @@ country_event = {
 		}
 	}
 }
+#愚人节特效
 event = {
 	id = wsg.99
 	hide_window = yes
@@ -87,6 +558,10 @@ country_event = {
 	hide_window = yes
 	trigger = {
 		has_wg_special_authority = yes
+		any_owned_species = {
+			has_wg_traits = yes
+			NOT = { species_gender = female }
+		}
 	}
 	is_triggered_only = yes
 	immediate = {
@@ -103,7 +578,7 @@ country_event = {
 		}
 	}
 }
-# 每2~6年功勋
+# 每2年功勋
 country_event = {
 	id = wsg.8
 	hide_window = yes
@@ -117,89 +592,9 @@ country_event = {
 			30 = { change_variable = { which = rankpts value = 2 } }
 			10 = { change_variable = { which = rankpts value = 3 } }
 		}
-		if = {
-			limit = {
-				years_passed <= 30
-			}
-			country_event = { id = wsg.8 days = 720 random = 1440 }	
-		} else_if = {
-			limit = {
-				years_passed <= 60
-			}
-			country_event = { id = wsg.8 days = 1800 random = 1800 }
-		}
-		
 	}
 }
 
-country_event = {
-	id = wsg.10
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		exists = capital_scope
-		capital_scope = {
-			is_planet_class = pc_dyson_ring
-		}
-	}
-
-	immediate = {
-		set_global_flag = spawned_wg_dyson_ring
-	}
-}
-
-country_event = {
-	id = wsg.11
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		OR = {
-			is_wg_empire = yes
-			has_authority = auth_united_fleet
-		}
-	}
-
-	immediate = {
-		capital_scope = {
-			validate_and_repair_planet_buildings_and_districts = yes
-			if = {
-				limit = { has_building = building_research_lab_1 }
-				remove_building = building_research_lab_1	
-				if = {
-					limit = { ROOT = { has_authority = auth_warshipgirls } }
-					add_building = building_wsg_research
-				}
-				if = {
-					limit = { ROOT = { has_authority = auth_shenhai } }
-					add_building = building_sh_research
-				}
-				if = {
-					limit = { ROOT = { has_authority = auth_united_fleet } }		
-					add_building = building_uf_research
-				}
-			}
-			if = {
-				limit = { has_planet_flag = wg_ring_world_start_planet }
-				while = {
-					count = 2
-					remove_district = district_rw_commercial
-					add_district = district_rw_sh_city
-					add_district = district_rw_sh_alloys
-				}
-				add_building = building_wg_fe_senergy
-				add_building = building_wg_fe_food
-				add_building = building_wg_fe_dimensional_fabricator
-				add_building = building_wg_fe_foundry
-				owner = { change_variable = { which = building_wg_fe_energy_count value = 1 } }
-				add_building = building_wg_fe_energy
-				owner = { subtract_variable = { which = building_wg_fe_energy_count value = 1 } }
-			}
-			validate_and_repair_planet_buildings_and_districts = yes
-		}
-	}
-}
 country_event = {
 	id = wsg.12
 	title = "wsg.12.name"
@@ -265,176 +660,18 @@ country_event = {
     }
 }
 
-
-# scope: planet
-# from: founder species
-# fromfrom: secondary species (if exists)
-# empire_init_capital_planet
-planet_event = {
-  id = wsg.2
-  hide_window = yes
-  is_triggered_only = yes
-
-	trigger = {
-		owner = { has_authority = auth_warshipgirls }
-	}
-  
-  immediate = {
-  	owner = {
-		give_technology = { tech = tech_powered_exoskeletons message = no } #外骨骼动力
-		#wsg_init_tech =yes
-    	save_event_target_as = WG_country
-  	}   	
-  }
-}
-
-country_event = {
-	id = wsg.3
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = {
-		has_authority = auth_warshipgirls
-		is_ai = yes
-	}
-	immediate = {
-		add_modifier = {
-			modifier = wg_ai_base
-			days = -1
-		}
-		add_modifier = {
-			modifier = wg_ai_base_amenities
-			days = -1
-		}
-		set_country_flag = no_machine_uprising
-		set_country_flag = synth_detector
-	}
-}
-
-country_event = {
-	id = wsg.5
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = {
-		has_authority = auth_warshipgirls
-		has_country_flag = origin_wsg_ice_breaking_flag
-	}
-	immediate = {
-		random_owned_planet = {
-			limit = {
-				is_capital = yes
-				NOT = { has_planet_flag = wg_ring_world_start_planet }
-			}
-			add_district = district_farming
-			add_district = district_generator
-			add_district = district_mining
-		}
-		random_owned_planet = {
-			limit = {
-				is_capital = yes
-			}			
-			create_species = {
-				name = "NAME_ice_breaking_species_SH"
-				class = "ShenHai"
-				portrait = "sh"
-				traits = {
-					trait = sh_trait_shenhai3
-					trait = sh_trait_together
-				}				
-				immortal = yes
-				effect = { save_global_event_target_as = wsg_ice_breaking_species_sh }
-			}	
-			create_pop_group = { size = 600 species = event_target:wsg_ice_breaking_species_sh }			
-		}
-		give_specimen = { key = wg_specimen_musashi_horn origin = origin_wsg_ice_breaking }
-	}
-}
-
-country_event = {
-	id = wsg.6
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = {
-		has_authority = auth_warshipgirls
-		NOT = { has_country_flag = port_home_deposit }
-	}
-	immediate = {
-		set_country_flag = port_home_deposit
-		random_owned_planet = {
-			limit = {
-				has_planet_flag = port_home
-				NOT = { has_planet_flag = cts_home }				
-			}
-			clear_deposits = yes
-			add_deposit = r_neoforce_remain	
-			add_deposit = r_port_pilan_ruins
-			add_deposit = r_DM
-			add_deposit = r_hp_shipyard
-			add_deposit = r_cherry_tree
-			add_deposit = d_dp_obelisk
-			add_deposit = d_satellite_group
-			add_deposit = d_plant_reaper
-			add_deposit = d_bison_power_station
-			add_deposit = d_dp_mining_station
-		}		
-	}
-}
-country_event = {
-	id = wsg.7
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = {
-		has_civic = civic_sunflower
-	}
-	immediate = {	
-		random_owned_planet = {
-			limit = {
-				is_capital = yes
-			}
-			set_planet_flag = sunflower_lv1
-			set_planet_flag = sunflower_lv2
-			add_building = building_sunflower_temple
-			create_species = {
-				name = "NAME_xie_sunflower"
-				class = PLANT
-				portrait = wsg9993
-				traits = {
-					trait = trait_wg_sunflower
-				}
-				homeworld = this
-				effect = {
-					save_global_event_target_as = wsg_sunflowe_species
-				}				
-			}
-			create_pop_group = { size = 300 species = event_target:wsg_sunflowe_species }
-			add_modifier = {
-				modifier = planet_wg_sunflower2
-				days = -1
-			}
-		}
-	}
-}
+###levithen
 country_event = {
 	id = wsg.4
 	hide_window = yes
 	is_triggered_only = yes
 	fire_only_once = yes
 
-	trigger = {
-		NOR = { 
-			has_global_flag = wg_solIII_created
-			has_origin = origin_wg_warhammer
-		}
-	}
-
 	immediate = {
 		set_spawn_system_batch = begin
-		set_global_flag = wg_solIII_created
 		random_country = {
 			limit = {
-				OR = {
-					is_wg_empire = yes
-					has_authority = auth_united_fleet
-				}
+				has_wg_and_uf_authority = yes
 				is_ai = no
 			}
 			save_event_target_as = player_country
@@ -684,29 +921,6 @@ country_event = {
 }
 
 # ai用，开局决定走路线
-event = {
-	id = wsg.11003
-	hide_window = yes
-	is_triggered_only = yes
-	fire_only_once = yes
-
-	immediate = {
-		every_playable_country = {
-			limit = { 
-				is_ai = yes
-				has_authority = auth_warshipgirls 
-				NOR = {
-					has_technology = tech_wsg_senergy
-					has_technology = tech_building_wsg_neo
-				}
-			}
-			locked_random_list = {
-				50 = { set_country_flag = wg_ascension_path_project_s }
-				50 = {}
-			}
-		}
-	}
-}
 country_event = {
 	id = wsg.11001
 	hide_window = yes
@@ -727,7 +941,7 @@ country_event = {
 	is_triggered_only = yes
 	trigger = {
 		is_ai = yes
-		is_wg_empire = yes
+		has_wg_authority = yes
 		last_increased_tech = tech_mine_living_metal
 	}
 
@@ -1706,21 +1920,13 @@ country_event = {
 	id = wsg.4000
 	hide_window = yes
 	is_triggered_only = yes
-
-	trigger = {
-		is_ai = yes
-	}
 	
 	immediate = {
 		country_event = { id = wsg.1998 }
 		country_event = { id = wsg.3999 }
 		country_event = { id = wsg.4001 days = 1 }
 		remove_modifier = wg_ai_base
-		add_modifier = {
-			modifier = wg_ai_base
-			multiplier = 3
-			days = -1
-		}
+		add_modifier = { modifier = wg_ai_base multiplier = 3 }
 	}
 }
 country_event = {
@@ -2313,7 +2519,7 @@ country_event = {
 	is_triggered_only = yes
 	trigger = {
 		is_ai = no
-		is_wg_empire = yes
+		has_wg_authority = yes
 	}
 	immediate = {
         every_owned_planet = {
@@ -3458,87 +3664,8 @@ country_event = {
 				}
 				random_owned_pop_group = { limit = { pop_group_size > 300 } kill_pop_group = { pop_group = this amount = 300 } }
 			}
-		}
-  	    #country_event = { id = wsg.12001 days = 720 }  	
+		}	
     }
-}
-
-#待调整
-country_event = {
-	id = wsg.12001
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_authority = auth_shenhai
-		has_ethic = ethic_fanatic_materialist
-	}
-
-	immediate = {
-		every_owned_leader = {
-			limit = {
-				leader_class = scientist
-			}
-			add_trait = { trait = leader_trait_scientist_shenhai_materialist show_message = no }
-			add_experience = 180
-		}
-	}
-}
-
-#待调整
-country_event = {
-	id = wsg.12002
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_authority = auth_warshipgirls
-		has_ethic = ethic_fanatic_materialist
-	}
-
-	immediate = {
-		every_owned_leader = {
-			limit = {
-				leader_class = scientist
-			}
-			add_trait = { trait = leader_trait_scientist_warshipgirls_materialist show_message = no }
-			add_experience = 180
-		}
-	}
-}
-
-country_event = {
-	id = wsg.12003
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_authority = auth_warshipgirls
-		has_civic = civic_wsg_super_harbor
-	}
-
-	immediate = {
-        every_owned_pop_group = {
-			limit = { 
-				has_trait = wsg_trait_warshipgirls 
-			}
-			species = { 
-				save_event_target_as = wsg_species 
-			}
-		}
-		every_pool_leader = {
-			limit = {
-				OR = {
-					is_same_species = event_target:wsg_species
-				}
-			}
-			switch = {
-				trigger = leader_class
-				admiral = { add_trait = { trait = leader_trait_admiral_wg_super_harbor show_message = no } }
-				general = { add_trait = { trait = leader_trait_general_wg_super_harbor show_message = no } }				
-			}
-		}
-	}
 }
 
 country_event = {
@@ -3636,30 +3763,6 @@ country_event = {
 	}
 }
 
-country_event = {
-	id = wsg.12008
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = {
-		has_civic = civic_wg_knight
-	}
-	immediate = {	
-		random_owned_planet = {
-			limit = {
-				is_capital = yes
-			}
-			add_building = building_wg_knight_castle
-			add_modifier = {
-				modifier = wg_knight_home_modifier
-				days = -1
-			}
-			add_modifier = {
-				modifier = wg_knight_modifier
-				days = -1
-			}
-		}
-	}
-}
 #傻逼蠢驴，老子改个物种特质就又变回去了
 #开局领袖立绘随机,定期一换
 # country_event = {
