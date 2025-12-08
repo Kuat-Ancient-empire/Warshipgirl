@@ -25,7 +25,7 @@ country_event = {
 				AND = { exists = leader leader = { has_leader_flag = wg_montana_admiral } }
 				AND = { exists = leader leader = { has_leader_flag = sh_Vector_admiral } }
 			}
-            NOT = { has_fleet_flag = drones }
+            NOT = { has_fleet_flag = wsg_battle_insitution_cd }
         }
 	}
 
@@ -97,7 +97,10 @@ country_event = {
 			if = {#蒙大拿
 				limit = {
 					exists = leader
-					leader = { has_leader_flag = wg_montana_admiral }
+					leader = { OR = {
+						has_leader_flag = wg_montana_admiral
+						has_leader_flag = sh_Vector_admiral
+					} }
 					NOT = { has_modifier = wg_timeline_invisable }
 				}
 				add_many_hp = { DAYS = 3 }
@@ -105,12 +108,12 @@ country_event = {
 			if = {#Vector
 				limit = {
 					exists = leader
-					leader = { has_leader_flag = sh_Vector_leader }
-					NOT = { has_modifier = wg_timeline_invisable }
+					leader = { has_leader_flag = sh_Vector_admiral }
+					NOT = { has_modifier = sh_Vector_modifier }
 				}
-				add_many_hp = { DAYS = 3 }
-				add_modifier = { modifier = sh_Vector_modifier days = 3 }
+				add_modifier = { modifier = sh_Vector_modifier days = 30 }
 			}
+			set_timed_fleet_flag = { flag = wsg_battle_insitution_cd days = 30 }
 		}
 	}
 }
