@@ -10,7 +10,7 @@ country_event = {
 	    #黑石碑来到
 		has_global_flag = monolith_crisis_invaded
 		NOT = { has_global_flag = monolith_crisis_end }
-		FROMFROM = { 
+		fromfrom = { 
 			any_owned_ship = {
 				has_component = Monolith_aura
 			}
@@ -24,28 +24,27 @@ country_event = {
 					exists = owner
 					owner = { is_ai = no }
 				}
-				owner = {
-					country_event = { id = monolith_crisis.5 }
-					set_country_flag = triggered_monolith_crisis_explain
-				}
+				owner = { country_event = { id = monolith_crisis.5 } }
 			}
 			if = {
 				limit = { any_owned_ship = {
 					is_ship_size = uf_buffer_o
 				}}
 				fleet_event = { id = monolith_crisis.4 days = 20 } # 电子战20天
-				set_timed_fleet_flag = { flag = monolith_aura_debuff days = 20 }
-			} else_if = {
+				root.fromfrom = { set_timed_fleet_flag = { flag = monolith_aura_debuff days = 20 } }
+			} 
+			else_if = {
 				limit = { any_owned_ship = { OR = {
 					is_ship_size = uf_star_fortress
 					is_ship_size = uf_star_fortress_2
 					is_ship_size = uf_glory_o
 				}}}
 				fleet_event = { id = monolith_crisis.4 days = 15 } # 黑曜石，联合荣耀15天
-				set_timed_fleet_flag = { flag = monolith_aura_debuff days = 15 }
-			} else = {
+				root.fromfrom = { set_timed_fleet_flag = { flag = monolith_aura_debuff days = 15 } }
+			} 
+			else = {
 				fleet_event = { id = monolith_crisis.4 days = 30 }#无电子战，黑曜石，联合荣耀30天保护
-				set_timed_fleet_flag = { flag = monolith_aura_debuff days = 30 }
+				root.fromfrom = { set_timed_fleet_flag = { flag = monolith_aura_debuff days = 30 } }
 			}
 			set_timed_fleet_flag = { flag = monolith_crisis_combat_fleet days = 40 }
 		}
@@ -58,18 +57,9 @@ country_event = {
     hide_window = yes
     is_triggered_only = yes
 
-    trigger = { 
-		has_global_flag = monolith_crisis_invaded
-		NOT = { has_global_flag = monolith_crisis_end }
-    }
+    trigger = { fromfrom = { has_fleet_flag = monolith_crisis_combat_fleet } }
 
-    immediate = {
-        FROMFROM = { 
-			remove_fleet_flag = monolith_crisis_combat_fleet
-			set_fleet_flag = fleet1
-			set_variable = { which = "monolith_not_in_combat_days" value = 1 }
-        }
-    }
+    immediate = { fromfrom = { remove_fleet_flag = monolith_crisis_combat_fleet } }
 }
 
 # 特殊情况，需要对舰队进行一些操作
@@ -84,8 +74,6 @@ fleet_event = {
     }
 
 	immediate = {
-		#解除压制
-		remove_fleet_flag = monolith_aura_debuff
 		random_list = {#添加随机debuff
 			1 = { add_modifier = { modifier = monolith_crisis_combat_fleet_random_debuff_1 days = 10 } }
 			1 = { add_modifier = { modifier = monolith_crisis_combat_fleet_random_debuff_2 days = 10 } }
