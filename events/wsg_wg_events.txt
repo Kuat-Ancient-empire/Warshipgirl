@@ -10,12 +10,6 @@ country_event = {
 	
 	immediate = {
 		if = {
-			limit = { has_authority = auth_warshipgirls }
-			set_country_flag = f_wsg_country
-			give_technology = { tech = tech_powered_exoskeletons message = no } #外骨骼动力
-			capital_scope = { planet_event = { id = wsg.3000 days = 720 random = 720 } }
-		}
-		if = {
 			limit = { 
 				exists = capital_scope
 				capital_scope = { OR = {
@@ -34,6 +28,30 @@ country_event = {
 		}
 		if = {
 			limit = { has_wg_special_authority = yes } 
+			#初始化外观
+			if = {
+				limit = { 
+					has_wg_authority = yes 
+					OR = {
+						graphical_culture = wsg_01
+						graphical_culture = wsg_05
+					}
+				}
+				if = {
+					limit = { graphical_culture = wsg_01 }
+					set_graphical_culture = wsg_06
+				}
+				if = {
+					limit = { graphical_culture = wsg_05 }
+					set_graphical_culture = wsg_07
+				}
+			}
+			if = {
+				limit = { has_authority = auth_warshipgirls }
+				set_country_flag = f_wsg_country
+				give_technology = { tech = tech_powered_exoskeletons message = no } #外骨骼动力
+				capital_scope = { planet_event = { id = wsg.3000 days = 720 random = 720 } }
+			}
 			# 防机械叛乱
 			if = {
 				limit = { is_ai = no }
