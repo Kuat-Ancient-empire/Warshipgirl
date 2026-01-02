@@ -488,3 +488,59 @@ initial_uf_crisis_country = {
 		}
 	}
 }
+
+initial_count_all_fleet_ship = {
+	set_variable = { which = num_carrier_exist value = 0 }
+	set_variable = { which = num_titan_exist value = 0 }
+	set_variable = { which = num_bb_exist value = 0 }
+	set_variable = { which = num_bc_exist value = 0 }
+	set_variable = { which = num_ca_exist value = 0 }
+	set_variable = { which = num_dd_exist value = 0 }
+	set_variable = { which = num_dreadnought_exist value = 0 }
+	set_variable = { which = num_bf_portal_exist value = 0 }
+	set_variable = { which = num_bf_exist value = 0 }
+	set_variable = { which = num_juggernaut_exist value = 0 }
+	set_variable = { which = num_flagship_exist value = 0 }
+	every_owned_ship = {
+		limit = { 
+			NOR = {  
+				is_ship_size = scout_UAV
+				is_ship_size = wg_corvette
+			}
+			OR = {
+				AND = {
+					fleet = { has_fleet_flag = counting_data }
+					NOR = {
+						is_ship_size = uf_Juggernaut 
+						is_ship_size = UF_Flagship
+					}
+				}
+				NOT = { fleet = { has_fleet_flag = counting_data }}
+			}
+			fleet = { NOT = { has_fleet_flag = drones }}
+		}
+		switch = {
+			trigger = is_ship_size
+			wg_carrier = { fleet = { change_variable = { which = num_carrier_exist value = 1 }}}
+			wg_titan = { fleet = { change_variable = { which = num_titan_exist value = 1 }}}
+			wg_battleship = { fleet = { change_variable = { which = num_bb_exist value = 1 }}}
+			wg_battlecrusier = { fleet = { change_variable = { which = num_bc_exist value = 1 }}}
+			wg_cruiser = { fleet = { change_variable = { which = num_ca_exist value = 1 }}}
+			wg_destroyer = { fleet = { change_variable = { which = num_dd_exist value = 1 }}}
+			wg_dreadnought = { fleet = { change_variable = { which = num_dreadnought_exist value = 1 }}}
+			uf_buffer = {
+				if = {
+					limit = { has_ship_flag = bf_portal }
+					fleet = { change_variable = { which = num_bf_portal_exist value = 1 }}
+				}
+				else = {
+					fleet = { change_variable = { which = num_bf_exist value = 1 }}
+				}
+			}
+			# 补船触发不会数以下类型的船
+			uf_Juggernaut = { fleet = { change_variable = { which = num_juggernaut_exist value = 1 }}}
+			UF_Flagship = { fleet = { change_variable = { which = num_flagship_exist value = 1 }}}
+		}
+	}
+	remove_fleet_flag = counting_data
+}
