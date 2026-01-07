@@ -112,6 +112,10 @@ create_wg_shimakaze_admiral = {
 			set_leader_flag = has_gained_level_trait
 			set_leader_flag = has_gained_trait
 			#set_leader_tier = leader_tier_legendary
+			if = {
+				limit = { owner = { has_country_flag = married_wg_shimakaze } }
+				add_trait = { trait = leader_trait_wg_shimakaze_legend_admiral show_message = no }
+			}
 			save_global_event_target_as = wg_shimakaze_admiral
 		}
 	}
@@ -154,6 +158,10 @@ create_wg_shimakaze_general = {
 			set_leader_flag = has_gained_level_trait
 			set_leader_flag = has_gained_trait
 			#set_leader_tier = leader_tier_legendary
+			if = {
+				limit = { owner = { has_country_flag = married_wg_shimakaze } }
+				add_trait = { trait = leader_trait_wg_shimakaze_legend_admiral show_message = no }
+			}
 			save_global_event_target_as = wg_shimakaze_general
 		}
 	}
@@ -178,10 +186,18 @@ remove_wg_shimakaze_leader_type = {
 # scope = leader
 change_wg_shimakaze_portrait = {
 	if = {
-		limit = { owner = { NOT = { is_variable_set = wsg_shimakaze_cloth } } }
-		change_leader_portrait = wsg267_1
-	} else_if = {
-		limit = { always = yes }
+		limit = { owner = { check_variable = { which = wg_shimakaze_cloth value = 1 } } }
 		change_leader_portrait = wsg267
+	}
+	else_if = {
+		limit = { owner = { check_variable = { which = wg_shimakaze_cloth value = 2 } } }
+		change_leader_portrait = wsg267_2
+	}
+	else_if = {
+		limit = { owner = { check_variable = { which = wg_shimakaze_cloth value = 3 } } }
+		change_leader_portrait = wsg267_3
+	}
+	else = {
+		change_leader_portrait = wsg267_1
 	}
 }
