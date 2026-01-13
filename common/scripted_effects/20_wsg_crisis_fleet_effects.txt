@@ -151,7 +151,14 @@ create_uf_fleet = {
             assign_leader = last_created_leader
             [[ID] fleet_event = { id = $ID$.110 days = 60 } ]
 
-            [[GUARD_FLEET] if = { limit = { always = $GUARD_FLEET$ } set_fleet_flag = defence_fleet set_formation_scale = 5 auto_move_to_planet = { target = star clear_auto_move_on_arrival = yes } } ]
+            [[GUARD_FLEET] 
+                if = { 
+                    limit = { always = $GUARD_FLEET$ } 
+                    set_fleet_flag = defence_fleet 
+                    set_formation_scale = 2
+                    auto_move_to_planet = { target = star clear_auto_move_on_arrival = yes } 
+                } 
+            ]
 
             [[ATTACK_FLEET] 
                 if = { limit = { always = $ATTACK_FLEET$ } set_fleet_flag = attack_fleet } 
@@ -207,6 +214,7 @@ spawn_fleets_insane = {
         last_created_fleet = {
             set_name = "NAME_auxiliary_guard_fleet"
             set_timed_fleet_flag = { flag = defence_fleet days = 4500 }
+            set_formation_scale = 2
             fleet_event = { id = wg_crisis.401 days = 4501 }
         }
     }
@@ -215,6 +223,7 @@ spawn_fleets_insane = {
         last_created_fleet = {
             set_name = "NAME_auxiliary_guard_fleet"
             set_timed_fleet_flag = { flag = defence_fleet days = 6000 }
+            set_formation_scale = 2
             fleet_event = { id = wg_crisis.401 days = 6001 }
         }
     }
