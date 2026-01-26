@@ -82,18 +82,8 @@ can_orbital_bombard = {
 			FROM.OWNER = { is_country_type = primitive }
 		}
 		ROOT.CONTROLLER = { is_at_war_with = FROM.CONTROLLER }
-		#	AUP/HFE
 		ROOT.CONTROLLER = { is_hostile = FROM.CONTROLLER }
-		#_|V可随意轰炸|	+bwm
-		FROM = {
-			OR = {
-				is_planet_class = pc_infested
-				has_planet_flag = bwm_ancestor_world			# bwm
-			}
-		}
-		#	TAC		---禁用|高能耗|
-	#	ROOT = { has_component = AI_MATRICES }
-		##_|可被轰炸|	+古代帝国/SOFE/bwm/Giga/Ehof/阿夸/多彩
+		FROM = { is_planet_class = pc_infested }
 		FROM.CONTROLLER = {
 			OR = {
 				#	VANILLA
@@ -106,11 +96,8 @@ can_orbital_bombard = {
 				}
 				#	UGRC
 				has_country_flag = UGRC_flg_cntr_RULE_can_be_bombed
-				ag_can_be_orbital_bombardment_country = yes		# 古代帝国	安装=|has_ancient_empire_mod|
-				kuat_can_be_orbital_bombarment_country = yes	# 阿夸		安装=|install_kuat_mod|
 			}
 		}
-		##_|可以轰炸|	+ev/wsg/swg/阿夸/古代帝国/失落帝国历史	/bwm/ACOT/SOFE/MEM/SRA/SSNI/久远/多彩/精灵/thl
 		ROOT.CONTROLLER = {
 			OR = {
 				#	VANILLA
@@ -146,26 +133,8 @@ can_orbital_bombard = {
 				}
 				#	UGRC
 				has_country_flag = UGRC_flg_cntr_RULE_can_bomb
-				#	wsg
-				is_country_type = wg_crisis_country
-				is_khan_country_type = yes
-				#	古代帝国
-				ag_can_do_orbital_bombardment_country = yes
-				#	阿夸
-				kuat_can_do_bombarment_country = yes
-				#	SRA
-				SRA_can_do_orbital_bombardment_country = yes
-				#	久远
-				KZ_VOY_can_unconditional_bombarment_country = yes
-				#	多彩
-				is_country_type = ten_crisis_empire
-				#	精灵
-				is_ELF_can_orbital_bombard_country_type = yes
-				#	thl
-				is_country_type = koishi_berserk_fleet
 			}
 		}
-		#_星球所有者轰炸被其他阵营占据的星球	-SOFE<去掉了此项>
 		AND = {
 			from.controller = {
 				is_country_type = faction
@@ -191,11 +160,6 @@ can_enter_system_by_jump = {
 			root = { has_country_flag = z_fw_r_cheat_quantum_beacon_activited }	#_[z_fw]永恒星炬
 			#_基础条件
 			AND = {
-				#_ugrc禁用条件
-				NOT = {
-					root = { is_country_type = teif_primitive }	#_teif
-				}
-				
 				#_Sealed system
 				OR = {
 					#_+[teif]
@@ -227,27 +191,6 @@ can_enter_system_by_jump = {
 					has_star_flag = lcluster
 					has_star_flag = wg_sealed_system			#_wsg
 					has_star_flag = wg_psionic_systems			#_wsg
-					has_star_flag = ag_no_jump_in_system		#_ag
-					has_star_flag = outercluster				#_SOFE	外星门
-					has_star_flag = ehof_compound_system		#_[giga]
-					has_star_flag = giga_core_03				#_[giga]
-					cohesive_system = yes						#_[giga]
-					urmazin_system = yes						#_[giga]
-					everchanging_system = yes					#_[giga]
-					katzen_jump_blocked_system = yes			#_[giga]
-					has_star_flag = nep_Krahen_cluster			#_seooc
-					has_star_flag = nep_Scrus_cluster			#_seooc
-					AND = {#_[kuat]
-						has_global_flag = starkillerbase_not_passed
-						has_star_flag = starkiller_system	
-					}
-					AND = {#_seooc
-						has_global_flag = nep_not_pass_Aemethms 
-						OR = {
-							has_star_flag = nep_dragon_system
-							has_star_flag = nep_heptagram_cluster
-						}
-					}
 				}
 			}
 		}
@@ -535,7 +478,6 @@ can_be_part_of_galactic_community = {
 			has_civic = civic_fanatic_purifiers
 			has_civic = civic_hive_devouring_swarm
 			has_civic = civic_machine_terminator
-			has_country_flag = dark_side		#_ur
 		}
 	}
 	custom_tooltip = {
@@ -595,7 +537,6 @@ can_be_part_of_galactic_empire = {
 			has_civic = civic_fanatic_purifiers
 			has_civic = civic_hive_devouring_swarm
 			has_civic = civic_machine_terminator
-			has_country_flag = dark_side		#_[ur]
 		}
 	}
 	custom_tooltip = {
