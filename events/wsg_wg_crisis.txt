@@ -4836,8 +4836,14 @@ country_event = {
 			exists = leader
 			NOT = { has_fleet_flag = drones }
 			leader = { OR ={
-				has_leader_flag = uf_leader_trait_s1
-				has_leader_flag = uf_leader_trait_s2
+				AND = {
+					has_leader_flag = uf_leader_trait_s1
+					prev = { NOT = { has_fleet_flag = uf_leader_trait_s1_triggered } }
+				}
+				AND = {
+					has_leader_flag = uf_leader_trait_s2
+					prev = { NOT = { has_fleet_flag = uf_leader_trait_s2_triggered } }
+				}
 			} }
 		}
 		NOT = { has_global_flag = wg_invasion_end }
@@ -4849,21 +4855,30 @@ country_event = {
 				# 联合技能 联合迴路遮断器
 				limit = { 
 					leader = { has_leader_flag = uf_leader_trait_s1 }
-					NOT = { solar_system = { has_star_flag = uf_leader_trait_s1_triggered }}
+					NOT = { has_fleet_flag = uf_leader_trait_s1_triggered }
 					count_combatant_fleet = {
 						count > 1
 						limit = { is_ship_class = shipclass_military fleet_size > 75 }
 					}
 				}
-				solar_system = { set_star_flag = uf_leader_trait_s1_triggered }
-				set_fleet_flag = uf_leader_trait_s1_triggered fleet_event = { id = wg_crisis.2010 }
+				set_timed_fleet_flag = { flag = uf_leader_trait_s1_triggered days = 30 }
+				random_combatant_fleet = {
+					limit = { is_ship_class = shipclass_military fleet_size > 75 }
+					uf_clear_ship_modifier = { modifier = ship_weapon_damage change = 0.90 DAYS = 30 }
+					uf_clear_ship_modifier = { modifier = weapon_type_energy_weapon_damage_mult change = 0.90 DAYS = 30 }
+					uf_clear_ship_modifier = { modifier = weapon_type_kinetic_weapon_damage_mult change = 0.90 DAYS = 30 }
+					uf_clear_ship_modifier = { modifier = weapon_type_explosive_weapon_damage_mult change = 0.90 DAYS = 30 }
+					uf_clear_ship_modifier = { modifier = weapon_type_energy_weapon_fire_rate_mult change = 0.90 DAYS = 30 }
+					uf_clear_ship_modifier = { modifier = weapon_type_kinetic_weapon_fire_rate_mult change = 0.90 DAYS = 30 }
+					uf_clear_ship_modifier = { modifier = weapon_type_explosive_weapon_fire_rate_mult change = 0.90 DAYS = 30 }
+				}
 			}
 			if = {
 				limit = { 
 					leader = { has_leader_flag = uf_leader_trait_s2 }
 					NOT = { has_fleet_flag = uf_leader_trait_s2_triggered }
 				}
-				set_fleet_flag = uf_leader_trait_s2_triggered
+				set_timed_fleet_flag = { flag = uf_leader_trait_s2_triggered days = 60 }
 				initial_count_all_fleet_ship = yes
 				fleet_event = { id = wg_crisis.2020 days = 1 }
 			}
@@ -4871,69 +4886,7 @@ country_event = {
 	}
 }
 
-# Fleet finish combat
-country_event = {
-    id = wg_crisis.1101
-    hide_window = yes
-    is_triggered_only = yes
-
-    trigger = { 
-		exists = fromfrom
-        FROMFROM = { 
-			exists = leader
-			OR = {
-				has_fleet_flag = uf_mirrored_fleet
-				has_fleet_flag = uf_leader_trait_s2_triggered
-			}
-		}
-	}
-
-	immediate = {
-		fromfrom = {
-			if = {
-				limit = { has_fleet_flag = uf_leader_trait_s2_triggered }
-				remove_fleet_flag = uf_leader_trait_s2_triggered
-			}
-			if = {
-				limit = { has_fleet_flag = uf_mirrored_fleet }
-				delete_fleet = { target = this kill_leader = yes destroy_template = yes }
-			}
-		}
-	}
-}
-
 # 联合技能 联合迴路遮断器
-fleet_event = {
-	id = wg_crisis.2010
-	hide_window = yes
-	is_triggered_only = yes
-	trigger = { has_fleet_flag = uf_leader_trait_s1_triggered }
-
-	immediate = {
-		if = {
-			limit = {
-				is_in_combat = yes
-				count_combatant_fleet = {
-					count > 1
-					limit = { is_ship_class = shipclass_military fleet_size > 75 }
-				}
-			}
-			random_combatant_fleet = {
-				limit = { is_ship_class = shipclass_military fleet_size > 75 }
-				uf_clear_ship_modifier = { modifier = ship_weapon_damage change = 0.90 DAYS = 15 }
-				uf_clear_ship_modifier = { modifier = weapon_type_energy_weapon_damage_mult change = 0.90 DAYS = 15 }
-				uf_clear_ship_modifier = { modifier = weapon_type_kinetic_weapon_damage_mult change = 0.90 DAYS = 15 }
-				uf_clear_ship_modifier = { modifier = weapon_type_explosive_weapon_damage_mult change = 0.90 DAYS = 15 }
-				uf_clear_ship_modifier = { modifier = weapon_type_energy_weapon_fire_rate_mult change = 0.90 DAYS = 15 }
-				uf_clear_ship_modifier = { modifier = weapon_type_kinetic_weapon_fire_rate_mult change = 0.90 DAYS = 15 }
-				uf_clear_ship_modifier = { modifier = weapon_type_explosive_weapon_fire_rate_mult change = 0.90 DAYS = 15 }
-			}
-			fleet_event = { id = wg_crisis.2010 days = 15 }
-		} 
-		else = { remove_fleet_flag = uf_leader_trait_s1_triggered solar_system = { remove_star_flag = uf_leader_trait_s1_triggered } }
-	}
-}
-
 fleet_event = {
 	id = wg_crisis.2013
 	hide_window = yes
@@ -4946,7 +4899,7 @@ fleet_event = {
 	immediate = {
 		if = {
 			limit = { is_in_combat = yes }
-			fleet_event = { id = wg_crisis.2013 days = 60 }
+			fleet_event = { id = wg_crisis.2013 days = 30 }
 		}
 		else = { delete_fleet = { target = this kill_leader = yes destroy_template = yes } }
 	}
@@ -5012,7 +4965,7 @@ fleet_event = {
 						add_modifier = { modifier = uf_raider_buff days = -1 }
 					}
 					set_variable = { which = fleet_id value = ROOT.fleet_id }
-					fleet_event = { id = wg_crisis.2013 days = 60 }
+					fleet_event = { id = wg_crisis.2013 days = 30 }
 				}
 				settings = { 
 					can_upgrade = no 
