@@ -4336,36 +4336,34 @@ planet_event = {
 	desc = "wg_crisis.1007.desc"
 	picture = GFX_evt_federation_fleet
 	is_triggered_only = yes
-	
-	immediate = {
+
+	option = {
+		name = wg_crisis.1007.a
+		owner = { win = yes }
+	}
+
+	after = {
+		set_update_modifiers_batch = begin
+		every_country = { destroy_country = yes }		
 		every_system = {
 			every_system_planet = {
 				limit = { is_star = yes }
 				change_pc = "pc_uf_end_star"
-				clear_deposits = yes
-				
 			}	
 			set_star_class = sc_uf_end
 			set_asteroid_belt = { radius = 0 }	
 			every_system_planet = {
 				limit = { is_star = no }
+				if = {
+					limit = { is_colony = yes }
+					destroy_colony = yes
+				}
 				change_pc = "pc_uf_end_planet"
 				clear_deposits = yes
 			}	
 		}
-		every_megastructure = {
-			delete_megastructure = THIS
-		}
-		every_country = {
-			limit = {
-				always = yes
-			}
-			destroy_country = yes
-		}
-	}
-	option = {
-		name = wg_crisis.1007.a
-		owner = { win = yes }
+		every_megastructure = { delete_megastructure = THIS }
+		set_update_modifiers_batch = end
 	}
 }
 
@@ -4378,12 +4376,12 @@ planet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
+		set_update_modifiers_batch = begin
 		every_country = {
-			limit = {
-				is_ai = no
-			}
+			limit = { is_ai = no }
 			destroy_country = yes
 		}
+		set_update_modifiers_batch = end
 	}
 	option = {
 		name = wg_crisis.1008.a
