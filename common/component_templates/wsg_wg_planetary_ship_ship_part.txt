@@ -28,6 +28,7 @@ weapon_component_template = {
 		planetary_ship_1
 		planetary_ship_2
 	}
+	ship_limit = 1
 	component_set = "PLANETARY_SHIP_T"
 	projectile_gfx = "planetary_ship_laser"
 	tags = {
@@ -36,17 +37,10 @@ weapon_component_template = {
 	ai_tags = {
 		weapon_role_artillery
 	}
-	ai_tag_weight = 0
-	resources = {
-		category = ship_components
-		cost = {
-			alloys = 3000
-			sr_dark_matter = 500
-		}
-		upkeep = {
-			energy = 20
-			alloys = 10
-		}
+	inline_script = {
+		script = component/wsg_component_weapon_cost/wsg_component_weapon_cost_alloys
+		wsg_component_weapon_tier = Planet
+		wsg_component_weapon_size = T
 	}
 	ai_weight = {
 		weight = 1000
@@ -93,16 +87,10 @@ weapon_component_template = {
 		weapon_role_artillery
 	}
 	ai_tag_weight = 0
-	resources = {
-		category = ship_components
-		cost = {
-			alloys = 700
-			sr_dark_matter = 50
-		}
-		upkeep = {
-			energy = 10
-			alloys = 5
-		}
+	inline_script = {
+		script = component/wsg_component_weapon_cost/wsg_component_weapon_cost_alloys
+		wsg_component_weapon_tier = 10
+		wsg_component_weapon_size = T
 	}
 	ai_weight = {
 		weight = 500
@@ -115,16 +103,10 @@ utility_component_template = {
 	icon = "GFX_PLANETARY_SHIP_REACTOR"
 	icon_frame = 1
 	power = 1200000
-	resources = {
-		category = ship_components
-		cost = {
-			alloys = 1000
-			sr_dark_matter = 500
-		}
-		upkeep = {
-			energy = 5
-			alloys = 5
-		}
+	inline_script = {
+		script = component/wsg_component_weapon_cost/wsg_component_weapon_cost_alloys
+		wsg_component_weapon_tier = 10
+		wsg_component_weapon_size = T
 	}
 	size_restriction = {
 		sh_planetary_ship
@@ -143,16 +125,10 @@ utility_component_template = {
 	icon = "GFX_PLANETARY_SHIP_THRUSTER"
 	icon_frame = 1
 	power = -300
-	resources = {
-		category = ship_components
-		cost = {
-			alloys = 500
-			sr_dark_matter = 100
-		}
-		upkeep = {
-			energy = 1
-			alloys = 1
-		}
+	inline_script = {
+		script = component/wsg_component_weapon_cost/wsg_component_weapon_cost_alloys
+		wsg_component_weapon_tier = 10
+		wsg_component_weapon_size = S
 	}
 	modifier = {
 	}
@@ -173,12 +149,10 @@ utility_component_template = {
 	icon = "GFX_PLANETARY_SHIP_JUMP_DRIVE"
 	icon_frame = 1
 	power = -3500
-	resources = {
-		category = ship_components
-		cost = {
-			alloys = 500
-			sr_dark_matter = 100
-		}
+	inline_script = {
+		script = component/wsg_component_weapon_cost/wsg_component_weapon_cost_alloys
+		wsg_component_weapon_tier = 10
+		wsg_component_weapon_size = S
 	}
 	ftl = yes
 	jumpdrive = yes
@@ -205,12 +179,10 @@ utility_component_template = {
 	icon = "GFX_PLANETARY_SHIP_COMPUTER"
 	icon_frame = 1
 	power = -45
-	resources = {
-		category = ship_components
-		cost = {
-			alloys = 500
-			sr_dark_matter = 100
-		}
+	inline_script = {
+		script = component/wsg_component_weapon_cost/wsg_component_weapon_cost_alloys
+		wsg_component_weapon_tier = 10
+		wsg_component_weapon_size = S
 	}
 	size_restriction = {
 		sh_planetary_ship
@@ -236,12 +208,10 @@ utility_component_template = {
 	icon = "GFX_PLANETARY_SHIP_COMPUTER"
 	icon_frame = 1
 	power = -45
-	resources = {
-		category = ship_components
-		cost = {
-			alloys = 500
-			sr_dark_matter = 100
-		}
+	inline_script = {
+		script = component/wsg_component_weapon_cost/wsg_component_weapon_cost_alloys
+		wsg_component_weapon_tier = 10
+		wsg_component_weapon_size = S
 	}
 	size_restriction = {
 		sh_planetary_ship
@@ -273,16 +243,10 @@ utility_component_template = {
 		SIZE = 9 TIER = 8 ARMOR = yes HULL = yes SHIELD = yes
 	}	
 	component_set = "PLANETARY_SHIP_IA"
-	resources = {
-		category = ship_components
-		cost = {
-			alloys = 100
-			sr_dark_matter = 10
-		}
-		upkeep = {
-			energy = 2
-			alloys = 1
-		}
+	inline_script = {
+		script = component/wsg_component_weapon_cost/wsg_component_weapon_cost_alloys
+		wsg_component_weapon_tier = 10
+		wsg_component_weapon_size = L
 	}
 	size_restriction = {
 		sh_planetary_ship
@@ -300,9 +264,6 @@ utility_component_template = {
 	icon = "GFX_PLANETARY_SHIP_AURA_2"
 	icon_frame = 1
 	power = -500
-	resources = {
-		category = ship_components
-	}
 	sensor_range = 10
 	hyperlane_range = 25
 	ship_modifier = {
@@ -389,6 +350,7 @@ utility_component_template = {
 			id = aura_sh_planetary_ship_2_debuff
 			priority = 200
 		}
+		limit = { is_in_combat = yes }
 		damage_per_day = {
 			accuracy = 2
 			damage = {
