@@ -3548,30 +3548,28 @@ country_event = {
             save_event_target_as = second_fleet
         }
         event_target:second_fleet = {
-            set_variable = { which = "new_titan_count" value = event_target:first_fleet.titan_count }
-            change_variable = { which = "new_titan_count" value = titan_count }
-            set_variable = { which = "new_bb_count" value = event_target:first_fleet.bb_count }
-            change_variable = { which = "new_bb_count" value = bb_count }
-            set_variable = { which = "new_dd_count" value = event_target:first_fleet.dd_count }
-            change_variable = { which = "new_dd_count" value = dd_count }
-            # 计算舰队规模
-            change_variable = { which = "new_fleet_size" value = "new_titan_count" }
-            multiply_variable = { which = "new_fleet_size" value = 80 }
-            change_variable = { which = "new_bb_size" value = "new_bb_count" }
-            multiply_variable = { which = "new_bb_size" value = 40 }
-            change_variable = { which = "new_dd_size" value = "new_dd_count" }
-            multiply_variable = { which = "new_dd_size" value = 10 }
-            change_variable = { which = "new_fleet_size" value = "new_bb_size" }
-            change_variable = { which = "new_fleet_size" value = "new_dd_size" }
-            set_variable = { which = "new_bb_size" value = 0 }
-            set_variable = { which = "new_dd_size" value = 0 }
+            set_variable = { which = new_titan_count value = event_target:first_fleet.titan_count }
+            change_variable = { which = new_titan_count value = titan_count }
+            set_variable = { which = new_bb_count value = event_target:first_fleet.bb_count }
+            change_variable = { which = new_bb_count value = bb_count }
+            set_variable = { which = new_dd_count value = event_target:first_fleet.dd_count }
+            change_variable = { which = new_dd_count value = dd_count }
+            # 计算舰队规模 ## 4.3调整内容###
+            change_variable = { which = new_fleet_size value = new_titan_count }
+            multiply_variable = { which = new_fleet_size value = 80 }
+            change_variable = { which = new_bb_size value = new_bb_count }
+            multiply_variable = { which = new_bb_size value = 40 }
+            change_variable = { which = new_dd_size value = new_dd_count }
+            multiply_variable = { which = new_dd_size value = 10 }
+            change_variable = { which = new_fleet_size value = new_bb_size }
+            change_variable = { which = new_fleet_size value = new_dd_size }
+            set_variable = { which = new_bb_size value = 0 }
+            set_variable = { which = new_dd_size value = 0 }
             if = {
-                limit = {
-                    check_variable = { which = "new_titan_count" value <= 8 }
-                    check_variable = { which = "new_bb_count" value <= 35 }
-                    check_variable = { which = "new_dd_count" value <= 70 }
-                    check_variable = { which = "new_fleet_size" value <= 500 }
-                }
+                limit = { check_variable = { 
+                    which = new_fleet_size 
+                    value <= root.trigger:command_limit 
+                } }
                 event_target:first_fleet = {
                     set_fleet_flag = removed_fleet
                     delete_fleet = {
@@ -3593,7 +3591,7 @@ country_event = {
                     effect = {
                         set_owner = PREV
                         while = {
-                            count = "new_titan_count"
+                            count = new_titan_count
                             create_ship = {
                                 name = random
                                 design = "NAME_WG_RA_TITAN"
@@ -3602,7 +3600,7 @@ country_event = {
                             }
                         }
                         while = {
-                            count = "new_bb_count"
+                            count = new_bb_count
                             create_ship = {
                                 name = random
                                 design = "NAME_WG_RA_BB"
@@ -3611,7 +3609,7 @@ country_event = {
                             }
                         }
                         while = {
-                            count = "new_dd_count"
+                            count = new_dd_count
                             create_ship = {
                                 name = random
                                 design = "NAME_WG_RA_DD"  
