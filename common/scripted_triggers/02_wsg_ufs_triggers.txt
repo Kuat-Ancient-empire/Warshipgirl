@@ -24,9 +24,7 @@ default_vaild_country = {
 	}
 }
 ufs_banned_country = {
-	OR = {
-		is_country_type = monolith_crisis_country
-	}
+	is_country_type = monolith_crisis_country
 }
 default_ufs_system_allow = {
 	hidden_trigger = { is_scope_type = galactic_object }
@@ -65,7 +63,8 @@ default_ufs_system_allow = {
 				}
 			}
 		}
-	} else = {
+	} 
+	else = {
 		custom_tooltip = {
 			fail_text = "not_owned_system_or_not_owned_colony"
 			OR = {
@@ -78,45 +77,11 @@ default_ufs_system_allow = {
 	}
 	custom_tooltip = {
 		fail_text = "kuat_requires_a_star_star_killer" 
-		NOR = { 
-			is_star_class = sc_kuat 
-			has_star_flag = kuat_military_base_system_home
-		}
-	}
-	custom_tooltip = {
-		fail_text = "too_cunning_icantbreathe_system" 
-		NOR = {
-			kuat_is_kuat_system = yes
-			has_star_flag = eternal_starbase_megastructure_in_system
-		}
-		NOT = { any_ship_in_system = { OR = {
-			is_ship_size = eternal_flagship
-			is_ship_size = eternal_battleship
-		}}}
-	}
-	custom_tooltip = {
-		fail_text = "kuat_requires_no_ancient_system" 
-		NOR = {
-			has_star_flag = ag_ancient_system
-			has_star_flag = ag_gamma_station_small_in_system
-		}
-		NOT = { any_ship_in_system = { OR = {
-			is_ship_size = ag_gamma_station_hostile
-			is_ship_size = ag_gamma_station_small_hostile
-			is_ship_size = ag_gamma_station_small_moving_hostile
-		}}}
-	}
-	custom_tooltip = {
-		fail_text = "kuat_requires_no_zeta_crisis_system" 
-		NOT = { any_ship_in_system = { OR = {
-			is_ship_size = ag_zeta_crisis_portal
-			is_ship_size = ag_zeta_crisis_psionic_storm
-			is_ship_size = ag_zeta_crisis_psionic_singularity
-		}}}
+		NOT = { has_star_flag = kuat_cannot_be_hit_by_starkillerbase }
 	}
 	custom_tooltip = {
 		fail_text = "ufs_banned_system"
-		ufs_banned_system = no
+		NOT = { has_star_flag = uf_galaxy_gun_system }
 	}
 }
 
@@ -166,8 +131,6 @@ is_vanilla_star_class = {
 
 is_ufs_crisis_faction = {
 	OR = {
-		is_country_type = mercenary_fleet				#_teif
-		is_country_type = ev_leviathans_crisis			#_ev
 		is_country_type = wg_crisis_country				#_wsg
 		is_country_type = afk_crisis_country			#_swg
 		is_invisable_faction = yes
@@ -175,15 +138,6 @@ is_ufs_crisis_faction = {
 		is_country_type = ag_ancient_gamma_guardian		#_ag
 		is_country_type = ag_zeta_crisis_country		#_ag
 		is_country_type = ag_ancient_psi_guardian
-		is_country_type = mem_ancestor_guardian			#_bwm
-		is_country_type = original_empire				#_sofe
-		is_country_type = compound_empire				#_giga/ehof
-		is_country_type = void_lifeforms_1				#_giga/acot
-		is_country_type = void_lifeforms_2				#_giga/acot
-		is_country_type = acot_crazed_stellarite		#_giga/acot
-		is_country_type = katzenartig_imperium			#_giga/acot
-		is_country_type = mem_surveyor_country_red		#_[mem]瓦祖兰
-		is_country_type = mem_vazurans
 	}
 }
 
@@ -331,13 +285,6 @@ is_ufs_banned_system = {
 		has_star_flag = uf_galaxy_gun_system
 		has_star_flag = monolith_crisis_systems
 		has_star_flag = monolith_crisis_shield_system
-	}
-}
-
-ufs_banned_system = {
-	OR = {
-		has_star_flag = fgosw_rule_system_protected
-		has_star_flag = uf_galaxy_gun_system
 	}
 }
 
