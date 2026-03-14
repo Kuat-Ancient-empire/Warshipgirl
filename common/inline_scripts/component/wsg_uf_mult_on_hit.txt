@@ -1,0 +1,26 @@
+on_hit = {
+	custom_tooltip_with_params = {
+		description = "uf_weapon_erase_modifier_on_hit_effect"
+		description_parameters = {
+			"var_1" = $uf_weapon_erase_value$
+			"var_2" = $uf_weapon_erase_days$
+		}
+	}
+	hidden_effect = {
+		if = {
+			limit = {
+				check_modifier_value = {
+					modifier = ship_damage_reduction_mult
+					value > 0.95
+				}
+			}
+			uf_steal_modifier_on_hit = {
+				VARIABLE = uf_ship_damage_reduce_reduce_temp
+				MODIFIER = wg_uf_on_hit_ship_damage_reduction_mult
+				UF_MODIFIER = uf_ship_damage_reduction_mult
+				AMOUNT = $uf_weapon_erase_value$
+				DAYS = $uf_weapon_erase_days$
+			}
+		}
+	}
+}
