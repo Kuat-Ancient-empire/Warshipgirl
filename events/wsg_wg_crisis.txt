@@ -4840,7 +4840,10 @@ country_event = {
 				}
 				AND = {
 					has_leader_flag = uf_leader_trait_s2
-					prev = { NOT = { has_fleet_flag = uf_leader_trait_s2_triggered } }
+					prev = { NOR = { 
+						has_fleet_flag = uf_leader_trait_s2_triggered 
+						has_fleet_flag = uf_mirrored_fleet
+					} }
 				}
 			} }
 		}
@@ -4874,9 +4877,12 @@ country_event = {
 			if = {
 				limit = { 
 					leader = { has_leader_flag = uf_leader_trait_s2 }
-					NOT = { has_fleet_flag = uf_leader_trait_s2_triggered }
+					NOR = { 
+						has_fleet_flag = uf_leader_trait_s2_triggered 
+						has_fleet_flag = uf_mirrored_fleet
+					}
 				}
-				set_timed_fleet_flag = { flag = uf_leader_trait_s2_triggered days = 60 }
+				set_timed_fleet_flag = { flag = uf_leader_trait_s2_triggered days = 180 }
 				initial_count_all_fleet_ship = yes
 				fleet_event = { id = wg_crisis.2020 days = 1 }
 			}
