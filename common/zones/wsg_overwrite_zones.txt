@@ -1,0 +1,1316 @@
+
+zone_urban = {
+	icon = GFX_district_specialization_urban
+	base_buildtime = @zone_buildtime
+	potential = { # planet scope
+		hidden_trigger = { exists = owner }
+		owner = {
+			is_wilderness_empire = no
+		}
+	}
+
+	unlock = { # planet scope
+		hidden_trigger = { exists = owner }
+		owner = {
+			is_wilderness_empire = no
+		}
+	}
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	triggered_district_planet_modifier = {
+		planet_housing_add = @zone_urban_housing_positive
+	}
+
+	max_buildings = @ag_num_zone_buildings
+
+	zone_sets = {
+		urban
+		habitat_urban
+	}
+
+	include = {
+		all
+	}
+
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+	excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+		generator
+		mining
+		farming
+		knights
+		betharian
+		generator_automation
+		mining_automation
+		farming_automation
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = @ag_num_zone_buildings
+	}
+
+	triggered_desc = {
+		trigger = {
+			always = yes
+		}
+		text = zone_urban_triggered_desc
+	}
+
+	ai_priority = 2
+	ai_weight_coefficient = 0.5
+	convert_to = { 
+		ag_common_zone_urban  
+		inline_script = { script = zones_convertion/vop_zone_urban }
+	}
+}
+
+zone_industrial = {
+	inline_script = {
+		script = zones/shared_industrial_zone
+		AMOUNT = @scaling_district_2_jobs
+	}
+
+	zone_sets = {
+		urban
+		habitat_urban
+	}
+
+	inline_script = {
+		script = zones/shared_city_non_urban_zone_modifiers
+	}
+
+	ai_weight_coefficient = 1.1
+	convert_to = { 
+		ag_common_zone_industrial 
+		inline_script = { script = zones_convertion/vop_zone_industrial }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_foundry = {
+	inline_script = {
+		script = zones/shared_industrial_foundry_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	zone_sets = {
+		urban
+		habitat_urban
+	}
+
+	inline_script = {
+		script = zones/shared_city_non_urban_zone_modifiers
+	}
+
+	ai_weight_coefficient = 1.2
+	convert_to = { 
+		ag_common_zone_foundry 
+		inline_script = { script = zones_convertion/vop_zone_foundry }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_factory = {
+	inline_script = {
+		script = zones/shared_industrial_factory_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	zone_sets = {
+		urban
+		habitat_urban
+	}
+
+	inline_script = {
+		script = zones/shared_city_non_urban_zone_modifiers
+	}
+	convert_to = { 
+		ag_common_zone_factory 
+		inline_script = { script = zones_convertion/vop_zone_factory }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_research_unity = {
+	icon = GFX_district_specialization_bureaucrat
+	base_buildtime = @zone_buildtime
+	potential = { # planet scope
+		hidden_trigger = { exists = owner }
+		owner = {
+			is_wilderness_empire = no
+		}
+	}
+
+	unlock = { # planet scope
+		hidden_trigger = { exists = owner }
+		owner = {
+			is_wilderness_empire = no
+		}
+	}
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	zone_sets = {
+		urban
+		polytechnic
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+        research
+        unity
+        origin
+    }
+
+	inline_script = {
+		script = jobs/zone_researchers_add
+		AMOUNT = @scaling_district_researchers_4_jobs
+		LARGE_AMOUNT = @scaling_district_researchers_2_jobs
+	}
+
+	inline_script = {
+		script = jobs/zone_unity_jobs_add
+		AMOUNT = @scaling_district_unity_4_jobs
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = @ag_num_zone_buildings
+	}
+
+	inline_script = {
+		script = zones/shared_city_non_urban_zone_modifiers
+	}
+
+	triggered_desc = {
+		trigger = {
+			always = yes
+		}
+		text = zone_research_unity_triggered_desc
+	}
+
+	ai_priority = 8
+	convert_to = { 
+		ag_common_zone_research_unity 
+		inline_script = { script = zones_convertion/vop_zone_unity }
+	}
+}
+
+zone_research = {
+	inline_script = {
+		script = zones/shared_research_zone
+		AMOUNT = @scaling_district_3_jobs
+	}
+
+	zone_sets = {
+		urban
+		polytechnic
+	}
+
+	inline_script = {
+		script = zones/shared_city_non_urban_zone_modifiers
+	}
+
+	ai_weight_coefficient = 1.2
+	convert_to = { ag_common_zone_research }
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_research_physics = {
+	inline_script = {
+		script = zones/shared_research_physics_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	zone_sets = {
+		urban
+		habitat_research
+		polytechnic
+	}
+
+	inline_script = {
+		script = zones/shared_research_zone_modifiers
+	}
+
+	ai_priority = 15
+
+	ai_weight_coefficient = 1.1
+	convert_to = { 
+		ag_common_zone_research_physics 
+		inline_script = { script = zones_convertion/vop_zone_research }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_research_society = {
+	inline_script = {
+		script = zones/shared_research_society_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	zone_sets = {
+		urban
+		habitat_research
+		polytechnic
+	}
+
+	inline_script = {
+		script = zones/shared_research_zone_modifiers
+	}
+
+	ai_priority = 15
+
+	ai_weight_coefficient = 1.1
+	convert_to = { 
+		ag_common_zone_research_society 
+		inline_script = { script = zones_convertion/vop_zone_research }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_research_engineering = {
+	inline_script = {
+		script = zones/shared_research_engineering_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	zone_sets = {
+		urban
+		habitat_research
+		polytechnic
+	}
+
+	inline_script = {
+		script = zones/shared_research_zone_modifiers
+	}
+
+	ai_priority = 15
+
+	ai_weight_coefficient = 1.1
+	convert_to = { 
+		ag_common_zone_research_engineering 
+		inline_script = { script = zones_convertion/vop_zone_research }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_unity = {
+	inline_script = {
+		script = zones/shared_unity_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	zone_sets = {
+		urban
+		habitat_urban
+		polytechnic
+	}
+
+	inline_script = {
+		script = zones/shared_city_non_urban_zone_modifiers
+	}
+
+	convert_to = {
+		zone_unity_spiritualist
+		zone_unity_bio_trophy
+		ag_common_zone_unity
+		inline_script = { script = zones_convertion/vop_zone_unity }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_unity_spiritualist = {
+	inline_script = {
+		script = zones/shared_unity_spiritualist_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	zone_sets = {
+		urban
+		habitat_urban
+		polytechnic
+	}
+
+	inline_script = {
+		script = zones/shared_city_non_urban_zone_modifiers
+	}
+
+	convert_to = {
+		zone_unity
+		zone_unity_bio_trophy
+		ag_common_zone_unity
+		inline_script = { script = zones_convertion/vop_zone_unity }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_unity_bio_trophy = {
+	inline_script = {
+		script = zones/shared_unity_bio_trophy_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	zone_sets = {
+		urban
+		habitat_urban
+		polytechnic
+	}
+
+	triggered_district_planet_modifier = {
+		planet_housing_add = -500
+	}
+
+	convert_to = {
+		zone_unity
+		zone_unity_spiritualist
+		ag_common_zone_unity
+		inline_script = { script = zones_convertion/vop_zone_unity }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_fortress = {
+	inline_script = {
+		script = zones/shared_fortress_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	zone_sets = {
+		urban
+		habitat_urban
+	}
+
+	inline_script = {
+		script = zones/shared_city_non_urban_zone_modifiers
+	}
+	convert_to = { 
+		ag_common_zone_fortress
+		inline_script = { script = zones_convertion/vop_zone_research }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_trade = {
+	inline_script = {
+		script = zones/shared_trade_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	zone_sets = {
+		urban
+		habitat_urban
+		resort
+	}
+
+	inline_script = {
+		script = zones/shared_city_non_urban_zone_modifiers
+	}
+
+	ai_weight_coefficient = 0.25
+	convert_to = { 
+		ag_common_zone_trade 
+		inline_script = { script = zones_convertion/vop_zone_trade }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+#Hive World Zones
+zone_spawning = {
+	inline_script = {
+		script = zones/shared_spawning_zone
+		AMOUNT = 50
+	}
+
+	zone_sets = {
+		urban
+	}
+
+	inline_script = {
+		script = zones/shared_city_non_urban_zone_modifiers
+	}
+	convert_to = { ag_common_zone_hive_spawning }
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+#Machine World Zones
+zone_machine_replication = {
+	icon = GFX_district_specialization_machine_replication
+	base_buildtime = @zone_buildtime
+	potential = { # planet scope
+		is_planet_class = pc_machine
+		exists = owner
+		owner = {
+			is_machine_empire = yes
+			has_ascension_perk = ap_machine_worlds
+		}
+	}
+
+	unlock = { # planet scope
+		exists = owner
+		owner = {
+			is_machine_empire = yes
+			has_ascension_perk = ap_machine_worlds
+		}
+	}
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	zone_sets = {
+		urban
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+        urban
+    }
+
+	triggered_district_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		job_replicator_add = 50
+	}
+
+	triggered_district_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_individual_machine = yes }
+		}
+		job_roboticist_add = 50
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = @ag_num_zone_buildings
+	}
+
+	inline_script = {
+		script = zones/shared_city_non_urban_zone_modifiers
+	}
+
+	ai_priority = 12
+	convert_to = { ag_common_zone_machine_replication }
+}
+
+zone_subterranean_urban = {
+	icon = GFX_colony_type_urban
+	base_buildtime = @zone_buildtime
+	potential = { # planet scope
+		exists = owner
+		owner = {
+			is_subterranean_empire = yes
+		}
+	}
+
+	unlock = { # planet scope
+		hidden_trigger = {
+			exists = owner
+			owner = {
+				is_subterranean_empire = yes
+			}
+		}
+	}
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	max_buildings = @ag_num_zone_buildings
+
+	zone_sets = {
+		minerals
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+	}
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+        mining
+        urban
+        fallen_empire_mining
+        mining_automation
+    }
+
+	inline_script = {
+		script = jobs/zone_miner_add
+		AMOUNT = @bonus_scaling_district_2_jobs
+	}
+
+	inline_script = {
+		script = jobs/zone_trader_add
+		AMOUNT = @bonus_scaling_district_2_jobs
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = @ag_num_zone_buildings
+	}
+
+	ai_priority = 1
+	convert_to = { 
+		ag_common_zone_urban 
+		inline_script = { script = zones_convertion/vop_zone_urban }
+	}
+}
+
+zone_agrarian_urban = {
+	icon = GFX_district_specialization_agrarian
+	base_buildtime = @zone_buildtime
+	potential = { # planet scope
+		exists = owner
+		owner = {
+			has_valid_civic = civic_agrarian_idyll
+		}
+		if = {
+			limit = {
+				owner = {
+					is_anglers_empire = yes
+				}
+			}
+			is_wet = no
+		}
+	}
+
+	unlock = { # planet scope
+		hidden_trigger = {
+			exists = owner
+			owner = {
+				has_valid_civic = civic_agrarian_idyll
+			}
+			if = {
+				limit = {
+					owner = {
+						is_anglers_empire = yes
+					}
+				}
+				is_wet = no
+			}
+		}
+	}
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	max_buildings = @ag_num_zone_buildings
+
+	zone_sets = {
+		food
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+		farming
+		hydroponics
+		urban
+		farming_automation
+	}
+
+	inline_script = {
+		script = jobs/zone_farmers_add
+		AMOUNT = @bonus_scaling_district_2_jobs
+	}
+
+	inline_script = {
+		script = jobs/zone_trader_add
+		AMOUNT = @bonus_scaling_district_2_jobs
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = @ag_num_zone_buildings
+	}
+
+	ai_priority = 1
+	convert_to = { 
+		ag_common_zone_urban 
+		inline_script = { script = zones_convertion/vop_zone_urban }
+	}
+}
+
+zone_urban_energy = {
+	icon = GFX_district_specialization_energy
+	base_buildtime = @zone_buildtime
+	potential = { # planet scope
+		hidden_trigger = { exists = owner }
+		owner = {
+			is_wilderness_empire = no
+			is_ai = no						# AI isn't great at handling these
+		}
+		NOT = {
+			is_planet_class = pc_city
+		}
+	}
+
+	unlock = { # planet scope
+		hidden_trigger = { exists = owner }
+		owner = {
+			is_wilderness_empire = no
+		}
+	}
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	inline_script = {
+		script = jobs/zone_trader_add
+		AMOUNT = @scaling_district_2_jobs
+	}
+
+	max_buildings = 0
+
+	zone_sets = {
+		urban
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+		generator
+		urban
+		fallen_empire_generator
+	}
+
+	triggered_district_planet_modifier = {
+		potential = {
+			NOT = {
+				is_planet_class = pc_ringworld_habitable
+			}
+		}
+		planet_technician_produces_mult = @zone_urban_rural_worker_produces_mult
+		planet_technician_trade_upkeep_add = @zone_urban_rural_worker_trade_upkeep_add
+	}
+
+	triggered_district_planet_modifier = {
+		potential = {
+			is_planet_class = pc_ringworld_habitable
+		}
+		planet_technician_produces_mult = @zone_urban_rural_worker_produces_mult
+		planet_technician_trade_upkeep_add = @zone_urban_rural_worker_trade_upkeep_add
+		mult = 5
+	}
+
+	triggered_desc = {
+		trigger = {
+			always = yes
+		}
+		text = zone_urban_triggered_desc
+	}
+
+	ai_priority = 13
+	convert_to = { 
+		ag_common_zone_urban_energy 
+		inline_script = { script = zones_convertion/vop_zone_urban }
+	}
+}
+
+zone_urban_minerals = {
+	icon = GFX_district_specialization_minerals
+	base_buildtime = @zone_buildtime
+	potential = { # planet scope
+		hidden_trigger = { exists = owner }
+		owner = {
+			is_wilderness_empire = no
+			is_ai = no						# AI isn't great at handling these
+		}
+		NOR = {
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_city
+		}
+	}
+
+	unlock = { # planet scope
+		hidden_trigger = { exists = owner }
+		owner = {
+			is_wilderness_empire = no
+		}
+	}
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	zone_sets = {
+		urban
+	}
+
+	inline_script = {
+		script = jobs/zone_trader_add
+		AMOUNT = @scaling_district_2_jobs
+	}
+
+	max_buildings = 0
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+		mining
+		urban
+		fallen_empire_mining
+	}
+
+	triggered_district_planet_modifier = {
+		potential = {
+			NOT = {
+				is_planet_class = pc_ringworld_habitable
+			}
+		}
+		planet_miners_produces_mult = @zone_urban_rural_worker_produces_mult
+		planet_miners_trade_upkeep_add = @zone_urban_rural_worker_trade_upkeep_add
+	}
+
+	triggered_district_planet_modifier = {
+		potential = {
+			is_planet_class = pc_ringworld_habitable
+		}
+		planet_miners_produces_mult = @zone_urban_rural_worker_produces_mult
+		planet_miners_trade_upkeep_add = @zone_urban_rural_worker_trade_upkeep_add
+		mult = 5
+	}
+
+	triggered_desc = {
+		trigger = {
+			always = yes
+		}
+		text = zone_urban_triggered_desc
+	}
+
+	ai_priority = 13
+	convert_to = { 
+		ag_common_zone_urban_minerals 
+		inline_script = { script = zones_convertion/vop_zone_urban }
+	}
+}
+
+zone_urban_food = {
+	icon = GFX_district_specialization_food
+	base_buildtime = @zone_buildtime
+	potential = { # planet scope
+		hidden_trigger = { exists = owner }
+		owner = {
+			is_wilderness_empire = no
+			is_ai = no						# AI isn't great at handling these
+		}
+		NOT = {
+			is_planet_class = pc_city
+		}
+	}
+
+	unlock = { # planet scope
+		hidden_trigger = { exists = owner }
+		owner = {
+			is_wilderness_empire = no
+		}
+	}
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	inline_script = {
+		script = jobs/zone_trader_add
+		AMOUNT = @scaling_district_2_jobs
+	}
+
+	max_buildings = 0
+
+	zone_sets = {
+		urban
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+		hydroponics
+		urban
+	}
+
+	triggered_district_planet_modifier = {
+		potential = {
+			NOT = {
+				is_planet_class = pc_ringworld_habitable
+			}
+		}
+		planet_farmers_produces_mult = @zone_urban_rural_worker_produces_mult
+		planet_farmers_trade_upkeep_add = @zone_urban_rural_worker_trade_upkeep_add
+	}
+
+	triggered_district_planet_modifier = {
+		potential = {
+			is_planet_class = pc_ringworld_habitable
+		}
+		planet_farmers_produces_mult = @zone_urban_rural_worker_produces_mult
+		planet_farmers_trade_upkeep_add = @zone_urban_rural_worker_trade_upkeep_add
+		mult = 5
+	}
+
+	triggered_desc = {
+		trigger = {
+			always = yes
+		}
+		text = zone_urban_triggered_desc
+	}
+
+	ai_priority = 13
+	convert_to = { 
+		ag_common_zone_urban_food 
+		inline_script = { script = zones_convertion/vop_zone_urban }
+	}
+}
+
+zone_minerals = {
+	inline_script = {
+		script = zones/shared_minerals_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	zone_sets = {
+		minerals
+		habitat_minerals
+	}
+
+	show_in_tech = tech_mineral_purification_1
+	convert_to = {
+		ag_double_zone_minerals_01
+		ag_double_zone_minerals_02
+		ag_double_zone_minerals_03
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_betharian = {
+	inline_script = {
+		script = zones/shared_betharian_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	swap_type = district_mining_betharian
+	swap_type_weight = 5
+
+	zone_sets = {
+		minerals
+	}
+
+	show_in_tech = tech_mine_betharian
+	convert_to = {
+		ag_double_zone_minerals_betharian_01
+		ag_double_zone_minerals_betharian_02
+		ag_double_zone_minerals_betharian_03
+		inline_script = { script = zones_convertion/vop_zone_industrial }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_rare_crystals = {
+	inline_script = {
+		script = zones/shared_rare_crystals_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	swap_type = district_mining_rare_crystals
+	swap_type_weight = 5
+
+	zone_sets = {
+		minerals
+	}
+
+	show_in_tech = tech_mine_rare_crystals
+	convert_to = {
+		ag_double_zone_minerals_rare_crystals_01
+		ag_double_zone_minerals_rare_crystals_02
+		ag_double_zone_minerals_rare_crystals_03
+		inline_script = { script = zones_convertion/vop_zone_industrial }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_energy = {
+	inline_script = {
+		script = zones/shared_energy_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	zone_sets = {
+		energy
+		habitat_energy
+	}
+
+	show_in_tech = tech_power_hub_1
+	convert_to = {
+		ag_double_zone_energy_01
+		ag_double_zone_energy_02
+		ag_double_zone_energy_03
+		inline_script = { script = zones_convertion/vop_zone_industrial }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_volatile_motes = {
+	inline_script = {
+		script = zones/shared_volatile_motes_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	swap_type = district_generator_volatile_motes
+	swap_type_weight = 5
+
+	zone_sets = {
+		energy
+	}
+
+	show_in_tech = tech_mine_volatile_motes
+	convert_to = {
+		ag_double_zone_energy_01
+		ag_double_zone_energy_02
+		ag_double_zone_energy_03
+		inline_script = { script = zones_convertion/vop_zone_industrial }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_food = {
+	inline_script = {
+		script = zones/shared_food_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	zone_sets = {
+		food
+	}
+
+	show_in_tech = tech_food_processing_1
+	convert_to = {
+		ag_double_zone_food_01
+		ag_double_zone_food_02
+		ag_double_zone_food_03
+		inline_script = { script = zones_convertion/vop_zone_industrial }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
+
+zone_anglers = {
+	icon = GFX_district_specialization_angler
+	base_buildtime = @zone_buildtime
+
+	potential = { # planet scope
+		hidden_trigger = {
+			exists = owner
+			owner = { is_anglers_empire = yes }
+		}
+		is_wet = yes
+	}
+
+	unlock = { # planet scope
+		hidden_trigger = {
+			exists = owner
+			owner = { is_anglers_empire = yes }
+		}
+		is_wet = yes
+	}
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	inline_script = {
+		script = jobs/zone_farmers_add
+		AMOUNT = @bonus_scaling_district_2_jobs
+	}
+
+	inline_script = {
+		script = jobs/zone_factory_add
+		AMOUNT = @bonus_scaling_district_2_jobs
+	}
+
+	zone_sets = {
+		food
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+		farming
+		hydroponics
+		fallen_empire_farming
+		farming_automation
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = 3
+	}
+
+	triggered_desc = {
+		trigger = {
+			always = yes
+		}
+		text = zone_anglers_triggered_desc
+	}
+
+	ai_priority = 5
+	convert_to = {
+		ag_double_zone_food_01
+		ag_double_zone_food_02
+		ag_double_zone_food_03
+		inline_script = { script = zones_convertion/vop_zone_industrial }
+	}
+}
+
+zone_exotic_gases = {
+	inline_script = {
+		script = zones/shared_exotic_gases_zone
+		AMOUNT = @scaling_district_1_job
+	}
+
+	swap_type = district_farming_exotic_gases
+	swap_type_weight = 5
+
+	resources = {
+		category = planet_zones
+		cost = {
+			minerals = @zone_cost
+		}
+	}
+
+	zone_sets = {
+		food
+	}
+
+	show_in_tech = tech_mine_exotic_gases
+	convert_to = {
+		ag_double_zone_food_01
+		ag_double_zone_food_02
+		ag_double_zone_food_03
+		inline_script = { script = zones_convertion/vop_zone_industrial }
+	}
+
+    excluded_building_sets = {
+        ag_disallowed_in_all_zones
+        ag_disallowed_in_all_vanilla_zones
+    }
+    included_building_sets = {
+        ag_allowed_in_all_zones
+        ag_allowed_in_all_vanilla_zones
+    }
+}
