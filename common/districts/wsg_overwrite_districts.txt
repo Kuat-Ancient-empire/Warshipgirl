@@ -1,586 +1,712 @@
 @base_cost = 300
 @city_cost = 500
 @rural_district_ai_coefficient = 0.75
+@wilderness_district_build_long = 480
+@wilderness_district_build_short = 240
 
 district_city = {
-    base_buildtime = 480
-    is_capped_by_modifier = no
-    exempt_from_ai_planet_specialization = yes
-    default_starting_district = yes
-    overlay_icon = GFX_district_government
+	base_buildtime = 480
 
-    zone_slots = {
-        slot_city_government
-        slot_city_01
-        slot_city_02
-    }
+	exempt_from_ai_planet_specialization = yes
+	default_starting_district = yes
+	overlay_icon = GFX_district_government
 
-    show_on_uncolonized = {
-        exists = from
-        from = {
-            is_regular_empire = yes
-        }
-        OR = {
-            uses_district_set = standard
-            uses_district_set = hive_world
-            uses_district_set = machine_world
-            uses_district_set = shattered_ring_world
-            uses_district_set = volcanic_world
-        }
-        is_special_colony_type = no
-    }
+	zone_slots = {
+		slot_city_government
+		slot_city_01
+		slot_city_02
+	}
 
-    potential = {
-        OR = {
-            NOT = { exists = owner } #this condition is needed for galaxy generation
-            AND = {
-                exists = owner
-                owner = {
-                    OR = {
-                        is_regular_empire = yes
-                        AND = {
-                            is_country_type = primitive
-                            is_hive_empire = no
-                        }
-                    }
-                }
-            }
-        }
-        NOT = { has_deposit = d_crashed_slaver_ship }
-        OR = {
-            uses_district_set = district_resort
-            uses_district_set = standard
-            uses_district_set = hive_world
-            uses_district_set = machine_world
-            uses_district_set = shattered_ring_world
-            uses_district_set = volcanic_world
-        }
-        is_special_colony_type = no
+	show_on_uncolonized = {
+		exists = from
+		from = {
+			is_regular_empire = yes
+		}
+		OR = {
+			uses_district_set = standard
+			uses_district_set = hive_world
+			uses_district_set = machine_world
+			uses_district_set = shattered_ring_world
+			uses_district_set = volcanic_world
+		}
+		is_special_colony_type = no
+	}
 
-        NAND = {
-            is_capital = yes
-            owner = {
-                has_menace_perk = menp_behemoth_mind_meld
-            }
-        }
+	potential = {
+		OR = {
+			NOT = { exists = owner } #this condition is needed for galaxy generation
+			AND = {
+				exists = owner
+				owner = {
+					OR = {
+						is_regular_empire = yes
+						AND = {
+							is_country_type = primitive
+							is_hive_empire = no
+						}
+					}
+				}
+			}
+		}
+		NOT = { has_deposit = d_crashed_slaver_ship }
+		OR = {
+			uses_district_set = district_resort
+			uses_district_set = standard
+			uses_district_set = hive_world
+			uses_district_set = machine_world
+			uses_district_set = shattered_ring_world
+			uses_district_set = volcanic_world
+		}
+		is_special_colony_type = no
 
-    }
+		NAND = {
+			is_capital = yes
+			owner = {
+				has_menace_perk = menp_behemoth_mind_meld
+			}
+		}
+	}
 
-    allow = {
-        is_special_colony_type = no
-        custom_tooltip = {
-            fail_text = arcology_project_construction_fail_tt
-            NOT = { has_planet_flag = arcology_project_construction }
-        }
-    }
+	allow = {
+		hidden_trigger = { is_special_colony_type = no }
+		custom_tooltip = {
+			fail_text = arcology_project_construction_fail_tt
+			NOT = { has_planet_flag = arcology_project_construction }
+		}
+	}
 
-    conversion_ratio = 1
-    convert_to = {
-        district_crashed_slaver_ship
-        district_arcology_housing
-        district_rw_city
-        district_nexus
-        district_hive
-        district_prison
-        district_craglands
-        district_mindlink
-        district_crashed_slaver_ship
-        district_resort
-        district_slave
+	conversion_ratio = 1
+	convert_to = {
+		district_crashed_slaver_ship
+		district_arcology_housing
+		district_rw_city
+		district_nexus
+		district_hive
+		district_prison
+		district_craglands
+		district_mindlink
+		district_crashed_slaver_ship
+		district_resort
+		district_slave
         # Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_urban }
+        district_ag_shell_world_housing
+		district_ag_ancient_city_housing
+		district_ag_ancient_city_wilderness
+		district_ag_hive
+		district_ag_ancient_hive_wilderness
+		district_ag_nexus
+		aon_city_districts
+		district_azur_gaia_city
+		district_azur_mind_crisis_city
+		district_azur_ringworld_city_bc
+		district_azur_ringworld_city
+		district_azur_harbour_city
+		district_arcology_adf_housing
+		district_arcology_adf_rw_housing
+		district_arcology_adf_ark_housing
+		district_arcology_kuat_housing
+		district_arcology_swgs_housing
+		district_arcology_swgs_rw_housing
+		district_arcology_wsg_housing
+		district_rw_wsg_city
+		district_water_housing
+		district_rw_water_housing
+		district_dr_housing
+		district_rw_sh_city
+		district_sh_city
+		district_uf_housing
+		district_rw_uf_city
+		district_auto_uf_housing
+		district_rw_auto_uf_city
+		district_uf_glory_city
+		district_wg_hive_world_housing
+		district_wg_forge
 		##############################################################################
-    }
+	}
 
-    resources = {
-        category = planet_districts_cities
-        cost = {
-            minerals = 500
-            trigger = {
-                NOT = { has_modifier = wooden_planet }
-            }
-        }
-        cost = {
-            food = 500
-            trigger = {
-                has_modifier = wooden_planet
-            }
-        }
-        upkeep = {
-            energy = 2
-            trigger = {
-                NOT = { has_modifier = wooden_planet }
-            }
-        }
-        upkeep = {
-            food = 2
-            trigger = {
-                has_modifier = wooden_planet
-            }
-        }
-    }
+	resources = {
+		category = planet_districts_cities
+		cost = {
+			minerals = @city_cost
+			trigger = {
+				NOT = { has_modifier = wooden_planet }
+			}
+		}
+		cost = {
+			food = @city_cost
+			trigger = {
+				has_modifier = wooden_planet
+			}
+		}
+		upkeep = {
+			energy = 2
+			trigger = {
+				NOT = { has_modifier = wooden_planet }
+			}
+		}
+		upkeep = {
+			food = 2
+			trigger = {
+				has_modifier = wooden_planet
+			}
+		}
+	}
 
-    planet_modifier = {
-        planet_housing_add = 1000
-    }
+	planet_modifier = {
+		planet_housing_add = 1000
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = {
-                has_valid_civic = civic_agrarian_idyll
-            }
-        }
-        modifier = {
-            planet_housing_add = -200
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_valid_civic = civic_agrarian_idyll
+			}
+		}
+		modifier = {
+			planet_housing_add = -200
+		}
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { has_active_tradition = tr_prosperity_public_works }
-        }
-        modifier = {
-            planet_housing_add = 100
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_active_tradition = tr_prosperity_public_works }
+		}
+		modifier = {
+			planet_housing_add = 100
+		}
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = {
-                has_technology = tech_housing_1
-            }
-        }
-        modifier = {
-            planet_housing_add = 100
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_technology = tech_housing_1
+			}
+		}
+		modifier = {
+			planet_housing_add = 100
+		}
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = {
-                has_technology = tech_housing_2
-                NOT = { has_valid_civic = civic_agrarian_idyll }
-            }
-        }
-        modifier = {
-            planet_housing_add = 200
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_technology = tech_housing_2
+				NOT = { has_valid_civic = civic_agrarian_idyll }
+			}
+		}
+		modifier = {
+			planet_housing_add = 200
+		}
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { is_tankbound_empire = yes }
-        }
-        modifier = {
-            job_production_overseer_add = 100
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_tankbound_empire = yes
+			}
+		}
+		modifier = {
+			job_production_overseer_add = 100
+		}
+	}
 
-    inline_script = {
-        script = districts/district_triggered_name_urban
-    }
+	inline_script = {
+		script = districts/district_triggered_name_urban
+	}
 
-    inline_script = {
-        script = districts/district_triggered_flavor_desc_urban
-    }
+	inline_script = {
+		script = districts/district_triggered_flavor_desc_urban
+	}
 
-    inline_script = {
-        script = districts/ai_urban_district_extra_weighting
-    }
+	inline_script = {
+		script = districts/ai_urban_district_extra_weighting
+	}
 }
 district_hive = {
-    base_buildtime = 480
-    is_capped_by_modifier = no
-    exempt_from_ai_planet_specialization = yes
-    overlay_icon = GFX_district_government
+	base_buildtime = 480
 
-    zone_slots = {
-        slot_city_government
-        slot_city_01
-        slot_city_02
-    }
+	exempt_from_ai_planet_specialization = yes
+	overlay_icon = GFX_district_government
 
-    show_on_uncolonized = {
-        exists = from
-        from = { is_hive_empire = yes }
-        OR = {
-            uses_district_set = standard
-            uses_district_set = volcanic_world
-            uses_district_set = hive_world
-            uses_district_set = machine_world
-            uses_district_set = shattered_ring_world
-        }
-        exists = from
-        from = { is_wilderness_empire = no }
-    }
+	zone_slots = {
+		slot_city_government
+		slot_city_01
+		slot_city_02
+	}
 
-    potential = {
-        exists = owner
-        owner = {
-            is_hive_empire = yes
-            is_wilderness_empire = no
-        }
-        OR = {
-            uses_district_set = standard
-            uses_district_set = volcanic_world
-            uses_district_set = hive_world
-            uses_district_set = machine_world
-            uses_district_set = shattered_ring_world
-        }
-        NAND = {
-            is_capital = yes
-            owner = {
-                has_menace_perk = menp_behemoth_mind_meld
-            }
-        }
-    }
+	show_on_uncolonized = {
+		exists = from
+		from = { is_hive_empire = yes }
+		OR = {
+			uses_district_set = standard
+			uses_district_set = volcanic_world
+			uses_district_set = hive_world
+			uses_district_set = machine_world
+			uses_district_set = shattered_ring_world
+		}
+		exists = from
+		from = { is_wilderness_empire = no }
+	}
 
-    allow = {
-        NOT = { has_modifier = resort_colony }
-        custom_tooltip = {
-            fail_text = arcology_project_construction_fail_tt
-            NOT = { has_planet_flag = arcology_project_construction }
-        }
-    }
+	potential = {
+		exists = owner
+		owner = {
+			is_hive_empire = yes
+			is_wilderness_empire = no
+		}
+		OR = {
+			uses_district_set = standard
+			uses_district_set = volcanic_world
+			uses_district_set = hive_world
+			uses_district_set = machine_world
+			uses_district_set = shattered_ring_world
+		}
+		NAND = {
+			is_capital = yes
+			owner = {
+				has_menace_perk = menp_behemoth_mind_meld
+			}
+		}
+	}
 
-    conversion_ratio = 1
-    convert_to = {
-        district_arcology_housing
-        district_rw_hive
-        district_nexus
-        district_city
-        district_craglands
-        district_mindlink
+	allow = {
+		hidden_trigger = {
+			NOT = { has_modifier = resort_colony }
+		}
+		custom_tooltip = {
+			fail_text = arcology_project_construction_fail_tt
+			NOT = { has_planet_flag = arcology_project_construction }
+		}
+	}
+
+	conversion_ratio = 1
+	convert_to = {
+		district_arcology_housing
+		district_rw_hive
+		district_nexus
+		district_city
+		district_craglands
+		district_mindlink
         # Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_urban }
+        district_ag_shell_world_housing
+		district_ag_ancient_city_housing
+		district_ag_ancient_city_wilderness
+		district_ag_hive
+		district_ag_ancient_hive_wilderness
+		district_ag_nexus
+		aon_city_districts
+		district_azur_gaia_city
+		district_azur_mind_crisis_city
+		district_azur_ringworld_city_bc
+		district_azur_ringworld_city
+		district_azur_harbour_city
+		district_arcology_adf_housing
+		district_arcology_adf_rw_housing
+		district_arcology_adf_ark_housing
+		district_arcology_kuat_housing
+		district_arcology_swgs_housing
+		district_arcology_swgs_rw_housing
+		district_arcology_wsg_housing
+		district_rw_wsg_city
+		district_water_housing
+		district_rw_water_housing
+		district_dr_housing
+		district_rw_sh_city
+		district_sh_city
+		district_uf_housing
+		district_rw_uf_city
+		district_auto_uf_housing
+		district_rw_auto_uf_city
+		district_uf_glory_city
+		district_wg_hive_world_housing
+		district_wg_forge
 		##############################################################################
-    }
+	}
 
-    resources = {
-        category = planet_districts_cities
-        cost = {
-            minerals = 500
-        }
-        upkeep = {
-            energy = 2
-        }
-    }
+	resources = {
+		category = planet_districts_cities
+		cost = {
+			minerals = @city_cost
+		}
+		upkeep = {
+			energy = 2
+		}
+	}
 
-    planet_modifier = {
-        planet_housing_add = 1200
-    }
+	planet_modifier = {
+		planet_housing_add = 1200
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            is_planet_class = pc_hive
-        }
-        modifier = {
-            planet_housing_add = 600
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			is_planet_class = pc_hive
+		}
+		modifier = {
+			planet_housing_add = 600
+		}
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { has_technology = tech_housing_1 }
-        }
-        modifier = {
-            planet_housing_add = 100
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_housing_1 }
+		}
+		modifier = {
+			planet_housing_add = 100
+		}
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { has_technology = tech_housing_2 }
-        }
-        modifier = {
-            planet_housing_add = 100
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_housing_2 }
+		}
+		modifier = {
+			planet_housing_add = 100
+		}
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { has_active_tradition = tr_prosperity_extended_hives }
-        }
-        modifier = {
-            planet_housing_add = 100
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_active_tradition = tr_prosperity_extended_hives }
+		}
+		modifier = {
+			planet_housing_add = 100
+		}
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { is_tankbound_empire = yes }
-        }
-        modifier = {
-            job_production_overseer_add = 100
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_tankbound_empire = yes }
+		}
+		modifier = {
+			job_production_overseer_add = 100
+		}
+	}
 
-    inline_script = {
-        script = districts/district_triggered_name_hive
-    }
+	inline_script = {
+		script = districts/district_triggered_name_hive
+	}
 
-    inline_script = {
-        script = districts/district_triggered_flavor_desc_hive
-    }
+	inline_script = {
+		script = districts/district_triggered_flavor_desc_hive
+	}
 
-    inline_script = {
-        script = districts/ai_urban_district_extra_weighting
-    }
+	inline_script = {
+		script = districts/ai_urban_district_extra_weighting
+	}
 }
 district_nexus = {
-    base_buildtime = 480
-    is_capped_by_modifier = no
-    exempt_from_ai_planet_specialization = yes
-    overlay_icon = GFX_district_government
+	base_buildtime = 480
 
-    zone_slots = {
-        slot_city_government
-        slot_city_01
-        slot_city_02
-    }
+	exempt_from_ai_planet_specialization = yes
+	overlay_icon = GFX_district_government
 
-    show_on_uncolonized = {
-        exists = from
-        from = {
-            is_machine_empire = yes
-        }
-        OR = {
-            uses_district_set = standard
-            uses_district_set = volcanic_world
-            uses_district_set = hive_world
-            uses_district_set = machine_world
-            uses_district_set = shattered_ring_world
-        }
-    }
+	zone_slots = {
+		slot_city_government
+		slot_city_01
+		slot_city_02
+	}
 
-    potential = {
-        exists = owner
-        owner = {
-            is_machine_empire = yes
-        }
-        OR = {
-            uses_district_set = standard
-            uses_district_set = volcanic_world
-            uses_district_set = hive_world
-            uses_district_set = machine_world
-            uses_district_set = shattered_ring_world
-        }
-        NAND = {
-            is_capital = yes
-            owner = {
-                has_menace_perk = menp_behemoth_mind_meld
-            }
-        }
-        NOT = { has_modifier = resort_colony }
-    }
+	show_on_uncolonized = {
+		exists = from
+		from = {
+			is_machine_empire = yes
+		}
+		OR = {
+			uses_district_set = standard
+			uses_district_set = volcanic_world
+			uses_district_set = hive_world
+			uses_district_set = machine_world
+			uses_district_set = shattered_ring_world
+		}
+	}
 
-    allow = {
-        NOT = { has_modifier = resort_colony }
-        custom_tooltip = {
-            fail_text = arcology_project_construction_fail_tt
-            NOT = { has_planet_flag = arcology_project_construction }
-        }
-    }
+	potential = {
+		exists = owner
+		owner = {
+			is_machine_empire = yes
+		}
+		OR = {
+			uses_district_set = standard
+			uses_district_set = volcanic_world
+			uses_district_set = hive_world
+			uses_district_set = machine_world
+			uses_district_set = shattered_ring_world
+		}
+		NAND = {
+			is_capital = yes
+			owner = {
+				has_menace_perk = menp_behemoth_mind_meld
+			}
+		}
+	}
 
-    conversion_ratio = 1
-    convert_to = {
-        district_arcology_housing
-        district_rw_nexus
-        district_city
-        district_hive
-        district_craglands
-        district_mindlink
+	allow = {
+		hidden_trigger = {
+			NOT = { has_modifier = resort_colony }
+		}
+		custom_tooltip = {
+			fail_text = arcology_project_construction_fail_tt
+			NOT = { has_planet_flag = arcology_project_construction }
+		}
+	}
+
+	conversion_ratio = 1
+	convert_to = {
+		district_arcology_housing
+		district_rw_nexus
+		district_city
+		district_hive
+		district_craglands
+		district_mindlink
         # Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_urban }
+        district_ag_shell_world_housing
+		district_ag_ancient_city_housing
+		district_ag_ancient_city_wilderness
+		district_ag_hive
+		district_ag_ancient_hive_wilderness
+		district_ag_nexus
+		aon_city_districts
+		district_azur_gaia_city
+		district_azur_mind_crisis_city
+		district_azur_ringworld_city_bc
+		district_azur_ringworld_city
+		district_azur_harbour_city
+		district_arcology_adf_housing
+		district_arcology_adf_rw_housing
+		district_arcology_adf_ark_housing
+		district_arcology_kuat_housing
+		district_arcology_swgs_housing
+		district_arcology_swgs_rw_housing
+		district_arcology_wsg_housing
+		district_rw_wsg_city
+		district_water_housing
+		district_rw_water_housing
+		district_dr_housing
+		district_rw_sh_city
+		district_sh_city
+		district_uf_housing
+		district_rw_uf_city
+		district_auto_uf_housing
+		district_rw_auto_uf_city
+		district_uf_glory_city
+		district_wg_hive_world_housing
+		district_wg_forge
 		##############################################################################
-    }
+	}
 
-    resources = {
-        category = planet_districts_cities
-        cost = {
-            minerals = 500
-        }
-        upkeep = {
-            energy = 2
-        }
-    }
+	resources = {
+		category = planet_districts_cities
+		cost = {
+			minerals = @city_cost
+		}
+		upkeep = {
+			energy = 2
+		}
+	}
 
-    planet_modifier = {
-        planet_housing_add = 1100
-    }
+	planet_modifier = {
+		planet_housing_add = 1100
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { has_technology = tech_housing_1 }
-        }
-        modifier = {
-            planet_housing_add = 100
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_housing_1 }
+		}
+		modifier = {
+			planet_housing_add = 100
+		}
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { has_technology = tech_housing_2 }
-        }
-        modifier = {
-            planet_housing_add = 100
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_housing_2 }
+		}
+		modifier = {
+			planet_housing_add = 100
+		}
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { has_active_tradition = tr_prosperity_optimized_nexus }
-        }
-        modifier = {
-            planet_housing_add = 100
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_active_tradition = tr_prosperity_optimized_nexus }
+		}
+		modifier = {
+			planet_housing_add = 100
+		}
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { is_tankbound_empire = yes }
-        }
-        modifier = {
-            job_production_overseer_add = 100
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_tankbound_empire = yes }
+		}
+		modifier = {
+			job_production_overseer_add = 100
+		}
+	}
 
-    inline_script = {
-        script = districts/district_triggered_name_machine
-    }
+	inline_script = {
+		script = districts/district_triggered_name_machine
+	}
 
-    inline_script = {
-        script = districts/district_triggered_flavor_desc_machine
-    }
+	inline_script = {
+		script = districts/district_triggered_flavor_desc_machine
+	}
 
-    inline_script = {
-        script = districts/ai_urban_district_extra_weighting
-    }
+	inline_script = {
+		script = districts/ai_urban_district_extra_weighting
+	}
 }
 district_craglands = {
-    base_buildtime = 480
-    is_capped_by_modifier = no
-    overlay_icon = GFX_district_government
+	base_buildtime = @wilderness_district_build_long
 
-    show_on_uncolonized = {
-        uses_district_set = standard
-        exists = from
-        from = { is_wilderness_empire = yes }
-    }
+	overlay_icon = GFX_district_government
 
-    potential = {
-        uses_district_set = standard
-        exists = owner
-        owner = { is_wilderness_empire = yes }
-        NAND = {
-            is_capital = yes
-            owner = {
-                has_menace_perk = menp_behemoth_mind_meld
-            }
-        }
-    }
-    allow = { custom_tooltip = {
-        fail_text = arcology_project_construction_fail_tt
-        NOT = { has_planet_flag = arcology_project_construction }
-    } }
+	show_on_uncolonized = {
+		uses_district_set = standard
+		exists = from
+		from = { is_wilderness_empire = yes }
+	}
 
-    zone_slots = {
-        slot_city_government
-        slot_city_01
-        slot_city_02
-    }
+	potential = {
+		uses_district_set = standard
+		exists = owner
+		owner = { is_wilderness_empire = yes }
+		NAND = {
+			is_capital = yes
+			owner = {
+				has_menace_perk = menp_behemoth_mind_meld
+			}
+		}
+	}
 
-    conversion_ratio = 1
-    convert_to = {
-        district_arcology_housing
-        district_rw_city
-        district_nexus
-        district_hive
-        district_city
-        district_mindlink
+	zone_slots = {
+		slot_city_government
+		slot_city_01
+		slot_city_02
+	}
+
+	conversion_ratio = 1
+	convert_to = {
+		district_arcology_housing
+		district_rw_city
+		district_nexus
+		district_hive
+		district_city
+		district_mindlink
         # Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_urban }
+        district_ag_shell_world_housing
+		district_ag_ancient_city_housing
+		district_ag_ancient_city_wilderness
+		district_ag_hive
+		district_ag_ancient_hive_wilderness
+		district_ag_nexus
+		aon_city_districts
+		district_azur_gaia_city
+		district_azur_mind_crisis_city
+		district_azur_ringworld_city_bc
+		district_azur_ringworld_city
+		district_azur_harbour_city
+		district_arcology_adf_housing
+		district_arcology_adf_rw_housing
+		district_arcology_adf_ark_housing
+		district_arcology_kuat_housing
+		district_arcology_swgs_housing
+		district_arcology_swgs_rw_housing
+		district_arcology_wsg_housing
+		district_rw_wsg_city
+		district_water_housing
+		district_rw_water_housing
+		district_dr_housing
+		district_rw_sh_city
+		district_sh_city
+		district_uf_housing
+		district_rw_uf_city
+		district_auto_uf_housing
+		district_rw_auto_uf_city
+		district_uf_glory_city
+		district_wg_hive_world_housing
+		district_wg_forge
 		##############################################################################
-    }
+	}
 
-    resources = {
-        category = planet_districts_cities
-        cost = {
-            minerals = 500
-        }
-        cost = {
-            biomass = 50
-        }
-        upkeep = {
-            energy = 2
-        }
-    }
+	resources = {
+		category = planet_districts_cities
+		cost = {
+			minerals = 500
+		}
+		cost = {
+			biomass = @biomass_cost
+		}
+		upkeep = {
+			energy = 2
+		}
+	}
 
-    planet_modifier = {
-        planet_housing_add = 100
-    }
+	planet_modifier = {
+		planet_housing_add = 100
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = {
-                has_tradition = tr_domination_imperious_architecture
-            }
-        }
-        planet_defense_armies_add = 2
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_tradition = tr_domination_imperious_architecture
+			}
+		}
+		planet_defense_armies_add = 1
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = {
-                has_tradition = tr_prosperity_public_works
-            }
-        }
-        planet_housing_add = 50
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_tradition = tr_prosperity_public_works
+			}
+		}
+		planet_housing_add = 50
+	}
 
-    inline_script = {
-        script = buildings/on_all_wilderness_buildings_districts
-    }
+	inline_script = {
+		script = buildings/on_all_wilderness_buildings_districts
+	}
 
-    ai_resource_production = {
-        unity = 5
-        trigger = {
-            OR = {
-                has_building = building_commensal_clearing_1
-                has_building = building_commensal_clearing_2
-                has_building = building_commensal_clearing_3
-                has_building = building_commensal_clearing_4
-            }
-        }
-    }
+	ai_resource_production = {
+		unity = 5
+		trigger = {
+			OR = {
+				has_building = building_commensal_clearing_1
+				has_building = building_commensal_clearing_2
+				has_building = building_commensal_clearing_3
+				has_building = building_commensal_clearing_4
+			}
+		}
+	}
 
-    exempt_from_ai_planet_specialization = yes
-    ai_estimate_without_unemployment = yes
-    additional_ai_weight = 10
+	exempt_from_ai_planet_specialization = yes
+	ai_estimate_without_unemployment = yes
+	additional_ai_weight = 10
 }
 
 district_arcology_housing = {
 	base_buildtime = 600
-	is_capped_by_modifier = no
+
 	exempt_from_ai_planet_specialization = yes
 	overlay_icon = GFX_district_government
 
@@ -614,14 +740,45 @@ district_arcology_housing = {
 		district_mindlink
         # Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_urban }
+        district_ag_shell_world_housing
+		district_ag_ancient_city_housing
+		district_ag_ancient_city_wilderness
+		district_ag_hive
+		district_ag_ancient_hive_wilderness
+		district_ag_nexus
+		aon_city_districts
+		district_azur_gaia_city
+		district_azur_mind_crisis_city
+		district_azur_ringworld_city_bc
+		district_azur_ringworld_city
+		district_azur_harbour_city
+		district_arcology_adf_housing
+		district_arcology_adf_rw_housing
+		district_arcology_adf_ark_housing
+		district_arcology_kuat_housing
+		district_arcology_swgs_housing
+		district_arcology_swgs_rw_housing
+		district_arcology_wsg_housing
+		district_rw_wsg_city
+		district_water_housing
+		district_rw_water_housing
+		district_dr_housing
+		district_rw_sh_city
+		district_sh_city
+		district_uf_housing
+		district_rw_uf_city
+		district_auto_uf_housing
+		district_rw_auto_uf_city
+		district_uf_glory_city
+		district_wg_hive_world_housing
+		district_wg_forge
 		##############################################################################
 	}
 
 	resources = {
 		category = planet_districts
 		cost = {
-			minerals = 1000
+			alloys = 500
 		}
 		upkeep = {
 			energy = 5
@@ -666,10 +823,22 @@ district_arcology_housing = {
 			planet_housing_add = 300
 		}
 	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_tankbound_empire = yes
+			}
+		}
+		modifier = {
+			job_production_overseer_add = 100
+		}
+	}
 }
 district_arcology_leisure = {
 	base_buildtime = 600
-	is_capped_by_modifier = no
+
 
 	zone_slots = {
 		slot_city_government
@@ -695,7 +864,38 @@ district_arcology_leisure = {
 		district_arcology_housing
         # Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_urban }
+        district_ag_shell_world_housing
+		district_ag_ancient_city_housing
+		district_ag_ancient_city_wilderness
+		district_ag_hive
+		district_ag_ancient_hive_wilderness
+		district_ag_nexus
+		aon_city_districts
+		district_azur_gaia_city
+		district_azur_mind_crisis_city
+		district_azur_ringworld_city_bc
+		district_azur_ringworld_city
+		district_azur_harbour_city
+		district_arcology_adf_housing
+		district_arcology_adf_rw_housing
+		district_arcology_adf_ark_housing
+		district_arcology_kuat_housing
+		district_arcology_swgs_housing
+		district_arcology_swgs_rw_housing
+		district_arcology_wsg_housing
+		district_rw_wsg_city
+		district_water_housing
+		district_rw_water_housing
+		district_dr_housing
+		district_rw_sh_city
+		district_sh_city
+		district_uf_housing
+		district_rw_uf_city
+		district_auto_uf_housing
+		district_rw_auto_uf_city
+		district_uf_glory_city
+		district_wg_hive_world_housing
+		district_wg_forge
 		##############################################################################
 	}
 
@@ -715,6 +915,18 @@ district_arcology_leisure = {
 		planet_housing_add = 1000
 	}
 
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_tankbound_empire = yes
+			}
+		}
+		modifier = {
+			job_production_overseer_add = 100
+		}
+	}
+
 	inline_script = {
 		script = jobs/entertainers_add
 		AMOUNT = 600
@@ -723,7 +935,7 @@ district_arcology_leisure = {
 district_arcology_urban_1 = {
 	icon = district_arcology_housing_secondary
 	base_buildtime = 600
-	is_capped_by_modifier = no
+
 	exempt_from_ai_planet_specialization = yes
 	overlay_icon = GFX_district_housing
 
@@ -746,14 +958,46 @@ district_arcology_urban_1 = {
 		district_hive
 		# Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_empty_1 }
+        district_ag_ancient_city_empty_01
+		aon_madoushi_districts
+		district_azur_gaia_worker
+		district_azur_gaia_worker_other
+		district_azur_mind_crisis_service
+		district_azur_ringworld_farming_bc
+		district_azur_ringworld_mining_bc
+		district_azur_ringworld_generator_bc
+		district_azur_ringworld_factory
+		district_azur_harbour_service
+		district_arcology_adf_Military
+		district_arcology_adf_rw_Military
+		district_arcology_adf_Ark_Military
+		district_arcology_kuat_Military
+		district_arcology_swgs_Military
+		district_arcology_swgs_rw_Military
+		district_arcology_wsg_neo
+		district_arcology_wsg_neo_alpha
+		district_rw_wsg_alloys
+		district_rw_water_generator
+		district_dr_generator
+		district_dr_roller_coaster
+		district_rw_sh_alloys
+		district_sh_generator_uncapped
+		district_sh_mining_uncapped
+		district_sh_foundry_shpc
+		district_uf_alloys
+		district_rw_uf_alloys
+		district_auto_uf_military
+		district_rw_auto_uf_military
+		district_uf_glory_military
+		district_wg_hive_world_admin
+		district_wg_forge_research
 		##############################################################################
 	}
 
 	resources = {
 		category = planet_districts
 		cost = {
-			minerals = 1000
+			alloys = 500
 		}
 		upkeep = {
 			energy = 5
@@ -797,11 +1041,25 @@ district_arcology_urban_1 = {
 			planet_housing_add = 300
 		}
 	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_tankbound_empire = yes }
+		}
+		modifier = {
+			job_production_overseer_add = 100
+		}
+	}
+
+	triggered_name = {
+		text = district_arcology_name
+	}
 }
 district_arcology_urban_2 = {
 	icon = district_arcology_housing_secondary
 	base_buildtime = 600
-	is_capped_by_modifier = no
+
 	exempt_from_ai_planet_specialization = yes
 	overlay_icon = GFX_district_housing
 
@@ -824,14 +1082,44 @@ district_arcology_urban_2 = {
 		district_hive
 		# Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_empty_2 }
+        district_ag_ancient_city_empty_02
+		aon_boukensha_districts
+		district_azur_gaia_goods
+		district_azur_mind_crisis_Industry
+		district_azur_ringworld_foundry_bc
+		district_azur_ringworld_artisan_bc
+		district_azur_ringworld_alloys
+		district_azur_ringworld_consumer_goods
+		district_azur_harbour_Industry
+		district_azur_harbour_energy
+		district_arcology_adf_science
+		district_arcology_adf_rw_science
+		district_arcology_adf_Ark_science
+		district_arcology_kuat_science
+		district_arcology_swgs_science
+		district_arcology_swgs_rw_science
+		district_arcology_wsg_science
+		district_rw_wsg_science
+		district_water_ktv
+		district_rw_water_food
+		district_dr_science
+		district_rw_sh_goods
+		district_sh_pantsu_shpc
+		district_uf_science
+		district_rw_uf_science
+		district_auto_uf_alloys
+		district_rw_auto_uf_alloys
+		district_uf_glory_base_resources
+		district_uf_glory_base_resources_2
+		district_uf_glory_auto_industry
+		district_uf_glory_auto_science
 		##############################################################################
 	}
 
 	resources = {
 		category = planet_districts
 		cost = {
-			minerals = 1000
+			alloys = 500
 		}
 		upkeep = {
 			energy = 5
@@ -876,11 +1164,25 @@ district_arcology_urban_2 = {
 			planet_housing_add = 300
 		}
 	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_tankbound_empire = yes }
+		}
+		modifier = {
+			job_production_overseer_add = 100
+		}
+	}
+
+	triggered_name = {
+		text = district_arcology_name
+	}
 }
 district_arcology_urban_3 = {
 	icon = district_arcology_housing_secondary
 	base_buildtime = 600
-	is_capped_by_modifier = no
+
 	exempt_from_ai_planet_specialization = yes
 	overlay_icon = GFX_district_housing
 
@@ -903,14 +1205,52 @@ district_arcology_urban_3 = {
 		district_hive
 		# Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_empty_3 }
+        district_ag_ancient_city_empty_03
+		aon_mahoutsukau_districts
+		aon_kishi_districts
+		district_azur_gaia_research
+		district_azur_mind_crisis_energy
+		district_azur_ringworld_research_bc
+		district_azur_ringworld_research
+		district_azur_harbour_cube
+		district_arcology_adf_Ark_Khaydarin
+		district_arcology_adf_rw_Khaydarin
+		district_arcology_adf_Khaydarin
+		district_arcology_Kuat_civilian_industry
+		district_arcology_eternal_Khaydarin
+		district_arcology_kuat_Khaydarin
+		district_arcology_swgs_Khaydarin
+		district_arcology_swgs_rw_Khaydarin
+		district_ev_hab_industrial_area
+		ev_district_arcology_arms_industry
+		ev_district_arcology_civilian_industry
+		district_prayer
+		district_arcology_wsg_military
+		district_rw_wsg_soldier
+		district_rw_water_ktv
+		district_dr_industrial
+		district_sh_science_shpc
+		district_rw_sh_soldier
+		district_uf_military
+		district_uf_entertainment
+		district_uf_hyperdimensional_matter
+		district_rw_uf_military
+		district_rw_uf_rare_resource
+		district_rw_uf_hyperdimensional_matter
+		district_auto_uf_science
+		district_auto_uf_hyperdimensional_matter
+		district_rw_auto_uf_science
+		district_rw_auto_uf_rare_resource
+		district_rw_auto_uf_hyperdimensional_matter
+		district_uf_glory_auto_rare_resource
+		district_uf_glory_auto_hyperdimensional_matter
 		##############################################################################
 	}
 
 	resources = {
 		category = planet_districts
 		cost = {
-			minerals = 1000
+			alloys = 500
 		}
 		upkeep = {
 			energy = 5
@@ -954,6 +1294,20 @@ district_arcology_urban_3 = {
 		modifier = {
 			planet_housing_add = 300
 		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_tankbound_empire = yes }
+		}
+		modifier = {
+			job_production_overseer_add = 100
+		}
+	}
+
+	triggered_name = {
+		text = district_arcology_name
 	}
 }
 
@@ -996,19 +1350,55 @@ district_generator = {
 		}
 		NOT = { has_modifier = resort_colony }
 	}
-    allow = { custom_tooltip = {
-        fail_text = arcology_project_construction_fail_tt
-        NOT = { has_planet_flag = arcology_project_construction }
-    } }
+
+	allow = {
+		custom_tooltip = {
+			fail_text = arcology_project_construction_fail_tt
+			NOT = { has_planet_flag = arcology_project_construction }
+		}
+	}
 
 	conversion_ratio = 1
 	convert_to = {
 		district_photosynthesis_fields
+		district_geothermal
 		district_nexus_1
 		district_hive_1
 		# Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_empty_1 }
+        district_ag_ancient_city_empty_01
+		aon_madoushi_districts
+		district_azur_gaia_worker
+		district_azur_gaia_worker_other
+		district_azur_mind_crisis_service
+		district_azur_ringworld_farming_bc
+		district_azur_ringworld_mining_bc
+		district_azur_ringworld_generator_bc
+		district_azur_ringworld_factory
+		district_azur_harbour_service
+		district_arcology_adf_Military
+		district_arcology_adf_rw_Military
+		district_arcology_adf_Ark_Military
+		district_arcology_kuat_Military
+		district_arcology_swgs_Military
+		district_arcology_swgs_rw_Military
+		district_arcology_wsg_neo
+		district_arcology_wsg_neo_alpha
+		district_rw_wsg_alloys
+		district_rw_water_generator
+		district_dr_generator
+		district_dr_roller_coaster
+		district_rw_sh_alloys
+		district_sh_generator_uncapped
+		district_sh_mining_uncapped
+		district_sh_foundry_shpc
+		district_uf_alloys
+		district_rw_uf_alloys
+		district_auto_uf_military
+		district_rw_auto_uf_military
+		district_uf_glory_military
+		district_wg_hive_world_admin
+		district_wg_forge_research
 		##############################################################################
 	}
 
@@ -1059,7 +1449,6 @@ district_generator = {
 		}
 		modifier = {
 			job_technician_automated_workforce_mult = 1.0
-			job_production_overseer_add = 100
 		}
 	}
 
@@ -1130,19 +1519,53 @@ district_mining = {
 		}
 		NOT = { has_modifier = resort_colony }
 	}
-    allow = { custom_tooltip = {
-        fail_text = arcology_project_construction_fail_tt
-        NOT = { has_planet_flag = arcology_project_construction }
-    } }
+
+	allow = {
+		custom_tooltip = {
+			fail_text = arcology_project_construction_fail_tt
+			NOT = { has_planet_flag = arcology_project_construction }
+		}
+	}
 
 	conversion_ratio = 1
 	convert_to = {
 		district_hollow_mountains
 		district_nexus_2
 		district_hive_2
+		district_melting
 		# Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_empty_2 }
+        district_ag_ancient_city_empty_02
+		aon_boukensha_districts
+		district_azur_gaia_goods
+		district_azur_mind_crisis_Industry
+		district_azur_ringworld_foundry_bc
+		district_azur_ringworld_artisan_bc
+		district_azur_ringworld_alloys
+		district_azur_ringworld_consumer_goods
+		district_azur_harbour_Industry
+		district_azur_harbour_energy
+		district_arcology_adf_science
+		district_arcology_adf_rw_science
+		district_arcology_adf_Ark_science
+		district_arcology_kuat_science
+		district_arcology_swgs_science
+		district_arcology_swgs_rw_science
+		district_arcology_wsg_science
+		district_rw_wsg_science
+		district_water_ktv
+		district_rw_water_food
+		district_dr_science
+		district_rw_sh_goods
+		district_sh_pantsu_shpc
+		district_uf_science
+		district_rw_uf_science
+		district_auto_uf_alloys
+		district_rw_auto_uf_alloys
+		district_uf_glory_base_resources
+		district_uf_glory_base_resources_2
+		district_uf_glory_auto_industry
+		district_uf_glory_auto_science
 		##############################################################################
 	}
 
@@ -1172,26 +1595,20 @@ district_mining = {
 				has_valid_civic = civic_agrarian_idyll
 			}
 		}
-		modifier = {
-			planet_housing_add = 300
-		}
+		planet_housing_add = 300
 	}
+
 	triggered_planet_modifier = {
-		potential = {
-			has_modifier = metal_planet
-		}
-		modifier = {
-			planet_housing_add = 500
-		}
+		planet_housing_add = 1
+		mult = modifier:mining_district_housing_add
 	}
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
 			owner = { is_gestalt = yes }
 		}
-		modifier = {
-			planet_housing_add = 100
-		}
+		planet_housing_add = 100
 	}
 
 	triggered_planet_modifier = {
@@ -1199,10 +1616,7 @@ district_mining = {
 			exists = owner
 			owner = { is_tankbound_empire = yes }
 		}
-		modifier = {
-			job_miner_automated_workforce_mult = 1.0
-			job_production_overseer_add = 100
-		}
+		job_miner_automated_workforce_mult = 1.0
 	}
 
 	inline_script = {
@@ -1267,10 +1681,13 @@ district_farming = {
 		}
 		NOT = { has_modifier = resort_colony }
 	}
-    allow = { custom_tooltip = {
-        fail_text = arcology_project_construction_fail_tt
-        NOT = { has_planet_flag = arcology_project_construction }
-    } }
+
+	allow = {
+		custom_tooltip = {
+			fail_text = arcology_project_construction_fail_tt
+			NOT = { has_planet_flag = arcology_project_construction }
+		}
+	}
 
 	conversion_ratio = 1
 	convert_to = {
@@ -1279,7 +1696,45 @@ district_farming = {
 		district_hive_3
 		# Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_empty_3 }
+        district_ag_ancient_city_empty_03
+		aon_mahoutsukau_districts
+		aon_kishi_districts
+		district_azur_gaia_research
+		district_azur_mind_crisis_energy
+		district_azur_ringworld_research_bc
+		district_azur_ringworld_research
+		district_azur_harbour_cube
+		district_arcology_adf_Ark_Khaydarin
+		district_arcology_adf_rw_Khaydarin
+		district_arcology_adf_Khaydarin
+		district_arcology_Kuat_civilian_industry
+		district_arcology_eternal_Khaydarin
+		district_arcology_kuat_Khaydarin
+		district_arcology_swgs_Khaydarin
+		district_arcology_swgs_rw_Khaydarin
+		district_ev_hab_industrial_area
+		ev_district_arcology_arms_industry
+		ev_district_arcology_civilian_industry
+		district_prayer
+		district_arcology_wsg_military
+		district_rw_wsg_soldier
+		district_rw_water_ktv
+		district_dr_industrial
+		district_sh_science_shpc
+		district_rw_sh_soldier
+		district_uf_military
+		district_uf_entertainment
+		district_uf_hyperdimensional_matter
+		district_rw_uf_military
+		district_rw_uf_rare_resource
+		district_rw_uf_hyperdimensional_matter
+		district_auto_uf_science
+		district_auto_uf_hyperdimensional_matter
+		district_rw_auto_uf_science
+		district_rw_auto_uf_rare_resource
+		district_rw_auto_uf_hyperdimensional_matter
+		district_uf_glory_auto_rare_resource
+		district_uf_glory_auto_hyperdimensional_matter
 		##############################################################################
 	}
 
@@ -1369,7 +1824,6 @@ district_farming = {
 		}
 		modifier = {
 			job_farmer_automated_workforce_mult = 1.0
-			job_production_overseer_add = 100
 		}
 	}
 
@@ -1397,273 +1851,381 @@ district_farming = {
 }
 
 district_geothermal = {
-    expansion_planner = yes
-    base_buildtime = 240
-    overlay_icon = GFX_district_energy
+	expansion_planner = yes
+	base_buildtime = 240
+	overlay_icon = GFX_district_energy
 
-    zone_slots = {
-        slot_energy
-    }
-    show_on_uncolonized = { uses_district_set = volcanic_world }
-    potential = { uses_district_set = volcanic_world }
-    allow = {
-        hidden_trigger = { NOT = { has_modifier = resort_colony } }
-        custom_tooltip = {
-            fail_text = arcology_project_construction_fail_tt
-            NOT = { has_planet_flag = arcology_project_construction }
-        }
-    }
+	zone_slots = {
+		slot_energy
+	}
+	show_on_uncolonized = { uses_district_set = volcanic_world }
+	potential = { uses_district_set = volcanic_world }
+	allow = {
+		hidden_trigger = {
+			NOT = { has_modifier = resort_colony }
+		}
+		custom_tooltip = {
+			fail_text = arcology_project_construction_fail_tt
+			NOT = { has_planet_flag = arcology_project_construction }
+		}
+	}
 
-    conversion_ratio = 1
-    convert_to = {
-        district_generator
-        district_photosynthesis_fields
-        district_nexus_1
-        district_hive_1
-        # Fuck PDX's stupid conversion.
+	conversion_ratio = 1
+	convert_to = {
+		district_generator
+		# Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_empty_1 }
+        district_ag_ancient_city_empty_01
+		aon_madoushi_districts
+		district_azur_gaia_worker
+		district_azur_gaia_worker_other
+		district_azur_mind_crisis_service
+		district_azur_ringworld_farming_bc
+		district_azur_ringworld_mining_bc
+		district_azur_ringworld_generator_bc
+		district_azur_ringworld_factory
+		district_azur_harbour_service
+		district_arcology_adf_Military
+		district_arcology_adf_rw_Military
+		district_arcology_adf_Ark_Military
+		district_arcology_kuat_Military
+		district_arcology_swgs_Military
+		district_arcology_swgs_rw_Military
+		district_arcology_wsg_neo
+		district_arcology_wsg_neo_alpha
+		district_rw_wsg_alloys
+		district_rw_water_generator
+		district_dr_generator
+		district_dr_roller_coaster
+		district_rw_sh_alloys
+		district_sh_generator_uncapped
+		district_sh_mining_uncapped
+		district_sh_foundry_shpc
+		district_uf_alloys
+		district_rw_uf_alloys
+		district_auto_uf_military
+		district_rw_auto_uf_military
+		district_uf_glory_military
+		district_wg_hive_world_admin
+		district_wg_forge_research
 		##############################################################################
-    }
-    expansion_planner_type = district_generator
+	}
+	expansion_planner_type = district_generator
 
-    resources = {
-        category = planet_districts_generator
-        cost = { minerals = @base_cost }
-        upkeep = { energy = 1 }
-    }
+	resources = {
+		category = planet_districts_generator
+		cost = { minerals = @base_cost }
+		upkeep = { energy = 1 }
+	}
 
-    inline_script = {
-        script = jobs/technicians_add
-        AMOUNT = @base_rural_district_jobs
-    }
+	inline_script = {
+		script = jobs/technicians_add
+		AMOUNT = @base_rural_district_jobs
+	}
 
-    planet_modifier = {
-        planet_housing_add = 200
-    }
+	planet_modifier = {
+		planet_housing_add = 200
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = {
-                has_valid_civic = civic_agrarian_idyll
-            }
-        }
-        modifier = {
-            planet_housing_add = 300
-        }
-    }
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { is_gestalt = yes }
-        }
-        modifier = {
-            planet_housing_add = 100
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_valid_civic = civic_agrarian_idyll
+			}
+		}
+		modifier = {
+			planet_housing_add = 300
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			planet_housing_add = 100
+		}
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { is_tankbound_empire = yes }
-        }
-        modifier = {
-            job_technician_automated_workforce_mult = 1.0
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_tankbound_empire = yes }
+		}
+		modifier = {
+			job_technician_automated_workforce_mult = 1.0
+		}
+	}
 
-    inline_script = {
-        script = districts/district_triggered_name_generator
-    }
+	inline_script = {
+		script = districts/district_triggered_name_generator
+	}
 
-    inline_script = {
-        script = districts/district_triggered_flavor_desc_generator
-    }
+	inline_script = {
+		script = districts/district_triggered_flavor_desc_generator
+	}
 
-    prerequisites = {
-        tech_power_plant_1
-    }
+	prerequisites = {
+		tech_power_plant_1
+	}
 
-    ai_weight_coefficient = @rural_district_ai_coefficient
+	ai_weight_coefficient = @rural_district_ai_coefficient
 }
 district_melting = {
-    expansion_planner = yes
-    base_buildtime = 240
-    overlay_icon = GFX_district_minerals
-    is_uncapped = { always = no }
-    min_for_deposits_on_planet = 5
-    max_for_deposits_on_planet = 15
+	expansion_planner = yes
+	base_buildtime = 240
+	overlay_icon = GFX_district_minerals
+	is_uncapped = {
+		is_mining_district_uncapped = yes
+	}
+	min_for_deposits_on_planet = 5
+	max_for_deposits_on_planet = 15
 
-    # Volcanic Worlds build Magma Forges instead of "mining districts".
-    inherits_capped_modifiers_from = district_mining
+	# Volcanic Worlds build Magma Forges instead of "mining districts".
+	inherits_capped_modifiers_from = district_mining
 
-    zone_slots = {
-        slot_minerals
-    }
+	zone_slots = {
+		slot_minerals
+	}
 
-    show_on_uncolonized = {
-        uses_district_set = volcanic_world
-        exists = from
-    }
-    potential = { uses_district_set = volcanic_world }
-    allow = {
-        hidden_trigger = { NOT = { has_modifier = resort_colony } }
-        custom_tooltip = {
-            fail_text = arcology_project_construction_fail_tt
-            NOT = { has_planet_flag = arcology_project_construction }
-        }
-    }
+	show_on_uncolonized = {
+		uses_district_set = volcanic_world
+		exists = from
+	}
 
-    conversion_ratio = 1
-    convert_to = {
-        district_mining
-        district_hollow_mountains_uncapped
-        district_nexus_2
-        district_hive_2
-        # Fuck PDX's stupid conversion.
+	potential = {
+		uses_district_set = volcanic_world
+	}
+
+	allow = {
+		hidden_trigger = {
+			NOT = { has_modifier = resort_colony }
+		}
+		custom_tooltip = {
+			fail_text = arcology_project_construction_fail_tt
+			NOT = { has_planet_flag = arcology_project_construction }
+		}
+	}
+
+	conversion_ratio = 1
+	convert_to = {
+		district_mining
+		# Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_empty_2 }
+        district_ag_ancient_city_empty_02
+		aon_boukensha_districts
+		district_azur_gaia_goods
+		district_azur_mind_crisis_Industry
+		district_azur_ringworld_foundry_bc
+		district_azur_ringworld_artisan_bc
+		district_azur_ringworld_alloys
+		district_azur_ringworld_consumer_goods
+		district_azur_harbour_Industry
+		district_azur_harbour_energy
+		district_arcology_adf_science
+		district_arcology_adf_rw_science
+		district_arcology_adf_Ark_science
+		district_arcology_kuat_science
+		district_arcology_swgs_science
+		district_arcology_swgs_rw_science
+		district_arcology_wsg_science
+		district_rw_wsg_science
+		district_water_ktv
+		district_rw_water_food
+		district_dr_science
+		district_rw_sh_goods
+		district_sh_pantsu_shpc
+		district_uf_science
+		district_rw_uf_science
+		district_auto_uf_alloys
+		district_rw_auto_uf_alloys
+		district_uf_glory_base_resources
+		district_uf_glory_base_resources_2
+		district_uf_glory_auto_industry
+		district_uf_glory_auto_science
 		##############################################################################
-    }
-    expansion_planner_type = district_mining
+	}
+	expansion_planner_type = district_mining
 
-    resources = {
-        category = planet_districts_mining
-        cost = { minerals = @base_cost }
-        upkeep = { energy = 1 }
-    }
+	resources = {
+		category = planet_districts_mining
+		cost = { minerals = @base_cost }
+		upkeep = { energy = 1 }
+	}
 
-    inline_script = {
-        script = jobs/miners_add
-        AMOUNT = @base_rural_district_jobs
-    }
+	inline_script = {
+		script = jobs/miners_add
+		AMOUNT = @base_rural_district_jobs
+	}
 
-    planet_modifier = {
-        planet_housing_add = 200
-    }
+	planet_modifier = {
+		planet_housing_add = 200
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = {
-                has_valid_civic = civic_agrarian_idyll
-            }
-        }
-        modifier = {
-            planet_housing_add = 300
-        }
-    }
-    triggered_planet_modifier = {
-        potential = {
-            has_modifier = metal_planet
-        }
-        modifier = {
-            planet_housing_add = 500
-        }
-    }
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { is_gestalt = yes }
-        }
-        modifier = {
-            planet_housing_add = 100
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_valid_civic = civic_agrarian_idyll
+			}
+		}
+		modifier = {
+			planet_housing_add = 300
+		}
+	}
+	triggered_planet_modifier = {
+		planet_housing_add = 1
+		mult = modifier:mining_district_housing_add
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			planet_housing_add = 100
+		}
+	}
 
-    triggered_planet_modifier = {
-        potential = {
-            exists = owner
-            owner = { is_tankbound_empire = yes }
-        }
-        modifier = {
-            job_miner_automated_workforce_mult = 1.0
-        }
-    }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_tankbound_empire = yes }
+		}
+		modifier = {
+			job_miner_automated_workforce_mult = 1.0
+		}
+	}
 
-    inline_script = {
-        script = districts/district_triggered_name_mining
-    }
+	inline_script = {
+		script = districts/district_triggered_name_mining
+	}
 
-    inline_script = {
-        script = districts/district_triggered_flavor_desc_mining
-    }
+	inline_script = {
+		script = districts/district_triggered_flavor_desc_mining
+	}
 
-    prerequisites = {
-        tech_mechanized_mining
-    }
+	prerequisites = {
+		tech_mechanized_mining
+	}
 
-    ai_weight_coefficient = @rural_district_ai_coefficient
+	ai_weight_coefficient = @rural_district_ai_coefficient
 }
 district_polytechnic = {
-    expansion_planner = no
-    base_buildtime = 250
-    overlay_icon = GFX_district_research
-    is_uncapped = { always = no }
+	expansion_planner = no
+	base_buildtime = 250
+	overlay_icon = GFX_district_research
+	is_uncapped = { always = no }
 
-    zone_slots = {
-        slot_polytechnic
-    }
+	prerequisites = {
+		tech_basic_science_lab_1
+	}
 
-    show_on_uncolonized = { uses_district_set = volcanic_world }
-    potential = { uses_district_set = volcanic_world }
-    allow = {
-        hidden_trigger = { OR = {
-            NOT = { exists = owner }
-            owner = {
-                has_technology = tech_basic_science_lab_1
-            }
-        } }
-        custom_tooltip = {
-            fail_text = arcology_project_construction_fail_tt
-            NOT = { has_planet_flag = arcology_project_construction }
-        }
-    }
-    prerequisites = { tech_basic_science_lab_1 }
+	allow = {
+		hidden_trigger = {
+			OR = {
+				NOT = { exists = owner }
+				owner = {
+					has_technology = tech_basic_science_lab_1
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = arcology_project_construction_fail_tt
+			NOT = { has_planet_flag = arcology_project_construction }
+		}
+	}
 
-    conversion_ratio = 1
+	zone_slots = {
+		slot_polytechnic
+	}
+
+	show_on_uncolonized = { uses_district_set = volcanic_world }
+	potential = { uses_district_set = volcanic_world }
+
+	conversion_ratio = 1
     convert_to = {
         district_farming
         district_nexus_3
         district_hive_3
         # Fuck PDX's stupid conversion.
 		################################# New Contents #################################
-        inline_script = { script = districts_convertion/vop_tag_empty_3 }
+        district_ag_ancient_city_empty_03
+		aon_mahoutsukau_districts
+		aon_kishi_districts
+		district_azur_gaia_research
+		district_azur_mind_crisis_energy
+		district_azur_ringworld_research_bc
+		district_azur_ringworld_research
+		district_azur_harbour_cube
+		district_arcology_adf_Ark_Khaydarin
+		district_arcology_adf_rw_Khaydarin
+		district_arcology_adf_Khaydarin
+		district_arcology_Kuat_civilian_industry
+		district_arcology_eternal_Khaydarin
+		district_arcology_kuat_Khaydarin
+		district_arcology_swgs_Khaydarin
+		district_arcology_swgs_rw_Khaydarin
+		district_ev_hab_industrial_area
+		ev_district_arcology_arms_industry
+		ev_district_arcology_civilian_industry
+		district_prayer
+		district_arcology_wsg_military
+		district_rw_wsg_soldier
+		district_rw_water_ktv
+		district_dr_industrial
+		district_sh_science_shpc
+		district_rw_sh_soldier
+		district_uf_military
+		district_uf_entertainment
+		district_uf_hyperdimensional_matter
+		district_rw_uf_military
+		district_rw_uf_rare_resource
+		district_rw_uf_hyperdimensional_matter
+		district_auto_uf_science
+		district_auto_uf_hyperdimensional_matter
+		district_rw_auto_uf_science
+		district_rw_auto_uf_rare_resource
+		district_rw_auto_uf_hyperdimensional_matter
+		district_uf_glory_auto_rare_resource
+		district_uf_glory_auto_hyperdimensional_matter
 		##############################################################################
     }
 
-    resources = {
-        category = planet_districts
-        cost = { minerals = 450 }
-        upkeep = { energy = 3 }
-    }
+	resources = {
+		category = planet_districts
+		cost = { minerals = 450 }
+		upkeep = { energy = 3 }
+	}
 
-    planet_modifier = { planet_housing_add = 200 }
+	planet_modifier = { planet_housing_add = 200 }
 
-    inline_script = {
-        script = jobs/thermotechnic_add
-    }
+	inline_script = {
+		script = jobs/thermotechnic_add
+	}
 
-    triggered_name = {
-        trigger = {
-            exists = owner
-            owner = { is_regular_empire = yes }
-        }
-        text = thermotechnic_default
-    }
-    triggered_name = {
-        trigger = {
-            exists = owner
-            owner = { is_hive_empire = yes }
-        }
-        text = thermotechnic_hive
-    }
-    triggered_name = {
-        trigger = {
-            exists = owner
-            owner = { is_machine_empire = yes }
-        }
-        text = thermotechnic_machine
-    }
+	triggered_name = {
+		trigger = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		text = thermotechnic_default
+	}
+	triggered_name = {
+		trigger = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		text = thermotechnic_hive
+	}
+	triggered_name = {
+		trigger = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		text = thermotechnic_machine
+	}
+	ai_weight_coefficient = 1.5
+	additional_ai_weight = 100
 }
