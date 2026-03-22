@@ -51,7 +51,19 @@ country_event = {
 			set_star_flag = cannot_be_hit_by_aow_starfall_spear
 			save_global_event_target_as = first_portal_2_system
 			random_system_planet = {
-				initial_uf_crisis_2_country = yes
+				if = {
+					limit = { NOT = { 
+						has_global_flag = wsg_any_player_civic_wsg_super_harbor 
+					} }
+					initial_uf_crisis_country = { 
+						THIS = wg_crisis_2 TARGET = wg_crisis
+						UF_COUNTRY_NAME = NAME_WG_crisis_country 
+					}
+				}
+				else = { initial_uf_crisis_country = { 
+					THIS = wg_crisis_2 TARGET = wg_crisis
+					UF_COUNTRY_NAME = NAME_WG_harbor_crisis_country 
+				} }
 				event_target:wg_crisis_2_country = {
 					create_fleet = {
 						name = "NAME_Dimensional_Portal"
@@ -201,7 +213,7 @@ country_event = {
 				if = {
 					# 天灾刷联合荣耀
 					limit = { has_global_flag = wg_crisis_insane }
-					create_wg_crisis_2_legendary_admiral = yes
+					create_wg_crisis_legendary_admiral = { THIS = wg_crisis_2 }
 					PREV = { star = { create_uf_glory_2 = yes }}	
 				}
 			}
@@ -286,7 +298,7 @@ fleet_event = {
 			create_wg_crisis_2_weaker_fleet_and_admiral = yes
 		}
 		else = {
-			create_wg_crisis_2_fleet_and_admiral = yes
+			create_wg_crisis_fleet_and_admiral = { THIS = wg_crisis_2 }
 		}
 	}
 }
@@ -439,10 +451,19 @@ country_event = {
 	desc = {
         # 非联合
         text = wg_crisis_2.8.desc
-        trigger = {
-			NOT = {
-				has_authority = auth_united_fleet
+       	trigger = {
+			NOR = { 
+				has_authority = auth_united_fleet 
+				has_civic = civic_wsg_super_harbor
 			}
+		}
+    }
+	desc = {
+        # 超港
+        text = wg_crisis_2.8_02.desc
+        trigger = {
+			has_civic = civic_wsg_super_harbor
+			NOT = { has_authority = auth_united_fleet }
 		}
     }
 
@@ -795,6 +816,35 @@ country_event = {
 	}
 }
 
+country_event = {
+	id = wg_crisis_2.103
+	hide_window = yes
+	fire_only_once = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = event_target:wg_crisis_2_country
+		is_same_value = event_target:wg_crisis_2_country
+		has_global_flag = all_portal_2_destroyed
+		NOT = { has_country_flag = retreat }
+	}
+
+	immediate = {
+		if = {
+			limit = { any_owned_fleet = {
+				has_fleet_flag = wg_portal_2_small
+			}}
+			country_event = { id = wg_crisis_2.103 days = 180 }
+		} else = {
+			set_country_flag = retreat
+			event_target:wg_crisis_2_country = { country_event = { id = wg_crisis_2.13 }}
+			every_playable_country = {
+				country_event = { id = wg_crisis_2.998 days = 60 }
+			}
+		}
+	}
+}
+
 # 循环刷辅助守卫舰队
 fleet_event = {
 	id = wg_crisis_2.102
@@ -1033,7 +1083,7 @@ country_event = {
 					create_wg_crisis_2_weaker_fleet_and_admiral = yes
 				}
 				else = {
-					create_wg_crisis_2_fleet_and_admiral = yes
+					create_wg_crisis_fleet_and_admiral = { THIS = wg_crisis_2 }
 				}
 			}
             
@@ -1161,7 +1211,7 @@ country_event = {
 							save_global_event_target_as = second_dimensional_portal_2
 							set_fleet_flag = second_dimensional_portal_2
                             set_event_locked = yes
-							spawn_fleets_insane_2 = yes
+							spawn_fleets_insane = { THIS = wg_crisis_2 }
 						}
 					}
 					country_event = { id = wg_crisis_2.18 days = 1200 } # Spawn Cycle starts
@@ -1172,7 +1222,7 @@ country_event = {
 					create_wg_crisis_2_guard_fleet = yes
 					last_created_fleet = { set_fleet_flag = second_portal_2_guard_fleet }
 				}}
-				while = { count = 2 create_wg_crisis_2_fleet_and_admiral = yes }
+				while = { count = 2 create_wg_crisis_fleet_and_admiral = { THIS = wg_crisis_2 } }
 				if = {
 					# 天灾刷联合荣耀
 					limit = {
@@ -1180,7 +1230,7 @@ country_event = {
 					}
 					PREV = { random_system_planet = {
 						limit = { is_primary_star = yes }
-						create_wg_crisis_2_legendary_admiral = yes
+						create_wg_crisis_legendary_admiral = { THIS = wg_crisis_2 }
 						create_uf_glory_2 = yes	
 					}}	
 				}
@@ -1264,7 +1314,7 @@ country_event = {
 							save_global_event_target_as = third_dimensional_portal_2
                             set_fleet_flag = third_dimensional_portal_2
 							set_event_locked = yes
-							spawn_fleets_insane_2 = yes
+							spawn_fleets_insane = { THIS = wg_crisis_2 }
 						}
 					}
 					country_event = { id = wg_crisis_2.19 days = 1200 } # Spawn Cycle starts
@@ -1275,7 +1325,7 @@ country_event = {
 					create_wg_crisis_2_guard_fleet = yes
 					last_created_fleet = { set_fleet_flag = third_portal_2_guard_fleet }
 				}}
-				while = { count = 2 create_wg_crisis_2_fleet_and_admiral = yes }
+				while = { count = 2 create_wg_crisis_fleet_and_admiral = { THIS = wg_crisis_2 } }
 				if = {
 					# 天灾刷联合荣耀
 					limit = {
@@ -1283,7 +1333,7 @@ country_event = {
 					}
 					PREV = { random_system_planet = {
 						limit = { is_primary_star = yes }
-						create_wg_crisis_2_legendary_admiral = yes
+						create_wg_crisis_legendary_admiral = { THIS = wg_crisis_2 }
 						create_uf_glory_2 = yes	
 					}}	
 				}
@@ -1329,7 +1379,7 @@ country_event = {
 		}
         else = {
 			event_target:second_dimensional_portal_2 = {
-				create_wg_crisis_2_fleet_and_admiral = yes
+				create_wg_crisis_fleet_and_admiral = { THIS = wg_crisis_2 }
 			}
             country_event = { id = wg_crisis_2.18 days = 720 random = 720 } # Check again later
         }
@@ -1359,7 +1409,7 @@ country_event = {
 		}
         else = {
 			event_target:third_dimensional_portal_2 = {
-				create_wg_crisis_2_fleet_and_admiral = yes
+				create_wg_crisis_fleet_and_admiral = { THIS = wg_crisis_2 }
 			}
             country_event = { id = wg_crisis_2.19 days = 720 random = 720 } # Check again later
         }
@@ -1820,6 +1870,15 @@ country_event = {
         # 舰娘政体 / 深海政体
         text = wg_crisis_2.57.desc.b
         trigger = {
+			NOT = { has_civic = civic_wsg_super_harbor }
+			has_wg_special_authority = yes
+		}
+    }
+	desc = {
+        # 舰娘政体 / 深海政体
+        text = wg_crisis_2.57.desc.c
+        trigger = {
+			has_civic = civic_wsg_super_harbor
 			has_wg_special_authority = yes
 		}
     }
@@ -1862,6 +1921,15 @@ country_event = {
         # 舰娘政体 / 深海政体
         text = wg_crisis_2.58.desc.b
         trigger = {
+			NOT = { has_civic = civic_wsg_super_harbor }
+			has_wg_special_authority = yes
+		}
+    }
+	desc = {
+        # 舰娘政体 / 深海政体
+        text = wg_crisis_2.58.desc.c
+        trigger = {
+			has_civic = civic_wsg_super_harbor
 			has_wg_special_authority = yes
 		}
     }
@@ -2248,33 +2316,6 @@ country_event = {
 	}
 }
 
-# 使常规检查项目在月中触发
-event = {
-	id = wg_crisis_2.98
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_global_flag = wg_invasion_2_happened
-		NOT = { has_global_flag = all_portal_2_destroyed }
-		exists = event_target:wg_crisis_2_country
-	}
-
-	immediate = {
-		event_target:wg_crisis_2_country = {
-			country_event = { id = wg_crisis_2.99 }
-			country_event = { id = wg_crisis_2.111}
-			if = {
-				limit = { has_global_flag = wg_crisis_insane }
-				country_event = { id = wg_crisis_2.104 }
-			} 
-			else = {
-				country_event = { id = wg_crisis_2.100 }
-			}
-		}
-	}
-}
-
 # 检查传送门是否无故消失，并补传送门
 country_event = {
 	id = wg_crisis_2.99
@@ -2470,7 +2511,7 @@ country_event = {
 					save_global_event_target_as = second_dimensional_portal_2
 					set_fleet_flag = second_dimensional_portal_2
 					set_event_locked = yes
-					spawn_fleets_insane_2 = yes
+					spawn_fleets_insane = { THIS = wg_crisis_2 }
 					if = {
 						limit = { any_owned_ship = { has_hp < 1 }}
 						add_modifier = { modifier = decrease_hp_80_per days = -1 }
@@ -2511,7 +2552,7 @@ country_event = {
 					save_global_event_target_as = third_dimensional_portal_2
 					set_fleet_flag = third_dimensional_portal_2
 					set_event_locked = yes
-					spawn_fleets_insane_2 = yes
+					spawn_fleets_insane = { THIS = wg_crisis_2 }
 					if = {
 						limit = { any_owned_ship = { has_hp < 1 }}
 						add_modifier = { modifier = decrease_hp_80_per days = -1 }
@@ -2537,12 +2578,8 @@ fleet_event = {
 			has_global_flag = wg_crisis_insane
 		}
 		count_owned_ship = { count > 0 }
-		any_owned_ship = {
-			is_ship_size = uf_Juggernaut
-		}
-		NOR = { 
-			has_fleet_flag = drones 
-		}
+		any_owned_ship = { is_ship_size = uf_Juggernaut }
+		NOT = { has_fleet_flag = uf_Juggernaut_completed_temple }
 	}
 
 	immediate = {
@@ -2564,9 +2601,9 @@ fleet_event = {
 				change_variable = { which = num_bf_exist value = 1 }
 				switch = {
 					trigger = has_global_flag
-					wg_crisis_normal = { fleet_event = { id = wg_crisis_2.110 days = 300 }}
-					wg_crisis_hard = { fleet_event = { id = wg_crisis_2.110 days = 150 }}
-					wg_crisis_insane = { fleet_event = { id = wg_crisis_2.110 days = 100 }}
+					wg_crisis_normal = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 300 } }
+					wg_crisis_hard = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 150 } }
+					wg_crisis_insane = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 75 }}
 				}
 			}
 			100 = {
@@ -2587,9 +2624,9 @@ fleet_event = {
 				change_variable = { which = num_bf_portal_exist value = 1 }
 				switch = {
 					trigger = has_global_flag
-					wg_crisis_normal = { fleet_event = { id = wg_crisis_2.110 days = 300 }}
-					wg_crisis_hard = { fleet_event = { id = wg_crisis_2.110 days = 150 }}
-					wg_crisis_insane = { fleet_event = { id = wg_crisis_2.110 days = 100 }}
+					wg_crisis_normal = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 300 } }
+					wg_crisis_hard = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 150 } }
+					wg_crisis_insane = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 75 }}
 				}
 			}
 			20 = {
@@ -2610,9 +2647,9 @@ fleet_event = {
 				change_variable = { which = num_carrier_exist value = 1 }
 				switch = {
 					trigger = has_global_flag
-					wg_crisis_normal = { fleet_event = { id = wg_crisis_2.110 days = 250 }}
-					wg_crisis_hard = { fleet_event = { id = wg_crisis_2.110 days = 120 }}
-					wg_crisis_insane = { fleet_event = { id = wg_crisis_2.110 days = 80 }}
+					wg_crisis_normal = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 300 } }
+					wg_crisis_hard = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 150 } }
+					wg_crisis_insane = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 75 }}
 				}
 			}
 			20 = {
@@ -2633,9 +2670,9 @@ fleet_event = {
 				change_variable = { which = num_dreadnought_exist value = 1 }
 				switch = {
 					trigger = has_global_flag
-					wg_crisis_normal = { fleet_event = { id = wg_crisis_2.110 days = 300 }}
-					wg_crisis_hard = { fleet_event = { id = wg_crisis_2.110 days = 150 }}
-					wg_crisis_insane = { fleet_event = { id = wg_crisis_2.110 days = 100 }}
+					wg_crisis_normal = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 300 } }
+					wg_crisis_hard = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 150 } }
+					wg_crisis_insane = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 75 }}
 				}
 			}
 			10 = {
@@ -2655,12 +2692,11 @@ fleet_event = {
 					upgradable = no
 				}
 				change_variable = { which = num_titan_exist value = 1 }
-				fleet_event = { id = wg_crisis_2.110 days = 120 }
 				switch = {
 					trigger = has_global_flag
-					wg_crisis_normal = { fleet_event = { id = wg_crisis_2.110 days = 360 }}
-					wg_crisis_hard = { fleet_event = { id = wg_crisis_2.110 days = 250 }}
-					wg_crisis_insane = { fleet_event = { id = wg_crisis_2.110 days = 120 }}
+					wg_crisis_normal = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 300 } }
+					wg_crisis_hard = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 150 } }
+					wg_crisis_insane = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 75 }}
 				}
 			}
 			8 = {
@@ -2681,9 +2717,9 @@ fleet_event = {
 				change_variable = { which = num_bc_exist value = 1 }
 				switch = {
 					trigger = has_global_flag
-					wg_crisis_normal = { fleet_event = { id = wg_crisis_2.110 days = 140 }}
-					wg_crisis_hard = { fleet_event = { id = wg_crisis_2.110 days = 80 }}
-					wg_crisis_insane = { fleet_event = { id = wg_crisis_2.110 days = 45 }}
+					wg_crisis_normal = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 300 } }
+					wg_crisis_hard = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 150 } }
+					wg_crisis_insane = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 75 }}
 				}
 			}
 			6 = {
@@ -2705,9 +2741,9 @@ fleet_event = {
 				change_variable = { which = num_bb_exist value = 1 }
 				switch = {
 					trigger = has_global_flag
-					wg_crisis_normal = { fleet_event = { id = wg_crisis_2.110 days = 180 }}
-					wg_crisis_hard = { fleet_event = { id = wg_crisis_2.110 days = 100 }}
-					wg_crisis_insane = { fleet_event = { id = wg_crisis_2.110 days = 65 }}
+					wg_crisis_normal = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 300 } }
+					wg_crisis_hard = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 150 } }
+					wg_crisis_insane = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 75 }}
 				}
 			}
 			3 = {
@@ -2729,9 +2765,9 @@ fleet_event = {
 				change_variable = { which = num_ca_exist value = 1 }
 				switch = {
 					trigger = has_global_flag
-					wg_crisis_normal = { fleet_event = { id = wg_crisis_2.110 days = 70 }}
-					wg_crisis_hard = { fleet_event = { id = wg_crisis_2.110 days = 45 }}
-					wg_crisis_insane = { fleet_event = { id = wg_crisis_2.110 days = 25 }}
+					wg_crisis_normal = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 300 } }
+					wg_crisis_hard = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 150 } }
+					wg_crisis_insane = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 75 }}
 				}
 			}
 			10 = {
@@ -2753,9 +2789,9 @@ fleet_event = {
 				change_variable = { which = num_dd_exist value = 1 }
 				switch = {
 					trigger = has_global_flag
-					wg_crisis_normal = { fleet_event = { id = wg_crisis_2.110 days = 40 }}
-					wg_crisis_hard = { fleet_event = { id = wg_crisis_2.110 days = 25 }}
-					wg_crisis_insane = { fleet_event = { id = wg_crisis_2.110 days = 10 }}
+					wg_crisis_normal = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 300 } }
+					wg_crisis_hard = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 150 } }
+					wg_crisis_insane = { set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 75 }}
 				}
 			}
 			1 = {
@@ -2775,7 +2811,7 @@ fleet_event = {
 						has_fleet_flag = counting_data
 					}
 				}
-				fleet_event = { id = wg_crisis_2.110 days = 20 random = 15 }
+				set_timed_fleet_flag = { flag = uf_Juggernaut_completed_temple days = 30 }
 			}
 			1 = {
 				modifier = {
@@ -2786,7 +2822,7 @@ fleet_event = {
 					factor = 0
 					is_in_combat = yes
 				}
-				fleet_event = { id = wg_crisis_2.110 days = 2 }
+				fleet_event = { id = wg_crisis_2.110 days = 1 }
 			}
 		}
 	}
@@ -2825,75 +2861,9 @@ country_event = {
 				}
 			}
 			set_fleet_flag = counting_data
-			fleet_event = { id = wg_crisis_2.112 }
+			initial_count_all_fleet_ship = yes
+			fleet_event = { id = wg_crisis_2.110 days = 1 }
 		}
-	}
-}
-
-# 数船
-fleet_event = {
-	id = wg_crisis_2.112
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		NOT = { has_global_flag = all_portal_2_destroyed }
-	}
-
-	immediate = {
-		set_variable = { which = num_carrier_exist value = 0 }
-		set_variable = { which = num_titan_exist value = 0 }
-		set_variable = { which = num_bb_exist value = 0 }
-		set_variable = { which = num_bc_exist value = 0 }
-		set_variable = { which = num_ca_exist value = 0 }
-		set_variable = { which = num_dd_exist value = 0 }
-		set_variable = { which = num_dreadnought_exist value = 0 }
-		set_variable = { which = num_bf_portal_exist value = 0 }
-		set_variable = { which = num_bf_exist value = 0 }
-		set_variable = { which = num_juggernaut_exist value = 0 }
-		set_variable = { which = num_flagship_exist value = 0 }
-		every_owned_ship = {
-			limit = { 
-				NOR = {  
-					is_ship_size = scout_UAV
-					is_ship_size = wg_corvette
-				}
-				OR = {
-					AND = {
-						fleet = { has_fleet_flag = counting_data }
-						NOR = {
-							is_ship_size = uf_Juggernaut 
-							is_ship_size = UF_Flagship
-						}
-					}
-					NOT = { fleet = { has_fleet_flag = counting_data }}
-				}
-				fleet = { NOT = { has_fleet_flag = drones }}
-			}
-			switch = {
-				trigger = is_ship_size
-				wg_carrier = { fleet = { change_variable = { which = num_carrier_exist value = 1 }}}
-				wg_titan = { fleet = { change_variable = { which = num_titan_exist value = 1 }}}
-				wg_battleship = { fleet = { change_variable = { which = num_bb_exist value = 1 }}}
-				wg_battlecrusier = { fleet = { change_variable = { which = num_bc_exist value = 1 }}}
-				wg_cruiser = { fleet = { change_variable = { which = num_ca_exist value = 1 }}}
-				wg_destroyer = { fleet = { change_variable = { which = num_dd_exist value = 1 }}}
-				wg_dreadnought = { fleet = { change_variable = { which = num_dreadnought_exist value = 1 }}}
-				uf_buffer = {
-					if = {
-						limit = { has_ship_flag = bf_portal }
-						fleet = { change_variable = { which = num_bf_portal_exist value = 1 }}
-					}
-					else = {
-						fleet = { change_variable = { which = num_bf_exist value = 1 }}
-					}
-				}
-				# 补船触发不会数以下类型的船
-				uf_Juggernaut = { fleet = { change_variable = { which = num_juggernaut_exist value = 1 }}}
-				UF_Flagship = { fleet = { change_variable = { which = num_flagship_exist value = 1 }}}
-			}
-		}
-		remove_fleet_flag = counting_data
 	}
 }
 
@@ -3246,7 +3216,7 @@ planet_event = {
 	}
 }
 
-
+#####非通用模板#####
 #海宅整活模块
 country_event = {
 	id = wg_crisis_2.2000
@@ -3580,8 +3550,8 @@ country_event = {
 				limit =  { is_ai = no }
 				capital_scope = { closest_system = {
 					max_steps = 2
-					create_wg_crisis_2_fleet_and_admiral = yes
-					create_wg_crisis_2_fleet_and_admiral = yes
+					create_wg_crisis_fleet_and_admiral = { THIS = wg_crisis_2 }
+					create_wg_crisis_fleet_and_admiral = { THIS = wg_crisis_2 }
 				} }
 			}
 			country_event = { id = wg_crisis_2.2010 days = 720 random = 720 }
@@ -3591,7 +3561,7 @@ country_event = {
 				limit =  { is_ai = no }
 				capital_scope = { closest_system = {
 					max_steps = 2
-					create_wg_crisis_2_fleet_and_admiral = yes
+					create_wg_crisis_fleet_and_admiral = { THIS = wg_crisis_2 }
 				} }
 			}
 			country_event = { id = wg_crisis_2.2010 days = 720 random = 360 }
@@ -4328,7 +4298,7 @@ country_event = {
 			}
 			while = {
 				count = 4
-				create_wg_crisis_2_fleet_and_admiral = yes
+				create_wg_crisis_fleet_and_admiral = { THIS = wg_crisis_2 }
 			}
 		}
 		if = {
@@ -4373,3 +4343,4 @@ country_event = {
 		}
     }
 }
+#####非通用模板#####
