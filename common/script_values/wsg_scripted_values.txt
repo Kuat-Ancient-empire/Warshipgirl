@@ -90,3 +90,60 @@ wg_planet_pop_assembly_average_int = {
 	mult = value:wg_modifier|MODIFIER|wg_planet_pop_assembly_average_mult|
 	max = value:wg_pop_free_house
 }
+
+wsg_modifier_mult_add = {
+	base = 0
+	add = 1
+	add = modifier:$wsg_modifier$
+	[[wsg_min] min = $wsg_min$ ]
+	[[wsg_max] max = $wsg_max$ ]	
+}
+wsg_modifier_mult_subtract = {
+	base = 0
+	add = 1
+	subtract = modifier:$wsg_modifier$
+	[[wsg_min] min = $wsg_min$ ]
+	[[wsg_max] max = $wsg_max$ ]
+}
+
+wsg_base_weapon_damage = {
+	base = 0
+	add = $wsg_damage_max$
+	divide = $wsg_damage_base$
+}
+
+wsg_damage_modifier_multiplier = {
+	base = 0
+	add = 1
+	add = modifier:ship_weapon_damage
+	add = modifier:$wsg_slot$_slot_weapon_damage_mult
+	add = modifier:shipclass_military_damage_mult
+	modifier = { add = modifier:weapon_type_energy_weapon_damage_mult always = $wsg_energy$ }
+	modifier = { add = modifier:weapon_type_kinetic_weapon_damage_mult always = $wsg_kinetic$ }
+	modifier = { add = modifier:weapon_type_explosive_weapon_damage_mult always = $wsg_explosive$ }
+	modifier = { add = modifier:weapon_type_point_defense_weapon_damage_mult always = $wsg_point_defense$ }
+	modifier = { add = modifier:weapon_type_strike_craft_weapon_damage_mult always = $wsg_strike_craft$ }
+	modifier = { add = modifier:weapon_type_sr_uf_weapon_damage_mult always = $wsg_sr_uf_weapon$ }
+	min = 0
+}
+
+wsg_overflow_weapon_damage_multiplier = {
+	base = 0
+	add = value:wsg_base_weapon_damage|wsg_damage_max|$wsg_damage_max$|wsg_damage_base|$wsg_damage_base$|
+	divide = $wsg_weapon_damage_buff$
+	divide = value:wsg_modifier_mult_add|wsg_modifier|ship_hull_damage_mult|wsg_min|1|
+	subtract = value:wsg_damage_modifier_multiplier|wsg_slot|$wsg_slot$|wsg_energy|$wsg_energy$|wsg_kinetic|$wsg_kinetic$|wsg_explosive|$wsg_explosive$|wsg_point_defense|$wsg_point_defense$|wsg_strike_craft|$wsg_strike_craft$|wsg_sr_uf_weapon|$wsg_sr_uf_weapon$|
+	divide = modifier:wsg_overflow_weapon_symbol
+	min = 0
+	max = value:wsg_base_weapon_damage|wsg_damage_max|$wsg_damage_max$|wsg_damage_base|$wsg_damage_base$|
+}
+
+wsg_overflow_weapon_rate_multiplier = {
+	base = 0
+	modifier = { add = modifier:weapon_type_energy_weapon_damage_mult always = $wsg_energy$ }
+	modifier = { add = modifier:weapon_type_kinetic_weapon_damage_mult always = $wsg_kinetic$ }
+	modifier = { add = modifier:weapon_type_explosive_weapon_damage_mult always = $wsg_explosive$ }
+	modifier = { add = modifier:weapon_type_point_defense_weapon_damage_mult always = $wsg_point_defense$ }
+	modifier = { add = modifier:weapon_type_strike_craft_weapon_damage_mult always = $wsg_strike_craft$ }
+	modifier = { add = modifier:weapon_type_sr_uf_weapon_damage_mult always = $wsg_sr_uf_weapon$ }
+}
