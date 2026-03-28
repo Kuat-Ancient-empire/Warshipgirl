@@ -247,6 +247,7 @@ uf_steal_modifier_on_hit = {
 }
 
 initial_uf_crisis_country = {
+	optimize_memory
 	create_species = {
 		name = "NAME_WG_crisis_species"
 		class = "Warship_Girls"
@@ -285,6 +286,8 @@ initial_uf_crisis_country = {
 			[[PLACEHOLDER] 
 				save_global_event_target_as = wg_crisis_2_country 
 				save_global_event_target_as = wg_crisis_country 
+				set_country_flag = wg_crisis_country
+				set_country_flag = wg_crisis_2_country
 			]
 			set_country_flag = UGRC_flg_cntr_RULE_can_bomb
 			set_country_flag = UGRC_flg_cntr_RULE_can_be_bombed
@@ -371,6 +374,7 @@ initial_uf_crisis_country = {
 }
 
 initial_count_all_fleet_ship = {
+	optimize_memory
 	set_variable = { which = num_carrier_exist value = 0 }
 	set_variable = { which = num_titan_exist value = 0 }
 	set_variable = { which = num_bb_exist value = 0 }
@@ -424,4 +428,24 @@ initial_count_all_fleet_ship = {
 		}
 	}
 	remove_fleet_flag = counting_data
+}
+
+initial_double_wg_crisis = {
+	optimize_memory
+	if = {
+		limit = { 
+			has_global_flag = wg_crisis_doubles 
+			NOT = { has_global_flag = wg_invasion$FALLBACK$_happened } 
+		}
+		country_event = { id = wg_crisis$FALLBACK$.3 }
+	}
+}
+
+initial_wg_crisis_2_remove_effect = {
+	optimize_memory
+	every_country = {
+		remove_point_of_interest = wg_invasion_2_false_uf_galaxy_gun_poi.1
+		remove_point_of_interest = wg_invasion_2_kind_omega_poi.1
+		remove_point_of_interest = wg_invasion_2_false_uf_ews_poi.1
+	}
 }
