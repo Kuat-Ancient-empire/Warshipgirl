@@ -267,7 +267,7 @@ initial_uf_crisis_country = {
 		allow_negative_traits = no
 	}
 	create_country = {
-		name = $UF_COUNTRY_NAME$
+		name = $UF_COUNTRY_NAME|NAME_WG_crisis_country$
 		type = "wg_crisis_country"
 		species = event_target:wg_crisis_species
 		name_list = "WSG"
@@ -298,10 +298,12 @@ initial_uf_crisis_country = {
 			}
 			set_country_flag = $THIS$_country
 			save_global_event_target_as = $THIS$_country
-			set_faction_hostility = {
-				target = event_target:$TARGET$_country
-				set_hostile = no
-				set_friendly = yes
+			every_country = {
+				limit = {
+					is_country_type = wg_crisis_country
+					NOT = { is_same_value = root }
+				}
+				set_faction_hostility = { target = root set_hostile = no set_friendly = yes }
 			}
 			set_faction_hostility = {
 				target = event_target:pantsu_shop_country
@@ -311,33 +313,13 @@ initial_uf_crisis_country = {
 			set_graphical_culture = wsg_01
 			create_ship_design = { design = "NAME_WG_Starbase" }
 			add_ship_design = last_created_design
-			if = {
-				limit = { has_global_flag = wg_crisis_very_easy }
-				add_modifier = { modifier = uf_very_easy_debuff days = -1 }
-			}
-			else_if = {
-				limit = { 
-					has_global_flag = wg_crisis_easy
-				}
-				add_modifier = { modifier = uf_easy_buff days = -1 }
-			}
-			else_if = {
-				limit = { 
-					has_global_flag = wg_crisis_normal
-				}
-				add_modifier = { modifier = uf_normal_buff days = -1 }
-			}
-			else_if = {
-				limit = { 
-					has_global_flag = wg_crisis_hard
-				}
-				add_modifier = { modifier = uf_hard_buff days = -1 }
-			}
-			else_if = {
-				limit = { 
-					has_global_flag = wg_crisis_insane
-				}
-				add_modifier = { modifier = uf_insane_buff days = -1 }
+			switch = {
+				trigger = has_global_flag
+				wg_crisis_very_easy = { add_modifier = { modifier = uf_very_easy_debuff days = -1 } }
+				wg_crisis_easy = { add_modifier = { modifier = uf_easy_buff days = -1 } }
+				wg_crisis_normal = { add_modifier = { modifier = uf_normal_buff days = -1 } }
+				wg_crisis_hard = { add_modifier = { modifier = uf_hard_buff days = -1 } }
+				wg_crisis_insane = { add_modifier = { modifier = uf_insane_buff days = -1 } }
 			}
 			country_event = { id = wg_crisis.200 }
 			country_event = { id = $THIS$.90 days = 1800 random = 1800 } # for test, should be 1080 days
@@ -360,11 +342,7 @@ initial_uf_crisis_country = {
 						is_infinite_faction = yes
 						is_kuat_contractor_faction = yes
 					} }
-					set_faction_hostility = {
-						target = event_target:$TARGET$_country
-						set_hostile = no
-						set_friendly = yes
-					}
+					set_faction_hostility = { target = root set_hostile = no set_friendly = yes }
 				}
 				set_global_flag = is_allied_ag_kuat
 			}
@@ -428,17 +406,6 @@ initial_count_all_fleet_ship = {
 		}
 	}
 	remove_fleet_flag = counting_data
-}
-
-initial_double_wg_crisis = {
-	optimize_memory
-	if = {
-		limit = { 
-			has_global_flag = wg_crisis_doubles 
-			NOT = { has_global_flag = wg_invasion$FALLBACK$_happened } 
-		}
-		country_event = { id = wg_crisis$FALLBACK$.3 }
-	}
 }
 
 initial_wg_crisis_2_remove_effect = {

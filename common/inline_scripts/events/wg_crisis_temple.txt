@@ -1,12 +1,11 @@
 
 # 参数如下：
 # 本次危机编号 : CURRENT 
-# 其他危机编号 : FALLBACK
 # 相同房间 : $ROOM2$ $ROOM3$
 # 不同房间 : $ROOM$ $ROOM1$
-# 样本effect : $TARGET_EFFECT$ 
-# 移除额外兴趣点 : $TARGET_EFFECT_COUNTRY_DESTROYED$ 
-# 海宅刷新舰队 : $TARGET_FLEET_EFFECT$ 
+# 样本effect : $WG_END_SPECIMAN_EFFECT$ 
+# 移除额外兴趣点 : $WG_END_REMOVE_INTEREST_EFFECT$ 
+# 海宅刷新舰队 : $WG_INITIAL_SPECIAL_EFFECT$ 
 # END GAME PRICE DESIGN : $WG_PRICE_DESIGN_NAME$ 
 # END GAME PRICE FLEET NAME : $WG_PRICE_FLEET_NAME$
 
@@ -62,19 +61,12 @@ country_event = {
 			save_global_event_target_as = first_portal$CURRENT$_system
 			random_system_planet = {
 				if = {
-					limit = { NOT = { 
-						has_global_flag = wsg_any_player_civic_wsg_super_harbor 
-					} }
-					initial_uf_crisis_country = { 
-						THIS = wg_crisis$CURRENT$ 
-						TARGET = wg_crisis$FALLBACK$
-						UF_COUNTRY_NAME = NAME_WG_crisis_country 
-					}
+					limit = { NOT = { has_global_flag = wsg_any_player_civic_wsg_super_harbor } }
+					initial_uf_crisis_country = { THIS = wg_crisis$CURRENT$ }
 				}
 				else = { initial_uf_crisis_country = { 
 					THIS = wg_crisis$CURRENT$ 
-					TARGET = wg_crisis$FALLBACK$
-					UF_COUNTRY_NAME = NAME_WG_harbor_crisis_country 
+					UF_COUNTRY_NAME = NAME_WG_harbor_crisis_country
 				} }
 				event_target:wg_crisis$CURRENT$_country = {
 					create_fleet = {
@@ -164,7 +156,7 @@ country_event = {
 					else = {
 						country_event = { id = wg_crisis$CURRENT$.14 days = 720 }
 					}
-					$TARGET_FLEET_EFFECT$
+					$WG_INITIAL_SPECIAL_EFFECT$
 				}
 				if = {
 					# 简单难度开局刷1队弱的进攻舰队
@@ -270,7 +262,6 @@ country_event = {
 			}
 			country_event = { id = wg_crisis$CURRENT$.6 }
 		}
-		initial_double_wg_crisis = { FALLBACK = $FALLBACK$ }
 		set_update_modifiers_batch = end
 	}
 }
@@ -971,7 +962,7 @@ event = {
 	}
 
 	immediate = {
-		$TARGET_EFFECT_COUNTRY_DESTROYED$
+		$WG_END_REMOVE_INTEREST_EFFECT$
 		event_target:wg_crisis$CURRENT$_country  = {
 			destroy_country = yes
 		}
@@ -2896,7 +2887,7 @@ country_event = {
 		NOT = { has_relic = "r_united_fleet" }
 	}
 	immediate = {
-		$TARGET_EFFECT$
+		$WG_END_SPECIMAN_EFFECT$
 	}
 	option = {
 		name = "wg_crisis$CURRENT$.998.a"

@@ -1263,19 +1263,12 @@ event = {
 				if = {
 					limit = { has_global_flag = wg_crisis_doubles }
 					country_event = { id = wg_crisis.3 days = 3600 }
-					country_event = { id = wg_crisis_2.3 days = 3600 }
-				}
-				else_if = {
-					limit = { is_multiplayer = yes }
-					random_list = {
-						1 = { country_event = { id = wg_crisis.3 days = 3600 } }
-						1 = { country_event = { id = wg_crisis_2.3 days = 3600 } }
-					}
+					country_event = { id = wg_crisis_2.3 days = 7200 }
 				}
 				else = {
 					random_list = {
-						1 = { country_event = { id = wg_crisis.3 days = 3600 random = 3600 } }
-						1 = { country_event = { id = wg_crisis_2.3 days = 3600 random = 3600 } }
+						1 = { country_event = { id = wg_crisis.3 days = 3600 } }
+						1 = { country_event = { id = wg_crisis_2.3 days = 3600 } }
 					}
 				}
 			}
@@ -1773,26 +1766,24 @@ country_event = {
 ########################################非通用模板#######################################################
 # 参数如下：
 # 本次危机编号 : CURRENT 
-# 其他危机编号 : FALLBACK
 # 相同房间 : $ROOM2$ $ROOM3$
 # 不同房间 : $ROOM$ $ROOM1$
-# 是否给样本 : $TARGET_EFFECT$ 
-# 是否有额外兴趣点移除 : $TARGET_EFFECT_COUNTRY_DESTROYED$ 
-# 是否额外刷新特殊效果 : $TARGET_FLEET_EFFECT$ 
+# 是否给样本 : $WG_END_SPECIMAN_EFFECT$ 
+# 是否有额外兴趣点移除 : $WG_END_REMOVE_INTEREST_EFFECT$ 
+# 是否额外刷新特殊效果 : $WG_INITIAL_SPECIAL_EFFECT$ 
 # 奖励设计 : $WG_PRICE_DESIGN_NAME$ 
 # 奖励舰队名称 : $WG_PRICE_FLEET_NAME$
 
 inline_script = {
 	script = "events/wg_crisis_temple"
 	CURRENT = ""
-	FALLBACK = "_2"
 	ROOM = UF_room
 	ROOM1 = UF1_room
 	ROOM2 = UF2_room
 	ROOM3 = UF3_room
-	TARGET_EFFECT = "no_events = yes"
-	TARGET_EFFECT_COUNTRY_DESTROYED = "no_events = yes"
-	TARGET_FLEET_EFFECT = "no_events = yes"
+	WG_END_SPECIMAN_EFFECT = "no_events = yes"
+	WG_END_REMOVE_INTEREST_EFFECT = "no_events = yes"
+	WG_INITIAL_SPECIAL_EFFECT = "no_events = yes"
 	WG_PRICE_DESIGN_NAME = "NAME_uf_navigator"
 	WG_PRICE_FLEET_NAME = "NAME_UF_Navigator"
 }
@@ -1802,14 +1793,13 @@ namespace = wg_crisis_2
 inline_script = {
 	script = "events/wg_crisis_temple"
 	CURRENT = "_2"
-	FALLBACK = ""
 	ROOM = uf_tirpitz_room
 	ROOM1 = uf_tirpitz_room
 	ROOM2 = UF3_room
 	ROOM3 = UF3_room
-	TARGET_EFFECT = "give_specimen = { key = wg_specimen_tallboy }"
-	TARGET_EFFECT_COUNTRY_DESTROYED = "initial_wg_crisis_2_remove_effect = yes"
-	TARGET_FLEET_EFFECT = "country_event = { id = wg_crisis_2.2000 days = 5 }"
+	WG_END_SPECIMAN_EFFECT = "give_specimen = { key = wg_specimen_tallboy }"
+	WG_END_REMOVE_INTEREST_EFFECT = "initial_wg_crisis_2_remove_effect = yes"
+	WG_INITIAL_SPECIAL_EFFECT = "country_event = { id = wg_crisis_2.2000 days = 5 }"
 	WG_PRICE_DESIGN_NAME = "NAME_SRA_SOGZ_UF_design"
 	WG_PRICE_FLEET_NAME = "NAME_SRA_SOGZ_UF"
 }
