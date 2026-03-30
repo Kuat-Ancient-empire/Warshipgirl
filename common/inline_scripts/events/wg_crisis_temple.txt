@@ -60,14 +60,30 @@ country_event = {
 			set_star_flag = cannot_be_hit_by_aow_starfall_spear
 			save_global_event_target_as = first_portal$CURRENT$_system
 			random_system_planet = {
-				if = {
-					limit = { NOT = { has_global_flag = wsg_any_player_civic_wsg_super_harbor } }
-					initial_uf_crisis_country = { THIS = wg_crisis$CURRENT$ }
+				switch = {
+					trigger = has_global_flag
+					wsg_any_player_civic_wsg_super_harbor = {
+						initial_uf_crisis_country = { 
+							THIS = wg_crisis$CURRENT$ 
+							UF_COUNTRY_NAME = NAME_WG_harbor_crisis_country 
+							FLAG_COLOR = "red"
+						}
+					}
+					wsg_any_player_origin_wg_warhammer = {
+						initial_uf_crisis_country = { 
+							THIS = wg_crisis$CURRENT$ 
+							UF_COUNTRY_NAME = NAME_WG_warhammer_crisis_country 
+							FLAG_COLOR = "dark_purple"
+						}
+					}
+					default = {
+						initial_uf_crisis_country = { 
+							THIS = wg_crisis$CURRENT$ 
+							UF_COUNTRY_NAME = NAME_WG_crisis_country
+							FLAG_COLOR = "yellow"
+						} 
+					}
 				}
-				else = { initial_uf_crisis_country = { 
-					THIS = wg_crisis$CURRENT$ 
-					UF_COUNTRY_NAME = NAME_WG_harbor_crisis_country
-				} }
 				event_target:wg_crisis$CURRENT$_country = {
 					create_fleet = {
 						name = "NAME_Dimensional_Portal"
@@ -2206,6 +2222,31 @@ country_event = {
 
 	option = {
 		name = WORRYING
+	}
+}
+
+# 使常规检查项目在月中触发
+event = {
+	id = wg_crisis$CURRENT$.98
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = wg_invasion$CURRENT$_happened
+		NOT = { has_global_flag = all_portal$CURRENT$_destroyed }
+		exists = event_target:wg_crisis$CURRENT$_country
+	}
+
+	immediate = {
+		event_target:wg_crisis$CURRENT$_country = {
+			country_event = { id = wg_crisis$CURRENT$.99 }
+			country_event = { id = wg_crisis$CURRENT$.111 }
+			if = {
+				limit = { has_global_flag = wg_crisis_insane }
+				country_event = { id = wg_crisis$CURRENT$.104 }
+			} 
+			else = { country_event = { id = wg_crisis$CURRENT$.100 } }
+		}
 	}
 }
 

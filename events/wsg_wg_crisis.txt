@@ -144,10 +144,7 @@ planet_event = {
 								orbit = {
 									NOT = { is_star = yes }
 									exists = owner
-									owner = { OR = {
-										is_hostile = event_target:wg_crisis_country
-										is_hostile = event_target:wg_crisis_2_country
-									} }
+									owner = { is_country_type = wg_crisis_country }
 								}
 							}
 						}
@@ -170,102 +167,67 @@ event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		OR = {
-			AND = {
-				exists = event_target:wg_crisis_country
-				event_target:wg_crisis_country = {
-					any_owned_fleet = {
-						exists = this
-						is_fleet_idle = yes
-						OR = {
-							has_fleet_flag = attack_fleet
-							has_fleet_flag = raider_fleet
-						}
-						NAND = {
-							exists = orbit
-							orbit = {
-								NOT = { is_star = yes }
-								exists = controller
-								controller = { is_hostile = event_target:wg_crisis_country }
-							}
-						}
-					}
+		any_country = {
+			is_country_type = wg_crisis_country
+			any_owned_fleet = {
+				exists = this
+				is_fleet_idle = yes
+				OR = {
+					has_fleet_flag = attack_fleet
+					has_fleet_flag = raider_fleet
 				}
-			}
-			AND = {
-				exists = event_target:wg_crisis_2_country
-				event_target:wg_crisis_2_country = {
-					any_owned_fleet = {
-						exists = this
-						is_fleet_idle = yes
-						OR = {
-							has_fleet_flag = attack_fleet
-							has_fleet_flag = raider_fleet
-						}
-						NAND = {
-							exists = orbit
-							orbit = {
-								NOT = { is_star = yes }
-								exists = controller
-								controller = { is_hostile = event_target:wg_crisis_2_country }
-							}
-						}
+				NAND = {
+					exists = orbit
+					orbit = {
+						NOT = { is_star = yes }
+						exists = controller
+						controller = { is_hostile = prevprevprev }
 					}
 				}
 			}
 		}
 	}
 	immediate = {
-		if = {
-			limit = { exists = event_target:wg_crisis_country }
-			event_target:wg_crisis_country = {
-				every_owned_fleet = {
-					limit = {
-						exists = this
-						is_fleet_idle = yes
-						OR = {
-							has_fleet_flag = attack_fleet
-							has_fleet_flag = raider_fleet
-						}
-						NAND = {
-							exists = orbit
-							orbit = {
-								NOT = { is_star = yes }
-								exists = controller
-								controller = { is_hostile = event_target:wg_crisis_country }
-							}
+		every_country = {
+			limit = {
+				is_country_type = wg_crisis_country
+				any_owned_fleet = {
+					exists = this
+					is_fleet_idle = yes
+					OR = {
+						has_fleet_flag = attack_fleet
+						has_fleet_flag = raider_fleet
+					}
+					NAND = {
+						exists = orbit
+						orbit = {
+							NOT = { is_star = yes }
+							exists = controller
+							controller = { is_hostile = prevprevprev }
 						}
 					}
-					clear_orders = yes
-					clear_fleet_actions = this
-					fleet_event = { id = wg_crisis.96 days = 3 random = 2 }
 				}
 			}
-		}
-		if = {
-			limit = { exists = event_target:wg_crisis_2_country }
-			event_target:wg_crisis_2_country = {
-				every_owned_fleet = {
-					limit = {
-						exists = this
-						is_fleet_idle = yes
-						OR = {
-							has_fleet_flag = attack_fleet
-							has_fleet_flag = raider_fleet
-						}
-						NAND = {
-							exists = orbit
-							orbit = {
-								NOT = { is_star = yes }
-								exists = controller
-								controller = { is_hostile = event_target:wg_crisis_2_country }
-							}
+			every_owned_fleet = {
+				limit = {
+					exists = this
+					is_fleet_idle = yes
+					OR = {
+						has_fleet_flag = attack_fleet
+						has_fleet_flag = raider_fleet
+					}
+					NAND = {
+						exists = orbit
+						orbit = {
+							NOT = { is_star = yes }
+							exists = controller
+							controller = { is_hostile = prevprevprev }
 						}
 					}
-					clear_orders = yes
-					clear_fleet_actions = this
-					fleet_event = { id = wg_crisis.96 days = 3 random = 2 }
 				}
+				clear_orders = yes
+				clear_fleet_actions = this
+				fleet_event = { id = wg_crisis.96 days = 3 random = 2 }
 			}
 		}
 	}
@@ -439,86 +401,33 @@ country_event = {
 	#fire_only_once = yes
 
     immediate = {
-		if = {
+		every_country = {
 			limit = {
-				has_global_flag = wg_crisis_doubles
+				is_default_and_fallen_country = yes
 			}
 			if = {
 				limit = {
-					NOT = { exists = event_target:wg_crisis_country }
-					NOT = { exists = event_target:wg_crisis_2_country }
+					has_origin = origin_wg_great_ming_subject
+					has_country_flag = wg_has_tributed
 				}
-				every_country = {
-					limit = {
-						is_default_and_fallen_country = yes
-					}
-					if = {
-						limit = {
-							has_origin = origin_wg_great_ming_subject
-							has_country_flag = wg_has_tributed
-						}
-						country_event = {
-							id = wg_great_ming.133 days = 90
-						}
-					}
-					if = {
-						limit = { has_global_flag = wg_crisis_2_country_died_already }
-						remove_global_flag = wg_crisis_2_country_died_already
-						country_event = { id = wg_crisis_2.51 }
-					}
-					else = {
-						country_event = { id = wg_crisis.51 }
-					}
+				country_event = {
+					id = wg_great_ming.133 days = 90
 				}
-				random_country = {
-					limit = {
-						is_country_type = wg_resistant_army
-					}
-					destroy_country = yes
-				}
-				random_country = {
-					limit = {
-						is_wg_fallen_empire = yes
-					}
-					country_event = { id = wg_fe.30 days = 30 }
-				}
+			}
+			switch = {
+				trigger = has_global_flag
+				initial_wg_crisis_event = { country_event = { id = wg_crisis.51 } remove_global_flag = initial_wg_crisis_event }
+				initial_wg_crisis_2_event = { country_event = { id = wg_crisis_2.51 } remove_global_flag = initial_wg_crisis_2_event }
+				initial_wg_crisis_3_event = { country_event = { id = wg_crisis_3.51 } remove_global_flag = initial_wg_crisis_3_event }
 			}
 		}
-		else = {
-			every_country = {
-				limit = {
-					is_default_and_fallen_country = yes
-				}
-				if = {
-					limit = {
-						has_origin = origin_wg_great_ming_subject
-						has_country_flag = wg_has_tributed
-					}
-					country_event = {
-						id = wg_great_ming.133 days = 90
-					}
-				}
-				if = {
-					limit = { has_global_flag = wg_crisis_2_country_died_already }
-					remove_global_flag = wg_crisis_2_country_died_already
-					country_event = { id = wg_crisis_2.51 }
-				}
-				else = {
-					country_event = { id = wg_crisis.51 }
-				}
-			}
-			random_country = {
-				limit = {
-					is_country_type = wg_resistant_army
-				}
-				destroy_country = yes
-			}
-			random_country = {
-				limit = {
-					is_wg_fallen_empire = yes
-				}
-				country_event = { id = wg_fe.30 days = 30 }
-			}
+		random_country = {
+			limit = { is_country_type = wg_resistant_army }
+			destroy_country = yes
+		}
+		random_country = {
+			limit = { is_wg_fallen_empire = yes }
+			country_event = { id = wg_fe.30 days = 30 }
 		}
 	}
 }
@@ -541,7 +450,7 @@ fleet_event = {
         owner = { is_country_type = wg_crisis_country }
 	}
 
-	immediate = { uf_exe_invasion_fleet_action = { ID = wg_crisis.96 TYPE = wg_crisis_uf OWNER = wg_crisis_country OWNER_2 = wg_crisis_2_country } }
+	immediate = { uf_exe_invasion_fleet_action = { ID = wg_crisis.96 TYPE = wg_crisis_uf } }
 }
 # 歼星舰队专用触发
 fleet_event = {
@@ -601,9 +510,8 @@ planet_event = {
 	hide_window = yes
 
 	trigger = {
-		OR = {
-			exists = event_target:wg_crisis_country
-			exists = event_target:wg_crisis_2_country
+		any_country = {
+			is_country_type = wg_crisis_country
 		}
 	}
 
@@ -972,66 +880,6 @@ country_event = {
 	}
 
 }
-# 使常规检查项目在月中触发
-event = {
-	id = wg_crisis.98
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		OR = {
-			AND = {
-				has_global_flag = wg_invasion_happened
-				NOT = { has_global_flag = all_portal_destroyed }
-				exists = event_target:wg_crisis_country
-			}
-			AND = {
-				has_global_flag = wg_invasion_2_happened
-				NOT = { has_global_flag = all_portal_2_destroyed }
-				exists = event_target:wg_crisis_2_country
-			}
-		}
-	}
-
-	immediate = {
-		if = {
-			limit = { 
-				has_global_flag = wg_invasion_happened
-				NOT = { has_global_flag = all_portal_destroyed }
-				exists = event_target:wg_crisis_country
-			}
-			event_target:wg_crisis_country = {
-				country_event = { id = wg_crisis.99 }
-				country_event = { id = wg_crisis.111 }
-				if = {
-					limit = { has_global_flag = wg_crisis_insane }
-					country_event = { id = wg_crisis.104 }
-				} 
-				else = {
-					country_event = { id = wg_crisis.100 }
-				}
-			}
-		}
-		if = {
-			limit = { 
-				has_global_flag = wg_invasion_2_happened
-				NOT = { has_global_flag = all_portal_2_destroyed }
-				exists = event_target:wg_crisis_2_country
-			}
-			event_target:wg_crisis_2_country = {
-				country_event = { id = wg_crisis_2.99 }
-				country_event = { id = wg_crisis_2.111}
-				if = {
-					limit = { has_global_flag = wg_crisis_insane }
-					country_event = { id = wg_crisis_2.104 }
-				} 
-				else = {
-					country_event = { id = wg_crisis_2.100 }
-				}
-			}
-		}
-	}
-}
 #摧毁星球
 country_event = {
 	id = wg_crisis.200
@@ -1053,10 +901,7 @@ country_event = {
 		every_galaxy_planet = {
 			limit = { 
 				exists = owner
-				owner = { OR = {
-					is_hostile = event_target:wg_crisis_country
-					is_hostile = event_target:wg_crisis_2_country
-				} }
+				owner = { is_hostile = root }
 				is_colony = yes
 			}
 			set_planet_flag = uf_target
@@ -1261,14 +1106,15 @@ event = {
 			random_country = {
 				limit = { is_country_type = global_event }
 				if = {
-					limit = { has_global_flag = wg_crisis_doubles }
-					country_event = { id = wg_crisis.3 days = 3600 }
-					country_event = { id = wg_crisis_2.3 days = 7200 }
+					limit = { has_global_flag = wsg_any_player_origin_wg_warhammer }
+					country_event = { id = wg_crisis_3.3 days = 3600 }
+					set_global_flag = initial_wg_crisis_3_event
 				}
 				else = {
+					reroll_random = yes
 					random_list = {
-						1 = { country_event = { id = wg_crisis.3 days = 3600 } }
-						1 = { country_event = { id = wg_crisis_2.3 days = 3600 } }
+						1 = { country_event = { id = wg_crisis.3 days = 3600 } set_global_flag = initial_wg_crisis_event }
+						1 = { country_event = { id = wg_crisis_2.3 days = 3600 } set_global_flag = initial_wg_crisis_2_event }
 					}
 				}
 			}
@@ -1802,4 +1648,19 @@ inline_script = {
 	WG_INITIAL_SPECIAL_EFFECT = "country_event = { id = wg_crisis_2.2000 days = 5 }"
 	WG_PRICE_DESIGN_NAME = "NAME_SRA_SOGZ_UF_design"
 	WG_PRICE_FLEET_NAME = "NAME_SRA_SOGZ_UF"
+}
+
+namespace = wg_crisis_3
+inline_script = {
+	script = "events/wg_crisis_temple"
+	CURRENT = "_3"
+	ROOM = uf_tirpitz_room
+	ROOM1 = uf_tirpitz_room
+	ROOM2 = UF3_room
+	ROOM3 = UF3_room
+	WG_END_SPECIMAN_EFFECT = "no_events = yes"
+	WG_END_REMOVE_INTEREST_EFFECT = "no_events = yes"
+	WG_INITIAL_SPECIAL_EFFECT = "no_events = yes"
+	WG_PRICE_DESIGN_NAME = "NAME_uf_navigator"
+	WG_PRICE_FLEET_NAME = "NAME_UF_Navigator"
 }
