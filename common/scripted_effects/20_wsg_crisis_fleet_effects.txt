@@ -120,10 +120,21 @@ create_uf_fleet = {
                 create_uf_titan = { NUM = $NUM_titan$ }
             ]
             [[NUM_bb] 
-                set_variable = { which = num_bb value = $NUM_bb$ }
-                change_variable = { which = num_ships value = num_bb }
-                set_variable = { which = num_bb_exist value = $NUM_bb$ }
-                create_uf_bb = { NUM = $NUM_bb$ }
+                switch = {
+                    trigger = has_global_flag
+                    wsg_any_player_origin_wg_warhammer = {
+                        set_variable = { which = num_bb value = $NUM_bb$ }
+                        change_variable = { which = num_ships value = num_bb }
+                        set_variable = { which = num_bb_exist value = $NUM_bb$ }
+                        create_uf_wh_hlc_hc = { NUM = $NUM_bb$ }
+                    }
+                    default = {
+                        set_variable = { which = num_bb value = $NUM_bb$ }
+                        change_variable = { which = num_ships value = num_bb }
+                        set_variable = { which = num_bb_exist value = $NUM_bb$ }
+                        create_uf_bb = { NUM = $NUM_bb$ }
+                    }
+                }
             ]
             [[NUM_bc] 
                 set_variable = { which = num_bc value = $NUM_bc$ }
@@ -156,18 +167,26 @@ create_uf_fleet = {
                 create_uf_buffer_portal = { NUM = $NUM_uf_buffer_portal$ }
             ]
             [[NUM_dreadnought]
-                if = {
-                    limit = { has_global_flag = wsg_any_player_civic_wsg_super_harbor }
-                    set_variable = { which = num_dreadnought value = $NUM_dreadnought$ }
-                    change_variable = { which = num_ships value = num_dreadnought }
-                    set_variable = { which = num_dreadnought_exist value = $NUM_dreadnought$ }
-                    create_uf_automaton_bc = { NUM = $NUM_dreadnought$ } 
-                }
-                else = {
-                    set_variable = { which = num_dreadnought value = $NUM_dreadnought$ }
-                    change_variable = { which = num_ships value = num_dreadnought }
-                    set_variable = { which = num_dreadnought_exist value = $NUM_dreadnought$ }
-                    create_uf_dreadnought = { NUM = $NUM_dreadnought$ }
+                switch = {
+                    trigger = has_global_flag
+                    wsg_any_player_civic_wsg_super_harbor = {
+                        set_variable = { which = num_dreadnought value = $NUM_dreadnought$ }
+                        change_variable = { which = num_ships value = num_dreadnought }
+                        set_variable = { which = num_dreadnought_exist value = $NUM_dreadnought$ }
+                        create_uf_automaton_bc = { NUM = $NUM_dreadnought$ }
+                    }
+                    wsg_any_player_origin_wg_warhammer = {
+                        set_variable = { which = num_dreadnought value = $NUM_dreadnought$ }
+                        change_variable = { which = num_ships value = num_dreadnought }
+                        set_variable = { which = num_dreadnought_exist value = $NUM_dreadnought$ }
+                        create_uf_wh_dcc_dc = { NUM = $NUM_dreadnought$ }
+                    }
+                    default = {
+                        set_variable = { which = num_dreadnought value = $NUM_dreadnought$ }
+                        change_variable = { which = num_ships value = num_dreadnought }
+                        set_variable = { which = num_dreadnought_exist value = $NUM_dreadnought$ }
+                        create_uf_dreadnought = { NUM = $NUM_dreadnought$ }
+                    }
                 }
             ]
             set_location = { target = PREV distance = $DISTANCE|5$ angle = random }
@@ -220,39 +239,6 @@ create_portal = {
             set_ship_flag = wg_portal
         }
     }
-}
-
-# scope = fleet (portal)
-spawn_fleets_insane = {
-	optimize_memory
-    while = { count = 3
-        create_$THIS$_raider_fleet = yes
-    }
-    while = { count = 1
-        fleet_event = { id = wg_crisis.4 days = 200 }
-    }
-    fleet_event = { id = wg_crisis.4 days = 360 } 
-    fleet_event = { id = wg_crisis.4 days = 540 } 
-    fleet_event = { id = wg_crisis.4 days = 720 }
-    while = { count = 1
-        create_$THIS$_greater_fleet = yes
-        last_created_fleet = {
-            set_name = "NAME_auxiliary_guard_fleet"
-            set_timed_fleet_flag = { flag = defence_fleet days = 4500 }
-            set_formation_scale = 2
-            fleet_event = { id = wg_crisis.401 days = 4501 }
-        }
-    }
-    while = { count = 1
-        create_$THIS$_greater_fleet = yes
-        last_created_fleet = {
-            set_name = "NAME_auxiliary_guard_fleet"
-            set_timed_fleet_flag = { flag = defence_fleet days = 6000 }
-            set_formation_scale = 2
-            fleet_event = { id = wg_crisis.401 days = 6001 }
-        }
-    }
-    fleet_event = { id = wg_crisis.102 days = 9000 } #循环刷辅助守家舰队
 }
 
 uf_fleet_destory_planet_action = {

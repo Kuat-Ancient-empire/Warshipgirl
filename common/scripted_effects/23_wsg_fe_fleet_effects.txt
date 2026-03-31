@@ -649,68 +649,82 @@ uf_fe_fleet_retargeting = {
 	optimize_memory
 	if = {
 		limit = {
-			NOT = {
+			NOR = {
 				has_global_flag = first_portal_destroyed
-			}
-			exists = event_target:first_portal_system
-		}
-		event_target:first_portal_system = {
-			save_event_target_as = portal_system
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
 				has_global_flag = first_portal_2_destroyed
+				has_global_flag = first_portal_3_destroyed
 			}
-			exists = event_target:first_portal_2_system
+			OR = {
+				exists = event_target:first_portal_system
+				exists = event_target:first_portal_2_system
+				exists = event_target:first_portal_3_system
+			}
 		}
-		event_target:first_portal_2_system = {
-			save_event_target_as = portal_system
+		if = {
+			limit = { exists = event_target:first_portal_system }
+			event_target:first_portal_system = { save_event_target_as = portal_system }
+		}
+		if = {
+			limit = { exists = event_target:first_portal_system }
+			event_target:first_portal_2_system = { save_event_target_as = portal_system }
+		}
+		if = {
+			limit = { exists = event_target:first_portal_system }
+			event_target:first_portal_3_system = { save_event_target_as = portal_system }
 		}
 	}
 	else_if = {
 		limit = {
-			NOT = {
+			NOR = {
 				has_global_flag = second_portal_destroyed
+				has_global_flag = second_portal_2_destroyed
+				has_global_flag = second_portal_3_destroyed
+			}
+			OR = {
+				exists = event_target:second_portal_system
+				exists = event_target:second_portal_2_system
+				exists = event_target:second_portal_3_system
 			}
 			exists = event_target:second_portal_system
 		}
-		event_target:second_portal_system = {
-			save_event_target_as = portal_system
+		if = {
+			limit = { exists = event_target:second_portal_system }
+			event_target:second_portal_system = { save_event_target_as = portal_system }
+		}
+		if = {
+			limit = { exists = event_target:second_portal_2_system }
+			event_target:second_portal_2_system = { save_event_target_as = portal_system }
+		}
+		if = {
+			limit = { exists = event_target:second_portal_3_system }
+			event_target:second_portal_3_system = { save_event_target_as = portal_system }
 		}
 	}
 	else_if = {
 		limit = {
-			NOT = {
-				has_global_flag = second_portal_2_destroyed
-			}
-			exists = event_target:second_portal_2_system
-		}
-		event_target:second_portal_2_system = {
-			save_event_target_as = portal_system
-		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
+			NOR = {
 				has_global_flag = third_portal_destroyed
+				has_global_flag = third_portal_2_destroyed
+				has_global_flag = third_portal_3_destroyed
+			}
+			OR = {
+				exists = event_target:third_portal_system
+				exists = event_target:third_portal_2_system
+				exists = event_target:third_portal_3_system
 			}
 			exists = event_target:third_portal_system
 		}
-		event_target:third_portal_system = {
-			save_event_target_as = portal_system
+		if = {
+			limit = { exists = event_target:third_portal_system }
+			event_target:third_portal_system = { save_event_target_as = portal_system }
 		}
-	}
-	else_if = {
-		limit = {
-			NOT = {
-				has_global_flag = third_portal_2_destroyed
-			}
-			exists = event_target:third_portal_2_system
+		if = {
+			limit = { exists = event_target:third_portal_2_system }
+			event_target:third_portal_2_system = { save_event_target_as = portal_system }
 		}
-		event_target:third_portal_2_system = {
-			save_event_target_as = portal_system
+		if = {
+			limit = { exists = event_target:third_portal_3_system }
+			event_target:third_portal_3_system = { save_event_target_as = portal_system }
 		}
 	}
 	event_target:portal_system = {
@@ -722,9 +736,7 @@ uf_fe_fleet_retargeting = {
 				}
 			}
 			min_steps = 4
-			random_system_planet = {
-				save_event_target_as = spawn_resistance_fleet_location
-			}
+			random_system_planet = { save_event_target_as = spawn_resistance_fleet_location }
 		}
 	}
 }

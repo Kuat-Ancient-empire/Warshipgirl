@@ -246,6 +246,18 @@ uf_steal_modifier_on_hit = {
 	clear_variable = $VARIABLE$
 }
 
+uf_place_holder_effect = {
+	optimize_memory
+	save_global_event_target_as = wg_crisis_2_country 
+	save_global_event_target_as = wg_crisis_3_country 
+	save_global_event_target_as = wg_crisis_country 
+	set_country_flag = wg_crisis_country
+	set_country_flag = wg_crisis_2_country
+	set_country_flag = wg_crisis_3_country
+	set_global_flag = all_portal_2_destroyed
+	set_fleet_flag = counting_data
+}
+
 initial_uf_crisis_country = {
 	optimize_memory
 	create_species = {
@@ -276,14 +288,7 @@ initial_uf_crisis_country = {
 			FLAG_COLOR = $FLAG_COLOR$
 		}
 		effect = {
-			[[PLACEHOLDER] 
-				save_global_event_target_as = wg_crisis_2_country 
-				save_global_event_target_as = wg_crisis_3_country 
-				save_global_event_target_as = wg_crisis_country 
-				set_country_flag = wg_crisis_country
-				set_country_flag = wg_crisis_2_country
-				set_country_flag = wg_crisis_3_country
-			]
+			[[PLACEHOLDER] uf_place_holder_effect = yes ]
 			set_country_flag = UGRC_flg_cntr_RULE_can_bomb
 			set_country_flag = UGRC_flg_cntr_RULE_can_be_bombed
 			set_country_flag = protected_from_queen_storm
@@ -298,7 +303,13 @@ initial_uf_crisis_country = {
 					is_country_type = wg_crisis_country
 					NOT = { is_same_value = root }
 				}
-				set_faction_hostility = { target = root set_hostile = no set_friendly = yes }
+				prev = {
+					set_faction_hostility = { 
+						target = prev 
+						set_hostile = no 
+						set_friendly = yes 
+					}
+				}
 			}
 			set_faction_hostility = {
 				target = event_target:pantsu_shop_country
@@ -337,7 +348,13 @@ initial_uf_crisis_country = {
 						is_infinite_faction = yes
 						is_kuat_contractor_faction = yes
 					} }
-					set_faction_hostility = { target = root set_hostile = no set_friendly = yes }
+					prev = {
+						set_faction_hostility = { 
+							target = prev 
+							set_hostile = no 
+							set_friendly = yes 
+						}
+					}
 				}
 				set_global_flag = is_allied_ag_kuat
 			}

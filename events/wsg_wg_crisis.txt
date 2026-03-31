@@ -312,18 +312,9 @@ country_event = {
 					# 全部门都死了，无家可归，继续炸
 					limit = {
 						OR = {
-							AND = {
-								has_global_flag = all_portal_destroyed
-								has_global_flag = all_portal_2_destroyed
-							}
-							AND = {
-								NOT = { has_global_flag = wg_crisis_doubles }
-								has_global_flag = all_portal_destroyed
-							}
-							AND = {
-								NOT = { has_global_flag = wg_crisis_doubles }
-								has_global_flag = all_portal_2_destroyed
-							}
+							has_global_flag = all_portal_destroyed
+							has_global_flag = all_portal_2_destroyed
+							has_global_flag = all_portal_3_destroyed
 						}
 					}
 					remove_fleet_flag = convoy_fleet
@@ -344,6 +335,10 @@ country_event = {
 								has_star_flag = second_portal_2_system
 								has_star_flag = third_portal_2_system
 								has_star_flag = small_portal_2_system
+								has_star_flag = first_portal_3_system
+								has_star_flag = second_portal_3_system
+								has_star_flag = third_portal_3_system
+								has_star_flag = small_portal_3_system
 							}
 							any_fleet_in_system = {
 								owner = { is_same_value = root }
@@ -508,12 +503,6 @@ planet_event = {
 	id = wg_crisis.81
 	is_triggered_only = yes
 	hide_window = yes
-
-	trigger = {
-		any_country = {
-			is_country_type = wg_crisis_country
-		}
-	}
 
 	immediate = {
 		every_playable_country = {
@@ -760,18 +749,9 @@ country_event = {
 			# 全部门都死了，无家可归，继续炸
 			limit = {
 				OR = {
-					AND = {
-						has_global_flag = all_portal_destroyed
-						has_global_flag = all_portal_2_destroyed
-					}
-					AND = {
-						NOT = { has_global_flag = wg_crisis_doubles }
-						has_global_flag = all_portal_destroyed
-					}
-					AND = {
-						NOT = { has_global_flag = wg_crisis_doubles }
-						has_global_flag = all_portal_2_destroyed
-					}
+					has_global_flag = all_portal_destroyed
+					has_global_flag = all_portal_2_destroyed
+					has_global_flag = all_portal_3_destroyed
 				}
 			}
 			random_owned_fleet = {
@@ -795,6 +775,10 @@ country_event = {
 						has_star_flag = second_portal_2_system
 						has_star_flag = third_portal_2_system
 						has_star_flag = small_portal_2_system
+						has_star_flag = first_portal_3_system
+						has_star_flag = second_portal_3_system
+						has_star_flag = third_portal_3_system
+						has_star_flag = small_portal_3_system
 					}
 					any_fleet_in_system = {
 						owner = { is_same_value = root }
@@ -918,10 +902,6 @@ event = {
 
 	trigger = {
 		has_global_flag = wg_invasion_end
-		AND = {
-			NOT = { has_global_flag = wg_crisis_doubles }
-			has_global_flag = wg_invasion_end
-		}
 	}
 
 	immediate = {
@@ -932,79 +912,6 @@ event = {
 		every_country = {
 			limit = { has_event_chain = uf_colossus_chain }
 			end_event_chain = uf_colossus_chain
-		}
-	}
-}
-# 换反抗军领袖标识
-event = {
-	id = wg_crisis.302
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_global_flag = wg_resistant_army_arrived
-		NOT = { has_global_flag = changed_ra_leader_flag }
-	}
-
-	immediate = {
-		every_country = {
-			limit = {
-				is_ai = no
-				NOT = { has_country_flag = changed_ra_leader_flag }
-				any_owned_leader = {
-					has_leader_flag = ra_admiral
-				}
-			}
-			country_event = { id = wg_crisis.303 }
-		}
-	}
-}
-country_event = {
-	id = wg_crisis.303
-	hide_window = yes
-	is_triggered_only = yes
-
-	immediate = {
-		set_country_flag = changed_ra_leader_flag
-		every_owned_leader = {
-			limit = { has_leader_flag = ra_admiral }
-			switch = {
-				trigger = has_leader_flag
-				junyo = { remove_leader_flag = ra_junyo set_leader_flag = ra_junyo }
-				chongqing = { remove_leader_flag = ra_chongqing set_leader_flag = ra_chongqing }
-				DM = { remove_leader_flag = ra_DM set_leader_flag = ra_DM }
-				fantasque = { remove_leader_flag = ra_fantasque set_leader_flag = ra_fantasque }
-				essex = { remove_leader_flag = ra_essex set_leader_flag = ra_essex }
-				nevada = { remove_leader_flag = ra_nevada set_leader_flag = ra_nevada }
-				AD = { remove_leader_flag = ra_AD set_leader_flag = ra_AD }
-				ranger = { remove_leader_flag = ra_ranger set_leader_flag = ra_ranger }
-				sirius = { remove_leader_flag = ra_sirius set_leader_flag = ra_sirius }
-				gearing = { remove_leader_flag = ra_gearing set_leader_flag = ra_gearing }
-				vanguard = { remove_leader_flag = ra_vanguard set_leader_flag = ra_vanguard }
-				ninghai = { remove_leader_flag = ra_ninghai set_leader_flag = ra_ninghai }
-				tashkent = { remove_leader_flag = ra_tashkent set_leader_flag = ra_tashkent }
-				kitayama = { remove_leader_flag = ra_kitayama set_leader_flag = ra_kitayama }
-				sukhbaatar = { remove_leader_flag = ra_sukhbaatar set_leader_flag = ra_sukhbaatar }
-				eugen = { remove_leader_flag = ra_eugen set_leader_flag = ra_eugen }
-				helena = { remove_leader_flag = ra_helena set_leader_flag = ra_helena }
-				renown = { remove_leader_flag = ra_renown set_leader_flag = ra_renown }
-				yamato = { remove_leader_flag = ra_yamato set_leader_flag = ra_yamato }
-				changchun = { remove_leader_flag = ra_changchun set_leader_flag = ra_changchun }
-				johnston = { remove_leader_flag = ra_johnston set_leader_flag = ra_johnston }
-				richelieu = { remove_leader_flag = ra_richelieu set_leader_flag = ra_richelieu }
-				royal_ark = { remove_leader_flag = ra_royal_ark set_leader_flag = ra_junyo }
-				U47 = { remove_leader_flag = ra_U47 set_leader_flag = ra_U47 }
-				hutton = { remove_leader_flag = ra_hutton set_leader_flag = ra_hutton }
-				enterprise = { remove_leader_flag = ra_enterprise set_leader_flag = ra_enterprise }
-				VV = { remove_leader_flag = ra_VV set_leader_flag = ra_VV }
-				hood = { remove_leader_flag = ra_hood set_leader_flag = ra_hood }
-				rodney = { remove_leader_flag = ra_rodney set_leader_flag = ra_rodney }
-				yukikaze = { remove_leader_flag = ra_yukikaze set_leader_flag = ra_yukikaze }
-				lexington = { remove_leader_flag = ra_lexington set_leader_flag = ra_lexington }
-				missouri = { remove_leader_flag = ra_missouri set_leader_flag = ra_missouri }
-				taiho_sh = { remove_leader_flag = ra_taiho_sh set_leader_flag = ra_taiho_sh }
-				cobot = { remove_leader_flag = ra_cobot set_leader_flag = ra_cobot }
-			}
 		}
 	}
 }
@@ -1255,15 +1162,15 @@ country_event = {
 			country_event = { id = wg_boss.1 }
 		}
 	}
-	option = {
-		name = "activate_uf_hidden_double_fight_diff"
-		trigger = { NOT = { has_global_flag = wg_crisis_doubles }}
-		hidden_effect = { 
-			set_global_flag = wg_crisis_doubles
-			country_event = { id = wg_crisis.1 }
-		}
-		custom_tooltip = "uf_hidden_double_fight_tooltip"
-	}
+	# option = {
+	# 	name = "activate_uf_hidden_double_fight_diff"
+	# 	trigger = { NOT = { has_global_flag = wg_crisis_doubles }}
+	# 	hidden_effect = { 
+	# 		set_global_flag = wg_crisis_doubles
+	# 		country_event = { id = wg_crisis.1 }
+	# 	}
+	# 	custom_tooltip = "uf_hidden_double_fight_tooltip"
+	# }
 	option = {
 		name = "activate_uf_hidden_diff"
 		trigger = { NOT = { has_global_flag = activated_uf_hidden_diff }}
@@ -1345,7 +1252,10 @@ country_event = {
 						has_trait = trait_wg_sunflower
 					}
 				}
-				planet = { create_pop_group = { size = prev.trigger:pop_group_size species = ROOT.owner_main_species }}
+				planet = { create_pop_group = { 
+					size = prev.trigger:pop_group_size 
+					species = ROOT.owner_main_species 
+				}}
 				kill_pop_group = { pop_group = this percentage = 1 }
 			}
 			country_event = { id = wg_crisis.10010 }
@@ -1621,15 +1531,15 @@ country_event = {
 # 奖励舰队名称 : $WG_PRICE_FLEET_NAME$
 
 inline_script = {
-	script = "events/wg_crisis_temple"
+	script = "events/wg_crisis_template"
 	CURRENT = ""
 	ROOM = UF_room
 	ROOM1 = UF1_room
 	ROOM2 = UF2_room
 	ROOM3 = UF3_room
-	WG_END_SPECIMAN_EFFECT = "no_events = yes"
-	WG_END_REMOVE_INTEREST_EFFECT = "no_events = yes"
-	WG_INITIAL_SPECIAL_EFFECT = "no_events = yes"
+	WG_END_SPECIMAN_EFFECT = ""
+	WG_END_REMOVE_INTEREST_EFFECT = ""
+	WG_INITIAL_SPECIAL_EFFECT = ""
 	WG_PRICE_DESIGN_NAME = "NAME_uf_navigator"
 	WG_PRICE_FLEET_NAME = "NAME_UF_Navigator"
 }
@@ -1637,7 +1547,7 @@ inline_script = {
 
 namespace = wg_crisis_2
 inline_script = {
-	script = "events/wg_crisis_temple"
+	script = "events/wg_crisis_template"
 	CURRENT = "_2"
 	ROOM = uf_tirpitz_room
 	ROOM1 = uf_tirpitz_room
@@ -1652,15 +1562,15 @@ inline_script = {
 
 namespace = wg_crisis_3
 inline_script = {
-	script = "events/wg_crisis_temple"
+	script = "events/wg_crisis_template"
 	CURRENT = "_3"
 	ROOM = uf_tirpitz_room
 	ROOM1 = uf_tirpitz_room
 	ROOM2 = UF3_room
 	ROOM3 = UF3_room
-	WG_END_SPECIMAN_EFFECT = "no_events = yes"
-	WG_END_REMOVE_INTEREST_EFFECT = "no_events = yes"
-	WG_INITIAL_SPECIAL_EFFECT = "no_events = yes"
+	WG_END_SPECIMAN_EFFECT = ""
+	WG_END_REMOVE_INTEREST_EFFECT = ""
+	WG_INITIAL_SPECIAL_EFFECT = ""
 	WG_PRICE_DESIGN_NAME = "NAME_uf_navigator"
 	WG_PRICE_FLEET_NAME = "NAME_UF_Navigator"
 }
