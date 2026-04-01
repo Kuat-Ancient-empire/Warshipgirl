@@ -8,17 +8,14 @@ monolith_target_system_trigger = {
 		NOT = { exists = space_owner }
 		AND = {
 			exists = space_owner
-			space_owner = { NOR = { 
-				is_same_value = event_target:$OWNER$ 
-				is_same_value = event_target:$OWNER_2$ 
-			}}
+			space_owner = { NOT = { is_same_value = root.owner }}
 		}
 		any_system_planet = { 
 			has_owner = yes 
 			owner = { NOT = { is_country_type = primitive }}
 			count_fleet_in_orbit = { count = 0 limit = {
 				exists = owner
-				owner = { OR = { is_same_value = event_target:$OWNER$ is_same_value = event_target:$OWNER_2$ } }
+				owner = { is_same_value = root.owner }
 				NOT = { is_same_value = root }
 			} }
 		}
@@ -30,7 +27,7 @@ monolith_target_planet_trigger = {
 	owner = { NOT = { is_country_type = primitive }}
 	count_fleet_in_orbit = { count = 0 limit = {
 		exists = owner
-		owner = { OR = { is_same_value = event_target:$OWNER$ is_same_value = event_target:$OWNER_2$ } }
+		owner = { is_same_value = root.owner }
 		NOT = { is_same_value = root }
 	} }	
 }
