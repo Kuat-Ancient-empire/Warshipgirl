@@ -500,35 +500,35 @@ country_event = {
 }
 
 # Unlock portal (不是天灾难度)
-country_event = {
-	id = wg_crisis$CURRENT$.100
-	hide_window = yes
-	is_triggered_only = yes
+# country_event = {
+# 	id = wg_crisis$CURRENT$.100
+# 	hide_window = yes
+# 	is_triggered_only = yes
 
-	trigger = {
-		has_global_flag = wg_invasion$CURRENT$_happened
-		has_country_flag = wg_crisis$CURRENT$_country
-		OR = {
-			NOT = { exists = FROM }
-			FROMFROM = { has_fleet_flag = defence_fleet }
-		}
-		NOR = { 
-			has_global_flag = wg_crisis_insane 
-			any_owned_fleet = { has_fleet_flag = defence_fleet }
-		}
-	}
+# 	trigger = {
+# 		has_global_flag = wg_invasion$CURRENT$_happened
+# 		has_country_flag = wg_crisis$CURRENT$_country
+# 		OR = {
+# 			NOT = { exists = FROM }
+# 			FROMFROM = { has_fleet_flag = defence_fleet }
+# 		}
+# 		NOR = { 
+# 			has_global_flag = wg_crisis_insane 
+# 			any_owned_fleet = { has_fleet_flag = defence_fleet }
+# 		}
+# 	}
  
-	immediate = {
-		if = {
-			limit = { exists = event_target:first_dimensional_portal$CURRENT$ }
-			event_target:first_dimensional_portal$CURRENT$ = { set_event_locked = no }
-		}
-		else = { random_owned_fleet = {
-			limit = { has_fleet_flag = first_dimensional_portal$CURRENT$ }
-			set_event_locked = no
-		}}
-	}
-}
+# 	immediate = {
+# 		if = {
+# 			limit = { exists = event_target:first_dimensional_portal$CURRENT$ }
+# 			event_target:first_dimensional_portal$CURRENT$ = { set_event_locked = no }
+# 		}
+# 		else = { random_owned_fleet = {
+# 			limit = { has_fleet_flag = first_dimensional_portal$CURRENT$ }
+# 			set_event_locked = no
+# 		}}
+# 	}
+# }
 
 # Unlock portal (天灾难度)
 country_event = {
@@ -539,7 +539,6 @@ country_event = {
 	trigger = {
 		has_global_flag = wg_invasion$CURRENT$_happened
 		has_country_flag = wg_crisis$CURRENT$_country
-		has_global_flag = wg_crisis_insane
 		OR = {
 			NOT = { exists = FROM }
 			FROMFROM = { has_fleet_flag = defence_fleet }
@@ -573,7 +572,7 @@ country_event = {
 				set_event_locked = no
 			}
 		}
-		else_if = {
+		if = {
 			limit = { 
 				# 检查第二传送门守家舰队
 				has_global_flag = second_portal$CURRENT$_opened
@@ -600,7 +599,7 @@ country_event = {
 			}
 			event_target:second_dimensional_portal$CURRENT$ = { set_event_locked = no }
 		}
-		else_if = {
+		if = {
 			limit = { 
 				# 检查第三传送门守家舰队
 				has_global_flag = third_portal$CURRENT$_opened
