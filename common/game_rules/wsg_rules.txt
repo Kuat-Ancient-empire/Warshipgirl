@@ -90,6 +90,7 @@ can_orbital_bombard = {
 				is_country_type = swarm
 				is_country_type = ai_empire
 				is_country_type = cybrex_empire
+				is_country_type = abandoned_hatchery
 				AND = {
 					is_country_type = awakened_marauders
 					ROOT.CONTROLLER = { is_hostile = prev }
@@ -113,6 +114,8 @@ can_orbital_bombard = {
 				is_country_type = debt_collectors
 				is_country_type = gray_goo
 				is_country_type = vol
+				is_country_type = behemoth_hatchling
+				is_country_type = abandoned_hatchery
 				AND = {
 					is_country_type = frenzied_voidworms
 					has_country_flag = can_bombard
@@ -329,7 +332,7 @@ can_build_branch_office_on_planet = {
 			root = {
 				is_subject = yes
 				OR = {
-					has_authority = auth_corporate
+					is_megacorp = yes
 					has_civic = civic_galactic_sovereign_megacorp
 				}
 				overlord = {
@@ -347,7 +350,7 @@ can_build_branch_office_on_planet = {
 						is_same_value = root.overlord
 					}
 					OR = {
-						has_authority = auth_corporate
+						is_megacorp = yes
 						has_civic = civic_galactic_sovereign_megacorp
 						has_authority = auth_warshipgirls
 					}
@@ -380,7 +383,7 @@ can_build_branch_office_on_planet = {
 						is_subject = yes
 						overlord = {
 							NOR = {
-								has_authority = auth_corporate
+								is_megacorp = yes
 								has_civic = civic_galactic_sovereign_megacorp
 							}
 						}
@@ -395,7 +398,7 @@ can_build_branch_office_on_planet = {
 					is_subject = yes
 					overlord = {
 						OR = {
-							has_authority = auth_corporate
+							is_megacorp = yes
 							has_civic = civic_galactic_sovereign_megacorp
 						}
 					}
@@ -457,6 +460,24 @@ can_build_branch_office_on_planet = {
 			}
 		}
 	}
+	custom_tooltip = {
+		fail_text = NO_BRANCH_OFFICE_ON_AI_WORLD
+		NOT = { is_planet_class = pc_ai }
+	}
+	custom_tooltip = {
+		fail_text = NO_BRANCH_OFFICE_ON_NANITE_WORLD
+		NOT = { is_planet_class = pc_gray_goo }
+	}
+	custom_tooltip = {
+		fail_text = NO_BRANCH_OFFICE_ON_SYNAPTIC_LATHE
+		NOT = { is_planet_class = pc_cosmogenesis_world }
+	}
+	custom_tooltip = {
+		fail_text = NO_BRANCH_OFFICE_ON_SELF
+		owner = {
+			NOT = { is_same_value = root }
+		}
+	}
 }
 
 ###_[ev/zofe/sofe/ur]	##################
@@ -478,18 +499,25 @@ can_be_part_of_galactic_community = {
 			has_civic = civic_fanatic_purifiers
 			has_civic = civic_hive_devouring_swarm
 			has_civic = civic_machine_terminator
+			has_menace_perk = menp_behemoth_ever_hungry
+			has_civic = civic_scorched_earth
+			has_civic = civic_hive_scorched_earth
 		}
 	}
 	custom_tooltip = {
 		fail_text = "community_declared_crisis_failtext"
 		has_been_declared_crisis = no
+		NOT = { has_country_flag = malevolent_aura_empire }
 	}
 	custom_tooltip = {
 		fail_text = "community_declared_crisis_failtext"
 		#fail_text = "community_overlord_declared_crisis_failtext"
 		OR = {
 			NOT = { exists = overlord }
-			overlord = { has_been_declared_crisis = no }
+			overlord = { 
+				has_been_declared_crisis = no 
+				NOT = { has_country_flag = malevolent_aura_empire }
+			}
 		}
 	}
 	
@@ -537,6 +565,9 @@ can_be_part_of_galactic_empire = {
 			has_civic = civic_fanatic_purifiers
 			has_civic = civic_hive_devouring_swarm
 			has_civic = civic_machine_terminator
+			has_menace_perk = menp_behemoth_ever_hungry
+			has_civic = civic_scorched_earth
+			has_civic = civic_hive_scorched_earth
 		}
 	}
 	custom_tooltip = {
@@ -562,12 +593,17 @@ can_be_part_of_galactic_empire = {
 ###_[ev/zofe/sofe/ur]	##################
 # This = country
 can_be_part_of_galactic_council = {
-	is_country_type = default
+	OR = {
+		is_country_type = default
+		has_country_flag = fallen_empire_hive_control
+	}
 	NOR = {
 		has_civic = civic_fanatic_purifiers
 		has_civic = civic_hive_devouring_swarm
 		has_civic = civic_machine_terminator
 		has_menace_perk = menp_behemoth_ever_hungry
+		has_civic = civic_scorched_earth
+		has_civic = civic_hive_scorched_earth
 	}
 	
 	#_[wsg]
@@ -591,10 +627,7 @@ can_add_advanced_traits = {
 
 #This, root = country
 can_add_negative_traits_organic = {
-	OR = {
-		has_utopia = yes
-		has_biogenesis_dlc = yes
-	}
+	has_biogenesis_dlc = yes
 	OR = {
 		has_tradition = tr_genetics_resequencing
 		has_active_tradition = tr_cybernetics_integrated_anatomy
@@ -610,10 +643,7 @@ can_add_negative_traits_organic = {
 can_remove_positive_traits_organic = {
 	OR = {
 		AND = {
-			OR = {
-				has_utopia = yes
-				has_biogenesis_dlc = yes
-			}
+			has_biogenesis_dlc = yes
 			OR = {
 				has_tradition = tr_genetics_resequencing
 				has_active_tradition = tr_cybernetics_integrated_anatomy

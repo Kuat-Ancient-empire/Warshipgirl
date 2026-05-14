@@ -21,8 +21,15 @@ country_event = {
 		text = "emperor.2.machine.desc"
 	}
 	desc = {
-		trigger = { is_hive_empire = yes }
+		trigger = {
+			is_hive_empire = yes
+			is_wilderness_empire = no
+		}
 		text = "emperor.2.hive.desc"
+	}
+	desc = {
+		trigger = { is_wilderness_empire = yes }
+		text = "emperor.2.wilderness.desc"
 	}
 	picture = GFX_evt_coronation
 	show_sound = event_coronation
@@ -36,6 +43,7 @@ country_event = {
 			leave_alliance = { override_requirements = yes }
 		}
 		set_galactic_emperor = yes
+		save_global_event_target_as = gal_emperor
 		if = {
 			limit = { has_country_flag = united_front_active }
 			pass_resolution_no_cooldown = resolution_emperor_united_front
@@ -101,22 +109,45 @@ country_event = {
 			}
 		}
 		set_government_cooldown = no
-		set_name = random
-		room_name_override = ""
-		change_country_flag = {
-			icon = {
-				category = "special"
-				file = "the_empire.dds"
+		if = {
+			limit = {
+				NOT = { is_country_type = awakened_fallen_empire }
 			}
-			background= {
-				category = "backgrounds"
-				file = "00_solid.dds"
+			set_name = random
+			room_name_override = ""
+			change_country_flag = {
+				icon = {
+					category = "special"
+					file = "the_empire.dds"
+				}
+				background= {
+					category = "backgrounds"
+					file = "00_solid.dds"
+				}
+				colors={
+					"red"
+					"red"
+					"null"
+					"null"
+				}
 			}
-			colors={
-				"red"
-				"red"
-				"null"
-				"null"
+		}
+		else = {
+			change_country_flag = {
+				icon = {
+					category = "special"
+					file = "hive_fe_flag_restored.dds"
+				}
+				background= {
+					category = "backgrounds"
+					file = "00_solid.dds"
+				}
+				colors={
+					"red"
+					"red"
+					"null"
+					"null"
+				}
 			}
 		}
 		every_playable_country = {
@@ -153,6 +184,14 @@ country_event = {
 		}
 		else = {
 			custom_tooltip = emperor.2.a.tooltip
+		}
+	}
+	after = {
+		if = {
+			limit = {
+				is_galactic_emperor = yes
+			}
+			country_event = { id = timeline.17 } # Milestone First Emperor Appointment
 		}
 	}
 }

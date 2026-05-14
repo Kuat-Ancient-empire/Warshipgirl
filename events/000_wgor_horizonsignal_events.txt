@@ -50,10 +50,7 @@ ship_event = {
 		name = akx.9005.a.spiritualist
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = ethic_fanatic_spiritualist
-					has_ethic = ethic_spiritualist
-				}
+				is_spiritualist = yes
 			}
 		}
 	}
@@ -62,10 +59,7 @@ ship_event = {
 		name = akx.9005.a.materialist
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = ethic_fanatic_materialist
-					has_ethic = ethic_materialist
-				}
+				is_materialist = yes
 			}
 		}
 	}
@@ -74,12 +68,8 @@ ship_event = {
 		name = akx.9005.a.neutral
 		trigger = {
 			owner = {
-				NOR = {
-					has_ethic = ethic_fanatic_spiritualist
-					has_ethic = ethic_spiritualist
-					has_ethic = ethic_fanatic_materialist
-					has_ethic = ethic_materialist
-				}
+				is_spiritualist = no
+				is_materialist = no
 			}
 		}
 	}
@@ -617,13 +607,31 @@ planet_event = {
 	immediate = {
 		solar_system = {
 			every_system_planet = {
+				limit = {
+					NOR = {
+						is_planet_class = pc_gas_giant
+						is_planet_class = pc_shattered_ring_habitable
+						is_planet_class = pc_ringworld_habitable
+						is_planet_class = pc_ringworld_habitable_damaged
+						is_planet_class = pc_ringworld_tech
+						is_planet_class = pc_ringworld_tech_damaged
+						is_planet_class = pc_ringworld_seam
+						is_planet_class = pc_ringworld_seam_damaged
+						is_planet_class = pc_habitat
+						is_planet_class = pc_asteroid
+						is_planet_class = pc_ice_asteroid
+						is_planet_class = pc_city
+						is_planet_class = pc_relic
+						is_star = yes
+					}
+				}
 				every_owned_pop_group = {
 					limit = {
 						is_sapient = yes
 					}
 					# add planet class to organics
 					if = {
-						limit = { is_robot_pop = no }
+						limit = { is_robot_pop_group = no }
 						modify_species = {
 							species = this
 							ideal_planet_class = pc_nuked
@@ -656,11 +664,11 @@ planet_event = {
 					}
 					# add traits to organics
 					if = {
-						limit = { 
-							is_robot_pop = no
-							NOT = { 
-								has_trait = trait_natural_physicists 
-							} 
+						limit = {
+							is_robot_pop_group = no
+							NOT = {
+								has_trait = trait_natural_physicists
+							}
 						}
 						# remove opposite traits
 						if = {
@@ -692,8 +700,8 @@ planet_event = {
 					}
 					if = {
 						limit = {
-							is_robot_pop = no
-							NOT = { 
+							is_robot_pop_group = no
+							NOT = {
 								has_trait = trait_repugnant
 							}
 						}
@@ -712,11 +720,11 @@ planet_event = {
 					}
 					#Add traits to machines
 					if = {
-						limit = { 
-							is_robot_pop = yes
-							NOT = { 
-								has_trait = trait_robot_artificial_physicists 
-							} 
+						limit = {
+							is_robot_pop_group = yes
+							NOT = {
+								has_trait = trait_robot_artificial_physicists
+							}
 						}
 						# remove opposite traits
 						if = {
@@ -740,11 +748,11 @@ planet_event = {
 						}
 					}
 					if = { #IM trait
-						limit = { 
-							is_robot_pop = yes
-							NOT = { 
+						limit = {
+							is_robot_pop_group = yes
+							NOT = {
 								has_trait = trait_robot_uncanny
-							} 
+							}
 						}
 						# remove opposite traits
 						if = {
@@ -761,27 +769,9 @@ planet_event = {
 						}
 					}
 				}
-				if = {
-					limit = {
-						is_planet_class = pc_molten
-						is_planet_class = pc_frozen
-						is_planet_class = pc_broken
-						is_planet_class = pc_barren
-						is_planet_class = pc_barren_cold
-						is_planet_class = pc_desert
-						is_planet_class = pc_arid
-						is_planet_class = pc_tundra
-						is_planet_class = pc_continental
-						is_planet_class = pc_tropical
-						is_planet_class = pc_ocean
-						is_planet_class = pc_arctic
-						is_planet_class = pc_alpine
-						is_planet_class = pc_savannah
-					}
-					change_pc = pc_nuked
-					set_planet_flag = nuked_planet_anomalies_disabled
-					reroll_planet = yes
-				}
+				change_pc = pc_nuked
+				set_planet_flag = nuked_planet_anomalies_disabled
+				reroll_planet = yes
 			}
 			every_system_planet = {
 				limit = { is_star = yes }

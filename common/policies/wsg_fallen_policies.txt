@@ -18,6 +18,8 @@ diplomatic_stance = {
 			is_country_type = awakened_fallen_empire
 			is_country_type = primitive
 			is_country_type = awakened_marauders
+			is_country_type = mirrored_country
+			is_country_type = exiled
 			is_country_type = kuat_fallen_empire
 			is_country_type = kuat_awakened_fallen_empire
 			is_country_type = kuat_awakened_returned_empire
@@ -152,6 +154,7 @@ diplomatic_stance = {
 			OR = {
 				is_country_type = default
 				is_country_type = awakened_fallen_empire
+				is_country_type = mirrored_country
 				is_country_type = kuat_awakened_fallen_empire
 				is_country_type = wg_awakened_fallen_empire
 				is_country_type = kuat_awakened_returned_empire
@@ -193,7 +196,7 @@ diplomatic_stance = {
 			# Cranky people:
 			modifier = {
 				factor = 0
-				has_ethic = ethic_fanatic_xenophobe
+				is_fanatic_xenophobe = yes
 			}
 			modifier = {
 				factor = 0.1
@@ -276,6 +279,7 @@ diplomatic_stance = {
 			OR = {
 				is_country_type = default
 				is_country_type = awakened_fallen_empire
+				is_country_type = exiled
 				is_country_type = kuat_awakened_fallen_empire
 				is_country_type = wg_awakened_fallen_empire
 				is_country_type = kuat_awakened_returned_empire
@@ -688,7 +692,7 @@ diplomatic_stance = {
 			modifier = {
 				factor = 0
 				OR = {
-					has_ethic = ethic_fanatic_xenophile
+					is_fanatic_xenophile = yes
 					has_valid_civic = civic_hive_empath
 				}
 			}
@@ -801,10 +805,6 @@ diplomatic_stance = {
 	option = {
 		name = "diplo_stance_purification"
 		icon = "GFX_diplomatic_stance_withdrawn"
-
-		potential = {
-			has_utopia = yes
-		}
 
 		valid = {
 			has_valid_civic = civic_fanatic_purifiers
@@ -993,6 +993,36 @@ diplomatic_stance = {
 			weight = 100
 		}
 	}
+
+	option = {
+		name = "diplo_stance_devastators"
+		icon = "GFX_diplomatic_stance_devastators"
+
+		potential = {
+			OR = {
+				has_valid_civic = civic_scorched_earth
+				has_valid_civic = civic_hive_scorched_earth
+			}
+		}
+
+		valid = {
+			OR = {
+				has_valid_civic = civic_scorched_earth
+				has_valid_civic = civic_hive_scorched_earth
+			}
+		}
+
+		policy_flags = {
+			diplo_stance_purification # TODO: Replace this later with a new one.
+		}
+
+		modifier = {
+		}
+
+		ai_weight = {
+			weight = 100
+		}
+	}
 }
 
 war_philosophy = {
@@ -1150,7 +1180,7 @@ war_philosophy = {
 
 		valid = {
 			NOR = {
-				has_ethic = "ethic_fanatic_militarist"
+				is_fanatic_militarist = yes
 				has_valid_civic = "civic_fanatic_purifiers"
 				has_valid_civic = "civic_hive_devouring_swarm"
 				has_valid_civic = "civic_machine_terminator"
