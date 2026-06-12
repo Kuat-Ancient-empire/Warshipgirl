@@ -1,6 +1,6 @@
 namespace = wsg
 #母港补给舰事件
-planet_event = {
+carrier_event = {
 	id = wsg.3000
 	title = "wsg.3000.name"
 	desc = "wsg.3000.desc"
@@ -9,16 +9,16 @@ planet_event = {
 	is_triggered_only = yes
 		
 	trigger = {
-		has_planet_flag = port_home
-		NOT = { has_planet_flag = f_wsg_AP }
+		has_carrier_flag = port_home
+		NOT = { has_carrier_flag = f_wsg_AP }
 	}
 	immediate = {
-		set_planet_flag = f_wsg_AP
+		set_carrier_flag = f_wsg_AP
 	}
 	option = {
 		name = "wsg.3000.a"
 		hidden_effect = {
-			planet_event = { id = wsg.3001 days = 5 }
+			carrier_event = { id = wsg.3001 days = 5 }
 		}
 	}
 	option = {
@@ -29,7 +29,7 @@ planet_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wsg.3001
 	title = "wsg.3001.name"
 	desc = "wsg.3001.desc"
@@ -552,7 +552,7 @@ country_event = {
 		add_research_option = "tech_alpha_weapon"		
 	}
 }
-planet_event = {
+carrier_event = {
 	id = wsg.3017
 	title = "wsg.3016.name"
 	desc = "wsg.3017.desc"
@@ -579,7 +579,7 @@ planet_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wsg.3018
 	title = "wsg.3018.name"
 	desc = "wsg.3018.desc"
@@ -605,7 +605,7 @@ planet_event = {
 	}
 }
 #港区星球通知
-planet_event = {
+carrier_event = {
 	id = wsg.3020
 	title = wsg.3020.name
 	desc = wsg.3020.desc
@@ -771,7 +771,7 @@ country_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wsg.3029
 	hide_window = yes
 
@@ -1132,7 +1132,7 @@ country_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wsg.3033
 	title = wsg.3033.name
 	desc = wsg.3033.desc
@@ -1334,9 +1334,9 @@ country_event = {
 			event_target:ovo_system = {
 				set_star_flag = ovo_system@root
 				random_system_planet = {
-					limit = { has_planet_flag = ovo_planet }
-					set_planet_flag = ovo_planet@root
-					remove_planet_flag = ovo_planet
+					limit = { has_carrier_flag = ovo_planet }
+					set_carrier_flag = ovo_planet@root
+					remove_carrier_flag = ovo_planet
 				}
 				remove_star_flag = ovo_system
 			}
@@ -1361,7 +1361,7 @@ country_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wsg.3037
 	title = "wsg.3037.name"
 	desc = "wsg.3037.desc"
@@ -1381,7 +1381,7 @@ planet_event = {
 	
 	trigger = {
 		has_modifier = "planet_OVO2"
-		NOT = { has_planet_flag = ovo_watching_flag }
+		NOT = { has_carrier_flag = ovo_watching_flag }
 		#pop_amount >= 1000
 		owner = {
 			NOT = { has_country_flag = finish_ovo_event }
@@ -1389,7 +1389,7 @@ planet_event = {
 	}
 	
 	immediate = {
-		set_planet_flag = ovo_watching_flag
+		set_carrier_flag = ovo_watching_flag
 	}
 	
 	is_triggered_only = yes
@@ -1405,7 +1405,7 @@ planet_event = {
 			owner = {
 				country_event = { id = wsg.3041 days = 60 random = 60 }
 			}
-			planet_event = { id = wsg.3038 days = 2000 } # for test, should be 2000 days
+			carrier_event = { id = wsg.3038 days = 2000 } # for test, should be 2000 days
 		}
 	}
 	
@@ -1416,7 +1416,7 @@ planet_event = {
 		}		
 	}
 }
-planet_event = {
+carrier_event = {
 	id = wsg.3038
 	title = "wsg.3038.name"
 	desc = "wsg.3038.desc"
@@ -1524,7 +1524,7 @@ country_event = {
 
 	trigger = {
 		FROM = { NOT = { has_country_flag = finish_ovo_event }}
-		FROMFROM = { has_planet_flag = ovo_watching_flag }
+		FROMFROM = { has_carrier_flag = ovo_watching_flag }
 		OR = {
 			has_country_flag = ovo_country_flag
 			FROMFROM.CONTROLLER = { has_country_flag = ovo_country_flag }
@@ -1582,7 +1582,7 @@ country_event = {
 
 	trigger = {
 		FROM = { NOT = { has_country_flag = finish_ovo_event }}
-		FROMFROM = { has_planet_flag = ovo_watching_flag }
+		FROMFROM = { has_carrier_flag = ovo_watching_flag }
 		has_country_flag = ovo_country_flag
 	}
 
@@ -1657,7 +1657,7 @@ country_event = {
 
 	immediate = {
 		random_owned_planet = {
-			limit = { has_planet_flag = ovo_planet@root }
+			limit = { has_carrier_flag = ovo_planet@root }
 			save_event_target_as = ovo_planet
 		}
 	}
@@ -1700,7 +1700,7 @@ country_event = {
 	immediate = {
 		random_owned_planet = {
 			limit = {
-				has_planet_flag = ovo_planet@root
+				has_carrier_flag = ovo_planet@root
 			}
 			save_event_target_as = quincy_planet
 		}
@@ -1822,7 +1822,7 @@ country_event = {
 		hidden_effect = {
 			end_event_chain = "ovo_chain"
 			random_owned_planet = {
-				limit = { has_planet_flag = ovo_planet@root }
+				limit = { has_carrier_flag = ovo_planet@root }
 				remove_modifier = "planet_OVO2"
 			}
 			remove_country_flag = ovo_army_destroyed
@@ -1866,7 +1866,7 @@ country_event = {
 		hidden_effect = { 
 			end_event_chain = "ovo_chain"
 			random_owned_planet = {
-				limit = { has_planet_flag = ovo_planet@root }
+				limit = { has_carrier_flag = ovo_planet@root }
 				if = {
 					limit = { 
 						ROOT = { 
@@ -2107,7 +2107,7 @@ country_event = {
 }
 
 #残忍的女海盗
-planet_event = {
+carrier_event = {
 	id = wsg.3049
 	title = wsg.3049.name
 	desc = wsg.3049.desc
@@ -3220,7 +3220,7 @@ country_event = {
 }
 
 #星球级誓约
-planet_event = {
+carrier_event = {
 	id = wsg.3077
 	title = wsg.3077.name
 	desc = wsg.3077.desc
@@ -3779,7 +3779,7 @@ country_event = {
 				destroy_colony = yes
 				change_pc = pc_nuked
 				reroll_planet = yes
-				set_planet_flag = nuked_planet_anomalies_disabled
+				set_carrier_flag = nuked_planet_anomalies_disabled
 			}
 			random_country = {
 				limit = { has_country_flag = sol_III_country }
@@ -3933,7 +3933,7 @@ ship_event = {
 }
 
 # 补充：太太触发事件
-planet_event = {
+carrier_event = {
 	id = wsg.3110
 	title = wsg.3110.name
 	desc = wsg.3110.desc
@@ -4544,7 +4544,7 @@ country_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wsg.3200
 	hide_window = yes
 	is_triggered_only = yes
@@ -4701,7 +4701,7 @@ country_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wsg.3205
 	title = wsg.3205.name
 	desc = wsg.3205.desc
@@ -4861,7 +4861,7 @@ country_event = {
 # 	}
 # }
 
-# planet_event = {
+# carrier_event = {
 # 	id = wsg.3211
 # 	title = wsg.3211.name
 # 	desc = wsg.3211.desc
@@ -4947,7 +4947,7 @@ country_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wsg.3216
 	title = "wsg.3216.name"
 	desc = "wsg.3216.desc"
@@ -5486,7 +5486,7 @@ country_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wsg.3313
 	title = "wsg.3313.name"
 	desc = "wsg.3313.desc"

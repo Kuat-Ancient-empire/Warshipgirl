@@ -1010,7 +1010,7 @@ country_event = {
 	immediate = {
         owner = {
 			capital_scope = {
-		    	planet_event = { id = wg_khan.17 days = 10 }
+		    	carrier_event = { id = wg_khan.17 days = 10 }
 			}	
 		}
 	}
@@ -1026,7 +1026,7 @@ country_event = {
 
 ######################################
 #第二阶段
-planet_event = {
+carrier_event = {
 	id = wg_khan.17
 	title = "wg_khan.17.name"
 	desc = "wg_khan.17.desc"
@@ -1646,7 +1646,7 @@ fleet_event = {
 }
 
 # Colony Bombarded ( stage 1 )
-planet_event = {
+carrier_event = {
 	id = wg_khan.101
 	title = "wg_khan.101.name"
 	picture = GFX_evt_wg_galofall
@@ -1712,7 +1712,7 @@ planet_event = {
 }
 
 # Colony Bombarded ( stage 2 )
-planet_event = {
+carrier_event = {
 	id = wg_khan.102
 	title = "wg_khan.101.name"
 	desc = "wg_khan.102.desc"
@@ -1727,7 +1727,7 @@ planet_event = {
 			is_khan_country_type = yes
 		}
 		check_variable = { which = wg_Khan_bombardment_stage value = 1 }
-		NOT = { has_planet_flag = khan_invaded_succeed_flag }
+		NOT = { has_carrier_flag = khan_invaded_succeed_flag }
 	}
 
 	immediate = {
@@ -1764,7 +1764,7 @@ planet_event = {
 }
 
 # Colony Bombarded ( stage 3 )
-planet_event = {
+carrier_event = {
 	id = wg_khan.103
 	title = "wg_khan.103.name"
 	picture = GFX_evt_big_mushroom
@@ -1791,7 +1791,7 @@ planet_event = {
 			is_khan_country_type = yes
 		}
 		check_variable = { which = wg_Khan_bombardment_stage value = 2 }
-		NOT = { has_planet_flag = khan_invaded_succeed_flag }
+		NOT = { has_carrier_flag = khan_invaded_succeed_flag }
 	}
 
 	immediate = {
@@ -1867,8 +1867,8 @@ country_event = {
 				country_event = { id = wg_khan.105 }
 				FROM = {
 					add_modifier = { modifier = "planet_Khan_occupied" days = -1}
-					planet_event = { id = wg_khan.106 days = 120 random = 180 }
-					set_timed_planet_flag = {
+					carrier_event = { id = wg_khan.106 days = 120 random = 180 }
+					set_timed_carrier_flag = {
 						flag = khan_invaded_succeed_flag
 						days = 30
 					}		
@@ -1911,7 +1911,7 @@ country_event = {
 }
 
 # 每隔数个月狂暴galo造成破坏
-planet_event = {
+carrier_event = {
 	id = wg_khan.106
 	title = "wg_khan.106.name"
 	desc = "wg_khan.106.desc"
@@ -1926,7 +1926,7 @@ planet_event = {
 	immediate = {
 		if = {
 			limit = { has_owner = yes }
-			planet_event = { id = wg_khan.106 days = 180 random = 180 }
+			carrier_event = { id = wg_khan.106 days = 180 random = 180 }
 		} else = {
 			remove_modifier = "planet_Khan_occupied"
 		}
@@ -2001,16 +2001,6 @@ planet_event = {
 					factor = 0
 					OR = {
 						num_districts = { type = any value < 5 }
-						NOT = { has_district = district_generator_uncapped }
-					}
-				}
-				remove_district = district_generator_uncapped
-			}
-			1 = {
-				modifier = {
-					factor = 0
-					OR = {
-						num_districts = { type = any value < 5 }
 						NOT = { has_district = district_mining }
 					}
 				}
@@ -2021,30 +2011,10 @@ planet_event = {
 					factor = 0
 					OR = {
 						num_districts = { type = any value < 5 }
-						NOT = { has_district = district_mining_uncapped }
-					}
-				}
-				remove_district = district_mining_uncapped
-			}
-			1 = {
-				modifier = {
-					factor = 0
-					OR = {
-						num_districts = { type = any value < 5 }
 						NOT = { has_district = district_farming }
 					}
 				}
 				remove_district = district_farming
-			}
-			1 = {
-				modifier = {
-					factor = 0
-					OR = {
-						num_districts = { type = any value < 5 }
-						NOT = { has_district = district_farming_uncapped }
-					}
-				}
-				remove_district = district_farming_uncapped
 			}
 			1 = {
 				modifier = {
@@ -2211,14 +2181,14 @@ country_event = {
 		FROM = {
 			country_event = { id = wg_khan.108 }
 			FROM = { # 一年后带可汗会再次攻击这个球
-				planet_event = { id = wg_khan.111 days = 360 }
+				carrier_event = { id = wg_khan.111 days = 360 }
 			}
 		}
 	}
 }
 
 # 将轰炸阶段设置回初始让带可汗舰队再次攻击该星球
-planet_event = {
+carrier_event = {
 	id = wg_khan.111
 	hide_window = yes
 	is_triggered_only = yes

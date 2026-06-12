@@ -884,7 +884,7 @@ country_event = {
 			}
 			# solar_system = {
 			# 	random_system_planet = {
-			# 		limit = { has_planet_flag = shop_habitat_2 }
+			# 		limit = { has_carrier_flag = shop_habitat_2 }
 			# 		save_event_target_as = shop_habitat_2
 			# 	}
 			# 	spawn_megastructure = {
@@ -895,7 +895,7 @@ country_event = {
 			# 		graphical_culture = root
 			# 	}
 			# 	random_system_planet = {
-			# 		limit = { has_planet_flag = shop_habitat_3 }
+			# 		limit = { has_carrier_flag = shop_habitat_3 }
 			# 		save_event_target_as = shop_habitat_3
 			# 	}
 			# 	spawn_megastructure = {
@@ -1608,25 +1608,25 @@ country_event = {
 
 	immediate = {
 		every_owned_planet = {
-			set_planet_flag = wg_shop_war_target_planet
+			set_carrier_flag = wg_shop_war_target_planet
 		}
 	}
 }
 
 # 解（占）放（领）一个星球
-planet_event = {
+carrier_event = {
 	id = wg_origin.43
 	hide_window = yes
 	is_triggered_only = yes
 
 	trigger = {
 		FROM = { has_country_flag = wg_shop_war_1 }
-		has_planet_flag = wg_shop_war_target_planet
+		has_carrier_flag = wg_shop_war_target_planet
 		NOT = { has_modifier = wg_shop_free_trade_planet_modifier }
 	}
 
 	immediate = {
-		remove_planet_flag = wg_shop_war_target_planet
+		remove_carrier_flag = wg_shop_war_target_planet
 		save_event_target_as = wg_shop_war_occupied_planet
 		FROM = {
 			country_event = { id = wg_origin.45 }
@@ -1691,7 +1691,7 @@ country_event = {
 			flag = lose_wg_shop_war days = 3600
 		}
 		every_owned_planet = {
-			remove_planet_flag = wg_shop_war_target_planet
+			remove_carrier_flag = wg_shop_war_target_planet
 		}
 	}
 }
@@ -1700,7 +1700,7 @@ country_event = {
 # 破坏度20%偷一产
 # 破坏度60%偷二产
 # 破坏度100%偷胖次
-planet_event = {
+carrier_event = {
 	id = wg_origin.47
 	hide_window = yes
 	is_triggered_only = yes
@@ -1711,7 +1711,7 @@ planet_event = {
 
 	trigger = {
 		has_orbital_bombardment_stance = wg_shop_raiding
-		has_planet_flag = wg_shop_war_target_planet
+		has_carrier_flag = wg_shop_war_target_planet
 		FROM = { has_country_flag = pantsu_shop_origin }
 		NOT = { has_modifier = wg_shop_free_trade_planet_modifier }
 	}
@@ -1912,7 +1912,7 @@ country_event = {
 		random_system = {
 			limit = { has_star_flag = shop_system_home }
 			random_system_planet = {
-				limit = { has_planet_flag = pantsu_home_habitat }
+				limit = { has_carrier_flag = pantsu_home_habitat }
 				add_modifier = { modifier = wg_shop_habitat_explosion_planet_modifier }
 				add_planet_devastation = 100
 				random_owned_pop_group = {
@@ -1925,7 +1925,7 @@ country_event = {
 				}
 			}
 			random_system_planet = {
-				limit = { has_planet_flag = shop_habitat_2 }
+				limit = { has_carrier_flag = shop_habitat_2 }
 				add_modifier = { modifier = wg_shop_habitat_explosion_planet_modifier }
 				add_planet_devastation = 100
 				random_owned_pop_group = {
@@ -1938,7 +1938,7 @@ country_event = {
 				}
 			}
 			random_system_planet = {
-				limit = { has_planet_flag = shop_habitat_3 }
+				limit = { has_carrier_flag = shop_habitat_3 }
 				add_modifier = { modifier = wg_shop_habitat_explosion_planet_modifier }
 				add_planet_devastation = 100
 				random_owned_pop_group = {
@@ -1969,7 +1969,7 @@ country_event = {
 
 }
 
-planet_event = {
+carrier_event = {
 	id = wg_origin.58
 	title = pantsu_shop_name
 	desc = wg_origin.58.desc
@@ -2043,7 +2043,7 @@ country_event = {
 			energy = -8000
 		}
 		random_planet_within_border = {
-			limit = { has_planet_flag = pantsu_home_habitat }
+			limit = { has_carrier_flag = pantsu_home_habitat }
 			add_deposit = d_shop_buildings_slot
 		}
 	}
@@ -2199,12 +2199,12 @@ fleet_event = {
 						set_star_flag = wg_rbq_dragon_target_system
 						random_system_planet = {
 							limit = { NOR = {
-								has_planet_flag = wg_rbq_dragon_visited
-								has_planet_flag = wg_rbq_dragon_watered
+								has_carrier_flag = wg_rbq_dragon_visited
+								has_carrier_flag = wg_rbq_dragon_watered
 								is_star = yes
 								is_capital = yes
 							}}
-							set_planet_flag = wg_rbq_dragon_target_planet
+							set_carrier_flag = wg_rbq_dragon_target_planet
 						}
 					}
 				}
@@ -2228,14 +2228,14 @@ fleet_event = {
 						find_random_planet = {
 							trigger = {
 								id = wg_origin.61.t3
-								has_planet_flag = wg_rbq_dragon_target_planet
+								has_carrier_flag = wg_rbq_dragon_target_planet
 							}
 							found_planet = { 
 								orbit_planet = this
 								effect = {
 									id = wg_origin.61.e3
-									remove_planet_flag = wg_rbq_dragon_target_planet
-									set_timed_planet_flag = {
+									remove_carrier_flag = wg_rbq_dragon_target_planet
+									set_timed_carrier_flag = {
 										flag = wg_rbq_dragon_visited
 										days = 360
 									}
@@ -2250,7 +2250,7 @@ fleet_event = {
 														1 = { change_planet_size = +2 }
 														1 = { change_planet_size = +3 }
 													}
-													set_planet_flag = wg_rbq_dragon_watered
+													set_carrier_flag = wg_rbq_dragon_watered
 													save_global_event_target_as = wg_rbq_dragon_watered_planet
 													prev = { remove_country_flag = wg_rbq_dragon_watered }
 												} else_if = {
@@ -2283,8 +2283,8 @@ fleet_event = {
 											trigger = {
 												id = wg_origin.61.t11
 												NOR = {
-													has_planet_flag = wg_rbq_dragon_visited
-													has_planet_flag = wg_rbq_dragon_watered
+													has_carrier_flag = wg_rbq_dragon_visited
+													has_carrier_flag = wg_rbq_dragon_watered
 													is_star = yes
 												}
 											}
@@ -2292,7 +2292,7 @@ fleet_event = {
 												orbit_planet = this
 												effect = {
 													id = wg_origin.61.e11
-													set_timed_planet_flag = {
+													set_timed_carrier_flag = {
 														flag = wg_rbq_dragon_visited
 														days = 360
 													}
@@ -2307,7 +2307,7 @@ fleet_event = {
 																		1 = { change_planet_size = +2 }
 																		1 = { change_planet_size = +3 }
 																	}
-																	set_planet_flag = wg_rbq_dragon_watered
+																	set_carrier_flag = wg_rbq_dragon_watered
 																	prev = { 
 																		remove_country_flag = wg_rbq_dragon_watered
 																		save_global_event_target_as = wg_rbq_dragon_watered_planet 
@@ -2748,8 +2748,8 @@ country_event = {
 			set_fleet_flag = stop_order
 		}
 		every_galaxy_planet = {
-			limit = { has_planet_flag = wg_rbq_dragon_target_planet }
-			remove_planet_flag = wg_rbq_dragon_target_planet
+			limit = { has_carrier_flag = wg_rbq_dragon_target_planet }
+			remove_carrier_flag = wg_rbq_dragon_target_planet
 		}
 		random_planet_within_border = {
 			weights = {
@@ -2775,7 +2775,7 @@ country_event = {
 				is_waterable_planet = yes
 				NOT = { is_planet_class = pc_wg_water }
 			}
-			set_planet_flag = wg_rbq_dragon_watered_planet_example
+			set_carrier_flag = wg_rbq_dragon_watered_planet_example
 			solar_system = { set_star_flag = wg_rbq_dragon_watered_system_example }
 			save_global_event_target_as = wg_rbq_dragon_watered_planet_example
 			event_target:wg_rbq_dragon_fleet = {
@@ -2794,7 +2794,7 @@ country_event = {
 							find_closest_planet = {
 								trigger = {
 									id = wg_origin.78.t1
-									has_planet_flag = wg_rbq_dragon_watered_planet_example
+									has_carrier_flag = wg_rbq_dragon_watered_planet_example
 								}
 								found_planet = {
 									orbit_planet = this
@@ -3329,7 +3329,7 @@ event = {
 	immediate = {
 		set_global_flag = 632e_update
 		random_galaxy_planet = {
-			limit = { has_planet_flag = wg_water_B_origin_planet }
+			limit = { has_carrier_flag = wg_water_B_origin_planet }
 			set_planet_size = 30
 			add_modifier = {
 				modifier = wg_origin_waterb_planet_modifier
@@ -3401,7 +3401,7 @@ country_event = {
 		}
 		random_planet_within_border = {
 			limit = {
-				has_planet_flag = wg_warhammer_neighbor_planet
+				has_carrier_flag = wg_warhammer_neighbor_planet
 			}
 			save_global_event_target_as = wg_warhammer_neighbor_planet_target
 			set_owner = root
@@ -3919,7 +3919,7 @@ country_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wg_origin.114
 	title = wg_origin.114.name
 	desc = wg_origin.114.desc
@@ -3997,13 +3997,13 @@ country_event = {
 		has_origin = origin_wg_warhammer
 		FROM = { has_country_flag = sunflower_genestealer_country_flag }
 		FROMFROM = { 
-			has_planet_flag = wg_warhammer_neighbor_planet 
+			has_carrier_flag = wg_warhammer_neighbor_planet 
 		}
 	}
 
 	immediate = {
 		FROMFROM = {
-			set_planet_flag = sunflower_genestealer_won
+			set_carrier_flag = sunflower_genestealer_won
 		}
 	}
 
@@ -4043,7 +4043,7 @@ country_event = {
 		has_origin = origin_wg_warhammer
 		FROM = { has_country_flag = sunflower_genestealer_country_flag }
 		FROMFROM = { 
-			has_planet_flag = wg_warhammer_neighbor_planet 
+			has_carrier_flag = wg_warhammer_neighbor_planet 
 		}
 	}
 
@@ -4100,7 +4100,7 @@ country_event = {
 
 	trigger = {
 		FROM = { has_origin = origin_wg_warhammer }
-		FROMFROM = { has_planet_flag = sunflower_genestealer_won }
+		FROMFROM = { has_carrier_flag = sunflower_genestealer_won }
 	}
 
 	option = {
@@ -4124,7 +4124,7 @@ country_event = {
 		name = wg_origin.120.a
 		random_planet_within_border = {
 			limit = {
-				has_planet_flag = wg_warhammer_neighbor_planet
+				has_carrier_flag = wg_warhammer_neighbor_planet
 			}
 			add_modifier = { modifier = wg_warhamme_farming_world_genestealer_modifier days = -1 }
 		}
@@ -4147,7 +4147,7 @@ country_event = {
 		name = wg_origin.121.a
 		hidden_effect = {
 			event_target:wg_warhammer_neighbor_planet_target = {
-				planet_event = { id = wg_origin.114 days = 30 } 
+				carrier_event = { id = wg_origin.114 days = 30 } 
 			}
 		}
 	}
@@ -4155,13 +4155,13 @@ country_event = {
 		name = wg_origin.121.b
 		hidden_effect = {
 			event_target:wg_warhammer_neighbor_planet_target = {
-				planet_event = { id = wg_origin.114 days = 30 } 
+				carrier_event = { id = wg_origin.114 days = 30 } 
 			}
 		}
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wg_origin.122
 	title = wg_origin.122.name
 	desc = wg_origin.122.desc
@@ -4231,7 +4231,7 @@ country_event = {
 		has_origin = origin_wg_warhammer
 		FROM = { has_country_flag = wg_chaos_country_flag }
 		FROMFROM = { 
-			has_planet_flag = planet_wg_earth 
+			has_carrier_flag = planet_wg_earth 
 		}
 	}
 	immediate = {
@@ -4263,7 +4263,7 @@ country_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wg_origin.124
 	title = "wg_origin.124.name"
 	desc = "wg_origin.124.desc"
@@ -4322,46 +4322,46 @@ country_event = {
 		random_planet_within_border = {
 			limit = { 
 				NOR = { 
-					has_planet_flag = megastructure
-					has_planet_flag = has_megastructure
-					has_planet_flag = wg_stc_planet_searched
+					has_carrier_flag = megastructure
+					has_carrier_flag = has_megastructure
+					has_carrier_flag = wg_stc_planet_searched
 					is_ringworld = yes
 					is_artificial = yes
 					is_planet_class = pc_habitat
 					is_star = yes
 				}
 			}
-			set_planet_flag = wg_stc_planet_searched
+			set_carrier_flag = wg_stc_planet_searched
 			save_global_event_target_as = wg_stc_planet_1
 		}
 		random_planet_within_border = {
 			limit = { 
 				NOR = { 
-					has_planet_flag = megastructure
-					has_planet_flag = has_megastructure
-					has_planet_flag = wg_stc_planet_searched
+					has_carrier_flag = megastructure
+					has_carrier_flag = has_megastructure
+					has_carrier_flag = wg_stc_planet_searched
 					is_ringworld = yes
 					is_artificial = yes
 					is_planet_class = pc_habitat
 					is_star = yes
 				}
 			}
-			set_planet_flag = wg_stc_planet_searched
+			set_carrier_flag = wg_stc_planet_searched
 			save_global_event_target_as = wg_stc_planet_2
 		}
 		random_planet_within_border = {
 			limit = { 
 				NOR = { 
-					has_planet_flag = megastructure
-					has_planet_flag = has_megastructure
-					has_planet_flag = wg_stc_planet_searched
+					has_carrier_flag = megastructure
+					has_carrier_flag = has_megastructure
+					has_carrier_flag = wg_stc_planet_searched
 					is_ringworld = yes
 					is_artificial = yes
 					is_planet_class = pc_habitat
 					is_star = yes
 				}
 			}
-			set_planet_flag = wg_stc_planet_searched
+			set_carrier_flag = wg_stc_planet_searched
 			save_global_event_target_as = wg_stc_planet_3
 		}
 		
@@ -4371,16 +4371,16 @@ country_event = {
 				random_planet_within_border = {
 					limit = { 
 						NOR = { 
-							has_planet_flag = megastructure
-							has_planet_flag = has_megastructure
-							has_planet_flag = wg_stc_planet_searched
+							has_carrier_flag = megastructure
+							has_carrier_flag = has_megastructure
+							has_carrier_flag = wg_stc_planet_searched
 							is_ringworld = yes
 							is_artificial = yes
 							is_planet_class = pc_habitat
 						}
 						is_star = no
 					}
-					set_planet_flag = wg_stc_planet_searched
+					set_carrier_flag = wg_stc_planet_searched
 					save_global_event_target_as = wg_stc_planet_4
 				}
 			}
@@ -4389,16 +4389,16 @@ country_event = {
 					random_system_planet = {
 						limit = { 
 							NOR = { 
-								has_planet_flag = megastructure
-								has_planet_flag = has_megastructure
-								has_planet_flag = wg_stc_planet_searched
+								has_carrier_flag = megastructure
+								has_carrier_flag = has_megastructure
+								has_carrier_flag = wg_stc_planet_searched
 								is_ringworld = yes
 								is_artificial = yes
 								is_planet_class = pc_habitat
 							}
 							is_star = no
 						}
-						set_planet_flag = wg_stc_planet_searched
+						set_carrier_flag = wg_stc_planet_searched
 						save_global_event_target_as = wg_stc_planet_4
 					}
 				}
@@ -4409,16 +4409,16 @@ country_event = {
 				random_planet_within_border = {
 					limit = { 
 						NOR = { 
-							has_planet_flag = megastructure
-							has_planet_flag = has_megastructure
-							has_planet_flag = wg_stc_planet_searched
+							has_carrier_flag = megastructure
+							has_carrier_flag = has_megastructure
+							has_carrier_flag = wg_stc_planet_searched
 							is_ringworld = yes
 							is_artificial = yes
 							is_planet_class = pc_habitat
 						}
 						is_star = no
 					}
-					set_planet_flag = wg_stc_planet_searched
+					set_carrier_flag = wg_stc_planet_searched
 					save_global_event_target_as = wg_stc_planet_5
 				}
 			}
@@ -4427,16 +4427,16 @@ country_event = {
 					random_system_planet = {
 						limit = { 
 							NOR = { 
-								has_planet_flag = megastructure
-								has_planet_flag = has_megastructure
-								has_planet_flag = wg_stc_planet_searched
+								has_carrier_flag = megastructure
+								has_carrier_flag = has_megastructure
+								has_carrier_flag = wg_stc_planet_searched
 								is_ringworld = yes
 								is_artificial = yes
 								is_planet_class = pc_habitat
 							}
 							is_star = no
 						}
-						set_planet_flag = wg_stc_planet_searched
+						set_carrier_flag = wg_stc_planet_searched
 						save_global_event_target_as = wg_stc_planet_5
 					}
 				}
@@ -4446,16 +4446,16 @@ country_event = {
 			random_system_planet = {
 				limit = { 
 					NOR = { 
-						has_planet_flag = megastructure
-						has_planet_flag = has_megastructure
-						has_planet_flag = wg_stc_planet_searched
+						has_carrier_flag = megastructure
+						has_carrier_flag = has_megastructure
+						has_carrier_flag = wg_stc_planet_searched
 						is_ringworld = yes
 						is_artificial = yes
 						is_planet_class = pc_habitat
 					}
 					is_star = no
 				}
-				set_planet_flag = wg_stc_planet_searched
+				set_carrier_flag = wg_stc_planet_searched
 				save_global_event_target_as = wg_stc_planet_6
 			}
 		}
@@ -4464,16 +4464,16 @@ country_event = {
 				random_planet_within_border = {
 					limit = { 
 						NOR = { 
-							has_planet_flag = megastructure
-							has_planet_flag = has_megastructure
-							has_planet_flag = wg_stc_planet_searched
+							has_carrier_flag = megastructure
+							has_carrier_flag = has_megastructure
+							has_carrier_flag = wg_stc_planet_searched
 							is_ringworld = yes
 							is_artificial = yes
 							is_planet_class = pc_habitat
 						}
 						is_star = no
 					}
-					set_planet_flag = wg_stc_planet_searched
+					set_carrier_flag = wg_stc_planet_searched
 					save_global_event_target_as = wg_stc_planet_7
 				}
 			}
@@ -4482,16 +4482,16 @@ country_event = {
 					random_system_planet = {
 						limit = { 
 							NOR = { 
-								has_planet_flag = megastructure
-								has_planet_flag = has_megastructure
-								has_planet_flag = wg_stc_planet_searched
+								has_carrier_flag = megastructure
+								has_carrier_flag = has_megastructure
+								has_carrier_flag = wg_stc_planet_searched
 								is_ringworld = yes
 								is_artificial = yes
 								is_planet_class = pc_habitat
 							}
 							is_star = no
 						}
-						set_planet_flag = wg_stc_planet_searched
+						set_carrier_flag = wg_stc_planet_searched
 						save_global_event_target_as = wg_stc_planet_7
 					}
 				}
@@ -4502,16 +4502,16 @@ country_event = {
 				random_planet_within_border = {
 					limit = { 
 						NOR = { 
-							has_planet_flag = megastructure
-							has_planet_flag = has_megastructure
-							has_planet_flag = wg_stc_planet_searched
+							has_carrier_flag = megastructure
+							has_carrier_flag = has_megastructure
+							has_carrier_flag = wg_stc_planet_searched
 							is_ringworld = yes
 							is_artificial = yes
 							is_planet_class = pc_habitat
 						}
 						is_star = no
 					}
-					set_planet_flag = wg_stc_planet_searched
+					set_carrier_flag = wg_stc_planet_searched
 					save_global_event_target_as = wg_stc_planet_8
 				}
 			}
@@ -4520,16 +4520,16 @@ country_event = {
 					random_system_planet = {
 						limit = { 
 							NOR = { 
-								has_planet_flag = megastructure
-								has_planet_flag = has_megastructure
-								has_planet_flag = wg_stc_planet_searched
+								has_carrier_flag = megastructure
+								has_carrier_flag = has_megastructure
+								has_carrier_flag = wg_stc_planet_searched
 								is_ringworld = yes
 								is_artificial = yes
 								is_planet_class = pc_habitat
 							}
 							is_star = no
 						}
-						set_planet_flag = wg_stc_planet_searched
+						set_carrier_flag = wg_stc_planet_searched
 						save_global_event_target_as = wg_stc_planet_8
 					}
 				}
@@ -4539,16 +4539,16 @@ country_event = {
 			random_system_planet = {
 				limit = { 
 					NOR = { 
-						has_planet_flag = megastructure
-						has_planet_flag = has_megastructure
-						has_planet_flag = wg_stc_planet_searched
+						has_carrier_flag = megastructure
+						has_carrier_flag = has_megastructure
+						has_carrier_flag = wg_stc_planet_searched
 						is_ringworld = yes
 						is_artificial = yes
 						is_planet_class = pc_habitat
 					}
 					is_star = no
 				}
-				set_planet_flag = wg_stc_planet_searched
+				set_carrier_flag = wg_stc_planet_searched
 				save_global_event_target_as = wg_stc_planet_9
 			}
 		}
@@ -4556,16 +4556,16 @@ country_event = {
 			random_system_planet = {
 				limit = { 
 					NOR = { 
-						has_planet_flag = megastructure
-						has_planet_flag = has_megastructure
-						has_planet_flag = wg_stc_planet_searched
+						has_carrier_flag = megastructure
+						has_carrier_flag = has_megastructure
+						has_carrier_flag = wg_stc_planet_searched
 						is_ringworld = yes
 						is_artificial = yes
 						is_planet_class = pc_habitat
 					}
 					is_star = no
 				}
-				set_planet_flag = wg_stc_planet_searched
+				set_carrier_flag = wg_stc_planet_searched
 				save_global_event_target_as = wg_stc_planet_10
 			}
 		}
@@ -5272,7 +5272,7 @@ country_event = {
 						}	
 					}
 					every_system_planet = {
-						planet_event = { id = wg_origin.202 days = 90 }
+						carrier_event = { id = wg_origin.202 days = 90 }
 					}
 				}
 			}
@@ -5284,7 +5284,7 @@ country_event = {
 		set_update_modifiers_batch = end
 	}
 }
-planet_event = {
+carrier_event = {
 	id = wg_origin.202
 	title = "wg_origin.202.name"
 	desc = "wg_origin.202.desc"
@@ -5659,7 +5659,7 @@ country_event = {
 	}
 	immediate = {
 		FromFrom= {
-			planet_event = {
+			carrier_event = {
 				id = wg_origin.212 days = 360
 			}
 		}
@@ -5668,7 +5668,7 @@ country_event = {
 		name = wg_origin.202.a
 	}
 }
-planet_event = {
+carrier_event = {
 	id = wg_origin.212
 	title = "wg_origin.212.name"
 	desc = "wg_origin.212.desc"
@@ -7107,7 +7107,7 @@ country_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wg_origin.259
 	hide_window = yes
 	is_triggered_only = yes
@@ -7414,12 +7414,12 @@ country_event = {
 		name = "wg_origin.268.a"
 		custom_tooltip = wg_origin.268.a.tooltip
 		event_target:wg_krieg_planet_location = {
-			planet_event = { id = wg_origin.269 days = 3 }
+			carrier_event = { id = wg_origin.269 days = 3 }
 		}
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wg_origin.269
 	title = wg_origin.269.name
 	desc = wg_origin.269.desc
@@ -7509,7 +7509,7 @@ country_event = {
 		has_origin = origin_wg_warhammer
 		FROM = { has_country_flag = wg_chaos_country_flag }
 		FROMFROM = { 
-			has_planet_flag = wg_krieg_planet 
+			has_carrier_flag = wg_krieg_planet 
 		}
 	}
 	option = {
@@ -7550,7 +7550,7 @@ country_event = {
 }
 
 
-planet_event = {
+carrier_event = {
 	id = wg_origin.272
 	title = "wg_origin.272.name"
 	desc = "wg_origin.272.desc"
@@ -7559,11 +7559,11 @@ planet_event = {
 	#is_triggered_only = yes
 
 	trigger = {
-		has_planet_flag = wg_krieg_planet
+		has_carrier_flag = wg_krieg_planet
 		owner = { NOT = { has_country_flag = lose_krieg }}
 		NOR = { 
-			has_planet_flag = wg_krieg_planet_chaos_won #混沌陆军胜利
-			has_planet_flag = wg_krieg_chaos_fleet_won #混沌海军胜利
+			has_carrier_flag = wg_krieg_planet_chaos_won #混沌陆军胜利
+			has_carrier_flag = wg_krieg_chaos_fleet_won #混沌海军胜利
 		}
 	}
 
@@ -7652,14 +7652,14 @@ country_event = {
 		}
 		hidden_effect = {
 			event_target:wg_krieg_planet_location = {
-				planet_event = { id = wg_origin.276 days = 30 }
+				carrier_event = { id = wg_origin.276 days = 30 }
 			}
 			country_event = { id = wg_origin.278 days = 40 }
 		}
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wg_origin.276
 	title = wg_origin.276.name
 	desc = wg_origin.276.desc
@@ -7745,7 +7745,7 @@ country_event = {
 		has_origin = origin_wg_warhammer
 		FROM = { has_country_flag = wg_chaos_ground_army_country_flag }
 		FROMFROM = { 
-			has_planet_flag = wg_krieg_planet 
+			has_carrier_flag = wg_krieg_planet 
 		}
 	}
 	
@@ -8027,13 +8027,13 @@ country_event = {
 		has_origin = origin_wg_warhammer
 		FROM = { has_country_flag = wg_chaos_ground_army_country_flag }
 		FROMFROM = { 
-			has_planet_flag = wg_krieg_planet 
+			has_carrier_flag = wg_krieg_planet 
 		}
 	}
 
 	immediate = {
 		FROMFROM = {
-			set_planet_flag = wg_krieg_planet_chaos_won
+			set_carrier_flag = wg_krieg_planet_chaos_won
 		}
 		country_event = { id = wg_origin.288 days = 1800 } #如果克里格失守5年未能夺回触发
 	}
@@ -8071,7 +8071,7 @@ country_event = {
 	trigger = {
 		exists = event_target:wg_krieg_planet_location
 		event_target:wg_krieg_planet_location = {
-			has_planet_flag = wg_krieg_planet_chaos_won 
+			has_carrier_flag = wg_krieg_planet_chaos_won 
 			is_colony = yes
 		}	
 		NOT = {
@@ -8112,10 +8112,10 @@ country_event = {
 
 	trigger = {
 		FROM = { has_origin = origin_wg_warhammer }
-		FROMFROM = { has_planet_flag = wg_krieg_planet_chaos_won }
+		FROMFROM = { has_carrier_flag = wg_krieg_planet_chaos_won }
 	}
 	immediate = {
-		FROMFROM = { remove_planet_flag = wg_krieg_planet_chaos_won }
+		FROMFROM = { remove_carrier_flag = wg_krieg_planet_chaos_won }
 		change_variable = {
 			which = wg_krieg_win
 			value = 1
@@ -8175,7 +8175,7 @@ country_event = {
 	}
 	immediate = {
 		event_target:wg_krieg_planet_location = {
-		    set_planet_flag = wg_krieg_chaos_fleet_won
+		    set_carrier_flag = wg_krieg_chaos_fleet_won
 			change_pc = pc_shattered
 			remove_all_buildings = yes
 			every_owned_pop_group = {
@@ -8484,7 +8484,7 @@ country_event = {
 				owner = root
 			}
 			every_system_planet = {
-				limit = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+				limit = { has_carrier_flag = wg_unsolve_soul_ancient_planet }
 				set_owner = root
 				set_controller = root
 				create_pop_group = { size = 4500 species = root.owner_species }
@@ -8532,7 +8532,7 @@ country_event = {
 		hidden_effect = {
 			event_target:wg_unsolve_soul_ancient_system = {
 				every_system_planet = {
-					limit = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+					limit = { has_carrier_flag = wg_unsolve_soul_ancient_planet }
 					while = {
 						count = 30
 						create_army = {
@@ -8565,7 +8565,7 @@ country_event = {
 	picture = GFX_evt_burning_settlement
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		fromfrom = { has_carrier_flag = wg_unsolve_soul_ancient_planet }
 		has_origin = origin_wg_warhammer
 		NOT = { is_variable_set = wg_warhamme_unsolve_soul_win }
 		from = { is_same_value = event_target:wg_nicron_country }
@@ -8681,7 +8681,7 @@ country_event = {
 	picture = GFX_evt_rift_sphere
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		fromfrom = { has_carrier_flag = wg_unsolve_soul_ancient_planet }
 		has_origin = origin_wg_warhammer
 		check_variable = { which = wg_warhamme_unsolve_soul_win value = 1 }
 		from = { is_same_value = event_target:wg_nicron_country }
@@ -8790,7 +8790,7 @@ country_event = {
 				}
 			}
 			every_system_planet = {
-				limit = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+				limit = { has_carrier_flag = wg_unsolve_soul_ancient_planet }
 				while = {
 					count = 5
 					create_army = {
@@ -8831,7 +8831,7 @@ country_event = {
 	picture = GFX_evt_interior_battle
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		fromfrom = { has_carrier_flag = wg_unsolve_soul_ancient_planet }
 		has_origin = origin_wg_warhammer
 		check_variable = { which = wg_warhamme_unsolve_soul_win value = 3 }
 		from = { is_same_value = event_target:wg_nicron_country }
@@ -8873,7 +8873,7 @@ country_event = {
 				}
 			}
 			every_system_planet = {
-				limit = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+				limit = { has_carrier_flag = wg_unsolve_soul_ancient_planet }
 				while = {
 					count = 10
 					create_army = {
@@ -8916,7 +8916,7 @@ country_event = {
 	trigger = {
 		fromfrom = { 
 			is_colony = yes
-			has_planet_flag = wg_unsolve_soul_ancient_planet 
+			has_carrier_flag = wg_unsolve_soul_ancient_planet 
 		}
 		has_origin = origin_wg_warhammer
 		check_variable = { which = wg_warhamme_unsolve_soul_win value = 4 }
@@ -8950,7 +8950,7 @@ country_event = {
 	is_triggered_only = yes
 	trigger = {
 		exists = from
-		from = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		from = { has_carrier_flag = wg_unsolve_soul_ancient_planet }
 		has_origin = origin_wg_warhammer
 		check_variable = { which = wg_warhamme_unsolve_soul_win value = 5 }
 	}
@@ -9039,7 +9039,7 @@ country_event = {
 	picture = GFX_evt_crisis_defeated
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		fromfrom = { has_carrier_flag = wg_unsolve_soul_ancient_planet }
 		has_origin = origin_wg_warhammer
 		check_variable = { which = wg_warhamme_unsolve_soul_win value = 6 }
 		from = { is_same_value = event_target:wg_nicron_country }
@@ -9087,7 +9087,7 @@ country_event = {
 	picture = GFX_evt_interior_battle
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+		fromfrom = { has_carrier_flag = wg_unsolve_soul_ancient_planet }
 		has_origin = origin_wg_warhammer
 		OR = {
 			check_variable = { which = wg_warhamme_unsolve_soul_win value = 3 }
@@ -9099,7 +9099,7 @@ country_event = {
 	immediate = {
 		event_target:wg_unsolve_soul_ancient_system = {
 			every_system_planet = {
-				limit = { has_planet_flag = wg_unsolve_soul_ancient_planet }
+				limit = { has_carrier_flag = wg_unsolve_soul_ancient_planet }
 				if = {
 					limit = { check_variable = { which = wg_warhamme_unsolve_soul_win value = 3 } }
 					while = {

@@ -63,7 +63,7 @@ country_event = {
 	}
 }
 # Colony Bombarded
-planet_event = {
+carrier_event = {
 	id = wg_crisis.10
 	title = "wg_crisis.10.name"
 	desc = "wg_crisis.10.desc"
@@ -88,8 +88,8 @@ planet_event = {
 			} 
 		}
 		if = {
-			limit = { has_planet_flag = phaseshifting_active }
-			remove_planet_flag = phaseshifting_active
+			limit = { has_carrier_flag = phaseshifting_active }
+			remove_carrier_flag = phaseshifting_active
 			remove_modifier = phaseshifted
 		}
 		every_fleet_in_orbit = {
@@ -98,7 +98,7 @@ planet_event = {
 				log = "planet destoryed! planet_count: [this.planet_count]"
 			}
 		}
-		remove_planet_flag = uf_target
+		remove_carrier_flag = uf_target
 		add_threat = { who = from amount = 2 }
 		destroy_colony = yes
 		if = {
@@ -505,7 +505,7 @@ fleet_event = {
 	}
 }
 # 联合星爆触发
-planet_event = {
+carrier_event = {
 	id = wg_crisis.81
 	is_triggered_only = yes
 	hide_window = yes
@@ -519,7 +519,7 @@ planet_event = {
 				amount = 1
 			}
 		}
-		set_planet_flag = uf_destroyed_planet
+		set_carrier_flag = uf_destroyed_planet
 		solar_system = {
 			clear_variable = fleet_id
 			save_event_target_as = uf_destroyed_system
@@ -885,8 +885,8 @@ country_event = {
 		set_timed_global_flag = { flag = recheck_planet days = 1 }
 		set_variable = { which = planet_count value = 0 }
 		every_galaxy_planet = {
-			limit = { has_planet_flag = uf_target }
-			remove_planet_flag = uf_target
+			limit = { has_carrier_flag = uf_target }
+			remove_carrier_flag = uf_target
 		}
 		every_galaxy_planet = {
 			limit = { 
@@ -894,7 +894,7 @@ country_event = {
 				owner = { is_hostile = root }
 				is_colony = yes
 			}
-			set_planet_flag = uf_target
+			set_carrier_flag = uf_target
 			ROOT = { change_variable = { which = planet_count value = 1 }}
 		}
 		log = "new planet_count: [this.planet_count]"

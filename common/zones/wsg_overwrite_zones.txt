@@ -23,8 +23,12 @@ zone_urban = {
 
 	resources = {
 		category = planet_zones
-		cost = {
-			minerals = @zone_cost
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @zone_cost
+			NOMADIC_COST_MULT = 0.5
 		}
 	}
 
@@ -97,6 +101,7 @@ zone_industrial = {
 	inline_script = {
 		script = zones/shared_industrial_zone
 		AMOUNT = @scaling_district_2_jobs
+		LARGE_AMOUNT = @scaling_district_2_jobs
 	}
 
 	zone_sets = {
@@ -143,6 +148,7 @@ zone_foundry = {
 	inline_script = {
 		script = zones/shared_industrial_foundry_zone
 		AMOUNT = @scaling_district_1_job
+		LARGE_AMOUNT = @scaling_district_1_job
 	}
 
 	zone_sets = {
@@ -236,8 +242,12 @@ zone_research_unity = {
 
 	resources = {
 		category = planet_zones
-		cost = {
-			minerals = @zone_cost
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @zone_cost
+			NOMADIC_COST_MULT = 0.5
 		}
 	}
 
@@ -354,6 +364,10 @@ zone_research_physics = {
 		AMOUNT = @scaling_district_1_job
 	}
 
+	inline_script = {
+		script = zones/potential_no_wilderness
+	}
+
 	zone_sets = {
 		urban
 		habitat_research
@@ -401,6 +415,10 @@ zone_research_society = {
 		AMOUNT = @scaling_district_1_job
 	}
 
+	inline_script = {
+		script = zones/potential_no_wilderness
+	}
+
 	zone_sets = {
 		urban
 		habitat_research
@@ -446,6 +464,10 @@ zone_research_engineering = {
 	inline_script = {
 		script = zones/shared_research_engineering_zone
 		AMOUNT = @scaling_district_1_job
+	}
+
+	inline_script = {
+		script = zones/potential_no_wilderness
 	}
 
 	zone_sets = {
@@ -703,8 +725,12 @@ zone_subterranean_urban = {
 
 	resources = {
 		category = planet_zones
-		cost = {
-			minerals = @zone_cost
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @zone_cost
+			NOMADIC_COST_MULT = 0.5
 		}
 	}
 
@@ -797,8 +823,12 @@ zone_agrarian_urban = {
 
 	resources = {
 		category = planet_zones
-		cost = {
-			minerals = @zone_cost
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @zone_cost
+			NOMADIC_COST_MULT = 0.5
 		}
 	}
 
@@ -866,6 +896,10 @@ zone_minerals = {
 	}
 
 	show_in_tech = tech_mineral_purification_1
+	show_tech_unlock_if = {
+		is_nomadic = no
+	}
+
 	convert_to = {
 		ag_double_zone_minerals_01
 		ag_double_zone_minerals_02
@@ -957,6 +991,10 @@ zone_rare_crystals = {
 		minerals
 	}
 
+	show_tech_unlock_if = {
+		is_nomadic = no
+	}
+
 	show_in_tech = tech_mine_rare_crystals
 	convert_to = {
 		ag_double_zone_minerals_rare_crystals_01
@@ -999,6 +1037,7 @@ zone_energy = {
 	zone_sets = {
 		energy
 		habitat_energy
+		ark_reactor
 	}
 
 	show_in_tech = tech_power_hub_1
@@ -1045,6 +1084,10 @@ zone_volatile_motes = {
 
 	zone_sets = {
 		energy
+	}
+
+	show_tech_unlock_if = {
+		is_nomadic = no
 	}
 
 	show_in_tech = tech_mine_volatile_motes
@@ -1132,7 +1175,12 @@ zone_anglers = {
 			exists = owner
 			owner = { is_anglers_empire = yes }
 		}
-		is_wet = yes
+		OR = {
+			is_wet = yes
+			owner = {
+				is_nomadic = yes
+			}
+		}
 	}
 
 	unlock = { # planet scope
@@ -1140,13 +1188,22 @@ zone_anglers = {
 			exists = owner
 			owner = { is_anglers_empire = yes }
 		}
-		is_wet = yes
+		OR = {
+			is_wet = yes
+			owner = {
+				is_nomadic = yes
+			}
+		}
 	}
 
 	resources = {
 		category = planet_zones
-		cost = {
-			minerals = @zone_cost
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @zone_cost
+			NOMADIC_COST_MULT = 0.5
 		}
 	}
 
@@ -1158,6 +1215,7 @@ zone_anglers = {
 	inline_script = {
 		script = jobs/zone_factory_add
 		AMOUNT = @scaling_district_2_jobs
+		LARGE_AMOUNT = @bonus_scaling_district_2_jobs
 	}
 
 	zone_sets = {
@@ -1225,6 +1283,10 @@ zone_exotic_gases = {
 		food
 	}
 
+	show_tech_unlock_if = {
+		is_nomadic = no
+	}
+
 	show_in_tech = tech_mine_exotic_gases
 	convert_to = {
 		ag_double_zone_food_01
@@ -1265,6 +1327,7 @@ zone_industrial_ring_world = {
 	inline_script = {
 		script = zones/shared_industrial_zone
 		AMOUNT = @doubled_scaling_district_2_jobs
+		LARGE_AMOUNT = @doubled_scaling_district_2_jobs
 	}
 
 	swap_type = district_ring_world_industrial
@@ -1303,6 +1366,7 @@ zone_foundry_ring_world = {
 	inline_script = {
 		script = zones/shared_industrial_foundry_zone
 		AMOUNT = @doubled_scaling_district_1_job
+		LARGE_AMOUNT = @doubled_scaling_district_1_job
 	}
 	swap_type = district_ring_world_foundry
 	swap_type_weight = 5
@@ -1412,6 +1476,10 @@ zone_research_physics_ring_world = {
 		AMOUNT = @doubled_scaling_district_1_job
 	}
 
+	inline_script = {
+		script = zones/potential_no_wilderness
+	}
+
 	swap_type = district_ring_world_research_physics
 	swap_type_weight = 5
 
@@ -1448,6 +1516,10 @@ zone_research_society_ring_world = {
 		AMOUNT = @doubled_scaling_district_1_job
 	}
 
+	inline_script = {
+		script = zones/potential_no_wilderness
+	}
+
 	swap_type = district_ring_world_research_society
 	swap_type_weight = 5
 
@@ -1482,6 +1554,10 @@ zone_research_engineering_ring_world = {
 	inline_script = {
 		script = zones/shared_research_engineering_zone
 		AMOUNT = @doubled_scaling_district_1_job
+	}
+
+	inline_script = {
+		script = zones/potential_no_wilderness
 	}
 
 	swap_type = district_ring_world_research_engineering
@@ -1595,6 +1671,10 @@ zone_unity_bio_trophy_ring_world = {
 
 	zone_sets = {
 		ring_world
+	}
+
+	triggered_district_planet_modifier = {
+		planet_housing_add = -1500
 	}
 
 	convert_to = {

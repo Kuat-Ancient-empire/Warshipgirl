@@ -2962,7 +2962,7 @@ country_event = {
 	}
 }
 #铁罐侍女技能
-planet_event = {
+carrier_event = {
 	id = wg_paragon.1003
 	hide_window = yes
 	is_triggered_only = yes
@@ -3268,26 +3268,26 @@ country_event = {
 }
 
 #不惧技能
-planet_event = {
+carrier_event = {
 	id = wg_paragon.1019
 	hide_window = yes
 	is_triggered_only = yes
 
 	# Prevent duplicate events
 	trigger = {
-		not = { has_planet_flag = checking_wg_impavido }
+		not = { has_carrier_flag = checking_wg_impavido }
 	}
 
 	immediate = {
-		set_planet_flag = checking_wg_impavido # Prevent duplicate events
-		planet_event = {
+		set_carrier_flag = checking_wg_impavido # Prevent duplicate events
+		carrier_event = {
 			id = wg_paragon.1020
 			days = 10
 		}
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wg_paragon.1020
 	hide_window = yes
 	is_triggered_only = yes
@@ -3295,7 +3295,7 @@ planet_event = {
 	immediate = {
 		if = {
 			limit = { has_ground_combat = no }
-			remove_planet_flag = checking_wg_impavido
+			remove_carrier_flag = checking_wg_impavido
 		}
 		else = {
 			# Handle both sides of the ground combat
@@ -3303,7 +3303,7 @@ planet_event = {
 			random_kill_army_if_IMPAVIDO = { SIDE_A = defender SIDE_B = attacker }
 	
 			# Do the same check again in X days
-			planet_event = { id = wg_paragon.1020 days = 10 } # NOTE: Update custom loc for effect when changing days
+			carrier_event = { id = wg_paragon.1020 days = 10 } # NOTE: Update custom loc for effect when changing days
 		}
 	}
 }

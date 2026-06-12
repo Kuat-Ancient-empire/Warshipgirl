@@ -14,7 +14,7 @@ country_event = {
 				exists = capital_scope
 				capital_scope = { OR = {
 					is_planet_class = pc_dyson_ring
-					has_planet_flag = port_home
+					has_carrier_flag = port_home
 				} }
 			}
 			if = {
@@ -22,8 +22,8 @@ country_event = {
 				set_global_flag = spawned_wg_dyson_ring
 			}
 			if = {
-				limit = { capital_scope = { has_planet_flag = port_home } }
-				set_country_flag = clovertheater_planet_flag
+				limit = { capital_scope = { has_carrier_flag = port_home } }
+				set_country_flag = clovertheater_carrier_flag
 			}
 		}
 		if = {
@@ -50,7 +50,7 @@ country_event = {
 				limit = { has_authority = auth_warshipgirls }
 				set_country_flag = f_wsg_country
 				give_technology = { tech = tech_powered_exoskeletons message = no } #外骨骼动力
-				capital_scope = { planet_event = { id = wsg.3000 days = 720 random = 720 } }
+				capital_scope = { carrier_event = { id = wsg.3000 days = 720 random = 720 } }
 			}
 			# 防机械叛乱
 			if = {
@@ -77,7 +77,7 @@ country_event = {
 				if = {
 					limit = { has_authority = auth_warshipgirls }
 					capital_scope = {
-						planet_event = { id = wsgancrel.4 days = 360 random = 720 }
+						carrier_event = { id = wsgancrel.4 days = 360 random = 720 }
 					}
 					country_event = { id = wsgancrel.31 days = 3600 random = 1800 }
 				}
@@ -109,7 +109,7 @@ country_event = {
 				}
 				capital_scope = {
 					if = {
-						limit = { NOT = { has_planet_flag = wg_ring_world_start_planet } }
+						limit = { NOT = { has_carrier_flag = wg_ring_world_start_planet } }
 						add_district = district_farming
 						add_district = district_generator
 						add_district = district_mining
@@ -134,7 +134,7 @@ country_event = {
 				limit = { 
 					has_authority = auth_warshipgirls  
 					NOT = { has_country_flag = port_home_deposit }
-					capital_scope = { has_planet_flag = port_home }
+					capital_scope = { has_carrier_flag = port_home }
 				}
 				set_country_flag = port_home_deposit
 				capital_scope = {
@@ -155,8 +155,8 @@ country_event = {
 			if = {
 				limit = { has_civic = civic_sunflower }
 				capital_scope = {
-					set_planet_flag = sunflower_lv1
-					set_planet_flag = sunflower_lv2
+					set_carrier_flag = sunflower_lv1
+					set_carrier_flag = sunflower_lv2
 					add_building = building_sunflower_temple
 					create_species = {
 						name = "NAME_xie_sunflower"
@@ -214,9 +214,9 @@ country_event = {
 			if = {
 				limit = { has_civic = civic_wsg_drg }
 				random_planet_within_border = {
-					limit = { has_planet_flag = wg_civic_drg_planet }
+					limit = { has_carrier_flag = wg_civic_drg_planet }
 					save_event_target_as = wg_drg_planet_target
-					set_planet_flag = megastructure
+					set_carrier_flag = megastructure
 					clear_deposits = yes
 					if = {
 						limit = { has_orbital_station = yes }
@@ -512,7 +512,7 @@ country_event = {
 					}
 				}
 				if = {
-					limit = { has_planet_flag = wg_ring_world_start_planet }
+					limit = { has_carrier_flag = wg_ring_world_start_planet }
 					while = {
 						count = 2
 						remove_district = district_rw_commercial
@@ -1396,7 +1396,7 @@ country_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wsg.20122
 	hide_window = yes
 	is_triggered_only = yes
@@ -2548,20 +2548,20 @@ country_event = {
         every_owned_planet = {
 			if = {
 				limit = { root = { has_civic = civic_sunflower }}
-				planet_event = { id = wsg.9911 }
+				carrier_event = { id = wsg.9911 }
 			}
 			if = {
 				limit = { OR = { 
 					has_building = building_alien_slicer_sh 
 					has_building = building_alien_slicer_wsg 
 				}}
-				planet_event = { id = wsg.9912 }
+				carrier_event = { id = wsg.9912 }
 			}
 		}
 	}	
 }
 # 向日葵熔炉
-planet_event = {
+carrier_event = {
 	id = wsg.9911
 	hide_window = yes
 	is_triggered_only = yes
@@ -2572,14 +2572,14 @@ planet_event = {
 				count >= 1
 				limit = { species = { has_trait = trait_wg_sunflower }}
 			}}
-			set_planet_flag = can_build_wsg_sunflower_foundry
+			set_carrier_flag = can_build_wsg_sunflower_foundry
 		} else = {
-			remove_planet_flag = can_build_wsg_sunflower_foundry
+			remove_carrier_flag = can_build_wsg_sunflower_foundry
 		}
 	}
 }
 #生物质工厂
-planet_event = {
+carrier_event = {
 	id = wsg.9912
 	hide_window = yes
 	is_triggered_only = yes
@@ -2595,10 +2595,10 @@ planet_event = {
 					}
 				}	
 			}
-			set_planet_flag = alien_slicer_4
+			set_carrier_flag = alien_slicer_4
 		}
 		else = {
-			remove_planet_flag = alien_slicer_4
+			remove_carrier_flag = alien_slicer_4
 		}
 		if = {
 			limit = {
@@ -2608,10 +2608,10 @@ planet_event = {
 					}
 				}	
 			}
-			set_planet_flag = alien_slicer_2
+			set_carrier_flag = alien_slicer_2
 		}
 		else = {
-			remove_planet_flag = alien_slicer_2
+			remove_carrier_flag = alien_slicer_2
 		}	
 	}
 }
@@ -2764,7 +2764,7 @@ country_event = {
 }
 
 # 触发自动补buff后每4800天加buff扣电
-# planet_event = {
+# carrier_event = {
 # 	id = wsg.9991
 # 	hide_window = yes
 # 	is_triggered_only = yes
@@ -2823,7 +2823,7 @@ country_event = {
 }
 
 # 深海触发自动补buff后每4800天加buff扣电
-# planet_event = {
+# carrier_event = {
 # 	id = wsg.9993
 # 	hide_window = yes
 # 	is_triggered_only = yes
@@ -2845,7 +2845,7 @@ country_event = {
 # }
 
 # 星球殖民后加buff
-planet_event = {
+carrier_event = {
 	id = wsg.9994
 	hide_window = yes
 	is_triggered_only = yes
@@ -2972,7 +2972,7 @@ country_event = {
 	}
 }
 
-planet_event = {
+carrier_event = {
 	id = wsg.9995
 	title = wsg.9995.name
 	desc = wsg.9995.desc
@@ -3646,7 +3646,7 @@ country_event = {
 		}
 		every_owned_planet = {
 			limit = {
-				NOT = { has_planet_flag = timed_kill_pop_ptc_flag }
+				NOT = { has_carrier_flag = timed_kill_pop_ptc_flag }
 			}
 			if = {
 				limit = {
@@ -3671,19 +3671,19 @@ country_event = {
 			}
 			if = {
 				limit = {
-					has_planet_flag = timed_1_kill_pop_ptc_flag
+					has_carrier_flag = timed_1_kill_pop_ptc_flag
 				}
 				random_owned_pop_group = { limit = { pop_group_size > 100 } kill_pop_group = { pop_group = this amount = 100 } } 
 			}
 			if = {
 				limit = {
-					has_planet_flag = timed_3_kill_pop_ptc_flag
+					has_carrier_flag = timed_3_kill_pop_ptc_flag
 				}
 				random_owned_pop_group = { limit = { pop_group_size > 200 } kill_pop_group = { pop_group = this amount = 200 } } 
 			}
 			if = {
 				limit = {
-					has_planet_flag = timed_3_2_kill_pop_ptc_flag
+					has_carrier_flag = timed_3_2_kill_pop_ptc_flag
 				}
 				random_owned_pop_group = { limit = { pop_group_size > 300 } kill_pop_group = { pop_group = this amount = 300 } }
 			}
