@@ -1,0 +1,46 @@
+can_enter_system_by_jump_trigger = {
+	custom_tooltip = {
+		#		success_text = "debug: can jump"
+		fail_text = cannot_jump_to_system
+
+		# Sealed system
+		OR = {
+			AND = {
+
+				# L-Cluster
+				NOT = { has_star_flag = wg_psionic_systems }
+
+				# L-Cluster
+				NOT = { has_star_flag = wg_sealed_system }
+
+				# L-Cluster
+				NOT = { has_star_flag = lcluster }
+
+				# Formless system
+				NOT = { has_star_flag = formless_system }
+
+				# Hyperthermia core system
+				NOT = { has_star_flag = hyperthermia_system }
+
+				#_wsg
+				OR = {
+					NOT = { exists = space_owner }
+					AND = {
+						exists = space_owner
+						space_owner = { NOT = { is_country_type = monolith_crisis_country }}
+					}
+				}
+
+				OR = {
+					NOT = { has_star_flag = sealed_system }
+					AND = {
+						$SCOPE$ = { has_country_flag = entered_sealed_system }
+						has_star_flag = sealed_system
+					}
+				}
+			}
+			$SCOPE$ = { has_country_flag = z_fw_r_celestial_orrey_activited }		#_[z_fw]璀璨星图
+			$SCOPE$ = { has_country_flag = z_fw_r_cheat_quantum_beacon_activited }	#_[z_fw]永恒星炬
+		}
+	}
+}

@@ -151,56 +151,6 @@ can_orbital_bombard = {
 	}
 }
 
-###_[z_fw/teif/ag/wsg/kuat/sofe/giga/ehof/seooc]	##################
-# Root = country attempting to target system for movement
-# This = system being targeted
-can_enter_system_by_jump = {
-	custom_tooltip = {
-		success_text = "debug: can jump"
-		fail_text = cannot_jump_to_system
-		OR = {
-			#_绝对通行
-			root = { has_country_flag = z_fw_r_celestial_orrey_activited }		#_[z_fw]璀璨星图
-			root = { has_country_flag = z_fw_r_cheat_quantum_beacon_activited }	#_[z_fw]永恒星炬
-			#_基础条件
-			AND = {
-				#_Sealed system
-				OR = {
-					#_+[teif]
-					NOR = {
-						has_star_flag = sealed_system
-						has_star_flag = fallen_sol_system	#_teif
-					}
-					#_[teif]
-					AND = {
-						root = { has_country_flag = entered_fallen_sol_system }
-						has_star_flag = fallen_sol_system
-					}
-					#_[teif]
-					AND = {
-						root = { has_country_flag = entered_sealed_system }
-						has_star_flag = sealed_system
-					}
-				}
-				#_wsg
-				OR = {
-					NOT = { exists = space_owner }
-					AND = {
-						exists = space_owner
-						space_owner = { NOT = { is_country_type = monolith_crisis_country }}
-					}
-				}
-				#_特殊星系	+[wsg/ag/kuat/sofe/giga/ehof]
-				NOR = {
-					has_star_flag = lcluster
-					has_star_flag = wg_sealed_system			#_wsg
-					has_star_flag = wg_psionic_systems			#_wsg
-				}
-			}
-		}
-	}
-}
-
 is_criminal_syndicate_rule = {
 	OR = {
 		AND = {
