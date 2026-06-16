@@ -9,7 +9,7 @@ country_event = {
 	trigger = {
 		# 关掉所有buff的触发
 		NOT = { has_global_flag = uf_buff_disabled }
-		FROMFROM = { 
+		FROMFROM? = { 
 			OR = {
 				any_owned_ship = { OR = {
 					has_component = UF_AURA_C
@@ -18,16 +18,16 @@ country_event = {
 					has_component = UF_AURA_F
 					has_component = UF_AURA_Glory
 				} }
-				AND = { exists = leader leader = { has_leader_flag = uf_vv_admiral } }
-				AND = { exists = leader leader = { has_leader_flag = wg_a150_admiral } }
-				AND = { exists = leader leader = { has_leader_flag = wg_montana_admiral } }
-				AND = { exists = leader leader = { has_leader_flag = sh_Vector_admiral } }
+				AND = { exists = leader leader? = { has_leader_flag = uf_vv_admiral } }
+				AND = { exists = leader leader? = { has_leader_flag = wg_a150_admiral } }
+				AND = { exists = leader leader? = { has_leader_flag = wg_montana_admiral } }
+				AND = { exists = leader leader? = { has_leader_flag = sh_Vector_admiral } }
 			}
         }
 	}
 
 	immediate = {
-		fromfrom = {
+		fromfrom? = {
 		    if = {
 				limit = { 
 					any_owned_ship = {
@@ -60,11 +60,11 @@ country_event = {
 					any_owned_ship = {
 						has_component = UF_AURA_F
 					}
-					ROOT.fromfromfrom = { NOT = {
+					ROOT.fromfromfrom? = { NOT = {
 						has_modifier = uf_debuff_F
 					} }
 				}
-				ROOT.fromfromfrom = { add_modifier = { modifier = uf_debuff_F days = 10 } }
+				ROOT.fromfromfrom? = { add_modifier = { modifier = uf_debuff_F days = 10 } }
 			}
 			if = {
 				limit = { 
@@ -78,7 +78,7 @@ country_event = {
 			if = {
 				limit = {
 					exists = leader
-					leader = { has_leader_flag = uf_vv_admiral }
+					leader? = { has_leader_flag = uf_vv_admiral }
 					NOT = { has_modifier = wg_timeline_invisable }
 				}
 				add_many_hp = { DAYS = 5 }
@@ -86,7 +86,7 @@ country_event = {
 			if = {#超大和
 				limit = {
 					exists = leader
-					leader = { has_leader_flag = wg_a150_admiral }
+					leader? = { has_leader_flag = wg_a150_admiral }
 					NOT = { has_modifier = wg_a150_modifier }
 				}
 				add_modifier = { modifier = wg_a150_modifier days = 5 }
@@ -94,7 +94,7 @@ country_event = {
 			if = {#蒙大拿
 				limit = {
 					exists = leader
-					leader = { OR = {
+					leader? = { OR = {
 						has_leader_flag = wg_montana_admiral
 						has_leader_flag = sh_Vector_admiral
 					} }
@@ -105,7 +105,7 @@ country_event = {
 			if = {#Vector
 				limit = {
 					exists = leader
-					leader = { has_leader_flag = sh_Vector_admiral }
+					leader? = { has_leader_flag = sh_Vector_admiral }
 					NOT = { has_modifier = sh_Vector_modifier }
 				}
 				add_modifier = { modifier = sh_Vector_modifier days = 30 }
@@ -125,7 +125,7 @@ country_event = {
     is_triggered_only = yes
 
     trigger = {
-		FromFrom = {
+		FromFrom? = {
 			OR = {
 				is_ship_size = uf_glory_o
 				is_ship_size = uf_star_fortress
@@ -137,9 +137,9 @@ country_event = {
 
 	immediate = {
 		if = {
-			limit = { FromFrom = {is_ship_size = uf_glory_o }}
-			FromFrom = {
-				solar_system = {
+			limit = { FromFrom? = {is_ship_size = uf_glory_o }}
+			FromFrom? = {
+				solar_system? = {
 					save_event_target_as = uf_glory_ruin_system
 					spawn_megastructure = { 
 						type = "uf_glory_megastructure_ruin" 
@@ -204,15 +204,15 @@ country_event = {
 		}
 		if = {
 			limit = { 
-				FromFrom = {
+				FromFrom? = {
 					OR = { 
 						is_ship_size = uf_star_fortress
 						is_ship_size = uf_star_fortress_2
 					}
 				}
 			}
-			FromFrom = {
-				solar_system = {
+			FromFrom? = {
+				solar_system? = {
 					save_event_target_as = uf_star_fortress_ruin_system
 					spawn_megastructure = { 
 						type = "uf_star_fortress_megastructure_ruin" 
@@ -277,14 +277,14 @@ country_event = {
 		}
 		if = {
 			limit = { 
-				FromFrom = {
+				FromFrom? = {
 					OR = { 
 						is_ship_size = sh_planetary_ship
 					}
 				}
 			}
-			FromFrom = {
-				solar_system = {
+			FromFrom? = {
+				solar_system? = {
 					save_global_event_target_as = sh_planetary_ship_system
 					spawn_megastructure = { 
 						type = "sh_planetary_ship_megastructure_ruin" 
@@ -317,7 +317,7 @@ country_event = {
 					}
 				}
 			}
-			From = {
+			From? = {
 				country_event = {
 					id = sh_fe.28
 				}

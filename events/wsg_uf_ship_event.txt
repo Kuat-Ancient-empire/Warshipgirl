@@ -12,7 +12,7 @@ fleet_event = {
 		is_ship_size = uf_mobile_portal
 	}
 	immediate = {
-		solar_system = {
+		solar_system? = {
 			save_event_target_as = portal_system
 			spawn_megastructure = {
 				type = uf_mobile_portal
@@ -68,12 +68,12 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = {
+		fromfrom? = {
 			has_fleet_flag = uf_portal_entity_fleet
 		}
 	}
 	immediate = {
-		fromfrom.solar_system = {
+		fromfrom.solar_system? = {
 			random_system_megastructure = {
 				limit = {
 					is_megastructure_type = uf_mobile_portal
@@ -106,12 +106,12 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = {
+		fromfrom? = {
 			is_ship_size = uf_mobile_portal
 		}
 	}
 	immediate = {
-		fromfrom.solar_system = {
+		fromfrom.solar_system? = {
 			if = {
 				limit = {
 					NOT = {
@@ -171,7 +171,7 @@ country_event = {
 					id = uf_ship.9
 					days = 1800
 				}
-				root = {
+				root? = {
 					country_event = {
 						id = uf_ship.11
 						scopes = {
@@ -227,12 +227,12 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		from = {
+		from? = {
 			is_megastructure_type = uf_mobile_portal2
 		}
 	}
 	immediate = {
-		from = {
+		from? = {
 			create_fleet = {
 				name = "NAME_uf_mobile_portal"
 				effect = {
@@ -253,7 +253,7 @@ country_event = {
 			}
 			remove_megastructure = this
 		}
-		fromfrom = {
+		fromfrom? = {
 			random_fleet_in_system = {
 				limit = {
 					has_fleet_flag = uf_portal_entity_fleet
@@ -278,9 +278,9 @@ country_event = {
 			has_fleet_flag = uf_portal_entity_fleet
 		}
 		exists = solar_system
-		solar_system = {
+		solar_system? = {
 			exists = space_owner
-			space_owner = {
+			space_owner? = {
 				NOT = {
 					is_same_value = root
 				}
@@ -295,9 +295,9 @@ country_event = {
 		every_controlled_fleet = {
 			limit = {
 				has_fleet_flag = uf_portal_entity_fleet
-				solar_system = {
+				solar_system? = {
 					exists = space_owner
-					space_owner = {
+					space_owner? = {
 						NOT = {
 							is_same_value = root
 						}
@@ -308,14 +308,14 @@ country_event = {
 					}
 				}
 			}
-			solar_system = {
+			solar_system? = {
 				random_system_megastructure = {
 					limit = {
 						is_megastructure_type = uf_mobile_portal
 					}
 					remove_megastructure = this
 				}
-				prev = {
+				prev? = {
 					save_event_target_as = portal_entity
 					create_fleet = {
 						name = "NAME_uf_mobile_portal"
@@ -367,7 +367,7 @@ event = {
 			}
 			random_country = {
 				limit = {
-					PREV = {
+					PREV? = {
 						has_megastructure_flag = uf_portal@PREV
 					}
 				}
@@ -400,7 +400,7 @@ country_event = {
 			set_owner = root
 			if = {
 				limit = {
-					solar_system = {
+					solar_system? = {
 						NOT = {
 							any_fleet_in_system = {
 								has_fleet_flag = uf_portal_entity_fleet
@@ -449,7 +449,7 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		FROMFROM = {
+		FROMFROM? = {
 			is_ship_size = uf_science
 		}
 		NOT = {
@@ -464,7 +464,7 @@ country_event = {
 			amount >= 50
 		}
 		NOT = {
-			from = {
+			from? = {
 				any_system = {
 					distance = {
 						source = from
@@ -474,7 +474,7 @@ country_event = {
 						use_bypasses = no
 					}
 					exists = owner
-					owner = {
+					owner? = {
 						OR = {
 							is_wg_fallen_empire = yes
 							is_sh_fallen_empire = yes
@@ -495,7 +495,7 @@ country_event = {
 		add_resource = {
 			influence = -50
 		}
-		from = {
+		from? = {
 			create_starbase = {
 				size = starbase_outpost
 				owner = root

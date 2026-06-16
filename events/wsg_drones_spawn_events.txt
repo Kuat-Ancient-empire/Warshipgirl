@@ -8,18 +8,18 @@ country_event = {
 
 	trigger = {
 		has_country_flag = shoukaku_relic_returned
-		fromfrom = {
+		fromfrom? = {
 			exists = leader
-			leader = { has_leader_flag = shoukaku }
+			leader? = { has_leader_flag = shoukaku }
 		}
 	}
 
 	immediate = {
-		FROMFROM = {
+		FROMFROM? = {
 			if = {
 				limit = {
-					ROOT = { has_country_flag = shoukaku_relic_returned }
-					leader = { has_leader_flag = shoukaku }
+					ROOT? = { has_country_flag = shoukaku_relic_returned }
+					leader? = { has_leader_flag = shoukaku }
 				}
 				fleet_event = { id = mwsge_drone.2 days = 5 }
 			}
@@ -58,8 +58,8 @@ fleet_event = {
 				}
 			}
 			if = { 
-				limit = { solar_system = { check_variable = { which = "system_drones_count" value < 9 }}}
-				solar_system = { change_variable = { which = "system_drones_count" value = 1 }}
+				limit = { solar_system? = { check_variable = { which = "system_drones_count" value < 9 }}}
+				solar_system? = { change_variable = { which = "system_drones_count" value = 1 }}
 				create_fleet = {
 					name = "NAME_Drone_Squadron"
 					settings = { 
@@ -131,7 +131,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		fromfrom = {
+		fromfrom? = {
 			count_owned_ship = {
 				limit = { is_ship_size = wg_carrier }
 				count > 0
@@ -141,7 +141,7 @@ country_event = {
 	}
 
 	immediate = {
-		FROMFROM = { fleet_event = { id = mwsge_drone.12 days = 2 } }
+		FROMFROM? = { fleet_event = { id = mwsge_drone.12 days = 2 } }
 	}
 }
 
@@ -172,22 +172,22 @@ fleet_event = {
 			}
 			# 深海大凤技能
 			if = {
-				limit = { fleet = { NOT = { has_fleet_flag = stop_spawning_drowns }}}
+				limit = { fleet? = { NOT = { has_fleet_flag = stop_spawning_drowns }}}
 				# 阻止开幕
 			
 				every_owned_ship = {
 					limit = {
 						is_ship_size = wg_carrier
-						FLEET = { is_same_value = PREVPREVPREV }
+						FLEET? = { is_same_value = PREVPREVPREV }
 					}
 					if = { 
 						# 限制在同一星系召唤过多无人机
-						limit = { solar_system = { check_variable = { which = "system_drones_count" value < 10 }}}
-						solar_system = { change_variable = { which = "system_drones_count" value = 1 }}
+						limit = { solar_system? = { check_variable = { which = "system_drones_count" value < 10 }}}
+						solar_system? = { change_variable = { which = "system_drones_count" value = 1 }}
 						# 饺子技能
-						if = { limit = { fleet = { has_fleet_flag = essex_debuff }}
+						if = { limit = { fleet? = { has_fleet_flag = essex_debuff }}
 							# 联合领袖技能 穿梭轰炸
-							if = { limit = { fleet = { has_fleet_flag = uf_leader_trait_n4 }}
+							if = { limit = { fleet? = { has_fleet_flag = uf_leader_trait_n4 }}
 								create_uf_drones = { NAME = "Drone_Squadron_WEAKEN" NUM = 5 EZ_NUM = 2 }
 							} else = {
 								create_uf_drones = { NAME = "Drone_Squadron_WEAKEN" NUM = 3 EZ_NUM = 1 }
@@ -200,7 +200,7 @@ fleet_event = {
 						}
 						# 正常
 						else = {
-							if = { limit = { fleet = { has_fleet_flag = uf_leader_trait_n4 }}
+							if = { limit = { fleet? = { has_fleet_flag = uf_leader_trait_n4 }}
 								create_uf_drones = { NAME = "Drone_Squadron" NUM = 10 EZ_NUM = 5 }
 							} else = {
 								create_uf_drones = { NAME = "Drone_Squadron" NUM = 7 EZ_NUM = 3 }
@@ -327,14 +327,14 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		fromfrom = {
+		fromfrom? = {
 			any_controlled_ship = { has_component = SHIP_DC_DRONE }
 		}
 	}
 
 	immediate = {
-		FROMFROM = {
-			owner = { save_event_target_as = fleet_cur_owner }
+		FROMFROM? = {
+			owner? = { save_event_target_as = fleet_cur_owner }
 			remove_fleet_flag = SHIP_AURA_SE_UAV2
 			if = {
 				limit = {
@@ -375,8 +375,8 @@ ship_event = {
 			# 深海大凤技能
 			if = { 
 				# 限制在同一星系召唤过多无人机
-				limit = { solar_system = { check_variable = { which = "system_drones_count_player" value < 10 }}}
-				solar_system = { change_variable = { which = "system_drones_count_player" value = 1 }}
+				limit = { solar_system? = { check_variable = { which = "system_drones_count_player" value < 10 }}}
+				solar_system? = { change_variable = { which = "system_drones_count_player" value = 1 }}
 				create_fleet = {
 					name = "NAME_dreadnought_carrier_drones_fleet"
 					effect = {
@@ -477,7 +477,7 @@ fleet_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		solar_system = { change_variable = { which = "system_drones_count" value = -1 }}
+		solar_system? = { change_variable = { which = "system_drones_count" value = -1 }}
 		delete_fleet = {
 			target = this
 			destroy_template = yes
@@ -546,11 +546,11 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROMFROM = { has_fleet_flag = normal_drones }
+		FROMFROM? = { has_fleet_flag = normal_drones }
 	}
 
 	immediate = {
-		FROMFROM.solar_system = {
+		FROMFROM.solar_system? = {
 			change_variable = { which = "system_drones_count" value = -1 }
 		}
 	}

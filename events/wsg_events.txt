@@ -23,7 +23,7 @@ carrier_event = {
 	}
 	option = {
 		name = "wsg.3000.b"
-		owner = {
+		owner? = {
 			add_resource = { influence = 50 }		
 		}
 	}
@@ -43,7 +43,7 @@ carrier_event = {
 	}
 	option = {
 		name = "wsg.3001.b"
-		owner = {
+		owner? = {
 			add_resource = { sr_pantsu = 200 }			
 		}
 	}
@@ -152,7 +152,7 @@ country_event = {
 	
 	option = {
 		name = "wsg.3014.a"
-		owner = {
+		owner? = {
 			add_resource = { unity = 1 }
 		}
 		hidden_effect = {
@@ -540,7 +540,7 @@ country_event = {
 	is_triggered_only = yes	
 
 	after = {
-		capital_scope = { add_planet_devastation = 20 }
+		capital_scope? = { add_planet_devastation = 20 }
 	}
 
 	option = {
@@ -564,7 +564,7 @@ carrier_event = {
 		add_planet_devastation = 20
 		remove_building = building_wsg_dark_alpha_experiment_field
 		add_building = building_wsg_dark_alpha_experiment_field_ruin
-		owner = { 
+		owner? = { 
 			add_research_option = "tech_alpha_weapon" 
 			end_event_chain = wsg_dark_alpha_chain
 		}
@@ -588,11 +588,11 @@ carrier_event = {
 	show_sound = event_wsg_au_task_completion
 
 	trigger = {
-		NOT = { owner = { has_country_flag = trigger_d_alpha_project }}
+		NOT = { owner? = { has_country_flag = trigger_d_alpha_project }}
 	}
 
 	immediate = {
-		owner = { set_country_flag = trigger_d_alpha_project }
+		owner? = { set_country_flag = trigger_d_alpha_project }
 	}
 
 	option = {
@@ -636,7 +636,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { is_megastructure_type = wsg_station }
+		FROM? = { is_megastructure_type = wsg_station }
 	}
 
 	immediate = {
@@ -759,7 +759,7 @@ country_event = {
 	fire_only_once = yes
 
 	trigger = {
-		FROM = { is_megastructure_type = dyson_yamato }
+		FROM? = { is_megastructure_type = dyson_yamato }
 	}
 
 	immediate = {
@@ -781,16 +781,16 @@ carrier_event = {
 		if = {
 			limit = {
 				exists = owner
-				owner = { NOT = { is_same_value = from.owner } }
+				owner? = { NOT = { is_same_value = from.owner } }
 			}
-			from.owner = {
+			from.owner? = {
 				country_event = { id = wsg.3030 }
 			}
 		}
 		if = {
 			limit = {
 				exists = owner
-				owner = {
+				owner? = {
 					NOT = { is_same_value = from.owner }
 					OR = {
 						is_wg_fallen_empire = yes
@@ -837,7 +837,7 @@ carrier_event = {
 			# 	}
 			# }
 			# modifiers for victim
-			owner = {
+			owner? = {
 				add_opinion_modifier = {
 					modifier = opinion_ovo_my_world
 					who = from.owner
@@ -851,7 +851,7 @@ carrier_event = {
 				}
 			}
 			# Add war exhaustion to planet owner 
-			owner = {
+			owner? = {
 				add_static_war_exhaustion = {
 					attacker = from.fleet.owner
 					location = root
@@ -935,10 +935,10 @@ country_event = {
 
 	option = {
 		name = wsg.3030.a
-		owner = {
+		owner? = {
 			add_resource = { food = 5000 }
 		}
-		from = {
+		from? = {
 			custom_tooltip = wsg.3030.tooltip
 		}
 	}
@@ -963,7 +963,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-	    capital_scope.star = {
+	    capital_scope.star? = {
 			create_ambient_object = {
 				type = "space_storm_2"
 				location = this
@@ -987,7 +987,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-	    event_target:ella_storm = {
+	    event_target:ella_storm? = {
 			destroy_ambient_object = this
 		}
 	}
@@ -1053,7 +1053,7 @@ country_event = {
 	option = {
 		name = "wsg.3031.a"
 		custom_tooltip = wsg.3031.a.tooltip
-		owner = {
+		owner? = {
 			add_resource = { unity = 100 }
 		}
 		if = {
@@ -1065,7 +1065,7 @@ country_event = {
 	option = {
 		name = "wsg.3031.b"
 		custom_tooltip = wsg.3031.b.tooltip
-		owner = {
+		owner? = {
 			add_resource = { influence = 50 }
 		}	
 		if = {
@@ -1077,7 +1077,7 @@ country_event = {
 	option = {
 		name = "wsg.3031.c"
 		custom_tooltip = wsg.3031.c.tooltip
-		owner = {
+		owner? = {
 			add_resource = { energy = 500 }
 		}	
 		if = {
@@ -1144,18 +1144,18 @@ carrier_event = {
 
 	trigger = {
 		exists = owner
-		owner = {
+		owner? = {
 			NOT = { has_country_flag = alpha_center_finished }
 		}	
 	}
 	option = {
 		name = wsg.3033.a
-		owner = {
+		owner? = {
 			add_resource = { energy = 10000 }
 			change_variable = { which = rankpts value = 4 }
 		}
 		hidden_effect = {
-			owner = {
+			owner? = {
 				country_event = { id = wsg.3034 days = 720 }
 				country_event = { id = wsg.3250 days = 1080 random = 360 }
 				country_event = { id = wsg.3324 days = 180 random = 180 }
@@ -1177,7 +1177,7 @@ country_event = {
 
 	option = {
 		name = wsg.3034.a
-		capital_scope = { enable_special_project = {
+		capital_scope? = { enable_special_project = {
 			name = WSG_ALPHA_DREADNOUGHT_PROJECT
 			location = THIS
 			owner = root
@@ -1211,11 +1211,11 @@ country_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		owner = {
+		owner? = {
 			save_event_target_as = wsg_project_owner
 			set_country_flag = wsg_dreadnought_finished
 		}
-		capital_scope = { save_event_target_as = wsg_capital }
+		capital_scope? = { save_event_target_as = wsg_capital }
 	}
 	
 	option = {
@@ -1237,11 +1237,11 @@ country_event = {
 				}
 			}
 		}
-		owner = {
+		owner? = {
 			remove_country_flag = dreadnought_allowed
 		}
 		hidden_effect = {
-			owner = {
+			owner? = {
 				country_event = { id = wsg.30350 days = 2520 }
 			}			
 		}
@@ -1265,11 +1265,11 @@ country_event = {
 				}
 			}
 		}
-		owner = {
+		owner? = {
 			remove_country_flag = dreadnought_allowed
 		}
 		hidden_effect = {
-			owner = {
+			owner? = {
 				country_event = { id = wsg.30350 days = 2520 }
 			}			
 		}
@@ -1287,7 +1287,7 @@ country_event = {
 	option = {
 		name = "wsg.30350.a"
 		hidden_effect = {
-			owner = {
+			owner? = {
 				set_country_flag = dreadnought_allowed
 			}	
 		}
@@ -1321,7 +1321,7 @@ country_event = {
 	after = {
 		set_spawn_system_batch = begin
 		hidden_effect = {
-			capital_scope = {
+			capital_scope? = {
 				spawn_system = {
 					min_distance = 10
 					max_distance = 30
@@ -1331,7 +1331,7 @@ country_event = {
 					initializer = "ovo_system"
 				}
 			}
-			event_target:ovo_system = {
+			event_target:ovo_system? = {
 				set_star_flag = ovo_system@root
 				random_system_planet = {
 					limit = { has_carrier_flag = ovo_planet }
@@ -1383,7 +1383,7 @@ carrier_event = {
 		has_modifier = "planet_OVO2"
 		NOT = { has_carrier_flag = ovo_watching_flag }
 		#pop_amount >= 1000
-		owner = {
+		owner? = {
 			NOT = { has_country_flag = finish_ovo_event }
 		}
 	}
@@ -1402,7 +1402,7 @@ carrier_event = {
 			owner = root
 		}
 		hidden_effect = {
-			owner = {
+			owner? = {
 				country_event = { id = wsg.3041 days = 60 random = 60 }
 			}
 			carrier_event = { id = wsg.3038 days = 2000 } # for test, should be 2000 days
@@ -1411,7 +1411,7 @@ carrier_event = {
 	
 	option = {
 		name = wsg.3037.b
-		owner = {
+		owner? = {
 			end_event_chain = "ovo_chain"
 		}		
 	}
@@ -1427,7 +1427,7 @@ carrier_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		owner = { 
+		owner? = { 
 			is_ai = no
 			NOR = { 
 				has_country_flag = spawn_ovo_army
@@ -1437,14 +1437,14 @@ carrier_event = {
 	}
 	
 	immediate = {
-		owner = { 
+		owner? = { 
 			set_country_flag = spawn_ovo_army
 			if = {
 				limit = { has_special_project = "ovo_watching_study_normal" }
 				abort_special_project = { type = "ovo_watching_study_normal" location = root }
 			}
 		}
-		event_target:ovo_star_target = {
+		event_target:ovo_star_target? = {
 			create_ambient_object = {
 				type = "WTFQG_object"
 				entity_offset_height = { min = -35 max = -40 }
@@ -1476,8 +1476,8 @@ carrier_event = {
 				}
 			}
 		}
-		event_target:ovo_country = {
-			ROOT = {
+		event_target:ovo_country? = {
+			ROOT? = {
 				create_army = {
 					name = "NAME_OVO_BOSS"
 					owner = PREV
@@ -1499,7 +1499,7 @@ carrier_event = {
 
 	after = {
 		hidden_effect = {
-			owner = {
+			owner? = {
 				country_event = { id = wsg.3042 days = 30 }
 			}			
 		}
@@ -1523,8 +1523,8 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { NOT = { has_country_flag = finish_ovo_event }}
-		FROMFROM = { has_carrier_flag = ovo_watching_flag }
+		FROM? = { NOT = { has_country_flag = finish_ovo_event }}
+		FROMFROM? = { has_carrier_flag = ovo_watching_flag }
 		OR = {
 			has_country_flag = ovo_country_flag
 			FROMFROM.CONTROLLER = { has_country_flag = ovo_country_flag }
@@ -1536,21 +1536,21 @@ country_event = {
 			# 地面战失败
 			limit = { 
 				has_country_flag = ovo_country_flag
-				FROMFROM = {
+				FROMFROM? = {
 					NOT = { has_modifier = planet_OVO_occupied }
 				}
 			}
-			FROM = {
+			FROM? = {
 				set_country_flag = ovo_occupied_planet
 				country_event = { id = wsg.3040 }
 			}
-			FROMFROM = {
+			FROMFROM? = {
 				add_modifier = { modifier = "planet_OVO_occupied" days = -1}
 				add_planet_devastation = 50
 			}
 		}
 		else = {
-			FROM = {
+			FROM? = {
 				# 地面战胜利
 				if = {
 					limit = { has_country_flag = ovo_fleet_destroyed }
@@ -1581,13 +1581,13 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { NOT = { has_country_flag = finish_ovo_event }}
-		FROMFROM = { has_carrier_flag = ovo_watching_flag }
+		FROM? = { NOT = { has_country_flag = finish_ovo_event }}
+		FROMFROM? = { has_carrier_flag = ovo_watching_flag }
 		has_country_flag = ovo_country_flag
 	}
 
 	immediate = {
-		FROM = {
+		FROM? = {
 			if = { # 地面战胜利前昆西舰队boss被击败
 				limit = { has_country_flag = ovo_fleet_destroyed }
 				country_event = { id = wsg.30450 }
@@ -1663,7 +1663,7 @@ country_event = {
 	}
 
 	after = {
-		event_target:ovo_planet = {
+		event_target:ovo_planet? = {
 			remove_modifier = planet_OVO_occupied
 		}
 	}
@@ -1760,12 +1760,12 @@ country_event = {
 		NOT = { has_country_flag = finish_ovo_event }
 		is_country_type = faction
 		has_country_flag = ovo_country_flag
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = ovo_fleet
 		}
 	}
 	immediate = {	
-		From = {
+		From? = {
 			if = {
 				limit = { has_country_flag = ovo_army_destroyed }
 				country_event = { id = wsg.3045 } # 港昆的昆西已被清除
@@ -1869,12 +1869,12 @@ country_event = {
 				limit = { has_carrier_flag = ovo_planet@root }
 				if = {
 					limit = { 
-						ROOT = { 
+						ROOT? = { 
 							has_country_flag = ovo_occupied_planet 
 							NOT = { has_country_flag = ovo_army_destroyed }
 						}
 					}
-					ROOT = { remove_country_flag = ovo_occupied_planet }
+					ROOT? = { remove_country_flag = ovo_occupied_planet }
 					remove_modifier = "planet_OVO_occupied"
 				}
 				remove_modifier = "planet_OVO2"
@@ -2079,7 +2079,7 @@ country_event = {
 					species = last_created_species
 					type = "defense_army"
 				}
-                solar_system = {
+                solar_system? = {
                     create_starbase = {
                         owner = last_created_country
                         size = starbase_starport
@@ -2120,7 +2120,7 @@ carrier_event = {
 
 	option = {
 		name = wsg.3049.a
-		owner = {
+		owner? = {
 			add_resource = { sr_pantsu = 50 }
 		}		
 	}
@@ -2210,7 +2210,7 @@ country_event = {
 				has_origin = origin_wg_warhammer
 			}
 		}
-		owner = {
+		owner? = {
 			add_resource = { food = 2000 }
 		}		
 	}
@@ -2219,7 +2219,7 @@ country_event = {
 		trigger = {
 			has_origin = origin_wg_warhammer
 		}
-		owner = {
+		owner? = {
 			add_resource = { food = 3000 }
 		}		
 	}
@@ -2278,7 +2278,7 @@ country_event = {
 	option = {
 		name = wsg.30511.a
 		custom_tooltip = wsg.30511.a.response
-		owner = {
+		owner? = {
 			add_resource = { unity = 50 }
 		}		
 	}
@@ -2387,7 +2387,7 @@ country_event = {
 # 	}
 # 	option = {
 # 		name = "wsg.3054.a"
-# 		owner={
+# 		owner? = {
 # 			give_technology = { tech = tech_exotic_gases }
 # 		}		
 # 	}
@@ -2495,7 +2495,7 @@ country_event = {
 		name = "wsg.3061.a"
 		custom_tooltip = wsg.3061.a.response
 		hidden_effect = {
-			owner = {
+			owner? = {
 				set_country_flag = struggle_edicts
 			}			
 		}	
@@ -2584,20 +2584,20 @@ country_event = {
 	
 	trigger = {
 		has_megastructure = wg_space_mine_1
-		fromfrom = {
+		fromfrom? = {
 			exists = solar_system
 			NOT = { has_fleet_flag = uf_clear_fleet_modifier_flag }
-			solar_system = { has_star_flag = wsg_space_miner_protection_system_@root }
+			solar_system? = { has_star_flag = wsg_space_miner_protection_system_@root }
 		}
 	}
 
 	immediate = {
-		fromfrom = {
+		fromfrom? = {
 			if = {
 				limit = { 
 					NOT = { has_fleet_flag = uf_clear_fleet_modifier_flag }
 					exists = solar_system
-					solar_system = { has_star_flag = wsg_space_miner_protection_system_@root }
+					solar_system? = { has_star_flag = wsg_space_miner_protection_system_@root }
 				}
 				every_owned_ship = {
 					limit = { NOT = { has_ship_flag = uf_clear_ship_modifier_flag } }
@@ -3237,7 +3237,7 @@ carrier_event = {
 			modifier = "planet_lp2" 
 			days = 720
 		}	
-		owner = {
+		owner? = {
 			add_resource = { unity = 100 }
 		}		
 	}
@@ -3251,7 +3251,7 @@ country_event = {
 	trigger = {
 		is_country_type = faction
 		has_country_flag = lady_custodian_country_flag
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = lady_fleet	
 		}
 	}
@@ -3325,7 +3325,7 @@ country_event = {
 			is_same_value = event_target:lady_contingency_owner
 			has_country_flag = gain_lady_Contingency
 		}
-		fromfrom = { 
+		fromfrom? = { 
 			OR = {
 				has_fleet_flag = lady_fleet	
 				is_same_value = event_target:lady_contingency_fleet
@@ -3402,7 +3402,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { is_megastructure_type = shenhai_energy_core_1 }
+		FROM? = { is_megastructure_type = shenhai_energy_core_1 }
 	}
 
 	option = {
@@ -3422,7 +3422,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { is_megastructure_type = shenhai_energy_core_2 }
+		FROM? = { is_megastructure_type = shenhai_energy_core_2 }
 	}
 
 	option = {
@@ -3441,7 +3441,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { is_megastructure_type = shenhai_energy_core_3 }
+		FROM? = { is_megastructure_type = shenhai_energy_core_3 }
 	}
 
 	option = {
@@ -3460,11 +3460,11 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { is_megastructure_type = shenhai_energy_core_4 }
+		FROM? = { is_megastructure_type = shenhai_energy_core_4 }
 	}
 
 	immediate = {
-		FROMFROM = {
+		FROMFROM? = {
 			every_system_planet = {
 				limit = {
 					OR = {
@@ -3526,7 +3526,7 @@ country_event = {
 			}
 		}
 		else = {
-            event_target:lex_sol_III = {
+            event_target:lex_sol_III? = {
 				reset_planet = yes
 				change_pc = pc_continental
 
@@ -3625,7 +3625,7 @@ country_event = {
 				add_building = building_lex_monument
 			}
             last_created_country = {
-                capital_scope = { set_name = "NAME_Sol_3_wg" }
+                capital_scope? = { set_name = "NAME_Sol_3_wg" }
 			}
 		}
 	}
@@ -3652,20 +3652,20 @@ ship_event = {
 
 	trigger = {
 		NOT = { has_global_flag = finish_lex_sol_III_event }
-		owner = {
+		owner? = {
 			has_authority = auth_warshipgirls
 			is_ai = no
 			has_point_of_interest = {
 				poi = lex_sol_III_poi
 			}
 		}
-		solar_system = {
+		solar_system? = {
 			has_star_flag = lex_sol
 		}
 	}
 
 	immediate = {
-		owner = {
+		owner? = {
 			country_event = {
 				id = wsg.3102 days = 360 random = 360 # for test, should be 360 + random 360 days
 			}
@@ -3770,9 +3770,9 @@ country_event = {
 		name = "wsg.3105.b"
 		custom_tooltip = "wsg.3105.b.tooltip"
 		hidden_effect = {
-			event_target:lex_sol_III = {
+			event_target:lex_sol_III? = {
 				observation_outpost = {
-					fleet = {
+					fleet? = {
 						delete_fleet = this
 					} 
 				}
@@ -3815,7 +3815,7 @@ country_event = {
 	immediate = {
 		if = {
 			limit = { has_country_flag = set_lex_as_ruler }
-			ruler = {
+			ruler? = {
 				set_age = 17
 				if = {
 					limit = { has_leader_flag = married }
@@ -3904,7 +3904,7 @@ country_event = {
 	
 	trigger = {
 		is_ai = no
-		from = { has_country_flag = wg_information_age }
+		from? = { has_country_flag = wg_information_age }
 	}
 
 	option = {
@@ -3918,17 +3918,17 @@ ship_event = {
 	hide_window = yes
 	
 	trigger = {
-		FROM = {
+		FROM? = {
 			AND = {
 				has_owner = yes
-				owner = { is_country_type = primitive }
+				owner? = { is_country_type = primitive }
 			}
 			has_country_flag = wg_information_age
 		}
 	}
 
 	immediate = {
-		owner = { country_event = { id = wsg.3108 }}
+		owner? = { country_event = { id = wsg.3108 }}
 	}
 }
 
@@ -3946,12 +3946,12 @@ carrier_event = {
 	}
 
 	immediate = {
-		owner = { set_country_flag = planet_deci_trigger_lex_event }
+		owner? = { set_country_flag = planet_deci_trigger_lex_event }
 	}
 
 	option = {
 		name = wsg.3110.a
-		owner = {
+		owner? = {
 			country_event = { id = wsg.3105 days = 1 }
 			hidden_effect = {
 				remove_point_of_interest = lex_sol_III_poi
@@ -3969,7 +3969,7 @@ country_event = {
 
 	option = {
 		name = DIG
-		event_target:lex_sol_III_nuked = {
+		event_target:lex_sol_III_nuked? = {
 			create_archaeological_site = site_nuked_sol_III
 		}
 	}
@@ -3987,11 +3987,11 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
@@ -4012,23 +4012,23 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
 		name = wsg.3132.a
-		trigger = { owner = {
+		trigger = { owner? = {
 			has_authority = auth_warshipgirls
 		}}
 		small_artifact_reward = yes
 	}
 	option = {
 		name = wsg.3132.b
-		trigger = { owner = {
+		trigger = { owner? = {
 			has_authority = auth_shenhai
 			is_wg_exterminate_goverment = no
 		}}
@@ -4036,7 +4036,7 @@ fleet_event = {
 	}
 	option = {
 		name = wsg.3132.c
-		trigger = { owner = {
+		trigger = { owner? = {
 			has_authority = auth_shenhai
 			is_wg_exterminate_goverment = yes
 		}}
@@ -4056,7 +4056,7 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
@@ -4065,12 +4065,12 @@ fleet_event = {
 	
 	option = {
 		name = wsg.3133.a
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	option = {
 		name = wsg.3133.b
-		owner = { large_artifact_reward = yes }
-		from = { 
+		owner? = { large_artifact_reward = yes }
+		from? = { 
 			set_archaeology_flag = finish_site
 			finish_site = yes
 			hidden_effect = { destroy_archaeological_site = this }
@@ -4089,19 +4089,19 @@ fleet_event = {
 
 	is_triggered_only = yes
 
-	trigger = { from = { NOT = { has_archaeology_flag = finish_site }}}
+	trigger = { from? = { NOT = { has_archaeology_flag = finish_site }}}
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
 		name = wsg.3134.a
-		hidden_effect = { owner = { country_event = { id = wsg.3135 }}}
+		hidden_effect = { owner? = { country_event = { id = wsg.3135 }}}
 	}
 }
 
@@ -4207,10 +4207,10 @@ country_event = {
 			change_leader_portrait = wsg29_3
 			save_global_event_target_as = wsg_lex_leader
 			if = {
-				limit = { owner = { has_country_flag = wsg_mist }}
+				limit = { owner? = { has_country_flag = wsg_mist }}
 				add_trait = { trait = leader_trait_mist show_message = no }
 			} else_if = {
-				limit = { owner = { has_country_flag = wsg_project_r }}
+				limit = { owner? = { has_country_flag = wsg_project_r }}
 				add_trait = { trait = leader_trait_warshipgirls show_message = no }
 			}
 			set_variable = { which = affection value = 10 }
@@ -4306,7 +4306,7 @@ country_event = {
 		
 	option = {
 		name = "wsg.3113.a"
-		owner={
+		owner? = {
 			give_technology = { tech = tech_wg_badseal }
 		}		
 		hidden_effect = {
@@ -4371,7 +4371,7 @@ country_event = {
 	}
 	option = {
 		name = "wsg.3116.b"
-		owner = {
+		owner? = {
 			add_resource = { food = 1 }		
 		}		
 		hidden_effect = {
@@ -4387,7 +4387,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		from = { has_leader_flag = badseal_flag }
+		from? = { has_leader_flag = badseal_flag }
 	}
 
 	immediate = {
@@ -4411,7 +4411,7 @@ country_event = {
 
 	option = {
 		name = "wsg.3117.a"		
-		event_target:bad_seal_food_target = {
+		event_target:bad_seal_food_target? = {
 			add_trait = { trait = leader_trait_badseal show_message = no }
 		}		
 	}	
@@ -4433,7 +4433,7 @@ country_event = {
 		
 	option = {
 		name = "wsg.3117.a"		
-		event_target:bad_seal_food_target = {
+		event_target:bad_seal_food_target? = {
 			add_trait = { trait = leader_trait_badseal show_message = no }
 		}		
 	}	
@@ -4457,7 +4457,7 @@ country_event = {
 	}
 	option = {
 		name = "wsg.3118.a"
-		owner = {
+		owner? = {
 			add_monthly_resource_mult = {
 				resource = physics_research
 				value = @tier2researchreward
@@ -4500,7 +4500,7 @@ country_event = {
 
 	option = {
 		name = OK
-		capital_scope = { enable_special_project = {
+		capital_scope? = { enable_special_project = {
 			name = WSG_SENERGY_DREADNOUGHT_PROJECT
 			owner = root
 		}}
@@ -4553,7 +4553,7 @@ carrier_event = {
 	trigger = {
 		NOR = { has_global_flag = obtained_nie_admiral }
 		is_same_value = event_target:lex_sol_III
-		FROM = {
+		FROM? = {
 			is_ai = no
 			has_authority = auth_warshipgirls
 		}
@@ -4561,7 +4561,7 @@ carrier_event = {
 
 	immediate = {
 		set_global_flag = obtained_nie_admiral
-		FROM = {
+		FROM? = {
 			random_list = {
 				# 乜提督
 				1 = { country_event = { id = wsg.3201 days = 30 random = 30 }}
@@ -4582,7 +4582,7 @@ country_event = {
 
 	option = {
 		name = wsg.3201.a
-		event_target:lex_sol_III = {
+		event_target:lex_sol_III? = {
 			add_deposit = d_underground_conduit
 			create_archaeological_site = site_nieAdmiral
 		}
@@ -4602,11 +4602,11 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
@@ -4628,24 +4628,24 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		event_target:lex_sol_III = {
+		event_target:lex_sol_III? = {
 			add_deposit = d_underground_conduit2
 			remove_deposit = d_underground_conduit
 		}
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
 		name = wsg.3203.a
 		medium_artifact_reward = yes
 		hidden_effect = {
-			owner = { country_event = { id = wsg.3204 }}
+			owner? = { country_event = { id = wsg.3204 }}
 		}
-		owner = { change_variable = { which = rankpts value = 3 }}
+		owner? = { change_variable = { which = rankpts value = 3 }}
 	}
 }
 
@@ -4725,7 +4725,7 @@ country_event = {
 
 	option = {
 		name = wsg.3206.a
-		event_target:lex_sol_III = {
+		event_target:lex_sol_III? = {
 			create_archaeological_site = site_canarias
 		}
 	}
@@ -4744,17 +4744,17 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
 		name = AMAZING
 		large_artifact_reward = yes
-		owner = { if = {
+		owner? = { if = {
 			limit = { NOT = { has_technology = tech_zero_point_power }}
 			add_research_option = tech_zero_point_power
 		}}
@@ -4774,11 +4774,11 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
@@ -4786,11 +4786,11 @@ fleet_event = {
 		medium_artifact_reward = yes
 		custom_tooltip = wsg.3208.tooltip
 		hidden_effect = {
-			owner = { 
+			owner? = { 
 				country_event = { id = wsg.3209 }
 			}
 		}
-		owner = { change_variable = { which = rankpts value = 3 }}
+		owner? = { change_variable = { which = rankpts value = 3 }}
 	}
 }
 
@@ -4888,7 +4888,7 @@ country_event = {
 	
 	option = {
 		name = "wsg.3212.a"
-		owner = {
+		owner? = {
 			add_resource = { energy = 300 }
 		}	
 	}
@@ -4905,7 +4905,7 @@ country_event = {
 	
 	option = {
 		name = "wsg.3213.a"
-		owner = {
+		owner? = {
 			add_resource = { food = 300 }
 		}	
 	}
@@ -4922,7 +4922,7 @@ country_event = {
 	
 	option = {
 		name = "wsg.3214.a"
-		owner = {
+		owner? = {
 			add_resource = { minerals = 300 }
 		}	
 	}
@@ -4995,12 +4995,12 @@ country_event = {
 	}
 
 	trigger = {
-		from = {
+		from? = {
 			any_attacker = { is_same_value = root }
 		}
 		any_country = {
 			is_at_war_with = root
-			root = {
+			root? = {
 				has_authority = auth_warshipgirls
 				has_country_flag = mist_support_fleet_allowed
 				NOT = {
@@ -5035,10 +5035,10 @@ country_event = {
 		room = mist_world_room
 	}
     immediate = {
-		owner = {
+		owner? = {
 			save_event_target_as = mist_support_fleet_owner
 		}
-		capital_scope = { save_event_target_as = mist_support_fleet_capital }
+		capital_scope? = { save_event_target_as = mist_support_fleet_capital }
 	}
 	option = {
 		name = wsg.3252.a
@@ -5137,12 +5137,12 @@ country_event = {
 		room = mist_world_room
 	}
 	trigger = {
-		from = {
+		from? = {
 			any_defender = { is_same_value = root }
 		}
 		any_country = {
 			is_at_war_with = root
-			root = {
+			root? = {
 				has_authority = auth_warshipgirls
 				has_country_flag = mist_support_fleet_allowed
 				NOT = {
@@ -5177,10 +5177,10 @@ country_event = {
 		room = mist_world_room
 	}
     immediate = {
-		owner = {
+		owner? = {
 			save_event_target_as = mist_support_fleet_owner
 		}
-		capital_scope = { save_event_target_as = mist_support_fleet_capital }
+		capital_scope? = { save_event_target_as = mist_support_fleet_capital }
 	}
 	option = {
 		name = wsg.3254.a
@@ -5429,7 +5429,7 @@ country_event = {
 		add_modifier = {
 			modifier = wsg_super_harbor_ground_battle days = 1080
 		}
-		owner = {
+		owner? = {
 			add_monthly_resource_mult = {
 				resource = unity
 				value = 3
@@ -5457,7 +5457,7 @@ country_event = {
 			days = 1800 
 		}
 		set_country_flag = wsg_at_war
-		capital_scope = {
+		capital_scope? = {
 			add_deposit = d_wsg_equality_on_sea
 			add_deposit = d_wsg_york_superme
 			add_deposit = d_wsg_eagleopolis
@@ -5495,11 +5495,11 @@ carrier_event = {
 	is_triggered_only = yes
 	fire_only_once = yes
 	trigger = {
-		FROM = { army_type = WGS_helldivers }
+		FROM? = { army_type = WGS_helldivers }
 	}
 	option = {
 		name = "wsg.3313.a"
-		owner = {
+		owner? = {
 			add_resource = { influence = 50 }		
 		}
 	}
@@ -5584,7 +5584,7 @@ country_event = {
 	}
 	option = {
 		name = wsg.3324.a
-		capital_scope = { enable_special_project = {
+		capital_scope? = { enable_special_project = {
 			name = WSG_MIST_PROJECT
 			owner = root
 		}}

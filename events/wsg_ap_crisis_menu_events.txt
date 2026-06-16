@@ -297,7 +297,7 @@ carrier_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		from.owner = {
+		from.owner? = {
 			OR = {
 				has_ascension_perk = ap_become_the_crisis
 				has_ascension_perk = ap_wg_crisis
@@ -306,7 +306,7 @@ carrier_event = {
 	}
 
 	immediate = {
-		from.owner = { 
+		from.owner? = { 
 			add_victory_score = {
 				source = destroyed_stars_score
 				score = 10
@@ -328,12 +328,12 @@ carrier_event = {
 				limit = { has_ascension_perk = ap_wg_crisis }
 				add_wg_crisis_points = { POINTS = 150 }
 			}
-			ROOT.owner = { set_country_flag = gain_wg_crisis_point }
+			ROOT.owner? = { set_country_flag = gain_wg_crisis_point }
 			# 被炸之后没有其他殖民地导致国家毁灭，给国家毁灭的分数
 			if = {
 				limit = {
 					exists = owner
-					owner = {
+					owner? = {
 						#NOT = { is_country_type = default_ev }
 						NOT = {
 							any_owned_planet = {
@@ -342,7 +342,7 @@ carrier_event = {
 						}
 					}
 				}
-				from.owner = {
+				from.owner? = {
 					if = {
 						limit = { has_ascension_perk = ap_become_the_crisis }
 						complete_crisis_objective = crisobj_destroy_empires
@@ -351,7 +351,7 @@ carrier_event = {
 						limit = { has_ascension_perk = ap_wg_crisis }
 						add_wg_crisis_points = { POINTS = 300 }
 					}
-					ROOT.owner = { set_country_flag = gain_wg_crisis_point }
+					ROOT.owner? = { set_country_flag = gain_wg_crisis_point }
 				}
 			}
 		}
@@ -381,12 +381,12 @@ carrier_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		FROM.owner = {
+		FROM.owner? = {
 			if = {
 				limit = {
-					ROOT = {
+					ROOT? = {
 						exists = owner
-						owner = { NOT = { is_same_value = PREVPREV }}
+						owner? = { NOT = { is_same_value = PREVPREV }}
 					}
 				}
 				if = {
@@ -400,7 +400,7 @@ carrier_event = {
 		if = {
 			limit = {
 				exists = owner
-				owner = {
+				owner? = {
 					#NOT = { is_country_type = default_ev }
 					NOT = {
 						any_owned_planet = {
@@ -409,12 +409,12 @@ carrier_event = {
 					}
 				}
 			}
-			from.owner = {
+			from.owner? = {
 				if = {
 					limit = { has_ascension_perk = ap_wg_crisis }
 					add_wg_crisis_points = { POINTS = 300 }
 				}
-				ROOT.owner = { set_country_flag = gain_wg_crisis_point }
+				ROOT.owner? = { set_country_flag = gain_wg_crisis_point }
 			}
 		}
 	}
@@ -433,19 +433,19 @@ country_event = {
 	trigger = {
 		has_ascension_perk = ap_wg_crisis
 		NAND = {
-			FROMFROM = { has_fleet_flag = can_gain_wg_crisis_point }
-			FROMFROMFROM = { has_fleet_flag = can_gain_wg_crisis_point }
+			FROMFROM? = { has_fleet_flag = can_gain_wg_crisis_point }
+			FROMFROMFROM? = { has_fleet_flag = can_gain_wg_crisis_point }
 		}
 	}
 
 	immediate = {
 		if = {
-			limit = { FROM = { is_enemy_country = yes }}
+			limit = { FROM? = { is_enemy_country = yes }}
 			# 野怪自动判断可获得点数
-			FROMFROMFROM = { set_fleet_flag = can_gain_wg_crisis_point }
+			FROMFROMFROM? = { set_fleet_flag = can_gain_wg_crisis_point }
 		} 
 		else = {
-			FROMFROMFROM = {
+			FROMFROMFROM? = {
 				clear_variable = count_ship_num
 				remove_fleet_flag = can_gain_wg_crisis_point
 				if = {
@@ -453,16 +453,16 @@ country_event = {
 					every_owned_ship = {
 						if = {
 							limit = { 
-								fleet = { NOT = { has_fleet_flag = can_gain_wg_crisis_point }}
+								fleet? = { NOT = { has_fleet_flag = can_gain_wg_crisis_point }}
 								# 舰队拥有主力舰以上级别的船，达成得分条件
 								OR = {
 									is_main_ship_size = yes 
 									is_super_ship_size = yes
 								}
 							}
-							fleet = { set_fleet_flag = can_gain_wg_crisis_point }
+							fleet? = { set_fleet_flag = can_gain_wg_crisis_point }
 						}
-						PREV = { change_variable = { which = count_ship_num value = 1 }}
+						PREV? = { change_variable = { which = count_ship_num value = 1 }}
 					}
 				}
 				if = {
@@ -489,12 +489,12 @@ country_event = {
 
 	trigger = {
 		has_ascension_perk = ap_wg_crisis
-		FROMFROMFROM = { has_fleet_flag = can_gain_wg_crisis_point }
+		FROMFROMFROM? = { has_fleet_flag = can_gain_wg_crisis_point }
 	}
 
 	immediate = {
 		add_wg_crisis_points = { POINTS = 15 }
-		FROMFROMFROM = { remove_fleet_flag = can_gain_wg_crisis_point }
+		FROMFROMFROM? = { remove_fleet_flag = can_gain_wg_crisis_point }
 	}
 }
 
@@ -508,7 +508,7 @@ country_event = {
 
 	trigger = {
 		has_ascension_perk = ap_wg_crisis
-		FROMFROMFROM = { is_main_ship_size = yes }
+		FROMFROMFROM? = { is_main_ship_size = yes }
 	}
 
 	immediate = {
@@ -526,7 +526,7 @@ country_event = {
 
 	trigger = {
 		has_ascension_perk = ap_wg_crisis
-		FROMFROMFROM = { is_super_ship_size = yes }
+		FROMFROMFROM? = { is_super_ship_size = yes }
 	}
 
 	immediate = {
@@ -544,7 +544,7 @@ country_event = {
 
 	trigger = {
 		has_ascension_perk = ap_wg_crisis
-		FROMFROMFROM = { is_ship_class = shipclass_military_station }
+		FROMFROMFROM? = { is_ship_class = shipclass_military_station }
 	}
 
 	immediate = {
@@ -560,22 +560,22 @@ starbase_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM.owner = { has_ascension_perk = ap_wg_crisis }
+		FROM.owner? = { has_ascension_perk = ap_wg_crisis }
 	}
 
 	immediate = {
 		if = { # 哨站3分
 			limit = { has_starbase_size = starbase_outpost }
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				add_wg_crisis_points = { POINTS = 5 }
 			}
 		} else_if = { # 星港6分
 			limit = { has_starbase_size = starbase_starport }
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				add_wg_crisis_points = { POINTS = 8 }
 			}
 		} else = { # 其他级别
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				add_wg_crisis_points = { POINTS = 15 }
 			}
 		}
@@ -590,27 +590,27 @@ ship_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { is_hostile = ROOT.owner }
-		owner = {
+		FROM? = { is_hostile = ROOT.owner }
+		owner? = {
 			has_ascension_perk = ap_wg_crisis
 		}
 	}
 
 	immediate = {
-		fleet = {
+		fleet? = {
 			starbase = {
 				if = { # 哨站3分
 					limit = { has_starbase_size = starbase_outpost }
-					event_target:ap_wg_crisis_country = {
+					event_target:ap_wg_crisis_country? = {
 						add_wg_crisis_points = { POINTS = 5 }
 					}
 				} else_if = { # 星港6分
 					limit = { has_starbase_size = starbase_starport }
-					event_target:ap_wg_crisis_country = {
+					event_target:ap_wg_crisis_country? = {
 						add_wg_crisis_points = { POINTS = 8 }
 					}
 				} else = { # 其他级别
-					event_target:ap_wg_crisis_country = {
+					event_target:ap_wg_crisis_country? = {
 						add_wg_crisis_points = { POINTS = 15 }
 					}
 				}
@@ -630,13 +630,13 @@ carrier_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		from = {
+		from? = {
 			has_ascension_perk = ap_wg_crisis
 		}
 	}
 
 	immediate = {
-		from = {
+		from? = {
 			add_wg_crisis_points = { POINTS = 2 }
 		}
 	}
@@ -652,14 +652,14 @@ carrier_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		from = {
+		from? = {
 			has_ascension_perk = ap_wg_crisis
 		}
 		OR = {
 			is_colony = yes
 			AND = {
 				exists = owner
-				owner = { 
+				owner? = { 
 					is_primitive = yes
 				}
 			}
@@ -667,13 +667,13 @@ carrier_event = {
 	}
 
 	immediate = {
-		from = {
+		from? = {
 			add_wg_crisis_points = { POINTS = 35 }
 		}
 		if = {
 			limit = {
 				exists = owner
-				owner = {
+				owner? = {
 					#NOT = { is_country_type = default_ev }
 					NOT = {
 						any_owned_planet = {
@@ -682,9 +682,9 @@ carrier_event = {
 					}
 				}
 			}
-			from = {
+			from? = {
 				add_wg_crisis_points = { POINTS = 300 }
-				ROOT.owner = { set_country_flag = gain_wg_crisis_point }
+				ROOT.owner? = { set_country_flag = gain_wg_crisis_point }
 			}
 		}
 	}
@@ -702,13 +702,13 @@ country_event = {
 	trigger = {
 		is_subject = yes
 		NOT = { has_country_flag = has_become_crisis_vassal }
-		from = {
+		from? = {
 			has_ascension_perk = ap_wg_crisis
 		}
 	}
 
 	immediate = {
-		from = {
+		from? = {
 			add_wg_crisis_points = { POINTS = 100 }
 		}
 		set_country_flag = has_become_crisis_vassal
@@ -738,7 +738,7 @@ event = {
 					vassals > 0
 				}
 				every_subject = {
-					prev = {
+					prev? = {
 						add_wg_crisis_points = { POINTS = 10 }
 					}
 				}
@@ -783,7 +783,7 @@ country_event = {
 	trigger = {
 		NOT = { has_country_flag = gain_wg_crisis_point }
 		exists = FROM
-		FROM = { OR = {
+		FROM? = { OR = {
 			has_ascension_perk = ap_wg_crisis 
 			has_ascension_perk = ap_become_the_crisis
 		}}
@@ -816,10 +816,10 @@ country_event = {
 	}
 
 	immediate = {
-		FROM = {
+		FROM? = {
 			save_event_target_as = loser_warleader
 		}
-		FROMFROM = {
+		FROMFROM? = {
 			every_war_participant = {
 				limit = { 
 					is_war_participant = { 
@@ -834,7 +834,7 @@ country_event = {
 						}
 					}
 				}
-				ROOT = {
+				ROOT? = {
 					if = {
 						limit = { has_ascension_perk = ap_wg_crisis }
 						add_wg_crisis_points = { POINTS = 300 }

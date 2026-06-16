@@ -18,7 +18,7 @@ get_player_nickname = {
 	optimize_memory
 	if = {
 		limit = { has_country_flag = has_nickname }
-		event_target:wsg_lady_country = {
+		event_target:wsg_lady_country? = {
 			random_controlled_fleet = {
 				limit = { has_fleet_flag = lady_naming_fleet }
 				save_global_event_target_as = wsg_player_nickname
@@ -71,13 +71,13 @@ create_wsg_lady_army_transport = {
 	}
 	if = {
 		limit = { 
-			event_target:wsg_lady_own_country = { 
+			event_target:wsg_lady_own_country? = { 
 				check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv5 }
 				has_country_flag = married_wsg_lady
 			}
 		}
 		if = {
-			limit = { event_target:wsg_lady_own_country = { has_country_flag = dragonslayer_wsg_lady }}
+			limit = { event_target:wsg_lady_own_country? = { has_country_flag = dragonslayer_wsg_lady }}
 			create_army_transport = {
 				ship_name = "NAME_WG_LADY"
 				army_name = "NAME_WG_LADY"
@@ -96,9 +96,9 @@ create_wsg_lady_army_transport = {
 		break = yes
 	}
 	if = {
-		limit = { event_target:wsg_lady_own_country = { check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv3 }}}
+		limit = { event_target:wsg_lady_own_country? = { check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv3 }}}
 		if = {
-			limit = { event_target:wsg_lady_own_country = { has_country_flag = dragonslayer_wsg_lady }}
+			limit = { event_target:wsg_lady_own_country? = { has_country_flag = dragonslayer_wsg_lady }}
 			create_army_transport = {
 				ship_name = "NAME_WG_LADY"
 				army_name = "NAME_WG_LADY"
@@ -117,9 +117,9 @@ create_wsg_lady_army_transport = {
 		break = yes
 	} 
 	if = { 
-		limit = { event_target:wsg_lady_own_country = { check_variable = { which = wg_lady_affection value < @wg_lady_affection_to_lv3 }}}
+		limit = { event_target:wsg_lady_own_country? = { check_variable = { which = wg_lady_affection value < @wg_lady_affection_to_lv3 }}}
 		if = {
-			limit = { event_target:wsg_lady_own_country = { has_country_flag = dragonslayer_wsg_lady }}
+			limit = { event_target:wsg_lady_own_country? = { has_country_flag = dragonslayer_wsg_lady }}
 			create_army_transport = {
 				ship_name = "NAME_WG_LADY"
 				army_name = "NAME_WG_LADY"
@@ -147,13 +147,13 @@ create_wsg_lady_army_troop = {
 	}
 	if = {
 		limit = { 
-			event_target:wsg_lady_own_country = { 
+			event_target:wsg_lady_own_country? = { 
 				check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv5 }
 				has_country_flag = married_wsg_lady
 			}
 		}
 		if = {
-			limit = { event_target:wsg_lady_own_country = { has_country_flag = dragonslayer_wsg_lady }}
+			limit = { event_target:wsg_lady_own_country? = { has_country_flag = dragonslayer_wsg_lady }}
 			create_army = {
 				owner = event_target:wsg_lady_own_country
 				type = lady_army_affection_5_dragonslayer
@@ -170,9 +170,9 @@ create_wsg_lady_army_troop = {
 		break = yes
 	}
 	if = {
-		limit = { event_target:wsg_lady_own_country = { check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv3 }}}
+		limit = { event_target:wsg_lady_own_country? = { check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv3 }}}
 		if = {
-			limit = { event_target:wsg_lady_own_country = { has_country_flag = dragonslayer_wsg_lady }}
+			limit = { event_target:wsg_lady_own_country? = { has_country_flag = dragonslayer_wsg_lady }}
 			create_army = {
 				owner = event_target:wsg_lady_own_country
 				type = lady_army_affection_3_dragonslayer
@@ -189,9 +189,9 @@ create_wsg_lady_army_troop = {
 		break = yes
 	} 
 	if = { 
-		limit = { event_target:wsg_lady_own_country = { check_variable = { which = wg_lady_affection value < @wg_lady_affection_to_lv3 }}}
+		limit = { event_target:wsg_lady_own_country? = { check_variable = { which = wg_lady_affection value < @wg_lady_affection_to_lv3 }}}
 		if = {
-			limit = { event_target:wsg_lady_own_country = { has_country_flag = dragonslayer_wsg_lady }}
+			limit = { event_target:wsg_lady_own_country? = { has_country_flag = dragonslayer_wsg_lady }}
 			create_army = {
 				owner = event_target:wsg_lady_own_country
 				type = lady_army_dragonslayer
@@ -211,7 +211,7 @@ create_wsg_lady_army_troop = {
 remove_lady_army = {
 	optimize_memory
 	last_created_army = { save_event_target_as = new_lady_army }
-	event_target:wsg_lady_own_country = {
+	event_target:wsg_lady_own_country? = {
 		every_owned_army = {
 			limit = { 
 				NOT = { is_same_value = event_target:new_lady_army }
@@ -230,7 +230,7 @@ set_lady_portrait = {
 		change_leader_portrait = wsglady_april_fool
 	}
 	else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			OR = {
 				has_country_flag = wsg_lady_cloth_01_unlock
 				has_global_flag = wg_cheat_all_clothes
@@ -239,7 +239,7 @@ set_lady_portrait = {
 		}}
 		change_leader_portrait = wsglady01
 	} else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			OR = {
 				has_country_flag = wsg_lady_cloth_02_unlock
 				has_global_flag = wg_cheat_all_clothes
@@ -248,7 +248,7 @@ set_lady_portrait = {
 		}}
 		change_leader_portrait = wsglady02
 	} else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			OR = {
 				has_country_flag = married_wsg_lady
 				has_global_flag = wg_cheat_all_clothes
@@ -257,25 +257,25 @@ set_lady_portrait = {
 		}}
 		change_leader_portrait = wsglady03
 	} else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			check_variable = { which = wsg_lady_cloth value = 4 }
 		}}
 		change_leader_portrait = wsglady04
 	} else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			check_variable = { which = wsg_lady_cloth value = 5 }
 		}}
 		change_leader_portrait = wsglady_april_fool
 	} else_if = {
-		limit = { owner = { check_variable = { which = wsg_lady_cloth value = 0 }}}
+		limit = { owner? = { check_variable = { which = wsg_lady_cloth value = 0 }}}
 		if = { 
-			limit = { owner = { check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv5 }}}
+			limit = { owner? = { check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv5 }}}
 			change_leader_portrait = wsg_lady_affection3
 		} else_if = {
-			limit = { owner = { check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv3 }}}
+			limit = { owner? = { check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv3 }}}
 			change_leader_portrait = wsg_lady_affection2
 		} else_if = {
-			limit = { owner = { check_variable = { which = wg_lady_affection value < @wg_lady_affection_to_lv3 }}}
+			limit = { owner? = { check_variable = { which = wg_lady_affection value < @wg_lady_affection_to_lv3 }}}
 			change_leader_portrait = wsg_lady_affection1
 		}
 	} else = {

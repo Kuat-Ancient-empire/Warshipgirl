@@ -40,13 +40,13 @@ create_bubbles_official = {
 		}
 		delete_fleet = this
 	}
-	event_target:bubbles_official = {
+	event_target:bubbles_official? = {
 		set_skill = owner.bubbles_level
 		leader_event = {
 			id = wg_affection.8 days = 1
 		}
 		if = {
-			limit = { PREV = { has_country_flag = bubbles_depressed }}
+			limit = { PREV? = { has_country_flag = bubbles_depressed }}
 			add_trait = { trait = leader_trait_arrested_development show_message = no }
 		#	add_trait = { trait = leader_trait_official_bubbles_depressed show_message = no }
 		}
@@ -70,7 +70,7 @@ create_bubbles_warship = {
 			set_fleet_stance = passive
 			set_fleet_flag = wg_event_limit_fleet
 			if = {
-				limit = { owner = { has_country_flag = bubbles_centenarian }}
+				limit = { owner? = { has_country_flag = bubbles_centenarian }}
 				create_ship = {
 					name = event_target:lost_amoeba_adult_fleet
 					design = "NAME_Adopted_Amoeba_Centenarian"
@@ -83,7 +83,7 @@ create_bubbles_warship = {
 				add_modifier = { modifier = "evolved_evasion" days = -1 }
 				set_fleet_flag = lost_amoeba_centenarian_fleet@prev
 			} else_if = {
-				limit = { owner = { has_country_flag = bubbles_adult }}
+				limit = { owner? = { has_country_flag = bubbles_adult }}
 				create_ship = {
 					name = "NAME_Adopted_Amoeba"
 					design = "NAME_Large_Space_Organism_Teal"
@@ -116,7 +116,7 @@ create_bubbles_warship = {
 			spawn_debris = yes
 		}
 	}
-	event_target:bubbles_fleet = {
+	event_target:bubbles_fleet? = {
 		check_bubbles_planet_modifiers = yes
 	}
 	remove_country_flag = bubbles_official_active
@@ -148,7 +148,7 @@ create_bubbles_admiral = {
 			save_global_event_target_as = bubbles_admiral
 		}
 	}
-	event_target:bubbles_admiral = {
+	event_target:bubbles_admiral? = {
 		set_skill = owner.bubbles_level
 		leader_event = {
 			id = wg_affection.8 days = 1
@@ -167,31 +167,31 @@ remove_bubbles_leader = {
 level_up_bubbles = {
 	optimize_memory
 	if = {
-		limit = { owner = { check_variable = { which = bubbles_level value = 2 }}}
+		limit = { owner? = { check_variable = { which = bubbles_level value = 2 }}}
 		set_skill = 2
 	} else_if = {
-		limit = { owner = { check_variable = { which = bubbles_level value = 3 }}}
+		limit = { owner? = { check_variable = { which = bubbles_level value = 3 }}}
 		set_skill = 3
 	} else_if = {
-		limit = { owner = { check_variable = { which = bubbles_level value = 4 }}}
+		limit = { owner? = { check_variable = { which = bubbles_level value = 4 }}}
 		set_skill = 4
 	} else_if = {
-		limit = { owner = { check_variable = { which = bubbles_level value = 5 }}}
+		limit = { owner? = { check_variable = { which = bubbles_level value = 5 }}}
 		set_skill = 5
 	} else_if = {
-		limit = { owner = { check_variable = { which = bubbles_level value = 6 }}}
+		limit = { owner? = { check_variable = { which = bubbles_level value = 6 }}}
 		set_skill = 6
 	} else_if = {
-		limit = { owner = { check_variable = { which = bubbles_level value = 7 }}}
+		limit = { owner? = { check_variable = { which = bubbles_level value = 7 }}}
 		set_skill = 7
 	} else_if = {
-		limit = { owner = { check_variable = { which = bubbles_level value = 8 }}}
+		limit = { owner? = { check_variable = { which = bubbles_level value = 8 }}}
 		set_skill = 8
 	} else_if = {
-		limit = { owner = { check_variable = { which = bubbles_level value = 9 }}}
+		limit = { owner? = { check_variable = { which = bubbles_level value = 9 }}}
 		set_skill = 9
 	} else_if = {
-		limit = { owner = { check_variable = { which = bubbles_level value = 10 }}}
+		limit = { owner? = { check_variable = { which = bubbles_level value = 10 }}}
 		set_skill = 10
 	}
 }
@@ -199,11 +199,11 @@ level_up_bubbles = {
 # scope: fleet
 check_bubbles_planet_modifiers = {
 	optimize_memory
-	solar_system = { 
+	solar_system? = { 
 		every_system_planet = {
 			limit = { 
 				has_owner = yes 
-				owner = { is_same_value = PREVPREVPREV.owner }
+				owner? = { is_same_value = PREVPREVPREV.owner }
 			}
 			add_bubbles_planet_modifer = yes
 		}
@@ -213,7 +213,7 @@ check_bubbles_planet_modifiers = {
 add_bubbles_planet_modifer = {
 	optimize_memory
 	if = {
-		limit = { owner = { check_variable = { which = bubbles_level value = 5 }}}
+		limit = { owner? = { check_variable = { which = bubbles_level value = 5 }}}
 		if = {
 			limit = { NOT = { has_modifier = planet_modifier_wg_bubbles_affection_lv5 }}
 			remove_all_bubbles_planet_modifiers = yes
@@ -221,28 +221,28 @@ add_bubbles_planet_modifer = {
 		}
 	} else = {
 		if = {
-			limit = { owner = { check_variable = { which = bubbles_level value = 1 }}}
+			limit = { owner? = { check_variable = { which = bubbles_level value = 1 }}}
 			if = {
 				limit = { NOT = { has_modifier = planet_modifier_wg_bubbles_affection_lv1 }}
 				remove_all_bubbles_planet_modifiers = yes
 				add_modifier = { modifier = planet_modifier_wg_bubbles_affection_lv1 }
 			}
 		} else_if = {
-			limit = { owner = { check_variable = { which = bubbles_level value = 2 }}}
+			limit = { owner? = { check_variable = { which = bubbles_level value = 2 }}}
 			if = {
 				limit = { NOT = { has_modifier = planet_modifier_wg_bubbles_affection_lv2 }}
 				remove_all_bubbles_planet_modifiers = yes
 				add_modifier = { modifier = planet_modifier_wg_bubbles_affection_lv2 }
 			}
 		} else_if = {
-			limit = { owner = { check_variable = { which = bubbles_level value = 3 }}}
+			limit = { owner? = { check_variable = { which = bubbles_level value = 3 }}}
 			if = {
 				limit = { NOT = { has_modifier = planet_modifier_wg_bubbles_affection_lv3 }}
 				remove_all_bubbles_planet_modifiers = yes
 				add_modifier = { modifier = planet_modifier_wg_bubbles_affection_lv3 }
 			}
 		} else_if = {
-			limit = { owner = { check_variable = { which = bubbles_level value = 4 }}}
+			limit = { owner? = { check_variable = { which = bubbles_level value = 4 }}}
 			if = {
 				limit = { NOT = { has_modifier = planet_modifier_wg_bubbles_affection_lv4 }}
 				remove_all_bubbles_planet_modifiers = yes

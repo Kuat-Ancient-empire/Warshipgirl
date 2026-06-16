@@ -10,7 +10,7 @@ country_event = {
 	    #黑石碑来到
 		has_global_flag = monolith_crisis_invaded
 		NOT = { has_global_flag = monolith_crisis_end }
-		fromfrom = { 
+		fromfrom? = { 
 			any_owned_ship = {
 				has_component = Monolith_aura
 			}
@@ -18,20 +18,20 @@ country_event = {
 	}
 
 	immediate = {
-		fromfromfrom = {
+		fromfromfrom? = {
 			if = {
 				limit = { 
 					exists = owner
-					owner = { is_ai = no }
+					owner? = { is_ai = no }
 				}
-				owner = { country_event = { id = monolith_crisis.5 } }
+				owner? = { country_event = { id = monolith_crisis.5 } }
 			}
 			if = {
 				limit = { any_owned_ship = {
 					is_ship_size = uf_buffer_o
 				}}
 				fleet_event = { id = monolith_crisis.4 days = 20 } # 电子战20天
-				root.fromfrom = { set_timed_fleet_flag = { flag = monolith_aura_debuff days = 20 } }
+				root.fromfrom? = { set_timed_fleet_flag = { flag = monolith_aura_debuff days = 20 } }
 			} 
 			else_if = {
 				limit = { any_owned_ship = { OR = {
@@ -40,11 +40,11 @@ country_event = {
 					is_ship_size = uf_glory_o
 				}}}
 				fleet_event = { id = monolith_crisis.4 days = 15 } # 黑曜石，联合荣耀15天
-				root.fromfrom = { set_timed_fleet_flag = { flag = monolith_aura_debuff days = 15 } }
+				root.fromfrom? = { set_timed_fleet_flag = { flag = monolith_aura_debuff days = 15 } }
 			} 
 			else = {
 				fleet_event = { id = monolith_crisis.4 days = 30 }#无电子战，黑曜石，联合荣耀30天保护
-				root.fromfrom = { set_timed_fleet_flag = { flag = monolith_aura_debuff days = 30 } }
+				root.fromfrom? = { set_timed_fleet_flag = { flag = monolith_aura_debuff days = 30 } }
 			}
 			set_timed_fleet_flag = { flag = monolith_crisis_combat_fleet days = 40 }
 		}
@@ -57,9 +57,9 @@ country_event = {
     hide_window = yes
     is_triggered_only = yes
 
-    trigger = { fromfrom = { has_fleet_flag = monolith_crisis_combat_fleet } }
+    trigger = { fromfrom? = { has_fleet_flag = monolith_crisis_combat_fleet } }
 
-    immediate = { fromfrom = { remove_fleet_flag = monolith_crisis_combat_fleet } }
+    immediate = { fromfrom? = { remove_fleet_flag = monolith_crisis_combat_fleet } }
 }
 
 # 特殊情况，需要对舰队进行一些操作
@@ -125,7 +125,7 @@ country_event = {
 			set_star_flag = monolith_invade_system
 			save_global_event_target_as = monolith_invasion_system
 		}
-		event_target:monolith_invasion_system = {
+		event_target:monolith_invasion_system? = {
 			closest_system = {
 				limit = { NOT = { has_star_flag = monolith_invade_system }}
 				set_star_flag = monolith_invade_system
@@ -305,8 +305,8 @@ country_event = {
 				amount = 4
 			}
 		}
-		event_target:monolith_invasion_system = {
-			star = {
+		event_target:monolith_invasion_system? = {
+			star? = {
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_large_fleet = yes
@@ -315,12 +315,12 @@ country_event = {
 			}
 			if = {
 				limit = { exists = starbase }
-				starbase = { fleet = { destroy_fleet = this } }
+				starbase = { fleet? = { destroy_fleet = this } }
 			}
 			create_monolith_crisis_starbase = yes
 		}
-		event_target:monolith_invasion_system_2 = {
-			star = {
+		event_target:monolith_invasion_system_2? = {
+			star? = {
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_large_fleet = yes
@@ -329,14 +329,14 @@ country_event = {
 			}
 			if = {
 				limit = { exists = starbase }
-				starbase = { fleet = { destroy_fleet = this } }
+				starbase = { fleet? = { destroy_fleet = this } }
 			}
 			create_monolith_crisis_starbase = yes
 			set_star_flag = monolith_crisis_bypass_systems_1
 			set_star_flag = monolith_crisis_init_bypass_systems
 		}
-		event_target:monolith_invasion_system_3 = {
-			star = {
+		event_target:monolith_invasion_system_3? = {
+			star? = {
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_large_fleet = yes
@@ -345,15 +345,15 @@ country_event = {
 			}
 			if = {
 				limit = { exists = starbase }
-				starbase = { fleet = { destroy_fleet = this } }
+				starbase = { fleet? = { destroy_fleet = this } }
 			}
 			create_monolith_crisis_starbase = yes
 			set_star_flag = monolith_crisis_bypass_systems_2
 			set_star_flag = monolith_crisis_init_bypass_systems
 		}
 				
-		event_target:monolith_invasion_system_4 = {
-			star = {
+		event_target:monolith_invasion_system_4? = {
+			star? = {
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_large_fleet = yes
@@ -362,7 +362,7 @@ country_event = {
 			}
 			if = {
 				limit = { exists = starbase }
-				starbase = { fleet = { destroy_fleet = this } }
+				starbase = { fleet? = { destroy_fleet = this } }
 			}
 			create_monolith_crisis_starbase = yes
 			set_star_flag = monolith_crisis_bypass_systems_3
@@ -536,7 +536,7 @@ country_event = {
 
 	is_triggered_only = yes
     trigger = {
-		FROM = {
+		FROM? = {
 			is_country_type = monolith_crisis_country
 		}
 		NOT = {
@@ -567,7 +567,7 @@ country_event = {
 			set_star_flag = monolith_invade_system
 			save_global_event_target_as = monolith_invasion_system
 		}
-		event_target:monolith_invasion_system = {
+		event_target:monolith_invasion_system? = {
 			closest_system = {
 				limit = { NOT = { has_star_flag = monolith_invade_system }}
 				set_star_flag = monolith_invade_system
@@ -584,8 +584,8 @@ country_event = {
 				save_global_event_target_as = monolith_invasion_system_4
 			}
 		}
-		event_target:monolith_invasion_system = {
-			star = {
+		event_target:monolith_invasion_system? = {
+			star? = {
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_large_fleet = yes
@@ -594,14 +594,14 @@ country_event = {
 			}
 			if = {
 				limit = { exists = starbase }
-				starbase = { fleet = { destroy_fleet = this } }
+				starbase = { fleet? = { destroy_fleet = this } }
 			}
 			create_monolith_crisis_starbase = yes
 			set_star_flag = monolith_crisis_bypass_systems_1
 			set_star_flag = monolith_crisis_init_bypass_systems
 		}
-		event_target:monolith_invasion_system_2 = {
-			star = {
+		event_target:monolith_invasion_system_2? = {
+			star? = {
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_large_fleet = yes
@@ -610,14 +610,14 @@ country_event = {
 			}
 			if = {
 				limit = { exists = starbase }
-				starbase = { fleet = { destroy_fleet = this }}
+				starbase = { fleet? = { destroy_fleet = this }}
 			}
 			create_monolith_crisis_starbase = yes
 			set_star_flag = monolith_crisis_bypass_systems_2
 			set_star_flag = monolith_crisis_init_bypass_systems
 		}
-		event_target:monolith_invasion_system_3 = {
-			star = {
+		event_target:monolith_invasion_system_3? = {
+			star? = {
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_large_fleet = yes
@@ -626,15 +626,15 @@ country_event = {
 			}
 			if = {
 				limit = { exists = starbase }
-				starbase = { fleet = { destroy_fleet = this } }
+				starbase = { fleet? = { destroy_fleet = this } }
 			}
 			create_monolith_crisis_starbase = yes
 			set_star_flag = monolith_crisis_bypass_systems_3
 			set_star_flag = monolith_crisis_init_bypass_systems
 		}
 				
-		event_target:monolith_invasion_system_4 = {
-			star = {
+		event_target:monolith_invasion_system_4? = {
+			star? = {
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_fleet = yes
 				create_monolith_crisis_large_fleet = yes
@@ -643,11 +643,11 @@ country_event = {
 			}
 			if = {
 				limit = { exists = starbase }
-				starbase = { fleet = { destroy_fleet = this } }
+				starbase = { fleet? = { destroy_fleet = this } }
 			}
 			create_monolith_crisis_starbase = yes
 		}
-		event_target:monolith_crisis_data_store = {
+		event_target:monolith_crisis_data_store? = {
 			change_variable = { which = event_chain_starbase_count value = 4 }
 			change_variable = { which = event_chain_fleet_count value = 20 }
 		}
@@ -808,10 +808,10 @@ country_event = {
 		}
 		every_playable_country = {
 			country_event = { id = monolith_crisis.116 }
-			event_target:monolith_crisis_1_system = {
+			event_target:monolith_crisis_1_system? = {
 				set_surveyed = { surveyed = yes surveyor = prev }
 			}
-			event_target:monolith_crisis_1_shield_system = {
+			event_target:monolith_crisis_1_shield_system? = {
 				set_surveyed = { surveyed = yes surveyor = prev }
 			}
 		}
@@ -824,7 +824,7 @@ country_event = {
 					exists = space_owner
 					OR = {
 						has_star_flag = monolith_crisis_init_bypass_systems
-						space_owner = { is_same_value = event_target:monolith_crisis_country }
+						space_owner? = { is_same_value = event_target:monolith_crisis_country }
 					}
 				}
 				spawn_megastructure = {
@@ -837,7 +837,7 @@ country_event = {
 				remove_star_flag = monolith_crisis_bypass_systems_1
 			}
 		}
-		event_target:monolith_crisis_data_store = {
+		event_target:monolith_crisis_data_store? = {
 			change_variable = { which = num_monolith_crisis_system value = 1 }
 			change_variable = { which = num_monolith_crisis_node value = 1 }
 			change_variable = { which = event_chain_starbase_count value = 2 }
@@ -892,10 +892,10 @@ country_event = {
 		set_spawn_system_batch = end
 		every_playable_country = {
 			country_event = { id = monolith_crisis.117 }
-			event_target:monolith_crisis_2_system = {
+			event_target:monolith_crisis_2_system? = {
 				set_surveyed = { surveyed = yes surveyor = prev }
 			}
-			event_target:monolith_crisis_2_shield_system = {
+			event_target:monolith_crisis_2_shield_system? = {
 				set_surveyed = { surveyed = yes surveyor = prev }
 			}
 		}
@@ -909,7 +909,7 @@ country_event = {
 					exists = space_owner
 					OR = {
 						has_star_flag = monolith_crisis_init_bypass_systems
-						space_owner = { is_same_value = event_target:monolith_crisis_country }
+						space_owner? = { is_same_value = event_target:monolith_crisis_country }
 					}
 				}
 				spawn_megastructure = {
@@ -922,7 +922,7 @@ country_event = {
 				remove_star_flag = monolith_crisis_bypass_systems_2
 			}
 		}
-		event_target:monolith_crisis_data_store = {
+		event_target:monolith_crisis_data_store? = {
 			change_variable = { which = num_monolith_crisis_system value = 1 }
 			change_variable = { which = num_monolith_crisis_node value = 1 }
 			change_variable = { which = event_chain_starbase_count value = 2 }
@@ -980,10 +980,10 @@ country_event = {
 		}
 		every_playable_country = {
 			country_event = { id = monolith_crisis.118 }
-			event_target:monolith_crisis_3_system = {
+			event_target:monolith_crisis_3_system? = {
 				set_surveyed = { surveyed = yes surveyor = prev }
 			}
-			event_target:monolith_crisis_3_shield_system = {
+			event_target:monolith_crisis_3_shield_system? = {
 				set_surveyed = { surveyed = yes surveyor = prev }
 			}
 		}
@@ -997,7 +997,7 @@ country_event = {
 					exists = space_owner
 					OR = {
 						has_star_flag = monolith_crisis_init_bypass_systems
-						space_owner = { is_same_value = event_target:monolith_crisis_country }
+						space_owner? = { is_same_value = event_target:monolith_crisis_country }
 					}
 				}
 				spawn_megastructure = {
@@ -1010,7 +1010,7 @@ country_event = {
 				remove_star_flag = monolith_crisis_bypass_systems_3
 			}
 		}
-		event_target:monolith_crisis_data_store = {
+		event_target:monolith_crisis_data_store? = {
 			change_variable = { which = num_monolith_crisis_system value = 1 }
 			change_variable = { which = num_monolith_crisis_node value = 1 }
 			change_variable = { which = event_chain_starbase_count value = 2 }
@@ -1048,7 +1048,7 @@ country_event = {
 		every_playable_country = {
 			country_event = { id = monolith_crisis.119 days = 5 }
 		}
-		event_target:monolith_crisis_data_store = {
+		event_target:monolith_crisis_data_store? = {
 			change_variable = { which = event_chain_starbase_count value = 1 }
 		}
 	}
@@ -1198,7 +1198,7 @@ country_event = {
 			amount = 1
 		}
 		every_playable_country = {
-			event_target:monolith_crisis_core_system = {
+			event_target:monolith_crisis_core_system? = {
 				set_surveyed = { surveyed = yes surveyor = prev }
 			}
 		}
@@ -1229,7 +1229,7 @@ event = {
 	is_triggered_only = yes
 	trigger = {
 		exists = event_target:monolith_crisis_country
-		event_target:monolith_crisis_country = {
+		event_target:monolith_crisis_country? = {
 			any_owned_fleet = {
 				exists = this
 				is_fleet_idle = yes
@@ -1241,7 +1241,7 @@ event = {
 	immediate = {
 		if = {
 			limit = { exists = event_target:monolith_crisis_country }
-			event_target:monolith_crisis_country = {
+			event_target:monolith_crisis_country? = {
 				every_owned_fleet = {
 					limit = {
 						exists = this
@@ -1283,15 +1283,15 @@ fleet_event = {
 	trigger = {
 		has_global_flag = monolith_crisis_invaded
 		NOT = { has_global_flag = monolith_crisis_end }
-		from = { has_star_flag = monolith_crisis_systems }
-		owner = {
+		from? = { has_star_flag = monolith_crisis_systems }
+		owner? = {
 			NOT = { is_country_type = monolith_crisis_country }
 		}
 	}
 
 	immediate = {
 		if = {
-			limit = { owner = { is_default_and_fallen_country = yes }}
+			limit = { owner? = { is_default_and_fallen_country = yes }}
 			set_mia = mia_return_home
 		} 
 		else = {
@@ -1305,7 +1305,7 @@ fleet_event = {
 						kuat_is_kuat_system = yes
 					}
 				}
-				random_system_planet = { root = { set_location = prev } }
+				random_system_planet = { root? = { set_location = prev } }
 			}
 		}
 	}
@@ -1319,8 +1319,8 @@ ship_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		from = { has_star_flag = monolith_crisis_systems }
-		owner = {
+		from? = { has_star_flag = monolith_crisis_systems }
+		owner? = {
 			NOT = { is_country_type = monolith_crisis_country }
 		}
 	}
@@ -1340,7 +1340,7 @@ event = {
 	}
 
 	immediate = {
-		event_target:monolith_crisis_country = {
+		event_target:monolith_crisis_country? = {
 			country_event = { id = monolith_crisis.198 }
 		}
 	}
@@ -1379,12 +1379,12 @@ country_event = {
 				}
 			}
 		}
-		event_target:monolith_crisis_country = { 
+		event_target:monolith_crisis_country? = { 
 			set_variable = { which = num_fleet value = trigger:num_fleets }
 			set_variable = { which = num_starbases value = trigger:num_starbases }
 			subtract_variable = { which = num_fleet value = num_starbases }
-			event_target:monolith_crisis_data_store = { set_variable = { which = event_chain_fleet_count value = prev.num_fleet }}
-			event_target:monolith_crisis_data_store = { set_variable = { which = event_chain_starbase_count value = prev.num_starbases }}
+			event_target:monolith_crisis_data_store? = { set_variable = { which = event_chain_fleet_count value = prev.num_fleet }}
+			event_target:monolith_crisis_data_store? = { set_variable = { which = event_chain_starbase_count value = prev.num_starbases }}
 		}
 		every_playable_country = {
 			limit = { has_event_chain = monolith_crisis_invasion_chain }
@@ -1406,13 +1406,13 @@ country_event = {
 			}
 		}
 		# 检测门的数量和是否存在门
-		event_target:monolith_crisis_data_store = {
+		event_target:monolith_crisis_data_store? = {
 			clear_variable = num_monolith_crisis_bypass_1
 			clear_variable = num_monolith_crisis_bypass_2
 			clear_variable = num_monolith_crisis_bypass_3
 			every_system = {
 				limit = { has_star_flag = monolith_crisis_bypass_systems_1 }
-				prev = { change_variable = { which = num_monolith_crisis_bypass_1 value = 1 }}
+				prev? = { change_variable = { which = num_monolith_crisis_bypass_1 value = 1 }}
 				if = {
 					limit = { 
 						NOT = { any_system_megastructure = { is_megastructure_type = monolith_crisis_gate_1 }}
@@ -1428,7 +1428,7 @@ country_event = {
 			}
 			every_system = {
 				limit = { has_star_flag = monolith_crisis_bypass_systems_2 }
-				prev = { change_variable = { which = num_monolith_crisis_bypass_2 value = 1 }}
+				prev? = { change_variable = { which = num_monolith_crisis_bypass_2 value = 1 }}
 				if = {
 					limit = { 
 						NOT = { any_system_megastructure = { is_megastructure_type = monolith_crisis_gate_2 }}
@@ -1444,7 +1444,7 @@ country_event = {
 			}
 			every_system = {
 				limit = { has_star_flag = monolith_crisis_bypass_systems_3 }
-				prev = { change_variable = { which = num_monolith_crisis_bypass_3 value = 1 }}
+				prev? = { change_variable = { which = num_monolith_crisis_bypass_3 value = 1 }}
 				if = {
 					limit = { 
 						NOT = { any_system_megastructure = { is_megastructure_type = monolith_crisis_gate_3 }}
@@ -1470,14 +1470,14 @@ country_event = {
 					NOT = { has_star_flag = comfirm_destroyed }
 					NOR = {
 						exists = space_owner
-						space_owner = { is_country_type = monolith_crisis_country }
+						space_owner? = { is_country_type = monolith_crisis_country }
 					}
 				}
 				every_fleet_in_system = { destroy_fleet = this }
 				create_monolith_crisis_starbase = yes
 				if = {
 					limit = { has_star_flag = monolith_crisis_shield_system }
-					star = {
+					star? = {
 						create_monolith_crisis_defence_fleet = yes
 						create_monolith_crisis_defence_fleet = yes
 					}
@@ -1502,15 +1502,15 @@ country_event = {
 					switch = {
 						trigger = has_star_flag
 						monolith_crisis_shield_1_system_flag = {
-							star = { change_pc = pc_m_star set_planet_size = 20 }
+							star? = { change_pc = pc_m_star set_planet_size = 20 }
 							set_star_class = sc_m
 						}
 						monolith_crisis_shield_1_system_flag = {
-							star = { change_pc = pc_b_star set_planet_size = 20 }
+							star? = { change_pc = pc_b_star set_planet_size = 20 }
 							set_star_class = sc_b
 						}
 						monolith_crisis_shield_3_system_flag = {
-							star = { change_pc = pc_g_star set_planet_size = 20 }
+							star? = { change_pc = pc_g_star set_planet_size = 20 }
 							set_star_class = sc_g
 						}
 					}
@@ -1533,7 +1533,7 @@ country_event = {
 							set_ambient_object_flag = shield_effect
 						}
 					}
-					star = { change_pc = pc_monolith_crisis_star }
+					star? = { change_pc = pc_monolith_crisis_star }
 					set_star_class = sc_monolith_crisis_star
 				}
 			}
@@ -1556,7 +1556,7 @@ system_event = {
 			# 不存在任何非天灾舰队
 			any_fleet_in_system = {
 				exists = owner
-				owner = { is_hostile = event_target:monolith_crisis_country }
+				owner? = { is_hostile = event_target:monolith_crisis_country }
 			}
 			# 不存在任何非土著球
 			any_system_planet = {
@@ -1567,7 +1567,7 @@ system_event = {
 
 	immediate = {
 		create_monolith_crisis_starbase = yes
-		event_target:monolith_crisis_data_store = {
+		event_target:monolith_crisis_data_store? = {
 			change_variable = { which = event_chain_starbase_count value = 1 }
 		}
 		every_playable_country = { 
@@ -1584,7 +1584,7 @@ system_event = {
 					factor = 0
 					has_global_flag = destroy_all_monolith_nodes
 				}
-				event_target:monolith_crisis_country = {
+				event_target:monolith_crisis_country? = {
 					set_variable = { which = counter_not_create_gate value = 0 }
 				}
 				random_list = {
@@ -1592,7 +1592,7 @@ system_event = {
 						modifier = {
 							factor = 0
 							OR = {
-								event_target:monolith_crisis_country = {
+								event_target:monolith_crisis_country? = {
 									has_country_flag = created_monolith_crisis_bypass_1
 									NAND = {
 										has_global_flag = second_monolith_node_destroyed
@@ -1604,14 +1604,14 @@ system_event = {
 						}
 						modifier = {
 							add = -2
-							event_target:monolith_crisis_country = {
+							event_target:monolith_crisis_country? = {
 								OR = {
 									AND = {
 										OR = {
 											has_global_flag = second_monolith_node_destroyed
 											has_country_flag = created_monolith_crisis_bypass_2
 										}
-										event_target:monolith_crisis_data_store = {
+										event_target:monolith_crisis_data_store? = {
 											check_variable_arithmetic = {
 												which = num_monolith_crisis_bypass_1
 												subtract = num_monolith_crisis_bypass_3
@@ -1624,7 +1624,7 @@ system_event = {
 											has_global_flag = third_monolith_node_destroyed
 											has_country_flag = created_monolith_crisis_bypass_3
 										}
-										event_target:monolith_crisis_data_store = {
+										event_target:monolith_crisis_data_store? = {
 											check_variable_arithmetic = {
 												which = num_monolith_crisis_bypass_1
 												subtract = num_monolith_crisis_bypass_2
@@ -1637,14 +1637,14 @@ system_event = {
 						}
 						modifier = {
 							add = -1
-							event_target:monolith_crisis_country = {
+							event_target:monolith_crisis_country? = {
 								OR = {
 									AND = {
 										OR = {
 											has_global_flag = second_monolith_node_destroyed
 											has_country_flag = created_monolith_crisis_bypass_2
 										}
-										event_target:monolith_crisis_data_store = {
+										event_target:monolith_crisis_data_store? = {
 											check_variable_arithmetic = {
 												which = num_monolith_crisis_bypass_1
 												subtract = num_monolith_crisis_bypass_3
@@ -1657,7 +1657,7 @@ system_event = {
 											has_global_flag = third_monolith_node_destroyed
 											has_country_flag = created_monolith_crisis_bypass_3
 										}
-										event_target:monolith_crisis_data_store = {
+										event_target:monolith_crisis_data_store? = {
 											check_variable_arithmetic = {
 												which = num_monolith_crisis_bypass_1
 												subtract = num_monolith_crisis_bypass_2
@@ -1669,13 +1669,13 @@ system_event = {
 							}
 						}
 						set_star_flag = monolith_crisis_bypass_systems_1
-						event_target:monolith_crisis_country = {
+						event_target:monolith_crisis_country? = {
 							# 刷完一个连接到节点的门之后，让下一个节点不会再刷连接到同样节点的门
 							set_country_flag = created_monolith_crisis_bypass_1
 							remove_country_flag = created_monolith_crisis_bypass_2
 							remove_country_flag = created_monolith_crisis_bypass_3
 						}
-						event_target:monolith_crisis_data_store = {
+						event_target:monolith_crisis_data_store? = {
 							change_variable = { which = num_monolith_crisis_bypass_1 value = 1 }
 						}
 						if = {
@@ -1692,7 +1692,7 @@ system_event = {
 						modifier = {
 							factor = 0
 							OR = {
-								event_target:monolith_crisis_country = {
+								event_target:monolith_crisis_country? = {
 									has_country_flag = created_monolith_crisis_bypass_2
 									NAND = {
 										has_global_flag = second_monolith_node_destroyed
@@ -1704,14 +1704,14 @@ system_event = {
 						}
 						modifier = {
 							add = -2
-							event_target:monolith_crisis_country = {
+							event_target:monolith_crisis_country? = {
 								OR = {
 									AND = {
 										OR = {
 											has_global_flag = first_monolith_node_destroyed
 											has_country_flag = created_monolith_crisis_bypass_1
 										}
-										event_target:monolith_crisis_data_store = {
+										event_target:monolith_crisis_data_store? = {
 											check_variable_arithmetic = {
 												which = num_monolith_crisis_bypass_2
 												subtract = num_monolith_crisis_bypass_3
@@ -1724,7 +1724,7 @@ system_event = {
 											has_global_flag = third_monolith_node_destroyed
 											has_country_flag = created_monolith_crisis_bypass_3
 										}
-										event_target:monolith_crisis_data_store = {
+										event_target:monolith_crisis_data_store? = {
 											check_variable_arithmetic = {
 												which = num_monolith_crisis_bypass_2
 												subtract = num_monolith_crisis_bypass_1
@@ -1737,14 +1737,14 @@ system_event = {
 						}
 						modifier = {
 							add = -1
-							event_target:monolith_crisis_country = {
+							event_target:monolith_crisis_country? = {
 								OR = {
 									AND = {
 										OR = {
 											has_global_flag = first_monolith_node_destroyed
 											has_country_flag = created_monolith_crisis_bypass_1
 										}
-										event_target:monolith_crisis_data_store = {
+										event_target:monolith_crisis_data_store? = {
 											check_variable_arithmetic = {
 												which = num_monolith_crisis_bypass_2
 												subtract = num_monolith_crisis_bypass_3
@@ -1757,7 +1757,7 @@ system_event = {
 											has_global_flag = third_monolith_node_destroyed
 											has_country_flag = created_monolith_crisis_bypass_3
 										}
-										event_target:monolith_crisis_data_store = {
+										event_target:monolith_crisis_data_store? = {
 											check_variable_arithmetic = {
 												which = num_monolith_crisis_bypass_2
 												subtract = num_monolith_crisis_bypass_1
@@ -1769,13 +1769,13 @@ system_event = {
 							}
 						}
 						set_star_flag = monolith_crisis_bypass_systems_2
-						event_target:monolith_crisis_country = {
+						event_target:monolith_crisis_country? = {
 							# 刷完一个连接到节点的门之后，让下一个节点不会再刷连接到同样节点的门
 							set_country_flag = created_monolith_crisis_bypass_2
 							remove_country_flag = created_monolith_crisis_bypass_1
 							remove_country_flag = created_monolith_crisis_bypass_3
 						}
-						event_target:monolith_crisis_data_store = {
+						event_target:monolith_crisis_data_store? = {
 							change_variable = { which = num_monolith_crisis_bypass_2 value = 1 }
 						}
 						if = {
@@ -1792,7 +1792,7 @@ system_event = {
 						modifier = {
 							factor = 0
 							OR = {
-								event_target:monolith_crisis_country = {
+								event_target:monolith_crisis_country? = {
 									has_country_flag = created_monolith_crisis_bypass_3
 									NAND = {
 										has_global_flag = second_monolith_node_destroyed
@@ -1804,14 +1804,14 @@ system_event = {
 						}
 						modifier = {
 							add = -2
-							event_target:monolith_crisis_country = {
+							event_target:monolith_crisis_country? = {
 								OR = {
 									AND = {
 										OR = {
 											has_global_flag = first_monolith_node_destroyed
 											has_country_flag = created_monolith_crisis_bypass_1
 										}
-										event_target:monolith_crisis_data_store = {
+										event_target:monolith_crisis_data_store? = {
 											check_variable_arithmetic = {
 												which = num_monolith_crisis_bypass_3
 												subtract = num_monolith_crisis_bypass_2
@@ -1824,7 +1824,7 @@ system_event = {
 											has_global_flag = second_monolith_node_destroyed
 											has_country_flag = created_monolith_crisis_bypass_2
 										}
-										event_target:monolith_crisis_data_store = {
+										event_target:monolith_crisis_data_store? = {
 											check_variable_arithmetic = {
 												which = num_monolith_crisis_bypass_3
 												subtract = num_monolith_crisis_bypass_1
@@ -1837,14 +1837,14 @@ system_event = {
 						}
 						modifier = {
 							add = -1
-							event_target:monolith_crisis_country = {
+							event_target:monolith_crisis_country? = {
 								OR = {
 									AND = {
 										OR = {
 											has_global_flag = first_monolith_node_destroyed
 											has_country_flag = created_monolith_crisis_bypass_1
 										}
-										event_target:monolith_crisis_data_store = {
+										event_target:monolith_crisis_data_store? = {
 											check_variable_arithmetic = {
 												which = num_monolith_crisis_bypass_3
 												subtract = num_monolith_crisis_bypass_2
@@ -1857,7 +1857,7 @@ system_event = {
 											has_global_flag = second_monolith_node_destroyed
 											has_country_flag = created_monolith_crisis_bypass_2
 										}
-										event_target:monolith_crisis_data_store = {
+										event_target:monolith_crisis_data_store? = {
 											check_variable_arithmetic = {
 												which = num_monolith_crisis_bypass_3
 												subtract = num_monolith_crisis_bypass_1
@@ -1869,13 +1869,13 @@ system_event = {
 							}
 						}
 						set_star_flag = monolith_crisis_bypass_systems_3
-						event_target:monolith_crisis_country = {
+						event_target:monolith_crisis_country? = {
 							# 刷完一个连接到节点的门之后，让下一个节点不会再刷连接到同样节点的门
 							set_country_flag = created_monolith_crisis_bypass_3
 							remove_country_flag = created_monolith_crisis_bypass_2
 							remove_country_flag = created_monolith_crisis_bypass_1
 						}
-						event_target:monolith_crisis_data_store = {
+						event_target:monolith_crisis_data_store? = {
 							change_variable = { which = num_monolith_crisis_bypass_3 value = 1 }
 						}
 						if = {
@@ -1897,30 +1897,30 @@ system_event = {
 				}
 				modifier = {
 					add = -1
-					event_target:monolith_crisis_country = {
+					event_target:monolith_crisis_country? = {
 						check_variable = { which = counter_not_create_gate value > 3 }}
 				}
 				modifier = {
 					add = -1
-					event_target:monolith_crisis_country = {
+					event_target:monolith_crisis_country? = {
 						check_variable = { which = counter_not_create_gate value > 5 }}
 				}
 				modifier = {
 					add = -1
-					event_target:monolith_crisis_country = {
+					event_target:monolith_crisis_country? = {
 						check_variable = { which = counter_not_create_gate value > 7 }}
 				}
 				modifier = {
 					add = -1
-					event_target:monolith_crisis_country = {
+					event_target:monolith_crisis_country? = {
 						check_variable = { which = counter_not_create_gate value > 10 }}
 				}
 				modifier = {
 					add = -1
-					event_target:monolith_crisis_country = {
+					event_target:monolith_crisis_country? = {
 						check_variable = { which = counter_not_create_gate value > 12 }}
 				}
-				event_target:monolith_crisis_country = {
+				event_target:monolith_crisis_country? = {
 					change_variable = { which = counter_not_create_gate value = 1 }
 				}
 			}
@@ -1956,7 +1956,7 @@ carrier_event = {
 			# 炸球
 			# 删除所有区划建筑人口，球直接还原成原版非废土宜居球
 			1 = { 
-				owner = {
+				owner? = {
 					country_event = { id = monolith_crisis.204 scopes = { from = root }}
 				}
 				every_owned_pop_group = {
@@ -1993,7 +1993,7 @@ carrier_event = {
 					factor = 0
 					NOT = { any_owned_pop_group = { is_organic_species = yes }}
 				}
-				owner = {
+				owner? = {
 					country_event = { id = monolith_crisis.205 scopes = { from = root }}
 				}
 				# 先以其中一个人口为模版创土著人口，再清除星球
@@ -2122,13 +2122,13 @@ starbase_event = {
 
 	trigger = {
 		NOT = { has_global_flag = monolith_crisis_end }
-		owner = { is_country_type = monolith_crisis_country }
+		owner? = { is_country_type = monolith_crisis_country }
 	}
 
 	# This = Starbase
 	# From = fleet that destroyed it
 	immediate = {
-		event_target:monolith_crisis_data_store = {
+		event_target:monolith_crisis_data_store? = {
 			change_variable = { which = event_chain_starbase_count value = -1 }
 		}
 		every_playable_country = {
@@ -2138,11 +2138,11 @@ starbase_event = {
 				amount = -1
 			}
 		}
-		solar_system = {
+		solar_system? = {
 			if = {
 				limit = { has_star_flag = monolith_crisis_shield_system }
 				set_star_flag = comfirm_destroyed
-				from.owner = { set_country_flag = monolith_shield_system_destroyer }
+				from.owner? = { set_country_flag = monolith_shield_system_destroyer }
 				every_system_ambient_object = {
 					limit = { has_ambient_object_flag = shield_ring_effect }
 					destroy_ambient_object = this
@@ -2150,7 +2150,7 @@ starbase_event = {
 				if = {
 					limit = { has_star_flag = monolith_crisis_shield_1_system_flag }
 					system_event = { id = monolith_crisis.221 days = 720 }
-					event_target:monolith_crisis_1_system = {
+					event_target:monolith_crisis_1_system? = {
 						every_system_ambient_object = {
 							limit = { has_ambient_object_flag = shield_effect }
 							destroy_ambient_object = this
@@ -2161,7 +2161,7 @@ starbase_event = {
 				} else_if = {
 					limit = { has_star_flag = monolith_crisis_shield_2_system_flag }
 					system_event = { id = monolith_crisis.221 days = 720 }
-					event_target:monolith_crisis_2_system = {
+					event_target:monolith_crisis_2_system? = {
 						every_system_ambient_object = {
 							limit = { has_ambient_object_flag = shield_effect }
 							destroy_ambient_object = this
@@ -2172,7 +2172,7 @@ starbase_event = {
 				} else_if = {
 					limit = { has_star_flag = monolith_crisis_shield_3_system_flag }
 					system_event = { id = monolith_crisis.221 days = 720 }
-					event_target:monolith_crisis_3_system = {
+					event_target:monolith_crisis_3_system? = {
 						every_system_ambient_object = {
 							limit = { has_ambient_object_flag = shield_effect }
 							destroy_ambient_object = this
@@ -2217,7 +2217,7 @@ system_event = {
 						any_owned_ship = { is_disabled = yes }
 						has_fleet_flag = uf_portal_entity_fleet # 棱镜核心不算
 					}
-					owner = { 
+					owner? = { 
 						NOT = { is_same_value = event_target:monolith_crisis_country }
 						OR = {
 							is_default_and_fallen_country = yes
@@ -2228,7 +2228,7 @@ system_event = {
 			}
 			remove_star_flag = comfirm_destroyed
 			create_monolith_crisis_starbase = yes
-			event_target:monolith_crisis_data_store = {
+			event_target:monolith_crisis_data_store? = {
 				change_variable = { which = event_chain_starbase_count value = 1 }
 			}
 			every_playable_country = { 
@@ -2238,7 +2238,7 @@ system_event = {
 					amount = 1
 				}
 			}
-			star = {
+			star? = {
 				create_monolith_crisis_defence_fleet = yes
 				create_ambient_object = {
 					type = "uf_monolith_shield_ring_effect"
@@ -2255,8 +2255,8 @@ system_event = {
 			if = {
 				limit = { has_star_flag = monolith_crisis_shield_1_system_flag }
 				set_star_class = sc_m
-				star = { change_pc = pc_m_star }
-				event_target:monolith_crisis_1_system = {
+				star? = { change_pc = pc_m_star }
+				event_target:monolith_crisis_1_system? = {
 					remove_star_flag = ufs_can_fire
 					save_event_target_as = target_system
 				}
@@ -2266,8 +2266,8 @@ system_event = {
 			} else_if = {
 				limit = { has_star_flag = monolith_crisis_shield_2_system_flag }
 				set_star_class = sc_g
-				star = { change_pc = pc_g_star }
-				event_target:monolith_crisis_2_system = {
+				star? = { change_pc = pc_g_star }
+				event_target:monolith_crisis_2_system? = {
 					remove_star_flag = ufs_can_fire
 					save_event_target_as = target_system
 				}
@@ -2277,8 +2277,8 @@ system_event = {
 			} else_if = {
 				limit = { has_star_flag = monolith_crisis_shield_3_system_flag }
 				set_star_class = sc_b
-				star = { change_pc = pc_b_star }
-				event_target:monolith_crisis_3_system = {
+				star? = { change_pc = pc_b_star }
+				event_target:monolith_crisis_3_system? = {
 					remove_star_flag = ufs_can_fire
 					save_event_target_as = target_system
 				}
@@ -2286,7 +2286,7 @@ system_event = {
 					country_event = { id = monolith_crisis.320 }
 				}
 			}
-			event_target:target_system = { star = {
+			event_target:target_system? = { star? = {
 				create_ambient_object = {
 					type = "uf_monolith_shield_effect"
 				}
@@ -2314,11 +2314,11 @@ country_event = {
 	trigger = {
 		NOT = { has_global_flag = monolith_crisis_end }
 		is_country_type = monolith_crisis_country
-		fromfrom = { NOT = { exists = starbase }}
+		fromfrom? = { NOT = { exists = starbase }}
 	}
 
 	immediate = {
-		event_target:monolith_crisis_data_store = {
+		event_target:monolith_crisis_data_store? = {
 			change_variable = { which = event_chain_fleet_count value = -1 }
 		}
 		every_playable_country = {
@@ -2342,14 +2342,14 @@ country_event = {
 		NOT = { has_global_flag = monolith_crisis_end }
 		OR = {
 			is_country_type = monolith_crisis_country
-			from = { is_country_type = monolith_crisis_country }
+			from? = { is_country_type = monolith_crisis_country }
 		}
 	}
 
 	immediate = {
 		if = {
 			limit = { is_country_type = monolith_crisis_country }
-			from = { 
+			from? = { 
 				add_event_chain_counter = {
 					event_chain = monolith_crisis_invasion_chain
 					counter = destroyed_monolith_crisis_ships
@@ -2400,22 +2400,22 @@ country_event = {
 			limit = { has_global_flag = destroy_all_monolith_nodes }
 			country_event = { id = monolith_crisis.215 days = 720 }
 		} else_if = {
-			limit = { event_target:monolith_crisis_data_store = { 
+			limit = { event_target:monolith_crisis_data_store? = { 
 				check_variable = { which = num_monolith_crisis_node value = 3 }
 			}}
 			country_event = { id = monolith_crisis.215 days = 2400 }
 		} else_if = {
-			limit = { event_target:monolith_crisis_data_store = { 
+			limit = { event_target:monolith_crisis_data_store? = { 
 				check_variable = { which = num_monolith_crisis_node value = 2 }
 			}}
 			country_event = { id = monolith_crisis.215 days = 2100 }
 		} else_if = {
-			limit = { event_target:monolith_crisis_data_store = { 
+			limit = { event_target:monolith_crisis_data_store? = { 
 				check_variable = { which = num_monolith_crisis_node value = 1 }
 			}}
 			country_event = { id = monolith_crisis.215 days = 1800 }
 		} else_if = {
-			limit = { event_target:monolith_crisis_data_store = { 
+			limit = { event_target:monolith_crisis_data_store? = { 
 				check_variable = { which = num_monolith_crisis_node value <= 0 }
 			}}
 			country_event = { id = monolith_crisis.215 days = 1500 }
@@ -2427,7 +2427,7 @@ country_event = {
 			save_event_target_as = monolith_invasion_system
 			system_event = { id = monolith_crisis.216 days = 360 } # 测试时间，刷兵事件
 		}
-		event_target:monolith_invasion_system = {
+		event_target:monolith_invasion_system? = {
 			closest_system = {
 				limit = { NOT = { has_star_flag = monolith_invade_system }}
 				set_timed_star_flag = { flag = monolith_invade_system days = 1 }
@@ -2445,29 +2445,29 @@ country_event = {
 			limit = {
 				NOT = { has_global_flag = destroy_all_monolith_nodes }
 				OR = {
-					event_target:monolith_invasion_system = { has_any_monolith_bypass_flag = no }
-					event_target:monolith_invasion_system_2 = { has_any_monolith_bypass_flag = no }
-					event_target:monolith_invasion_system_3 = { has_any_monolith_bypass_flag = no }
+					event_target:monolith_invasion_system? = { has_any_monolith_bypass_flag = no }
+					event_target:monolith_invasion_system_2? = { has_any_monolith_bypass_flag = no }
+					event_target:monolith_invasion_system_3? = { has_any_monolith_bypass_flag = no }
 				}
 			}
 			random_list = {
 				1 = { 
 					modifier = { factor = 0 
-						event_target:monolith_invasion_system = { has_any_monolith_bypass_flag = yes }
+						event_target:monolith_invasion_system? = { has_any_monolith_bypass_flag = yes }
 					}
-					event_target:monolith_invasion_system = { set_star_flag = create_monolith_gate }
+					event_target:monolith_invasion_system? = { set_star_flag = create_monolith_gate }
 				}
 				1 = { 
 					modifier = { factor = 0 
-						event_target:monolith_invasion_system_2 = { has_any_monolith_bypass_flag = yes }
+						event_target:monolith_invasion_system_2? = { has_any_monolith_bypass_flag = yes }
 					}
-					event_target:monolith_invasion_system_2 = { set_star_flag = create_monolith_gate }
+					event_target:monolith_invasion_system_2? = { set_star_flag = create_monolith_gate }
 				}
 				1 = { 
 					modifier = { factor = 0 
-						event_target:monolith_invasion_system_3 = { has_any_monolith_bypass_flag = yes }
+						event_target:monolith_invasion_system_3? = { has_any_monolith_bypass_flag = yes }
 					}
-					event_target:monolith_invasion_system_3 = { set_star_flag = create_monolith_gate }
+					event_target:monolith_invasion_system_3? = { set_star_flag = create_monolith_gate }
 				}
 			}
 		}
@@ -2520,7 +2520,7 @@ country_event = {
 			save_event_target_as = monolith_invasion_system
 			system_event = { id = monolith_crisis.216 days = 180 }
 		}
-		event_target:monolith_invasion_system = {
+		event_target:monolith_invasion_system? = {
 			closest_system = {
 				limit = { NOT = { has_star_flag = monolith_invade_system }}
 				set_timed_star_flag = { flag = monolith_invade_system days = 1 }
@@ -2540,7 +2540,7 @@ country_event = {
 			save_event_target_as = monolith_invasion_system_4
 			system_event = { id = monolith_crisis.216 days = 180 }
 		}
-		event_target:monolith_invasion_system_4 = {
+		event_target:monolith_invasion_system_4? = {
 			closest_system = {
 				limit = { NOT = { has_star_flag = monolith_invade_system }}
 				set_timed_star_flag = { flag = monolith_invade_system days = 1 }
@@ -2560,7 +2560,7 @@ country_event = {
 			save_event_target_as = monolith_invasion_system_7
 			system_event = { id = monolith_crisis.216 days = 180 } 
 		}
-		event_target:monolith_invasion_system_7 = {
+		event_target:monolith_invasion_system_7? = {
 			closest_system = {
 				limit = { NOT = { has_star_flag = monolith_invade_system }}
 				set_timed_star_flag = { flag = monolith_invade_system days = 1 }
@@ -2656,7 +2656,7 @@ system_event = {
 	immediate = {
 		set_update_modifiers_batch = begin
 		system_event = { id = monolith_crisis.200 }
-		star = {
+		star? = {
 			carrier_event = { id = monolith_crisis.217 }
 			carrier_event = { id = monolith_crisis.217 }
 		}
@@ -2783,7 +2783,7 @@ carrier_event = {
 			10 = { create_monolith_crisis_large_fleet = yes }
 			1 = { create_monolith_crisis_huge_fleet = yes }
 		}
-		event_target:monolith_crisis_data_store = {
+		event_target:monolith_crisis_data_store? = {
 			change_variable = { which = event_chain_fleet_count value = 1 }
 		}
 		every_playable_country = {
@@ -2809,21 +2809,21 @@ country_event = {
 	}
 
 	immediate = {
-		event_target:monolith_crisis_1_shield_system = {
-			star = { carrier_event = { id = monolith_crisis.217 }}
+		event_target:monolith_crisis_1_shield_system? = {
+			star? = { carrier_event = { id = monolith_crisis.217 }}
 		}
 		if = {
-			limit = { event_target:monolith_crisis_data_store = { 
+			limit = { event_target:monolith_crisis_data_store? = { 
 				check_variable = { which = num_monolith_crisis_node value = 3 }
 			}}
 			country_event = { id = monolith_crisis.218 days = 600 random = 300 }
 		} else_if = {
-			limit = { event_target:monolith_crisis_data_store = { 
+			limit = { event_target:monolith_crisis_data_store? = { 
 				check_variable = { which = num_monolith_crisis_node value = 2 }
 			}}
 			country_event = { id = monolith_crisis.218 days = 450 random = 300 }
 		} else_if = {
-			limit = { event_target:monolith_crisis_data_store = { 
+			limit = { event_target:monolith_crisis_data_store? = { 
 				check_variable = { which = num_monolith_crisis_node value = 1 }
 			}}
 			country_event = { id = monolith_crisis.218 days = 300 random = 300 }
@@ -2844,21 +2844,21 @@ country_event = {
 	}
 
 	immediate = {
-		event_target:monolith_crisis_2_shield_system = {
-			star = { carrier_event = { id = monolith_crisis.217 }}
+		event_target:monolith_crisis_2_shield_system? = {
+			star? = { carrier_event = { id = monolith_crisis.217 }}
 		}
 		if = {
-			limit = { event_target:monolith_crisis_data_store = { 
+			limit = { event_target:monolith_crisis_data_store? = { 
 				check_variable = { which = num_monolith_crisis_node value = 3 }
 			}}
 			country_event = { id = monolith_crisis.219 days = 600 random = 300 }
 		} else_if = {
-			limit = { event_target:monolith_crisis_data_store = { 
+			limit = { event_target:monolith_crisis_data_store? = { 
 				check_variable = { which = num_monolith_crisis_node value = 2 }
 			}}
 			country_event = { id = monolith_crisis.219 days = 450 random = 300 }
 		} else_if = {
-			limit = { event_target:monolith_crisis_data_store = { 
+			limit = { event_target:monolith_crisis_data_store? = { 
 				check_variable = { which = num_monolith_crisis_node value = 1 }
 			}}
 			country_event = { id = monolith_crisis.219 days = 300 random = 300 }
@@ -2879,21 +2879,21 @@ country_event = {
 	}
 
 	immediate = {
-		event_target:monolith_crisis_3_shield_system = {
-			star = { carrier_event = { id = monolith_crisis.217 }}
+		event_target:monolith_crisis_3_shield_system? = {
+			star? = { carrier_event = { id = monolith_crisis.217 }}
 		}
 		if = {
-			limit = { event_target:monolith_crisis_data_store = { 
+			limit = { event_target:monolith_crisis_data_store? = { 
 				check_variable = { which = num_monolith_crisis_node value = 3 }
 			}}
 			country_event = { id = monolith_crisis.220 days = 600 random = 300 }
 		} else_if = {
-			limit = { event_target:monolith_crisis_data_store = { 
+			limit = { event_target:monolith_crisis_data_store? = { 
 				check_variable = { which = num_monolith_crisis_node value = 2 }
 			}}
 			country_event = { id = monolith_crisis.220 days = 450 random = 300 }
 		} else_if = {
-			limit = { event_target:monolith_crisis_data_store = { 
+			limit = { event_target:monolith_crisis_data_store? = { 
 				check_variable = { which = num_monolith_crisis_node value = 1 }
 			}}
 			country_event = { id = monolith_crisis.220 days = 300 random = 300 }
@@ -2985,11 +2985,11 @@ fleet_event = {
 	id = monolith_crisis.302
 	title = monolith_crisis.302.name
 	desc = {
-		exclusive_trigger = { owner = { NOT = { has_country_flag = encounter_monolith_gate }}}
+		exclusive_trigger = { owner? = { NOT = { has_country_flag = encounter_monolith_gate }}}
 		text = monolith_crisis.302.desc.a
 	}
 	desc = {
-		exclusive_trigger = { owner = { 
+		exclusive_trigger = { owner? = { 
 			has_country_flag = encounter_monolith_gate
 			NOT = { has_country_flag = encounter_red_monolith_gate }
 		}}
@@ -3005,32 +3005,32 @@ fleet_event = {
 		has_global_flag = first_monolith_node_spawned
 		NOT = { has_global_flag = first_monolith_node_destroyed }
 		NOT = { has_global_flag = monolith_crisis_end }
-		owner = { is_ai = no }
-		from = { 
+		owner? = { is_ai = no }
+		from? = { 
 			has_star_flag = monolith_crisis_bypass_systems_1
 			NOT = { has_star_flag = triggered_monolith_gate_event@root.owner }
 		}
 	}
 
 	after = {
-		hidden_effect = { owner = {
+		hidden_effect = { owner? = {
 			set_country_flag = encounter_monolith_gate
 			set_country_flag = encounter_red_monolith_gate
 		}}
 	}
 	immediate = {
-		from = { set_star_flag = triggered_monolith_gate_event@root.owner }
+		from? = { set_star_flag = triggered_monolith_gate_event@root.owner }
 	}
 
 	option = {
 		name = monolith_crisis.302.a
 		trigger = {
-			owner = { NOR = {
+			owner? = { NOR = {
 				has_global_flag = reverse_engineering_monolith_bypass_1
 				has_special_project = hack_monolith_gate_red 
 			}}
 		}
-		from = { random_system_megastructure = {
+		from? = { random_system_megastructure = {
 			limit = { is_megastructure_type = monolith_crisis_gate_1 }
 			enable_special_project = { 
 				name = "hack_monolith_gate_red"
@@ -3042,7 +3042,7 @@ fleet_event = {
 	option = {
 		name = monolith_crisis.302.c
 		trigger = { 
-			owner = { OR = {
+			owner? = { OR = {
 				has_global_flag = reverse_engineering_monolith_bypass_1
 				has_special_project = hack_monolith_gate_red 
 			}}
@@ -3051,7 +3051,7 @@ fleet_event = {
 	option = {
 		name = monolith_crisis.302.b
 		trigger = { 
-			owner = { OR = {
+			owner? = { OR = {
 				has_global_flag = reverse_engineering_monolith_bypass_1
 				has_special_project = hack_monolith_gate_red 
 			}}
@@ -3068,7 +3068,7 @@ fleet_event = {
 		# 		}}
 		# 	}
 		# }
-		from = { 
+		from? = { 
 			set_star_flag = destroy_monolith_gate_project_on_progress
 			random_system_megastructure = {
 				limit = { is_megastructure_type = monolith_crisis_gate_1 }
@@ -3086,11 +3086,11 @@ fleet_event = {
 	id = monolith_crisis.303
 	title = monolith_crisis.303.name
 	desc = {
-		exclusive_trigger = { owner = { NOT = { has_country_flag = encounter_monolith_gate }}}
+		exclusive_trigger = { owner? = { NOT = { has_country_flag = encounter_monolith_gate }}}
 		text = monolith_crisis.302.desc.a
 	}
 	desc = {
-		exclusive_trigger = { owner = { 
+		exclusive_trigger = { owner? = { 
 			has_country_flag = encounter_monolith_gate
 			NOT = { has_country_flag = encounter_blue_monolith_gate }
 		}}
@@ -3106,33 +3106,33 @@ fleet_event = {
 		has_global_flag = second_monolith_node_spawned
 		NOT = { has_global_flag = second_monolith_node_destroyed }
 		NOT = { has_global_flag = monolith_crisis_end }
-		owner = { is_ai = no }
-		from = {
+		owner? = { is_ai = no }
+		from? = {
 			has_star_flag = monolith_crisis_bypass_systems_2
 			NOT = { has_star_flag = triggered_monolith_gate_event@root.owner }
 		}
 	}
 
 	after = {
-		hidden_effect = { owner = {
+		hidden_effect = { owner? = {
 			set_country_flag = encounter_monolith_gate
 			set_country_flag = encounter_blue_monolith_gate
 		}}
 	}
 
 	immediate = {
-		from = { set_star_flag = triggered_monolith_gate_event@root.owner }
+		from? = { set_star_flag = triggered_monolith_gate_event@root.owner }
 	}
 
 	option = {
 		name = monolith_crisis.302.a
 		trigger = {
-			owner = { NOR = {
+			owner? = { NOR = {
 				has_global_flag = reverse_engineering_monolith_bypass_2
 				has_special_project = hack_monolith_gate_blue 
 			}}
 		}
-		from = { random_system_megastructure = {
+		from? = { random_system_megastructure = {
 			limit = { is_megastructure_type = monolith_crisis_gate_2 }
 			enable_special_project = { 
 				name = "hack_monolith_gate_blue"
@@ -3144,7 +3144,7 @@ fleet_event = {
 	option = {
 		name = monolith_crisis.302.c
 		trigger = { 
-			owner = { OR = {
+			owner? = { OR = {
 				has_global_flag = reverse_engineering_monolith_bypass_2
 				has_special_project = hack_monolith_gate_blue 
 			}}
@@ -3153,7 +3153,7 @@ fleet_event = {
 	option = {
 		name = monolith_crisis.302.b
 		trigger = { 
-			owner = { OR = {
+			owner? = { OR = {
 				has_global_flag = reverse_engineering_monolith_bypass_1
 				has_special_project = hack_monolith_gate_red 
 			}}
@@ -3170,7 +3170,7 @@ fleet_event = {
 		# 		}}
 		# 	}
 		# }
-		from = { 
+		from? = { 
 			set_star_flag = destroy_monolith_gate_project_on_progress
 			random_system_megastructure = {
 				limit = { is_megastructure_type = monolith_crisis_gate_2 }
@@ -3188,11 +3188,11 @@ fleet_event = {
 	id = monolith_crisis.304
 	title = monolith_crisis.304.name
 	desc = {
-		exclusive_trigger = { owner = { NOT = { has_country_flag = encounter_monolith_gate }}}
+		exclusive_trigger = { owner? = { NOT = { has_country_flag = encounter_monolith_gate }}}
 		text = monolith_crisis.302.desc.a
 	}
 	desc = {
-		exclusive_trigger = { owner = { 
+		exclusive_trigger = { owner? = { 
 			has_country_flag = encounter_monolith_gate
 			NOT = { has_country_flag = encounter_yellow_monolith_gate }
 		}}
@@ -3208,32 +3208,32 @@ fleet_event = {
 		has_global_flag = third_monolith_node_spawned
 		NOT = { has_global_flag = third_monolith_node_destroyed }
 		NOT = { has_global_flag = monolith_crisis_end }
-		owner = { is_ai = no }
-		from = {
+		owner? = { is_ai = no }
+		from? = {
 			has_star_flag = monolith_crisis_bypass_systems_3
 			NOT = { has_star_flag = triggered_monolith_gate_event@root.owner }
 		}
 	}
 
 	after = {
-		hidden_effect = { owner = {
+		hidden_effect = { owner? = {
 			set_country_flag = encounter_monolith_gate
 			set_country_flag = encounter_yellow_monolith_gate
 		}}
 	}
 	immediate = {
-		from = { set_star_flag = triggered_monolith_gate_event@root.owner }
+		from? = { set_star_flag = triggered_monolith_gate_event@root.owner }
 	}
 
 	option = {
 		name = monolith_crisis.302.a
 		trigger = {
-			owner = { NOR = { 
+			owner? = { NOR = { 
 				has_global_flag = reverse_engineering_monolith_bypass_3 
 				has_special_project = hack_monolith_gate_yellow
 			}}
 		}
-		from = { random_system_megastructure = {
+		from? = { random_system_megastructure = {
 			limit = { is_megastructure_type = monolith_crisis_gate_3 }
 			enable_special_project = { 
 				name = "hack_monolith_gate_yellow"
@@ -3245,7 +3245,7 @@ fleet_event = {
 	option = {
 		name = monolith_crisis.302.c
 		trigger = { 
-			owner = { OR = {
+			owner? = { OR = {
 				has_global_flag = reverse_engineering_monolith_bypass_3
 				has_special_project = hack_monolith_gate_yellow 
 			}}
@@ -3254,7 +3254,7 @@ fleet_event = {
 	option = {
 		name = monolith_crisis.302.b
 		trigger = { 
-			owner = { OR = {
+			owner? = { OR = {
 				has_global_flag = reverse_engineering_monolith_bypass_1
 				has_special_project = hack_monolith_gate_red 
 			}}
@@ -3271,7 +3271,7 @@ fleet_event = {
 		# 		}}
 		# 	}
 		# }
-		from = { 
+		from? = { 
 			set_star_flag = destroy_monolith_gate_project_on_progress
 			random_system_megastructure = {
 				limit = { is_megastructure_type = monolith_crisis_gate_3 }
@@ -3294,7 +3294,7 @@ ship_event = {
 	location = root
 
 	immediate = {
-		owner = { set_global_flag = reverse_engineering_monolith_bypass_1 }
+		owner? = { set_global_flag = reverse_engineering_monolith_bypass_1 }
 		every_playable_country = {
 			limit = { NOT = { is_same_value = root.owner }}
 			country_event = { id = monolith_crisis.312 }
@@ -3315,7 +3315,7 @@ ship_event = {
 	location = root
 
 	immediate = {
-		owner = { set_global_flag = reverse_engineering_monolith_bypass_2 }
+		owner? = { set_global_flag = reverse_engineering_monolith_bypass_2 }
 		every_playable_country = {
 			limit = { NOT = { is_same_value = root.owner }}
 			country_event = { id = monolith_crisis.313 }
@@ -3336,7 +3336,7 @@ ship_event = {
 	location = root
 
 	immediate = {
-		owner = { set_global_flag = reverse_engineering_monolith_bypass_3 }
+		owner? = { set_global_flag = reverse_engineering_monolith_bypass_3 }
 		every_playable_country = {
 			limit = { NOT = { is_same_value = root.owner }}
 			country_event = { id = monolith_crisis.314 }
@@ -3358,7 +3358,7 @@ country_event = {
 			type = destroy_monolith_gate
 			location = from
 		}
-		from.solar_system = { 
+		from.solar_system? = { 
 			remove_star_flag = destroy_monolith_gate_project_on_progress
 			remove_star_flag = triggered_monolith_gate_event@root.owner
 			if = {
@@ -3368,7 +3368,7 @@ country_event = {
 					limit = { is_megastructure_type = monolith_crisis_gate_1 }
 					delete_megastructure = this
 				}
-				event_target:monolith_crisis_data_store = {
+				event_target:monolith_crisis_data_store? = {
 					change_variable = { which = num_monolith_crisis_bypass_1 value = -1 }
 				}
 			} 
@@ -3379,7 +3379,7 @@ country_event = {
 					limit = { is_megastructure_type = monolith_crisis_gate_2 }
 					delete_megastructure = this
 				}
-				event_target:monolith_crisis_data_store = {
+				event_target:monolith_crisis_data_store? = {
 					change_variable = { which = num_monolith_crisis_bypass_2 value = -1 }
 				}
 			}
@@ -3390,7 +3390,7 @@ country_event = {
 					limit = { is_megastructure_type = monolith_crisis_gate_3 }
 					delete_megastructure = this
 				}
-				event_target:monolith_crisis_data_store = {
+				event_target:monolith_crisis_data_store? = {
 					change_variable = { which = num_monolith_crisis_bypass_3 value = -1 }
 				}
 			}
@@ -3408,7 +3408,7 @@ ship_event = {
 	location = root
 
 	immediate = {
-		owner = { country_event = { id = monolith_crisis.308 scopes = { from = from }}}
+		owner? = { country_event = { id = monolith_crisis.308 scopes = { from = from }}}
 	}
 
 	option = {
@@ -3425,7 +3425,7 @@ ship_event = {
 	location = from
 
 	trigger = {
-		from = { has_star_flag = monolith_crisis_shield_1_system_flag }
+		from? = { has_star_flag = monolith_crisis_shield_1_system_flag }
 	}
 
 	option = {
@@ -3442,7 +3442,7 @@ ship_event = {
 	location = from
 
 	trigger = {
-		from = { has_star_flag = monolith_crisis_shield_2_system_flag }
+		from? = { has_star_flag = monolith_crisis_shield_2_system_flag }
 	}
 
 	option = {
@@ -3459,7 +3459,7 @@ ship_event = {
 	location = from
 
 	trigger = {
-		from = { has_star_flag = monolith_crisis_shield_3_system_flag }
+		from? = { has_star_flag = monolith_crisis_shield_3_system_flag }
 	}
 
 	option = {
@@ -3550,7 +3550,7 @@ country_event = {
 			set_variable = { which = ufs_interface_page value = 0 }
 			set_variable = { which = selected_ufs_system value = 0 }
 			set_country_flag = ufs_window_active
-			event_target:monolith_crisis_1_system = {
+			event_target:monolith_crisis_1_system? = {
 				save_global_event_target_as = first_selected_ufs_system
 			}
 			set_country_flag = select_first_ufs_system
@@ -3606,7 +3606,7 @@ country_event = {
 			set_variable = { which = ufs_interface_page value = 0 }
 			set_variable = { which = selected_ufs_system value = 0 }
 			set_country_flag = ufs_window_active
-			event_target:monolith_crisis_2_system = {
+			event_target:monolith_crisis_2_system? = {
 				save_global_event_target_as = first_selected_ufs_system
 			}
 			set_country_flag = select_first_ufs_system
@@ -3662,7 +3662,7 @@ country_event = {
 			set_variable = { which = ufs_interface_page value = 0 }
 			set_variable = { which = selected_ufs_system value = 0 }
 			set_country_flag = ufs_window_active
-			event_target:monolith_crisis_3_system = {
+			event_target:monolith_crisis_3_system? = {
 				save_global_event_target_as = first_selected_ufs_system
 			}
 			set_country_flag = select_first_ufs_system
@@ -3781,17 +3781,17 @@ country_event = {
 			limit = { has_country_flag = monolith_system_destroyer }
 			remove_country_flag = monolith_system_destroyer
 			if = {
-				limit = { event_target:monolith_crisis_data_store = {
+				limit = { event_target:monolith_crisis_data_store? = {
 					check_variable = { which = destroyed_monolith_crisis_system value = 1 }
 				}}
 				country_event = { id = monolith_crisis.326 }
 			} else_if = {
-				limit = { event_target:monolith_crisis_data_store = {
+				limit = { event_target:monolith_crisis_data_store? = {
 					check_variable = { which = destroyed_monolith_crisis_system value = 2 }
 				}}
 				country_event = { id = monolith_crisis.327 }
 			} else_if = {
-				limit = { event_target:monolith_crisis_data_store = {
+				limit = { event_target:monolith_crisis_data_store? = {
 					check_variable = { which = destroyed_monolith_crisis_system value = 3 }
 				}}
 				country_event = { id = monolith_crisis.328 }
@@ -3824,17 +3824,17 @@ country_event = {
 			limit = { has_country_flag = monolith_system_destroyer }
 			remove_country_flag = monolith_system_destroyer
 			if = {
-				limit = { event_target:monolith_crisis_data_store = {
+				limit = { event_target:monolith_crisis_data_store? = {
 					check_variable = { which = destroyed_monolith_crisis_system value = 1 }
 				}}
 				country_event = { id = monolith_crisis.326 }
 			} else_if = {
-				limit = { event_target:monolith_crisis_data_store = {
+				limit = { event_target:monolith_crisis_data_store? = {
 					check_variable = { which = destroyed_monolith_crisis_system value = 2 }
 				}}
 				country_event = { id = monolith_crisis.327 }
 			} else_if = {
-				limit = { event_target:monolith_crisis_data_store = {
+				limit = { event_target:monolith_crisis_data_store? = {
 					check_variable = { which = destroyed_monolith_crisis_system value = 3 }
 				}}
 				country_event = { id = monolith_crisis.328 }
@@ -3867,17 +3867,17 @@ country_event = {
 			limit = { has_country_flag = monolith_system_destroyer }
 			remove_country_flag = monolith_system_destroyer
 			if = {
-				limit = { event_target:monolith_crisis_data_store = {
+				limit = { event_target:monolith_crisis_data_store? = {
 					check_variable = { which = destroyed_monolith_crisis_system value = 1 }
 				}}
 				country_event = { id = monolith_crisis.326 }
 			} else_if = {
-				limit = { event_target:monolith_crisis_data_store = {
+				limit = { event_target:monolith_crisis_data_store? = {
 					check_variable = { which = destroyed_monolith_crisis_system value = 2 }
 				}}
 				country_event = { id = monolith_crisis.327 }
 			} else_if = {
-				limit = { event_target:monolith_crisis_data_store = {
+				limit = { event_target:monolith_crisis_data_store? = {
 					check_variable = { which = destroyed_monolith_crisis_system value = 3 }
 				}}
 				country_event = { id = monolith_crisis.328 }
@@ -3974,7 +3974,7 @@ country_event = {
 
 	immediate = {
 		set_update_modifiers_batch = begin
-		event_target:monolith_crisis_country = {
+		event_target:monolith_crisis_country? = {
 			every_owned_fleet = {
 				delete_fleet = this
 			}
@@ -4126,7 +4126,7 @@ situation_event = {
 	picture = GFX_evt_monolith_crisis_16
 
 	immediate = {
-		owner = {
+		owner? = {
 			every_owned_planet = {
 				limit = { NOR = {
 					has_modifier = hm_jammer_planet_buff_50
@@ -4151,7 +4151,7 @@ situation_event = {
 	picture = GFX_evt_monolith_crisis_16
 
 	immediate = {
-		owner = {
+		owner? = {
 			every_owned_planet = {
 				limit = { NOT = { has_modifier = hm_jammer_planet_buff }}
 				remove_modifier = hm_jammer_planet_buff_0
@@ -4168,26 +4168,26 @@ situation_event = {
 	option = {
 		name = monolith_crisis.337.b
 		trigger = {
-			owner = {
+			owner? = {
 				NOT = { has_country_flag = destroy_shield_system_by_ufs }
 				any_owned_megastructure = {
 					is_megastructure_type = uf_galaxy_gun_4
 				}
 			}
 		}
-		allow = { owner = {
+		allow = { owner? = {
 			custom_tooltip = {
 				fail_text = "ufs_window_on_screen"
 				NOT = { has_country_flag = ufs_window_active }
 			}
 			NOT = { has_modifier = ufs_recover_cd }
 		}}
-		hidden_effect = { owner = {
+		hidden_effect = { owner? = {
 			set_variable = { which = ufs_fliter_mod value = 3 }
 			set_variable = { which = ufs_interface_page value = 0 }
 			set_variable = { which = selected_ufs_system value = 0 }
 			set_country_flag = ufs_window_active
-			event_target:monolith_crisis_core_system = {
+			event_target:monolith_crisis_core_system? = {
 				save_global_event_target_as = first_selected_ufs_system
 			}
 			set_country_flag = select_first_ufs_system
@@ -4280,16 +4280,16 @@ situation_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		owner = {
+		owner? = {
 			change_variable = { which = hm_jammer_pass_month value = 1 }
 			if = {
-				limit = { root = { current_situation_approach = situation_hm_jammer_speed_up }}
+				limit = { root? = { current_situation_approach = situation_hm_jammer_speed_up }}
 				change_variable = { which = hm_jammer_pass_month value = 0.2 }
 			}
 			every_owned_planet = {
 				change_variable = { which = hm_jammer_progress value = 1 }
 				if = {
-					limit = { root = { current_situation_approach = situation_hm_jammer_speed_up }}
+					limit = { root? = { current_situation_approach = situation_hm_jammer_speed_up }}
 					change_variable = { which = hm_jammer_progress value = 0.2 }
 				}
 				if = {
@@ -4311,7 +4311,7 @@ situation_event = {
 			}
 			if = {
 				limit = { NOT = { any_owned_planet = { NOT = { has_modifier = hm_jammer_planet_buff }}}}
-				root = { add_situation_progress = 100 }
+				root? = { add_situation_progress = 100 }
 			}
 		}
 	}
@@ -4378,7 +4378,7 @@ country_event = {
 	
 	location = from
     immediate = {
-		from = { save_event_target_as = uf_gate_system }
+		from? = { save_event_target_as = uf_gate_system }
 	}
 
 	option = {
@@ -4403,7 +4403,7 @@ country_event = {
 			}
 			save_event_target_as = uf_owner
 		}
-		event_target:uf_gate_system_target = {
+		event_target:uf_gate_system_target? = {
 			create_starbase = {
 				size = starbase_outpost
 				effect = {
@@ -4435,7 +4435,7 @@ country_event = {
 	location = from
 
     immediate = {
-		from = { save_event_target_as = uf_rectangular_system }
+		from? = { save_event_target_as = uf_rectangular_system }
 	}
 
 	option = {
@@ -4461,7 +4461,7 @@ country_event = {
 			}
 			save_event_target_as = uf_owner
 		}
-		event_target:uf_rectangular_system_target = {
+		event_target:uf_rectangular_system_target? = {
 			create_starbase = {
 				size = starbase_outpost
 				effect = {

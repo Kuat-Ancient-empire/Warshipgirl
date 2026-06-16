@@ -115,7 +115,7 @@ country_event = {
 		name = "wg_bubbles.2.a"
 		hidden_effect = { if = {
 			limit = { exists = capital_scope }
-			capital_scope = { enable_special_project = {
+			capital_scope? = { enable_special_project = {
 				name = "MODIFY_BUBBLES_SECOND"
 				owner = ROOT
 				location = this
@@ -217,9 +217,9 @@ country_event = {
 		}
 		create_bubbles_admiral = yes
 		set_variable = { which = bubbles_level value = 1 }
-		event_target:bubbles_admiral = {
+		event_target:bubbles_admiral? = {
 			change_leader_portrait = Bubbles
-			owner = { random_controlled_fleet = {
+			owner? = { random_controlled_fleet = {
 				limit = { 
 					OR = {
 						has_fleet_flag = lost_amoeba_fleet@ROOT
@@ -364,7 +364,7 @@ country_event = {
 			}
 			custom_tooltip = {
 				fail_text = bubbles_become_ruler
-				NOT = { ruler = { has_leader_flag = bubbles_leader }}
+				NOT = { ruler? = { has_leader_flag = bubbles_leader }}
 			}
 		}
 		hidden_effect = { 
@@ -404,7 +404,7 @@ country_event = {
 			}
 			custom_tooltip = {
 				fail_text = bubbles_become_ruler
-				NOT = { ruler = { has_leader_flag = bubbles_leader }}
+				NOT = { ruler? = { has_leader_flag = bubbles_leader }}
 			}
 		}
 		hidden_effect = { 
@@ -500,7 +500,7 @@ country_event = {
 	picture = GFX_evt_exploding_ship
 
 	trigger = {
-		FROM = { 
+		FROM? = { 
 			OR = {
 				is_same_value = event_target:amoeba_finding_scientist
 				has_leader_flag = amoeba_finding_scientist
@@ -515,7 +515,7 @@ country_event = {
 
 	immediate = {
 		set_country_flag = lost_bubbles_scientist_event_triggered
-		FROM = { save_event_target_as = save_bubbles_scientist }
+		FROM? = { save_event_target_as = save_bubbles_scientist }
 		country_event = { id = wg_bubbles.9 days = 7 }
 	}
 
@@ -583,7 +583,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:bubbles_admiral = {
+		event_target:bubbles_admiral? = {
 			kill_leader = { show_notification = no }
 		}
 		create_country = {
@@ -607,7 +607,7 @@ country_event = {
     		    }
     		}
 			effect = {
-				event_target:bubbles_fleet = {
+				event_target:bubbles_fleet? = {
 					set_owner = PREV
 					set_fleet_flag = bubbles_escape_fleet
 					auto_move_to_planet = {
@@ -703,7 +703,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		event_target:bubbles_country = {
+		event_target:bubbles_country? = {
 			every_owned_fleet = {
 				delete_fleet = this
 			}
@@ -726,22 +726,22 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROMFROMFROM = {
+		FROMFROMFROM? = {
 			has_fleet_flag = bubbles_escape_fleet
 		}
 		has_country_flag = bubbles_become_enemy
 	}
 
 	immediate = {
-		FROMFROMFROM = { 
+		FROMFROMFROM? = { 
 			save_event_target_as = bubbles_fleet 
-			solar_system = {
+			solar_system? = {
 				save_event_target_as = bubbles_killed_system
 			}
 		}
 		random_country = { #防止其他人击杀泡泡触发错事件
 			limit = {
-				event_target:bubbles_fleet = {
+				event_target:bubbles_fleet? = {
 					OR = {
 						has_fleet_flag = lost_amoeba_fleet@PREV
 						has_fleet_flag = lost_amoeba_adult_fleet@PREV
@@ -775,17 +775,17 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { has_fleet_flag = bubbles_escape_fleet }
+		FROM? = { has_fleet_flag = bubbles_escape_fleet }
 	}
 
 	immediate = {
-		FROM = { 
+		FROM? = { 
 			save_event_target_as = bubbles_fleet 
-			solar_system = { save_event_target_as = bubbles_mourning_system }
+			solar_system? = { save_event_target_as = bubbles_mourning_system }
 		}
 		random_country = {
 			limit = {
-				event_target:bubbles_fleet = {
+				event_target:bubbles_fleet? = {
 					OR = {
 						has_fleet_flag = lost_amoeba_fleet@PREV
 						has_fleet_flag = lost_amoeba_adult_fleet@PREV
@@ -793,7 +793,7 @@ country_event = {
 					}
 				}
 			}
-			event_target:bubbles_mourning_system = {
+			event_target:bubbles_mourning_system? = {
 				set_star_flag = bubbles_mourning_system@PREV
 			}
 			country_event = { id = wg_bubbles.14 }
@@ -841,22 +841,22 @@ ship_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { 
+		FROM? = { 
 			has_star_flag = bubbles_mourning_system@ROOT.owner 
 			any_fleet_in_system = {
 				has_fleet_flag = bubbles_escape_fleet
 			}
 		}
-		owner = { has_point_of_interest = { poi = find_bubbles_poi.1 }}
+		owner? = { has_point_of_interest = { poi = find_bubbles_poi.1 }}
 	}
 	immediate = {
-		FROM = {
+		FROM? = {
 			random_fleet_in_system = {
 				limit = { has_fleet_flag = bubbles_escape_fleet }
 				save_event_target_as = bubbles_fleet
 			}
 		}
-		FROMFROM = {
+		FROMFROM? = {
 			country_event = { id = wg_bubbles.15 }
 			remove_point_of_interest = find_bubbles_poi.1
 		}
@@ -927,7 +927,7 @@ country_event = {
 	after = {
 		end_event_chain = find_bubbles_chain
 		change_variable = { which = wg_bubbles_affection value = 10 }
-		event_target:bubbles_fleet = {
+		event_target:bubbles_fleet? = {
 			set_owner = ROOT
 			hidden_effect = { check_bubbles_planet_modifiers = yes }
 			remove_fleet_flag = bubbles_escape_fleet
@@ -953,7 +953,7 @@ country_event = {
 	custom_gui_option = wg_new_commu_option
 
 	trigger = {
-		FROMFROM = {
+		FROMFROM? = {
 			OR = {
 				has_fleet_flag = lost_amoeba_fleet@ROOT
 				has_fleet_flag = lost_amoeba_adult_fleet@ROOT
@@ -1000,7 +1000,7 @@ country_event = {
 	custom_gui_option = wg_new_commu_option
 
 	trigger = {
-		FROM = { has_leader_flag = bubbles_official }
+		FROM? = { has_leader_flag = bubbles_official }
 		NOR = { 
 			has_country_flag = engaged_with_bubbles 
 			has_country_flag = bubbles_changing

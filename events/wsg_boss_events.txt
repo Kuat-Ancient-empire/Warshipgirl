@@ -17,8 +17,8 @@ country_event = {
 			}
 			if = {
 				limit = { exists = capital_scope }
-				capital_scope = { 
-					solar_system = { 
+				capital_scope? = { 
+					solar_system? = { 
 						if = {
 							limit = { any_neighbor_system_euclidean = { has_hyperlane_to = PREV }}
 							save_event_target_as = spawn_boss_system_source
@@ -35,7 +35,7 @@ country_event = {
 				}
 			} 
 			else = {
-				random_controlled_fleet = { solar_system = {
+				random_controlled_fleet = { solar_system? = {
 					save_event_target_as = spawn_boss_system_source
 				}}
 			}
@@ -387,14 +387,14 @@ country_event = {
 	trigger = {
 		is_country_type = guardian_wg_think_tank
 		has_country_flag = guardian_wsg_think_tank_country_flag
-		FROMFROM = { is_ship_size = wg_think_tank }
-		FROM = { is_ai = no }
+		FROMFROM? = { is_ship_size = wg_think_tank }
+		FROM? = { is_ai = no }
 	}
 	
 	immediate = {
 		set_global_flag = no_guardian_wg_think_tank
-		FROMFROM = {
-			solar_system = {
+		FROMFROM? = {
+			solar_system? = {
 				spawn_megastructure = {
 					name = "NAME_WG_THINK_TANK_RUINED"
 					type = "think_tank_ruined"
@@ -404,7 +404,7 @@ country_event = {
 				}
 			}
 		}
-		FROM = {
+		FROM? = {
 			country_event = { id = wg_boss.4 days = 5 }
 		}
 		destroy_country = yes
@@ -527,7 +527,7 @@ country_event = {
 			modifier = "wsg_think_tank_destoryed" 	
 			days = -1
 		}
-		owner = {
+		owner? = {
 			add_resource = { alloys = 5000 }
 		}
 		hidden_effect = {
@@ -682,10 +682,10 @@ country_event = {
 	    NOT = { has_global_flag = wg_waifus_astesia }#启用一键召唤老婆后本事件不会触发
 	}
 	immediate = {
-		owner = {
+		owner? = {
 			save_event_target_as = wg_project_owner
 		}
-		capital_scope = { save_event_target_as = wg_capital }
+		capital_scope? = { save_event_target_as = wg_capital }
 		set_global_flag = wg_waifus_astesia
 	}
 	
@@ -721,7 +721,7 @@ country_event = {
 			}
 		}
 		hidden_effect = {
-			owner = {
+			owner? = {
 				set_country_flag = get_astesia
 				country_event = { id = wg_boss.12 days = 1800 random = 1800 }
 				country_event = { id = wg_astesia.1 }
@@ -749,7 +749,7 @@ country_event = {
 		
 	option = {
 		name = "wg_boss.12.a"
-		owner={
+		owner? = {
 			give_technology = { tech = tech_boss_weapen_ion }
 		}		
 	}	
@@ -806,7 +806,7 @@ country_event = {
 		name = "wg_boss.15.a"
 		hidden_effect = {
 			set_country_flag = astesia_chosen_one
-			owner = {
+			owner? = {
 				country_event = { id = wg_boss.16 }
 			}			
 		}		
@@ -941,7 +941,7 @@ ship_event = {
 	fire_only_once = yes
 
 	immediate = {
-		solar_system = {
+		solar_system? = {
 			random_system_ambient_object = {
 				limit = { has_ambient_object_flag = hidden_uav_1 }
 				save_event_target_as = hidden_uav_1_location
@@ -961,7 +961,7 @@ ship_event = {
 	option = {
 		name = "wg_boss.20.a"
 		hidden_effect = {
-			owner = {
+			owner? = {
 				country_event = { id = wg_boss.21 days = 15 random = 15 }	
 			}	
 		}		
@@ -1159,7 +1159,7 @@ country_event = {
         trigger = { 
             has_wg_special_authority = no
         }
-		owner = {
+		owner? = {
 			add_monthly_resource_mult = {
 				resource = engineering_research
 				value = @tier5researchreward
@@ -1175,12 +1175,12 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = wg_uav_boss_flag
 		}
 	}
 	immediate = {
-		FROM = { country_event = { id = wg_boss.22 days = 5 }}
+		FROM? = { country_event = { id = wg_boss.22 days = 5 }}
 		random_country = {
 			limit = {
 				has_country_flag = wg_uav_fleet_country_flag
@@ -1366,12 +1366,12 @@ country_event = {
 	
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = WG_Defensive_core_flag
 		}
 	}
 	immediate = {	
-		From = {
+		From? = {
 			country_event = { id = wg_boss.30 days = 5 }
 			set_country_flag = wg_defensive_murderer
 		}	
@@ -1439,7 +1439,7 @@ country_event = {
 	
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = wg_gars_fleet_flag	
 		}
 	}
@@ -1452,7 +1452,7 @@ country_event = {
 		}		
 	}	
 	after = {
-		From = {
+		From? = {
 			country_event = { id = wg_boss.34 days = 5 }
 		}
 	}
@@ -1515,7 +1515,7 @@ country_event = {
 	option = {
 		name = "wg_boss.34.a"
 		change_variable = { which = rankpts value = 6 }
-		owner={
+		owner? = {
 			add_research_option = "tech_wg_gras"
 			add_tech_progress = {
 				tech = tech_wg_gras
@@ -1568,12 +1568,12 @@ country_event = {
 	
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = wg_rbq_dragon_fleet
 		}
 	}
 	immediate = {	
-		From = {
+		From? = {
 			country_event = { id = wg_boss.38 days = 5 }
 		}	
 	}	
@@ -1589,7 +1589,7 @@ country_event = {
 	option = {
 		name = "wg_boss.38.a"
 		change_variable = { which = rankpts value = 6 }
-		owner = {
+		owner? = {
 			add_resource = { unity = 2000 }
 		}		
 		hidden_effect = {
@@ -1690,18 +1690,18 @@ carrier_event = {
 			limit = {
 				is_planet_class = pc_frozen
 			}
-			from.owner = { country_event = { id = wg_boss.44 } }
+			from.owner? = { country_event = { id = wg_boss.44 } }
 		}
 		else_if = {
 			limit = {
 				NOT = { is_planet_class = pc_ai }
 			}
-			from.owner = { country_event = { id = wg_boss.44 } }
+			from.owner? = { country_event = { id = wg_boss.44 } }
 		}
 		# 绒布球喷水加好感
 		if = {
-			limit = { from = { has_fleet_flag = wg_rbq_dragon_fleet }}
-			from.owner = { 
+			limit = { from? = { has_fleet_flag = wg_rbq_dragon_fleet }}
+			from.owner? = { 
 				change_variable = { which = wg_yukikaze_affection value = 3 }
 			}
 		}
@@ -1709,7 +1709,7 @@ carrier_event = {
 		if = {
 			limit = {
 				exists = owner
-				owner = {
+				owner? = {
 					#NOT = { is_country_type = default_ev }
 					NOT = {
 						any_owned_planet = {
@@ -1719,7 +1719,7 @@ carrier_event = {
 				}
 			}
 			# empire destruction menace reward
-			from.owner = { 
+			from.owner? = { 
 				if = {
 					limit = { has_ascension_perk = ap_become_the_crisis }
 					complete_crisis_objective = crisobj_destroy_empires
@@ -1729,7 +1729,7 @@ carrier_event = {
 					add_wg_crisis_points = { POINTS = 300 }
 				}
 			}
-			owner = { destroy_country = yes }
+			owner? = { destroy_country = yes }
 		}
 
 		# Contingency Machine World
@@ -1751,14 +1751,14 @@ carrier_event = {
 			}
 			set_carrier_flag = destroyed_by_colossus
 			set_carrier_flag = planet_cracked
-			from.owner = { save_event_target_as = final_machine_world_destroyer }
+			from.owner? = { save_event_target_as = final_machine_world_destroyer }
 			carrier_event = { id = crisis.2043 }
 		}
 
 		# Swarm Situation Log counter
 		if = {
 			limit = {
-				owner = { is_country_type = swarm }
+				owner? = { is_country_type = swarm }
 			}
 			every_country = {
 				limit = { has_event_chain = "prethoryn_scourge_chain" }
@@ -1777,7 +1777,7 @@ carrier_event = {
 		if = {
 			limit = {
 				exists = owner
-				owner = {
+				owner? = {
 					NOT = { is_same_value = from.owner }
 					OR = {
 						is_country_type = default
@@ -1826,7 +1826,7 @@ carrier_event = {
 						}
 					}
 					if = {
-						limit = { root = { is_colony = no } }
+						limit = { root? = { is_colony = no } }
 						add_opinion_modifier = {
 							modifier = opinion_cracked_an_uninhabited_world
 							who = from.owner
@@ -1844,9 +1844,9 @@ carrier_event = {
 				add_threat = { who = from.owner amount = 1 }
 			}
 			# modifiers for victim
-			owner = {
+			owner? = {
 				if = {
-					limit = { root = { is_colony = no } }
+					limit = { root? = { is_colony = no } }
 					add_opinion_modifier = {
 						modifier = opinion_cracked_my_uninhabited_world
 						who = from.owner
@@ -1869,7 +1869,7 @@ carrier_event = {
 		}
 		if = {
 			limit = { exists = owner }
-			owner = {
+			owner? = {
 				if = {
 					limit = { #isn't the case when the crisis bombards planets, for instance
 						is_at_war_with = from.fleet.owner
@@ -1919,7 +1919,7 @@ country_event = {
 
 	trigger = {
 		NOT = { has_country_flag = fired_water }
-		FROM = {
+		FROM? = {
 			is_wg_habitat = no
 			is_ringworld = no
 		}
@@ -1980,7 +1980,7 @@ country_event = {
 		country_event = { id = wg_boss.49 days = 30 }
 	}
 
-	after = { owner = { change_variable = { which = rankpts value = 1 }}}
+	after = { owner? = { change_variable = { which = rankpts value = 1 }}}
 
 	option = {
 		name = "wg_boss.46.a"		
@@ -1988,7 +1988,7 @@ country_event = {
 	option = {
 		name = "wg_boss.46.b"
 		trigger = {
-			owner = { OR = {
+			owner? = { OR = {
 				has_ethic = ethic_materialist
 				has_ethic = ethic_fanatic_materialist
 			}}
@@ -1997,7 +1997,7 @@ country_event = {
 	option = {
 		name = "wg_boss.46.c"
 		trigger = {
-			owner = { OR = {
+			owner? = { OR = {
 				has_ethic = ethic_fanatic_spiritualist
 				has_ethic = ethic_spiritualist
 			}}
@@ -2095,7 +2095,7 @@ country_event = {
 				days = -1
 			}
 		}
-		owner = {
+		owner? = {
 			set_country_flag = encountered_first_wormhole
 			add_seen_bypass_type = wormhole
 		}
@@ -2104,7 +2104,7 @@ country_event = {
 	option = {
 		name = "wg_boss.48.a"
 		custom_tooltip = wg_boss.48.tooltip
-		owner = {
+		owner? = {
 			if = {
 				limit = { NOT = { has_technology = tech_wormhole_stabilization }}
 				add_research_option = "tech_wormhole_stabilization"
@@ -2188,12 +2188,12 @@ country_event = {
 	is_triggered_only = yes
 	trigger = {
 		NOT = { has_global_flag = bugv_get_mad }
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = wg_bugv_fleet
 		}
 	}
 	immediate = {	
-		FROM = {
+		FROM? = {
 			country_event = { id = wg_boss.52 days = 5 }
 		}	
 	}	
@@ -2794,7 +2794,7 @@ country_event = {
 					set_hostile = yes
 				}
 			}
-			event_target:wg_bugv_fleet_ship = {
+			event_target:wg_bugv_fleet_ship? = {
 				set_fleet_stance = aggressive
 				set_aggro_range_measure_from = self
 				set_aggro_range = 20
@@ -2857,7 +2857,7 @@ country_event = {
 
 	trigger = {
 		has_global_flag = bugv_get_mad
-		fromfromfrom = { 
+		fromfromfrom? = { 
 			has_fleet_flag = wg_bugv_fleet
 		}
 	}
@@ -2964,7 +2964,7 @@ fleet_event = {
 	}
 
 	immediate = {
-		FROM = { set_star_flag = bugv_visited }
+		FROM? = { set_star_flag = bugv_visited }
 	}
 }
 ####向日葵
@@ -3004,7 +3004,7 @@ country_event = {
 	option = {
 		name = "wg_boss.73.a"
 		hidden_effect = {
-			owner = {
+			owner? = {
 				country_event = { id = wg_boss.74 }
 			}	
 		}
@@ -3076,7 +3076,7 @@ ship_event = {
 	}
 	
 	immediate = {
-		FROM = { owner = { country_event = { id = wg_boss.78 days = 5 } } }
+		FROM? = { owner? = { country_event = { id = wg_boss.78 days = 5 } } }
 	}
 }
 
@@ -3092,7 +3092,7 @@ country_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		FROM = { save_event_target_as = disabled_sunflower_ship }
+		FROM? = { save_event_target_as = disabled_sunflower_ship }
 		give_specimen = { key = wg_specimen_MK14torpedo }
 	}
 
@@ -3102,10 +3102,10 @@ country_event = {
 	option = {
 		name = "wg_boss.78.a"
 		custom_tooltip = wg_boss.78.tooltip
-		owner = {
+		owner? = {
 			add_resource = { unity = 2000 }
 		}
-		owner = {
+		owner? = {
 			add_resource = { influence = 500 }
 		}		
 		hidden_effect = {
@@ -3117,7 +3117,7 @@ country_event = {
 	}
 	option = {
 		name = "wg_boss.78.b"
-		from = {
+		from? = {
 			enable_special_project = {
 				name = "WG_BOARD_LIVESTAR"
 				location = this
@@ -3139,12 +3139,12 @@ country_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		FROM = { save_event_target_as = disabled_sunflower_ship }
+		FROM? = { save_event_target_as = disabled_sunflower_ship }
 	}
 	option = {
 		name = "wg_boss.79.a"
 		custom_tooltip = wg_boss.78.tooltip
-		owner = {
+		owner? = {
 			add_resource = { food = 10000 }
 			add_resource = { energy = 10000 }
 			add_resource = { influence = 1000 }
@@ -3158,11 +3158,11 @@ country_event = {
 	}
 	option = {
 		name = "wg_boss.79.b"
-		owner = {
+		owner? = {
 			add_resource = { food = 10000 }
 			add_resource = { energy = 10000 }
 		}		
-		from = {
+		from? = {
 			enable_special_project = {
 				name = "WG_FIX_LIVESTAR"
 				location = event_target:sunflower_ship
@@ -3202,7 +3202,7 @@ country_event = {
 				species = event_target:sunflowe_species
 			}
 		}		
-		from = {
+		from? = {
 			enable_special_project = {
 				name = "WG_FIX_LIVESTAR"
 				location = event_target:sunflower_ship
@@ -3221,7 +3221,7 @@ country_event = {
 	
 	is_triggered_only = yes
 	immediate = {
-		owner = {
+		owner? = {
 			save_event_target_as = wg_sunflower_owner
 		}
 	}
@@ -3438,12 +3438,12 @@ country_event = {
 	
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = wg_rbq_dragon_fleet2
 		}
 	}
 	immediate = {	
-		From = {
+		From? = {
 			country_event = { id = wg_boss.88 days = 5 }
 		}	
 	}	
@@ -3459,7 +3459,7 @@ country_event = {
 	option = {
 		name = "wg_boss.88.a"
 		change_variable = { which = rankpts value = 10 }
-		owner = {
+		owner? = {
 			add_resource = { unity = 2000 }
 		}		
 		hidden_effect = {
@@ -3520,7 +3520,7 @@ country_event = {
 		random_list = {
 			50 = {
 				random_galaxy_planet = {
-					limit = { solar_system = {
+					limit = { solar_system? = {
 						NOT = { exists = space_owner }
 					}}
 					save_event_target_as = fairy_dragon_target
@@ -3599,7 +3599,7 @@ country_event = {
 											trigger = {
 												id = fairy_dragon.1.trigger.1
 												NOR = {
-													event_target:fairy_dragon_fleet = {
+													event_target:fairy_dragon_fleet? = {
 														distance = { # 最小走动范围为10 星系外
 															source = PREV
 															min_jumps = 10
@@ -3659,19 +3659,19 @@ fleet_event = {
 
 	trigger = {
 		has_fleet_flag = fairy_dragon_fleet
-		fromfrom = {
+		fromfrom? = {
 			exists = space_owner
-			space_owner = {
+			space_owner? = {
 				is_country_type = default
 				NOT = { has_country_flag = fairy_dragon_arrived }
 			}
 		}
-		from = {
+		from? = {
 			OR = {
 				NOT = { exists = space_owner }
 				AND = {
 					exists = space_owner
-					space_owner = { NOT = { is_same_value = root.fromfrom.space_owner } }
+					space_owner? = { NOT = { is_same_value = root.fromfrom.space_owner } }
 					# technically redundant
 				}
 			}
@@ -3679,7 +3679,7 @@ fleet_event = {
 	}
 
 	immediate = {
-		fromfrom.space_owner = {
+		fromfrom.space_owner? = {
 			set_country_flag = fairy_dragon_arrived
 			country_event = { id = wg_boss.93 }
 		}
@@ -3762,7 +3762,7 @@ ship_event = {
 	}
 	
 	immediate = {
-		FROM = { owner = { country_event = { id = wg_boss.97 days = 2 } } }
+		FROM? = { owner? = { country_event = { id = wg_boss.97 days = 2 } } }
 		save_global_event_target_as = fairy_dragon_disabled
 	}
 }
@@ -3819,10 +3819,10 @@ country_event = {
 		trigger = { 
             has_authority = auth_warshipgirls
 		}
-		owner = {
+		owner? = {
 			add_resource = { sr_pantsu = 5000 }
 		}
-		owner={
+		owner? = {
 			if = {
 				limit = { OR = {
 					has_country_flag = wg_ascension_path_project_s 
@@ -3862,13 +3862,13 @@ country_event = {
 		name = wg_boss.98.b
 		custom_gui = "enclave_caravaneer_option"
 		change_variable = { which = rankpts value = 25 }
-		owner = {
+		owner? = {
 			add_resource = { sr_pantsu = 5000 }
 		}
 		trigger = { 
             has_authority = auth_shenhai
 		}
-		owner={
+		owner? = {
 			give_technology = { tech = tech_sh_FD2 }
 		}
 		hidden_effect = {
@@ -4038,12 +4038,12 @@ country_event = {
 	
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = wg_one_cat_fleet
 		}
 	}
 	immediate = {	
-		From = {
+		From? = {
 			country_event = { id = wg_boss.106 days = 5 }
 		}	
 	}	
@@ -4059,7 +4059,7 @@ country_event = {
 	option = {
 		name = "wg_boss.106.a"
 		change_variable = { which = rankpts value = 10 }
-		owner={
+		owner? = {
 			give_technology = { tech = tech_wsg_CAT }
 		}				
 	}	
@@ -4108,12 +4108,12 @@ country_event = {
 	
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = wg_rbq_dragon_fleet3
 		}
 	}
 	immediate = {	
-		From = {
+		From? = {
 			country_event = { id = wg_boss.110 days = 5 }
 		}	
 	}	
@@ -4129,7 +4129,7 @@ country_event = {
 	option = {
 		name = "wg_boss.110.a"
 		change_variable = { which = rankpts value = 6 }
-		owner = {
+		owner? = {
 			add_resource = { unity = 2000 }
 		}		
 		hidden_effect = {
@@ -4569,7 +4569,7 @@ country_event = {
 		if = { # 生成在5跳外的星系
 			limit = {
 				any_system = {
-					space_owner = { is_same_value = ROOT }
+					space_owner? = { is_same_value = ROOT }
 					distance = {
 						source = ROOT.capital_scope
 						type = hyperlane
@@ -4597,7 +4597,7 @@ country_event = {
 			}
 		} else_if = { # 备用方案（找不到5跳之外的星系）
 			limit = { any_system = {
-				space_owner = { is_same_value = ROOT }
+				space_owner? = { is_same_value = ROOT }
 			}}
 			random_system_within_border = {
 				save_global_event_target_as = wg_psionic_system_home
@@ -4605,13 +4605,13 @@ country_event = {
 		} else_if = { # 太虚
 			limit = { always = yes }
 			random_controlled_fleet = {
-				solar_system = {
+				solar_system? = {
 					save_global_event_target_as = wg_psionic_system_home
 				}
 			}
 		}
 
-		event_target:wg_psionic_system_home = {
+		event_target:wg_psionic_system_home? = {
 			set_star_flag = wg_psionic_system_home
 			random_system_planet = {
 				limit = { is_primary_star = yes }
@@ -4646,7 +4646,7 @@ country_event = {
 				is_discovered = no
 				hyperlane = no
 			}
-			event_target:wg_psi_1_system = {
+			event_target:wg_psi_1_system? = {
 				spawn_system = {
 					min_distance >= 20
 					max_distance >= 30
@@ -4668,7 +4668,7 @@ country_event = {
 			}
 		}
 		set_spawn_system_batch = end
-		event_target:wg_psi_1_system = {
+		event_target:wg_psi_1_system? = {
 			every_fleet_in_system = {
 				limit = {
 					NOT = { has_modifier = wg_timeline_invisable }
@@ -4680,7 +4680,7 @@ country_event = {
 				to = event_target:wg_psi_2_system
 			}
 		}
-		event_target:wg_psi_2_system = {
+		event_target:wg_psi_2_system? = {
 			every_fleet_in_system = {
 				limit = {
 					NOT = { has_modifier = wg_timeline_invisable }
@@ -4692,7 +4692,7 @@ country_event = {
 				to = event_target:wg_psi_3_system
 			}
 		}
-		event_target:wg_psi_3_system = {
+		event_target:wg_psi_3_system? = {
 			every_fleet_in_system = {
 				limit = {
 					NOT = { has_modifier = wg_timeline_invisable }
@@ -4741,7 +4741,7 @@ country_event = {
 
 	immediate = {
 		set_country_flag = wg_psi_event_country
-		event_target:wg_psionic_system_home = {
+		event_target:wg_psionic_system_home? = {
 			random_system_megastructure = {
 				limit = { is_megastructure_type = wg_psionic_wormhole }
 				create_fleet = {
@@ -4776,9 +4776,9 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROMFROMFROM = { OR = {
+		FROMFROMFROM? = { OR = {
 			has_ship_flag = wsg_psi_dreadnought
-			fleet = { has_fleet_flag = wsg_psi_dreadnought }
+			fleet? = { has_fleet_flag = wsg_psi_dreadnought }
 		}}
 	}
 
@@ -4792,7 +4792,7 @@ country_event = {
 					has_ascension_perk = ap_shenhai_silent
 				}}
 				# 如果不是缄默国家，先生成一个无敌的道具无畏舰触发事件
-				FROMFROMFROM = { 
+				FROMFROMFROM? = { 
 					create_fleet = {
 						name = "NAME_WG_corrupted_DREADNOUGHT"
 						settings = {
@@ -4835,13 +4835,13 @@ country_event = {
 			limit = { is_megastructure_type = wg_psionic_wormhole }
 			activate_gateway = this
 		}
-		event_target:wg_psi_1_system = {
+		event_target:wg_psi_1_system? = {
 			random_system_planet = {
 				limit = { has_carrier_flag = wg_shrouded_planet_1 }
 				prevent_anomaly = no
 			}
 		}
-		event_target:wg_psi_2_system = {
+		event_target:wg_psi_2_system? = {
 			random_system_planet = {
 				limit = { has_carrier_flag = wg_shrouded_planet_2 }
 				prevent_anomaly = no
@@ -4851,7 +4851,7 @@ country_event = {
 				prevent_anomaly = no
 			}
 		}
-		event_target:wg_psi_3_system = {
+		event_target:wg_psi_3_system? = {
 			random_system_planet = {
 				limit = { has_carrier_flag = wg_shrouded_planet_4 }
 				prevent_anomaly = no
@@ -4874,7 +4874,7 @@ country_event = {
 	picture = GFX_evt_wsg_psi_dreadnought
 
 	immediate = {
-		event_target:wg_psi_country_wicked = {
+		event_target:wg_psi_country_wicked? = {
 			random_owned_fleet = {
 				limit = { has_fleet_flag = wsg_psi_dreadnought_disabled }
 				save_event_target_as = wsg_psi_dreadnought
@@ -4902,13 +4902,13 @@ country_event = {
 				activate_gateway = this
 			}
 			delete_fleet = event_target:wsg_psi_dreadnought
-			event_target:wg_psi_1_system = {
+			event_target:wg_psi_1_system? = {
 				random_system_planet = {
 					limit = { has_carrier_flag = wg_shrouded_planet_1 }
 					prevent_anomaly = no
 				}
 			}
-			event_target:wg_psi_2_system = {
+			event_target:wg_psi_2_system? = {
 				random_system_planet = {
 					limit = { has_carrier_flag = wg_shrouded_planet_2 }
 					prevent_anomaly = no
@@ -4918,7 +4918,7 @@ country_event = {
 					prevent_anomaly = no
 				}
 			}
-			event_target:wg_psi_3_system = {
+			event_target:wg_psi_3_system? = {
 				random_system_planet = {
 					limit = { has_carrier_flag = wg_shrouded_planet_4 }
 					prevent_anomaly = no
@@ -4936,7 +4936,7 @@ country_event = {
 	picture = GFX_evt_wsg_psi_dreadnought
 
 	immediate = {
-		event_target:wg_psi_country_wicked = {
+		event_target:wg_psi_country_wicked? = {
 			random_owned_fleet = {
 				limit = { has_fleet_flag = wsg_psi_dreadnought_disabled }
 				delete_fleet = this
@@ -4975,7 +4975,7 @@ country_event = {
 	picture = GFX_evt_wsg_psi_dreadnought
 
 	immediate = {
-		event_target:wg_psi_country_wicked = {
+		event_target:wg_psi_country_wicked? = {
 			random_owned_fleet = {
 				limit = { has_fleet_flag = wsg_psi_dreadnought_disabled }
 				delete_fleet = this
@@ -5079,10 +5079,10 @@ country_event = {
 		begin_event_chain = {
 			event_chain = wg_psi_chain
 		}
-		event_target:wg_psi_1_system = {
+		event_target:wg_psi_1_system? = {
 			random_system_planet = {
 				limit = { has_carrier_flag = wg_shrouded_planet_1 }
-				ROOT = { create_point_of_interest = {
+				ROOT? = { create_point_of_interest = {
 					id = wg_psi_planet_poi.1
 					name = wg_psi_planet_poi
 					desc = wg_psi_planet_poi_desc
@@ -5091,10 +5091,10 @@ country_event = {
 				}}
 			}
 		}
-		event_target:wg_psi_2_system = {
+		event_target:wg_psi_2_system? = {
 			random_system_planet = {
 				limit = { has_carrier_flag = wg_shrouded_planet_2 }
-				ROOT = { create_point_of_interest = {
+				ROOT? = { create_point_of_interest = {
 					id = wg_psi_planet_poi.2
 					name = wg_psi_planet_poi
 					desc = wg_psi_planet_poi_desc
@@ -5104,7 +5104,7 @@ country_event = {
 			}
 			random_system_planet = {
 				limit = { has_carrier_flag = wg_shrouded_planet_3 }
-				ROOT = { create_point_of_interest = {
+				ROOT? = { create_point_of_interest = {
 					id = wg_psi_planet_poi.3
 					name = wg_psi_planet_poi
 					desc = wg_psi_planet_poi_desc
@@ -5113,10 +5113,10 @@ country_event = {
 				}}
 			}
 		}
-		event_target:wg_psi_3_system = {
+		event_target:wg_psi_3_system? = {
 			random_system_planet = {
 				limit = { has_carrier_flag = wg_shrouded_planet_4 }
-				ROOT = { create_point_of_interest = {
+				ROOT? = { create_point_of_interest = {
 					id = wg_psi_planet_poi.4
 					name = wg_psi_planet_poi
 					desc = wg_psi_planet_poi_desc
@@ -5126,7 +5126,7 @@ country_event = {
 			}
 		}
 		hidden_effect = { 
-			owner = { country_event = { id = wg_paragon.17 days = 1 }}
+			owner? = { country_event = { id = wg_paragon.17 days = 1 }}
 		}
 	}
 
@@ -5137,7 +5137,7 @@ country_event = {
 		change_variable = { which = rankpts value = 2 }
 		hidden_effect = { 
 			set_country_flag = reject_psi_country_request
-			owner = { country_event = { id = wg_paragon.17 days = 1 }}
+			owner? = { country_event = { id = wg_paragon.17 days = 1 }}
 			every_megastructure = {
 				limit = { is_megastructure_type = wg_psionic_wormhole }
 				activate_gateway = this
@@ -5187,23 +5187,23 @@ fleet_event = {
 						OR = {
 							AND = {
 								has_carrier_flag = psi_fleet_target_1
-								ROOT = { check_variable = { which = psi_fleet_target value = 1 }}
+								ROOT? = { check_variable = { which = psi_fleet_target value = 1 }}
 							}
 							AND = {
 								has_carrier_flag = psi_fleet_target_2
-								ROOT = { check_variable = { which = psi_fleet_target value = 2 }}
+								ROOT? = { check_variable = { which = psi_fleet_target value = 2 }}
 							}
 							AND = {
 								has_carrier_flag = psi_fleet_target_3
-								ROOT = { check_variable = { which = psi_fleet_target value = 3 }}
+								ROOT? = { check_variable = { which = psi_fleet_target value = 3 }}
 							}
 							AND = {
 								has_carrier_flag = psi_fleet_target_4
-								ROOT = { check_variable = { which = psi_fleet_target value = 4 }}
+								ROOT? = { check_variable = { which = psi_fleet_target value = 4 }}
 							}
 							AND = {
 								has_carrier_flag = psi_fleet_target_5
-								ROOT = { check_variable = { which = psi_fleet_target value = 5 }}
+								ROOT? = { check_variable = { which = psi_fleet_target value = 5 }}
 							}
 						}
 					}
@@ -5211,7 +5211,7 @@ fleet_event = {
 						move_to = this
 						effect = {
 							id = wg_psi_fleet.2
-							root = { 
+							root? = { 
 								random_list = {
 									1 = { 
 										modifier = { factor = 0 check_variable = { which = psi_fleet_target value > 4 }}
@@ -5254,7 +5254,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		event_target:wg_psi_country_wicked = {
+		event_target:wg_psi_country_wicked? = {
 			every_owned_fleet = {
 				fleet_event = { id = wg_boss.135 }
 			}
@@ -5270,7 +5270,7 @@ ship_event = {
 	picture = GFX_evt_shrouded_planet
 	trigger = { exists = owner }
 	immediate = {
-		owner = {
+		owner? = {
 			country_event = { id = wg_boss.138 days = 120 }
 		}
 	}
@@ -5291,9 +5291,9 @@ country_event = {
 
 	option = {
 		name = wg_boss.138.a
-		leader = { add_experience = 200 }
+		leader? = { add_experience = 200 }
 		begin_event_chain = { event_chain = wg_psi_chain target = owner }
-		event_target:wg_psi_1_system = {
+		event_target:wg_psi_1_system? = {
 			random_system_planet = {
 				limit = { has_carrier_flag = wg_shrouded_planet_1 }
 				enable_special_project = {
@@ -5303,7 +5303,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:wg_psi_2_system = {
+		event_target:wg_psi_2_system? = {
 			random_system_planet = {
 				limit = { has_carrier_flag = wg_shrouded_planet_2 }
 				enable_special_project = {
@@ -5321,7 +5321,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:wg_psi_3_system = {
+		event_target:wg_psi_3_system? = {
 			random_system_planet = {
 				limit = { has_carrier_flag = wg_shrouded_planet_4 }
 				enable_special_project = {
@@ -5334,7 +5334,7 @@ country_event = {
 	}
 	option = {
 		name = wg_boss.138.b
-		owner = { add_resource = {
+		owner? = { add_resource = {
 			influence = 100
 		}}
 	}
@@ -5351,7 +5351,7 @@ ship_event = {
 	trackable = yes
 
 	immediate = {
-		owner = { 
+		owner? = { 
 			add_event_chain_counter = {
 				event_chain = wg_psi_chain
 				counter = wg_shrouded_planet_counter
@@ -5366,7 +5366,7 @@ ship_event = {
 
 	option = {
 		name = EXCELLENT
-		hidden_effect = { owner = { if = {
+		hidden_effect = { owner? = { if = {
 			limit = { OR = {
 				has_completed_event_chain_counter = {
 					event_chain = wg_psi_chain
@@ -5405,8 +5405,8 @@ ship_event = {
 	location = from
 
 	trigger = {
-		FROM = { has_carrier_flag = wg_shrouded_planet }
-		owner = { OR = {
+		FROM? = { has_carrier_flag = wg_shrouded_planet }
+		owner? = { OR = {
 			has_country_flag = accept_psi_country_request 
 			has_event_chain = wg_psi_chain
 		}}
@@ -5414,17 +5414,17 @@ ship_event = {
 
 	immediate = {
 		if = {
-			limit = { from = { has_carrier_flag = wg_shrouded_planet_1 }}
-			owner = { remove_point_of_interest = wg_psi_planet_poi.1 }
+			limit = { from? = { has_carrier_flag = wg_shrouded_planet_1 }}
+			owner? = { remove_point_of_interest = wg_psi_planet_poi.1 }
 		} else_if = {
-			limit = { from = { has_carrier_flag = wg_shrouded_planet_2 }}
-			owner = { remove_point_of_interest = wg_psi_planet_poi.2 }
+			limit = { from? = { has_carrier_flag = wg_shrouded_planet_2 }}
+			owner? = { remove_point_of_interest = wg_psi_planet_poi.2 }
 		} else_if = {
-			limit = { from = { has_carrier_flag = wg_shrouded_planet_3 }}
-			owner = { remove_point_of_interest = wg_psi_planet_poi.3 }
+			limit = { from? = { has_carrier_flag = wg_shrouded_planet_3 }}
+			owner? = { remove_point_of_interest = wg_psi_planet_poi.3 }
 		} else_if = {
-			limit = { from = { has_carrier_flag = wg_shrouded_planet_4 }}
-			owner = { remove_point_of_interest = wg_psi_planet_poi.4 }
+			limit = { from? = { has_carrier_flag = wg_shrouded_planet_4 }}
+			owner? = { remove_point_of_interest = wg_psi_planet_poi.4 }
 		}
 	}
 
@@ -5500,7 +5500,7 @@ country_event = {
 		}
 		name = wg_boss.142.a
 		
-		owner = {
+		owner? = {
 			end_event_chain = "wg_psi_chain"
 		}
 	}
@@ -5514,7 +5514,7 @@ country_event = {
 		}
 		name = wg_boss.142.b
 		
-		owner = {
+		owner? = {
 			end_event_chain = "wg_psi_chain"
 		}
 	}
@@ -5528,7 +5528,7 @@ country_event = {
 		}
 		name = wg_boss.142.c
 		
-		owner = {
+		owner? = {
 			end_event_chain = "wg_psi_chain"
 		}
 	}
@@ -5746,7 +5746,7 @@ country_event = {
 		end_event_chain = wg_psi_chain
 		hidden_effect = {
 			set_country_flag = finish_wg_psi_events
-			event_target:wg_psi_country = {
+			event_target:wg_psi_country? = {
 				set_subject_of = {
 					who = ROOT
 					preset = preset_vassal
@@ -5784,7 +5784,7 @@ country_event = {
 		end_event_chain = wg_psi_chain
 		hidden_effect = {
 			set_country_flag = finish_wg_psi_events
-			event_target:wg_psi_country = {
+			event_target:wg_psi_country? = {
 				every_owned_starbase = { set_owner = ROOT }
 				every_owned_leader = { set_owner = ROOT }
 				every_owned_fleet = { set_owner = ROOT }
@@ -5814,7 +5814,7 @@ country_event = {
 	immediate = {
 		set_country_flag = wg_holy_war2
 		country_event = { id = wg_boss.161 days = 10 }
-		event_target:wg_psi_country = {
+		event_target:wg_psi_country? = {
 			set_country_flag = wg_holy_war
 			# 加强
 			add_modifier = { modifier = wg_psi_country_cheat }
@@ -5871,7 +5871,7 @@ country_event = {
 	option = {
 		name = wg_boss.157.a
 		custom_tooltip = wg_boss.157.a.tooltip
-		event_target:wg_psi_country = { declare_war = {
+		event_target:wg_psi_country? = { declare_war = {
 			target = ROOT
 			attacker_war_goal = wg_holy_war
 		}}
@@ -5900,7 +5900,7 @@ country_event = {
 
 	after = {
 		hidden_effect = {
-			event_target:wg_psi_country = {
+			event_target:wg_psi_country? = {
 				remove_country_flag = wg_holy_war
 				every_owned_planet = {
 					set_owner = ROOT
@@ -5983,11 +5983,11 @@ country_event = {
 	trigger = {
 		exists = event_target:wg_psi_country
 		has_country_flag = wg_holy_war2
-		event_target:wg_psi_country = { has_country_flag = wg_holy_war }
+		event_target:wg_psi_country? = { has_country_flag = wg_holy_war }
 	}
 
 	immediate = {
-		event_target:wg_psi_country = { 
+		event_target:wg_psi_country? = { 
 			add_resource = {
 				energy = 50000
 				minerals = 50000
@@ -5998,11 +5998,11 @@ country_event = {
 			change_variable = { which = summon_times value = 1 }
 			if = {
 				limit = { check_variable = { which = summon_times value >= 4 }}
-				ROOT = { country_event = { id = wg_boss.163 days = 1440 }}
+				ROOT? = { country_event = { id = wg_boss.163 days = 1440 }}
 			} else = {
-				ROOT = { country_event = { id = wg_boss.162 days = 1440 }}
+				ROOT? = { country_event = { id = wg_boss.162 days = 1440 }}
 			}
-			capital_scope = {
+			capital_scope? = {
 				create_fleet = {
 					name = "NAME_WG_boss_psi_fleet_1"
 					settings = {
@@ -6028,7 +6028,7 @@ country_event = {
 								design = "NAME_WG_PSI_GUNSHIP"
 							}
 						}
-						owner = { create_leader = {
+						owner? = { create_leader = {
 							name = random
 							class = commander
 							species = event_target:wg_psi_species
@@ -6058,7 +6058,7 @@ country_event = {
 								design = "NAME_WG_PSI_BIG_GUNSHIP"
 							}
 						}
-						owner = { create_leader = {
+						owner? = { create_leader = {
 							name = random
 							class = commander
 							species = event_target:wg_psi_species
@@ -6088,7 +6088,7 @@ country_event = {
 								design = "NAME_WG_PSI_GUNSHIP"
 							}
 						}
-						owner = { create_leader = {
+						owner? = { create_leader = {
 							name = random
 							class = commander
 							species = event_target:wg_psi_species
@@ -6120,7 +6120,7 @@ country_event = {
 	picture = GFX_evt_surreal_visions
 
 	immediate = {
-		event_target:wg_psi_country = { 
+		event_target:wg_psi_country? = { 
 			every_owned_planet = {
 				destroy_colony = yes
 				change_pc = pc_eye_shrouded
@@ -6299,7 +6299,7 @@ country_event = {
 					}
 					effect = {
 						change_leader_portrait = wsg380
-						event_target:wg_psi_country = { 
+						event_target:wg_psi_country? = { 
 							set_leader = PREV
 						}
 					}
@@ -6317,8 +6317,8 @@ country_event = {
 				}
 			}
 		}
-		event_target:wg_psi_1_system = {
-			starbase = { fleet = { delete_fleet = this }}
+		event_target:wg_psi_1_system? = {
+			starbase = { fleet? = { delete_fleet = this }}
 			create_starbase = {
 				size = starbase_outpost
 				effect = {
@@ -6349,7 +6349,7 @@ country_event = {
 								design = "NAME_WG_PSI_GUNSHIP"
 							}
 						}
-						owner = { create_leader = {
+						owner? = { create_leader = {
 							name = "NAME_WG_psi_country_admiral"
 							class = commander
 							species = event_target:wg_psi_species
@@ -6383,7 +6383,7 @@ country_event = {
 							random_existing_design = science
 						}
 						set_fleet_stance = evasive
-						owner = {
+						owner? = {
 							create_leader = {
 								name = random
 								class = scientist
@@ -6411,11 +6411,11 @@ country_event = {
 				}
 			}
 		}
-		event_target:wg_psi_country = {
+		event_target:wg_psi_country? = {
 			random_country = {
 				limit = { has_country_flag = wg_psi_event_country }
 				establish_communications_no_message = PREV
-				PREV = {
+				PREV? = {
 					copy_techs_from = {
 						target = PREV
 					}
@@ -6431,7 +6431,7 @@ country_event = {
 						who = PREV
 						modifier = opinion_help_reform_country
 					}
-					PREV = { 
+					PREV? = { 
 						add_opinion_modifier = {
 							who = PREV
 							modifier = opinion_wg_save_our_species
@@ -6465,7 +6465,7 @@ carrier_event = {
 		add_deposit = d_senergy
 		set_owner = event_target:wg_psi_country
 		set_capital = yes
-		event_target:wg_psi_country = { 
+		event_target:wg_psi_country? = { 
 			create_leader = {
 				class = official
 				species = event_target:wg_psi_species
@@ -6474,7 +6474,7 @@ carrier_event = {
 				immortal = yes
 			}
 			last_created_leader = {
-				ROOT = { assign_leader = prev }
+				ROOT? = { assign_leader = prev }
 			}
 		}
 		while = { count = 8
@@ -6498,8 +6498,8 @@ carrier_event = {
 			size = 8000
 			species = event_target:wg_psi_species
 		}
-		event_target:wg_psi_2_system = {
-			starbase = { fleet = { delete_fleet = this }}
+		event_target:wg_psi_2_system? = {
+			starbase = { fleet? = { delete_fleet = this }}
 			create_starbase = {
 				size = starbase_outpost
 				effect = {
@@ -6515,8 +6515,8 @@ carrier_event = {
 				carrier_event = { id = wg_boss.152 }
 			}
 		}
-		event_target:wg_psi_3_system = {
-			starbase = { fleet = { delete_fleet = this }}
+		event_target:wg_psi_3_system? = {
+			starbase = { fleet? = { delete_fleet = this }}
 			create_starbase = {
 				size = starbase_outpost
 				effect = {
@@ -6588,7 +6588,7 @@ carrier_event = {
 		add_deposit = d_fuming_bog  
 		add_deposit = d_senergy
 		set_owner = event_target:wg_psi_country
-		event_target:wg_psi_country = { 
+		event_target:wg_psi_country? = { 
 			create_leader = {
 				class = official
 				species = event_target:wg_psi_species
@@ -6597,7 +6597,7 @@ carrier_event = {
 				immortal = yes
 			}
 			last_created_leader = {
-				ROOT = { assign_leader = prev }
+				ROOT? = { assign_leader = prev }
 			}
 		}
 		while = { count = 12
@@ -6634,8 +6634,8 @@ carrier_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		solar_system = {
-			starbase = { fleet = { delete_fleet = this }}
+		solar_system? = {
+			starbase = { fleet? = { delete_fleet = this }}
 			create_starbase = {
 				size = starbase_outpost
 				effect = {
@@ -6659,7 +6659,7 @@ carrier_event = {
 		add_deposit = d_dust_desert 
 		add_deposit = d_senergy
 		set_owner = event_target:wg_psi_country
-		event_target:wg_psi_country = { 
+		event_target:wg_psi_country? = { 
 			create_leader = {
 				class = official
 				species = event_target:wg_psi_species
@@ -6668,7 +6668,7 @@ carrier_event = {
 				immortal = yes
 			}
 			last_created_leader = {
-				ROOT = { assign_leader = prev }
+				ROOT? = { assign_leader = prev }
 			}
 		}
 		while = { count = 6
@@ -6975,7 +6975,7 @@ country_event = {
 	option = {
 		name = "wg_boss.205.a"
 		change_variable = { which = rankpts value = 6 }
-		owner = {
+		owner? = {
 			add_resource = { unity = 2000 }
 		}		
 		hidden_effect = {
@@ -7014,7 +7014,7 @@ country_event = {
 	option = {
 		name = "wg_boss.206.a"
 		change_variable = { which = rankpts value = 6 }
-		owner = {
+		owner? = {
 			add_resource = { unity = 2000 }
 		}				
 	}	
@@ -7026,12 +7026,12 @@ country_event = {
 	
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = wg_rbq_dragon_city_fleet	
 		}
 	}
 	immediate = {	
-		From = {
+		From? = {
 			country_event = { id = wg_boss.205 days = 5 }
 			country_event = { id = wg_boss.206 days = 5 }
 		}	
@@ -7061,24 +7061,24 @@ country_event = {
 				limit = {
 					has_hyperlane_to = prev
 				}
-				PREV = { change_variable = { which = neighbor_system_count value = 1 }}
+				PREV? = { change_variable = { which = neighbor_system_count value = 1 }}
 			}
 			if = {
 				limit = { check_variable = { which = neighbor_system_count value < 4 }}
 				every_neighbor_system_euclidean = {
 					limit = {
 						NOT = { has_hyperlane_to = prev }
-						PREV = { check_variable = { which = neighbor_system_count value < 4 }}
+						PREV? = { check_variable = { which = neighbor_system_count value < 4 }}
 					}
 					add_hyperlane = { from = this to = prev }
-					PREV = { change_variable = { which = neighbor_system_count value = 1 }}
+					PREV? = { change_variable = { which = neighbor_system_count value = 1 }}
 				}
 			}
 			set_star_flag = wg_boss_lly_system
 			set_star_flag = wg_event_system
 			save_event_target_as = wg_boss_lly_system
 		}
-		event_target:wg_boss_lly_system = {
+		event_target:wg_boss_lly_system? = {
 			create_country = {
 				name = "NAME_CUNNING_LLY"
 				type = faction_wsg_neutral
@@ -7132,14 +7132,14 @@ country_event = {
 					}
 				}
 			}
-			event_target:wg_boss_lly_fleet = {
+			event_target:wg_boss_lly_fleet? = {
 				queue_actions = {
 					repeat = {
 						find_random_planet = {
 							trigger = {
 								id = wg_boss.207.t1
 								NOT = { has_carrier_flag = wg_boss_lly_stayed_planet }
-								solar_system = { has_star_flag = wg_boss_lly_system }
+								solar_system? = { has_star_flag = wg_boss_lly_system }
 							}
 							found_planet = { 
 								move_to = this
@@ -7159,7 +7159,7 @@ country_event = {
 					}
 				}
 			}
-			star = {
+			star? = {
 				while = {
 					count = 2
 					create_ambient_object = {
@@ -7287,21 +7287,21 @@ country_event = {
 
 	option = {
 		name = wg_boss.209.a
-		trigger = { owner = { OR = {
+		trigger = { owner? = { OR = {
 			has_ethic = ethic_militarist
 			has_ethic = ethic_fanatic_militarist
 		}}}
 	}
 	option = {
 		name = wg_boss.209.b
-		trigger = { owner = { OR = {
+		trigger = { owner? = { OR = {
 			has_ethic = ethic_spiritualist
 			has_ethic = ethic_fanatic_spiritualist
 		}}}
 	}
 	option = {
 		name = wg_boss.209.c
-		trigger = { owner = { OR = {
+		trigger = { owner? = { OR = {
 			has_ethic = ethic_materialist
 			has_ethic = ethic_fanatic_materialist
 		}}}
@@ -7318,18 +7318,18 @@ ship_event = {
 	picture = GFX_evt_space_monster
 	is_triggered_only = yes
 	trigger = {
-		owner = {
+		owner? = {
 			is_ai = no
 			NOT = { has_country_flag = establish_communicate_with_lly }
 		}
-		solar_system = {
+		solar_system? = {
 			has_star_flag = wg_boss_lly_system
 		}
 	}
 
 	option = {
 		name = EXCELLENT
-		owner = { country_event = { id = wg_boss.211 days = 90 random = 90 }}
+		owner? = { country_event = { id = wg_boss.211 days = 90 random = 90 }}
 	}
 }
 
@@ -7349,7 +7349,7 @@ country_event = {
 
 	option = {
 		name = wg_boss.211.a
-		event_target:wg_boss_lly_system = { starbase = {
+		event_target:wg_boss_lly_system? = { starbase = {
 			enable_special_project = {
 				name = "COMMUNICATE_LLY"
 				owner = ROOT
@@ -7379,7 +7379,7 @@ ship_event = {
 	}
 
 	immediate = {
-		owner = { set_country_flag = establish_communicate_with_lly }
+		owner? = { set_country_flag = establish_communicate_with_lly }
 	}
 
 	option = {
@@ -7390,7 +7390,7 @@ ship_event = {
 	option = {
 		name = wg_boss.212.b
 		hidden_effect = { ship_event = { id = wg_boss.213 }}
-		owner = { change_variable = { which = rankpts value = 5 }}
+		owner? = { change_variable = { which = rankpts value = 5 }}
 	}
 }
 ship_event = {
@@ -7421,7 +7421,7 @@ ship_event = {
 	}
 	option = {
 		name = wg_boss.213.b
-		hidden_effect = { owner = { country_event = { id = wg_boss.214 }}}
+		hidden_effect = { owner? = { country_event = { id = wg_boss.214 }}}
 	}
 }
 # 不给船
@@ -7502,13 +7502,13 @@ ship_event = {
 
 	option = {
 		name = wg_boss.216.a
-		fleet = {
+		fleet? = {
 			destroy_fleet = {
 				target = this
 				kill_leader = no
 			}
 		}
-		hidden_effect = { owner = { 
+		hidden_effect = { owner? = { 
 			set_timed_country_flag = { flag = give_food_lly days = 1800 }
 			fire_on_action = {
 				on_action = wg_boss_lly_present_event_list
@@ -7736,11 +7736,11 @@ country_event = {
 
 	option = {
 		name = wg_boss.226.a
-		hidden_effect = { owner = { country_event = { id = wg_boss.229 }}}
+		hidden_effect = { owner? = { country_event = { id = wg_boss.229 }}}
 	}
 	option = {
 		name = wg_boss.226.b
-		hidden_effect = { owner = { country_event = { id = wg_boss.227 }}}
+		hidden_effect = { owner? = { country_event = { id = wg_boss.227 }}}
 	}
 }
 # 不给
@@ -7989,7 +7989,7 @@ country_event = {
 	picture = GFX_evt_space_monster
 
 	trigger = {
-		FROMFROMFROM = { has_fleet_flag = wg_boss_lly_fleet }
+		FROMFROMFROM? = { has_fleet_flag = wg_boss_lly_fleet }
 	}
 
 	option = {
@@ -8079,12 +8079,12 @@ country_event = {
 		count_owned_ship = {
 			count < 1
 		}
-		FROM = {
+		FROM? = {
 			is_ai = no
 		}
 	}
 	immediate = {	
-		From = {
+		From? = {
 			country_event = { id = wg_boss.253 days = 2 }
 		}	
 	}	
@@ -8113,7 +8113,7 @@ country_event = {
 	is_triggered_only = yes
 	picture = GFX_evt_wg_ra4
 	immediate = {	
-		# From = {
+		# From? = {
 		# 	country_event = { id = wg_boss.253 days = 2 }
 		# }	
 	}
@@ -8123,7 +8123,7 @@ country_event = {
 			modifier = "wsg_eddy_fish_buff" 	
 			days = -1
 		}
-		owner={
+		owner? = {
 			give_technology = { tech = tech_eddy_fish_flak }
 		}
 	}
@@ -8200,12 +8200,12 @@ country_event = {
 	
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = kebab_seal_fleet	
 		}
 	}
 	immediate = {	
-		From = {
+		From? = {
 			country_event = { id = wg_boss.257 days = 2 }
 		}	
 	}	
@@ -8320,7 +8320,7 @@ country_event = {
 	trigger = {
 		NOT = { is_variable_set = 59_battle_countdown }
 		has_country_flag = 59_event_player
-		from = { has_country_flag = 59_country }
+		from? = { has_country_flag = 59_country }
 	}
 
 	immediate = {
@@ -8339,7 +8339,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		event_target:59_fleet = {
+		event_target:59_fleet? = {
 			is_in_combat = yes
 		}
 		is_variable_set = 59_battle_countdown
@@ -8361,7 +8361,7 @@ country_event = {
 
 	trigger = {
 		has_country_flag = 59_event_player
-		from = { has_country_flag = 59_country }
+		from? = { has_country_flag = 59_country }
 	}
 
 	immediate = {
@@ -8378,7 +8378,7 @@ country_event = {
 
 	trigger = {
 		NOT = { has_country_flag = 59_event_1_triggered }
-		event_target:59_fleet = { is_in_combat = yes }
+		event_target:59_fleet? = { is_in_combat = yes }
 		check_variable = {
 			which = 59_battle_countdown
 			value >= 9
@@ -8402,7 +8402,7 @@ country_event = {
 
 	trigger = {
 		NOT = { has_country_flag = 59_event_2_triggered }
-		event_target:59_fleet = { is_in_combat = yes }
+		event_target:59_fleet? = { is_in_combat = yes }
 		check_variable = {
 			which = 59_battle_countdown
 			value >= 39
@@ -8427,7 +8427,7 @@ country_event = {
 
 	trigger = {
 		NOT = { has_country_flag = 59_event_3_triggered }
-		event_target:59_fleet = { is_in_combat = yes }
+		event_target:59_fleet? = { is_in_combat = yes }
 		check_variable = {
 			which = 59_battle_countdown
 			value >= 69
@@ -8451,7 +8451,7 @@ country_event = {
 	picture = GFX_evt_wg_type_59_2
 
 	trigger = {
-		event_target:59_fleet = { is_in_combat = yes }
+		event_target:59_fleet? = { is_in_combat = yes }
 		check_variable = {
 			which = 59_battle_countdown
 			value >= 89
@@ -8460,7 +8460,7 @@ country_event = {
 
 	immediate = {
 		delete_fleet = event_target:59_fleet
-		event_target:59_country = {
+		event_target:59_country? = {
 			destroy_country = yes
 		}
 	}
@@ -8573,7 +8573,7 @@ country_event = {
 			location = event_target:wg_heyed_system_location
 		}
 		hidden_effect = {
-			event_target:wg_heyed_planet_location = { 
+			event_target:wg_heyed_planet_location? = { 
 				create_archaeological_site = r_heyed
 			}
 		}
@@ -8624,14 +8624,14 @@ country_event = {
     show_sound = event_super_explosion
 	
 	immediate = {
-		event_target:wg_heyed_planet_location = { 
+		event_target:wg_heyed_planet_location? = { 
 			change_pc = pc_molten
 			remove_deposit = d_wg_heyed
 		}
 	}
 	option = {
 		name = "wg_boss.302.a"
-		owner = {
+		owner? = {
 			add_resource = { influence = 200 }
 			end_event_chain = wg_heyed_chain
 		}
@@ -8650,11 +8650,11 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
@@ -8674,11 +8674,11 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
@@ -8698,21 +8698,21 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
 		name = wg_boss.305.a
 		trigger = {
-			owner = {
+			owner? = {
 				has_resource = { type = food amount > 500 }
 			}
 		}
-		owner = {
+		owner? = {
 			add_resource = {
 				food = -500
 			}
@@ -8721,10 +8721,10 @@ fleet_event = {
 	option = {
 		name = wg_boss.305.b
 		custom_tooltip = wg_boss.305.b.tooltip
-		fromfrom = {
+		fromfrom? = {
 			add_stage_clues = -10
 		}
-		leader = {
+		leader? = {
 			add_trait = { trait = leader_trait_scientist_wg_trait_heyed show_message = no }
 		}
 	}
@@ -8742,17 +8742,17 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
 		name = wg_boss.306.a
 		large_artifact_reward = yes
-		owner = {
+		owner? = {
 			add_monthly_resource_mult = {
 				resource = society_research
 				value = @tier5researchreward
@@ -8775,17 +8775,17 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
 		name = wg_boss.307.a
 		hidden_effect = {
-			owner  = {
+			owner? = {
 				country_event = { id = wg_boss.308 days = 5  }
 				remove_point_of_interest = explore_heyed
 			}
@@ -8995,7 +8995,7 @@ country_event = {
 	option = {
 		name = wg_boss.315.b
 		response_text = wg_boss.315.b.response
-		owner = {
+		owner? = {
 			add_resource = { influence = 200 }
 			end_event_chain = wg_heyed_chain
 		}
@@ -9011,7 +9011,7 @@ country_event = {
 	location = event_target:wg_heyed_son_1_planet_location
 	
 	immediate = {
-		event_target:wg_heyed_son_1_planet_location = { 
+		event_target:wg_heyed_son_1_planet_location? = { 
 			change_pc = pc_heyed_son
 			clear_deposits = yes
 			add_deposit = d_wg_heyed_son
@@ -9099,17 +9099,17 @@ country_event = {
 	location = event_target:wg_heyed_son_1_planet_location
 	
 	immediate = {
-		event_target:wg_heyed_son_2_planet_location = { 
+		event_target:wg_heyed_son_2_planet_location? = { 
 			change_pc = pc_heyed_son
 			clear_deposits = yes
 			add_deposit = d_wg_heyed_son
 		}
-		event_target:wg_heyed_son_3_planet_location = { 
+		event_target:wg_heyed_son_3_planet_location? = { 
 			change_pc = pc_heyed_son
 			clear_deposits = yes
 			add_deposit = d_wg_heyed_son
 		}
-		event_target:wg_heyed_son_4_planet_location = { 
+		event_target:wg_heyed_son_4_planet_location? = { 
 			change_pc = pc_heyed_son
 			clear_deposits = yes
 			add_deposit = d_wg_heyed_son
@@ -9206,7 +9206,7 @@ country_event = {
 		hidden_effect = {
 			country_event = { id = wg_boss.324 days = 480 random = 720 }#逆子
 		}
-		owner = {
+		owner? = {
 			add_monthly_resource_mult = {
 				resource = society_research
 				value = @tier5researchreward
@@ -9225,7 +9225,7 @@ country_event = {
 		name = wg_boss.323.b
 		response_text = wg_boss.323.b.response
 		change_variable = { which = rankpts value = 10 }
-		owner = {
+		owner? = {
 			add_monthly_resource_mult = {
 				resource = society_research
 				value = @tier5researchreward
@@ -9324,7 +9324,7 @@ country_event = {
 		name = wg_boss.326.d
 		response_text = wg_boss.326.d.response
 		change_variable = { which = rankpts value = 5 }
-		owner = {
+		owner? = {
 			add_resource = { influence = 50 }
 			end_event_chain = wg_heyed_chain
 		}
@@ -9387,7 +9387,7 @@ country_event = {
 		hidden_effect = {
 			country_event = { id = wg_boss.330 days = 360 random = 180 }#逆子自杀
 		}
-		owner = {
+		owner? = {
 			add_resource = { influence = 50 food = 2000 minerals = 2000 energy = 2000 }
 		}
 	}
@@ -9445,12 +9445,12 @@ country_event = {
 	location = event_target:wg_heyed_son_4_planet_location
 	
 	immediate = {
-		event_target:wg_heyed_son_4_planet_location = { 
+		event_target:wg_heyed_son_4_planet_location? = { 
 			change_pc = pc_shattered
 			clear_deposits = yes
 			add_deposit = d_minerals_10
 		}
-		event_target:wg_heyed_son_3_planet_location = { 
+		event_target:wg_heyed_son_3_planet_location? = { 
 			change_pc = pc_broken
 			clear_deposits = yes
 			add_deposit = d_minerals_7
@@ -9481,10 +9481,10 @@ country_event = {
 	option = {
 		name = wg_boss.333.a
 		change_variable = { which = rankpts value = 10 }
-		owner = {
+		owner? = {
 			end_event_chain = wg_heyed_chain
 		}
-		owner = {
+		owner? = {
 			add_monthly_resource_mult = {
 				resource = society_research
 				value = @tier5researchreward
@@ -9610,7 +9610,7 @@ country_event = {
 		name = wg_boss.337.c
 		response_text = wg_boss.337.c.response
 		change_variable = { which = rankpts value = 5 }
-		owner = {
+		owner? = {
 			end_event_chain = wg_heyed_chain
 		}
 	}
@@ -9646,7 +9646,7 @@ country_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		event_target:wg_heyed_son_4_planet_location = { 
+		event_target:wg_heyed_son_4_planet_location? = { 
 			change_pc = pc_rare_crystal_asteroid
 			clear_deposits = yes
 			add_deposit = d_minerals_7
@@ -9704,7 +9704,7 @@ country_event = {
 							trigger = {
 								id = wg_starchase_fleet.1.trigger.1
 								NOR = {
-									event_target:wg_starchase_fleet = {
+									event_target:wg_starchase_fleet? = {
 										distance = { # 最小走动范围为10 星系外
 											source = PREV
 											min_jumps = 10
@@ -9772,11 +9772,11 @@ country_event = {
 
 	option = {
 		name = wg_boss.340.a
-		owner = {
+		owner? = {
 			end_event_chain = wg_heyed_chain
 			change_variable = { which = rankpts value = 5 }
 		}
-		owner = {
+		owner? = {
 			add_monthly_resource_mult = {
 				resource = society_research
 				value = @tier5researchreward
@@ -9831,7 +9831,7 @@ carrier_event = {
 	
 	trigger = {
 		exists = owner
-		owner = {
+		owner? = {
 			has_wg_and_uf_special_authority = yes
 		}
         is_same_value = event_target:wg_old_god_planet_target
@@ -9851,7 +9851,7 @@ carrier_event = {
 	location = event_target:wg_old_god_planet_target
 
 	trigger = { 
-		owner = { NOT = { has_country_flag = wg_old_god_event_triggered }} 
+		owner? = { NOT = { has_country_flag = wg_old_god_event_triggered }} 
 	}
 	immediate = {
 		random_ambient_object = {
@@ -9862,7 +9862,7 @@ carrier_event = {
 	option = {
 		name = "wg_boss.352.a"
 		hidden_effect = {
-			owner = {
+			owner? = {
 				set_country_flag = wg_old_god_event_triggered
 				random_ambient_object = {
 					limit = { has_ambient_object_flag = wg_old_god_psi_storm_flag }
@@ -9883,7 +9883,7 @@ carrier_event = {
 
 	trigger = {
 		exists = owner
-		owner = {
+		owner? = {
 			has_wg_and_uf_special_authority = yes
 			NOT = { has_country_flag = building_wg_sacrilege_altar_allowed }
 		}
@@ -9897,7 +9897,7 @@ carrier_event = {
 		add_building = building_wg_sacrilege_altar_3
 		trigger = {
 			NOT = {
-				owner = {
+				owner? = {
 					has_ascension_perk = ap_mind_over_matter
 				}
 			}
@@ -9914,7 +9914,7 @@ carrier_event = {
 		add_building = building_wg_sacrilege_altar_2
 		add_building = building_wg_sacrilege_altar_3
 		trigger = {
-			owner = {
+			owner? = {
 				has_ascension_perk = ap_mind_over_matter
 			}	
 		}
@@ -9940,13 +9940,13 @@ carrier_event = {
 	option = {
 		name = "wg_boss.354.a"
 		custom_tooltip = wg_boss.354.tooltip
-		owner = {
+		owner? = {
 			set_country_flag = building_wg_sacrilege_altar_allowed
 		}
 	}	
 	option = {
 		name = "wg_boss.354.b"
-		event_target:wg_old_god_planet_target = {
+		event_target:wg_old_god_planet_target? = {
 			remove_building = building_wg_sacrilege_altar_1
 			remove_building = building_wg_sacrilege_altar_2
 			remove_building = building_wg_sacrilege_altar_3
@@ -9965,13 +9965,13 @@ carrier_event = {
 	option = {
 		name = "wg_boss.355.a"
 		custom_tooltip = wg_boss.354.tooltip
-		owner = {
+		owner? = {
 			set_country_flag = building_wg_sacrilege_altar_allowed
 		}
 	}	
 	option = {
 		name = "wg_boss.354.b"
-		event_target:wg_old_god_planet_target = {
+		event_target:wg_old_god_planet_target? = {
 			remove_building = building_wg_sacrilege_altar_1
 			remove_building = building_wg_sacrilege_altar_2
 			remove_building = building_wg_sacrilege_altar_3
@@ -9991,7 +9991,7 @@ carrier_event = {
 	option = {
 		name = "wg_boss.356.a"
 		custom_tooltip = wg_boss.356.tooltip
-		owner = {
+		owner? = {
 			set_country_flag = building_wg_sacrilege_altar_1_2_upgraded 
 		}
 	}	
@@ -10010,7 +10010,7 @@ carrier_event = {
 	option = {
 		name = "wg_boss.357.a"
 		custom_tooltip = wg_boss.357.tooltip
-		owner = {
+		owner? = {
 			set_country_flag = building_wg_sacrilege_altar_2_2_upgraded 
 		}
 	}	
@@ -10029,7 +10029,7 @@ carrier_event = {
 	option = {
 		name = "wg_boss.358.a"
 		#custom_tooltip = wg_boss.358.tooltip
-		owner = {
+		owner? = {
 			set_country_flag = building_wg_sacrilege_altar_3_2_upgraded 
 		}
 		hidden_effect = {
@@ -10051,13 +10051,13 @@ carrier_event = {
 		name = "wg_boss.359.a"
 		trigger = {
 			NOT = {
-				owner = {
+				owner? = {
 					has_ascension_perk = ap_mind_over_matter
 				}
 			}
 		}
 		add_planet_devastation = 50
-		event_target:wg_old_god_planet_target = {
+		event_target:wg_old_god_planet_target? = {
 			remove_building = building_wg_sacrilege_altar_1_2
 			remove_building = building_wg_sacrilege_altar_2_2
 			remove_building = building_wg_sacrilege_altar_3_2
@@ -10067,7 +10067,7 @@ carrier_event = {
 			days = -1
 		}
 		hidden_effect = {
-			owner = {
+			owner? = {
 				country_event = { id = wg_boss.361 days = 5 }
 				country_event = { id = wg_boss.362 days = 5 }
 			}			
@@ -10076,12 +10076,12 @@ carrier_event = {
 	option = {
 		name = "wg_boss.359.b"
 		trigger = {
-			owner = {
+			owner? = {
 				has_ascension_perk = ap_mind_over_matter
 			}	
 		}
 		add_planet_devastation = 50
-		event_target:wg_old_god_planet_target = {
+		event_target:wg_old_god_planet_target? = {
 			remove_building = building_wg_sacrilege_altar_1_2
 			remove_building = building_wg_sacrilege_altar_2_2
 			remove_building = building_wg_sacrilege_altar_3_2
@@ -10091,7 +10091,7 @@ carrier_event = {
 			days = -1
 		}
 		hidden_effect = {
-			owner = {
+			owner? = {
 				country_event = { id = wg_boss.360 }
 			}			
 		}
@@ -10116,7 +10116,7 @@ country_event = {
 	option = {
 		name = wg_boss.360.a
 		hidden_effect = {
-			owner = {
+			owner? = {
 				country_event = { id = wg_boss.361 days = 5 }
 				country_event = { id = wg_boss.362 days = 5 }
 			}			
@@ -10253,11 +10253,11 @@ country_event = {
 	
 	trigger = {
 		exists = event_target:wg_old_god_planet_target
-		event_target:wg_old_god_planet_target = { is_colony = yes }
+		event_target:wg_old_god_planet_target? = { is_colony = yes }
 		NOT = { has_global_flag = wg_old_god_defeated }
 	}
 	immediate = {
-		event_target:wg_old_god_planet_target = {
+		event_target:wg_old_god_planet_target? = {
 			change_pc = pc_eye_shrouded
 			remove_all_buildings = yes
 			every_owned_pop_group = { kill_pop_group = { pop_group = this percentage = 1 } }
@@ -10310,10 +10310,10 @@ country_event = {
 	option = {
 		name = "wg_boss.365.a"
 		change_variable = { which = rankpts value = 20 }
-		owner = {
+		owner? = {
 			add_resource = { unity = 5000 }
 		}
-		owner = {
+		owner? = {
 			add_monthly_resource_mult = {
 				resource = society_research
 				value = @tier5researchreward
@@ -10321,7 +10321,7 @@ country_event = {
 				max = @tier5researchmax
 			}
 		}
-		event_target:wg_old_god_planet_target = {
+		event_target:wg_old_god_planet_target? = {
 			remove_modifier = "wsg_old_god_advent"	
 			add_modifier = {
 				modifier = "wsg_old_god_defeated" 	
@@ -10357,10 +10357,10 @@ ship_event = {
 	}
 	
 	immediate = {
-		solar_system = {
+		solar_system? = {
 			every_ship_in_system = {
 				limit = {
-					owner = { is_hostile = root.owner }
+					owner? = { is_hostile = root.owner }
 				}
 				add_modifier = {
 					modifier = wg_Deep_Eyes_White_Dragon_Ship_Aura_1
@@ -10370,12 +10370,12 @@ ship_event = {
 			}
 			system_event = { id = wg_boss.401 days = 2 }
 		}
-		root.owner = { change_variable = { which = wg_Deep_Eyes_White_Dragon_count value = 1 } }
+		root.owner? = { change_variable = { which = wg_Deep_Eyes_White_Dragon_count value = 1 } }
 		if = {
 			limit = { has_ship_flag = wg_Deep_Eyes_White_Dragon_Ship_boss_flag }
-			from.owner = { country_event = { id = wg_boss.403 } }
+			from.owner? = { country_event = { id = wg_boss.403 } }
 		}
-		else = { root.owner = { country_event = { id = wg_boss.406 } } }
+		else = { root.owner? = { country_event = { id = wg_boss.406 } } }
 	}
 }
 
@@ -10478,11 +10478,11 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
@@ -10492,7 +10492,7 @@ fleet_event = {
 	option = {
 		name = wg_boss.510.b
 		trigger = {
-			owner = {
+			owner? = {
 				has_ascension_perk = ap_cosmogenesis
 			}
 		}
@@ -10512,11 +10512,11 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
@@ -10526,7 +10526,7 @@ fleet_event = {
 	option = {
 		name = wg_boss.511.b
 		trigger = {
-			owner = {
+			owner? = {
 				has_ascension_perk = ap_cosmogenesis
 			}
 		}
@@ -10545,11 +10545,11 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
@@ -10559,7 +10559,7 @@ fleet_event = {
 	option = {
 		name = wg_boss.512.b
 		trigger = {
-			owner = {
+			owner? = {
 				has_ascension_perk = ap_cosmogenesis
 			}
 		}
@@ -10578,22 +10578,22 @@ fleet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		from = { set_site_progress_locked = yes }
+		from? = { set_site_progress_locked = yes }
 	}
 
 	after = { 
-		from = { set_site_progress_locked = no } 
+		from? = { set_site_progress_locked = no } 
 	}
 	
 	option = {
 		name = wg_boss.513.a
 		small_artifact_reward = yes
-		hidden_effect = { owner = { country_event = { id = wg_boss.515 }}}
+		hidden_effect = { owner? = { country_event = { id = wg_boss.515 }}}
 	}
 	option = {
 		name = wg_boss.513.b
 		small_artifact_reward = yes		
-		hidden_effect = { owner = { country_event = { id = wg_boss.514 }}}
+		hidden_effect = { owner? = { country_event = { id = wg_boss.514 }}}
 	}
 }
 
@@ -10614,7 +10614,7 @@ country_event = {
 	option = {
 		name = wg_boss.514.a
 		hidden_effect = {
-			event_target:site_wg_Rosmontis = {
+			event_target:site_wg_Rosmontis? = {
 				set_planet_entity = {
 					entity = pc_asteroid
 				}
@@ -10638,7 +10638,7 @@ country_event = {
 
 	option = {
 		name = wg_boss.515.a
-		hidden_effect = { owner = { country_event = { id = wg_boss.516 }}}
+		hidden_effect = { owner? = { country_event = { id = wg_boss.516 }}}
 	}
 }
 country_event = {
@@ -10657,7 +10657,7 @@ country_event = {
 
 	option = {
 		name = wg_boss.516.a
-		hidden_effect = { owner = { country_event = { id = wg_boss.517 }}}
+		hidden_effect = { owner? = { country_event = { id = wg_boss.517 }}}
 	}
 }
 country_event = {
@@ -10677,7 +10677,7 @@ country_event = {
 	option = {
 		name = wg_boss.517.a
 		hidden_effect = {
-			event_target:site_wg_Rosmontis = {
+			event_target:site_wg_Rosmontis? = {
 				set_planet_entity = {
 					entity = pc_asteroid
 				}
@@ -10731,11 +10731,11 @@ carrier_event = {
 			limit = { check_variable = { which = kp_pop_amount value > 0 } }
 			if = {
 				limit = { pop_group_size < planet.kp_pop_amount }
-				prev = { subtract_variable = { which = kp_pop_amount value = prev.trigger:pop_group_size } }
+				prev? = { subtract_variable = { which = kp_pop_amount value = prev.trigger:pop_group_size } }
 				kill_all_pop = yes
 			}
 			else = {
-				prev = { clear_variable = kp_pop_amount }
+				prev? = { clear_variable = kp_pop_amount }
 				kill_pop_group = {
 					pop_group = this
 					amount = prev.kp_pop_amount
@@ -10745,7 +10745,7 @@ carrier_event = {
 		}
 		while = {
 			count = kp_pop_amount_total
-			owner = {
+			owner? = {
 				add_monthly_resource_mult = {
 					resource = physics_research
 					value = 1
@@ -11079,17 +11079,17 @@ ship_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		owner = { is_ai = no }
+		owner? = { is_ai = no }
 		# 初步筛选条件
-		FROM = { has_star_flag = wg_event_system }
+		FROM? = { has_star_flag = wg_event_system }
 	}
 
 	immediate = {
-		FROM = { switch = {
+		FROM? = { switch = {
 			trigger = has_star_flag
 			# 星极
 			wg_boss_think_tank_system_home = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { 
 						has_wg_special_authority = yes
 						NOT = { has_country_flag = triggered_wg_think_tank_event }
@@ -11103,12 +11103,12 @@ ship_event = {
 				if = {
 					limit = { NOT = { has_global_flag = triggered_wg_boss_uav_event }}
 					set_global_flag = triggered_wg_boss_uav_event
-					root = { ship_event = { id = wg_boss.20 }}
+					root? = { ship_event = { id = wg_boss.20 }}
 				}
 			}
 			# gars
 			wg_machine_system = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = triggered_wg_gars_event }}
 					set_country_flag = triggered_wg_gars_event
 					country_event = { id = wg_boss.24 }
@@ -11116,7 +11116,7 @@ ship_event = {
 			}
 			# 水b龙
 			wg_boss_water_system_home = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOR = { 
 						has_origin = origin_waterb
 						has_country_flag = triggered_wg_boss_RBQ_event
@@ -11127,7 +11127,7 @@ ship_event = {
 			}
 			# bug太多了想摸
 			wg_boss_bugvv_system_home = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = triggered_wg_boss_bugv_event }}
 					set_country_flag = triggered_wg_boss_bugv_event
 					country_event = { id = wg_boss.46 }
@@ -11135,7 +11135,7 @@ ship_event = {
 			}
 			# 榨汁向日葵
 			sunflower_waring = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOR = {
 						has_country_flag = triggered_wg_sunflowe_event
 						has_country_flag = triggered_wg_sunflowe_system_event
@@ -11145,7 +11145,7 @@ ship_event = {
 				}}
 			}
 			wg_boss_sunflower_system_home = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = triggered_wg_sunflowe_system_event }}
 					set_country_flag = triggered_wg_sunflowe_system_event
 					country_event = { id = wg_boss.76 }
@@ -11153,7 +11153,7 @@ ship_event = {
 			}
 			# 云玩家
 			wg_blue_cloud_system_home = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_global_flag = triggered_noob_blue_event }}
 					set_global_flag = triggered_noob_blue_event
 					country_event = { id = wg_boss.82 }
@@ -11161,7 +11161,7 @@ ship_event = {
 			}
 			# 水b龙环星系
 			wg_boss_ring_water_system_home = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = triggered_wg_boss_RBQ_event }}
 					set_country_flag = triggered_wg_boss_RBQ_event
 					country_event = { id = wg_boss.86 }
@@ -11169,7 +11169,7 @@ ship_event = {
 			}
 			# 阿猫
 			wg_one_cat_system_flag = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = triggered_wg_one_cat_event }}
 					set_country_flag = triggered_wg_one_cat_event
 					country_event = { id = wg_boss.104 }
@@ -11177,7 +11177,7 @@ ship_event = {
 			}
 			# 水b龙恒星
 			wg_boss_water_star_system_home = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = triggered_wg_boss_RBQ_event }}
 					set_country_flag = triggered_wg_boss_RBQ_event
 					country_event = { id = wg_boss.108 }
@@ -11185,7 +11185,7 @@ ship_event = {
 			}
 			# 灵能星系
 			wg_psionic_systems = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = entered_wg_psi_system }}
 					set_country_flag = entered_wg_psi_system
 					country_event = { id = wg_boss.133 }
@@ -11193,7 +11193,7 @@ ship_event = {
 			}
 			# 水b龙理想城
 			wg_boss_water_city_system_home = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = triggered_wg_boss_RBQ_event }}
 					set_country_flag = triggered_wg_boss_RBQ_event
 					country_event = { id = wg_boss.202 }
@@ -11203,7 +11203,7 @@ ship_event = {
 			# wg_boss_lly_system = {
 				# if = {
 				# 	limit = { exists = event_target:wg_boss_lly_fleet }
-				# 	root.owner = { 
+				# 	root.owner? = { 
 				# 		if = {
 				# 			limit = { 
 				# 				has_country_flag = establish_communicate_with_lly 
@@ -11226,7 +11226,7 @@ ship_event = {
 			# }
 			# 狡无明日
 			wg_eddy_fish_system = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_global_flag = triggered_wg_eddy_fish_event }}
 					set_global_flag = triggered_wg_eddy_fish_event
 					country_event = { id = wg_boss.251 }
@@ -11234,7 +11234,7 @@ ship_event = {
 			}
 			# 戴森环
 			wg_dyson_ring_system = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = entered_wg_dyson_ring_system }}
 					set_country_flag = entered_wg_dyson_ring_system
 					country_event = { id = wsgancrel.210 }
@@ -11242,7 +11242,7 @@ ship_event = {
 			}
 			# 投影盒
 			wg_box_system_flag = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_global_flag = triggered_wg_box_event }}
 					set_global_flag = triggered_wg_box_event
 					country_event = { id = wsgancrel.220 }
@@ -11250,7 +11250,7 @@ ship_event = {
 			}
 			# 舰娘先驱者星系 - 安迪卡
 			wg_relic_Andica_system_flag = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = entered_Andica_system }}
 					set_country_flag = entered_Andica_system
 					country_event = { id = wsgancrel.138 }
@@ -11258,7 +11258,7 @@ ship_event = {
 			}
 			# 苏可汗门口
 			wg_Da_Khan_gate_system_home = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = triggered_wg_khan_drone_event }}
 					set_country_flag = triggered_wg_khan_drone_event
 					country_event = { id = wg_khan.25 }
@@ -11266,7 +11266,7 @@ ship_event = {
 			}
 			# 苏可汗老家
 			wg_Da_Khan_system_home = {
-				root = {
+				root? = {
 					if = {
 						limit = { has_global_flag = spawn_khan_boss }
 						ship_event = { id = wg_khan.299 }
@@ -11277,7 +11277,7 @@ ship_event = {
 			}
 			# 帕里特
 			wg_Parit_system = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = triggered_wg_Parit_event }}
 					set_country_flag = triggered_wg_Parit_event
 					country_event = { id = wg_parit.5 }
@@ -11285,7 +11285,7 @@ ship_event = {
 			}
 			# 狡多迪亚
 			wg_eddy_system = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { 
 						has_country_flag = eddy_disoverer
 						NOT = { has_country_flag = triggered_wg_eddy_event }
@@ -11295,7 +11295,7 @@ ship_event = {
 				}}
 			}
 			wg_eddy2_system = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { 
 						has_country_flag = custom_start_parit
 						NOT = { has_country_flag = triggered_wg_eddy_event }
@@ -11306,7 +11306,7 @@ ship_event = {
 			}
 			# 深海
 			Sh_juggernaut_system = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { 
 						has_authority = auth_shenhai
 						NOT = { has_global_flag = triggered_Sh_juggernaut_event }
@@ -11317,7 +11317,7 @@ ship_event = {
 			}
 			# sol3
 			lex_sol = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { 
 						has_authority = auth_warshipgirls
 						NOT = { has_country_flag = triggered_lex_sol_event }
@@ -11329,7 +11329,7 @@ ship_event = {
 			}
 			# 核爆版sol3
 			lex_sol_nuked = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { 
 						has_wg_authority = yes
 						NOT = { has_country_flag = triggered_lex_sol_event }
@@ -11341,28 +11341,28 @@ ship_event = {
 			}
 			# 59
 			wg_boss_59_system_home = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = entered_59_system }}
 					set_country_flag = entered_59_system
 					country_event = { id = wg_boss.267 }
 				}}
 			}
 			wg_heyed_system_flag = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = triggered_wg_heyed_event }}
 					set_country_flag = triggered_wg_heyed_event
 					country_event = { id = wg_boss.301 }
 				}}
 			}
 			wg_old_god_system_flag = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = triggered_wg_old_god_system_event }}
 					set_country_flag = triggered_wg_old_god_system_event
 					country_event = { id = wg_boss.366 }
 				}}
 			}
 			wg_Deep_Eyes_White_Dragon_system_flag = {
-				root.owner = { if = {
+				root.owner? = { if = {
 					limit = { NOT = { has_country_flag = triggered_wg_Deep_Eyes_White_Dragon_system_event }}
 					set_country_flag = triggered_wg_Deep_Eyes_White_Dragon_system_event
 					country_event = { id = wg_boss.402 }
@@ -11380,17 +11380,17 @@ ship_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		owner = { is_ai = no }
+		owner? = { is_ai = no }
 		# 初步筛选条件
-		FROM = { has_star_flag = wg_event_system }
+		FROM? = { has_star_flag = wg_event_system }
 	}
 
 	immediate = {
 		if = {
-			limit = { FROM = { has_star_flag = wg_boss_lly_system }}
+			limit = { FROM? = { has_star_flag = wg_boss_lly_system }}
 			if = {
 				limit = { exists = event_target:wg_boss_lly_fleet }
-				root.owner = { 
+				root.owner? = { 
 					if = {
 						limit = { 
 							has_country_flag = establish_communicate_with_lly 

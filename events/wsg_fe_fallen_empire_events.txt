@@ -9,7 +9,7 @@ country_event = {
 	}
 
 	immediate = {
-		ruler = { change_leader_portrait = wsg1 }
+		ruler? = { change_leader_portrait = wsg1 }
 		every_playable_country = {
 			limit = {
 				OR = {
@@ -23,7 +23,7 @@ country_event = {
 				who = root
 				location = root.capital_scope
 			}
-			root = { every_system_within_border = { every_system_planet = {
+			root? = { every_system_within_border = { every_system_planet = {
 				set_surveyed = { surveyed = yes surveyor = prevprevprev }
 			}}}
 			country_event = { id = wg_fe.2 }
@@ -295,7 +295,7 @@ country_event = {
 				max_orientation_angle = 102
 				initializer = "wg_fallen_empire_colony_1_system"
 			}
-			event_target:wg_fe_colony_1_system = {
+			event_target:wg_fe_colony_1_system? = {
 				random_neighbor_system_euclidean = {
 					limit = { 
 						NOT = { has_hyperlane_to = PREV }
@@ -311,7 +311,7 @@ country_event = {
 					initializer = "wg_fallen_empire_capital_system"
 				}
 			}
-			event_target:wg_fe_home_system = {
+			event_target:wg_fe_home_system? = {
 				spawn_system = { 
 					min_distance >= 20
 					max_distance <= 50
@@ -383,7 +383,7 @@ country_event = {
 				max_orientation_angle = 102
 				initializer = "wg_fallen_empire_colony_1_system"
 			}
-			event_target:wg_fe_colony_1_system = {
+			event_target:wg_fe_colony_1_system? = {
 				random_neighbor_system_euclidean = {
 					limit = { 
 						NOT = { has_hyperlane_to = PREV }
@@ -399,7 +399,7 @@ country_event = {
 					initializer = "wg_fallen_empire_capital_system"
 				}
 			}
-			event_target:wg_fe_home_system = {
+			event_target:wg_fe_home_system? = {
 				spawn_system = { 
 					min_distance >= 20
 					max_distance <= 50
@@ -471,7 +471,7 @@ country_event = {
 				max_orientation_angle = 102
 				initializer = "wg_fallen_empire_colony_1_system"
 			}
-			event_target:wg_fe_colony_1_system = {
+			event_target:wg_fe_colony_1_system? = {
 				random_neighbor_system_euclidean = {
 					limit = { 
 						NOT = { has_hyperlane_to = PREV }
@@ -487,7 +487,7 @@ country_event = {
 					initializer = "wg_fallen_empire_capital_system"
 				}
 			}
-			event_target:wg_fe_home_system = {
+			event_target:wg_fe_home_system? = {
 				spawn_system = { 
 					min_distance >= 20
 					max_distance <= 50
@@ -558,7 +558,7 @@ country_event = {
 				max_orientation_angle = 102
 				initializer = "wg_fallen_empire_colony_1_system"
 			}
-			event_target:wg_fe_colony_1_system = {
+			event_target:wg_fe_colony_1_system? = {
 				random_neighbor_system_euclidean = {
 					limit = { 
 						NOT = { has_hyperlane_to = PREV }
@@ -574,7 +574,7 @@ country_event = {
 					initializer = "wg_fallen_empire_capital_system"
 				}
 			}
-			event_target:wg_fe_home_system = {
+			event_target:wg_fe_home_system? = {
 				spawn_system = { 
 					min_distance >= 20
 					max_distance <= 50
@@ -645,7 +645,7 @@ country_event = {
 				max_orientation_angle = 102
 				initializer = "wg_fallen_empire_colony_1_system"
 			}
-			event_target:wg_fe_colony_1_system = {
+			event_target:wg_fe_colony_1_system? = {
 				random_neighbor_system_euclidean = {
 					limit = { 
 						NOT = { has_hyperlane_to = PREV }
@@ -661,7 +661,7 @@ country_event = {
 					initializer = "wg_fallen_empire_capital_system"
 				}
 			}
-			event_target:wg_fe_home_system = {
+			event_target:wg_fe_home_system? = {
 				spawn_system = { 
 					min_distance >= 20
 					max_distance <= 50
@@ -747,7 +747,7 @@ country_event = {
 	}
 
 	immediate = {
-		event_target:fe_species_sh = {
+		event_target:fe_species_sh? = {
 			set_citizenship_type = {
 				country = root
 				type = citizenship_full
@@ -825,7 +825,7 @@ country_event = {
 							is_same_species = event_target:saved_species
 						}
 					}}
-					PREV = { create_pop_group = {
+					PREV? = { create_pop_group = {
 						size = 100
 						species = event_target:fe_species_wsg
 					}}
@@ -953,7 +953,7 @@ country_event = {
 			sr_dark_matter = 500
 		}
 		hidden_effect = {
-			event_target:wg_fallen_empire = { #增加舰娘堕落留下的几率
+			event_target:wg_fallen_empire? = { #增加舰娘堕落留下的几率
 				set_country_flag = add_stay_chance5
 			}
 		}
@@ -1007,7 +1007,7 @@ country_event = {
 			sr_dark_matter = 500
 		}
 		hidden_effect = {
-			event_target:wg_fe_task_planet = {
+			event_target:wg_fe_task_planet? = {
 				random_owned_pop_group = {
 					limit = {
 						is_same_species = root.owner_species
@@ -1015,7 +1015,7 @@ country_event = {
 					kill_pop_group = { pop_group = this percentage = 1 }
 				}
 			}
-			event_target:wg_fallen_empire = {
+			event_target:wg_fallen_empire? = {
 				random_owned_planet = {
 					limit = {
 						pop_amount >= 100
@@ -1102,7 +1102,7 @@ country_event = {
 					}
 				}
 				set_global_flag = wg_fallen_empire_awakened
-				event_target:wg_fallen_empire = {
+				event_target:wg_fallen_empire? = {
 					country_event = { id = wg_fe.22 }
 				}
 			} 
@@ -1118,7 +1118,7 @@ country_event = {
 					factor = 0
 					any_country = { has_origin = origin_wg_fe_child } #妈宝起源必定留下
 				}
-				event_target:wg_fallen_empire = {
+				event_target:wg_fallen_empire? = {
 					country_event = { id = wg_fe.25 }
 				}
 			} 
@@ -1135,7 +1135,7 @@ country_event = {
 
 	trigger = {
 		exists = event_target:wg_fallen_empire
-		event_target:wg_fallen_empire = {
+		event_target:wg_fallen_empire? = {
 			NOT = { is_country_type = wg_awakened_fallen_empire }
 		}
 	}
@@ -1181,7 +1181,7 @@ country_event = {
 				sr_pantsu = 50000
 				sr_se = 50000
 			}
-			capital_scope = {
+			capital_scope? = {
 				create_wg_fe_capital_fleet_and_admiral = yes
 			}
 		}
@@ -1195,7 +1195,7 @@ country_event = {
 			sr_pantsu = 5000
 			sr_se = 5000
 		}
-		capital_scope = {
+		capital_scope? = {
 			create_wg_fe_capital_fleet_and_admiral = yes
 		}
 		every_owned_planet = { # 游戏中心换成兵工厂
@@ -1229,7 +1229,7 @@ country_event = {
 				}
 			}
 			establish_communications_no_message = root
-			root = { save_event_target_as = contact_empire }
+			root? = { save_event_target_as = contact_empire }
 			country_event = { id = action.1 days = 3 }
 		}
 		every_playable_country = {
@@ -1322,7 +1322,7 @@ country_event = {
 	}
 
 	immediate = {
-		capital_scope = {
+		capital_scope? = {
 			create_wg_fe_capital_fleet_and_admiral = yes
 		}
 		add_resource = {
@@ -1466,7 +1466,7 @@ country_event = {
 			limit = {
 				is_country_type = default
 			}
-			root = { every_system_within_border = { every_system_planet = {
+			root? = { every_system_within_border = { every_system_planet = {
 				set_surveyed = { surveyed = yes surveyor = prevprevprev }
 			}}}
 		}
@@ -1604,7 +1604,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		capital_scope = {
+		capital_scope? = {
 			create_fleet = {
 				name = "NAME_WG_FE_WATCHKEEPER"
 				effect = {
@@ -2058,7 +2058,7 @@ country_event = {
 					has_country_flag = atomic_age
 					has_country_flag = early_space_age
 				}
-				capital_scope = {
+				capital_scope? = {
 					has_observation_outpost = yes
 					observation_outpost_owner = {
 						is_same_empire = root
@@ -2858,7 +2858,7 @@ country_event = {
 							count_owned_ship = {
 								count < 10
 								limit = {
-									fleet = { NOR = {
+									fleet? = { NOR = {
 										has_fleet_flag = lady_fleet
 										has_fleet_flag = lady_fleet2
 									}}
@@ -3227,7 +3227,7 @@ country_event = {
 	}
 
 	immediate = {
-		capital_scope = {
+		capital_scope? = {
 			random_list = {
 				1 = {
 					create_fleet = {
@@ -3397,7 +3397,7 @@ country_event = {
 	}
 
 	immediate = {
-		capital_scope = {
+		capital_scope? = {
 			if = {
 				limit = { years_passed < 80 }
 				create_fleet = {
@@ -3624,7 +3624,7 @@ country_event = {
 		hidden_effect = {
 			if = {
 				limit = { has_federation = yes }
-				event_target:wg_fallen_empire = { 
+				event_target:wg_fallen_empire? = { 
 					join_alliance = { 
 						who = root 
 						override_requirements = yes 
@@ -3771,24 +3771,24 @@ country_event = {
         set_timed_global_flag = { flag = wg_awakened_fleet_reinforce_cooldown days = 600 }
         if = {
             limit = { NOT = { has_global_flag = first_portal_destroyed }}
-            event_target:first_portal_system = {
+            event_target:first_portal_system? = {
                 save_event_target_as = portal_system_fe
             }
         }
         else_if = {
             limit = { NOT = { has_global_flag = second_portal_destroyed }}
-            event_target:second_portal_system = {
+            event_target:second_portal_system? = {
                 save_event_target_as = portal_system_fe
             }
         }
         else_if = {
             limit = { NOT = { has_global_flag = third_portal_destroyed }}
-            event_target:third_portal_system = {
+            event_target:third_portal_system? = {
                 save_event_target_as = portal_system_fe
             }
         }
 
-        event_target:wg_awakened_fleet_country_targer = {
+        event_target:wg_awakened_fleet_country_targer? = {
             if = {
                 limit = { has_global_flag = wg_crisis_easy }
                 create_wg_awakened_fe_admiral = yes
@@ -3858,7 +3858,7 @@ country_event = {
     immediate = {
         if = {
             limit = { NOT = { has_global_flag = first_portal_destroyed }}
-            event_target:first_portal_system = {
+            event_target:first_portal_system? = {
                 save_event_target_as = portal_system_fe
             }
         }
@@ -3866,13 +3866,13 @@ country_event = {
             limit = { has_global_flag = wg_crisis_insane }
             if = {
                 limit = { NOT = { has_global_flag = second_portal_destroyed }}
-                event_target:second_portal_system = {
+                event_target:second_portal_system? = {
                     save_event_target_as = portal_system_fe
                 }
             }
             else_if = {
                 limit = { NOT = { has_global_flag = third_portal_destroyed }}
-                event_target:third_portal_system = {
+                event_target:third_portal_system? = {
                     save_event_target_as = portal_system_fe
                 }
             }
@@ -3982,7 +3982,7 @@ country_event = {
 		}
         uf_fe_fleet_retargeting = yes
 
-        event_target:wg_awakened_fleet_country_targer = {
+        event_target:wg_awakened_fleet_country_targer? = {
             if = {
                 limit = { has_global_flag = wg_crisis_easy }
                 create_wg_back_fe_fleet = yes
@@ -4045,7 +4045,7 @@ country_event = {
     immediate = {
         if = {
             limit = { NOT = { has_global_flag = first_portal_destroyed }}
-            event_target:first_portal_system = {
+            event_target:first_portal_system? = {
                 save_event_target_as = portal_system_fe
             }
         }
@@ -4053,13 +4053,13 @@ country_event = {
             limit = { has_global_flag = wg_crisis_insane }
             if = {
                 limit = { NOT = { has_global_flag = second_portal_destroyed }}
-                event_target:second_portal_system = {
+                event_target:second_portal_system? = {
                     save_event_target_as = portal_system_fe
                 }
             }
             else_if = {
                 limit = { NOT = { has_global_flag = third_portal_destroyed }}
-                event_target:third_portal_system = {
+                event_target:third_portal_system? = {
                     save_event_target_as = portal_system_fe
                 }
             }

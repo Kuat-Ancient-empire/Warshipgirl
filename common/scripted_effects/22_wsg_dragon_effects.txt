@@ -41,7 +41,7 @@ create_wg_dragon_admiral = {
 			save_global_event_target_as = wg_dragon_admiral
 		}
 	}
-	event_target:wg_dragon_admiral = {
+	event_target:wg_dragon_admiral? = {
 		add_skill_without_trait_selection = owner.wg_dragon_level
 		leader_event = {
 			id = wg_affection.8 days = 1
@@ -58,16 +58,16 @@ create_wg_dragon_fleet = {
 			limit = {
 				any_controlled_fleet = {
 					exists = leader
-					leader = { has_leader_flag = wg_dragon_leader }
+					leader? = { has_leader_flag = wg_dragon_leader }
 				}
 			}
 			random_controlled_fleet = {
-				limit = { leader = { has_leader_flag = wg_dragon_leader }}
+				limit = { leader? = { has_leader_flag = wg_dragon_leader }}
 				save_event_target_as = wg_dragon_warship_location
 			}
 		} else_if = {
 			limit = { always = yes }
-			capital_scope = {
+			capital_scope? = {
 				save_event_target_as = wg_dragon_warship_location
 			}
 		}
@@ -83,19 +83,19 @@ create_wg_dragon_fleet = {
 			}
 			random_owned_army = {
 				limit = { is_wg_dragon_army = yes }
-				planet = { save_event_target_as = wg_dragon_warship_location }
+				planet? = { save_event_target_as = wg_dragon_warship_location }
 			}
 		}
 		else = {
 			random_owned_army = {
 				limit = { is_wg_dragon_army = yes }
-				fleet = { save_event_target_as = wg_dragon_warship_location }
+				fleet? = { save_event_target_as = wg_dragon_warship_location }
 			}
 		}
 	}
 	else_if = {
 		limit = { always = yes }
-		capital_scope = {
+		capital_scope? = {
 			save_event_target_as = wg_dragon_warship_location
 		}
 	}
@@ -107,7 +107,7 @@ create_wg_dragon_fleet = {
 			if = {
 				limit = { 
 					has_global_flag = nirvana_empire_start 
-					owner = { has_technology = tech_god_of_nirvana }
+					owner? = { has_technology = tech_god_of_nirvana }
 				}
 				create_ship = {
 					design = "NAME_str_Eternity"
@@ -118,7 +118,7 @@ create_wg_dragon_fleet = {
 			} else_if = {
 				limit = { 
 					has_global_flag = nirvana_empire_start 
-					owner = { has_technology = tech_aurora_dragon }
+					owner? = { has_technology = tech_aurora_dragon }
 				}
 				create_ship = {
 					design = "NAME_str_Aurora"
@@ -182,14 +182,14 @@ create_wg_dragon_fleet = {
 			set_leader_flag = wg_dragon_warship
 			#set_leader_tier = leader_tier_legendary
 			save_global_event_target_as = wg_dragon_warship
-			event_target:wg_dragon_fleet = { assign_leader = PREV }
+			event_target:wg_dragon_fleet? = { assign_leader = PREV }
 		}
 	}
-	event_target:wg_dragon_warship = {
+	event_target:wg_dragon_warship? = {
 		if = {
 			limit = {
 				has_global_flag = nirvana_empire_start
-				owner = { OR = {
+				owner? = { OR = {
 					has_technology = tech_aurora_dragon
 					has_technology = tech_god_of_nirvana
 				}}
@@ -211,16 +211,16 @@ create_wg_dragon_army = {
 			limit = {
 				any_controlled_fleet = {
 					exists = leader
-					leader = { has_leader_flag = wg_dragon_leader }
+					leader? = { has_leader_flag = wg_dragon_leader }
 				}
 			}
 			random_controlled_fleet = {
-				limit = { leader = { has_leader_flag = wg_dragon_leader }}
+				limit = { leader? = { has_leader_flag = wg_dragon_leader }}
 				save_event_target_as = wg_dragon_transport_location
 			}
 		} else_if = {
 			limit = { always = yes }
-			capital_scope = {
+			capital_scope? = {
 				save_event_target_as = wg_dragon_transport_location
 			}
 		}
@@ -229,7 +229,7 @@ create_wg_dragon_army = {
 		limit = { check_variable = { which = wg_dragon_active_type value = 2 }}
 		if = {
 			limit = { exists = event_target:wg_dragon_fleet }
-			event_target:wg_dragon_fleet = {
+			event_target:wg_dragon_fleet? = {
 				save_event_target_as = wg_dragon_transport_location
 			}
 		} else = {
@@ -241,7 +241,7 @@ create_wg_dragon_army = {
 	}
 	else_if = {
 		limit = { always = yes }
-		capital_scope = {
+		capital_scope? = {
 			save_event_target_as = wg_dragon_transport_location
 		}
 	}
@@ -281,7 +281,7 @@ create_wg_dragon_army_transport = {
 	}
 	if = {
 		limit = { 
-			event_target:wg_dragon_own_country = { 
+			event_target:wg_dragon_own_country? = { 
 				check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv5 }
 				has_country_flag = married_wg_dragon
 			}
@@ -294,7 +294,7 @@ create_wg_dragon_army_transport = {
 		}
 	}
 	else_if = {
-		limit = { event_target:wg_dragon_own_country = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}}
+		limit = { event_target:wg_dragon_own_country? = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}}
 		create_army_transport = {
 			species = event_target:wg_dragon_own_country
 			ship_name = "NAME_wg_dragon"
@@ -322,7 +322,7 @@ create_wg_dragon_army_troop = {
 	}
 	if = {
 		limit = { 
-			event_target:wg_dragon_own_country = { 
+			event_target:wg_dragon_own_country? = { 
 				check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv5 }
 				has_country_flag = married_wg_dragon
 			}
@@ -334,7 +334,7 @@ create_wg_dragon_army_troop = {
 		}
 	}
 	else_if = {
-		limit = { event_target:wg_dragon_own_country = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}}
+		limit = { event_target:wg_dragon_own_country? = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}}
 		create_army = {
 			species = event_target:wg_dragon_own_country
 			owner = event_target:wg_dragon_own_country
@@ -359,7 +359,7 @@ remove_wg_dragon_army = {
 		limit = { has_country_flag = wg_dragon_owner }
 		save_event_target_as = wg_dragon_own_country
 	}
-	event_target:wg_dragon_own_country = {
+	event_target:wg_dragon_own_country? = {
 		every_owned_army = {
 			limit = { 
 				NOT = { is_same_value = event_target:new_wg_dragon_army }
@@ -376,9 +376,9 @@ remove_wg_dragon_army = {
 reset_wg_dragon_affection_level = {
 	optimize_memory
 	if = {
-		limit = { ruler = { has_leader_flag = wg_dragon_leader }}
+		limit = { ruler? = { has_leader_flag = wg_dragon_leader }}
 		no_events = yes
-		# ruler = {
+		# ruler? = {
 		# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander } 
 		# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
 		# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = ruler }
@@ -396,7 +396,7 @@ reset_wg_dragon_affection_level = {
 				}
 			}
 			no_events = yes
-			# event_target:wg_dragon_admiral = {
+			# event_target:wg_dragon_admiral? = {
 			# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander } 
 			# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
 			# 	add_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander }
@@ -412,7 +412,7 @@ reset_wg_dragon_affection_level = {
 				}
 			}
 			no_events = yes
-			# event_target:wg_dragon_warship = {
+			# event_target:wg_dragon_warship? = {
 			# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }
 			# 	remove_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = commander } 
 			# 	add_special_leader_affection_trait = { LEADER = wg_dragon LEADER_CLASS = warship }

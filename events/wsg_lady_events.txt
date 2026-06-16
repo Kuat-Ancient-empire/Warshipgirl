@@ -214,12 +214,12 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		event_target:lady_contingency_fleet = {
+		event_target:lady_contingency_fleet? = {
 			set_fleet_flag = has_to_wgfe_project
 		}
 		if = {
 			limit = { exists = capital_scope }
-			capital_scope = { solar_system = { save_event_target_as = capital_system }}
+			capital_scope? = { solar_system? = { save_event_target_as = capital_system }}
 		} 
 		# else_if = {
 		# 	limit = { 
@@ -230,15 +230,15 @@ country_event = {
 		# 	}
 		# 	random_controlled_fleet = {
 		# 		limit = { any_owned_ship = { is_any_type_homeless_ship = yes }}
-		# 		solar_system = { save_event_target_as = capital_system }
+		# 		solar_system? = { save_event_target_as = capital_system }
 		# 	}
 		# } 
 		else = {
-			random_controlled_fleet = { solar_system = {
+			random_controlled_fleet = { solar_system? = {
 				save_event_target_as = capital_system 
 			}}
 		}
-		event_target:capital_system = {
+		event_target:capital_system? = {
 			random_system_planet = {
 				limit = { NOT = { is_star = yes }}
 				create_ambient_object = {
@@ -284,7 +284,7 @@ country_event = {
 						has_fleet_flag = lady_fleet
 					}
 					has_fleet_flag = has_to_wgfe_project
-					solar_system = {
+					solar_system? = {
 						any_system_planet = { 
 							OR = {
 								is_same_value = event_target:wg_project_planet 
@@ -314,7 +314,7 @@ country_event = {
 	immediate = {
 		if = {
 			limit = { exists = event_target:lady_contingency_fleet }
-			event_target:lady_contingency_fleet = { set_fleet_flag = has_to_wgfe_project }
+			event_target:lady_contingency_fleet? = { set_fleet_flag = has_to_wgfe_project }
 		}
 		if = {
 			limit = { NOT = { has_special_project = wsg_lady_to_wg_fe }}
@@ -326,7 +326,7 @@ country_event = {
 							has_fleet_flag = lady_fleet
 						}
 						has_fleet_flag = has_to_wgfe_project
-						solar_system = {
+						solar_system? = {
 							any_system_planet = { 
 								OR = {
 									is_same_value = event_target:wg_project_planet 
@@ -372,7 +372,7 @@ country_event = {
 		abort_special_project = { type = wsg_lady_to_wg_fe }
 		set_country_flag = finish_wsg_lady_to_wg_fe_project
 		destroy_ambient_object = event_target:wg_wormhole
-		event_target:lady_contingency_fleet = {
+		event_target:lady_contingency_fleet? = {
 			delete_fleet = this
 		}
 	}
@@ -723,7 +723,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:wsg_lady_country = {
+		event_target:wsg_lady_country? = {
 			establish_communications_no_message = root
 		}
 		save_global_event_target_as = wsg_lady_own_country
@@ -773,7 +773,7 @@ event = {
 
 	trigger = {
 		exists = event_target:wsg_lady_own_country
-		event_target:wsg_lady_own_country = {
+		event_target:wsg_lady_own_country? = {
 			wsg_lady_available = yes
 			NOT = { has_modifier = wsg_lady_recover_cd }
 			OR = {
@@ -800,7 +800,7 @@ event = {
 								exists = planet
 								AND = {
 									exists = fleet
-									fleet = { num_ships > 0 }
+									fleet? = { num_ships > 0 }
 								}
 							}
 						}
@@ -815,7 +815,7 @@ event = {
 	}
 
 	immediate = {
-		event_target:wsg_lady_own_country = {
+		event_target:wsg_lady_own_country? = {
 			remove_country_flag = wsg_lady_official_active
 			remove_country_flag = wsg_lady_warship_active
 			remove_country_flag = wsg_lady_army_active
@@ -878,7 +878,7 @@ country_event = {
 		}
 		NOT = { has_modifier = wsg_lady_recover_cd }
 		has_country_flag = wsg_lady_official_active
-		FROM = { has_leader_flag = wsg_lady_official }
+		FROM? = { has_leader_flag = wsg_lady_official }
 	}
 
 	option = {
@@ -921,7 +921,7 @@ country_event = {
 		}
 		NOT = { has_modifier = wsg_lady_recover_cd }
 		has_country_flag = wsg_lady_warship_active
-		FROMFROM = { has_fleet_flag = lady_fleet2 }
+		FROMFROM? = { has_fleet_flag = lady_fleet2 }
 	}
 
 	immediate = {
@@ -978,7 +978,7 @@ country_event = {
 				exists = planet
 				AND = {
 					exists = fleet
-					fleet = { num_ships > 0 }
+					fleet? = { num_ships > 0 }
 				}
 			}
 		}}
@@ -1104,7 +1104,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { 
+		FROM? = { 
 			has_country_flag = gain_wsg_lady
 			NOR = { 
 				has_country_flag = talking_to_wsg_lady
@@ -1116,7 +1116,7 @@ country_event = {
 						exists = planet
 						AND = {
 							exists = fleet
-							fleet = { num_ships > 0 }
+							fleet? = { num_ships > 0 }
 						}
 					}
 				}
@@ -1126,7 +1126,7 @@ country_event = {
 	}
 
 	immediate = {
-		FROM = {
+		FROM? = {
 			remove_country_flag = wsg_lady_army_active
 			add_modifier = { modifier = wsg_lady_recover_cd days = 180 }
 			country_event = { id = wg_lady.39 }
@@ -1154,7 +1154,7 @@ country_event = {
 					exists = planet
 					AND = {
 						exists = fleet
-						fleet = { num_ships > 0 }
+						fleet? = { num_ships > 0 }
 					}
 				}
 			}
@@ -1287,7 +1287,7 @@ country_event = {
 	trigger = {
 		wsg_lady_available = yes
 		has_country_flag = wsg_lady_armed_science_active
-		FROMFROM = { has_fleet_flag = lady_armed_science }
+		FROMFROM? = { has_fleet_flag = lady_armed_science }
 	}
 
 	option = {
@@ -1312,7 +1312,7 @@ event = {
 
 	trigger = {
 		exists = event_target:wsg_lady_own_country
-		event_target:wsg_lady_own_country = {
+		event_target:wsg_lady_own_country? = {
 			wsg_lady_available = yes
 			NOR = {
 				has_country_flag = wsg_lady_weaken
@@ -1337,7 +1337,7 @@ event = {
 	}
 
 	immediate = {
-		event_target:wsg_lady_own_country = {
+		event_target:wsg_lady_own_country? = {
 			country_event = { id = wg_lady.44 }
 		}
 	}
@@ -1355,7 +1355,7 @@ country_event = {
 	}
 
 	immediate = {
-		capital_scope = { solar_system = { starbase = {
+		capital_scope? = { solar_system? = { starbase = {
 			save_event_target_as = mod_location
 		}}}
 	}
@@ -1461,7 +1461,7 @@ country_event = {
 				}
 				if = {
 					limit = { NOT = { has_modifier = wsg_lady_modify_consume }}
-					event_target:lady_warship_fleet = { set_event_locked = yes }
+					event_target:lady_warship_fleet? = { set_event_locked = yes }
 					add_modifier = { modifier = wsg_lady_modify_consume }
 				} 
 				else_if = {
@@ -1480,7 +1480,7 @@ country_event = {
 				}
 				if = {
 					limit = { NOT = { has_modifier = wsg_lady_modify_consume2 }}
-					event_target:lady_warship_fleet = { set_event_locked = yes }
+					event_target:lady_warship_fleet? = { set_event_locked = yes }
 					add_modifier = { modifier = wsg_lady_modify_consume2 }
 				} 
 				else_if = {
@@ -1500,7 +1500,7 @@ country_event = {
 				}
 				if = {
 					limit = { NOT = { has_modifier = wsg_lady_modify_consume3 }}
-					event_target:lady_warship_fleet = { set_event_locked = yes }
+					event_target:lady_warship_fleet? = { set_event_locked = yes }
 					add_modifier = { modifier = wsg_lady_modify_consume3 }
 				} 
 				else_if = {
@@ -1840,7 +1840,7 @@ country_event = {
 	}
 
 	immediate = {
-		capital_scope = { solar_system = { starbase = {
+		capital_scope? = { solar_system? = { starbase = {
 			save_event_target_as = mod_location
 		}}}
 	}
@@ -1924,8 +1924,8 @@ country_event = {
 	}
 
 	immediate = {
-		event_target:lady_warship_fleet = { set_event_locked = yes }
-		event_target:wsg_lady_own_country = {
+		event_target:lady_warship_fleet? = { set_event_locked = yes }
+		event_target:wsg_lady_own_country? = {
 			set_country_flag = modifing_wsg_lady
 			if = {
 				limit = { 
@@ -1970,7 +1970,7 @@ country_event = {
 	immediate = {
 		if = {
 			limit = { exists = event_target:lady_warship_fleet }
-			event_target:lady_warship_fleet = {
+			event_target:lady_warship_fleet? = {
 				set_event_locked = no
 			}
 		} else = {
@@ -1995,7 +1995,7 @@ country_event = {
 	immediate = {
 		if = {
 			limit = { exists = event_target:lady_warship_fleet }
-			event_target:lady_warship_fleet = {
+			event_target:lady_warship_fleet? = {
 				set_event_locked = no
 			}
 		} else = {
@@ -2020,7 +2020,7 @@ country_event = {
 	immediate = {
 		if = {
 			limit = { exists = event_target:lady_warship_fleet }
-			event_target:lady_warship_fleet = {
+			event_target:lady_warship_fleet? = {
 				set_event_locked = no
 			}
 		} else = {
@@ -2054,7 +2054,7 @@ country_event = {
 		set_country_flag = lady_juggernaut
 		every_owned_fleet = {
 			limit = { has_fleet_flag = lady_fleet2 }
-			leader = {
+			leader? = {
 				kill_leader = { show_notification = no fire = yes }
 			}
 			delete_fleet = {
@@ -2085,7 +2085,7 @@ country_event = {
 		set_country_flag = lady_warship_designable
 		every_owned_fleet = {
 			limit = { has_fleet_flag = lady_fleet2 }
-			leader = {
+			leader? = {
 				kill_leader = { show_notification = no fire = yes }
 			}
 			delete_fleet = {
@@ -2136,7 +2136,7 @@ country_event = {
 			}
 		}
 		set_spawn_system_batch = end
-		event_target:wg_naming_ship_system = {
+		event_target:wg_naming_ship_system? = {
 			isolate_system = yes
 		}
 		set_global_flag = spawn_naming_system
@@ -2154,7 +2154,7 @@ country_event = {
 
 	immediate = {
 		country_event = { id = wg_lady.59 }
-		event_target:wsg_player_nickname = {
+		event_target:wsg_player_nickname? = {
 			delete_fleet = { target = this destroy_template = yes }
 		}
 		clear_global_event_target = wsg_player_nickname
@@ -2308,7 +2308,7 @@ country_event = {
 	custom_gui_option = wg_new_commu_option
 
 	trigger = {
-		from = { OR = {
+		from? = { OR = {
 			is_country_type = wsg_lady 
 			is_same_value = ROOT
 		}}
@@ -2364,7 +2364,7 @@ country_event = {
 		name = change_player_nickname
 		hidden_effect = {
 			country_event = { id = wg_lady.10062 }
-			event_target:wsg_lady_country = {
+			event_target:wsg_lady_country? = {
 				every_owned_fleet = {
 					limit = { has_fleet_flag = lady_naming_fleet }
 					delete_fleet = this
@@ -2519,7 +2519,7 @@ country_event = {
 	custom_gui_option = wg_new_commu_option
 
 	trigger = {
-		from = { OR = {
+		from? = { OR = {
 			is_country_type = wsg_lady 
 			is_same_value = ROOT
 		}}
@@ -2566,7 +2566,7 @@ country_event = {
 		name = change_player_nickname
 		hidden_effect = {
 			country_event = { id = wg_lady.10062 }
-			event_target:wsg_lady_country = {
+			event_target:wsg_lady_country? = {
 				every_owned_fleet = {
 					limit = { has_fleet_flag = lady_naming_fleet }
 					delete_fleet = this
@@ -2725,7 +2725,7 @@ country_event = {
 	custom_gui_option = wg_new_commu_option
 
 	trigger = {
-		from = { OR = {
+		from? = { OR = {
 			is_country_type = wsg_lady 
 			is_same_value = ROOT
 		}}
@@ -2813,7 +2813,7 @@ country_event = {
 		# custom_gui = wg_gray_commu_option
 		hidden_effect = {
 			country_event = { id = wg_lady.10062 }
-			event_target:wsg_lady_country = {
+			event_target:wsg_lady_country? = {
 				every_owned_fleet = {
 					limit = { has_fleet_flag = lady_naming_fleet }
 					delete_fleet = this
@@ -2972,7 +2972,7 @@ country_event = {
 	custom_gui_option = wg_new_commu_option
 
 	trigger = {
-		from = { OR = {
+		from? = { OR = {
 			is_country_type = wsg_lady 
 			is_same_value = ROOT
 		}}
@@ -3030,7 +3030,7 @@ country_event = {
 		name = change_player_nickname
 		hidden_effect = {
 			country_event = { id = wg_lady.10062 }
-			event_target:wsg_lady_country = {
+			event_target:wsg_lady_country? = {
 				every_owned_fleet = {
 					limit = { has_fleet_flag = lady_naming_fleet }
 					delete_fleet = this
@@ -3190,7 +3190,7 @@ country_event = {
 	custom_gui_option = wg_new_commu_option
 
 	trigger = {
-		from = { OR = {
+		from? = { OR = {
 			is_country_type = wsg_lady 
 			is_same_value = ROOT
 		}}
@@ -3247,7 +3247,7 @@ country_event = {
 		name = change_player_nickname
 		hidden_effect = {
 			country_event = { id = wg_lady.10062 }
-			event_target:wsg_lady_country = {
+			event_target:wsg_lady_country? = {
 				every_owned_fleet = {
 					limit = { has_fleet_flag = lady_naming_fleet }
 					delete_fleet = this
@@ -3395,7 +3395,7 @@ country_event = {
 	custom_gui_option = wg_new_commu_option
 
 	trigger = {
-		from = { OR = {
+		from? = { OR = {
 			is_country_type = wsg_lady 
 			is_same_value = ROOT
 		}}
@@ -3420,7 +3420,7 @@ country_event = {
 		name = change_player_nickname
 		hidden_effect = {
 			country_event = { id = wg_lady.10062 }
-			event_target:wsg_lady_country = {
+			event_target:wsg_lady_country? = {
 				every_owned_fleet = {
 					limit = { has_fleet_flag = lady_naming_fleet }
 					delete_fleet = this
@@ -3465,12 +3465,12 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		event_target:wg_naming_ship_system = {
+		event_target:wg_naming_ship_system? = {
 			random_system_planet = {
 				save_event_target_as = placing_planet
 			}
 		}
-		event_target:wsg_player_nickname = {
+		event_target:wsg_player_nickname? = {
 			set_owner = event_target:wsg_lady_country
 			set_location = event_target:placing_planet
 		}
@@ -3492,8 +3492,8 @@ country_event = {
 	custom_gui_option = wg_new_commu_option
 
 	immediate = {
-		capital_scope = {
-			solar_system = {
+		capital_scope? = {
+			solar_system? = {
 				starbase = {
 					save_event_target_as = wg_lady_modify_location
 				}
@@ -3512,7 +3512,7 @@ country_event = {
 			set_country_flag = lady_warship_cracker
 			set_country_flag = modifing_wsg_lady
 		}
-		event_target:wg_lady_modify_location = {
+		event_target:wg_lady_modify_location? = {
 			enable_special_project = {
 				name = WG_LADY_CHANGE_COLOSSUS_WEAPON
 				location = THIS
@@ -3532,7 +3532,7 @@ country_event = {
 			set_country_flag = lady_warship_shielder
 			set_country_flag = modifing_wsg_lady
 		}
-		event_target:wg_lady_modify_location = {
+		event_target:wg_lady_modify_location? = {
 			enable_special_project = {
 				name = WG_LADY_CHANGE_COLOSSUS_WEAPON
 				location = THIS
@@ -3552,7 +3552,7 @@ country_event = {
 			set_country_flag = lady_warship_neutron
 			set_country_flag = modifing_wsg_lady
 		}
-		event_target:wg_lady_modify_location = {
+		event_target:wg_lady_modify_location? = {
 			enable_special_project = {
 				name = WG_LADY_CHANGE_COLOSSUS_WEAPON
 				location = THIS
@@ -3572,7 +3572,7 @@ country_event = {
 			set_country_flag = lady_warship_godray
 			set_country_flag = modifing_wsg_lady
 		}
-		event_target:wg_lady_modify_location = {
+		event_target:wg_lady_modify_location? = {
 			enable_special_project = {
 				name = WG_LADY_CHANGE_COLOSSUS_WEAPON
 				location = THIS
@@ -3592,7 +3592,7 @@ country_event = {
 			set_country_flag = lady_warship_nanobots
 			set_country_flag = modifing_wsg_lady
 		}
-		event_target:wg_lady_modify_location = {
+		event_target:wg_lady_modify_location? = {
 			enable_special_project = {
 				name = WG_LADY_CHANGE_COLOSSUS_WEAPON
 				location = THIS
@@ -3612,7 +3612,7 @@ country_event = {
 			set_country_flag = lady_warship_ovo
 			set_country_flag = modifing_wsg_lady
 		}
-		event_target:wg_lady_modify_location = {
+		event_target:wg_lady_modify_location? = {
 			enable_special_project = {
 				name = WG_LADY_CHANGE_COLOSSUS_WEAPON
 				location = THIS
@@ -3632,7 +3632,7 @@ country_event = {
 			set_country_flag = lady_warship_psh
 			set_country_flag = modifing_wsg_lady
 		}
-		event_target:wg_lady_modify_location = {
+		event_target:wg_lady_modify_location? = {
 			enable_special_project = {
 				name = WG_LADY_CHANGE_COLOSSUS_WEAPON
 				location = THIS
@@ -3652,7 +3652,7 @@ country_event = {
 			set_country_flag = lady_warship_sun_killer
 			set_country_flag = modifing_wsg_lady
 		}
-		event_target:wg_lady_modify_location = {
+		event_target:wg_lady_modify_location? = {
 			enable_special_project = {
 				name = WG_LADY_CHANGE_COLOSSUS_WEAPON
 				location = THIS
@@ -3672,7 +3672,7 @@ country_event = {
 			set_country_flag = lady_warship_waterB
 			set_country_flag = modifing_wsg_lady
 		}
-		event_target:wg_lady_modify_location = {
+		event_target:wg_lady_modify_location? = {
 			enable_special_project = {
 				name = WG_LADY_CHANGE_COLOSSUS_WEAPON
 				location = THIS
@@ -3692,7 +3692,7 @@ country_event = {
 	# 		set_country_flag = lady_warship_graygoo
 	# 		set_country_flag = modifing_wsg_lady
 	# 	}
-	# 	event_target:wg_lady_modify_location = {
+	# 	event_target:wg_lady_modify_location? = {
 	# 		enable_special_project = {
 	# 			name = WG_LADY_CHANGE_COLOSSUS_WEAPON
 	# 			location = THIS
@@ -3715,7 +3715,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		event_target:lady_warship_fleet = { set_event_locked = yes }
+		event_target:lady_warship_fleet? = { set_event_locked = yes }
 	}
 }
 
@@ -3727,7 +3727,7 @@ country_event = {
 
 	immediate = {
 		remove_country_flag = modifing_wsg_lady
-		event_target:lady_warship_fleet = { set_event_locked = no }
+		event_target:lady_warship_fleet? = { set_event_locked = no }
 	}
 }
 
@@ -3786,7 +3786,7 @@ country_event = {
 				limit = { has_fleet_flag = lady_naming_fleet }
 				delete_fleet = this
 			}
-			event_target:wsg_lady_country = {
+			event_target:wsg_lady_country? = {
 				every_owned_fleet = {
 					limit = { has_fleet_flag = lady_naming_fleet }
 					delete_fleet = this
@@ -3837,7 +3837,7 @@ country_event = {
 				limit = { has_fleet_flag = lady_naming_fleet }
 				delete_fleet = this
 			}
-			event_target:wsg_lady_country = {
+			event_target:wsg_lady_country? = {
 				every_owned_fleet = {
 					limit = { has_fleet_flag = lady_naming_fleet }
 					delete_fleet = this
@@ -3858,7 +3858,7 @@ country_event = {
 	immediate = {
 		if = {
 			limit = { has_country_flag = has_nickname }
-			event_target:wsg_lady_country = {
+			event_target:wsg_lady_country? = {
 				random_owned_fleet = {
 					limit = { has_fleet_flag = lady_naming_fleet }
 					save_global_event_target_as = wsg_player_nickname
@@ -3904,7 +3904,7 @@ country_event = {
 			remove_modifier = wsg_lady_modify_consume3
 			if = {
 				limit = { exists = event_target:lady_warship_fleet }
-				event_target:lady_warship_fleet = { set_event_locked = no }
+				event_target:lady_warship_fleet? = { set_event_locked = no }
 			}
 		}
 	}
@@ -3916,11 +3916,11 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { 
+		FROM? = { 
 			is_country_type = guardian_dragon 
 			NOT = { has_country_flag = rubricator_dragon_country }
 		}
-		FROMFROM = { has_fleet_flag = lady_fleet2 }
+		FROMFROM? = { has_fleet_flag = lady_fleet2 }
 	}
 
 	immediate = {
@@ -3937,7 +3937,7 @@ event = {
 
 	trigger = {
 		exists = event_target:wsg_lady_own_country
-		event_target:wsg_lady_own_country = { 
+		event_target:wsg_lady_own_country? = { 
 			has_country_flag = gain_wsg_lady
 			is_at_war = no
 			NOR = { 
@@ -3951,7 +3951,7 @@ event = {
 	}
 
 	immediate = {
-		event_target:wsg_lady_own_country = {
+		event_target:wsg_lady_own_country? = {
 			country_event = { id = wg_lady.101 random = 359 }
 			set_country_flag = triggered_wg_lady_affection_event_3_1
 		}
@@ -4525,7 +4525,7 @@ event = {
 
 	trigger = {
 		exists = event_target:wsg_lady_own_country
-		event_target:wsg_lady_own_country = {
+		event_target:wsg_lady_own_country? = {
 			has_country_flag = gain_wsg_lady
 			has_country_flag = unlock_wg_lady_affection_event_3_2
 		}
@@ -4533,7 +4533,7 @@ event = {
 	}
 
 	immediate = {
-		event_target:wsg_lady_own_country = {
+		event_target:wsg_lady_own_country? = {
 			country_event = { id = wg_lady.123 days = 30 }
 			remove_country_flag = unlock_wg_lady_affection_event_3_2
 			set_global_flag = triggered_wsg_lady_valentinesDay_event
@@ -5011,7 +5011,7 @@ event = {
 		}
 		AND = {
 			exists = event_target:wsg_lady_own_country
-			event_target:wsg_lady_own_country = {
+			event_target:wsg_lady_own_country? = {
 				has_country_flag = gain_wsg_lady
 				is_at_war = no
 				check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv4 }
@@ -5030,7 +5030,7 @@ event = {
 	immediate = {
 		random_list = {
 			1 = {
-				event_target:wsg_lady_own_country = {
+				event_target:wsg_lady_own_country? = {
 					set_country_flag = triggered_wg_lady_affection_event_4_1
 					country_event = { id = wg_lady.140 random = 359 }
 				}
@@ -5038,7 +5038,7 @@ event = {
 			9 = {
 				modifier = {
 					add = -6
-					event_target:wsg_lady_own_country = {
+					event_target:wsg_lady_own_country? = {
 						has_country_flag = given_dark_matter_tech
 					}
 				}
@@ -5064,7 +5064,7 @@ event = {
 				}
 				modifier = {
 					factor = 0
-					event_target:wsg_lady_own_country = {
+					event_target:wsg_lady_own_country? = {
 						check_variable = { which = wg_lady_affection value >= @wg_lady_affection_to_lv4 }
 					}
 				}
@@ -6076,7 +6076,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		from = { is_country_type = wsg_lady }
+		from? = { is_country_type = wsg_lady }
 		is_same_value = event_target:gray_owner
 		NOT = { has_country_flag = guess_who_event_triggered }
 		is_ai = no
@@ -6104,7 +6104,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		from = { is_country_type = gray }
+		from? = { is_country_type = gray }
 		has_country_flag = gain_wsg_lady
 		NOT = { has_country_flag = guess_who_event_triggered }
 		is_ai = no
@@ -6557,7 +6557,7 @@ country_event = {
 	picture = GFX_evt_wsg_no_video
 
 	trigger = {
-		from = { is_country_type = gray }
+		from? = { is_country_type = gray }
 		is_same_value = event_target:gray_owner
 		has_country_flag = ban_commu_with_gray
 		NOT = { has_modifier = gray_scattered }
@@ -6577,7 +6577,7 @@ country_event = {
 	picture = GFX_evt_wsg_no_video
 
 	trigger = {
-		from = { OR = {
+		from? = { OR = {
 			is_country_type = wsg_lady 
 			is_same_value = ROOT
 		}}

@@ -8,7 +8,7 @@ country_event = {
 
 	immediate = {
 		set_global_flag = wg_khan_crisis_active
-		event_target:WG_Khan_gate_system_target = {
+		event_target:WG_Khan_gate_system_target? = {
 			random_system_planet = {
 				limit = { is_star = yes }
 				save_global_event_target_as = WG_Khan_gate_star_target
@@ -100,14 +100,14 @@ country_event = {
 							set_hostile = no
 						}
 					}
-					event_target:wg_fallen_empire = {
+					event_target:wg_fallen_empire? = {
 						set_faction_hostility = {
 							target = PREV
 							set_neutral = yes
 							set_hostile = no
 						}
 					}
-					event_target:sh_fallen_empire = {
+					event_target:sh_fallen_empire? = {
 						set_faction_hostility = {
 							target = PREV
 							set_neutral = yes
@@ -183,8 +183,8 @@ country_event = {
 
 	immediate = {
 		set_global_flag = wg_Khan_created
-		capital_scope = {
-			solar_system = {
+		capital_scope? = {
+			solar_system? = {
 				random_neighbor_system_euclidean = {
 					limit = { NOR = {
 						has_star_flag = sealed_system
@@ -418,7 +418,7 @@ country_event = {
 	is_triggered_only = yes
 
     trigger = {
-		FROM = {
+		FROM? = {
 			is_khan_country_type = yes
 		}
 		has_global_flag = wg_khan_crisis_active
@@ -770,7 +770,7 @@ country_event = {
 		}
 		if = {
 			limit = { exists = event_target:WG_Khan_country }
-			event_target:WG_Khan_country = {
+			event_target:WG_Khan_country? = {
 				set_country_type = wg_Khan_country_type_auto_delete
 				random_country = {
 					limit = { is_country_type = pantsu_shop }
@@ -929,7 +929,7 @@ country_event = {
 	}
 	option = {
 		name = wg_khan.14.a
-		owner = {
+		owner? = {
 			add_resource = { unity = 2000 }
 		}
 		every_country = {
@@ -1008,15 +1008,15 @@ country_event = {
 		is_ai = no
 	}
 	immediate = {
-        owner = {
-			capital_scope = {
+        owner? = {
+			capital_scope? = {
 		    	carrier_event = { id = wg_khan.17 days = 10 }
 			}	
 		}
 	}
 	option = {
 		name = wg_khan.16.a
-		owner = {
+		owner? = {
 			add_resource = { unity = 4000 }
 			add_resource = { influence = 200 }
 		}
@@ -1034,7 +1034,7 @@ carrier_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		owner = { NOT = { has_special_project = "wg_khan_getway" }}
+		owner? = { NOT = { has_special_project = "wg_khan_getway" }}
 	}
 
 	option = {
@@ -1101,7 +1101,7 @@ country_event = {
 
 # 	trigger = {
 # 		has_global_flag = wg_khan_home_active
-# 		event_target:wg_Da_Khan_home_country = {
+# 		event_target:wg_Da_Khan_home_country? = {
 #             count_owned_ship = {
 #                 count < 1
 #             }
@@ -1140,13 +1140,13 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = wg_khan_fleet
 			NOT = { has_fleet_flag = super_sukhbaatar_fleet }
 		}
 	}
 	immediate = {
-		FROM = { 
+		FROM? = { 
 			set_country_flag = wg_khan_killer
 			save_global_event_target_as = WG_Khan_killer_country
 			country_event = { id = wg_khan.23 }
@@ -1159,7 +1159,7 @@ country_event = {
 			limit = { has_modifier = fe_damage_to_wg_khan }
 			remove_modifier = fe_damage_to_wg_khan
 		}
-		event_target:wg_Khan_army_country = {
+		event_target:wg_Khan_army_country? = {
 			every_owned_army = {
 				remove_army = yes
 			}
@@ -1170,7 +1170,7 @@ country_event = {
 		every_galaxy_planet = {
 			limit = { 
 				exists = owner
-				owner = { is_ai = yes }
+				owner? = { is_ai = yes }
 				has_modifier = planet_Khan_occupied 
 			}
 			remove_modifier = planet_Khan_occupied
@@ -1235,7 +1235,7 @@ country_event = {
 	option = {
 		name = wg_khan.23.a
 		end_event_chain = wg_Khan_chain
-		owner = {
+		owner? = {
 			add_resource = { 
 				influence = 200 
 				sr_pantsu = 2
@@ -1249,7 +1249,7 @@ country_event = {
 	option = {
 		name = wg_khan.23.b
 		end_event_chain = wg_Khan_chain
-		owner = {
+		owner? = {
 			add_resource = { 
 				influence = 200 
 			}
@@ -1262,7 +1262,7 @@ country_event = {
 	option = {
 		name = wg_khan.23.c
 		end_event_chain = wg_Khan_chain
-		owner = {
+		owner? = {
 			add_resource = { influence = 500 }
 		}
         trigger = { 
@@ -1280,13 +1280,13 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = wg_Da_Khan_gate_main_fleet
 		}
 		NOT = { has_global_flag = wg_khan_crisis_active }
 	}
 	immediate = {
-		FROM = { 
+		FROM? = { 
 			country_event = { id = wg_khan.27 days = 30 }
 		}
 		set_global_flag = wg_khan_gate_main_fleet_defeated
@@ -1584,7 +1584,7 @@ event = {
 	is_triggered_only = yes
 	trigger = {
 		exists = event_target:WG_Khan_country
-		event_target:WG_Khan_country = {
+		event_target:WG_Khan_country? = {
 			any_owned_fleet = {
 				exists = this
 				is_fleet_idle = yes
@@ -1603,7 +1603,7 @@ event = {
 	immediate = {
 		if = {
 			limit = { exists = event_target:WG_Khan_country }
-			event_target:WG_Khan_country = {
+			event_target:WG_Khan_country? = {
 				every_owned_fleet = {
 					limit = {
 						exists = this
@@ -1635,7 +1635,7 @@ fleet_event = {
 	trigger = {
 		exists = this
 		has_fleet_flag = Khan_attack_fleet
-		owner = { is_khan_country_type = yes }
+		owner? = { is_khan_country_type = yes }
 		has_global_flag = wg_khan_crisis_active
 	}
 
@@ -1655,20 +1655,20 @@ carrier_event = {
 
 	desc = {
 		trigger = {
-			NOT = { owner = { has_country_flag = wg_Khan_bombardment_stage1_encountered }}
+			NOT = { owner? = { has_country_flag = wg_Khan_bombardment_stage1_encountered }}
 		}
 		text = "wg_khan.101.desc"
 	}
 	desc = {
 		trigger = {
-			owner = { has_country_flag = wg_Khan_bombardment_stage1_encountered }
+			owner? = { has_country_flag = wg_Khan_bombardment_stage1_encountered }
 		}
 		text = "wg_khan.101.desc.a"
 	}
 
 	trigger = {
         planet_devastation >= 40
-		FROM = {
+		FROM? = {
 			is_khan_country_type = yes
 		}
 		check_variable = { which = wg_Khan_bombardment_stage value < 1 }
@@ -1705,7 +1705,7 @@ carrier_event = {
 
 	option = {
 		name = wg_khan.101.a
-		owner = {
+		owner? = {
 			set_country_flag = wg_Khan_bombardment_stage1_encountered
 		}
 	}
@@ -1723,7 +1723,7 @@ carrier_event = {
 
 	trigger = {
         planet_devastation >= 70
-		FROM = {
+		FROM? = {
 			is_khan_country_type = yes
 		}
 		check_variable = { which = wg_Khan_bombardment_stage value = 1 }
@@ -1773,13 +1773,13 @@ carrier_event = {
 
 	desc = {
 		trigger = {
-			owner = { NOT = { has_country_flag = wg_Khan_bombardment_stage3_encountered }}
+			owner? = { NOT = { has_country_flag = wg_Khan_bombardment_stage3_encountered }}
 		}
 		text = "wg_khan.103.desc"
 	}
 	desc = {
 		trigger = {
-			owner = { has_country_flag = wg_Khan_bombardment_stage3_encountered }
+			owner? = { has_country_flag = wg_Khan_bombardment_stage3_encountered }
 		}
 		text = "wg_khan.103.desc.b"
 	}
@@ -1787,7 +1787,7 @@ carrier_event = {
 	trigger = {
 		has_global_flag = wg_khan_crisis_active
         planet_devastation >= 100
-		FROM = {
+		FROM? = {
 			is_khan_country_type = yes
 		}
 		check_variable = { which = wg_Khan_bombardment_stage value = 2 }
@@ -1826,7 +1826,7 @@ carrier_event = {
 
 	option = {
 		name = wg_khan.103.a
-		owner = {
+		owner? = {
 			set_country_flag = wg_Khan_bombardment_stage3_encountered
 		}
 	}
@@ -1844,7 +1844,7 @@ country_event = {
 
 	trigger = {
 		has_global_flag = wg_khan_crisis_active
-		FROMFROM = { check_variable = { which = wg_Khan_bombardment_stage value > 0 }}
+		FROMFROM? = { check_variable = { which = wg_Khan_bombardment_stage value > 0 }}
 		OR = {
 			is_khan_country_type = yes # 可汗空投入侵玩家星球
 			FROMFROM.CONTROLLER = { 
@@ -1854,18 +1854,18 @@ country_event = {
 	}
 
 	immediate = {
-		FROMFROM = { save_event_target_as = invaded_planet }
+		FROMFROM? = { save_event_target_as = invaded_planet }
 		if = {
 			# 地面战失败
 			limit = { 
 				is_khan_country_type = yes
-				FROMFROM = {
+				FROMFROM? = {
 					NOT = { has_modifier = planet_Khan_occupied }
 				}
 			}
-			FROM = {
+			FROM? = {
 				country_event = { id = wg_khan.105 }
-				FROM = {
+				FROM? = {
 					add_modifier = { modifier = "planet_Khan_occupied" days = -1}
 					carrier_event = { id = wg_khan.106 days = 120 random = 180 }
 					set_timed_carrier_flag = {
@@ -1881,10 +1881,10 @@ country_event = {
 			country_event = { id = wg_khan.109 days = 1 }
 		}
 		else = {
-			FROM = { # 地面战胜利
+			FROM? = { # 地面战胜利
 				if = { # 夺回了星球
-					limit = { FROM = { has_modifier = planet_Khan_occupied }}
-					FROM = { set_variable = { which = wg_Khan_bombardment_stage value = 0 }}
+					limit = { FROM? = { has_modifier = planet_Khan_occupied }}
+					FROM? = { set_variable = { which = wg_Khan_bombardment_stage value = 0 }}
 					country_event = { id = wg_khan.107 }
 				}
 			}
@@ -1903,7 +1903,7 @@ country_event = {
 
 	option = {
 		name = "wsg.3040.a"
-		event_target:invaded_planet = {
+		event_target:invaded_planet? = {
 			add_planet_devastation = 100
 		}
 		tooltip = { add_modifier = { modifier = "planet_Khan_occupied" days = -1}}
@@ -2083,7 +2083,7 @@ country_event = {
 
 	option = {
 		name = EXCELLENT
-		event_target:invaded_planet = {
+		event_target:invaded_planet? = {
 			remove_modifier = "planet_Khan_occupied"
 		}
 	}
@@ -2117,12 +2117,12 @@ country_event = {
 		every_owned_army = {
 			limit = {
 				exists = planet
-				planet = { is_same_value = event_target:invaded_planet }
+				planet? = { is_same_value = event_target:invaded_planet }
 			}
 			switch = {
 				trigger = army_type
 				galo_army = {
-					event_target:invaded_planet = {
+					event_target:invaded_planet? = {
 						create_army = {
 							name = "NAME_GALO_ARMY"
 							owner = event_target:wg_Khan_army_country
@@ -2132,7 +2132,7 @@ country_event = {
 					}
 				}
 				Khan_galodam = {
-					event_target:invaded_planet = {
+					event_target:invaded_planet? = {
 						create_army = {
 							name = "NAME_GALODAM_ARMY"
 							owner = event_target:wg_Khan_army_country
@@ -2142,7 +2142,7 @@ country_event = {
 					}
 				}
 				ovo_boss_army = {
-					event_target:invaded_planet = {
+					event_target:invaded_planet? = {
 						create_army = {
 							name = "NAME_OVO_BOSS_ARMY_KHAN"
 							owner = event_target:wg_Khan_army_country
@@ -2154,7 +2154,7 @@ country_event = {
 			}
 			remove_army = yes
 		}
-		event_target:invaded_planet = {
+		event_target:invaded_planet? = {
 			set_controller = event_target:wg_Khan_army_country # 将控制权移交给陆军国家
 		}
 	}
@@ -2172,15 +2172,15 @@ country_event = {
 
 	trigger = {
 		is_khan_country_type = yes
-		FROMFROM = {
+		FROMFROM? = {
 			check_variable = { which = wg_Khan_bombardment_stage value > 2 }
 		}
 	}
 
 	immediate = {
-		FROM = {
+		FROM? = {
 			country_event = { id = wg_khan.108 }
-			FROM = { # 一年后带可汗会再次攻击这个球
+			FROM? = { # 一年后带可汗会再次攻击这个球
 				carrier_event = { id = wg_khan.111 days = 360 }
 			}
 		}
@@ -2213,10 +2213,10 @@ country_event = {
 	}
 
 	after = {
-		event_target:WG_Khan_country = {
+		event_target:WG_Khan_country? = {
 			destroy_country = yes
 		}
-		event_target:wg_Khan_army_country = {
+		event_target:wg_Khan_army_country? = {
 			every_owned_army = {
 				remove_army = yes
 			}
@@ -2231,7 +2231,7 @@ country_event = {
 			every_owned_planet = {
 				limit = { has_modifier = planet_Khan_occupied }
 				remove_modifier = planet_Khan_occupied
-				ROOT = {
+				ROOT? = {
 					add_resource = { food = 1000 }
 				}
 			}
@@ -2279,11 +2279,11 @@ country_event = {
 	desc = {
 		trigger = {  
 			fail_text = {
-				FROMFROM = { exists = leader }
+				FROMFROM? = { exists = leader }
 				text = wg_khan.200.desc
 			}
 			success_text = {
-				FROMFROM = { exists = leader }
+				FROMFROM? = { exists = leader }
 				text = wg_khan.200.desc.b
 			}
 		}
@@ -2299,8 +2299,8 @@ country_event = {
 			has_modifier = fe_damage_to_wg_khan 
 			has_country_flag = triggered_wg_khan_paralyzed_ship_event
 		}
-		FROM = { is_khan_country_type = yes }
-		FROMFROMFROM = { has_fleet_flag = Khan_attack_fleet }
+		FROM? = { is_khan_country_type = yes }
+		FROMFROMFROM? = { has_fleet_flag = Khan_attack_fleet }
 		is_ai = no
 	}
 
@@ -2368,7 +2368,7 @@ ship_event = {
 
 	option = {
 		name = EXCELLENT
-		owner = { add_modifier = { modifier = fe_damage_to_wg_khan }}
+		owner? = { add_modifier = { modifier = fe_damage_to_wg_khan }}
 		custom_tooltip = wg_khan.201.tooltip
 	}
 }
@@ -2399,11 +2399,11 @@ country_event = {
 	trigger = {
 		has_modifier = fe_damage_to_wg_khan
 		is_wg_default_country = yes
-		FROM = { is_khan_country_type = yes }
+		FROM? = { is_khan_country_type = yes }
 	}
 
 	immediate = {
-		FROMFROMFROM = { if = {
+		FROMFROMFROM? = { if = {
 			limit = { 
 				has_fleet_flag = Khan_attack_fleet
 				NOT = { has_fleet_flag = khan_jammer_applied }
@@ -2432,12 +2432,12 @@ fleet_event = {
 				1 = {
 					modifier = { # 最多瘫痪15艘船
 						factor = 0
-						solar_system = { check_variable = { which = jammed_khan_ships value >= 15 }}
+						solar_system? = { check_variable = { which = jammed_khan_ships value >= 15 }}
 					}
 					random_owned_ship = {
 						destroy_ship = this
 					}
-					solar_system = {
+					solar_system? = {
 						change_variable = { which = jammed_khan_ships value = 1 }
 					}
 				}
@@ -2500,11 +2500,11 @@ country_event = {
 
 	trigger = {
 		is_khan_country_type = yes
-		FROMFROM = { has_fleet_flag = khan_jammer_applied }
+		FROMFROM? = { has_fleet_flag = khan_jammer_applied }
 	}
 
 	immediate = {
-		FROMFROM = {
+		FROMFROM? = {
 			remove_fleet_flag = khan_jammer_applied
 			remove_modifier = khan_jammer_debuff1
 			remove_modifier = khan_jammer_debuff2
@@ -2537,15 +2537,15 @@ country_event = {
 
 	trigger = {
 		has_modifier = fe_damage_to_wg_khan
-		FROM = { is_khan_country_type = yes }
-		FROMFROM.solar_system = { check_variable = { which = jammed_khan_ships value > 0 }}
-		FROMFROMFROM = { has_fleet_flag = khan_jammer_applied }
+		FROM? = { is_khan_country_type = yes }
+		FROMFROM.solar_system? = { check_variable = { which = jammed_khan_ships value > 0 }}
+		FROMFROMFROM? = { has_fleet_flag = khan_jammer_applied }
 	}
 
 	immediate = {
-		FROMFROM = { 
+		FROMFROM? = { 
 			save_event_target_as = create_khan_fleet_location 
-			solar_system = {
+			solar_system? = {
 				create_fleet = {
 					name = "NAME_Khan_Captured_Fleet"
 					effect = {
@@ -2597,35 +2597,35 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROMFROM = { 
+		FROMFROM? = { 
 			has_fleet_flag = super_sukhbaatar_fleet
 			NOT = { has_fleet_flag = in_battle }
-			owner = { any_owned_ship = {
-				fleet = { is_same_value = root.fromfrom }
+			owner? = { any_owned_ship = {
+				fleet? = { is_same_value = root.fromfrom }
 				NOT = { is_ship_class = shipclass_science_ship }
 			}}
 		}
 	}
 
 	immediate = {
-		FROMFROM = {
+		FROMFROM? = {
 			if = {
 				limit = { has_fleet_flag = super_sukhbaatar_fleet }
 				set_fleet_flag = in_battle
 				save_global_event_target_as = khan_star_destroyer_fleet
-				leader = { save_global_event_target_as = WG_Sukhbaatar_target }
-				solar_system = {
+				leader? = { save_global_event_target_as = WG_Sukhbaatar_target }
+				solar_system? = {
 					save_global_event_target_as = wg_Da_Khan_system_home_target
 				}
-				owner = {
+				owner? = {
 					save_global_event_target_as = wg_Da_Khan_home_country
 				}
 			}
 		}
-		event_target:wg_Da_Khan_home_country = {
+		event_target:wg_Da_Khan_home_country? = {
 			if = {
 				limit = { 
-					event_target:WG_Sukhbaatar_target = { NOT = {
+					event_target:WG_Sukhbaatar_target? = { NOT = {
 						has_trait = leader_trait_khan_iron_curtain
 					}}
 				}
@@ -2633,7 +2633,7 @@ country_event = {
 			}
 			if = {
 				limit = { 
-					event_target:WG_Sukhbaatar_target = { NOT = {
+					event_target:WG_Sukhbaatar_target? = { NOT = {
 						has_trait = leader_trait_khan_weather_control_device
 					}}
 				}
@@ -2641,7 +2641,7 @@ country_event = {
 			}
 			if = {
 				limit = { 
-					event_target:WG_Sukhbaatar_target = { NOT = {
+					event_target:WG_Sukhbaatar_target? = { NOT = {
 						has_trait = leader_trait_khan_chronospere
 					}}
 				}
@@ -2649,7 +2649,7 @@ country_event = {
 			}
 			if = {
 				limit = { 
-					event_target:WG_Sukhbaatar_target = { NOT = {
+					event_target:WG_Sukhbaatar_target? = { NOT = {
 						has_trait = leader_trait_khan_psychic_dominator
 					}}
 				}
@@ -2667,10 +2667,10 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		event_target:khan_star_destroyer_fleet = {
+		event_target:khan_star_destroyer_fleet? = {
 			has_fleet_flag = in_battle
 		}
-		event_target:WG_Sukhbaatar_target = {
+		event_target:WG_Sukhbaatar_target? = {
 			NOT = { has_trait = leader_trait_khan_iron_curtain_active }
 		}
 	}
@@ -2678,7 +2678,7 @@ country_event = {
 	immediate = {
 		if = {
 			limit = { exists = event_target:WG_Sukhbaatar_target }
-			event_target:WG_Sukhbaatar_target = {
+			event_target:WG_Sukhbaatar_target? = {
 				remove_trait = leader_trait_khan_iron_curtain
 				add_timed_trait = { trait = leader_trait_khan_iron_curtain_active days = 30 }
 			}
@@ -2690,7 +2690,7 @@ country_event = {
 				save_global_event_target_as = WG_Sukhbaatar_target
 			}
 		}
-		event_target:wg_Da_Khan_system_home_target = {
+		event_target:wg_Da_Khan_system_home_target? = {
 			set_star_flag = wg_khan_iron_curtain_created
 			every_fleet_in_system = {
 				limit = { OR = { 
@@ -2712,10 +2712,10 @@ country_event = {
 	id = wg_khan.302
 	hide_window = yes
 	trigger = {
-		event_target:khan_star_destroyer_fleet = {
+		event_target:khan_star_destroyer_fleet? = {
 			has_fleet_flag = in_battle
 		}
-		event_target:WG_Sukhbaatar_target = {
+		event_target:WG_Sukhbaatar_target? = {
 			NOT = { has_trait = leader_trait_khan_weather_control_device_active }
 		}
 	}
@@ -2723,7 +2723,7 @@ country_event = {
 	immediate = {
 		if = {
 			limit = { exists = event_target:WG_Sukhbaatar_target }
-			event_target:WG_Sukhbaatar_target = {
+			event_target:WG_Sukhbaatar_target? = {
 				remove_trait = leader_trait_khan_weather_control_device
 				remove_trait = leader_trait_khan_weather_control_device_active
 				add_timed_trait = { trait = leader_trait_khan_weather_control_device_active days = 75 }
@@ -2737,7 +2737,7 @@ country_event = {
 				save_global_event_target_as = WG_Sukhbaatar_target
 			}
 		}
-		event_target:wg_Da_Khan_system_home_target = {
+		event_target:wg_Da_Khan_system_home_target? = {
 			set_timed_star_flag = { flag = wg_khan_lighting_storm_created days = 75 }
 			random_fleet_in_system = {
 				limit = { 
@@ -2780,7 +2780,7 @@ country_event = {
 	is_triggered_only = yes
 	immediate = {
 		destroy_ambient_object = event_target:wg_lighting_storm
-		event_target:wg_Da_Khan_system_home_target = {
+		event_target:wg_Da_Khan_system_home_target? = {
 			random_system_ambient_object = {
 				limit = { has_ambient_object_flag = wg_lighting_storm }
 				destroy_ambient_object = this
@@ -2796,17 +2796,17 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		event_target:khan_star_destroyer_fleet = {
+		event_target:khan_star_destroyer_fleet? = {
 			has_fleet_flag = in_battle
 		}
-		event_target:WG_Sukhbaatar_target = {
+		event_target:WG_Sukhbaatar_target? = {
 			NOT = { has_trait = leader_trait_khan_psychic_dominator_active }
 		}
 	}
 	immediate = {
 		if = {
 			limit = { exists = event_target:WG_Sukhbaatar_target }
-			event_target:WG_Sukhbaatar_target = {
+			event_target:WG_Sukhbaatar_target? = {
 				remove_trait = leader_trait_khan_psychic_dominator
 				remove_trait = leader_trait_khan_psychic_dominator_active
 				add_timed_trait = { trait = leader_trait_khan_psychic_dominator_active days = 30 }
@@ -2820,11 +2820,11 @@ country_event = {
 				save_global_event_target_as = WG_Sukhbaatar_target
 			}
 		}
-		event_target:wg_Da_Khan_system_home_target = {
+		event_target:wg_Da_Khan_system_home_target? = {
 			every_fleet_in_system = {
 				limit = { 
 					exists = owner
-					owner = { is_invisable_faction = no }
+					owner? = { is_invisable_faction = no }
 					NOR = { 
 						has_fleet_flag = super_sukhbaatar_fleet 
 						has_fleet_flag = khan_fleet 
@@ -2834,13 +2834,13 @@ country_event = {
 				every_owned_ship = {
 					if = {
 						limit = { is_ship_size_corvette = yes }
-						PREV = { change_variable = { which = fleet_force value = 0.1 }}
+						PREV? = { change_variable = { which = fleet_force value = 0.1 }}
 					} else_if = {
 						limit = { is_convoy_ship_size = yes }
-						PREV = { change_variable = { which = fleet_force value = 1 }}
+						PREV? = { change_variable = { which = fleet_force value = 1 }}
 					} else_if = {
 						limit = { is_main_ship_size = yes }
-						PREV = { change_variable = { which = fleet_force value = 8 }}
+						PREV? = { change_variable = { which = fleet_force value = 8 }}
 					}
 				}
 			}
@@ -2849,7 +2849,7 @@ country_event = {
 				order_by = fleet_force
 				limit = { 
 					exists = owner
-					owner = { is_invisable_faction = no }
+					owner? = { is_invisable_faction = no }
 					NOR = { 
 						has_fleet_flag = super_sukhbaatar_fleet 
 						has_fleet_flag = khan_fleet 
@@ -2858,7 +2858,7 @@ country_event = {
 				save_event_target_as = largest_fleet
 			}
 		}
-		event_target:largest_fleet = {
+		event_target:largest_fleet? = {
 			set_confused = yes
 			set_timed_fleet_flag = { flag = wg_khan_psychic_dominator days = 30 }
 			fleet_event = { id = wg_khan.305 days = 30 }
@@ -2875,7 +2875,7 @@ fleet_event = {
 
 	immediate = {
 		set_confused = no
-		event_target:WG_Sukhbaatar_target = {
+		event_target:WG_Sukhbaatar_target? = {
 			add_timed_trait = { trait = leader_trait_khan_psychic_dominator days = 90 }
 		}
 	}
@@ -2888,22 +2888,22 @@ country_event = {
 	is_triggered_only = yes
 	trigger = {
 		is_same_value = event_target:wg_Da_Khan_home_country
-		FROMFROM = { has_fleet_flag = super_sukhbaatar_fleet }
+		FROMFROM? = { has_fleet_flag = super_sukhbaatar_fleet }
 	}
 
 	immediate = {
-		event_target:WG_Sukhbaatar_target = {
+		event_target:WG_Sukhbaatar_target? = {
 			remove_trait = leader_trait_khan_chronospere
 			remove_trait = leader_trait_khan_weather_control_device_active
 			remove_trait = leader_trait_khan_iron_curtain_active
 			remove_trait = leader_trait_khan_psychic_dominator_active
 		}
-		event_target:wg_Da_Khan_system_home_target = {
+		event_target:wg_Da_Khan_system_home_target? = {
 			remove_star_flag = wg_khan_lighting_storm_created
 			remove_star_flag = wg_khan_iron_curtain_created
 		}
-		FROMFROM = { remove_fleet_flag = in_battle }
-		FROM = { 
+		FROMFROM? = { remove_fleet_flag = in_battle }
+		FROM? = { 
 			every_controlled_fleet = {
 				if = {
 					limit = { has_fleet_flag = wg_khan_psychic_dominator }
@@ -2932,7 +2932,7 @@ fleet_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		FROM = { has_star_flag = wg_Da_Khan_gate_system_home }
+		FROM? = { has_star_flag = wg_Da_Khan_gate_system_home }
 		OR = {
 			has_fleet_flag = wg_khan_lighting_storm
 			has_fleet_flag = wg_khan_iron_curtain
@@ -2952,20 +2952,20 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		event_target:khan_star_destroyer_fleet = {
+		event_target:khan_star_destroyer_fleet? = {
 			has_fleet_flag = in_battle
 		}
-		event_target:WG_Sukhbaatar_target = {
+		event_target:WG_Sukhbaatar_target? = {
 			NOT = { has_trait = leader_trait_khan_chronospere }
 		}
 	}
 
 	immediate = {
-		event_target:WG_Sukhbaatar_target = {
+		event_target:WG_Sukhbaatar_target? = {
 			remove_trait = leader_trait_khan_chronospere
 			add_timed_trait = { trait = leader_trait_khan_chronospere days = 180 }
 		}
-		event_target:wg_Da_Khan_system_home_target = {
+		event_target:wg_Da_Khan_system_home_target? = {
 			random_system_planet = {
 				save_event_target_as = spawn_khan_fleet_location
 			}
@@ -2986,7 +2986,7 @@ fleet_event = {
 	id = wg_khan.316
 	hide_window = yes
 	trigger = {
-		FROM = { 
+		FROM? = { 
 			has_star_flag = wg_Da_Khan_system_home 
 			OR = {
 				has_star_flag = wg_khan_lighting_storm_created
@@ -2997,7 +2997,7 @@ fleet_event = {
 	is_triggered_only = yes
 	immediate = {
 		if = {
-			limit = { FROM = { has_star_flag = wg_khan_lighting_storm_created }}
+			limit = { FROM? = { has_star_flag = wg_khan_lighting_storm_created }}
 			if = {
 				limit = { NOT = { has_fleet_flag = wg_khan_lighting_storm }}
 				set_fleet_flag = wg_khan_lighting_storm
@@ -3005,7 +3005,7 @@ fleet_event = {
 			}
 		}
 		if = {
-			limit = { FROM = { has_star_flag = wg_khan_iron_curtain_created }}
+			limit = { FROM? = { has_star_flag = wg_khan_iron_curtain_created }}
 			if = {
 				limit = { NOT = { has_fleet_flag = wg_khan_iron_curtain }}
 				set_fleet_flag = wg_khan_iron_curtain
@@ -3020,11 +3020,11 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	immediate = {
-		event_target:WG_Sukhbaatar_target = {
+		event_target:WG_Sukhbaatar_target? = {
 			remove_trait = leader_trait_khan_weather_control_device_active
 			add_timed_trait = { trait = leader_trait_khan_weather_control_device days = 45 }
 		}
-		event_target:wg_Da_Khan_system_home_target = {
+		event_target:wg_Da_Khan_system_home_target? = {
 			every_fleet_in_system = {
 				limit = { has_fleet_flag = wg_khan_lighting_storm }
 				remove_fleet_flag = wg_khan_lighting_storm
@@ -3040,11 +3040,11 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	immediate = {
-		event_target:WG_Sukhbaatar_target = {
+		event_target:WG_Sukhbaatar_target? = {
 			remove_trait = leader_trait_khan_iron_curtain_active
 			add_timed_trait = { trait = leader_trait_khan_iron_curtain days = 90 }
 		}
-		event_target:wg_Da_Khan_system_home_target = {
+		event_target:wg_Da_Khan_system_home_target? = {
 			every_fleet_in_system = {
 				limit = { has_fleet_flag = wg_khan_iron_curtain }
 				remove_fleet_flag = wg_khan_iron_curtain
@@ -3062,16 +3062,16 @@ country_event = {
 
 	trigger = {
 		is_country_type = wg_Khan_home_country_auto_delete
-		FROMFROM = { has_fleet_flag = super_sukhbaatar_fleet }
+		FROMFROM? = { has_fleet_flag = super_sukhbaatar_fleet }
 		NOT = { has_global_flag = khan_star_destroyer_defeated }
 	}
 
 	immediate = {
 		set_global_flag = khan_star_destroyer_defeated
-		FROMFROM = { save_event_target_as = super_sukhbaatar_fleet_location }
-		FROM = { save_event_target_as = khan_destroyer }
-		event_target:super_sukhbaatar_fleet_location = {
-			solar_system = {
+		FROMFROM? = { save_event_target_as = super_sukhbaatar_fleet_location }
+		FROM? = { save_event_target_as = khan_destroyer }
+		event_target:super_sukhbaatar_fleet_location? = {
+			solar_system? = {
 				every_fleet_in_system = {
 					if = {
 						limit = { has_fleet_flag = wg_khan_psychic_dominator }
@@ -3120,7 +3120,7 @@ country_event = {
 				save_global_event_target_as = wg_Da_Khan_home_country2
 			}				
 		}
-		event_target:wg_Da_Khan_home_country2 = {
+		event_target:wg_Da_Khan_home_country2? = {
 			every_country = {
 				limit = { NOT = { is_same_value = PREV }}
 				set_faction_hostility = {
@@ -3163,10 +3163,10 @@ country_event = {
 				spawn_debris = no 
 			}
 		}
-		event_target:khan_destroyer = {
+		event_target:khan_destroyer? = {
 			country_event = { id = wg_khan.310 }
 		} 
-		event_target:wg_Da_Khan_home_country = { 
+		event_target:wg_Da_Khan_home_country? = { 
 			country_event = { id = wg_khan.315 }
 		}
 	}
@@ -3178,16 +3178,16 @@ ship_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		fleet = { has_fleet_flag = super_sukhbaatar_fleet }
+		fleet? = { has_fleet_flag = super_sukhbaatar_fleet }
 		NOT = { has_global_flag = khan_star_destroyer_defeated }
 	}
 
 	immediate = {
 		set_global_flag = khan_star_destroyer_defeated
-		fleet = { 
+		fleet? = { 
 			remove_fleet_flag = in_battle
 			save_event_target_as = super_sukhbaatar_fleet_location
-			solar_system = {
+			solar_system? = {
 				every_fleet_in_system = {
 					if = {
 						limit = { has_fleet_flag = wg_khan_psychic_dominator }
@@ -3206,8 +3206,8 @@ ship_event = {
 					}
 				}
 				random_fleet_in_system = { 
-					limit = { owner = { is_ai = no }}
-					owner = {
+					limit = { owner? = { is_ai = no }}
+					owner? = {
 						country_event = { id = wg_khan.310 }
 						country_event = { id = wg_khan.315 }
 					}
@@ -3281,10 +3281,10 @@ ship_event = {
 				spawn_debris = no 
 			}
 		}
-		event_target:super_sukhbaatar_fleet_location = {
+		event_target:super_sukhbaatar_fleet_location? = {
 			delete_fleet = this
 		}
-		owner = { destroy_country = yes }
+		owner? = { destroy_country = yes }
 		delete_ship = this
 	}
 }
@@ -3295,7 +3295,7 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	immediate = {
-		event_target:wg_Da_Khan_system_home_target = {
+		event_target:wg_Da_Khan_system_home_target? = {
 			if = {
 				limit = {
 					any_fleet_in_system = {
@@ -3308,7 +3308,7 @@ country_event = {
 				}
 				country_event = { id = wg_khan.319 days = 1 }
 			} else = {
-				event_target:khan_star_destroyer_fleet = {
+				event_target:khan_star_destroyer_fleet? = {
 					remove_fleet_flag = in_battle
 				}
 			}
@@ -3340,7 +3340,7 @@ country_event = {
 			limit = { has_modifier = fe_damage_to_wg_khan }
 			remove_modifier = fe_damage_to_wg_khan
 		}
-		event_target:wg_Khan_army_country = {
+		event_target:wg_Khan_army_country? = {
 			every_owned_army = {
 				remove_army = yes
 			}
@@ -3351,7 +3351,7 @@ country_event = {
 		every_galaxy_planet = {
 			limit = { 
 				exists = owner
-				owner = { is_ai = yes }
+				owner? = { is_ai = yes }
 				has_modifier = planet_Khan_occupied 
 			}
 			remove_modifier = planet_Khan_occupied
@@ -3516,7 +3516,7 @@ country_event = {
 					spawn_debris = no 
 				}
 			}
-			event_target:khan_star_destroyer_fleet = {
+			event_target:khan_star_destroyer_fleet? = {
 				delete_fleet = this
 			}
 			random_country = {
@@ -3525,7 +3525,7 @@ country_event = {
 				}
 				destroy_country = yes
 			}
-			event_target:wg_Da_Khan_home_country2 = {
+			event_target:wg_Da_Khan_home_country2? = {
 				destroy_country = yes
 			}
 		}
@@ -3546,7 +3546,7 @@ country_event = {
 	immediate = {
 		if = {
 			limit = {
-				event_target:khan_star_destroyer_fleet = {
+				event_target:khan_star_destroyer_fleet? = {
 					OR = {
 						is_in_combat = yes
 						has_fleet_flag = in_battle
@@ -3560,7 +3560,7 @@ country_event = {
 					any_country = {
 						has_special_project = WG_KHAN_INVADE_STAR_DESTROYER
 					}
-					event_target:wg_Da_Khan_home_country = {
+					event_target:wg_Da_Khan_home_country? = {
 						any_owned_ship = {
 							has_ship_flag = khan_star_destroyer
 							is_disabled = yes
@@ -3579,7 +3579,7 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	immediate = {
-		event_target:khan_star_destroyer_fleet = {
+		event_target:khan_star_destroyer_fleet? = {
 			delete_fleet = {
 				target = this
 				kill_leader = yes
@@ -3596,7 +3596,7 @@ country_event = {
 				save_global_event_target_as = WG_KHAN_species
 			}
 		}
-		event_target:wg_Da_Khan_home_country = {
+		event_target:wg_Da_Khan_home_country? = {
 			create_leader = {
 				class = commander
 				species = event_target:WG_KHAN_species
@@ -3618,7 +3618,7 @@ country_event = {
 				change_leader_portrait = sh73
 			}
 		}
-		event_target:wg_Da_Khan_system_home_target = { star = {
+		event_target:wg_Da_Khan_system_home_target? = { star? = {
 			create_fleet = {
 				name = "NAME_Sukhbaatar_Fleet"
 				effect = {
@@ -3729,7 +3729,7 @@ country_event = {
 				}
 			}
 			#奥丁舰队
-			event_target:wg_Da_Khan_home_country = {
+			event_target:wg_Da_Khan_home_country? = {
 				create_species = {
 					name = WG_KHAN2
 					plural = WG_KHAN2
@@ -3982,7 +3982,7 @@ country_event = {
 					set_aggro_range = 250
 				}
 			}
-			event_target:wg_Da_Khan_home_country = {
+			event_target:wg_Da_Khan_home_country? = {
 				every_owned_leader = {
 					if = {
 						limit = { has_leader_flag = Khan_Odin_flag }
@@ -4010,7 +4010,7 @@ ship_event = {
 	fire_only_once = yes
 	
 	trigger = {
-		FROM = {
+		FROM? = {
 			has_star_flag = wg_Da_Khan_system_home
 			NOT = { any_fleet_in_system = {
 				has_fleet_flag = super_sukhbaatar_fleet	

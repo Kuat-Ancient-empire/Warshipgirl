@@ -38,7 +38,7 @@ destroy_system_wg = {
 				# except Extradimensionals
 				AND = {
 					exists = owner
-					owner = {
+					owner? = {
 						OR = {
 							is_country_type = portal_holder
 							is_country_type = extradimensional
@@ -63,7 +63,7 @@ destroy_system_uf = {
 		destroy_ambient_object = this
 	}
 	every_fleet_in_system = {
-		limit = { owner = { NOT = { is_same_value = event_target:wg_crisis_country }}}
+		limit = { owner? = { NOT = { is_same_value = event_target:wg_crisis_country }}}
 		destroy_fleet = this
 	}
 	every_system_planet = {
@@ -100,7 +100,7 @@ destroy_system_uf = {
 			is_planet_class = pc_ai
 			has_carrier_flag = machine_lair
 		}
-		from.owner = { save_event_target_as = final_machine_world_destroyer }
+		from.owner? = { save_event_target_as = final_machine_world_destroyer }
 		stop_crisis_sound = yes
 		carrier_event = { id = crisis.2046 }
 	}
@@ -149,7 +149,7 @@ destroy_system_uf = {
 	every_system_megastructure = {
 		remove_megastructure = this
 	}
-	star = {
+	star? = {
 		create_ambient_object = {
 			type = "destroyed_system"
 			location = this
@@ -209,14 +209,14 @@ destroy_system_ufs = {
 			}
 		}
 	}
-	root.from = { random_owned_fleet = { 
+	root.from? = { random_owned_fleet = { 
 		save_event_target_as = foa_target_fleet 
 		random_owned_ship = { save_event_target_as = foa_target_ship }
 	} }
 	every_fleet_in_system = {
 		limit = { 
 			exists = owner
-			owner = { 
+			owner? = { 
 				NOR = { 
 					is_same_value = root.from 
 					exists = event_target:wg_crisis_country
@@ -235,7 +235,7 @@ destroy_system_ufs = {
 #scope: fleet
 uf_foa_effect_the_crisis_fleet = {
 	optimize_memory
-	root.from = { fire_on_action = {
+	root.from? = { fire_on_action = {
 		on_action = on_fleet_destroyed_perp
 		scopes = {
 			from = prev.owner
@@ -243,7 +243,7 @@ uf_foa_effect_the_crisis_fleet = {
 			fromfromfrom = prev
 		}
 	} }
-	owner = { fire_on_action = {
+	owner? = { fire_on_action = {
 		on_action = on_fleet_destroyed_victim
 		scopes = {
 			from = root.from
@@ -257,7 +257,7 @@ uf_foa_effect_the_crisis_fleet = {
 uf_foa_effect_the_crisis_ship = {
 	optimize_memory
 	every_owned_ship = {
-		root.from = { fire_on_action = {
+		root.from? = { fire_on_action = {
 			on_action = on_ship_destroyed_perp
 			scopes = {
 				from = prev.owner
@@ -265,7 +265,7 @@ uf_foa_effect_the_crisis_ship = {
 				fromfromfrom = prev
 			}
 		} }
-		owner = { fire_on_action = {
+		owner? = { fire_on_action = {
 			on_action = on_ship_destroyed_victim
 			scopes = {
 				from = root.from
@@ -290,7 +290,7 @@ uf_foa_effect_the_crisis_starbase = {
 
 common_destroy_system_effect = {
 	optimize_memory
-	star = {
+	star? = {
 		create_ambient_object = {
 			type = "destroyed_system"
 			location = this
@@ -328,7 +328,7 @@ common_destroy_system_effect = {
 			is_planet_class = pc_ai
 			has_carrier_flag = machine_lair
 		}
-		from.owner = { save_event_target_as = final_machine_world_destroyer }
+		from.owner? = { save_event_target_as = final_machine_world_destroyer }
 		stop_crisis_sound = yes
 		carrier_event = { id = crisis.2046 }
 	}

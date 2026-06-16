@@ -95,7 +95,7 @@ country_event = {
 
 	trigger = {
 		has_modifier = wg_worm_cooldown
-		FROM = { OR = {
+		FROM? = { OR = {
 			is_country_type = wg_worm 
 			is_same_value = ROOT 
 		}}
@@ -128,7 +128,7 @@ country_event = {
 
 	trigger = {
 		NOT = { has_modifier = wg_worm_cooldown }
-		FROM = { OR = {
+		FROM? = { OR = {
 			is_country_type = wg_worm 
 			is_same_value = ROOT 
 		}}
@@ -673,7 +673,7 @@ country_event = {
 		name = OK
 		if = {
 			limit = { exists = event_target:the_loop_planet }
-			event_target:the_loop_planet = {
+			event_target:the_loop_planet? = {
 				change_pc = pc_nuked
 			}
 		}
@@ -702,11 +702,11 @@ country_event = {
 
 	option = {
 		name = OK
-		event_target:the_loop_leader = {
+		event_target:the_loop_leader? = {
 			set_leader_flag = gained_trait_the_loop
 			if = {
 				limit = { is_ruler = yes }
-				ruler = { add_trait = { trait = leader_trait_ruler_wg_the_loop show_message = no } }
+				ruler? = { add_trait = { trait = leader_trait_ruler_wg_the_loop show_message = no } }
 			} else = {
 				switch = {
 					trigger = leader_class
@@ -733,7 +733,7 @@ country_event = {
 	option = {
 		name = OK
 		custom_tooltip = wg_worm.106.tooltip
-		capital_scope = {
+		capital_scope? = {
 			while = {
 				count = 3
 				create_army = {

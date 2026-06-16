@@ -84,7 +84,7 @@ country_event = {
                 hyperlane = yes
                 initializer = "shop_system" 
             }
-            event_target:pantsu_shop_system = {
+            event_target:pantsu_shop_system? = {
                 random_system_planet = {
                     create_pantsu_shop_guard_fleets = yes
                 }
@@ -100,7 +100,7 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		from = {
+		from? = {
 			is_country_type = pantsu_shop
 		}
 		OR = {
@@ -111,7 +111,7 @@ country_event = {
 	}
 
 	immediate = {
-		from = {
+		from? = {
 			establish_communications_no_message = root
 		}
         if = {
@@ -141,15 +141,15 @@ ship_event = {
 
     trigger = {
         exists = event_target:pantsu_shop_country
-        From = { has_star_flag = shop_system_home }
-        FromFrom = { 
+        From? = { has_star_flag = shop_system_home }
+        FromFrom? = { 
             is_wg_default_country = yes
             NOT = { has_communications = event_target:pantsu_shop_country }
         }
     }
 
     immediate = {
-        owner = {
+        owner? = {
             if = { 
                 limit = { 
                     OR = {
@@ -191,7 +191,7 @@ country_event = {
 	hide_window = yes
     is_triggered_only = yes
     trigger = {
-        fromfrom = {
+        fromfrom? = {
             is_country_type = pantsu_shop
         }
         NOT = { has_country_flag = establish_communicate_in_normal }
@@ -251,7 +251,7 @@ carrier_event = {
     is_triggered_only = yes
 
     trigger = {
-        owner = {
+        owner? = {
             has_authority = auth_shenhai
             is_ai = no
             NOT = { has_communications = event_target:pantsu_shop_country }
@@ -261,13 +261,13 @@ carrier_event = {
 
     immediate = {
         # 防止事件重复发生
-        owner = { set_country_flag = establish_communicate_in_normal }
+        owner? = { set_country_flag = establish_communicate_in_normal }
     }
 
     option = {
         name = CURIOUS
         hidden_effect = {
-            owner = { 
+            owner? = { 
                 establish_communications_no_message = event_target:pantsu_shop_country
                 country_event = { id = wsgranking.1000 }
                 country_event = { id = wsgranking.20001 }
@@ -408,7 +408,7 @@ country_event = {
             has_authority = auth_warshipgirls
         }
         exists = event_target:pantsu_shop_country
-        event_target:pantsu_shop_country = {
+        event_target:pantsu_shop_country? = {
             NOT = { is_hostile = root }
         }
         NOT = { has_country_flag = pantsu_shop_cooldown }
@@ -416,9 +416,9 @@ country_event = {
             #防止视窗多开
             NOT = { has_country_flag = engaged_with_pantsu_shop }
 			pantsu_shop_active_diplo = no 
-			from = { is_same_value = root } # returning from open sub-menu
+			from? = { is_same_value = root } # returning from open sub-menu
 		}
-        from = { OR = {
+        from? = { OR = {
             is_country_type = pantsu_shop
             is_same_value = root # returned from menu
         }}
@@ -530,15 +530,15 @@ country_event = {
         }
         exists = event_target:pantsu_shop_country
         has_country_flag = pantsu_shop_cooldown
-        event_target:pantsu_shop_country = {
+        event_target:pantsu_shop_country? = {
             NOT = { is_hostile = root }
         }
         OR = { 
             #防止视窗多开
 			pantsu_shop_active_diplo = no 
-			from = { is_same_value = root } # returning from open sub-menu
+			from? = { is_same_value = root } # returning from open sub-menu
 		}
-        from = { OR = {
+        from? = { OR = {
             is_country_type = pantsu_shop
             is_same_value = root # returned from menu
         }}
@@ -584,7 +584,7 @@ country_event = {
 #             has_authority = auth_shenhai
 #             has_authority = auth_warshipgirls
 #         }
-#         from = { is_country_type = pantsu_shop }
+#         from? = { is_country_type = pantsu_shop }
 #         NOT = { has_global_flag = pantsu_shop_disabled }
 #     }
     
@@ -607,20 +607,20 @@ country_event = {
     }
     
     trigger = {
-        from = { is_country_type = pantsu_shop }
+        from? = { is_country_type = pantsu_shop }
         OR = {
             has_authority = auth_shenhai
             has_authority = auth_warshipgirls
         }
         exists = event_target:pantsu_shop_country
-        event_target:pantsu_shop_country = {
+        event_target:pantsu_shop_country? = {
             is_hostile = ROOT
         }
         NOT = { has_active_event = { wsgranking.1003 }}
         OR = { # prevents diplo duplication
             NOT = { has_country_flag = engaged_with_pantsu_shop }
 			pantsu_shop_active_diplo = no 
-			from = { is_same_value = root } # returning from open sub-menu
+			from? = { is_same_value = root } # returning from open sub-menu
 		}
         is_ai = no
         NOT = { has_global_flag = pantsu_shop_disabled }
@@ -677,7 +677,7 @@ country_event = {
         OR = { 
             #防止视窗多开
 			pantsu_shop_active_diplo = no 
-			from = { is_same_value = root } # returning from open sub-menu
+			from? = { is_same_value = root } # returning from open sub-menu
         }
         NOT = { has_global_flag = pantsu_shop_disabled }
     }
@@ -1807,12 +1807,12 @@ country_event = {
             }
         }
         hidden_effect = {
-            event_target:pantsu_shop_country = { 
+            event_target:pantsu_shop_country? = { 
                 set_variable = { which = dark_matter_out value = root.wg_shop_exchange_resource }
                 multiply_variable = { which = dark_matter_out  value = 1.25 }
                 subtract_variable = { which = dark_matter_stock value = dark_matter_out }
             }
-            event_target:pantsu_shop_country = { subtract_variable = { which = dark_matter_stock value = wg_shop_exchange_resource }}
+            event_target:pantsu_shop_country? = { subtract_variable = { which = dark_matter_stock value = wg_shop_exchange_resource }}
             country_event = { id = wsgranking.1011 }
         }
         add_resource = {
@@ -1837,7 +1837,7 @@ country_event = {
             }
         }
         hidden_effect = {
-            event_target:pantsu_shop_country = { 
+            event_target:pantsu_shop_country? = { 
                 set_variable = { which = zro_out value = root.wg_shop_exchange_resource }
                 multiply_variable = { which = zro_out  value = 1.25 }
                 subtract_variable = { which = zro_stock value = zro_out }
@@ -1866,7 +1866,7 @@ country_event = {
             }
         }
         hidden_effect = {
-            event_target:pantsu_shop_country = { 
+            event_target:pantsu_shop_country? = { 
                 set_variable = { which = living_metal_out value = root.wg_shop_exchange_resource }
                 multiply_variable = { which = living_metal_out  value = 1.25 }
                 subtract_variable = { which = living_metal_stock value = living_metal_out }
@@ -1899,7 +1899,7 @@ country_event = {
             }
         }
         hidden_effect = {
-            event_target:pantsu_shop_country = { 
+            event_target:pantsu_shop_country? = { 
                 set_variable = { which = nanite_out value = root.wg_shop_exchange_resource }
                 multiply_variable = { which = nanite_out value = 0.3 }
                 subtract_variable = { which = nanite_stock value = nanite_out }
@@ -1929,7 +1929,7 @@ country_event = {
             }
         }
         hidden_effect = {
-            event_target:pantsu_shop_country = { 
+            event_target:pantsu_shop_country? = { 
                 set_variable = { which = alpha_out value = root.wg_shop_exchange_resource }
                 multiply_variable = { which = alpha_out value = 0.6 }
                 subtract_variable = { which = alpha_stock value = alpha_out }
@@ -1959,7 +1959,7 @@ country_event = {
             }
         }
         hidden_effect = {
-            event_target:pantsu_shop_country = { 
+            event_target:pantsu_shop_country? = { 
                 set_variable = { which = se_out value = root.wg_shop_exchange_resource }
                 multiply_variable = { which = se_out value = 0.6 }
                 subtract_variable = { which = se_stock value = se_out }
@@ -2682,7 +2682,7 @@ event = {
     }
 
     immediate = {
-        event_target:pantsu_shop_country = {
+        event_target:pantsu_shop_country? = {
             if = {
                 limit = { check_variable = { which = dark_matter_stock value < 2000000 }}
                 if = {
@@ -4398,7 +4398,7 @@ country_event = {
             days = 7200
         }
         hidden_effect = {
-			event_target:PantsuShopTaskPlanet = {
+			event_target:PantsuShopTaskPlanet? = {
 				random_owned_pop_group = {
 					limit = {
                         is_same_species = root
@@ -4611,7 +4611,7 @@ country_event = {
                 energy = 2000
             }
         }
-        event_target:pantsu_shop_franchising_planet = {
+        event_target:pantsu_shop_franchising_planet? = {
             add_modifier = {
                 modifier = pantsu_shop_franchising
                 days = -1
@@ -4946,7 +4946,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-        fromfromfrom = { has_fleet_flag = pantsu_shop_guard }
+        fromfromfrom? = { has_fleet_flag = pantsu_shop_guard }
 	}
 
 	immediate = {
@@ -5081,7 +5081,7 @@ country_event = {
 #             limit = { has_country_flag = asked_for_immigration }
 #             remove_country_flag = asked_for_immigration
 #         }
-#         capital_scope = { solar_system = {
+#         capital_scope? = { solar_system? = {
 #             random_system_planet = {
 #                 limit = { 
 #                     is_star = no
@@ -5111,7 +5111,7 @@ country_event = {
 #     is_triggered_only = yes
 
 #     immediate = {
-#         #event_target:pantsu_shop_country = {
+#         #event_target:pantsu_shop_country? = {
 #         #    destroy_country = yes
 #         #}
 #         country_event = { id = wsgranking.2005 }
@@ -5269,7 +5269,7 @@ country_event = {
             energy = 2000
         }
 		hidden_effect = {
-			event_target:pantsu_shop_country = {
+			event_target:pantsu_shop_country? = {
 				steal_relic = {
 					relic = r_khans_throne
 					target = event_target:Khans_throne_owner
@@ -5330,7 +5330,7 @@ country_event = {
             energy = 4000
         }
 		hidden_effect = {
-			event_target:pantsu_shop_country = {
+			event_target:pantsu_shop_country? = {
 				steal_relic = {
 					relic = r_khans_throne
 					target = event_target:Khans_throne_owner
@@ -5370,7 +5370,7 @@ country_event = {
             energy = 2000
         }
 		hidden_effect = {
-			event_target:pantsu_shop_country = {
+			event_target:pantsu_shop_country? = {
 				steal_relic = {
 					relic = r_khans_throne
 					target = event_target:Khans_throne_owner
@@ -5415,7 +5415,7 @@ country_event = {
             energy = 3000
         }
 		hidden_effect = {
-			event_target:pantsu_shop_country = {
+			event_target:pantsu_shop_country? = {
 				steal_relic = {
 					relic = r_khans_throne
 					target = event_target:Khans_throne_owner
@@ -5474,7 +5474,7 @@ country_event = {
             energy = 3000
         }
 		hidden_effect = {
-			event_target:pantsu_shop_country = {
+			event_target:pantsu_shop_country? = {
 				steal_relic = {
 					relic = r_khans_throne
 					target = event_target:Khans_throne_owner
@@ -5521,7 +5521,7 @@ country_event = {
             energy = 5000
         }
 		hidden_effect = {
-			event_target:pantsu_shop_country = {
+			event_target:pantsu_shop_country? = {
 				steal_relic = {
 					relic = r_khans_throne
 					target = event_target:Khans_throne_owner
@@ -5582,7 +5582,7 @@ country_event = {
             energy = 5000
         }
 		hidden_effect = {
-			event_target:pantsu_shop_country = {
+			event_target:pantsu_shop_country? = {
 				steal_relic = {
 					relic = r_khans_throne
 					target = event_target:Khans_throne_owner
@@ -5629,7 +5629,7 @@ country_event = {
             energy = 10000
         }
 		hidden_effect = {
-			event_target:pantsu_shop_country = {
+			event_target:pantsu_shop_country? = {
 				steal_relic = {
 					relic = r_khans_throne
 					target = event_target:Khans_throne_owner
@@ -5690,7 +5690,7 @@ country_event = {
             energy = 10000
         }
 		hidden_effect = {
-			event_target:pantsu_shop_country = {
+			event_target:pantsu_shop_country? = {
 				steal_relic = {
 					relic = r_khans_throne
 					target = event_target:Khans_throne_owner
@@ -5738,7 +5738,7 @@ country_event = {
             energy = 20000
         }
 		hidden_effect = {
-			event_target:pantsu_shop_country = {
+			event_target:pantsu_shop_country? = {
 				steal_relic = {
 					relic = r_khans_throne
 					target = event_target:Khans_throne_owner
@@ -5778,7 +5778,7 @@ country_event = {
 		change_variable = { which = rankpts value = 2 }
 		set_global_flag = goooooooooood_chair
 		set_country_flag = chair_victim
-		event_target:pantsu_shop_country = {
+		event_target:pantsu_shop_country? = {
 			steal_relic = {
 				relic = r_khans_throne
 				target = event_target:Khans_throne_owner
@@ -5827,7 +5827,7 @@ country_event = {
 
     option = {
 		name = wsgranking.2022.a
-		owner = { add_relic = "r_eila_throne" }
+		owner? = { add_relic = "r_eila_throne" }
 	}
 }
 #########################################食堂
@@ -6177,7 +6177,7 @@ country_event = {
     option = {
         name = wsgranking.2039.a
 		set_country_flag = wg_canteen9
-		event_target:wg_canteen_scientist = {
+		event_target:wg_canteen_scientist? = {
 			add_experience = 1000
 			add_trait = { trait = leader_trait_spark_of_genius show_message = no }
 		}
@@ -6358,14 +6358,14 @@ country_event = {
         }
         exists = event_target:pantsu_shop_country
 		has_communications = event_target:pantsu_shop_country
-        event_target:pantsu_shop_country = {
+        event_target:pantsu_shop_country? = {
             NOT = { is_hostile = root }
         }
         OR = { 
             #防止视窗多开
             NOT = { has_country_flag = engaged_with_pantsu_shop2 }
 		}
-        from = { OR = {
+        from? = { OR = {
             is_country_type = pantsu_shop_logo_titan
             is_same_value = root # returned from menu
         }}
@@ -6626,16 +6626,16 @@ carrier_event = {
 
     is_triggered_only = yes
     trigger = {
-        owner = { NOT = { has_country_flag = built_cunningmazon }}
+        owner? = { NOT = { has_country_flag = built_cunningmazon }}
     }
     immediate = {
-        owner = { set_country_flag = built_cunningmazon }
+        owner? = { set_country_flag = built_cunningmazon }
     }
 
     option = {
         name = wsgranking.2104.a
         hidden_effect = {
-            owner = { 
+            owner? = { 
                 country_event = { id = wsgranking.2106 days = 1800 }
             }
         }

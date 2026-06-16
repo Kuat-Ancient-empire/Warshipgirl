@@ -253,7 +253,7 @@ uf_fleet_destory_planet_action = {
                             check_variable = { which = fleet_id value = root.uf_fleet_id }
                         }}
                     }
-                    solar_system = { clear_variable = fleet_id }
+                    solar_system? = { clear_variable = fleet_id }
                 }
                 # 等候一段时间后仍然找不到可通行路径，折跃
                 if = {
@@ -262,7 +262,7 @@ uf_fleet_destory_planet_action = {
                         NOT = {
                             any_system = {
                                 NOT = { has_star_flag = uf_destroyed_system }
-                                ROOT = { can_access_system = PREV }
+                                ROOT? = { can_access_system = PREV }
                                 OR = {
                                     exists = starbase
                                     any_system_planet = {
@@ -288,7 +288,7 @@ uf_fleet_destory_planet_action = {
                             found_system = { 
                                 effect = {
                                     id = wg_crisis.97.e02
-                                    root = {
+                                    root? = {
                                         set_location = prev.star
                                     }
                                 }
@@ -302,10 +302,10 @@ uf_fleet_destory_planet_action = {
                 trigger = {
                     id = wg_crisis.97.t1
                     NOT = { has_star_flag = uf_destroyed_system }
-                    ROOT = { can_access_system = prev }
+                    ROOT? = { can_access_system = prev }
                     any_system_planet = {  
                         exists = owner
-                        owner = { is_hostile = root.owner }
+                        owner? = { is_hostile = root.owner }
                     }
                 }
                 found_system = {
@@ -325,18 +325,18 @@ uf_fleet_destory_planet_action = {
                                 id = wg_crisis.97.e2
                                 # 提醒玩家
                                 if = {
-                                    limit = { solar_system = { any_system_planet = {
+                                    limit = { solar_system? = { any_system_planet = {
                                         has_owner = yes
-                                        owner = { is_ai = no }
+                                        owner? = { is_ai = no }
                                     }}}
-                                    solar_system = { 
+                                    solar_system? = { 
                                         save_event_target_as = uf_colossus_arrived_system
                                         random_system_planet = {
                                             limit = {
                                                 has_owner = yes
-                                                owner = { is_ai = no }
+                                                owner? = { is_ai = no }
                                             }
-                                            owner = { country_event = { id = wg_crisis.89 }}
+                                            owner? = { country_event = { id = wg_crisis.89 }}
                                         }
                                     }
                                 }
@@ -350,7 +350,7 @@ uf_fleet_destory_planet_action = {
                     # 找不到路
                     effect = {
                         id = wg_crisis.97.e13
-                        ROOT = { 
+                        ROOT? = { 
                             set_fleet_flag = cannot_find_path
                             set_timed_fleet_flag = {
                                 flag = orders_cooldown days = 200

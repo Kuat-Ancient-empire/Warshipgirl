@@ -8,14 +8,14 @@ country_event = {
 
     trigger = { 
         has_global_flag = wg_resistant_army_arrived
-        FROMFROM = { 
+        FROMFROM? = { 
             leader? = { has_leader_flag = ra_admiral }
             NOT = { has_fleet_flag = drones }
         }
     }
 
     immediate = {
-        FROMFROM = {
+        FROMFROM? = {
             ##################################################################
             #       R                                                        #
             ##################################################################
@@ -35,8 +35,8 @@ country_event = {
             # 重庆
             else_if = { 
                 limit = { leader? = { has_leader_flag = ra_chongqing } }
-                ROOT.FROMFROMFROM = { if = {
-                    limit = { owner = { NOT = { is_same_value = PREVPREV.owner }}}
+                ROOT.FROMFROMFROM? = { if = {
+                    limit = { owner? = { NOT = { is_same_value = PREVPREV.owner }}}
                     every_owned_ship = {
                         limit = {
                             is_ship_size = scout_UAV
@@ -72,7 +72,7 @@ country_event = {
                     limit = { NOT = { has_fleet_flag = essex_buff } }
                     set_fleet_flag = essex_buff
                 }
-                ROOT.FROMFROMFROM = {
+                ROOT.FROMFROMFROM? = {
                     every_owned_ship = {
                         limit = {
                             is_ship_size = scout_UAV
@@ -91,7 +91,7 @@ country_event = {
             # 内华达
             else_if = { 
                 limit = { leader? = { has_leader_flag = ra_nevada } }
-                ROOT.FROMFROMFROM = { if = {
+                ROOT.FROMFROMFROM? = { if = {
                     limit = { NOT = { has_fleet_flag = nevada_debuff } }
                     add_modifier = { modifier = nevada_debuff_to_enemy days = -1 }
                     set_fleet_flag = nevada_debuff
@@ -152,7 +152,7 @@ country_event = {
             else_if = { 
                 limit = { leader? = { has_leader_flag = ra_sukhbaatar } }
                 if = {
-                    limit = { ROOT.FROM = { is_enemy_country = yes } }
+                    limit = { ROOT.FROM? = { is_enemy_country = yes } }
                     set_fleet_flag = sukhbaatar
                 }
             }        
@@ -211,7 +211,7 @@ country_event = {
                     leader? = { has_leader_flag = ra_johnston }
                 }
                 save_event_target_as = this_fleet
-                event_target:this_fleet = {
+                event_target:this_fleet? = {
                     set_variable = { which = "num_enemy_ships" value = root.fromfromfrom.trigger:num_ships }
                 }
                 set_variable = { which = "num_fleet_ships" value = trigger:num_ships }
@@ -228,7 +228,7 @@ country_event = {
                     leader? = { has_leader_flag = ra_richelieu }
                 }
                 save_event_target_as = this_fleet
-                event_target:this_fleet = {
+                event_target:this_fleet? = {
                     set_variable = { which = "num_enemy_ships" value = root.fromfromfrom.trigger:num_ships }
                 }
                 set_variable = { which = "num_fleet_ships" value = trigger:num_ships }
@@ -245,7 +245,7 @@ country_event = {
             # 皇方
             else_if = { 
                 limit = { leader? = { has_leader_flag = ra_royal_ark } }
-                root.fromfromfrom = { if = {
+                root.fromfromfrom? = { if = {
                     limit = { NOT = { has_fleet_flag = royal_ark_debuff } }
                     add_modifier = { modifier = royal_ark_debuff_to_enemy days = -1 }
                     set_fleet_flag = royal_ark_debuff
@@ -264,7 +264,7 @@ country_event = {
             # 胡腾
             else_if = { 
                 limit = { leader? = { has_leader_flag = ra_hutton } }
-                root.fromfromfrom = {
+                root.fromfromfrom? = {
                     if = {
                         limit = { NOT = { has_fleet_flag = hutton_buff } }
                         add_modifier = { modifier = hutton_buff_to_enemy days = -1 }
@@ -273,7 +273,7 @@ country_event = {
                     every_owned_ship = {
                         limit = {
                             is_ship_size = scout_UAV
-                            Fleet = { is_same_value = PREVPREVPREV }
+                            Fleet? = { is_same_value = PREVPREVPREV }
                             NOT = { has_ship_flag = hutton_buff }
                         }
                         add_modifier = { modifier = hutton_buff_to_enemy_drones days = -1 }
@@ -288,7 +288,7 @@ country_event = {
             # 企业
             else_if = { 
                 limit = { leader? = { has_leader_flag = ra_enterprise } }
-                root.fromfromfrom = {
+                root.fromfromfrom? = {
                     if = {
                         limit = { NOT = { has_fleet_flag = enterprise_debuff }}
                         add_modifier = { modifier = enterprise_debuff_to_enemy days = -1 }
@@ -394,7 +394,7 @@ country_event = {
                     add_modifier = { modifier = taiho_sh_buff_to_all days = -1 }
                     set_fleet_flag = taiho_sh_buff
                 }
-                root.fromfromfrom = {
+                root.fromfromfrom? = {
                     every_owned_ship = {
                         limit = {
                             is_ship_size = scout_UAV
@@ -586,8 +586,8 @@ fleet_event = {
             remove_fleet_flag = sukhbaatar
             create_random_ship_sukhbaatar = yes
             if = {
-                limit = { owner = { NOT = { has_country_flag = no_notice_sukhbaatar }}}
-                owner = { country_event = { id = raa_skill.150 }}
+                limit = { owner? = { NOT = { has_country_flag = no_notice_sukhbaatar }}}
+                owner? = { country_event = { id = raa_skill.150 }}
             }
         }
         ##################################################################
@@ -842,8 +842,8 @@ fleet_event = {
         } }
         NAND = { 
             has_fleet_flag = drones
-            FROM = { has_fleet_flag = drones }
-            FROMFROM = { has_fleet_flag = drones }
+            FROM? = { has_fleet_flag = drones }
+            FROMFROM? = { has_fleet_flag = drones }
         }
     }
 
@@ -853,7 +853,7 @@ fleet_event = {
             # 重庆
             if = {
                 limit = { has_leader_flag = ra_chongqing }
-                ROOT = { every_combatant_fleet = { 
+                ROOT? = { every_combatant_fleet = { 
                     limit = { NOT = { has_fleet_flag = drones }}
                     if = {
                         limit = { NOT = { has_fleet_flag = chongqing_debuff }}
@@ -873,7 +873,7 @@ fleet_event = {
             # 饺子
             if = {
                 limit = { has_leader_flag = ra_essex }
-                ROOT = { every_combatant_fleet = { 
+                ROOT? = { every_combatant_fleet = { 
                     limit = { NOT = { has_fleet_flag = drones }}
                     if = {
                         limit = { NOT = { has_fleet_flag = essex_debuff }}
@@ -893,7 +893,7 @@ fleet_event = {
             # 内华达
             if = {
                 limit = { has_leader_flag = ra_nevada }
-                ROOT = { every_combatant_fleet = { 
+                ROOT? = { every_combatant_fleet = { 
                     limit = { NOT = { has_fleet_flag = nevada_debuff }}
                     add_modifier = { modifier = nevada_debuff_to_enemy days = -1 }
                     set_fleet_flag = nevada_debuff
@@ -902,7 +902,7 @@ fleet_event = {
             # 方舟
             if = {
                 limit = { has_leader_flag = ra_royal_ark }
-                ROOT = { every_combatant_fleet = { 
+                ROOT? = { every_combatant_fleet = { 
                     limit = { NOT = { has_fleet_flag = royal_ark_debuff }}
                     add_modifier = { modifier = royal_ark_debuff_to_enemy days = -1 }
                     set_fleet_flag = royal_ark_debuff
@@ -911,7 +911,7 @@ fleet_event = {
             # 胡腾
             if = {
                 limit = { has_leader_flag = ra_hutton }
-                ROOT = { every_combatant_fleet = { 
+                ROOT? = { every_combatant_fleet = { 
                     limit = { NOT = { has_fleet_flag = drones }}
                     if = {
                         limit = { NOT = { has_fleet_flag = hutton_buff }}
@@ -938,7 +938,7 @@ fleet_event = {
             # 企业
             if = {
                 limit = { has_leader_flag = ra_enterprise }
-                ROOT = { every_combatant_fleet = { 
+                ROOT? = { every_combatant_fleet = { 
                     limit = { NOT = { has_fleet_flag = enterprise_debuff }}
                     add_modifier = { modifier = enterprise_debuff_to_enemy days = -1 }
                     set_fleet_flag = enterprise_debuff
@@ -947,7 +947,7 @@ fleet_event = {
             # 深海大凤
             if = {
                 limit = { has_leader_flag = ra_taiho_sh }
-                ROOT = { every_combatant_fleet = { 
+                ROOT? = { every_combatant_fleet = { 
                     limit = { NOT = { has_fleet_flag = drones }}
                     if = {
                         limit = { NOT = { has_fleet_flag = taiho_sh_debuff }}
@@ -968,7 +968,7 @@ fleet_event = {
             # 饺子
             if = { 
                 limit = { has_leader_flag = ra_essex }
-                ROOT = { if = { 
+                ROOT? = { if = { 
                     limit = { NOT = { has_fleet_flag = drones }}
                     every_owned_ship = {
                         limit = {
@@ -987,7 +987,7 @@ fleet_event = {
             # 海妈
             if = {
                 limit = { has_leader_flag = ra_helena }
-                ROOT = { if = { 
+                ROOT? = { if = { 
                     limit = { NOT = { has_fleet_flag = helena_buff }}
                     add_modifier = { modifier = helena_buff_to_all days = -1}
                     set_fleet_flag = helena_buff
@@ -996,7 +996,7 @@ fleet_event = {
             # U47
             if = {
                 limit = { has_leader_flag = ra_U47 }
-                ROOT = { if = { 
+                ROOT? = { if = { 
                     limit = { NOT = { has_fleet_flag = U47_buff }}
                     add_modifier = { modifier = U47_buff_to_all days = -1}
                     set_fleet_flag = U47_buff
@@ -1005,7 +1005,7 @@ fleet_event = {
             # 塞猫
             if = {
                 limit = { has_leader_flag = ra_hood }
-                ROOT = { if = { 
+                ROOT? = { if = { 
                     limit = { NOT = { has_fleet_flag = hood_buff }}
                     add_modifier = { modifier = hood_buff_to_all days = -1}
                     set_fleet_flag = hood_buff
@@ -1014,7 +1014,7 @@ fleet_event = {
             # 太太
             if = {
                 limit = { has_leader_flag = ra_lexington }
-                ROOT = { if = { 
+                ROOT? = { if = { 
                     limit = { NOT = { has_fleet_flag = drones }}
                     every_owned_ship = {
                         limit = {
@@ -1034,7 +1034,7 @@ fleet_event = {
             # 深海大凤
             if = {
                 limit = { has_leader_flag = ra_taiho_sh }
-                ROOT = { if = { 
+                ROOT? = { if = { 
                     limit = { NOT = { has_fleet_flag = drones }}
                     every_owned_ship = {
                         limit = {
@@ -1064,7 +1064,7 @@ fleet_event = {
             # 卡伯特
             if = {
                 limit = { has_leader_flag = ra_cobot }
-                ROOT = { if = { 
+                ROOT? = { if = { 
                     limit = { NOR = { 
                         has_fleet_flag = drones
                         has_fleet_flag = cobot_skill_triggered
@@ -1074,7 +1074,7 @@ fleet_event = {
                     add_modifier = { modifier = cobot_buff_to_all days = -1 }
                     every_owned_ship = {
                         limit = {
-                            Fleet = { is_same_value = PREVPREVPREV }
+                            Fleet? = { is_same_value = PREVPREVPREV }
                             NOR = { 
                                 is_ship_size_corvette = yes
                                 has_ship_flag = cobot_skill
@@ -1175,7 +1175,7 @@ fleet_event = {
     immediate = {
         # initialize_majia_country = yes
         random_combatant_fleet = {
-            root.owner = {
+            root.owner? = {
                 create_fleet = {
                     name = "NAME_Opening_torpedo_strike"
                     effect = {
@@ -1427,7 +1427,7 @@ fleet_event = {
     }
 
     immediate = {
-        from = {
+        from? = {
             random_owned_ship = {
                 save_event_target_as = wg_destroyer_target
             }
@@ -1468,8 +1468,8 @@ country_event = {
 
     trigger = {
         exists = FROMFROM
-        FROMFROM = {
-            Fleet = { 
+        FROMFROM? = {
+            Fleet? = { 
                 exists = leader
                 is_in_combat = yes
                 leader? = { has_leader_flag = yamato }
@@ -1479,8 +1479,8 @@ country_event = {
 
     immediate = {
         if = {
-            limit = { FROMFROM = { is_ship_size = scout_UAV }}
-            FROMFROMFROM.Fleet = {
+            limit = { FROMFROM? = { is_ship_size = scout_UAV }}
+            FROMFROMFROM.Fleet? = {
                 random_list = {
                     1 = {
                         random_owned_ship = { 
@@ -1492,7 +1492,7 @@ country_event = {
             }
         }
         else = {
-            FROMFROMFROM.Fleet = {
+            FROMFROMFROM.Fleet? = {
                 random_list = {
                     1 = {
                         random_owned_ship = { 
@@ -1513,7 +1513,7 @@ fleet_event = {
 
     immediate = {
         random_combatant_fleet = {
-            root.owner = {
+            root.owner? = {
                 create_fleet = {
                     name = "NAME_Opening_missile_strike"
                     effect = {
@@ -1783,7 +1783,7 @@ fleet_event = {
         random_list = {
             1 = {
                 random_owned_ship = {
-                    solar_system = {
+                    solar_system? = {
                         every_fleet_in_system = {
                             limit = { NOT = { is_same_value = root }}
                             every_owned_ship = {
@@ -1797,7 +1797,7 @@ fleet_event = {
                         }
                     }
                 }
-                owner = { country_event = { id = raa_skill.2051 }}
+                owner? = { country_event = { id = raa_skill.2051 }}
             }
             666 = {}
         }

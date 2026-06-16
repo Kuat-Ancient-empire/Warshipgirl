@@ -6,18 +6,18 @@ uf_exe_invasion_jump_drive_planet_action  = {
 		99 = {  
 			modifier = { 
 				set = 0 
-				root = { has_fleet_flag = monolith_attack_fleet }
+				root? = { has_fleet_flag = monolith_attack_fleet }
 			}
-			prevprev = { 
+			prevprev? = { 
 				auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } 
 			}
 		}
 		99 = {  
 			modifier = { 
 				set = 0 
-				root = { NOT = { has_fleet_flag = monolith_attack_fleet } }
+				root? = { NOT = { has_fleet_flag = monolith_attack_fleet } }
 			}
-			prevprev = { 
+			prevprev? = { 
 				auto_move_to_planet = { 
 					target = prev 
 					arrival_effect = monilith_crisis_destroy_planet 
@@ -28,13 +28,13 @@ uf_exe_invasion_jump_drive_planet_action  = {
 		1 = {
 			modifier = {
 				set = 0
-				prevprev = { any_owned_ship = { has_ship_flag = uf_jump_drive_cooldown } }
+				prevprev? = { any_owned_ship = { has_ship_flag = uf_jump_drive_cooldown } }
 			}
 			modifier = {
 				set = 0
-				root = { has_fleet_flag = monolith_attack_fleet }
+				root? = { has_fleet_flag = monolith_attack_fleet }
 			}
-			prevprev = {
+			prevprev? = {
 				set_location = { target = prev distance = 300 angle = random }
 				every_owned_ship = { 
 					create_ambient_object = {
@@ -62,13 +62,13 @@ uf_exe_invasion_jump_drive_planet_action  = {
 		1 = {
 			modifier = {
 				set = 0
-				prevprev = { any_owned_ship = { has_ship_flag = uf_jump_drive_cooldown } }
+				prevprev? = { any_owned_ship = { has_ship_flag = uf_jump_drive_cooldown } }
 			}
 			modifier = {
 				set = 0
-				root = { NOT = { has_fleet_flag = monolith_attack_fleet } }
+				root? = { NOT = { has_fleet_flag = monolith_attack_fleet } }
 			}
-			prevprev = {
+			prevprev? = {
 				set_location = { target = prev distance = 300 angle = random }
 				every_owned_ship = { 
 					create_ambient_object = {
@@ -102,15 +102,15 @@ uf_exe_invasion_jump_drive_planet_action  = {
 
 uf_exe_invasion_jump_drive_fleet_action  = {
 	random_list = {
-		99 = { prevprev = { 
+		99 = { prevprev? = { 
 			auto_follow_fleet = { target = prev.fleet attack_fleet = yes } 
 		} }
 		1 = {
 			modifier = {
 				factor = 0
-				prevprev = { any_owned_ship = { has_ship_flag = uf_jump_drive_cooldown } }
+				prevprev? = { any_owned_ship = { has_ship_flag = uf_jump_drive_cooldown } }
 			}
-			prevprev = {
+			prevprev? = {
 				set_location = { target = prev.fleet distance = @uf_ge_fleet_jumpdrive_to_target_distance angle = random }
 				every_owned_ship = { 
 					create_ambient_object = {
@@ -146,26 +146,26 @@ uf_exe_invasion_fleet_wandering_action = {
 	random_list = {
 		#周围星系随机设置目标
 		95 = {
-			solar_system = { random_neighbor_system = {
-				limit = { prevprev = { can_access_system = prev } }
+			solar_system? = { random_neighbor_system = {
+				limit = { prevprev? = { can_access_system = prev } }
 				save_event_target_as = $TYPE$_invasion_fleet_wandering_action_target
 			} }
 			if = {
 				limit = { exists = event_target:$TYPE$_invasion_fleet_wandering_action_target }
 				event_target:$TYPE$_invasion_fleet_wandering_action_target = {
-					system_star = { prevprev = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
+					system_star = { prevprev? = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
 				}
 			} 
 			else_if = {
 				limit = { any_system = {
-					prev = { can_access_system = prev }
+					prev? = { can_access_system = prev }
 				} }
 				random_system = {
-					limit = { prev = { can_access_system = prev } }
+					limit = { prev? = { can_access_system = prev } }
 					save_event_target_as = $TYPE$_invasion_fleet_wandering_action_target
 				}
 				event_target:$TYPE$_invasion_fleet_wandering_action_target = {
-					system_star = { prevprev = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
+					system_star = { prevprev? = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
 				}
 			}
 			else = { 
@@ -178,7 +178,7 @@ uf_exe_invasion_fleet_wandering_action = {
 		5 = {
 			modifier = { 
 				set = 0 
-				root = { has_fleet_flag = monolith_attack_fleet }
+				root? = { has_fleet_flag = monolith_attack_fleet }
 			}
 			modifier = { 
 				mult = 0
@@ -204,7 +204,7 @@ uf_exe_invasion_fleet_wandering_action = {
 				event_target:$TYPE$_invasion_fleet_wandering_action_target = {
 					random_system_planet = {
 						limit = { is_primary_star = yes }
-						prevprev = {
+						prevprev? = {
 							set_location = { target = prev distance = 300 angle = random }
 							every_owned_ship = { 
 								create_ambient_object = {
@@ -224,26 +224,26 @@ uf_exe_invasion_fleet_wandering_action = {
 				}
 			} 
 			else = {
-				solar_system = { random_neighbor_system = {
-					limit = { prevprev = { can_access_system = prev } }
+				solar_system? = { random_neighbor_system = {
+					limit = { prevprev? = { can_access_system = prev } }
 					save_event_target_as = $TYPE$_invasion_fleet_wandering_action_target
 				} }
 				if = {
 					limit = { exists = event_target:$TYPE$_invasion_fleet_wandering_action_target }
 					event_target:$TYPE$_invasion_fleet_wandering_action_target = {
-						system_star = { prevprev = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
+						system_star = { prevprev? = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
 					}
 				} 
 				else_if = {
 					limit = { any_system = {
-						prev = { can_access_system = prev }
+						prev? = { can_access_system = prev }
 					} }
 					random_system = {
-						limit = { prev = { can_access_system = prev } }
+						limit = { prev? = { can_access_system = prev } }
 						save_event_target_as = $TYPE$_invasion_fleet_wandering_action_target
 					}
 					event_target:$TYPE$_invasion_fleet_wandering_action_target = {
-						system_star = { prevprev = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
+						system_star = { prevprev? = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
 					}
 				}
 				else = { 
@@ -257,7 +257,7 @@ uf_exe_invasion_fleet_wandering_action = {
 		5 = {
 			modifier = { 
 				set = 0 
-				root = { NOT = { has_fleet_flag = monolith_attack_fleet } }
+				root? = { NOT = { has_fleet_flag = monolith_attack_fleet } }
 			}
 			modifier = { 
 				mult = 0
@@ -280,7 +280,7 @@ uf_exe_invasion_fleet_wandering_action = {
 				event_target:$TYPE$_invasion_fleet_wandering_action_target = {
 					random_system_planet = {
 						limit = { is_primary_star = yes }
-						prevprev = {
+						prevprev? = {
 							set_location = { target = prev distance = 300 angle = random }
 							every_owned_ship = { 
 								create_ambient_object = {
@@ -304,26 +304,26 @@ uf_exe_invasion_fleet_wandering_action = {
 				}
 			} 
 			else = {
-				solar_system = { random_neighbor_system = {
-					limit = { prevprev = { can_access_system = prev } }
+				solar_system? = { random_neighbor_system = {
+					limit = { prevprev? = { can_access_system = prev } }
 					save_event_target_as = $TYPE$_invasion_fleet_wandering_action_target
 				} }
 				if = {
 					limit = { exists = event_target:$TYPE$_invasion_fleet_wandering_action_target }
 					event_target:$TYPE$_invasion_fleet_wandering_action_target = {
-						system_star = { prevprev = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
+						system_star = { prevprev? = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
 					}
 				} 
 				else_if = {
 					limit = { any_system = {
-						prev = { can_access_system = prev }
+						prev? = { can_access_system = prev }
 					} }
 					random_system = {
-						limit = { prev = { can_access_system = prev } }
+						limit = { prev? = { can_access_system = prev } }
 						save_event_target_as = $TYPE$_invasion_fleet_wandering_action_target
 					}
 					event_target:$TYPE$_invasion_fleet_wandering_action_target = {
-						system_star = { prevprev = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
+						system_star = { prevprev? = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } }
 					}
 				}
 				else = { 
@@ -342,21 +342,21 @@ uf_exe_invasion_fleet_action = {
 	# 寻找所在星系目前没有己方单位的敌对星球
 	if = {
 		limit = {
-			root = {
+			root? = {
 				NOT = { has_fleet_flag = monolith_attack_fleet }
 				exists = solar_system
-				solar_system = {
+				solar_system? = {
 					any_system_planet = { uf_standard_system_target_triggers = yes }
 				}
 			}
 		}
-		root = {
-			solar_system = {
+		root? = {
+			solar_system? = {
 				random_system_planet = {
 					limit = {
 						uf_standard_system_target_triggers = yes
 					}
-					prevprev = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } }
+					prevprev? = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } }
 				}
 			}
 		}
@@ -364,21 +364,21 @@ uf_exe_invasion_fleet_action = {
 	# 寻找所在星系内敌对军事舰船
 	else_if = {
 		limit = {
-			root = {
+			root? = {
 				NOT = { has_fleet_flag = monolith_attack_fleet }
 				exists = solar_system
-				solar_system = { any_ship_in_system = {
+				solar_system? = { any_ship_in_system = {
 					uf_standard_ship_target_triggers = yes
 				} }
 			}
 		}
-		root = {
-			solar_system = {
+		root? = {
+			solar_system? = {
 				random_ship_in_system = {
 					limit = {
 						uf_standard_ship_target_triggers = yes
 					}
-					prevprev = { auto_follow_fleet = { target = prev.fleet attack_fleet = yes } }
+					prevprev? = { auto_follow_fleet = { target = prev.fleet attack_fleet = yes } }
 				}
 			}
 		}
@@ -386,17 +386,17 @@ uf_exe_invasion_fleet_action = {
 	# 寻找所在星系内目标黑石
 	else_if = {
 		limit = {
-			root = {
+			root? = {
 				has_fleet_flag = monolith_attack_fleet
 				exists = solar_system
-				solar_system = { any_system_planet = { monolith_target_planet_trigger = yes } }
+				solar_system? = { any_system_planet = { monolith_target_planet_trigger = yes } }
 			}
 		}
-		root = {
-			solar_system = {
+		root? = {
+			solar_system? = {
 				random_system_planet = {
 					limit = { monolith_target_planet_trigger = yes }
-					prevprev = {  
+					prevprev? = {  
 						auto_move_to_planet = { 
 							target = prev 
 							arrival_effect = monilith_crisis_destroy_planet
@@ -414,7 +414,7 @@ uf_exe_invasion_fleet_action = {
 			25 = {
 				modifier = {
 					set = 0
-					root = { NOT = { has_fleet_flag = monolith_attack_fleet } }
+					root? = { NOT = { has_fleet_flag = monolith_attack_fleet } }
 				}
 				#开始找目标
 				closest_system = {
@@ -422,7 +422,7 @@ uf_exe_invasion_fleet_action = {
 					limit = {
 						NOT = { is_same_value = root.solar_system }
 						monolith_target_system_trigger = yes
-						prev = { can_access_system = prev }
+						prev? = { can_access_system = prev }
 					}
 					save_event_target_as = $TYPE$_invasion_fleet_action_target
 				}
@@ -442,7 +442,7 @@ uf_exe_invasion_fleet_action = {
 								uf_exe_invasion_jump_drive_planet_action = yes
 							}
 						} 
-						else = { system_star = { prevprev = {  
+						else = { system_star = { prevprev? = {  
 							auto_move_to_planet = { 
 								target = prev 
 								arrival_effect = monilith_crisis_building_the_starbase 
@@ -478,7 +478,7 @@ uf_exe_invasion_fleet_action = {
 									uf_exe_invasion_jump_drive_planet_action = yes
 								}
 							} 
-							else = { system_star = { prevprev = {  
+							else = { system_star = { prevprev? = {  
 								auto_move_to_planet = { 
 									target = prev 
 									arrival_effect = monilith_crisis_building_the_starbase 
@@ -494,7 +494,7 @@ uf_exe_invasion_fleet_action = {
 			25 = {
 				modifier = {
 					set = 0
-					root = { NOT = { has_fleet_flag = monolith_attack_fleet } }
+					root? = { NOT = { has_fleet_flag = monolith_attack_fleet } }
 				}
 				# 25%概率去找10跳以内的空间站或者星球舰队
 				random_system = {
@@ -508,7 +508,7 @@ uf_exe_invasion_fleet_action = {
 							max_jumps = 10
 						}
 						monolith_target_system_trigger = yes
-						prev = { can_access_system = prev }
+						prev? = { can_access_system = prev }
 					}
 					save_event_target_as = $TYPE$_invasion_fleet_action_target
 				}
@@ -528,7 +528,7 @@ uf_exe_invasion_fleet_action = {
 								uf_exe_invasion_jump_drive_planet_action = yes
 							}
 						} 
-						else = { system_star = { prevprev = {  
+						else = { system_star = { prevprev? = {  
 							auto_move_to_planet = { 
 								target = prev 
 								arrival_effect = monilith_crisis_building_the_starbase 
@@ -569,7 +569,7 @@ uf_exe_invasion_fleet_action = {
 									uf_exe_invasion_jump_drive_planet_action = yes
 								}
 							} 
-							else = { system_star = { prevprev = {  
+							else = { system_star = { prevprev? = {  
 								auto_move_to_planet = { 
 									target = prev 
 									arrival_effect = monilith_crisis_building_the_starbase 
@@ -586,7 +586,7 @@ uf_exe_invasion_fleet_action = {
 			25 = {
 				modifier = {
 					set = 0
-					root = { has_fleet_flag = monolith_attack_fleet }
+					root? = { has_fleet_flag = monolith_attack_fleet }
 				}
 				#开始找目标
 				closest_system = {
@@ -594,7 +594,7 @@ uf_exe_invasion_fleet_action = {
 					limit = {
 						NOT = { is_same_value = root.solar_system }
 						any_system_planet = { uf_standard_system_target_triggers = yes }
-						prev = { can_access_system = prev }
+						prev? = { can_access_system = prev }
 					}
 					save_event_target_as = $TYPE$_invasion_fleet_action_target
 				}
@@ -614,7 +614,7 @@ uf_exe_invasion_fleet_action = {
 								uf_exe_invasion_jump_drive_planet_action = yes
 							}
 						} 
-						else = { system_star = { prevprev = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } } }
+						else = { system_star = { prevprev? = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } } }
 					}
 				} 
 				#找不到目标，再找一次
@@ -646,7 +646,7 @@ uf_exe_invasion_fleet_action = {
 									uf_exe_invasion_jump_drive_planet_action = yes
 								}
 							} 
-							else = { system_star = { prevprev = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } } }
+							else = { system_star = { prevprev? = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } } }
 						}
 					} 
 					#找不到目标，摆烂了，开始转圈
@@ -656,7 +656,7 @@ uf_exe_invasion_fleet_action = {
 			25 = {
 				modifier = {
 					set = 0
-					root = { has_fleet_flag = monolith_attack_fleet }
+					root? = { has_fleet_flag = monolith_attack_fleet }
 				}
 				# 25%概率去找10跳以内的空间站或者星球舰队
 				random_system = {
@@ -672,7 +672,7 @@ uf_exe_invasion_fleet_action = {
 						any_system_planet = {
 							uf_standard_system_target_triggers = yes
 						}
-						prev = { can_access_system = prev }
+						prev? = { can_access_system = prev }
 					}
 					save_event_target_as = $TYPE$_invasion_fleet_action_target
 				}
@@ -694,7 +694,7 @@ uf_exe_invasion_fleet_action = {
 								uf_exe_invasion_jump_drive_planet_action = yes
 							}
 						} 
-						else = { system_star = { prevprev = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } } }
+						else = { system_star = { prevprev? = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } } }
 					}
 				} 
 				#找不到目标，再找一次
@@ -733,7 +733,7 @@ uf_exe_invasion_fleet_action = {
 									uf_exe_invasion_jump_drive_planet_action = yes
 								}
 							} 
-							else = { system_star = { prevprev = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } } }
+							else = { system_star = { prevprev? = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } } }
 						}
 					} 
 					#找不到目标，摆烂了，开始转圈
@@ -743,7 +743,7 @@ uf_exe_invasion_fleet_action = {
 			25 = {
 				modifier = {
 					set = 0
-					root = { has_fleet_flag = monolith_attack_fleet }
+					root? = { has_fleet_flag = monolith_attack_fleet }
 				}
 				# 25%概率找50跳内未停用的敌对舰船
 				closest_system = {
@@ -753,7 +753,7 @@ uf_exe_invasion_fleet_action = {
 						any_ship_in_system = {
 							uf_standard_ship_target_triggers = yes
 						}
-						prev = { can_access_system = prev }
+						prev? = { can_access_system = prev }
 					}
 					save_event_target_as = $TYPE$_invasion_fleet_action_target
 				}
@@ -800,7 +800,7 @@ uf_exe_invasion_fleet_action = {
 			25 = {
 				modifier = {
 					set = 0
-					root = { has_fleet_flag = monolith_attack_fleet }
+					root? = { has_fleet_flag = monolith_attack_fleet }
 				}
 				# 25%概率找10跳内未停用的敌对舰船
 				random_system = {
@@ -816,7 +816,7 @@ uf_exe_invasion_fleet_action = {
 						any_ship_in_system = {
 							uf_standard_ship_target_triggers = yes
 						}
-						prev = { can_access_system = prev }
+						prev? = { can_access_system = prev }
 					}
 					save_event_target_as = $TYPE$_invasion_fleet_action_target
 				}

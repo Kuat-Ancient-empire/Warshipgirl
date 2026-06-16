@@ -8,8 +8,8 @@ create_gray_official = {
 	if = {
 		limit = { has_country_flag = gray_warship_active }
 		remove_country_flag = gray_warship_active
-		event_target:gray_leader_admiral = { kill_leader = { show_notification = no fire = yes } }
-		event_target:gray_warship = { delete_fleet = this }		#删除灰风母舰
+		event_target:gray_leader_admiral? = { kill_leader = { show_notification = no fire = yes } }
+		event_target:gray_warship? = { delete_fleet = this }		#删除灰风母舰
 	}
 	if = {
 		limit = { has_country_flag = gray_army_active }
@@ -56,7 +56,7 @@ create_gray_official = {
 			id = wg_affection.8 days = 1
 		}
 		if = {
-			limit = { owner = { has_country_flag = gray_encountered_the_loop }}
+			limit = { owner? = { has_country_flag = gray_encountered_the_loop }}
 			add_trait = { trait = leader_trait_official_wg_the_loop show_message = no }
 		}
 		add_skill_without_trait_selection = owner.gray_level
@@ -70,7 +70,7 @@ create_gray_warship = {
 	if = {
 		limit = { has_country_flag = gray_official_active }
 		remove_country_flag = gray_official_active
-		event_target:gray_official = {
+		event_target:gray_official? = {
 			kill_leader = { show_notification = no }
 		}
 	}
@@ -85,13 +85,13 @@ create_gray_warship = {
 			}
 			random_owned_army = {
 				limit = { army_type = gray_army }
-				planet = { save_event_target_as = gray_warship_location }
+				planet? = { save_event_target_as = gray_warship_location }
 			}
 		}
 		else = {
 			random_owned_army = {
 				limit = { army_type = gray_army }
-				fleet = { save_event_target_as = gray_warship_location }
+				fleet? = { save_event_target_as = gray_warship_location }
 			}
 		}
 	}
@@ -100,23 +100,23 @@ create_gray_warship = {
 		if = {
 			limit = { any_owned_planet = {
 				exists = leader
-				leader = { has_leader_flag = gray_official }
+				leader? = { has_leader_flag = gray_official }
 			}}
 			random_owned_planet = {
 				limit = {
 					exists = leader
-					leader = { has_leader_flag = gray_official }
+					leader? = { has_leader_flag = gray_official }
 				}
 				save_event_target_as = gray_warship_location
 			}
 		} else = {
-			capital_scope = {
+			capital_scope? = {
 				save_event_target_as = gray_warship_location
 			}
 		}
 	} 
 	else = {
-		capital_scope = { save_event_target_as = gray_warship_location }
+		capital_scope? = { save_event_target_as = gray_warship_location }
 	}
 	set_country_flag = gray_warship_active
 	create_leader = {
@@ -194,7 +194,7 @@ create_gray_warship = {
 			id = wg_affection.8 days = 1
 		}
 		if = {
-			limit = { owner = { has_country_flag = gray_encountered_the_loop }}
+			limit = { owner? = { has_country_flag = gray_encountered_the_loop }}
 			add_trait = { trait = leader_trait_commander_wg_the_loop show_message = no }
 		}
 		add_skill_without_trait_selection = 10
@@ -207,34 +207,34 @@ create_gray_army = {
 	if = {
 		limit = { has_country_flag = gray_official_active }
 		remove_country_flag = gray_official_active
-		event_target:gray_official = { kill_leader = { show_notification = no } }
+		event_target:gray_official? = { kill_leader = { show_notification = no } }
 	}
 	if = {
 		limit = { has_country_flag = gray_warship_active }
-		event_target:gray_warship = { save_event_target_as = gray_transport_location }
+		event_target:gray_warship? = { save_event_target_as = gray_transport_location }
 	}
 	else_if = {
 		limit = { has_country_flag = gray_official_active }
 		if = {
 			limit = { any_owned_planet = {
 				exists = leader
-				leader = { has_leader_flag = gray_official }
+				leader? = { has_leader_flag = gray_official }
 			}}
 			random_owned_planet = {
 				limit = {
 					exists = leader
-					leader = { has_leader_flag = gray_official }
+					leader? = { has_leader_flag = gray_official }
 				}
 				save_event_target_as = gray_warship_location
 			}
 		} else = {
-			capital_scope = {
+			capital_scope? = {
 				save_event_target_as = gray_warship_location
 			}
 		}
 	} 
 	else = {
-		capital_scope = { save_event_target_as = gray_transport_location }
+		capital_scope? = { save_event_target_as = gray_transport_location }
 	}
 	set_country_flag = gray_army_active
 	create_fleet = {
@@ -258,8 +258,8 @@ create_gray_army = {
 	if = {
 		limit = { has_country_flag = gray_warship_active }
 		remove_country_flag = gray_warship_active
-		event_target:gray_leader_admiral = { kill_leader = { show_notification = no } }
-		event_target:gray_warship_ship = { delete_ship = this }
+		event_target:gray_leader_admiral? = { kill_leader = { show_notification = no } }
+		event_target:gray_warship_ship? = { delete_ship = this }
 	}
 }
 
@@ -267,7 +267,7 @@ create_gray_army = {
 set_gray_portrait = {
 	optimize_memory
 	if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			OR = {
 				has_wg_special_authority = yes
 				has_global_flag = wg_cheat_all_clothes
@@ -276,27 +276,27 @@ set_gray_portrait = {
 		}}
 		change_leader_portrait = GrayTempest01
 	} else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			check_variable = { which = wg_gray_cloth value = 2 }
 		}}
 		change_leader_portrait = GrayTempest02
 	} else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			check_variable = { which = wg_gray_cloth value = 3 }
 		}}
 		change_leader_portrait = GrayTempest03
 	} else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			check_variable = { which = wg_gray_cloth value = 4 }
 		}}
 		change_leader_portrait = GrayTempest04
 	} else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			check_variable = { which = wg_gray_cloth value = 5 }
 		}}
 		change_leader_portrait = GrayTempest05
 	}else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			check_variable = { which = wg_gray_cloth value = 6 }
 		}}
 		change_leader_portrait = GrayTempest06

@@ -6,9 +6,9 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = { 
-		FROMFROM = { 
+		FROMFROM? = { 
 			exists = leader
-			leader = { OR = {
+			leader? = { OR = {
 				has_leader_flag = NieAdmiral
 				has_leader_flag = mist_Renown
 				has_leader_flag = mist_Repulse
@@ -19,11 +19,11 @@ country_event = {
     }
 	
 	immediate = {
-		FROMFROM = {
+		FROMFROM? = {
 			# 乜提督
 			if = { 
 				limit = { 
-					leader = { has_leader_flag = NieAdmiral }
+					leader? = { has_leader_flag = NieAdmiral }
 					NOT = { has_fleet_flag = NieAdmiral_fleet }
 				}
 				set_fleet_flag = NieAdmiral_fleet
@@ -32,11 +32,11 @@ country_event = {
 			# 声望
 			else_if = { 
 				limit = { 
-					leader = { has_leader_flag = mist_Renown }
+					leader? = { has_leader_flag = mist_Renown }
 					NOT = { has_fleet_flag = mist_Renown_fleet }
 				}
 				set_fleet_flag = mist_Renown_fleet
-				leader = {
+				leader? = {
 					random_list = {
 						1 = { 
 							modifier = { factor = 0 check_variable = { which = weapon_damage value >= 10 }}
@@ -65,7 +65,7 @@ country_event = {
 			# 反击
 			else_if = { 
 				limit = { 
-					leader = { has_leader_flag = mist_Repulse }
+					leader? = { has_leader_flag = mist_Repulse }
 				}
 				clear_variable = renown_debuff_level
 				set_fleet_flag = mist_Repulse_fleet
@@ -74,7 +74,7 @@ country_event = {
 			# 沙口秘书
 			else_if = { 
 				limit = { 
-					leader = { has_leader_flag = projectS_missouri }
+					leader? = { has_leader_flag = projectS_missouri }
 				}
 				set_fleet_flag = projectS_missouri_fleet
 			}
@@ -90,11 +90,11 @@ country_event = {
 
     trigger = { 
         OR = {
-            FROMFROM = { 
+            FROMFROM? = { 
 				has_fleet_flag = NieAdmiral_fleet
                 NOT = { has_fleet_flag = drones }
             }
-            FROMFROMFROM = { 
+            FROMFROMFROM? = { 
 				has_fleet_flag = NieAdmiral_fleet
                 NOT = { has_fleet_flag = drones }
             }
@@ -102,7 +102,7 @@ country_event = {
     }
 
     immediate = {
-		FROMFROM = { 
+		FROMFROM? = { 
 			if = {
 				limit = { has_fleet_flag = NieAdmiral_fleet }
 				remove_fleet_flag = NieAdmiral_fleet
@@ -115,7 +115,7 @@ country_event = {
 				}
 			}
 		}
-		FROMFROMFROM = { 
+		FROMFROMFROM? = { 
 			if = {
 				limit = { has_fleet_flag = NieAdmiral_fleet }
 				remove_fleet_flag = NieAdmiral_fleet
@@ -201,7 +201,7 @@ fleet_event = {
 				}}
 				random_owned_ship = { 
 					limit = { has_ship_flag = NieAdmiral_skill2 }
-						solar_system = {
+						solar_system? = {
 						if = {
 							limit = {
 								count_ship_in_system = {
@@ -211,14 +211,14 @@ fleet_event = {
 											has_ship_flag = NieAdmiral_skill_failed
 										}
 										NOT = { has_ship_flag = NieAdmiral_skill2 }
-										Fleet = { has_fleet_flag = NieAdmiral_fleet }
+										Fleet? = { has_fleet_flag = NieAdmiral_fleet }
 									}
 									count < 1
 								}
 							}
-							ROOT = { fleet_event = { id = wg_leader.3 days = 5 }}
+							ROOT? = { fleet_event = { id = wg_leader.3 days = 5 }}
 						} else = {
-							ROOT = { 
+							ROOT? = { 
 								fleet_event = { id = wg_leader.102 days = 1 }
 							}
 						}
@@ -260,7 +260,7 @@ country_event = {
     is_triggered_only = yes
 
     trigger = { 
-		fromfrom = { OR = {
+		fromfrom? = { OR = {
 			has_fleet_flag = mist_Renown_fleet
 			has_fleet_flag = mist_Repulse_fleet 
 			has_fleet_flag = projectS_missouri_fleet
@@ -268,7 +268,7 @@ country_event = {
     }
 
     immediate = {
-		fromfrom = {  
+		fromfrom? = {  
 			if = {
 				limit = { has_fleet_flag = mist_Renown_fleet }
 				remove_fleet_flag = mist_Renown_fleet

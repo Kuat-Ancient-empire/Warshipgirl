@@ -5,7 +5,7 @@ create_wsg_automated_dreadnought_official = {
 	if = {
 		limit = { has_country_flag = wsg_automated_dreadnought_warship_active }
 		remove_country_flag = wsg_automated_dreadnought_warship_active
-		event_target:wsg_automated_dreadnought_warship_ship = { delete_ship = this }		#删除无畏舰母舰
+		event_target:wsg_automated_dreadnought_warship_ship? = { delete_ship = this }		#删除无畏舰母舰
 	}
 	if = {
 		limit = { has_country_flag = wsg_automated_dreadnought_army_active }
@@ -46,19 +46,19 @@ create_wsg_automated_dreadnought_official = {
 			# set_leader_flag = has_gained_level_trait
 			set_leader_flag = wsg_automated_dreadnought_leader
 			if = {
-				limit = { owner = { has_country_flag = wsg_mist }}
+				limit = { owner? = { has_country_flag = wsg_mist }}
 				add_trait = { trait = leader_trait_mist show_message = no }
 			}
 			else_if = {
-				limit = { owner = { has_country_flag = project_s_finish }}
+				limit = { owner? = { has_country_flag = project_s_finish }}
 				add_trait = { trait = leader_trait_warshipgirls2 show_message = no }
 			}
 			else_if = {
-				limit = { owner = { has_ascension_perk = ap_shenhai_silent }}
+				limit = { owner? = { has_ascension_perk = ap_shenhai_silent }}
 				add_trait = { trait = leader_trait_shenhai1 show_message = no }
 			}
 			else_if = {
-				limit = { owner = { has_ascension_perk = ap_shenhai_icebreaking }}
+				limit = { owner? = { has_ascension_perk = ap_shenhai_icebreaking }}
 				add_trait = { trait = leader_trait_shenhai2 show_message = no }
 			}
 		}
@@ -78,7 +78,7 @@ create_wsg_automated_dreadnought_warship = {
 	if = {
 		limit = { has_country_flag = wsg_automated_dreadnought_official_active }
 		remove_country_flag = wsg_automated_dreadnought_official_active
-		event_target:wsg_automated_dreadnought_official = {
+		event_target:wsg_automated_dreadnought_official? = {
 			kill_leader = { fire = yes show_notification = no }
 		}
 	}
@@ -93,13 +93,13 @@ create_wsg_automated_dreadnought_warship = {
 			}
 			random_owned_army = {
 				limit = { army_type = wsg_automated_dreadnought_army }
-				planet = { save_event_target_as = wsg_automated_dreadnought_warship_location }
+				planet? = { save_event_target_as = wsg_automated_dreadnought_warship_location }
 			}
 		}
 		else = {
 			random_owned_army = {
 				limit = { army_type = wsg_automated_dreadnought_army }
-				fleet = { save_event_target_as = wsg_automated_dreadnought_warship_location }
+				fleet? = { save_event_target_as = wsg_automated_dreadnought_warship_location }
 			}
 		}
 	}
@@ -108,23 +108,23 @@ create_wsg_automated_dreadnought_warship = {
 		if = {
 			limit = { any_owned_planet = {
 				exists = leader
-				leader = { has_leader_flag = wsg_automated_dreadnought_official }
+				leader? = { has_leader_flag = wsg_automated_dreadnought_official }
 			}}
 			random_owned_planet = {
 				limit = {
 					exists = leader
-					leader = { has_leader_flag = wsg_automated_dreadnought_official }
+					leader? = { has_leader_flag = wsg_automated_dreadnought_official }
 				}
 				save_event_target_as = wsg_automated_dreadnought_warship_location
 			}
 		} else = {
-			capital_scope = {
+			capital_scope? = {
 				save_event_target_as = wsg_automated_dreadnought_warship_location
 			}
 		}
 	} 
 	else = {
-		capital_scope = { save_event_target_as = wsg_automated_dreadnought_warship_location }
+		capital_scope? = { save_event_target_as = wsg_automated_dreadnought_warship_location }
 	}
 	set_country_flag = wsg_automated_dreadnought_warship_active
 	create_fleet = {
@@ -175,34 +175,34 @@ create_wsg_automated_dreadnought_army = {
 	if = {
 		limit = { has_country_flag = wsg_automated_dreadnought_official_active }
 		remove_country_flag = wsg_automated_dreadnought_official_active
-		event_target:wsg_automated_dreadnought_official = { kill_leader = { show_notification = no } }
+		event_target:wsg_automated_dreadnought_official? = { kill_leader = { show_notification = no } }
 	}
 	if = {
 		limit = { has_country_flag = wsg_automated_dreadnought_warship_active }
-		event_target:wsg_automated_dreadnought_warship = { save_event_target_as = wsg_automated_dreadnought_transport_location }
+		event_target:wsg_automated_dreadnought_warship? = { save_event_target_as = wsg_automated_dreadnought_transport_location }
 	}
 	else_if = {
 		limit = { has_country_flag = wsg_automated_dreadnought_official_active }
 		if = {
 			limit = { any_owned_planet = {
 				exists = leader
-				leader = { has_leader_flag = wsg_automated_dreadnought_official }
+				leader? = { has_leader_flag = wsg_automated_dreadnought_official }
 			}}
 			random_owned_planet = {
 				limit = {
 					exists = leader
-					leader = { has_leader_flag = wsg_automated_dreadnought_official }
+					leader? = { has_leader_flag = wsg_automated_dreadnought_official }
 				}
 				save_event_target_as = wsg_automated_dreadnought_warship_location
 			}
 		} else = {
-			capital_scope = {
+			capital_scope? = {
 				save_event_target_as = wsg_automated_dreadnought_warship_location
 			}
 		}
 	} 
 	else = {
-		capital_scope = { save_event_target_as = wsg_automated_dreadnought_transport_location }
+		capital_scope? = { save_event_target_as = wsg_automated_dreadnought_transport_location }
 	}
 	set_country_flag = wsg_automated_dreadnought_army_active
 	create_fleet = {
@@ -226,7 +226,7 @@ create_wsg_automated_dreadnought_army = {
 	if = {
 		limit = { has_country_flag = wsg_automated_dreadnought_warship_active }
 		remove_country_flag = wsg_automated_dreadnought_warship_active
-		event_target:wsg_automated_dreadnought_warship_ship = { delete_ship = this }
+		event_target:wsg_automated_dreadnought_warship_ship? = { delete_ship = this }
 	}
 }
 
@@ -234,7 +234,7 @@ create_wsg_automated_dreadnought_army = {
 set_wsg_automated_dreadnought_portrait = {
 	optimize_memory
 	if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			OR = {
 				has_wg_special_authority = yes
 				has_global_flag = wg_cheat_all_clothes
@@ -243,27 +243,27 @@ set_wsg_automated_dreadnought_portrait = {
 		}}
 		change_leader_portrait = wsg_automated_dreadnought_0
 	} else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			check_variable = { which = wg_wsg_automated_dreadnought_cloth value = 2 }
 		}}
 		change_leader_portrait = wsg_automated_dreadnought_0
 	} else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			check_variable = { which = wg_wsg_automated_dreadnought_cloth value = 3 }
 		}}
 		change_leader_portrait = wsg_automated_dreadnought_0
 	} else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			check_variable = { which = wg_wsg_automated_dreadnought_cloth value = 4 }
 		}}
 		change_leader_portrait = wsg_automated_dreadnought_0
 	} else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			check_variable = { which = wg_wsg_automated_dreadnought_cloth value = 5 }
 		}}
 		change_leader_portrait = wsg_automated_dreadnought_0
 	}else_if = {
-		limit = { owner = { 
+		limit = { owner? = { 
 			check_variable = { which = wg_wsg_automated_dreadnought_cloth value = 6 }
 		}}
 		change_leader_portrait = wsg_automated_dreadnought_0

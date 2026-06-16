@@ -7,14 +7,14 @@ ship_event = {
 	is_triggered_only = yes
 	picture = GFX_evt_wg_great_ming_1
 	immediate = {
-		solar_system = {
+		solar_system? = {
 			save_global_event_target_as = wg_great_ming_neighbour_system
 		}
 	}
 	option = {
 		name = "wg_great_ming.1.a"
-		owner = {
-			capital_scope = {
+		owner? = {
+			capital_scope? = {
 				enable_special_project = {
 					name = WG_GREAT_MING_HOME_SYSTEM
 					location = this
@@ -37,7 +37,7 @@ country_event = {
 	picture = GFX_evt_glitchy_matrix
     immediate = {
 		set_spawn_system_batch = begin
-		event_target:wg_great_ming_neighbour_system = {
+		event_target:wg_great_ming_neighbour_system? = {
 			closest_system = {
 				min_steps = 2
 			}
@@ -74,16 +74,16 @@ fleet_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		from = { 
+		from? = { 
 			has_star_flag = Great_ming_sol 	
 		}
-		owner = { NOT = { has_country_flag = great_ming_country }}
+		owner? = { NOT = { has_country_flag = great_ming_country }}
 	}
 	immediate = {
-		owner = { set_country_flag = wg_great_ming_first_discoverer }
+		owner? = { set_country_flag = wg_great_ming_first_discoverer }
 		every_playable_country = {
 			establish_communications_no_message = event_target:great_ming_country
-			event_target:great_ming_system = {
+			event_target:great_ming_system? = {
 				set_surveyed = {
 					surveyed = yes
 					surveyor = root
@@ -95,7 +95,7 @@ fleet_event = {
 	option = {
 		name = wg_great_ming.3.a
 		hidden_effect = { 
-			owner = {
+			owner? = {
 				country_event = { id = wg_great_ming.4 }
 			}	
 		}
@@ -110,9 +110,9 @@ country_event = {
 	diplomatic = yes
 	force_open = yes
     immediate = {
-		event_target:great_ming_country = {
+		event_target:great_ming_country? = {
 			every_country = {
-				prev = {
+				prev? = {
 					set_closed_borders = {
 						who = prev
 						status = yes
@@ -405,7 +405,7 @@ country_event = {
 				}
         	}
 		}
-		event_target:great_ming_trade_country = {
+		event_target:great_ming_trade_country? = {
 			create_fleet = {
 				name = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
 				settings = {
@@ -474,14 +474,14 @@ country_event = {
 		}
         exists = event_target:great_ming_country
 		has_communications = event_target:great_ming_country
-        event_target:great_ming_country = {
+        event_target:great_ming_country? = {
             NOT = { is_hostile = root }
         }
         OR = { 
             #防止视窗多开
             NOT = { has_country_flag = engaged_with_great_ming }
 		}
-        from = { OR = {
+        from? = { OR = {
             is_country_type = primitive_trade_great_ming
             is_same_value = root # returned from menu
         }}
@@ -668,7 +668,7 @@ country_event = {
 		set_timed_country_flag = { flag = wg_great_ming_surrender_cd days = 360 }
 		hidden_effect = {
 			set_variable = { which = great_ming_affection value = 0 } #好感清零
-			event_target:great_ming_country = { declare_war = {
+			event_target:great_ming_country? = { declare_war = {
 				target = ROOT
 				attacker_war_goal = wg_humiliation
 			}}
@@ -855,7 +855,7 @@ country_event = {
 			}
 			save_event_target_as = jinyiwei_invading_planet_4
 		}
-		event_target:jinyiwei_invading_planet_1 = {
+		event_target:jinyiwei_invading_planet_1? = {
 			while = { count = 8
 				create_army = {
 					name = "great_ming_jinyiwei"
@@ -865,7 +865,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:jinyiwei_invading_planet_2 = {
+		event_target:jinyiwei_invading_planet_2? = {
 			while = { count = 5
 				create_army = {
 					name = "great_ming_jinyiwei"
@@ -875,7 +875,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:jinyiwei_invading_planet_3 = {
+		event_target:jinyiwei_invading_planet_3? = {
 			while = { count = 5
 				create_army = {
 					name = "great_ming_jinyiwei"
@@ -885,7 +885,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:jinyiwei_invading_planet_4 = {
+		event_target:jinyiwei_invading_planet_4? = {
 			while = { count = 5
 				create_army = {
 					name = "great_ming_jinyiwei"
@@ -1026,7 +1026,7 @@ country_event = {
 
 	is_triggered_only = yes
     trigger = {
-		event_target:great_ming_system = {
+		event_target:great_ming_system? = {
 			NOT = {
 				any_ship_in_system = {
 					is_ship_size = wg_great_ming_trade_spacestation
@@ -1070,7 +1070,7 @@ country_event = {
 				}
         	}
 		}
-		event_target:great_ming_system = {
+		event_target:great_ming_system? = {
 		    random_system_planet = {
 				limit = { is_star = yes }
 				save_event_target_as = great_ming_star
@@ -1183,7 +1183,7 @@ country_event = {
 			}
 			save_event_target_as = jinyiwei_invading_planet_1
 		}
-		event_target:jinyiwei_invading_planet_1 = {
+		event_target:jinyiwei_invading_planet_1? = {
 			while = { count = 10
 				create_army = {
 					name = "great_ming_jinyiwei"
@@ -1219,7 +1219,7 @@ country_event = {
 			}
 			has_country_flag = wg_has_war_with_great_ming #交战中
 		}
-        from = { OR = {
+        from? = { OR = {
             is_country_type = primitive_trade_great_ming
             is_same_value = root # returned from menu
         }}
@@ -1340,7 +1340,7 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		capital_scope.solar_system = {
+		capital_scope.solar_system? = {
 			NOT = {
 				any_ship_in_system = {
 					is_ship_size = wg_great_ming_trade_spacestation
@@ -1460,7 +1460,7 @@ country_event = {
 			}
 			save_event_target_as = jinyiwei_invading_planet_4
 		}
-		event_target:jinyiwei_invading_planet_1 = {
+		event_target:jinyiwei_invading_planet_1? = {
 			while = { count = 10
 				create_army = {
 					name = "great_ming_jinyiwei"
@@ -1470,7 +1470,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:jinyiwei_invading_planet_2 = {
+		event_target:jinyiwei_invading_planet_2? = {
 			while = { count = 5
 				create_army = {
 					name = "great_ming_jinyiwei"
@@ -1480,7 +1480,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:jinyiwei_invading_planet_3 = {
+		event_target:jinyiwei_invading_planet_3? = {
 			while = { count = 5
 				create_army = {
 					name = "great_ming_jinyiwei"
@@ -1490,7 +1490,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:jinyiwei_invading_planet_4 = {
+		event_target:jinyiwei_invading_planet_4? = {
 			while = { count = 5
 				create_army = {
 					name = "great_ming_jinyiwei"
@@ -1553,7 +1553,7 @@ country_event = {
 			save_event_target_as = jinyiwei_invading_planet_4
 		}
 		
-		event_target:jinyiwei_invading_planet_1 = {
+		event_target:jinyiwei_invading_planet_1? = {
 			while = { count = 5
 				create_army = {
 					name = "great_ming_jinyiwei"
@@ -1563,7 +1563,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:jinyiwei_invading_planet_2 = {
+		event_target:jinyiwei_invading_planet_2? = {
 			while = { count = 5
 				create_army = {
 					name = "great_ming_jinyiwei"
@@ -1573,7 +1573,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:jinyiwei_invading_planet_3 = {
+		event_target:jinyiwei_invading_planet_3? = {
 			while = { count = 5
 				create_army = {
 					name = "great_ming_jinyiwei"
@@ -1583,7 +1583,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:jinyiwei_invading_planet_4 = {
+		event_target:jinyiwei_invading_planet_4? = {
 			while = { count = 5
 				create_army = {
 					name = "great_ming_jinyiwei"
@@ -1614,7 +1614,7 @@ country_event = {
 				NOR = {
 					exists = space_owner
 					any_fleet_in_system = {
-						owner = {
+						owner? = {
 							is_hostile = root.owner
 						}
 					}	
@@ -1678,12 +1678,12 @@ country_event = {
 		last_created_country = {
             room_name_override = "wg07_room"
         }
-		event_target:second_great_ming_country = {
+		event_target:second_great_ming_country? = {
 			room_name_override = "wg07_room"#老子写3个，看你蠢驴换不换room
 			set_male_ruler_title = "great_ming_wsg_emperor_title"
 			set_female_ruler_title = "great_ming_wsg_emperor_title"
 			set_closed_borders = { who = ROOT status = no }
-			ROOT = { set_closed_borders = { who = PREV status = no }}
+			ROOT? = { set_closed_borders = { who = PREV status = no }}
 			add_modifier = {
 				modifier = khan_buff_after_50_years
 				days = -1
@@ -1736,7 +1736,7 @@ country_event = {
 				name = "Science ship"
 				effect = {
 					set_owner = prev
-					prev = { create_leader = {
+					prev? = { create_leader = {
 						class = scientist
 						species = event_target:great_ming_wsg_species.owner_main_species
 						gender = female
@@ -1821,7 +1821,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:second_great_ming_capital = {
+		event_target:second_great_ming_capital? = {
 			prevent_anomaly = yes
 			
 			set_owner = event_target:second_great_ming_country
@@ -1857,10 +1857,10 @@ country_event = {
 				type = "defense_army"
 				#land_army = yes
 			}
-			solar_system = {
+			solar_system? = {
 				if = {
 					limit = { exists = starbase }
-					starbase.fleet = {
+					starbase.fleet? = {
 						delete_fleet = this
 					}
 				}
@@ -1882,7 +1882,7 @@ country_event = {
 						}
 						if = {
 							limit = { has_mining_station = yes }
-							mining_station.fleet = {
+							mining_station.fleet? = {
 								delete_fleet = this
 							}
 						}
@@ -1894,7 +1894,7 @@ country_event = {
 						}
 						if = {
 							limit = { has_research_station = yes }
-							research_station.fleet = {
+							research_station.fleet? = {
 								delete_fleet = this
 							}
 						}
@@ -2021,7 +2021,7 @@ country_event = {
 			}
 			save_global_event_target_as = great_ming_invading_planet_4
 		}
-		event_target:great_ming_invading_planet_1 = {
+		event_target:great_ming_invading_planet_1? = {
 			while = { count = 15
 				create_army = {
 					name = "great_ming_attack_army"
@@ -2034,7 +2034,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:great_ming_invading_planet_2 = {
+		event_target:great_ming_invading_planet_2? = {
 			while = { count = 15
 				create_army = {
 					name = "great_ming_attack_army"
@@ -2047,7 +2047,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:great_ming_invading_planet_3 = {
+		event_target:great_ming_invading_planet_3? = {
 			while = { count = 15
 				create_army = {
 					name = "great_ming_attack_army"
@@ -2060,7 +2060,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:great_ming_invading_planet_4 = {
+		event_target:great_ming_invading_planet_4? = {
 			while = { count = 15
 				create_army = {
 					name = "great_ming_attack_army"
@@ -2135,7 +2135,7 @@ country_event = {
 				}
         	}
 		}
-		event_target:great_ming_attack_fleet_country = {
+		event_target:great_ming_attack_fleet_country? = {
 			set_faction_hostility = {
 				target = root.owner
 				set_hostile = yes
@@ -2174,7 +2174,7 @@ country_event = {
 			save_global_event_target_as = great_ming_fleet_invading_planet_4
 		}
 
-		event_target:great_ming_fleet_invading_planet_1 = {
+		event_target:great_ming_fleet_invading_planet_1? = {
 			create_fleet = {
 				name = "NAME_WG_GREAT_MING_FLEET2"
 				effect = {
@@ -2208,7 +2208,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:great_ming_fleet_invading_planet_2 = {
+		event_target:great_ming_fleet_invading_planet_2? = {
 			create_fleet = {
 				name = "NAME_WG_GREAT_MING_FLEET2"
 				effect = {
@@ -2242,7 +2242,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:great_ming_fleet_invading_planet_3 = {
+		event_target:great_ming_fleet_invading_planet_3? = {
 			create_fleet = {
 				name = "NAME_WG_GREAT_MING_FLEET2"
 				effect = {
@@ -2276,7 +2276,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:great_ming_fleet_invading_planet_4 = {
+		event_target:great_ming_fleet_invading_planet_4? = {
 			create_fleet = {
 				name = "NAME_WG_GREAT_MING_FLEET2"
 				effect = {
@@ -2336,7 +2336,7 @@ country_event = {
 	immediate = {
 		country_event = { id = wg_great_ming.41 days = 720 random = 360 }#循环陆军进攻直到投降或大明战败
 		reroll_random = yes
-		capital_scope = {
+		capital_scope? = {
 			while = { count = 10
 				create_army = {
 					name = "great_ming_attack_army"
@@ -2380,7 +2380,7 @@ country_event = {
 	immediate = {
 		country_event = { id = wg_great_ming.42 days = 360 random = 480 }#循环舰队进攻直到投降或大明战败
 		reroll_random = yes
-		capital_scope = {
+		capital_scope? = {
 			create_fleet = {
 				name = "NAME_WG_GREAT_MING_FLEET2"
 				effect = {
@@ -2565,7 +2565,7 @@ country_event = {
 		every_war = {
 			limit = {
 				any_war_participant = {
-					prev = {
+					prev? = {
 						using_war_goal = {
 							type = wg_humiliation
 							owner = prev
@@ -2575,7 +2575,7 @@ country_event = {
 			}
 			end_war_effect = yes
 		}
-		event_target:great_ming_country = {
+		event_target:great_ming_country? = {
 			set_faction_hostility = {
 				target = root.owner
 				set_hostile = no
@@ -3037,7 +3037,7 @@ country_event = {
 		name = wg_great_ming.50.c
 		custom_tooltip = wg_great_ming.50.c.tooltip
 		hidden_effect = {
-			capital_scope = {
+			capital_scope? = {
 				closest_system = {
 					min_steps = 1
 				}
@@ -3063,7 +3063,7 @@ carrier_event = {
 
 	trigger = {
 		exists = owner
-		owner = { 
+		owner? = { 
 			has_wg_authority = yes 
 			NOT = { has_country_flag = wg_great_ming_abandoned_world_target_once }
 		}
@@ -3071,13 +3071,13 @@ carrier_event = {
 	}
 
 	immediate = {
-		owner = { set_country_flag = wg_great_ming_abandoned_world_target_once }
+		owner? = { set_country_flag = wg_great_ming_abandoned_world_target_once }
 	}
 
 	option = {
 		name = "wg_great_ming.51.a"
 		trigger = {
-			owner = {
+			owner? = {
 				NOR = {
 					is_xenophile = yes
 					has_authority = auth_shenhai
@@ -3088,7 +3088,7 @@ carrier_event = {
 	option = {
 		name = "wg_great_ming.51.b"
 		hidden_effect = {
-			owner = {
+			owner? = {
 				country_event = { id = wg_great_ming.52 days = 1 }
 			}	
 		}
@@ -3123,7 +3123,7 @@ country_event = {
 		name = "wg_great_ming.52.b"
 		custom_tooltip = wg_great_ming.52.b.tooltip
 		hidden_effect = {
-			event_target:wg_great_ming_abandoned_world_target = {	
+			event_target:wg_great_ming_abandoned_world_target? = {	
 				create_pop_group = { size = 300 species = event_target:great_ming_sh_species }
 			}	
 		}
@@ -3340,7 +3340,7 @@ country_event = {
 		name = wg_great_ming.58.a
 		response_text = wg_great_ming.58.a.response
 		custom_tooltip = wg_great_ming.54.a.tooltip
-		event_target:wg_great_ming_drg_mission_target = {
+		event_target:wg_great_ming_drg_mission_target? = {
 			enable_special_project = {
 				name = WG_GREAT_MING_DRG_MISSION
 				owner = owner
@@ -3439,8 +3439,8 @@ country_event = {
 			}
 			save_event_target_as = wg_great_ming_tributed_ai_country_1
 		}
-		event_target:wg_great_ming_tributed_ai_country_1 = {
-			capital_scope = {
+		event_target:wg_great_ming_tributed_ai_country_1? = {
+			capital_scope? = {
 				save_event_target_as = wg_great_ming_tributed_ai_country_capital_1
 			}
 			create_fleet = {
@@ -3478,8 +3478,8 @@ country_event = {
 			save_event_target_as = wg_great_ming_tributed_ai_country_2
 			set_country_flag = wg_great_ming_tributed_ai
 		}
-		event_target:wg_great_ming_tributed_ai_country_2 = {
-			capital_scope = {
+		event_target:wg_great_ming_tributed_ai_country_2? = {
+			capital_scope? = {
 				save_event_target_as = wg_great_ming_tributed_ai_country_capital_2
 			}
 			create_fleet = {
@@ -3517,8 +3517,8 @@ country_event = {
 			save_event_target_as = wg_great_ming_tributed_ai_country_3
 			set_country_flag = wg_great_ming_tributed_ai
 		}
-		event_target:wg_great_ming_tributed_ai_country_3 = {
-			capital_scope = {
+		event_target:wg_great_ming_tributed_ai_country_3? = {
+			capital_scope? = {
 				save_event_target_as = wg_great_ming_tributed_ai_country_capital_3
 			}
 			create_fleet = {
@@ -3569,7 +3569,7 @@ country_event = {
 			which = origin_wg_great_ming_subject_point
 			value = 10
 		}
-		event_target:great_ming_country = {
+		event_target:great_ming_country? = {
 			set_faction_hostility = {
 				target = root
 				set_hostile = no
@@ -3645,7 +3645,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:great_ming_trade_country = {
+		event_target:great_ming_trade_country? = {
 			create_fleet = {
 				name = "NAME_WG_GREAT_MING_TRADE_SPACESTATION"
 				settings = {
@@ -3855,7 +3855,7 @@ country_event = {
 					save_global_event_target_as = great_ming_specimen_country
 				}
         	}
-			event_target:great_ming_specimen_country = {
+			event_target:great_ming_specimen_country? = {
 				steal_specimens = {
 					who = root
 					category = any

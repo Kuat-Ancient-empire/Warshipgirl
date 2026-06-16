@@ -67,7 +67,7 @@ country_event = {
 			country_event = { id = ap_wg_crisis.4 days = 1 }
 		}
 		begin_event_chain = { event_chain = ap_wg_crisis_chain }
-		capital_scope = {
+		capital_scope? = {
 			enable_special_project = {
 				name = ap_wg_crisis_active
 				owner = owner
@@ -87,7 +87,7 @@ carrier_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		owner = { 
+		owner? = { 
 			if = {
 				limit = { 
 					has_relic = r_wg_psionic_gem 
@@ -246,7 +246,7 @@ country_event = {
 		hidden_effect = {
 			set_country_flag = ap_wg_crisis_shortcut_plan_started
 		}
-		capital_scope = {
+		capital_scope? = {
 			enable_special_project = {
 				name = ap_wg_crisis_shortcut_plan
 				location = this
@@ -463,7 +463,7 @@ country_event = {
 		set_country_flag = wg_crisis_lv3_2ndObj_finish
 		# 焚灭等级3完成
 		end_event_chain = ap_wg_crisis_shortcut_plan_chain
-		capital_scope = {
+		capital_scope? = {
 			enable_special_project = {
 				name = ap_wg_crisis_shortcut_plan_main_event_chain
 				location = this
@@ -529,7 +529,7 @@ country_event = {
 	show_sound = event_dyson_sphere_build_start
 
 	trigger = {
-		FROM = { is_megastructure_type = wg_fm_gateway_01 }
+		FROM? = { is_megastructure_type = wg_fm_gateway_01 }
 	}
 
 	immediate = {
@@ -540,8 +540,8 @@ country_event = {
 			country_event = { id = ap_wg_crisis.9 days = 1 }
 		}
 		country_event = { id = ap_wg_crisis.1097 days = 90 random = 90 }
-		FROMFROM = {
-			star = {
+		FROMFROM? = {
+			star? = {
 				set_planet_size = 25
 				create_ambient_object = {
 					type = wsg_construction_platform_object
@@ -583,11 +583,11 @@ country_event = {
 	show_sound = event_dyson_sphere_build_upgrade_frame
 
 	trigger = {
-		FROM = { is_megastructure_type = wg_fm_gateway_02 }
+		FROM? = { is_megastructure_type = wg_fm_gateway_02 }
 	}
 
 	immediate = {
-		event_target:wg_gateway_object = {
+		event_target:wg_gateway_object? = {
 			destroy_ambient_object = this
 			clear_global_event_target = wg_gateway_object
 		}
@@ -628,7 +628,7 @@ country_event = {
 			custom_tooltip = ap_wg_crisis.1013.tooltip
 			hidden_effect = { add_wg_crisis_points = { POINTS = 500 }}
 		}
-		FROMFROM.star = {
+		FROMFROM.star? = {
 			enable_special_project = {
 				name = adjust_psionic_energy_hypersiphon
 				location = this
@@ -648,7 +648,7 @@ country_event = {
 	show_sound = megastructure_gate_way_portal_hum
 
 	immediate = {
-		event_target:ap_wg_crisis_country = {
+		event_target:ap_wg_crisis_country? = {
 			set_country_flag = finish_adjust_psionic_energy_hypersiphon
 		}
 	}
@@ -669,7 +669,7 @@ country_event = {
 	show_sound = avian_colossus_dome_opening
 
 	trigger = {
-		FROM = { is_megastructure_type = wg_fm_gateway_03 }
+		FROM? = { is_megastructure_type = wg_fm_gateway_03 }
 	}
 
 	immediate = {
@@ -686,8 +686,8 @@ country_event = {
 		}
 		country_event = { id = ap_wg_crisis.1066 days = 30 random = 90 }
 		country_event = { id = ap_wg_crisis.1067 days = 540 random = 360 }
-		FROMFROM = {
-			star = {
+		FROMFROM? = {
+			star? = {
 				create_ambient_object = {
 					type = wsg_gateway_psi_portal_crisis_object
 					location = this
@@ -738,7 +738,7 @@ country_event = {
 	show_sound = event_faceoff_in_space
 
 	trigger = {
-		FROM = { is_megastructure_type = wg_fm_gateway_04 }
+		FROM? = { is_megastructure_type = wg_fm_gateway_04 }
 	}
 
 	immediate = {
@@ -764,7 +764,7 @@ country_event = {
 			remove_modifier = wg_shroud_crisis_country_debuff
 		}
 		# 削弱虚境入侵
-		event_target:wg_shroud_crisis_country = {
+		event_target:wg_shroud_crisis_country? = {
 			remove_modifier = wg_shroud_country_modifiers_generic
 			add_modifier = { modifier = wg_shroud_country_modifiers_debuff }
 			if = {
@@ -776,11 +776,11 @@ country_event = {
 				add_modifier = { modifier = wg_shroud_country_modifiers_debuff_hard }
 			}
 		}
-		event_target:wg_gateway_object = {
+		event_target:wg_gateway_object? = {
 			destroy_ambient_object = this
 			clear_global_event_target = wg_gateway_object
 		}
-		FROMFROM.star = {
+		FROMFROM.star? = {
 			create_ambient_object = {
 				type = wsg_gateway_portal_crisis_object
 				location = this
@@ -803,7 +803,7 @@ country_event = {
 			custom_tooltip = ap_wg_crisis.1015.tooltip
 			hidden_effect = { add_wg_crisis_points = { POINTS = 1000 }}
 		}
-		capital_scope = {
+		capital_scope? = {
 			enable_special_project = {
 				name = active_neutron_impact_shielder
 				location = this
@@ -820,7 +820,7 @@ carrier_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		owner = {
+		owner? = {
 			every_owned_planet = {
 				add_modifier = { modifier = building_neutron_impact_shielder_modifier }
 			}
@@ -850,7 +850,7 @@ carrier_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		owner = {
+		owner? = {
 			is_researching_special_project = active_neutron_impact_shielder
 		}
 	}
@@ -869,7 +869,7 @@ carrier_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		owner = { has_country_flag = finish_neutron_impact_shielder }
+		owner? = { has_country_flag = finish_neutron_impact_shielder }
 	}
 
 	immediate = {
@@ -889,7 +889,7 @@ carrier_event = {
 	show_sound = event_energy_field
 
 	immediate = {
-		owner = {
+		owner? = {
 			set_country_flag = finish_neutron_impact_shielder
 			every_owned_planet = {
 				remove_modifier = building_neutron_impact_shielder_modifier
@@ -939,17 +939,17 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	trigger = {
-		FROM = { is_megastructure_type = wg_fm_gateway_05 }
+		FROM? = { is_megastructure_type = wg_fm_gateway_05 }
 	}
 
 	immediate = {
 		set_update_modifiers_batch = begin
 		set_global_flag = wg_fm_end_game
-		event_target:wg_gateway_object = {
+		event_target:wg_gateway_object? = {
 			destroy_ambient_object = this
 			clear_global_event_target = wg_gateway_object
 		}
-		FROMFROM.star = {
+		FROMFROM.star? = {
 			create_ambient_object = {
 				type = "destroyed_system"
 				location = this
@@ -1039,10 +1039,10 @@ country_event = {
 				limit = { always = yes }
 				if = {
 					limit = {
-						solar_system = {
-							space_owner = { NOR = {
+						solar_system? = {
+							space_owner? = { NOR = {
 								is_same_value = ROOT 
-								ROOT = {
+								ROOT? = {
 									any_subject = {
 										is_same_value = PREVPREV
 										NOT = { is_at_war_with = PREV }
@@ -1080,14 +1080,14 @@ country_event = {
 		# remove以太引擎，避免二次炸银河
 		every_megastructure = {
 			limit = { is_crisis_sphere = yes }
-			solar_system = {
+			solar_system? = {
 				spawn_megastructure = {
 					type = crisis_sphere_ruined
 					coords_from = prev
 					init_effect = {
 						random_country = {
 							limit = {
-								prev = { has_megastructure_flag = crisis_sphere_of@prev }
+								prev? = { has_megastructure_flag = crisis_sphere_of@prev }
 							}
 							save_event_target_as = former_owner
 						}
@@ -1152,13 +1152,13 @@ country_event = {
 							is_planet_class = pc_ai
 							has_carrier_flag = machine_lair
 						}
-						ROOT = { save_event_target_as = final_machine_world_destroyer }
+						ROOT? = { save_event_target_as = final_machine_world_destroyer }
 						stop_crisis_sound = yes
 						carrier_event = { id = crisis.2046 }
 					}
 				} else_if = {
 					limit = { always = yes }
-					ROOT = { 
+					ROOT? = { 
 						country_event = { id = ap_wg_crisis.1018 days = 1 }
 					}
 				}
@@ -1178,7 +1178,7 @@ country_event = {
 					is_country_type = extradimensional_2
 					is_country_type = extradimensional_3
 				} }
-				ROOT = { country_event = { id = ap_wg_crisis.1019 }}
+				ROOT? = { country_event = { id = ap_wg_crisis.1019 }}
 			}
 			# remove 大可汗
 			if = {
@@ -1188,7 +1188,7 @@ country_event = {
 				set_global_flag = great_khan_defeated_once
 				set_global_flag = great_khan_dead
 				remove_global_flag = marauder_crisis_ongoing
-				ROOT = { 
+				ROOT? = { 
 					save_event_target_as = khan_destroyer
 					set_country_flag = no_khan_do
 					country_event = { id = marauder.710 }
@@ -1201,7 +1201,7 @@ country_event = {
 					limit = {
 						exists = event_target:great_khan_ruler
 					}
-					event_target:great_khan_ruler = {
+					event_target:great_khan_ruler? = {
 						kill_leader = { show_notification = no }
 					}
 				}
@@ -1209,7 +1209,7 @@ country_event = {
 					limit = {
 						exists = event_target:great_khan
 					}
-					event_target:great_khan = {
+					event_target:great_khan? = {
 						kill_leader = { show_notification = no }
 					}
 				}
@@ -1292,7 +1292,7 @@ country_event = {
 					is_planet_class = pc_ai
 					has_carrier_flag = machine_lair
 				}
-				ROOT = { save_event_target_as = final_machine_world_destroyer }
+				ROOT? = { save_event_target_as = final_machine_world_destroyer }
 				stop_crisis_sound = yes
 				carrier_event = { id = crisis.2046 }
 			}
@@ -1361,7 +1361,7 @@ country_event = {
 			limit = {
 				NOT = { has_global_flag = extradimensional_second_portal } 
 			}
-			ROOT = { country_event = { id = crisis.1250 days = 10 random = 10 }}
+			ROOT? = { country_event = { id = crisis.1250 days = 10 random = 10 }}
 		} else_if = {
 			limit = {
 				has_global_flag = extradimensional_second_portal
@@ -1601,7 +1601,7 @@ country_event = {
 	}
 
 	immediate = {
-		capital_scope = {
+		capital_scope? = {
 			create_sh_fe_capital_fleet_and_admiral = yes
 		}
 		if = {
@@ -1630,7 +1630,7 @@ country_event = {
 	hide_window = yes
 
 	trigger = {
-		event_target:ap_wg_crisis_country = {
+		event_target:ap_wg_crisis_country? = {
 			NOT = { has_country_flag = pantsu_shop_origin }
 		}
 	}
@@ -1638,7 +1638,7 @@ country_event = {
 	immediate = {
 		set_global_flag = pantsu_shop_disabled
 		set_global_flag = pantsu_shop_leave
-		event_target:pantsu_shop_country = {
+		event_target:pantsu_shop_country? = {
 			every_owned_fleet = {
 				delete_fleet = this
 			}
@@ -1646,7 +1646,7 @@ country_event = {
 		}
 		if = {
 			limit = { exists = event_target:pantsu_shop_logo_titan_country }
-			event_target:pantsu_shop_logo_titan_country = {
+			event_target:pantsu_shop_logo_titan_country? = {
 				every_owned_fleet = {
 					delete_fleet = this
 				}
@@ -1714,7 +1714,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { is_megastructure_type = wg_fm_gateway_02 }
+		FROM? = { is_megastructure_type = wg_fm_gateway_02 }
 	}
 
 	immediate = {
@@ -1735,7 +1735,7 @@ country_event = {
 	}
 
 	immediate = {
-		event_target:ap_wg_crisis_country = {
+		event_target:ap_wg_crisis_country? = {
 			set_country_flag = wg_fm_war
 		}
 		set_global_flag = wg_crisis_war_begin
@@ -1756,19 +1756,19 @@ country_event = {
 						is_wg_default_country = yes
 						NOT = { is_same_value = ROOT }
 						OR = {
-							ROOT = {
+							ROOT? = {
 								exists = federation
 								NOT = { any_federation_ally = {
 									is_same_value = PREVPREV
 								}}
 							}
-							ROOT = {
+							ROOT? = {
 								is_overlord = yes
 								NOT = { any_subject = {
 									is_same_value = PREVPREV
 								}}
 							}
-							ROOT = {
+							ROOT? = {
 								NOT = { exists = federation }
 								is_overlord = no
 							}
@@ -1889,7 +1889,7 @@ country_event = {
 								}
 							}
 							country_event = { id = ap_wg_crisis.1043 days = 30 }
-							event_target:ap_wg_crisis_country = {
+							event_target:ap_wg_crisis_country? = {
 								country_event = { id = ap_wg_crisis.1050 days = 25 }
 							}
 						}
@@ -1919,7 +1919,7 @@ country_event = {
 		if = {
 			limit = { 
 				exists = event_target:sh_fallen_empire 
-				event_target:sh_fallen_empire = {
+				event_target:sh_fallen_empire? = {
 					NOT = { is_at_war_with = event_target:ap_wg_crisis_country }
 				}
 			}
@@ -1952,7 +1952,7 @@ country_event = {
 		set_global_flag = sh_fallen_empire_awakened
 		if = {
 			limit = { exists = event_target:sh_fallen_empire }
-			event_target:sh_fallen_empire = {
+			event_target:sh_fallen_empire? = {
 				set_country_type = wg_awakened_fallen_empire
 				set_empire_name = "沉默守卫者"
 				if = {
@@ -1984,7 +1984,7 @@ country_event = {
 						}
 					}
 				}
-				capital_scope = {
+				capital_scope? = {
 					create_sh_fe_capital_fleet_and_admiral = yes
 				}
 				add_resource = {
@@ -2045,11 +2045,11 @@ country_event = {
 			limit = { any_war = {
 				any_defender = { is_same_value = ROOT }
 			}}
-			event_target:sh_fallen_empire = {
+			event_target:sh_fallen_empire? = {
 				join_war = event_target:wg_anti_crisis_leader
 			}
 		} else = {
-			event_target:sh_fallen_empire = {
+			event_target:sh_fallen_empire? = {
 				declare_war = {
 					target = ROOT
 					attacker_war_goal = wg_fm_war
@@ -2171,7 +2171,7 @@ country_event = {
 				random_defender = {
 					limit = { OR = {
 						is_subject = no 
-						PREV = { using_war_goal = {
+						PREV? = { using_war_goal = {
 							type = wg_independence
 							owner = PREV
 						}}
@@ -2269,7 +2269,7 @@ country_event = {
 			}
 			country_event = { id = ap_wg_crisis.1051 }
 		}
-		event_target:ap_wg_crisis_country = {
+		event_target:ap_wg_crisis_country? = {
 			country_event = { id = ap_wg_crisis.1069 days = 1 }
 			country_event = { id = ap_wg_crisis.1070 days = 5 }
 		}
@@ -2331,7 +2331,7 @@ country_event = {
 			}
 			country_event = { id = ap_wg_crisis.1052 }
 		}
-		event_target:ap_wg_crisis_country = {
+		event_target:ap_wg_crisis_country? = {
 			country_event = { id = ap_wg_crisis.1069 }
 			country_event = { id = ap_wg_crisis.1070 days = 5 }
 		}
@@ -2459,7 +2459,7 @@ country_event = {
 			}
 			country_event = { id = ap_wg_crisis.1054 }
 		}
-		event_target:ap_wg_crisis_country = {
+		event_target:ap_wg_crisis_country? = {
 			country_event = { id = ap_wg_crisis.1069 }
 			country_event = { id = ap_wg_crisis.1070 days = 5 }
 		}
@@ -2543,7 +2543,7 @@ country_event = {
 # 			}
 # 			country_event = { id = ap_wg_crisis.1053 }
 # 		}
-# 		event_target:ap_wg_crisis_country = {
+# 		event_target:ap_wg_crisis_country? = {
 # 			country_event = { id = ap_wg_crisis.1069 }
 # 		}
 # 	}
@@ -2690,7 +2690,7 @@ country_event = {
 		}
 		hidden_effect = { 
 			country_event = { id = ap_wg_crisis.1041 days = 30 }
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				country_event = { id = ap_wg_crisis.1047 days = 25 }
 			}
 		}
@@ -2721,7 +2721,7 @@ country_event = {
 		}
 		hidden_effect = { 
 			country_event = { id = ap_wg_crisis.1042 days = 30 }
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				country_event = { id = ap_wg_crisis.1048 days = 25 }
 			}
 		}
@@ -2752,7 +2752,7 @@ country_event = {
 		}
 		hidden_effect = { 
 			country_event = { id = ap_wg_crisis.1043 days = 30 }
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				country_event = { id = ap_wg_crisis.1050 days = 25 }
 			}
 		}
@@ -2761,7 +2761,7 @@ country_event = {
 		# 问堕落爸如果不对抗会怎样
 		name = ap_wg_crisis.1044.e
 		trigger = {
-			event_target:request_wg_fm_war_country = {
+			event_target:request_wg_fm_war_country? = {
 				is_same_value = event_target:sh_fallen_empire
 			}
 		}
@@ -2816,7 +2816,7 @@ country_event = {
 					}
 					country_event = { id = ap_wg_crisis.1041 days = 30 }
 				}
-				event_target:ap_wg_crisis_country = {
+				event_target:ap_wg_crisis_country? = {
 					country_event = { id = ap_wg_crisis.1047 days = 25 }
 				}
 			}
@@ -2846,7 +2846,7 @@ country_event = {
 					}
 					country_event = { id = ap_wg_crisis.1042 days = 30 }
 				}
-				event_target:ap_wg_crisis_country = {
+				event_target:ap_wg_crisis_country? = {
 					country_event = { id = ap_wg_crisis.1048 days = 25 }
 				}
 			}
@@ -2916,7 +2916,7 @@ country_event = {
 					country_event = { id = ap_wg_crisis.1043 days = 30 }
 					set_country_flag = wg_anti_crisis_leader
 				}
-				event_target:ap_wg_crisis_country = {
+				event_target:ap_wg_crisis_country? = {
 					country_event = { id = ap_wg_crisis.1050 days = 25 }
 				}
 			}
@@ -3145,7 +3145,7 @@ country_event = {
 				save_event_target_as = wg_anti_crisis_leader
 			}
 		}
-		event_target:wg_anti_crisis_leader = {
+		event_target:wg_anti_crisis_leader? = {
 			declare_war = {
 				target = ROOT
 				attacker_war_goal = wg_fm_war
@@ -3153,7 +3153,7 @@ country_event = {
 		}
 		if = {
 			limit = { has_global_flag = wg_psi_country_join_wgfm_war }
-			event_target:wg_psi_country = {
+			event_target:wg_psi_country? = {
 				join_war = ROOT
 			}
 		}
@@ -3234,7 +3234,7 @@ country_event = {
 
 	trigger = {
 		has_authority = auth_sh_fe
-		FROM = {
+		FROM? = {
 			has_ascension_perk = ap_wg_crisis
 		}
 		NOT = { has_global_flag = wg_crisis_war_begin }
@@ -3242,7 +3242,7 @@ country_event = {
 
 	immediate = {
 		country_event = { id = ap_wg_crisis.1033 days = 5 } #深海爸觉醒
-		event_target:ap_wg_crisis_country = {
+		event_target:ap_wg_crisis_country? = {
 			country_event = { id = ap_wg_crisis.1056 days = 5 }
 		}
 	}
@@ -3287,7 +3287,7 @@ country_event = {
 	}
 
 	immediate = {
-		capital_scope = {
+		capital_scope? = {
 			create_sh_fe_admiral = yes
 			random_list = {
 				1 = { 
@@ -3341,8 +3341,8 @@ country_event = {
 				}
 				NOR = { 
 					has_star_flag = wg_gateway_construction_system 
-					event_target:ap_wg_crisis_country = {
-						capital_scope = { solar_system = { is_same_value = PREVPREVPREV }}
+					event_target:ap_wg_crisis_country? = {
+						capital_scope? = { solar_system? = { is_same_value = PREVPREVPREV }}
 					}
 					has_star_flag = wg_psionic_energy_burst
 				}
@@ -3434,8 +3434,8 @@ country_event = {
 						OR = {
 							has_star_flag = wg_gateway_construction_system
 							has_star_flag = wg_psionic_energy_burst
-							event_target:ap_wg_crisis_country = {
-								capital_scope = { solar_system = { is_same_value = PREVPREVPREV }}
+							event_target:ap_wg_crisis_country? = {
+								capital_scope? = { solar_system? = { is_same_value = PREVPREVPREV }}
 							}
 						}
 					}
@@ -3464,13 +3464,13 @@ system_event = {
 		if = {
 			limit = { 
 				exists = space_owner 
-				space_owner = { is_ai = no }
+				space_owner? = { is_ai = no }
 			}
 			save_event_target_as = wg_psi_crisis_invaded_system
 			if = {
-				limit = { space_owner = { NOT = { has_country_flag = wg_shroud_crisis_invaded }}}
+				limit = { space_owner? = { NOT = { has_country_flag = wg_shroud_crisis_invaded }}}
 				# 刷怪的星系第一次被入侵
-				space_owner = { 
+				space_owner? = { 
 					set_country_flag = wg_shroud_crisis_invaded
 					country_event = { id = ap_wg_crisis.1062 }
 				}
@@ -3478,20 +3478,20 @@ system_event = {
 				limit = { 
 					any_system_planet = { 
 						has_owner = yes 
-						owner = { NOT = { is_country_type = primitive }}
+						owner? = { NOT = { is_country_type = primitive }}
 					}
 				}
 				# 刷怪的星系有殖民地
-				space_owner = { 
+				space_owner? = { 
 					country_event = { id = ap_wg_crisis.1062 }
-					event_target:wg_psi_crisis_invaded_system = {
+					event_target:wg_psi_crisis_invaded_system? = {
 						every_system_planet = {
 							limit = { 
 								has_owner = yes 
-								owner = { NOT = { is_country_type = primitive }}
+								owner? = { NOT = { is_country_type = primitive }}
 							}
 							if = {
-								limit = { owner = { OR = {
+								limit = { owner? = { OR = {
 									has_ascension_perk = ap_mind_over_matter
 									has_country_flag = finish_wg_psi_events
 									has_relic = r_wg_psionic_gem
@@ -3508,7 +3508,7 @@ system_event = {
 		} else_if = {
 			limit = { 
 				exists = space_owner 
-				space_owner = { is_ai = yes }
+				space_owner? = { is_ai = yes }
 				any_system_planet = { has_owner = yes }
 			}
 			every_system_planet = {
@@ -3589,7 +3589,7 @@ system_event = {
 			limit = { NOT = { has_star_flag = wg_psionic_energy_burst }}
 			set_star_flag = wg_psionic_energy_burst
 			add_modifier = { modifier = wg_shroud_system_modifiers }
-			star = {
+			star? = {
 				create_ambient_object = {
 					type = "psi_storm_1"
 					entity_offset = 0
@@ -3696,10 +3696,10 @@ country_event = {
 	desc = {
 		trigger = {
 			is_same_value = event_target:ap_wg_crisis_country
-			NOT = { event_target:wg_psi_crisis_invaded_system = {
+			NOT = { event_target:wg_psi_crisis_invaded_system? = {
 				any_system_planet = { 
 					has_owner = yes 
-					owner = { is_same_value = root }
+					owner? = { is_same_value = root }
 				}
 			}}
 		}
@@ -3708,10 +3708,10 @@ country_event = {
 	desc = {
 		trigger = {
 			is_same_value = event_target:ap_wg_crisis_country
-			event_target:wg_psi_crisis_invaded_system = {
+			event_target:wg_psi_crisis_invaded_system? = {
 				any_system_planet = { 
 					has_owner = yes 
-					owner = { is_same_value = root }
+					owner? = { is_same_value = root }
 				}
 			}
 		}
@@ -3725,7 +3725,7 @@ country_event = {
 				has_country_flag = finish_wg_psi_events
 				has_relic = r_wg_psionic_gem
 			}
-			event_target:wg_psi_crisis_invaded_system = {
+			event_target:wg_psi_crisis_invaded_system? = {
 				any_system_planet = { has_owner = yes }
 			}
 		}
@@ -3734,7 +3734,7 @@ country_event = {
 	desc = {
 		trigger = {
 			NOT = { is_same_value = event_target:ap_wg_crisis_country }
-			NOT = { event_target:wg_psi_crisis_invaded_system = {
+			NOT = { event_target:wg_psi_crisis_invaded_system? = {
 				any_system_planet = { has_owner = yes }
 			}}
 		}
@@ -3748,7 +3748,7 @@ country_event = {
 				has_country_flag = finish_wg_psi_events
 				has_relic = r_wg_psionic_gem
 			}
-			event_target:wg_psi_crisis_invaded_system = {
+			event_target:wg_psi_crisis_invaded_system? = {
 				any_system_planet = { has_owner = yes }
 			}
 		}
@@ -3762,7 +3762,7 @@ country_event = {
 				has_country_flag = finish_wg_psi_events
 				has_relic = r_wg_psionic_gem
 			}
-			event_target:wg_psi_crisis_invaded_system = {
+			event_target:wg_psi_crisis_invaded_system? = {
 				any_system_planet = { has_owner = yes }
 			}
 		}
@@ -3803,7 +3803,7 @@ carrier_event = {
 	show_sound = event_air_raid_siren
 
 	trigger = {
-		solar_system = {
+		solar_system? = {
 			has_star_flag = wg_psionic_energy_burst
 		}
 	}
@@ -3822,10 +3822,10 @@ country_event = {
 	title = ap_wg_crisis.1064.name
 	desc = {
 		exclusive_trigger = {
-			event_target:wg_psi_entity_defeated_system = {
+			event_target:wg_psi_entity_defeated_system? = {
 				any_system_planet = { 
 					has_owner = yes 
-					owner = { is_same_empire = root }
+					owner? = { is_same_empire = root }
 				}
 			}
 		}
@@ -3837,19 +3837,19 @@ country_event = {
 	show_sound = event_ship_thrusters
 
 	trigger = {
-		FROM = {
+		FROM? = {
 			is_country_type = wg_shroud_spirits
 		}
 	}
 
 	immediate = {
-		FROMFROM.solar_system = {
+		FROMFROM.solar_system? = {
 			save_event_target_as = wg_psi_entity_defeated_system
 			if = {
 				limit = {
 					any_ship_in_system = {
 						has_hp_percentage >= 0.01
-						owner = { is_country_type = wg_shroud_spirits }
+						owner? = { is_country_type = wg_shroud_spirits }
 					}
 				}
 				no_events = yes
@@ -4002,18 +4002,18 @@ ship_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		solar_system = {
+		solar_system? = {
 			has_star_flag = wg_gateway_construction_system
 		}
-		FROM = { has_ascension_perk = ap_wg_crisis }
+		FROM? = { has_ascension_perk = ap_wg_crisis }
 	}
 
 	immediate = {
-		owner = { 
+		owner? = { 
 			set_country_flag = capture_wg_fm_gate_victim
 			save_event_target_as = capture_wg_fm_gate_victim 
 		}
-		event_target:capture_wg_fm_gate_victim = { 
+		event_target:capture_wg_fm_gate_victim? = { 
 			country_event = { id = ap_wg_crisis.1072 }
 		}
 		
@@ -4061,15 +4061,15 @@ country_event = {
 		}
 		if = {
 			limit = { 
-				event_target:wg_gateway_construction_system = {
+				event_target:wg_gateway_construction_system? = {
 					exists = space_owner
-					space_owner = { NOT = { is_same_value = event_target:ap_wg_crisis_country }}
+					space_owner? = { NOT = { is_same_value = event_target:ap_wg_crisis_country }}
 				} 
-				event_target:ap_wg_crisis_country = {
+				event_target:ap_wg_crisis_country? = {
 					check_variable = { which = capture_wg_fm_gate_counter value = 0 }
 				}
 			}
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				country_event = { id = ap_wg_crisis.1073 }
 			}
 		}
@@ -4100,10 +4100,10 @@ country_event = {
 				is_megastructure_type = wg_fm_gateway_03
 				is_megastructure_type = wg_fm_gateway_04
 			}}
-			solar_system = { spawn_megastructure = {
+			solar_system? = { spawn_megastructure = {
 				type = wg_fm_gateway_damaged
 			}}
-			event_target:wg_gateway_object = {
+			event_target:wg_gateway_object? = {
 				destroy_ambient_object = this
 				clear_global_event_target = wg_gateway_object
 			}
@@ -4265,17 +4265,17 @@ ship_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		solar_system = {
+		solar_system? = {
 			has_star_flag = wg_gateway_construction_system
 		}
-		owner = { check_variable = {
+		owner? = { check_variable = {
 			which = capture_wg_fm_gate_counter
 			value > 0
 		}}
 	}
 
 	immediate = {
-		owner = { 
+		owner? = { 
 			country_event = { id = ap_wg_crisis.1080 }
 			set_country_flag = reclaim_wg_gateway
 		}
@@ -4303,7 +4303,7 @@ country_event = {
 		name = EXCELLENT
 		if = {
 			limit = { NOT = { has_special_project = repair_wg_fm_gate }}
-			event_target:wg_gateway_construction_system = {
+			event_target:wg_gateway_construction_system? = {
 				enable_special_project = {
 					name = repair_wg_fm_gate
 					location = this
@@ -4373,10 +4373,10 @@ country_event = {
 					is_megastructure_type = wg_fm_gateway_03
 					is_megastructure_type = wg_fm_gateway_04
 				}}
-				solar_system = { spawn_megastructure = {
+				solar_system? = { spawn_megastructure = {
 					type = wg_fm_gateway_damaged
 				}}
-				event_target:wg_gateway_object = {
+				event_target:wg_gateway_object? = {
 					destroy_ambient_object = this
 					clear_global_event_target = wg_gateway_object
 				}
@@ -4461,19 +4461,19 @@ country_event = {
 		months = 18
 		modifier = {
 			factor = 2
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				check_variable = { which = awakened_fe_join_wgfm_war value > 1 }
 			}
 		}
 		modifier = {
 			factor = 1.5
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				check_variable = { which = awakened_fe_join_wgfm_war value > 2 }
 			}
 		}
 		modifier = {
 			factor = 1.33
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				check_variable = { which = awakened_fe_join_wgfm_war value > 3 }
 			}
 		}
@@ -4498,7 +4498,7 @@ country_event = {
 			limit = { has_country_flag = wg_anti_crisis_leader }
 			save_event_target_as = wg_anti_crisis_leader
 		}
-		event_target:ap_wg_crisis_country = {
+		event_target:ap_wg_crisis_country? = {
 			change_variable = { which = awakened_fe_join_wgfm_war value = 1 }
 			country_event = { id = ap_wg_crisis.1088 }
 			country_event = { id = ap_wg_crisis.1086 days = 5 }
@@ -4534,19 +4534,19 @@ country_event = {
 		months = 18
 		modifier = {
 			factor = 2
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				check_variable = { which = awakened_fe_join_wgfm_war value > 1 }
 			}
 		}
 		modifier = {
 			factor = 1.5
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				check_variable = { which = awakened_fe_join_wgfm_war value > 2 }
 			}
 		}
 		modifier = {
 			factor = 1.33
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				check_variable = { which = awakened_fe_join_wgfm_war value > 3 }
 			}
 		}
@@ -4570,7 +4570,7 @@ country_event = {
 			limit = { has_country_flag = wg_anti_crisis_leader }
 			save_event_target_as = wg_anti_crisis_leader
 		}
-		event_target:ap_wg_crisis_country = {
+		event_target:ap_wg_crisis_country? = {
 			change_variable = { which = awakened_fe_join_wgfm_war value = 1 }
 			country_event = { id = ap_wg_crisis.1088 }
 			country_event = { id = ap_wg_crisis.1086 days = 5 }
@@ -4584,7 +4584,7 @@ country_event = {
 	title = ap_wg_crisis.1086.name
 	desc = {
 		trigger = {
-			event_target:wgfm_war_awakened_fallen_empire = {
+			event_target:wgfm_war_awakened_fallen_empire? = {
 				has_ethic = ethic_fanatic_spiritualist
 			}
 		}
@@ -4592,7 +4592,7 @@ country_event = {
 	}
 	desc = {
 		trigger = {
-			event_target:wgfm_war_awakened_fallen_empire = {
+			event_target:wgfm_war_awakened_fallen_empire? = {
 				has_ethic = ethic_fanatic_materialist
 			}
 		}
@@ -4600,7 +4600,7 @@ country_event = {
 	}
 	desc = {
 		trigger = {
-			event_target:wgfm_war_awakened_fallen_empire = {
+			event_target:wgfm_war_awakened_fallen_empire? = {
 				has_ethic = ethic_fanatic_xenophile
 			}
 		}
@@ -4608,7 +4608,7 @@ country_event = {
 	}
 	desc = {
 		trigger = {
-			event_target:wgfm_war_awakened_fallen_empire = {
+			event_target:wgfm_war_awakened_fallen_empire? = {
 				has_ethic = ethic_fanatic_xenophobe
 			}
 		}
@@ -4630,11 +4630,11 @@ country_event = {
 			limit = { any_war = {
 				any_defender = { is_same_value = ROOT }
 			}}
-			event_target:wgfm_war_awakened_fallen_empire = {
+			event_target:wgfm_war_awakened_fallen_empire? = {
 				join_war = event_target:wg_anti_crisis_leader
 			}
 		} else = {
-			event_target:wgfm_war_awakened_fallen_empire = {
+			event_target:wgfm_war_awakened_fallen_empire? = {
 				declare_war = {
 					target = ROOT
 					attacker_war_goal = wg_fm_war
@@ -4661,7 +4661,7 @@ country_event = {
 	title = ap_wg_crisis.1087.name
 	desc = {
 		exclusive_trigger = {
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				check_variable = { which = awakened_fe_join_wgfm_war value <= 1 }
 			}
 		}
@@ -4682,7 +4682,7 @@ country_event = {
 	title = ap_wg_crisis.1087.name
 	desc = {
 		exclusive_trigger = {
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				check_variable = { which = awakened_fe_join_wgfm_war value <= 1 }
 			}
 		}
@@ -4743,19 +4743,19 @@ country_event = {
 		years = 5
 		modifier = {
 			factor = 0.5
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				check_variable = { which = rebellious_subjects value > 1 }
 			}
 		}
 		modifier = {
 			factor = 0.5
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				check_variable = { which = rebellious_subjects value > 2 }
 			}
 		}
 		modifier = {
 			factor = 0.5
-			event_target:ap_wg_crisis_country = {
+			event_target:ap_wg_crisis_country? = {
 				check_variable = { which = rebellious_subjects value > 4 }
 			}
 		}
@@ -4781,7 +4781,7 @@ country_event = {
 		save_event_target_as = wg_rebellious_subject_country
 		set_country_flag = wg_rebellious_subject_country
 		set_global_flag = wg_fm_has_rebel_country
-		event_target:ap_wg_crisis_country = {
+		event_target:ap_wg_crisis_country? = {
 			change_variable = { which = rebellious_subjects value = 1 }
 			country_event = { id = ap_wg_crisis.1091 }
 		}
@@ -4847,7 +4847,7 @@ country_event = {
 		# 		is_subject = no 
 		# 	}
 		# }
-		event_target:wg_rebellious_subject_country = {
+		event_target:wg_rebellious_subject_country? = {
 			if = {
 				limit = { is_subject = yes }
 				set_subject_of = { who = none }
@@ -4892,7 +4892,7 @@ country_event = {
 					random_federation = {
 						limit = { has_federation_flag = wg_anti_crisis_federation }
 						federation_leader = {
-							ROOT = { join_alliance = {
+							ROOT? = { join_alliance = {
 								who = PREV
 								override_requirements = yes
 							}}
@@ -5143,7 +5143,7 @@ country_event = {
 
 	option = {
 		name = ap_wg_crisis.1097.a
-		capital_scope = { 
+		capital_scope? = { 
 			enable_special_project = {
 				name = wg_fm_alliance_plan
 				location = this
@@ -5278,7 +5278,7 @@ country_event = {
 							modifier = opinion_destroying_galaxy
 						}
 					}
-					root = { country_event = { id = ap_wg_crisis.1099 }}
+					root? = { country_event = { id = ap_wg_crisis.1099 }}
 				}
 				100 = { # 不同意加入玩家
 					modifier = {
@@ -5340,7 +5340,7 @@ country_event = {
 						modifier = opinion_destroying_galaxy
 					}
 					save_event_target_as = reject_wgfm_alliance_country
-					root = { country_event = { id = ap_wg_crisis.1100 }}
+					root? = { country_event = { id = ap_wg_crisis.1100 }}
 				}
 			}
 		}
@@ -5356,13 +5356,13 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		event_target:join_wgfm_alliance_country = {	
+		event_target:join_wgfm_alliance_country? = {	
 			NOT = { has_country_flag = reject_wgfm_alliance }
 		}
 	}
 
 	immediate = {
-		event_target:join_wgfm_alliance_country = {	
+		event_target:join_wgfm_alliance_country? = {	
 			set_country_flag = join_wgfm_alliance
 		}
 	}
@@ -5382,13 +5382,13 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		event_target:reject_wgfm_alliance_country = {	
+		event_target:reject_wgfm_alliance_country? = {	
 			NOT = { has_country_flag = reject_wgfm_alliance }
 		}
 	}
 
 	immediate = {
-		event_target:reject_wgfm_alliance_country = {	
+		event_target:reject_wgfm_alliance_country? = {	
 			set_country_flag = reject_wgfm_alliance
 		}
 	}
@@ -5511,7 +5511,7 @@ country_event = {
 
 	immediate = {
 		set_global_flag = wg_psi_country_join_wgfm_war
-		event_target:wg_psi_country = {
+		event_target:wg_psi_country? = {
 			add_modifier = { modifier = wg_psi_country_cheat }
 			add_resource = {
 				energy = 50000
@@ -5664,7 +5664,7 @@ country_event = {
 		name = wg_crisis.1003.a
 		response_text = wg_crisis.1003.a.response
 		hidden_effect = {
-			capital_scope = {
+			capital_scope? = {
 				carrier_event = { id = wg_crisis.1004 days = 5 }
 			}
 			country_event = { id = ap_wg_crisis.1113 }
@@ -5709,7 +5709,7 @@ country_event = {
 			}
 			destroy_country = yes
 		}
-		event_target:wg_crisis_country = {
+		event_target:wg_crisis_country? = {
 			every_owned_fleet = {
 				delete_fleet = this
 			}
@@ -5745,13 +5745,13 @@ country_event = {
 		trigger = {
 			has_country_flag = join_uf
 		}
-		capital_scope = { enable_special_project = {
+		capital_scope? = { enable_special_project = {
 			name = "join_uf_study_normal"
 			location = this
 			owner = root
 		}}	
 		hidden_effect = {
-			owner = {
+			owner? = {
 				country_event = { id = wg_crisis.1006 }
 			}
 		}	
@@ -5761,7 +5761,7 @@ country_event = {
 		trigger = {
 			has_country_flag = fight_with_uf
 		}
-		capital_scope = { enable_special_project = {
+		capital_scope? = { enable_special_project = {
 			name = "resistance_uf_study_wg_fm"
 			location = this
 			owner = root
@@ -5784,7 +5784,7 @@ carrier_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		owner = {
+		owner? = {
 			every_owned_planet = {
 				limit = { is_colony = yes }
 				remove_all_buildings = yes
@@ -5843,7 +5843,7 @@ country_event = {
 	option = {
 		name = ap_wg_crisis.1116.a
 		custom_tooltip = ap_wg_crisis.1116.tooltip
-		capital_scope = { enable_special_project = {
+		capital_scope? = { enable_special_project = {
 			name = "resistance_uf_study_wg_fm"
 			location = this
 			owner = root
@@ -5869,7 +5869,7 @@ country_event = {
 	}
 
 	immediate = {
-		capital_scope = {
+		capital_scope? = {
 			create_ambient_object = {
 				type = "bug_object"
 				entity_offset_height = { min = -0 max = -25 }

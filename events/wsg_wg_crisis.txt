@@ -74,14 +74,14 @@ carrier_event = {
 
 	trigger = {
         planet_devastation >= 100
-		FROM = {
+		FROM? = {
 			is_country_type = wg_crisis_country
 		}
 	}
 
 	immediate = {
 		# 相位星球
-		event_target:wg_crisis_country = { 
+		event_target:wg_crisis_country? = { 
 			subtract_variable = { 
 				which = wg_find_target_fleet_effct 
 				value = 1 
@@ -93,7 +93,7 @@ carrier_event = {
 			remove_modifier = phaseshifted
 		}
 		every_fleet_in_orbit = {
-			owner = {
+			owner? = {
 				change_variable = { which = planet_count value = -1 }
 				log = "planet destoryed! planet_count: [this.planet_count]"
 			}
@@ -116,7 +116,7 @@ carrier_event = {
 			change_pc = pc_shattered 
         }
 		if = {
-			limit = { FROM = { is_country_type = wg_crisis_country } }
+			limit = { FROM? = { is_country_type = wg_crisis_country } }
 			every_country = {
 				limit = { has_event_chain = "wg_invasion_chain" }
 				add_event_chain_counter = {
@@ -126,11 +126,11 @@ carrier_event = {
 				}
 			}
 		}
-		solar_system = {
+		solar_system? = {
 			every_fleet_in_system = {
 				limit = {
 					exists = owner
-					owner = { is_country_type = wg_crisis_country }
+					owner? = { is_country_type = wg_crisis_country }
 					OR = {
 						has_fleet_flag = attack_fleet
 						has_fleet_flag = raider_fleet
@@ -144,7 +144,7 @@ carrier_event = {
 								orbit = {
 									NOT = { is_star = yes }
 									exists = owner
-									owner = { is_country_type = wg_crisis_country }
+									owner? = { is_country_type = wg_crisis_country }
 								}
 							}
 						}
@@ -246,9 +246,9 @@ country_event = {
     immediate = {
         if = {
             limit = {
-                FROM = { has_event_chain = "wg_invasion_chain" }
+                FROM? = { has_event_chain = "wg_invasion_chain" }
             }
-            FROM = {
+            FROM? = {
                 add_event_chain_counter = {
                     event_chain = "wg_invasion_chain"
                     counter = "wg_invastor_kills_us"
@@ -270,9 +270,9 @@ country_event = {
 			}
         }
 		if = {
-			limit = { FROMFROM = { is_ship_size = star_eater_uf }}
-			FROMFROM.fleet = { save_event_target_as = destroyed_uf_colossus_fleet }
-			FROM = { set_country_flag = uf_colossus_destroyer }
+			limit = { FROMFROM? = { is_ship_size = star_eater_uf }}
+			FROMFROM.fleet? = { save_event_target_as = destroyed_uf_colossus_fleet }
+			FROM? = { set_country_flag = uf_colossus_destroyer }
 			every_country = {
 				limit = { has_event_chain = "uf_colossus_chain" }
 				add_event_chain_counter = {
@@ -292,16 +292,16 @@ country_event = {
 				}
 				# 随便找另外一个跟
 				if = {
-					limit = { root = { any_owned_fleet = {
+					limit = { root? = { any_owned_fleet = {
 						exists = this
 						has_fleet_flag = colossus_fleet
 					}}}
-					root = { random_owned_fleet = {
+					root? = { random_owned_fleet = {
 						limit = {
 							exists = this
 							has_fleet_flag = colossus_fleet
 						}
-						PREVPREV = {
+						PREVPREV? = {
 							set_variable = { which = uf_colossus_id value = PREV.uf_colossus_id }
 							auto_follow_fleet = { target = PREV attack_fleet = no }
 							add_modifier = { modifier = uf_convoy_fleet_speed_buff days = 2500 }
@@ -341,7 +341,7 @@ country_event = {
 								has_star_flag = small_portal_3_system
 							}
 							any_fleet_in_system = {
-								owner = { is_same_value = root }
+								owner? = { is_same_value = root }
 							}
 						}
 						set_star_flag = convoy_fleet_waiting_system
@@ -443,7 +443,7 @@ fleet_event = {
 			has_fleet_flag = attack_fleet
 		}
 		#wg_crisis.96 fleet_flag change from eddy#
-        owner = { is_country_type = wg_crisis_country }
+        owner? = { is_country_type = wg_crisis_country }
 	}
 
 	immediate = { 
@@ -466,7 +466,7 @@ fleet_event = {
 		is_fleet_idle = yes
 		has_fleet_flag = colossus_fleet
 		NOT = { has_fleet_flag = evading_battle }
-        owner = { is_country_type = wg_crisis_country }
+        owner? = { is_country_type = wg_crisis_country }
         any_system = { exists = space_owner }
 	}
 
@@ -487,8 +487,8 @@ fleet_event = {
 			has_global_flag = wg_invasion_3_happened
 		}
 		has_fleet_flag = raider_fleet
-        owner = { is_country_type = wg_crisis_country }
-		from = {
+        owner? = { is_country_type = wg_crisis_country }
+		from? = {
 			any_fleet_in_system = {
 				NOT = { is_same_value = root }
 				OR = {
@@ -501,7 +501,7 @@ fleet_event = {
 	immediate = {
 		clear_orders = yes
 		clear_fleet_actions = this
-		from = { random_neighbor_system = { system_star = { root = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } } } }
+		from? = { random_neighbor_system = { system_star = { root? = { auto_move_to_planet = { target = prev clear_auto_move_on_arrival = yes } } } } }
 	}
 }
 # 联合星爆触发
@@ -520,7 +520,7 @@ carrier_event = {
 			}
 		}
 		set_carrier_flag = uf_destroyed_planet
-		solar_system = {
+		solar_system? = {
 			clear_variable = fleet_id
 			save_event_target_as = uf_destroyed_system
 			set_star_flag = uf_destroyed_system
@@ -528,16 +528,16 @@ carrier_event = {
 				limit = {
 					any_system_planet = {
 						has_owner = yes
-						owner = { is_ai = no }
+						owner? = { is_ai = no }
 					}
 				}
 				random_system_planet = {
 					limit = {
 						has_owner = yes
-						owner = { is_ai = no }
+						owner? = { is_ai = no }
 					}
 					save_event_target_as = uf_destroyed_planet
-					owner = { 
+					owner? = { 
 						# 通知你家炸了
 						country_event = { id = wg_crisis.82 }
 						# 通知其他人你家炸了
@@ -587,10 +587,10 @@ country_event = {
 					counter = uf_colossus_destroys_stars
 					amount = 1
 				}
-				event_target:wg_crisis_country = {
+				event_target:wg_crisis_country? = {
 					every_owned_fleet = {
 						limit = { has_fleet_flag = colossus_fleet }
-						root = { add_event_chain_counter = {
+						root? = { add_event_chain_counter = {
 							event_chain = uf_colossus_chain
 							counter = exists_uf_colossus
 							amount = 1
@@ -636,10 +636,10 @@ country_event = {
 					counter = uf_colossus_destroys_stars
 					amount = 1
 				}
-				event_target:wg_crisis_country = {
+				event_target:wg_crisis_country? = {
 					every_owned_fleet = {
 						limit = { has_fleet_flag = colossus_fleet }
-						root = { add_event_chain_counter = {
+						root? = { add_event_chain_counter = {
 							event_chain = uf_colossus_chain
 							counter = exists_uf_colossus
 							amount = 1
@@ -668,14 +668,14 @@ country_event = {
 	trigger = {
 		is_country_type = wg_crisis_country
 		has_global_flag = wg_crisis_insane
-		fromfrom = { 
+		fromfrom? = { 
 			has_fleet_flag = colossus_fleet 
 			# 已到达目的地，不需要回避
-			solar_system = { NOT = {
+			solar_system? = { NOT = {
 				check_variable = { which = fleet_id value = prevprev.uf_fleet_id }
 			}}
 		}
-		fromfromfrom = {
+		fromfromfrom? = {
 			any_owned_ship = { 
 				is_ship_class = shipclass_military
 			}
@@ -684,7 +684,7 @@ country_event = {
 	}
 
 	immediate = {
-		from = {
+		from? = {
 			clear_fleet_actions = this
 			set_fleet_stance = evasive
 			set_fleet_flag = evading_battle
@@ -715,7 +715,7 @@ fleet_event = {
 	}
 
 	immediate = {
-		owner = { random_owned_fleet = {
+		owner? = { random_owned_fleet = {
 			limit = {
 				has_fleet_flag = evading_battle
 				has_fleet_flag = colossus_fleet 
@@ -740,7 +740,7 @@ country_event = {
 			has_fleet_flag = colossus_fleet
 			has_fleet_flag = evading_battle
 			check_variable = { which = uf_colossus_id value = prevprev.uf_colossus_id }
-			root = { NOT = {
+			root? = { NOT = {
 				any_owned_fleet = {
 					has_fleet_flag = convoy_fleet
 					check_variable = { which = uf_colossus_id value = prevprev.uf_colossus_id }
@@ -787,7 +787,7 @@ country_event = {
 						has_star_flag = small_portal_3_system
 					}
 					any_fleet_in_system = {
-						owner = { is_same_value = root }
+						owner? = { is_same_value = root }
 					}
 				}
 				set_star_flag = colossus_fleet_waiting_system
@@ -891,11 +891,11 @@ country_event = {
 		every_galaxy_planet = {
 			limit = { 
 				exists = owner
-				owner = { is_hostile = root }
+				owner? = { is_hostile = root }
 				is_colony = yes
 			}
 			set_carrier_flag = uf_target
-			ROOT = { change_variable = { which = planet_count value = 1 }}
+			ROOT? = { change_variable = { which = planet_count value = 1 }}
 		}
 		log = "new planet_count: [this.planet_count]"
 		country_event = { id = wg_crisis.200 days = 400 }
@@ -1052,7 +1052,7 @@ event = {
 			}
 			if = {
 				limit = { exists = event_target:wg_fallen_empire }
-				event_target:wg_fallen_empire = {
+				event_target:wg_fallen_empire? = {
 					country_event = { id = wg_fe.21 }
 				}
 			}
@@ -1257,7 +1257,7 @@ country_event = {
 						has_trait = trait_wg_sunflower
 					}
 				}
-				planet = { create_pop_group = { 
+				planet? = { create_pop_group = { 
 					size = prev.trigger:pop_group_size 
 					species = ROOT.owner_main_species 
 				}}
@@ -1335,7 +1335,7 @@ country_event = {
 				}
 			}
 		}
-		event_target:wsg_lady_country = {
+		event_target:wsg_lady_country? = {
 			establish_communications_no_message = root
 		}
 		save_global_event_target_as = wsg_lady_own_country
@@ -1353,17 +1353,17 @@ country_event = {
     is_triggered_only = yes
 
     trigger = { 
-		FROMFROM = { 
+		FROMFROM? = { 
 			exists = leader
 			NOT = { has_fleet_flag = drones }
-			leader = { OR ={
+			leader? = { OR ={
 				AND = {
 					has_leader_flag = uf_leader_trait_s1
-					prev = { NOT = { has_fleet_flag = uf_leader_trait_s1_triggered } }
+					prev? = { NOT = { has_fleet_flag = uf_leader_trait_s1_triggered } }
 				}
 				AND = {
 					has_leader_flag = uf_leader_trait_s2
-					prev = { NOR = { 
+					prev? = { NOR = { 
 						has_fleet_flag = uf_leader_trait_s2_triggered 
 						has_fleet_flag = uf_mirrored_fleet
 					} }
@@ -1374,11 +1374,11 @@ country_event = {
 	}
 
 	immediate = {
-        FROMFROM = {
+        FROMFROM? = {
 			if = { 
 				# 联合技能 联合迴路遮断器
 				limit = { 
-					leader = { has_leader_flag = uf_leader_trait_s1 }
+					leader? = { has_leader_flag = uf_leader_trait_s1 }
 					NOT = { has_fleet_flag = uf_leader_trait_s1_triggered }
 					count_combatant_fleet = {
 						count > 1
@@ -1399,7 +1399,7 @@ country_event = {
 			}
 			if = {
 				limit = { 
-					leader = { has_leader_flag = uf_leader_trait_s2 }
+					leader? = { has_leader_flag = uf_leader_trait_s2 }
 					NOR = { 
 						has_fleet_flag = uf_leader_trait_s2_triggered 
 						has_fleet_flag = uf_mirrored_fleet
@@ -1436,8 +1436,8 @@ fleet_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		leader = { save_event_target_as = uf_clone_leader }
-		owner = {
+		leader? = { save_event_target_as = uf_clone_leader }
+		owner? = {
 			clone_leader = {
 				target = event_target:uf_clone_leader
 				class = commander
@@ -1490,7 +1490,7 @@ fleet_event = {
 					assign_leader = event_target:uf_mirrored_leader
 					set_fleet_flag = uf_mirrored_fleet
 					if = {
-						limit = { ROOT = { has_fleet_flag = raider_fleet }}
+						limit = { ROOT? = { has_fleet_flag = raider_fleet }}
 						add_modifier = { modifier = uf_raider_buff days = -1 }
 					}
 					set_variable = { which = fleet_id value = ROOT.fleet_id }
@@ -1517,7 +1517,7 @@ country_event = {
 
 	trigger = {
 		is_country_type = wg_crisis_country
-		FROMFROM = { has_fleet_flag = flagship_fleet }
+		FROMFROM? = { has_fleet_flag = flagship_fleet }
 	}
 
 	immediate = {

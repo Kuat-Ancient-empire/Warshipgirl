@@ -7,17 +7,17 @@ ship_event = {
 	hide_window = yes
 
 	trigger = {
-		FROM = {
+		FROM? = {
 			AND = {
 				has_owner = yes
-				owner = { is_country_type = primitive }
+				owner? = { is_country_type = primitive }
 			}
 			NOT = { has_carrier_flag = fotd_hunter@root.owner }
 		}
 	}
 
 	immediate = {
-		owner = {
+		owner? = {
 			save_event_target_as = ship_owner
 			if = {
 				limit = {
@@ -26,12 +26,12 @@ ship_event = {
 				set_country_flag = encountered_first_primitive
 			}
 		}
-		FROM = {
+		FROM? = {
 			if = {
 				limit = {
 					exists = owner
 				}
-				owner = {
+				owner? = {
 					establish_contact = { who = event_target:ship_owner }
 					save_event_target_as = primitive_civ
 				}
@@ -41,7 +41,7 @@ ship_event = {
 		if = {
 			limit = {
 				exists = event_target:primitive_civ
-				event_target:primitive_civ = {
+				event_target:primitive_civ? = {
 					NOT = { has_country_flag = humans_late_medieval_age }
 					NOT = { has_country_flag = benefactor_empire }
 					NOT = { has_country_flag = primitive_cousins_of_@root.owner }
@@ -55,13 +55,13 @@ ship_event = {
 					}
 				}
 			}
-			owner = { country_event = { id = action.5 } }
+			owner? = { country_event = { id = action.5 } }
 			break = yes
 		}
 		if = {
 			limit = {
 				exists = event_target:primitive_civ
-				event_target:primitive_civ = {
+				event_target:primitive_civ? = {
 					NOR = {
 						has_country_flag = humans_machine_age
 						has_country_flag = humans_early_space_age
@@ -75,13 +75,13 @@ ship_event = {
 					}
 				}
 			}
-			owner = { country_event = { id = action.6 } }
+			owner? = { country_event = { id = action.6 } }
 			break = yes
 		}
 		if = {
 			limit = {
 				exists = event_target:primitive_civ
-				event_target:primitive_civ = {
+				event_target:primitive_civ? = {
 					NOR = {
 						has_country_flag = humans_machine_age
 						has_country_flag = humans_early_space_age 
@@ -89,47 +89,47 @@ ship_event = {
 					has_country_flag = wg_information_age
 				}
 			}
-			owner = { country_event = { id = wsg.3108 scopes = { from = event_target:primitive_civ } } }
+			owner? = { country_event = { id = wsg.3108 scopes = { from = event_target:primitive_civ } } }
 			break = yes
 		}
 		if = {
 			limit = {
 				exists = event_target:primitive_civ
-				event_target:primitive_civ = { has_country_flag = humans_late_medieval_age }
+				event_target:primitive_civ? = { has_country_flag = humans_late_medieval_age }
 			}
-			owner = { country_event = { id = galactic_features.101 } }
+			owner? = { country_event = { id = galactic_features.101 } }
 			break = yes
 		}
 		if = {
 			limit = {
 				exists = event_target:primitive_civ
-				event_target:primitive_civ = { has_country_flag = humans_machine_age }
+				event_target:primitive_civ? = { has_country_flag = humans_machine_age }
 			}
-			owner = { country_event = { id = galactic_features.102 } }
+			owner? = { country_event = { id = galactic_features.102 } }
 			break = yes
 		}
 		if = {
 			limit = {
 				exists = event_target:primitive_civ
-				event_target:primitive_civ = { has_country_flag = humans_early_space_age }
+				event_target:primitive_civ? = { has_country_flag = humans_early_space_age }
 			}
-			owner = { country_event = { id = galactic_features.103 } }
+			owner? = { country_event = { id = galactic_features.103 } }
 			break = yes
 		}
 		if = {
 			limit = {
 				exists = event_target:primitive_civ
-				event_target:primitive_civ = { has_country_flag = benefactor_empire }
+				event_target:primitive_civ? = { has_country_flag = benefactor_empire }
 			}
-			owner = { country_event = { id = origin.1355 } }
+			owner? = { country_event = { id = origin.1355 } }
 			break = yes
 		}
 		if = {
 			limit = {
 				exists = event_target:primitive_civ
-				event_target:primitive_civ = { has_country_flag = primitive_cousins_of_@root.owner }
+				event_target:primitive_civ? = { has_country_flag = primitive_cousins_of_@root.owner }
 			}
-			#owner = { country_event = { id = origin.410 } }
+			#owner? = { country_event = { id = origin.410 } }
 			break = yes
 		}
 	}
@@ -143,12 +143,12 @@ fleet_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		owner = { is_country_type = default }
-		from = {
+		owner? = { is_country_type = default }
+		from? = {
 			OR = {
 				AND = {
 					exists = space_owner
-					space_owner = {
+					space_owner? = {
 						OR = {
 							is_country_type = fallen_empire
 							is_country_type = awakened_fallen_empire
@@ -161,7 +161,7 @@ fleet_event = {
 				}
 				any_neighbor_system = {
 					exists = space_owner
-					space_owner = {
+					space_owner? = {
 						OR = {
 							is_country_type = fallen_empire
 							is_country_type = awakened_fallen_empire
@@ -177,11 +177,11 @@ fleet_event = {
 	}
 
 	immediate = {
-		from = {
+		from? = {
 			if = {
 				limit = {
 					exists = space_owner
-					space_owner = {
+					space_owner? = {
 						OR = {
 							is_country_type = fallen_empire
 							is_country_type = awakened_fallen_empire
@@ -192,7 +192,7 @@ fleet_event = {
 						NOT = { has_communications = root.owner }
 					}
 				}
-				space_owner = {
+				space_owner? = {
 					save_event_target_as = contact_empire
 				}
 			}
@@ -200,7 +200,7 @@ fleet_event = {
 				random_neighbor_system = {
 					limit = {
 						exists = space_owner
-						space_owner = {
+						space_owner? = {
 							OR = {
 								is_country_type = fallen_empire
 								is_country_type = awakened_fallen_empire
@@ -210,13 +210,13 @@ fleet_event = {
 							NOT = { has_communications = root.owner }
 						}
 					}
-					space_owner = {
+					space_owner? = {
 						save_event_target_as = contact_empire
 					}
 				}
 			}
 		}
-		owner = {
+		owner? = {
 			establish_contact = {
 				who = event_target:contact_empire
 				location = event_target:contact_empire.capital_scope
@@ -229,7 +229,7 @@ fleet_event = {
 						has_authority = auth_shenhai
 					}
 					is_ai = no
-					event_target:contact_empire = { is_wg_fallen_empire = yes }
+					event_target:contact_empire? = { is_wg_fallen_empire = yes }
 				}
 				country_event = { id = wg_fe.2 }
 			} 
@@ -240,7 +240,7 @@ fleet_event = {
 						has_authority = auth_shenhai
 					}
 					is_ai = no
-					event_target:contact_empire = { is_sh_fallen_empire = yes }
+					event_target:contact_empire? = { is_sh_fallen_empire = yes }
 				}
 				country_event = { id = sh_fe.2 }
 			} else = {

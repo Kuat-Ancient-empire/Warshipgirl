@@ -89,7 +89,7 @@ country_event = {
 	custom_gui = wg_dragon_new_commu_window
 	custom_gui_option = wg_new_commu_option
 	trigger = {
-		from = { OR = {
+		from? = { OR = {
 			is_country_type = wg_dragon 
 			is_same_value = ROOT
 		}}
@@ -111,7 +111,7 @@ country_event = {
 		allow = {
 			custom_tooltip = {
 				fail_text = wg_dragon_become_ruler
-				NOT = { ruler = { has_leader_flag = wg_dragon_leader }}
+				NOT = { ruler? = { has_leader_flag = wg_dragon_leader }}
 			}
 		}
 		hidden_effect = { create_wg_dragon_admiral = yes }
@@ -121,7 +121,7 @@ country_event = {
 		allow = {
 			custom_tooltip = {
 				fail_text = wg_dragon_become_ruler
-				NOT = { ruler = { has_leader_flag = wg_dragon_leader }}
+				NOT = { ruler? = { has_leader_flag = wg_dragon_leader }}
 			}
 		}
 		hidden_effect = { create_wg_dragon_fleet = yes }
@@ -131,7 +131,7 @@ country_event = {
 		allow = {
 			custom_tooltip = {
 				fail_text = wg_dragon_become_ruler
-				NOT = { ruler = { has_leader_flag = wg_dragon_leader }}
+				NOT = { ruler? = { has_leader_flag = wg_dragon_leader }}
 			}
 		}
 		hidden_effect = { create_wg_dragon_army = yes }
@@ -192,7 +192,7 @@ country_event = {
 	custom_gui = wg_dragon_new_commu_window
 	custom_gui_option = wg_new_commu_option
 	trigger = {
-		from = { OR = {
+		from? = { OR = {
 			is_country_type = wg_dragon 
 			is_same_value = ROOT
 		}}
@@ -255,7 +255,7 @@ country_event = {
 	custom_gui = wg_dragon_new_commu_window
 	custom_gui_option = wg_new_commu_option
 	trigger = {
-		from = { OR = {
+		from? = { OR = {
 			is_country_type = wg_dragon 
 			is_same_value = ROOT
 		}}
@@ -320,7 +320,7 @@ country_event = {
 	custom_gui = wg_dragon_new_commu_window
 	custom_gui_option = wg_new_commu_option
 	trigger = {
-		from = { OR = {
+		from? = { OR = {
 			is_country_type = wg_dragon 
 			is_same_value = ROOT
 		}}
@@ -383,7 +383,7 @@ country_event = {
 	custom_gui = wg_dragon_new_commu_window
 	custom_gui_option = wg_new_commu_option
 	trigger = {
-		from = { OR = {
+		from? = { OR = {
 			is_country_type = wg_dragon 
 			is_same_value = ROOT
 		}}
@@ -436,7 +436,7 @@ country_event = {
 	trigger = {
 		wg_dragon_available = yes
 		check_variable = { which = wg_dragon_active_type value = 1 }
-		FROM = { has_leader_flag = wg_dragon_leader }
+		FROM? = { has_leader_flag = wg_dragon_leader }
 	}
 
 	option = {
@@ -463,7 +463,7 @@ country_event = {
 	trigger = {
 		wg_dragon_available = yes
 		check_variable = { which = wg_dragon_active_type value = 2 }
-		FROMFROM = { has_fleet_flag = wg_dragon_fleet }
+		FROMFROM? = { has_fleet_flag = wg_dragon_fleet }
 	}
 
 	immediate = {
@@ -503,7 +503,7 @@ country_event = {
 				exists = planet
 				AND = {
 					exists = fleet
-					fleet = { num_ships > 0 }
+					fleet? = { num_ships > 0 }
 				}
 			}
 		}}
@@ -534,7 +534,7 @@ country_event = {
 				exists = planet
 				AND = {
 					exists = fleet
-					fleet = { num_ships > 0 }
+					fleet? = { num_ships > 0 }
 				}
 			}
 		}}
@@ -554,7 +554,7 @@ event = {
 
 	trigger = {
 		exists = event_target:wg_dragon_own_country
-		event_target:wg_dragon_own_country = {
+		event_target:wg_dragon_own_country? = {
 			wg_dragon_available = yes
 			NOT = { has_modifier = wg_dragon_recover_cd }
 			OR = {
@@ -577,7 +577,7 @@ event = {
 							exists = planet
 							AND = {
 								exists = fleet
-								fleet = { num_ships > 0 }
+								fleet? = { num_ships > 0 }
 							}
 						}
 					}}
@@ -587,7 +587,7 @@ event = {
 	}
 
 	immediate = {
-		event_target:wg_dragon_own_country = {
+		event_target:wg_dragon_own_country? = {
 			every_owned_leader = {
 				limit = { has_leader_flag = wg_dragon_leader }
 				kill_leader = { show_notification = no }
@@ -674,12 +674,12 @@ country_event = {
 					any_owned_army = {
 						exists = planet
 						is_wg_dragon_army = yes
-						planet = { has_ground_combat = no }
+						planet? = { has_ground_combat = no }
 					}
 					any_owned_army = {
 						exists = fleet
 						is_wg_dragon_army = yes
-						fleet = { is_in_combat = no }
+						fleet? = { is_in_combat = no }
 					}
 				}
 			}
@@ -692,7 +692,7 @@ country_event = {
 				}
 				random_owned_army = {
 					limit = { is_wg_dragon_army = yes }
-					planet = { create_wg_dragon_army_troop = yes }
+					planet? = { create_wg_dragon_army_troop = yes }
 				}
 			} else_if = {
 				limit = { 
@@ -703,7 +703,7 @@ country_event = {
 				}
 				random_owned_army = {
 					limit = { is_wg_dragon_army = yes }
-					fleet = { create_wg_dragon_army_transport = yes }
+					fleet? = { create_wg_dragon_army_transport = yes }
 				}
 			}
 		} else = {
@@ -719,14 +719,14 @@ country_event = {
     is_triggered_only = yes
 
     trigger = { 
-        FROMFROM = { 
+        FROMFROM? = { 
 			has_fleet_flag = wg_dragon_fleet
 		}
 	}
 
 
 	immediate = {
-		FROMFROM = { fleet_event = { id = wg_dragon.17 }}
+		FROMFROM? = { fleet_event = { id = wg_dragon.17 }}
 	}
 }
 
@@ -746,19 +746,19 @@ fleet_event = {
 			random_list = {
 				2 = {
 					modifier = {
-						owner = { special_leader_affection_lv2_trigger = { LEADER = dragon }}
+						owner? = { special_leader_affection_lv2_trigger = { LEADER = dragon }}
 						add = 2
 					}
 					modifier = {
-						owner = { special_leader_affection_lv3_trigger = { LEADER = dragon }}
+						owner? = { special_leader_affection_lv3_trigger = { LEADER = dragon }}
 						add = 4
 					}
 					modifier = {
-						owner = { special_leader_affection_lv4_trigger = { LEADER = dragon }}
+						owner? = { special_leader_affection_lv4_trigger = { LEADER = dragon }}
 						add = 6
 					}
 					modifier = {
-						owner = { special_leader_affection_lv5_trigger = { LEADER = dragon }}
+						owner? = { special_leader_affection_lv5_trigger = { LEADER = dragon }}
 						add = 8
 					}
 					every_owned_ship = {
@@ -792,7 +792,7 @@ fleet_event = {
 						} 
 					}
 					if = {
-						limit = { owner = { special_leader_affection_lv5_trigger = { LEADER = dragon MARRIED_FLAG = married_wg_dragon }}}
+						limit = { owner? = { special_leader_affection_lv5_trigger = { LEADER = dragon MARRIED_FLAG = married_wg_dragon }}}
 						every_owned_ship = {
 							limit = { NOT = { has_modifier = wg_timeline_invisable } }
 							add_many_hp = { DAYS = 5 }
@@ -811,7 +811,7 @@ fleet_event = {
 						limit = { 
 							any_owned_ship = { has_hp_percentage < 0.3 }
 							NOT = { has_modifier = wg_timeline_invisable }
-							owner = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv4 }}
+							owner? = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv4 }}
 						}
 						add_many_hp = { DAYS = 60 }
 					} 
@@ -824,7 +824,7 @@ fleet_event = {
 					modifier = {
 						factor = 0
 						any_owned_ship = { has_hp_percentage < 0.3 }
-						owner = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv4 }}
+						owner? = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv4 }}
 					}
 					modifier = {
 						special_leader_affection_lv2_trigger = { LEADER = dragon }
@@ -835,7 +835,7 @@ fleet_event = {
 						add = -4
 					}
 					modifier = {
-						NOT = { owner =  { has_country_flag = married_wg_dragon } }
+						NOT = { owner? = { has_country_flag = married_wg_dragon } }
 						check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv4 }
 						add = -6
 					}

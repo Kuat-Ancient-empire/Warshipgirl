@@ -402,11 +402,11 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
-		FROMFROM = { has_carrier_flag = wg_pod_bombarded_planet }
+		FROMFROM? = { has_carrier_flag = wg_pod_bombarded_planet }
 	}
 
 	immediate = {
-		FROMFROM = { 
+		FROMFROM? = { 
 			carrier_event = { id = wg_pod.101 days = 1 }
 			remove_carrier_flag = wg_pod_bombarded_planet
 		}
@@ -424,14 +424,14 @@ carrier_event = {
 			remove_army = yes
 		}
 		every_fleet_in_orbit = {
-			owner = { every_owned_army = {
+			owner? = { every_owned_army = {
 				limit = { is_wg_pod_army_type = yes }
 				if = {
 					limit = { 
 						exists = fleet 
-						fleet = { is_same_value = PREVPREVPREV }
+						fleet? = { is_same_value = PREVPREVPREV }
 					}
-					fleet = { delete_fleet = this }
+					fleet? = { delete_fleet = this }
 				}
 			}}
 		}
@@ -444,8 +444,8 @@ fleet_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		owner = { is_same_value = root.from.owner }
-		FROM = { 
+		owner? = { is_same_value = root.from.owner }
+		FROM? = { 
 			is_scope_type = planet
 			NOT = { has_modifier = wg_pod_planet_modifier }
 		}
@@ -455,7 +455,7 @@ fleet_event = {
 	}
 
 	immediate = {
-		FROM = { add_modifier = {
+		FROM? = { add_modifier = {
 			modifier = wg_pod_planet_modifier
 		}}
 	}

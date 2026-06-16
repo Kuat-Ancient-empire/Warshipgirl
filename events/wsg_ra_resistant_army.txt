@@ -263,7 +263,7 @@ country_event = {
 
     trigger = {
         exists = event_target:wg_resistant_country
-        FROM = { OR = { 
+        FROM? = { OR = { 
             is_country_type = wg_resistant_army 
             is_same_value = ROOT
         }}
@@ -271,7 +271,7 @@ country_event = {
             #防止视窗多开
             NOT = { has_country_flag = ra_diplo_engaged }
             ra_active_diplo = no
-		    FROM = { is_same_value = root }
+		    FROM? = { is_same_value = root }
         }
         is_ai = no
     }
@@ -1643,7 +1643,7 @@ country_event = {
 
     after = {
         hidden_effect = {
-            capital_scope = { save_event_target_as = spawn_resistance_fleet_location }
+            capital_scope? = { save_event_target_as = spawn_resistance_fleet_location }
             create_wg_resistance_fleet_for_player = yes
             update_ra_fleet_count = yes
         }
@@ -1671,7 +1671,7 @@ country_event = {
     immediate = {
         set_timed_global_flag = { flag = resistance_reinforce_cooldown days = 800 }
         uf_fe_fleet_retargeting = yes
-        event_target:wg_resistant_country = {
+        event_target:wg_resistant_country? = {
             if = {
                 limit = { has_global_flag = wg_crisis_easy }
                 create_wg_resistance_admiral = yes
@@ -1772,10 +1772,10 @@ country_event = {
                     has_wg_special_authority = no
                 }
                 set_timed_country_flag = { flag = has_ra_fleet_spawn days = 1}
-                capital_scope = {
+                capital_scope? = {
                     save_event_target_as = spawn_resistance_fleet_location
                 }
-                event_target:wg_resistant_country = {
+                event_target:wg_resistant_country? = {
                     if = {
                         limit = { has_global_flag = wg_crisis_easy }
                         create_wg_resistance_admiral = yes
@@ -1824,10 +1824,10 @@ country_event = {
             limit = {
                 has_wg_special_authority = yes
             }
-            capital_scope = {
+            capital_scope? = {
                 save_event_target_as = spawn_resistance_fleet_location
             }
-            event_target:wg_resistant_country = {
+            event_target:wg_resistant_country? = {
                 if = {
                     limit = { has_global_flag = wg_crisis_easy }
                     create_wg_resistance_admiral = yes
@@ -1877,9 +1877,9 @@ country_event = {
     is_triggered_only = yes
 
     trigger = {
-        event_target:wg_resistant_country = {
+        event_target:wg_resistant_country? = {
             count_owned_ship = {
-                limit = { Fleet = { has_fleet_flag = ra_defence_fleet@root }}
+                limit = { Fleet? = { has_fleet_flag = ra_defence_fleet@root }}
                 count > 0
             }
         }
@@ -1914,10 +1914,10 @@ country_event = {
     }
 
     immediate = {
-        event_target:wg_resistant_country = {
+        event_target:wg_resistant_country? = {
             random_owned_fleet = {
                 limit = { has_fleet_flag = ra_defence_fleet@root }
-                random_owned_ship = { solar_system = {
+                random_owned_ship = { solar_system? = {
                     save_event_target_as = fleet_system
                 }}
             }
@@ -1933,7 +1933,7 @@ country_event = {
 			}
             set_timed_star_flag = { flag = candidate_system@root days = 1 }
         }
-        event_target:first_portal_system = { 
+        event_target:first_portal_system? = { 
             while = { count = 3
                 closest_system = {
                     limit = {
@@ -1954,7 +1954,7 @@ country_event = {
                     has_global_flag = second_portal_opened
                     NOT = { has_global_flag = second_portal_destroyed }
                 }
-                event_target:second_portal_system = { 
+                event_target:second_portal_system? = { 
                     while = { count = 3
                         closest_system = {
                             limit = {
@@ -1974,7 +1974,7 @@ country_event = {
                     has_global_flag = third_portal_opened
                     NOT = { has_global_flag = third_portal_destroyed }
                 }
-                event_target:third_portal_system = { 
+                event_target:third_portal_system? = { 
                     while = { count = 3
                         closest_system = {
                             limit = {
@@ -1990,7 +1990,7 @@ country_event = {
                 }
             }
         }
-        event_target:first_portal_2_system = { 
+        event_target:first_portal_2_system? = { 
             while = { count = 3
                 closest_system = {
                     limit = {
@@ -2011,7 +2011,7 @@ country_event = {
                     has_global_flag = second_portal_2_opened
                     NOT = { has_global_flag = second_portal_destroyed }
                 }
-                event_target:second_portal_system = { 
+                event_target:second_portal_system? = { 
                     while = { count = 3
                         closest_system = {
                             limit = {
@@ -2031,7 +2031,7 @@ country_event = {
                     has_global_flag = third_portal_2_opened
                     NOT = { has_global_flag = third_portal_2_destroyed }
                 }
-                event_target:third_portal_system = { 
+                event_target:third_portal_system? = { 
                     while = { count = 3
                         closest_system = {
                             limit = {
@@ -2047,7 +2047,7 @@ country_event = {
                 }
             }
         }
-        event_target:fleet_system = {
+        event_target:fleet_system? = {
             closest_system = {
                 limit = {
                     OR = {
@@ -2065,7 +2065,7 @@ country_event = {
                 set_timed_star_flag = { flag = defening_system@root days = 360 }
             }
         }
-        event_target:wg_resistant_country = {
+        event_target:wg_resistant_country? = {
             every_owned_fleet = {
                 limit = { has_fleet_flag = ra_defence_fleet@root }
                 queue_actions = {
@@ -2858,7 +2858,7 @@ country_event = {
                 NOT = { has_fleet_flag = removed_fleet }
                 is_in_combat = no
             }
-            ROOT = { change_variable = { which = "ra_fleet_id" value = 1 }}
+            ROOT? = { change_variable = { which = "ra_fleet_id" value = 1 }}
             set_variable = { which = "ra_fleet_id" value = ROOT.ra_fleet_id }
             count_ra_fleet_ships = yes
             if = {
@@ -2957,7 +2957,7 @@ country_event = {
         OR = {
             NOT = { has_active_event = { wg_crisis.65 }}
             has_country_flag = first_fleet_chosen
-            FROM = { is_same_value = ROOT }
+            FROM? = { is_same_value = ROOT }
             has_country_flag = rechoose_fleet
         }
     }
@@ -2999,7 +2999,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 1 }
             exists = event_target:ra_fleet_1
-            event_target:ra_fleet_1 = {
+            event_target:ra_fleet_1? = {
                 check_variable = { which = "ra_fleet_id" value = 1 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3008,11 +3008,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_1 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_1? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_1 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_1? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3022,7 +3022,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 2 }
             exists = event_target:ra_fleet_2
-            event_target:ra_fleet_2 = {
+            event_target:ra_fleet_2? = {
                 check_variable = { which = "ra_fleet_id" value = 2 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3031,11 +3031,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_2 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_2? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_2 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_2? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3045,7 +3045,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 3 }
             exists = event_target:ra_fleet_3
-            event_target:ra_fleet_3 = {
+            event_target:ra_fleet_3? = {
                 check_variable = { which = "ra_fleet_id" value = 3 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3054,11 +3054,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_3 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_3? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_3 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_3? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3068,7 +3068,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 4 }
             exists = event_target:ra_fleet_4
-            event_target:ra_fleet_4 = {
+            event_target:ra_fleet_4? = {
                 check_variable = { which = "ra_fleet_id" value = 4 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3077,11 +3077,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_4 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_4? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_4 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_4? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3091,7 +3091,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 5 }
             exists = event_target:ra_fleet_5
-            event_target:ra_fleet_5 = {
+            event_target:ra_fleet_5? = {
                 check_variable = { which = "ra_fleet_id" value = 5 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3100,11 +3100,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_5 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_5? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_5 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_5? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3114,7 +3114,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 6 }
             exists = event_target:ra_fleet_6
-            event_target:ra_fleet_6 = {
+            event_target:ra_fleet_6? = {
                 check_variable = { which = "ra_fleet_id" value = 6 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3123,11 +3123,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_6 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_6? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_6 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_6? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3137,7 +3137,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 7 }
             exists = event_target:ra_fleet_7
-            event_target:ra_fleet_7 = {
+            event_target:ra_fleet_7? = {
                 check_variable = { which = "ra_fleet_id" value = 7 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3146,11 +3146,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_7 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_7? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_7 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_7? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3160,7 +3160,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 8 }
             exists = event_target:ra_fleet_8
-            event_target:ra_fleet_8 = {
+            event_target:ra_fleet_8? = {
                 check_variable = { which = "ra_fleet_id" value = 8 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3169,11 +3169,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_8 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_8? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_8 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_8? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3183,7 +3183,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 9 }
             exists = event_target:ra_fleet_9
-            event_target:ra_fleet_9 = {
+            event_target:ra_fleet_9? = {
                 check_variable = { which = "ra_fleet_id" value = 9 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3192,11 +3192,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_9 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_9? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_9 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_9? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3206,7 +3206,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 10 }
             exists = event_target:ra_fleet_10
-            event_target:ra_fleet_10 = {
+            event_target:ra_fleet_10? = {
                 check_variable = { which = "ra_fleet_id" value = 10 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3215,11 +3215,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_10 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_10? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_10 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_10? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3229,7 +3229,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 11 }
             exists = event_target:ra_fleet_11
-            event_target:ra_fleet_11 = {
+            event_target:ra_fleet_11? = {
                 check_variable = { which = "ra_fleet_id" value = 11 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3238,11 +3238,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_11 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_11? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_11 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_11? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3252,7 +3252,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 12 }
             exists = event_target:ra_fleet_12
-            event_target:ra_fleet_12 = {
+            event_target:ra_fleet_12? = {
                 check_variable = { which = "ra_fleet_id" value = 12 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3261,11 +3261,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_12 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_12? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_12 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_12? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3275,7 +3275,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 13 }
             exists = event_target:ra_fleet_13
-            event_target:ra_fleet_13 = {
+            event_target:ra_fleet_13? = {
                 check_variable = { which = "ra_fleet_id" value = 13 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3284,11 +3284,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_13 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_13? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_13 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_13? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3298,7 +3298,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 14 }
             exists = event_target:ra_fleet_14
-            event_target:ra_fleet_14 = {
+            event_target:ra_fleet_14? = {
                 check_variable = { which = "ra_fleet_id" value = 14 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3307,11 +3307,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_14 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_14? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_14 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_14? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3321,7 +3321,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 15 }
             exists = event_target:ra_fleet_15
-            event_target:ra_fleet_15 = {
+            event_target:ra_fleet_15? = {
                 check_variable = { which = "ra_fleet_id" value = 15 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3330,11 +3330,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_15 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_15? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_15 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_15? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3344,7 +3344,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 16 }
             exists = event_target:ra_fleet_16
-            event_target:ra_fleet_16 = {
+            event_target:ra_fleet_16? = {
                 check_variable = { which = "ra_fleet_id" value = 16 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3353,11 +3353,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_16 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_16? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_16 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_16? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3367,7 +3367,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 17 }
             exists = event_target:ra_fleet_17
-            event_target:ra_fleet_17 = {
+            event_target:ra_fleet_17? = {
                 check_variable = { which = "ra_fleet_id" value = 17 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3376,11 +3376,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_17 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_17? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_17 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_17? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3390,7 +3390,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 18 }
             exists = event_target:ra_fleet_18
-            event_target:ra_fleet_18 = {
+            event_target:ra_fleet_18? = {
                 check_variable = { which = "ra_fleet_id" value = 18 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3399,11 +3399,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_18 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_18? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_18 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_18? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3413,7 +3413,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 19 }
             exists = event_target:ra_fleet_19
-            event_target:ra_fleet_19 = {
+            event_target:ra_fleet_19? = {
                 check_variable = { which = "ra_fleet_id" value = 19 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3422,11 +3422,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_19 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_19? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_19 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_19? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3436,7 +3436,7 @@ country_event = {
         trigger = { 
             check_variable = { which = "ra_fleet_id" value >= 20 }
             exists = event_target:ra_fleet_20
-            event_target:ra_fleet_20 = {
+            event_target:ra_fleet_20? = {
                 check_variable = { which = "ra_fleet_id" value = 20 }
                 NOT = { has_fleet_flag = first_chosen_fleet }
             }
@@ -3445,11 +3445,11 @@ country_event = {
             if = { 
                 limit = { NOT = { has_country_flag = first_fleet_chosen }}
                 set_country_flag = first_fleet_chosen
-                event_target:ra_fleet_20 = { set_fleet_flag = first_chosen_fleet }
+                event_target:ra_fleet_20? = { set_fleet_flag = first_chosen_fleet }
                 country_event = { id = wg_crisis.65 }
             }
             else = {
-                event_target:ra_fleet_20 = { set_fleet_flag = second_chosen_fleet }
+                event_target:ra_fleet_20? = { set_fleet_flag = second_chosen_fleet }
                 country_event = { id = wg_crisis.66 }
             }
         }
@@ -3473,7 +3473,7 @@ country_event = {
             limit = { has_fleet_flag = second_chosen_fleet }
             save_event_target_as = second_fleet
         }
-        event_target:second_fleet = {
+        event_target:second_fleet? = {
             set_variable = { which = new_titan_count value = event_target:first_fleet.titan_count }
             change_variable = { which = new_titan_count value = titan_count }
             set_variable = { which = new_bb_count value = event_target:first_fleet.bb_count }
@@ -3496,7 +3496,7 @@ country_event = {
                     which = new_fleet_size 
                     value <= root.trigger:command_limit 
                 } }
-                event_target:first_fleet = {
+                event_target:first_fleet? = {
                     set_fleet_flag = removed_fleet
                     delete_fleet = {
                         target = this
@@ -3504,7 +3504,7 @@ country_event = {
                         destroy_template = yes
                     }
                 }
-                event_target:second_fleet = {
+                event_target:second_fleet? = {
                     set_fleet_flag = removed_fleet
                     delete_fleet = {
                         target = this
@@ -3625,11 +3625,11 @@ country_event = {
     is_triggered_only = yes
 
     trigger = {
-        FROMFROM = { has_fleet_flag = fleet_bought_from_resistance }
+        FROMFROM? = { has_fleet_flag = fleet_bought_from_resistance }
     }
 
     immediate = {
-        FROMFROM = {
+        FROMFROM? = {
             set_fleet_flag = removed_fleet
         }
         update_ra_fleet_count = yes
@@ -3646,12 +3646,12 @@ country_event = {
     is_triggered_only = yes
 
     trigger = {
-        FROM = { has_fleet_flag = fleet_bought_from_resistance }
+        FROM? = { has_fleet_flag = fleet_bought_from_resistance }
         check_variable = { which = "ra_fleet_count" value >= 2 }
     }
 
     immediate = {
-        FROM = { 
+        FROM? = { 
             set_fleet_flag = removed_fleet
             set_fleet_flag = first_chosen_fleet
         }
@@ -3688,14 +3688,14 @@ country_event = {
 
     trigger = {
         OR = {
-            FROMFROM = { has_fleet_flag = fleet_bought_from_resistance }
-            FROMFROMFROM = { has_fleet_flag = fleet_bought_from_resistance }
+            FROMFROM? = { has_fleet_flag = fleet_bought_from_resistance }
+            FROMFROMFROM? = { has_fleet_flag = fleet_bought_from_resistance }
         }
     }
 
     immediate = {
-        FROMFROM = { count_ra_fleet_ships = yes }
-        FROMFROMFROM = { count_ra_fleet_ships = yes }
+        FROMFROM? = { count_ra_fleet_ships = yes }
+        FROMFROMFROM? = { count_ra_fleet_ships = yes }
     }
 }
 
@@ -3707,14 +3707,14 @@ country_event = {
 
     trigger = {
         exists = FROM
-        FROM = { has_leader_flag = ra_admiral }
+        FROM? = { has_leader_flag = ra_admiral }
     }
 
     immediate = {
         change_variable = { which = "buy_ra_leader_count" value = -1 }
         if = {
             limit = { 
-                FROM = { OR = {
+                FROM? = { OR = {
                     has_leader_flag = ra_enterprise 
                     has_leader_flag = ra_VV
                     has_leader_flag = ra_hood
@@ -3726,7 +3726,7 @@ country_event = {
         }
         else_if = {
             limit = { 
-                FROM = { OR = {
+                FROM? = { OR = {
                     has_leader_flag = ra_lexington
                     has_leader_flag = ra_missouri
                     has_leader_flag = ra_taiho_sh

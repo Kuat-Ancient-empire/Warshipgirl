@@ -12,19 +12,19 @@ create_wg_rbq_dragon_fleet = {
 			}
 			random_owned_army = {
 				limit = { is_wg_rbq_dragon_army = yes }
-				planet = { save_event_target_as = wg_rbq_dragon_warship_location }
+				planet? = { save_event_target_as = wg_rbq_dragon_warship_location }
 			}
 		}
 		else = {
 			random_owned_army = {
 				limit = { is_wg_rbq_dragon_army = yes }
-				fleet = { save_event_target_as = wg_rbq_dragon_warship_location }
+				fleet? = { save_event_target_as = wg_rbq_dragon_warship_location }
 			}
 		}
 	}
 	else_if = {
 		limit = { always = yes }
-		capital_scope = {
+		capital_scope? = {
 			save_event_target_as = wg_rbq_dragon_warship_location
 		}
 	}
@@ -85,10 +85,10 @@ create_wg_rbq_dragon_fleet = {
 			set_leader_flag = wg_yukikaze_admiral
 			#set_leader_tier = leader_tier_legendary
 			save_global_event_target_as = wg_yukikaze_admiral
-			event_target:wg_rbq_dragon_fleet = { assign_leader = PREV }
+			event_target:wg_rbq_dragon_fleet? = { assign_leader = PREV }
 		}
 	}
-	event_target:wg_yukikaze_admiral = {
+	event_target:wg_yukikaze_admiral? = {
 		add_skill_without_trait_selection = owner.wg_yukikaze_level
 		leader_event = {
 			id = wg_affection.8 days = 1
@@ -103,7 +103,7 @@ create_wg_rbq_dragon_army = {
 		limit = { check_variable = { which = wg_yukikaze_active_type value = 1 }}
 		if = {
 			limit = { exists = event_target:wg_rbq_dragon_fleet }
-			event_target:wg_rbq_dragon_fleet = {
+			event_target:wg_rbq_dragon_fleet? = {
 				save_event_target_as = wg_rbq_dragon_transport_location
 			}
 		} else = {
@@ -115,7 +115,7 @@ create_wg_rbq_dragon_army = {
 	}
 	else_if = {
 		limit = { always = yes }
-		capital_scope = {
+		capital_scope? = {
 			save_event_target_as = wg_rbq_dragon_transport_location
 		}
 	}
@@ -155,7 +155,7 @@ create_wg_rbq_dragon_army_transport = {
 	}
 	if = {
 		limit = { 
-			event_target:wg_yukikaze_own_country = { 
+			event_target:wg_yukikaze_own_country? = { 
 				check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv5 }
 				has_country_flag = married_wg_dragon
 			}
@@ -168,7 +168,7 @@ create_wg_rbq_dragon_army_transport = {
 		}
 	}
 	else_if = {
-		limit = { event_target:wg_yukikaze_own_country = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}}
+		limit = { event_target:wg_yukikaze_own_country? = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}}
 		create_army_transport = {
 			species = event_target:wg_yukikaze_own_country
 			ship_name = "NAME_wg_rbq_dragon"
@@ -199,7 +199,7 @@ create_wg_rbq_dragon_army_troop = {
 	}
 	if = {
 		limit = { 
-			event_target:wg_yukikaze_own_country = { 
+			event_target:wg_yukikaze_own_country? = { 
 				check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv5 }
 				has_country_flag = married_wg_dragon
 			}
@@ -211,7 +211,7 @@ create_wg_rbq_dragon_army_troop = {
 		}
 	}
 	else_if = {
-		limit = { event_target:wg_yukikaze_own_country = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}}
+		limit = { event_target:wg_yukikaze_own_country? = { check_variable = { which = wg_dragon_affection value >= @wg_dragon_affection_to_lv3 }}}
 		create_army = {
 			species = event_target:wg_yukikaze_own_country
 			owner = event_target:wg_yukikaze_own_country
@@ -239,7 +239,7 @@ remove_wg_rbq_dragon_army = {
 			save_event_target_as = wg_yukikaze_own_country
 		}
 	}
-	event_target:wg_yukikaze_own_country = {
+	event_target:wg_yukikaze_own_country? = {
 		every_owned_army = {
 			limit = { 
 				NOT = { is_same_value = event_target:new_wg_dragon_army }

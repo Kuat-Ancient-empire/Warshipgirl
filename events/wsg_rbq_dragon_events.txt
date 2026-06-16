@@ -11,9 +11,9 @@ country_event = {
 		NOT = { has_country_flag = get_wg_yukikaze }
 	}
 	immediate = {
-		event_target:wg_rbq_dragon_fleet = {
+		event_target:wg_rbq_dragon_fleet? = {
 			delete_fleet = this
-			owner = { destroy_country = yes }
+			owner? = { destroy_country = yes }
 		}
 		if = {
 			limit = { NOT = { any_country = { has_country_flag = get_wg_yukikaze }}}
@@ -90,7 +90,7 @@ country_event = {
 		NOT = { has_country_flag = wg_rbq_dragon_changing }
 		wg_rbq_dragon_available = yes
 		check_variable = { which = wg_yukikaze_active_type value = 1 }
-		FROMFROM = { has_fleet_flag = wg_rbq_dragon_fleet }
+		FROMFROM? = { has_fleet_flag = wg_rbq_dragon_fleet }
 	}
 
 	immediate = {
@@ -114,7 +114,7 @@ country_event = {
 				exists = planet
 				AND = {
 					exists = fleet
-					fleet = { num_ships > 0 }
+					fleet? = { num_ships > 0 }
 				}
 			}
 		}}
@@ -141,7 +141,7 @@ country_event = {
 				exists = planet
 				AND = {
 					exists = fleet
-					fleet = { num_ships > 0 }
+					fleet? = { num_ships > 0 }
 				}
 			}
 		}}
@@ -177,7 +177,7 @@ event = {
 
 	trigger = {
 		exists = event_target:wg_yukikaze_own_country
-		event_target:wg_yukikaze_own_country = {
+		event_target:wg_yukikaze_own_country? = {
 			NOT = { has_country_flag = wg_rbq_dragon_changing }
 			wg_rbq_dragon_available = yes
 			OR = {
@@ -195,7 +195,7 @@ event = {
 							exists = planet
 							AND = {
 								exists = fleet
-								fleet = { num_ships > 0 }
+								fleet? = { num_ships > 0 }
 							}
 						}
 					}}
@@ -226,12 +226,12 @@ country_event = {
 					any_owned_army = {
 						exists = planet
 						is_wg_rbq_dragon_army = yes
-						planet = { has_ground_combat = no }
+						planet? = { has_ground_combat = no }
 					}
 					any_owned_army = {
 						exists = fleet
 						is_wg_rbq_dragon_army = yes
-						fleet = { is_in_combat = no }
+						fleet? = { is_in_combat = no }
 					}
 				}
 			}
@@ -244,7 +244,7 @@ country_event = {
 				}
 				random_owned_army = {
 					limit = { is_wg_rbq_dragon_army = yes }
-					planet = { create_wg_rbq_dragon_army_troop = yes }
+					planet? = { create_wg_rbq_dragon_army_troop = yes }
 				}
 			} else_if = {
 				limit = { 
@@ -255,7 +255,7 @@ country_event = {
 				}
 				random_owned_army = {
 					limit = { is_wg_rbq_dragon_army = yes }
-					fleet = { create_wg_rbq_dragon_army_transport = yes }
+					fleet? = { create_wg_rbq_dragon_army_transport = yes }
 				}
 			}
 		} else = {
@@ -272,7 +272,7 @@ country_event = {
 
 	trigger = {
 		wg_rbq_dragon_available = yes
-		FROM = { 
+		FROM? = { 
 			has_leader_flag = wg_yukikaze_leader
 		}
 	}
@@ -281,18 +281,18 @@ country_event = {
 		change_variable = { which = wg_yukikaze_level value = 1 }
 		change_variable = { which = wg_yukikaze_affection value = 2 }
 		if = { # buff加成的额外好感度
-			limit = { owner = { has_modifier = wg_modifier_canteen_affectionUp2 }}
+			limit = { owner? = { has_modifier = wg_modifier_canteen_affectionUp2 }}
 			change_variable = { which = wg_yukikaze_affection value = 2 }
 		}
 		random_list = {
 			40 = { 
 				modifier = { # buff加成的额外几率
-					ROOT = { has_modifier = wg_modifier_canteen_affectionUp1 }
+					ROOT? = { has_modifier = wg_modifier_canteen_affectionUp1 }
 					factor = 2
 				}
 				change_variable = { which = wg_yukikaze_affection value = 1 }
 				if = { # buff加成的额外好感度
-					limit = { owner = { has_modifier = wg_modifier_canteen_affectionUp2 }}
+					limit = { owner? = { has_modifier = wg_modifier_canteen_affectionUp2 }}
 					change_variable = { which = wg_yukikaze_affection value = 1 }
 				}
 			}
@@ -301,12 +301,12 @@ country_event = {
 		random_list = {
 			20 = {
 				modifier = { # buff加成的额外几率
-					ROOT = { has_modifier = wg_modifier_canteen_affectionUp1 }
+					ROOT? = { has_modifier = wg_modifier_canteen_affectionUp1 }
 					factor = 2
 				}
 				change_variable = { which = wg_yukikaze_affection value = 1 }
 				if = { # buff加成的额外好感度
-					limit = { owner = { has_modifier = wg_modifier_canteen_affectionUp2 }}
+					limit = { owner? = { has_modifier = wg_modifier_canteen_affectionUp2 }}
 					change_variable = { which = wg_yukikaze_affection value = 1 }
 				}
 			}
@@ -324,20 +324,20 @@ carrier_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = {
+		FROM? = {
 			any_owned_army = {
 				exists = planet
-				planet = { is_same_value = event_target:victory_planet }
+				planet? = { is_same_value = event_target:victory_planet }
 				is_wg_rbq_dragon_army = yes
 			}
 		}
 	}
 
 	immediate = {
-		FROM = { add_wg_yukikaze_army_affection = yes }
+		FROM? = { add_wg_yukikaze_army_affection = yes }
 		if = { # buff加成的额外好感度
 			limit = { has_modifier = wg_modifier_canteen_affectionUp2 }
-			FROM = { add_wg_yukikaze_army_affection = yes }
+			FROM? = { add_wg_yukikaze_army_affection = yes }
 		}
 	}
 }
@@ -1203,14 +1203,14 @@ carrier_event = {
 
 	trigger = {
 		# always = no
-		solar_system = {
+		solar_system? = {
 			has_star_flag = wg_origin_waterb_home_system
 		}
-		from = { has_country_flag = origin_waterb }
+		from? = { has_country_flag = origin_waterb }
 	}
 
 	immediate = {
-		from = { 
+		from? = { 
 			country_event = { 
 				id = wg_yukikaze.10001 
 				scopes = { from = root } 
@@ -1231,7 +1231,7 @@ country_event = {
 
 	option = {
 		name = DIG
-		from = { enable_special_project = {
+		from? = { enable_special_project = {
 			name = explore_waterb_planet
 			location = this
 			owner = root
@@ -1251,7 +1251,7 @@ country_event = {
 	location = from
 
 	immediate = {
-		FROM = { 
+		FROM? = { 
 			if = {
 				limit = { OR = {
 					is_planet_class = pc_swim
@@ -1267,7 +1267,7 @@ country_event = {
 	option = {
 		name = EXCELLENT
 		tooltip = {
-			from = { add_deposit = d_waterb_underwater_vent }
+			from? = { add_deposit = d_waterb_underwater_vent }
 		}
 	}
 }
@@ -1281,7 +1281,7 @@ country_event = {
 	location = from
 
 	immediate = {
-		FROM = { 
+		FROM? = { 
 			if = {
 				limit = { OR = {
 					is_planet_class = pc_swim
@@ -1297,7 +1297,7 @@ country_event = {
 	option = {
 		name = EXCELLENT
 		tooltip = {
-			from = { add_deposit = d_waterb_underwater_mote }
+			from? = { add_deposit = d_waterb_underwater_mote }
 		}
 	}
 }
@@ -1311,7 +1311,7 @@ country_event = {
 	location = from
 
 	immediate = {
-		FROM = { 
+		FROM? = { 
 			if = {
 				limit = { OR = {
 					is_planet_class = pc_swim
@@ -1328,7 +1328,7 @@ country_event = {
 		name = EXCELLENT
 		add_resource = { minor_artifacts = 20 }
 		tooltip = {
-			from = { add_deposit = d_waterb_underwater_buildings }
+			from? = { add_deposit = d_waterb_underwater_buildings }
 		}
 	}
 }
@@ -1343,7 +1343,7 @@ country_event = {
 	location = from
 
 	immediate = {
-		FROM = { 
+		FROM? = { 
 			if = {
 				limit = { OR = {
 					is_planet_class = pc_swim
