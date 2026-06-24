@@ -65,6 +65,15 @@ country_event = {
 
 	option = {
 		name = planetary_ship.4.a
+		hidden_effect = {
+			set_country_flag = wsg_active_planetary_ship_megastructures_4
+		}
+	}
+	option = {
+		name = planetary_ship.4.b
+		hidden_effect = {
+			set_country_flag = wsg_active_planetary_ship_megastructures_5
+		}
 	}
 }
 
@@ -78,6 +87,7 @@ country_event = {
 	is_triggered_only = yes
     immediate = {
 		from? = { save_event_target_as = planetary_ship_system }
+		remove_country_flag = wsg_active_planetary_ship_megastructures_4
 	}
 
 	option = {
@@ -103,6 +113,7 @@ country_event = {
 	is_triggered_only = yes
     immediate = {
 		from? = { save_event_target_as = planetary_ship_system }
+		remove_country_flag = wsg_active_planetary_ship_megastructures_5
 	}
 
 	option = {
@@ -140,12 +151,7 @@ country_event = {
 	immediate = {
 		if = {
 			limit = { 
-				FromFrom? = {
-					OR = { 
-						is_ship_size = planetary_ship_1
-						is_ship_size = planetary_ship_2
-					}
-				}
+				FromFrom? = { is_ship_size = planetary_ship_1 }
 			}
 			FromFrom? = {
 				solar_system? = {
@@ -205,10 +211,73 @@ country_event = {
 			}
 			if = {
 				limit = { NOT = { has_country_flag = planetary_ship_stop_notice } }
-				country_event = {
-					id = planetary_ship.8
-					#弹窗提示
+				country_event = { id = planetary_ship.8 }
+			}
+		}
+
+		if = {
+			limit = { 
+				FromFrom? = { is_ship_size = planetary_ship_2 }
+			}
+			FromFrom? = {
+				solar_system? = {
+					save_event_target_as = planetary_ship_ruin_target_system
+					spawn_megastructure = { 
+						type = "planetary_ship_megastructures_1_ruin" 
+						coords_from = prev
+						init_effect = {
+							save_event_target_as = planetary_ship_ruin_megastructure
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -25 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:planetary_ship_ruin_megastructure
+							distance = 15
+							angle = random
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -20 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:planetary_ship_ruin_megastructure
+							distance = 15
+							angle = random
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = -0 max = -25 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:planetary_ship_ruin_megastructure
+							distance = 25
+							angle = random
+						}
+					}
+					create_ambient_object = {
+						type = "large_debris_object"
+						entity_offset_height = { min = 0 max = -20 }
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = event_target:planetary_ship_ruin_megastructure
+							distance = 5
+							angle = random
+						}
+					}
 				}
+			}
+			if = {
+				limit = { NOT = { has_country_flag = planetary_ship_stop_notice } }
+				country_event = { id = planetary_ship.8 }
 			}
 		}
 	}
