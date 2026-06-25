@@ -1,24 +1,57 @@
 entity = {
 	name = "wsg_supermacy_entity"
-	pdxmesh = "wsg_supermacy_mesh"
-	scale = 4
+	pdxmesh = "arthropoid_01_titan_frame_mesh"
 	default_state = "idle"
-	state = { name = "idle" animation = "open" 
+	state = { name = "idle" animation = "idle" 
+
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_01" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_02" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_03" } }
+
+	}
+	state = { name = "moving" animation = "idle"
+		event =  { trigger_once = yes sound = { soundeffect = "moving_out_titan" } }
+	}
+	state = { name = "death" animation = "death" looping = no 
+		event = { time = 2.5 node = "explosion_locator_01" particle = "wsg_technosphere_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ship_explosion" } }
+		event = { time = 3.5 node = "explosion_locator_02" particle = "wsg_technosphere_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ship_explosion" } }
+		event = { time = 5.5 node = "explosion_locator_03" particle = "wsg_technosphere_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ship_explosion" } }
+		event = { time = 7.5 node = "explosion_locator_04" particle = "wsg_technosphere_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ship_explosion" } }
+		event = { time = 9.5 node = "explosion_locator_05" particle = "wsg_technosphere_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "ship_explosion" } }
+		event = { time = 12.5 node = "ship_main" particle = "wsg_technosphere_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "amb_titan_ship_death" } }
+	}
+	scale = 4.0
+	game_data = { emissive_recolor_crunch = 0.0 }
+}
+entity = {
+	name = wsg_supermacy_main_entity
+	pdxmesh = "wsg_supermacy_mesh"
+	default_state = "idle"
+	state = { name = "idle" 
 		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_01" } }
 		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_02" } }
 		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_03" } }
 	}
-	state = { name = "moving" animation = "open"
+	state = { name = "moving" 
 		event =  { trigger_once = yes sound = { soundeffect = "moving_out_titan" } }
 	}
-	locator = { name = "wsg_BF_explosion_locator" position = { 0 0 0 } rotation = { 0 0 0 } }
-	state = { name = "death" state_time = 10 animation = "open" looping = no 
-		event = { time = 0 node = "wsg_BF_explosion_locator" particle = "wsg_technosphere_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "amb_titan_ship_death" } }
-	}
-	game_data = {
-		emissive_recolor_crunch = 0.0
-	}
+	game_data = { emissive_recolor_crunch = 0.0 }
 }
+entity = {
+	name = wsg_supermacy_locator_entity
+	pdxmesh = "wsg_supermacy_locator_mesh"
+	default_state = "idle"
+	state = { name = "idle" 
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_01" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_02" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_03" } }
+	}
+	state = { name = "moving" 
+		event =  { trigger_once = yes sound = { soundeffect = "moving_out_titan" } }
+	}
+	game_data = { emissive_recolor_crunch = 0.0 }
+}
+
 entity = {
 	name = "wsg_supermacy_megastructure_entity"
 	locator = { name = "core"	position = { 0 40 0 } rotation = { 0 0 0 } }
@@ -31,7 +64,7 @@ entity = {
 	pdxmesh = "wsg_supermacy_mesh"
 	scale = 4
 	default_state = "idle"
-	state = { name = "idle" animation = "open" 
+	state = { name = "idle" 
 		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_01" } }
 		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_02" } }
 		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_03" } }
@@ -40,7 +73,7 @@ entity = {
 		event =  { trigger_once = yes sound = { soundeffect = "moving_out_titan" } }
 	}
 	locator = { name = "wsg_BF_explosion_locator" position = { 0 0 0 } rotation = { 0 0 0 } }
-	state = { name = "death" state_time = 10 animation = "open" looping = no 
+	state = { name = "death" state_time = 10 looping = no 
 		event = { time = 0 node = "wsg_BF_explosion_locator" particle = "wsg_technosphere_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "amb_titan_ship_death" } }
 	}
 	game_data = {
@@ -60,16 +93,16 @@ entity = {
 	pdxmesh = "wsg_supermacy_damaged_mesh"
 	scale = 4
 	default_state = "idle"
-	state = { name = "idle" animation = "open" 
+	state = { name = "idle"
 		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_01" } }
 		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_02" } }
 		start_event = { trigger_once = yes sound = { soundeffect = "amb_titan_ship_hum_03" } }
 	}
-	state = { name = "moving" animation = "open"
+	state = { name = "moving" 
 		event =  { trigger_once = yes sound = { soundeffect = "moving_out_titan" } }
 	}
 	locator = { name = "wsg_BF_explosion_locator" position = { 0 0 0 } rotation = { 0 0 0 } }
-	state = { name = "death" state_time = 10 animation = "open" looping = no 
+	state = { name = "death" state_time = 10 looping = no 
 		event = { time = 0 node = "wsg_BF_explosion_locator" particle = "wsg_technosphere_explosion_particle" keep_particle = yes trigger_once = yes sound = { soundeffect = "amb_titan_ship_death" } }
 	}
 	game_data = {
