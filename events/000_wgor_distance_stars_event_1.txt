@@ -6,13 +6,13 @@ ship_event = {
 	title = "distar.50.name"
 	desc = {
 		trigger = {
-			owner? = { has_country_flag = amoeba_encountered }
+			owner = { has_country_flag = amoeba_encountered }
 		}
 		text = "distar.50.desc"
 	}
 	desc = {
 		trigger = {
-			owner? = { NOT = { has_country_flag = amoeba_encountered } }
+			owner = { NOT = { has_country_flag = amoeba_encountered } }
 		}
 		text = "distar.50.desc.first_enc"
 	}
@@ -40,21 +40,21 @@ ship_event = {
 			type = neutral_faction
 			auto_delete = yes
 			flag = {
-    		    icon = {
-    		        category = "pirate"
-    		        file = "flag_pirate_3.dds"
-    		    }
-    		    background = {
-    		        category = "backgrounds"
-    		        file = "00_solid.dds"
-    		    }
-    		    colors = {
-    		        "blue"
-    		        "blue"
-    		        "null"
-    		        "null"
-    		    }
-    		}
+				icon = {
+					category = "pirate"
+					file = "flag_pirate_3.dds"
+				}
+				background = {
+					category = "backgrounds"
+					file = "00_solid.dds"
+				}
+				colors = {
+					"blue"
+					"blue"
+					"null"
+					"null"
+				}
+			}
 			effect = {
 				set_country_flag = protected_from_queen_storm
 				set_faction_hostility = {
@@ -95,12 +95,12 @@ ship_event = {
 				save_event_target_as = lost_amoeba_country
 			}
 		}
-		root? = {
-			fleet? = {
+		root = {
+			fleet = {
 				save_event_target_as = science_ship_fleet
 			}
 		}
-		event_target:lost_amoeba_fleet? = {
+		event_target:lost_amoeba_fleet = {
 			auto_follow_fleet = {
 				target = event_target:science_ship_fleet
 				attack_fleet = no
@@ -110,7 +110,7 @@ ship_event = {
 
 	after = {
 		hidden_effect = {
-			owner? = {
+			owner = {
 				set_country_flag = amoeba_encountered
 				every_country = {
 					limit = {
@@ -118,7 +118,7 @@ ship_event = {
 						NOT = { has_communications = root.owner }
 						is_amoeba_country_type = yes
 					}
-					root.owner? = {
+					root.owner = {
 						establish_communications_no_message = prev
 						establish_communication_with_subjects_and_federation = { FLAG = amoeba_encountered }
 					}
@@ -135,14 +135,14 @@ ship_event = {
 			set_owner = root.owner
 		}
 		hidden_effect = {
-			leader? = {
+			leader = {
 				if = {
 					limit = { is_special_affection_leader = no }
 					save_global_event_target_as = amoeba_finding_scientist
 					add_trait = { trait = leader_trait_scientist_bubbles_saver show_message = no }
 				}
 			}
-			owner? = {
+			owner = {
 				set_country_flag = amoeba_befriended # Achievement flag
 				set_variable = { which = wg_bubbles_affection value = 10 }
 				set_variable = { which = wg_bubbles_affection_level value = 1 }
@@ -150,7 +150,7 @@ ship_event = {
 				# country_event = { id = distar.304 days = 36500 }
 				if = {
 					limit = { NOT = { has_country_flag = amoeba_encountered } }
-					capital_scope? = {
+					capital_scope = {
 						enable_special_project = {
 							name = "AMOEBAS_PACIFICATION_PROJECT"
 							location = this
@@ -166,13 +166,13 @@ ship_event = {
 		name = distar.50.b
 		custom_tooltip = distar.50.b.tooltip
 		hidden_effect = {
-			owner? = {
+			owner = {
 				country_event = { id = distar.52 days = 90 }
 				if = {
 					limit = {
 						NOT = { has_country_flag = amoeba_encountered }
 					}
-					capital_scope? = {
+					capital_scope = {
 						enable_special_project = {
 							name = "AMOEBAS_PROJECT"
 							location = this
@@ -186,14 +186,14 @@ ship_event = {
 
 	option = {
 		name = "distar.50.c"
-		event_target:lost_amoeba_fleet? = {
+		event_target:lost_amoeba_fleet = {
 			enable_special_project = {
 				name = "DISSECTION_PROJECT"
 				location = this
 				owner = root.owner
 			}
 		}
-		owner? = { 
+		owner = { 
 			if = {
 				limit = { NOT = { has_country_flag = amoeba_encountered } }
 				add_modifier = {
@@ -225,7 +225,7 @@ country_event = { #Adopted Amoeba Evolves
 	}
 
 	after = {
-		event_target:lost_amoeba_adult_fleet? = {
+		event_target:lost_amoeba_adult_fleet = {
 			set_name = "NAME_Bubbles"
 			hidden_effect = {
 				add_modifier = { modifier = "amoeba_speed_boost" days = -1 }
@@ -273,7 +273,7 @@ country_event = { #Adopted Amoeba Evolves
 				uses_naval_capacity = no
 			}
 		}
-		event_target:lost_amoeba_fleet? = {
+		event_target:lost_amoeba_fleet = {
 			delete_fleet = {
 				target = this
 				destroy_template = yes
@@ -281,7 +281,7 @@ country_event = { #Adopted Amoeba Evolves
 		}
 		if = {
 			limit = { exists = event_target:lost_amoeba_country }
-			event_target:lost_amoeba_country? = {
+			event_target:lost_amoeba_country = {
 				destroy_country = yes
 			}
 		}
@@ -340,8 +340,14 @@ country_event = { #Discovering Scientist becomes depressed if Amoeba dies
 
 	option = {
 		name = "distar.57.a"
-		event_target:amoeba_finding_scientist? = {
+		event_target:amoeba_finding_scientist = {
 			add_trait = { trait = leader_trait_substance_abuser show_message = no }
+		}
+	}
+	after = {
+		give_specimen = {
+			key = memorial_for_bubbles
+			targets = { from }
 		}
 	}
 }
