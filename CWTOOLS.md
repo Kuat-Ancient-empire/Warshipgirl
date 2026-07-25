@@ -5,7 +5,7 @@
 
 ## Mod Info
 - **Workspace Kind**: paradox_mod
-- **Game**: Stellaris (medium confidence)
+- **Game**: Stellaris (high confidence)
 - **Name**: Warship Girls R And MIST Species
 - **Version**: 0.1
 - **Tags**: Anime, Graphics, Leaders, Species
