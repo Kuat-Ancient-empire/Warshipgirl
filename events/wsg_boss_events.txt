@@ -10710,60 +10710,63 @@ country_event = {
 	}
 }
 
-carrier_event = {
+planet_event = {
 	id = wg_boss.550
-	hide_window = yes
+	title = "wg_boss.550.name"
+	desc = "wg_boss.550.desc"
+	picture_event_data = {
+		portrait = wg_Rosmontis_0
+		room = cosmogenesis_room
+	}
+	diplomatic = yes
+	force_open = yes
+
 	is_triggered_only = yes
+	option = {
+		name = wg_boss.550.a
+	}
 
 	trigger = {
-		pop_amount > 1500
+		pop_amount >= 2000
 	}
 
 	immediate = {
-		export_trigger_value_to_variable = {
-			trigger = pop_amount
-			variable = kp_pop_amount
-		}
-		subtract_variable = { which = kp_pop_amount value = 1000 }
-		set_variable = { which = kp_pop_amount_total value = kp_pop_amount }
-		multiply_variable = { which = kp_pop_amount_total value = 0.1 }
-		every_owned_pop_group = {
-			limit = { check_variable = { which = kp_pop_amount value > 0 } }
+		colony = {
+			export_trigger_value_to_variable = {
+				trigger = pop_amount
+				variable = kp_pop_amount
+			}
 			if = {
-				limit = { pop_group_size < planet.kp_pop_amount }
-				prev? = { subtract_variable = { which = kp_pop_amount value = prev.trigger:pop_group_size } }
-				kill_all_pop = yes
+				limit = { check_variable = { which = kp_pop_amount value > 101000 } }
+				set_variable = { which = kp_pop_amount value = 101000 }
 			}
-			else = {
-				prev? = { clear_variable = kp_pop_amount }
-				kill_pop_group = {
-					pop_group = this
-					amount = prev.kp_pop_amount
+			subtract_variable = { which = kp_pop_amount value = 1000 }
+			set_variable = { which = kp_pop_amount_total value = kp_pop_amount }
+			multiply_variable = { which = kp_pop_amount_total value = 0.001 }
+			every_owned_pop_group = {
+				limit = { prev? = { check_variable = { which = kp_pop_amount value > 0 } } }
+				if = {
+					limit = { pop_group_size < prev.kp_pop_amount }
+					prev? = { subtract_variable = { which = kp_pop_amount value = prev.trigger:pop_group_size } }
+					kill_all_pop = yes
 				}
-				break = yes
+				else = {
+					kill_pop_group = {
+						pop_group = this
+						amount = prev.kp_pop_amount
+					}
+					prev? = { clear_variable = kp_pop_amount }
+					break = yes
+				}
 			}
+			while = {
+				count = kp_pop_amount_total
+				owner? = {
+					progress_all_researches = 0.01
+				}
+			}
+			clear_variable = kp_pop_amount_total
 		}
-		while = {
-			count = kp_pop_amount_total
-			owner? = {
-				add_monthly_resource_mult = {
-					resource = physics_research
-					value = 1
-					max = 20000
-				}
-				add_monthly_resource_mult = {
-					resource = society_research
-					value = 1
-					max = 20000
-				}
-				add_monthly_resource_mult = {
-					resource = engineering_research
-					value = 1
-					max = 20000
-				}
-			}
-		}
-		clear_variable = kp_pop_amount_total
 	}
 }
 
