@@ -17,29 +17,27 @@ country_event = {
 			limit = {
 				exists = capital_scope
 			}
-			capital_scope? = {
-				solar_system? = {
-					if = {
+			capital_scope.solar_system? = {
+				if = {
+					limit = {
+						NOT = {
+							any_neighbor_system_euclidean = {
+								has_hyperlane_to = prev
+							}
+						}
+					}
+					save_event_target_as = spawn_parit_system_source
+				}
+				else = {
+					random_neighbor_system_euclidean = {
 						limit = {
-							NOT = {
-								any_neighbor_system_euclidean = {
-									has_hyperlane_to = prev
-								}
+							NOR = {
+								has_star_flag = sealed_system
+								has_star_flag = wg_sealed_system
+								has_star_flag = can_spawn_boss_system
 							}
 						}
 						save_event_target_as = spawn_parit_system_source
-					}
-					else = {
-						random_neighbor_system_euclidean = {
-							limit = {
-								NOR = {
-									has_star_flag = sealed_system
-									has_star_flag = wg_sealed_system
-									has_star_flag = can_spawn_boss_system
-								}
-							}
-							save_event_target_as = spawn_parit_system_source
-						}
 					}
 				}
 			}
