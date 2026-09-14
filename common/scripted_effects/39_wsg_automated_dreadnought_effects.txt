@@ -5,7 +5,10 @@ create_wsg_automated_dreadnought_official = {
 	if = {
 		limit = { has_country_flag = wsg_automated_dreadnought_warship_active }
 		remove_country_flag = wsg_automated_dreadnought_warship_active
-		event_target:wsg_automated_dreadnought_warship_ship? = { delete_ship = this }		#删除无畏舰母舰
+		event_target:wsg_automated_dreadnought_warship_ship? = { 
+			leader? = { kill_leader = { fire = yes show_notification = no } }
+			delete_ship = this
+		}		#删除无畏舰母舰
 	}
 	if = {
 		limit = { has_country_flag = wsg_automated_dreadnought_army_active }
@@ -39,7 +42,6 @@ create_wsg_automated_dreadnought_official = {
 			set_leader_flag = not_has_wg_affection_normal
 			set_leader_flag = immune_to_negative_traits
 			save_global_event_target_as = wsg_automated_dreadnought_official
-			change_leader_portrait = wsg_automated_dreadnought_0
 			#set_leader_tier = leader_tier_legendary
 			set_leader_flag = immune_to_negative_traits
 			set_leader_flag = wsg_automated_dreadnought_official
@@ -127,6 +129,60 @@ create_wsg_automated_dreadnought_warship = {
 		capital_scope? = { save_event_target_as = wsg_automated_dreadnought_warship_location }
 	}
 	set_country_flag = wsg_automated_dreadnought_warship_active
+
+	create_leader = {							#创建无畏舰指挥官
+		class = commander
+		species = event_target:wsg_automated_dreadnought_species
+		name = "NAME_wsg_automated_dreadnought"
+		skip_background_generation = yes
+		custom_catch_phrase = wsg_automated_dreadnought_catch_phrase
+		custom_description = wsg_automated_dreadnought_backstory
+		background_ethic = ethic_gestalt_consciousness
+		gender = female
+		immortal = yes
+		event_leader = yes
+		tier = leader_tier_legendary
+		skill = 1
+		set_age = 7 #——800000
+		traits = {
+			trait = leader_trait_legend_sh
+			trait = leader_trait_wsg_automated_dreadnought3
+		}
+		effect = {
+			set_leader_flag = not_has_wg_affection_normal
+			set_leader_flag = immune_to_negative_traits
+			save_global_event_target_as = wsg_automated_dreadnought_commander
+			#set_leader_tier = leader_tier_legendary
+			set_leader_flag = immune_to_negative_traits
+			set_leader_flag = wsg_automated_dreadnought_commander
+			# set_leader_flag = has_gained_level_trait
+			set_leader_flag = wsg_automated_dreadnought_leader
+			if = {
+				limit = { owner? = { has_country_flag = wsg_mist }}
+				add_trait = { trait = leader_trait_mist show_message = no }
+			}
+			else_if = {
+				limit = { owner? = { has_country_flag = project_s_finish }}
+				add_trait = { trait = leader_trait_warshipgirls2 show_message = no }
+			}
+			else_if = {
+				limit = { owner? = { has_ascension_perk = ap_shenhai_silent }}
+				add_trait = { trait = leader_trait_shenhai1 show_message = no }
+			}
+			else_if = {
+				limit = { owner? = { has_ascension_perk = ap_shenhai_icebreaking }}
+				add_trait = { trait = leader_trait_shenhai2 show_message = no }
+			}
+		}
+	}
+	random_owned_leader = {
+		limit = { has_leader_flag = wsg_automated_dreadnought_commander }
+		leader_event = {
+			id = wg_affection.8 days = 1
+		}
+		add_skill_without_trait_selection = 10
+		set_wsg_automated_dreadnought_portrait = yes
+	}
 	create_fleet = {
 		name = "NAME_wsg_automated_dreadnought"
 		settings = {
@@ -154,6 +210,7 @@ create_wsg_automated_dreadnought_warship = {
 			save_global_event_target_as = wsg_automated_dreadnought_warship
 			set_location = event_target:wsg_automated_dreadnought_warship_location
 			add_modifier = { modifier = remove_fleet_maintenance }
+			set_leader = event_target:wsg_automated_dreadnought_commander
 		}
 	}
 	if = {
@@ -226,7 +283,10 @@ create_wsg_automated_dreadnought_army = {
 	if = {
 		limit = { has_country_flag = wsg_automated_dreadnought_warship_active }
 		remove_country_flag = wsg_automated_dreadnought_warship_active
-		event_target:wsg_automated_dreadnought_warship_ship? = { delete_ship = this }
+		event_target:wsg_automated_dreadnought_warship_ship? = { 
+			leader? = { kill_leader = { fire = yes show_notification = no } }
+			delete_ship = this
+		}		#删除无畏舰母舰
 	}
 }
 
@@ -235,38 +295,14 @@ set_wsg_automated_dreadnought_portrait = {
 	optimize_memory
 	if = {
 		limit = { owner? = { 
-			OR = {
-				has_wg_special_authority = yes
-				has_global_flag = wg_cheat_all_clothes
-			}
-			check_variable = { which = wg_wsg_automated_dreadnought_cloth value = 1 }
+			check_variable = { which = wsg_automated_dreadnought_cloth value = 1 }
 		}}
-		change_leader_portrait = wsg_automated_dreadnought_0
+		change_leader_portrait = wsg_automated_dreadnought_1
 	} else_if = {
 		limit = { owner? = { 
-			check_variable = { which = wg_wsg_automated_dreadnought_cloth value = 2 }
+			check_variable = { which = wsg_automated_dreadnought_cloth value = 2 }
 		}}
-		change_leader_portrait = wsg_automated_dreadnought_0
-	} else_if = {
-		limit = { owner? = { 
-			check_variable = { which = wg_wsg_automated_dreadnought_cloth value = 3 }
-		}}
-		change_leader_portrait = wsg_automated_dreadnought_0
-	} else_if = {
-		limit = { owner? = { 
-			check_variable = { which = wg_wsg_automated_dreadnought_cloth value = 4 }
-		}}
-		change_leader_portrait = wsg_automated_dreadnought_0
-	} else_if = {
-		limit = { owner? = { 
-			check_variable = { which = wg_wsg_automated_dreadnought_cloth value = 5 }
-		}}
-		change_leader_portrait = wsg_automated_dreadnought_0
-	}else_if = {
-		limit = { owner? = { 
-			check_variable = { which = wg_wsg_automated_dreadnought_cloth value = 6 }
-		}}
-		change_leader_portrait = wsg_automated_dreadnought_0
+		change_leader_portrait = wsg_automated_dreadnought_2
 	} else_if = {
 		limit = { always = yes }
 		change_leader_portrait = wsg_automated_dreadnought_0
@@ -281,8 +317,8 @@ reset_wsg_automated_dreadnought_cloth = {
 				has_wg_special_authority = yes
 				has_global_flag = wg_cheat_all_clothes
 			}
-			check_variable = { which = wg_wsg_automated_dreadnought_cloth value = 1 }
+			check_variable = { which = wsg_automated_dreadnought_cloth value = 0 }
 		}
-		set_variable = { which = wg_wsg_automated_dreadnought_cloth value = 1 }
+		set_variable = { which = wsg_automated_dreadnought_cloth value = 0 }
 	}
 }

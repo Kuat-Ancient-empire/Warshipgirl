@@ -1,11 +1,81 @@
-wsg_automated_dreadnought_portrait = {
+wsg_automated_dreadnought_portrait0 = {
 	potential = { 
 		exists = from
 		from = {
-			# check_variable = { which = wsg_automated_dreadnought_cloth value = 0 }
+			check_variable = { which = wsg_automated_dreadnought_cloth value = 0 }
 			has_country_flag = get_wsg_automated_dreadnought
 		}
 	}
 	allow = { always = yes }
 	effect = { } #no need
+}
+wsg_automated_dreadnought_portrait1 = {
+	potential = { 
+		exists = from
+		from = {
+			check_variable = { which = wsg_automated_dreadnought_cloth value = 1 }
+			has_country_flag = get_wsg_automated_dreadnought
+		}
+	}
+	allow = { always = yes }
+	effect = { } #no need
+}
+wsg_automated_dreadnought_portrait2 = {
+	potential = { 
+		exists = from
+		from = {
+			check_variable = { which = wsg_automated_dreadnought_cloth value = 2 }
+			has_country_flag = get_wsg_automated_dreadnought
+		}
+	}
+	allow = { always = yes }
+	effect = { } #no need
+}
+
+
+wsg_automated_dreadnought_cloth_button_prev = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = {
+		from = {
+			hidden_effect = {
+				change_variable = { which = wsg_automated_dreadnought_cloth value = -1 }
+				if = {
+					limit = { check_variable = { which = wsg_automated_dreadnought_cloth value < 0 }}
+					if = {
+						limit = {
+							has_country_flag = married_wsg_automated_dreadnought
+						}
+						set_variable = { which = wsg_automated_dreadnought_cloth value = 2 }
+					}
+					else = {
+						set_variable = { which = wsg_automated_dreadnought_cloth value = 1 }
+					}
+				}
+			}
+		}
+		custom_tooltip = change_cloth
+	}
+}
+wsg_automated_dreadnought_cloth_button_next = {
+	potential = { always = yes }
+	allow = { always = yes }
+	effect = {
+		from = {
+			hidden_effect = {
+				change_variable = { which = wsg_automated_dreadnought_cloth value = 1 }
+				if = {
+					limit = {
+						OR = {
+							NOT = { has_country_flag = married_wsg_automated_dreadnought }
+							check_variable = { which = wsg_automated_dreadnought_cloth value > 2 }
+						}
+						check_variable = { which = wsg_automated_dreadnought_cloth value > 1 }
+					}
+					set_variable = { which = wsg_automated_dreadnought_cloth value = 0 }
+				}
+			}
+		}
+		custom_tooltip = change_cloth
+	}
 }
