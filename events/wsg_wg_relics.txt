@@ -542,35 +542,35 @@ ship_event = {
 	}
 }
 
-ship_event = {
-	id = wsgancrel.100
-	title = "wsgancrel.100.name"
-	desc = "wsgancrel.100.desc"
-	picture = GFX_evt_underground_civilization
-	is_triggered_only = yes
+# ship_event = {
+# 	id = wsgancrel.100
+# 	title = "wsgancrel.100.name"
+# 	desc = "wsgancrel.100.desc"
+# 	picture = GFX_evt_underground_civilization
+# 	is_triggered_only = yes
 
-	immediate = {
-		owner? = { change_variable = { which = debug_finished_wg_precursors_anomaly value = 1 }}
-	}
+# 	immediate = {
+# 		owner? = { change_variable = { which = debug_finished_wg_precursors_anomaly value = 1 }}
+# 	}
 
-	option = {
-		name = TERRIBLE
-		from? = {
-			if = {
-				limit = { NOT = { has_event_chain = wg_precursors }}
-				begin_event_chain = {
-					event_chain = wg_precursors
-					target = this
-				}
-			}
-			enable_special_project = {
-				name = wg_precursor_6
-				owner = root.owner
-				location = this
-			}
-		}
-	}
-}
+# 	option = {
+# 		name = TERRIBLE
+# 		from? = {
+# 			if = {
+# 				limit = { NOT = { has_event_chain = wg_precursors }}
+# 				begin_event_chain = {
+# 					event_chain = wg_precursors
+# 					target = this
+# 				}
+# 			}
+# 			enable_special_project = {
+# 				name = wg_precursor_6
+# 				owner = root.owner
+# 				location = this
+# 			}
+# 		}
+# 	}
+# }
 
 country_event = {
 	id = wsgancrel.101
@@ -1356,7 +1356,8 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		is_ai = no 
+		is_ai = no
+		NOT = { has_global_flag = spawned_sixth_precursors_system }
 		OR = {
 			has_authority = auth_warshipgirls
 			has_authority = auth_shenhai
@@ -1364,6 +1365,7 @@ country_event = {
 	}
 
 	immediate = {
+		set_global_flag = spawned_sixth_precursors_system
 		country_event = { id = wsgancrel.142 }
 	}
 

@@ -16,33 +16,10 @@ reset_wg_lady_affection_variables = {
 # 为避免bug，event target使用的是全局变量
 get_player_nickname = {
 	optimize_memory
-	if = {
-		limit = { has_country_flag = has_nickname }
-		event_target:wsg_lady_country? = {
-			random_controlled_fleet = {
-				limit = { has_fleet_flag = lady_naming_fleet }
-				save_global_event_target_as = wsg_player_nickname
-			}
-		}
-		if = { #找不到储存命名的船，调用预设名字的船作为昵称
-			limit = { NOT = { exists = event_target:wsg_player_nickname }}
-			random_system = {
-				limit = { has_star_flag = wg_naming_ship_system }
-				random_fleet_in_system = {
-					limit = { has_fleet_flag = wsg_player_default_nickname }
-					save_global_event_target_as = wsg_player_nickname
-				}
-			}
-		}
-	}
-	else_if = { #该国家并没有设定大小姐用的昵称，调用预设名字作为昵称
-		limit = { NOT = { has_country_flag = has_nickname }}
-		random_system = {
-			limit = { has_star_flag = wg_naming_ship_system }
-			random_fleet_in_system = {
-				limit = { has_fleet_flag = wsg_player_default_nickname }
-				save_global_event_target_as = wsg_player_nickname
-			}
+	event_target:wsg_lady_country? = {
+		random_controlled_fleet = {
+			limit = { has_fleet_flag = lady_naming_fleet }
+			save_global_event_target_as = wsg_player_nickname
 		}
 	}
 }

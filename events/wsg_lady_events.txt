@@ -2118,26 +2118,33 @@ country_event = {
 	trigger = {
 		NOR = {
 			has_global_flag = spawn_naming_system
-			any_system = { has_star_flag = wg_naming_ship_system }
 		}
 	}
 
 	immediate = {
-		set_spawn_system_batch = begin
-		no_scope = {
-			spawn_system = {
-				min_distance >= 500
-				max_distance <= 600
-				min_orientation_angle = 0
-				max_orientation_angle = 360
-				initializer = "wg_naming_ship_system"
-				hyperlane = no
-				is_discovered = no
+		create_fleet = {
+			name = "WSG_PLAYER_DEFAULT_NICKNAME"
+			effect = {
+				set_owner = event_target:wsg_lady_country
+				create_ship = {
+					name = "NAMING_SHIP"
+					design = "NAME_wg_naming_ship"
+					upgradable = no
+				}
+				set_fleet_flag = lady_naming_fleet
+				set_location = ROOT.capital_scope
+				save_global_event_target_as = wsg_player_nickname
+				set_mia = mia_return_home
+				set_mia_return_delay = 36000000
 			}
-		}
-		set_spawn_system_batch = end
-		event_target:wg_naming_ship_system? = {
-			isolate_system = yes
+			settings = {
+				can_upgrade = no 
+				uses_naval_capacity = no
+				spawn_debris = no
+				can_disband = no
+				can_change_leader = no
+				can_change_composition = no
+			}
 		}
 		set_global_flag = spawn_naming_system
 	}
@@ -3465,14 +3472,10 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		event_target:wg_naming_ship_system? = {
-			random_system_planet = {
-				save_event_target_as = placing_planet
-			}
-		}
 		event_target:wsg_player_nickname? = {
 			set_owner = event_target:wsg_lady_country
-			set_location = event_target:placing_planet
+			set_mia = mia_return_home
+			set_mia_return_delay = 36000000
 		}
 		set_country_flag = has_nickname
 		country_event = { id = wg_lady.10063 }
@@ -3856,33 +3859,10 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		if = {
-			limit = { has_country_flag = has_nickname }
-			event_target:wsg_lady_country? = {
-				random_owned_fleet = {
-					limit = { has_fleet_flag = lady_naming_fleet }
-					save_global_event_target_as = wsg_player_nickname
-				}
-			}
-			if = { #找不到储存命名的船，调用预设名字的船作为昵称
-				limit = { NOT = { exists = event_target:wsg_player_nickname }}
-				random_system = {
-					limit = { has_star_flag = wg_naming_ship_system }
-					random_fleet_in_system = {
-						limit = { has_fleet_flag = wsg_player_default_nickname }
-						save_global_event_target_as = wsg_player_nickname
-					}
-				}
-			}
-		}
-		else_if = { #该国家并没有设定大小姐用的昵称，调用预设名字作为昵称
-			limit = { NOT = { has_country_flag = has_nickname }}
-			random_system = {
-				limit = { has_star_flag = wg_naming_ship_system }
-				random_fleet_in_system = {
-					limit = { has_fleet_flag = wsg_player_default_nickname }
-					save_global_event_target_as = wsg_player_nickname
-				}
+		event_target:wsg_lady_country? = {
+			random_controlled_fleet = {
+				limit = { has_fleet_flag = lady_naming_fleet }
+				save_global_event_target_as = wsg_player_nickname
 			}
 		}
 		country_event = { id = wg_old_leader_diplo.1000 }
