@@ -123,7 +123,10 @@ country_event = {
 							trait = sh_trait_together
 						}				
 						immortal = yes
-						effect = { save_global_event_target_as = wsg_ice_breaking_species_sh }
+						effect = {
+							save_global_event_target_as = wsg_ice_breaking_species_sh
+							set_citizenship_type = { country = prevprev type = citizenship_limited cooldown = no }
+						}
 					}	
 					create_pop_group = { size = 600 species = event_target:wsg_ice_breaking_species_sh }	
 				}
@@ -2758,6 +2761,23 @@ country_event = {
 					}
 				}
 				select_decision = { name = decision_planet_mist }
+			}
+			if = {
+				limit = { 
+					NOT = { has_modifier = planet_NEOB }
+					root? = {
+						has_technology = tech_building_wsg_neo
+						resource_stockpile_compare = {
+							resource = unity
+							value >= 300
+						}
+						resource_stockpile_compare = {
+							resource = sr_neo
+							value >= 500
+						}
+					}
+				}
+				select_decision = { name = decision_planet_NEOB }
 			}
 		}
 	}
