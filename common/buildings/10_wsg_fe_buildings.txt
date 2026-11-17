@@ -221,10 +221,16 @@ building_wg_fe_energy = {
 				owner = { is_wg_fallen_empire = yes }
 				owner = { is_sh_fallen_empire = yes }
 				owner = {
-					check_variable = { which = building_wg_fe_energy_count value >= 1 }
+					has_country_flag = building_wg_fe_energy_count
 				}
 			}
 		}
+	}
+	allow = {
+		owner = {
+			check_variable = { which = building_wg_fe_energy_count value >= 1 }
+		}
+		
 	}
 	on_queued = {
 		owner = {
@@ -236,7 +242,16 @@ building_wg_fe_energy = {
 			change_variable = { which = building_wg_fe_energy_count value = 1 }
 		}
 	}
-
+	on_built = {
+		owner = {
+			if = {
+				limit = {
+					check_variable = { which = building_wg_fe_energy_count value < 1 }
+				}
+				remove_country_flag = building_wg_fe_energy_count
+			}
+		}
+	}
 	resources = {
 		category = planet_buildings
 		produces = {
