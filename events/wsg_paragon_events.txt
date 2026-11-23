@@ -771,7 +771,7 @@ country_event = {
 			custom_description = wsg_washington_desc
 			custom_catch_phrase = wsg_washington_catch_phrase
 			traits = {
-				trait = subclass_commander_admiral
+				trait = subclass_commander_general
 				trait = leader_trait_general_washington_axe
 			}
 			event_leader = yes	# prevents this leader from leading factions and winning elections
@@ -2317,7 +2317,7 @@ country_event = {
 				trait = leader_trait_warshipgirls
 				trait = leader_trait_general_impavido
 				trait = leader_trait_general_impavido2
-				trait = subclass_commander_admiral
+				trait = subclass_commander_general
 			}
 			event_leader = yes	# prevents this leader from leading factions and winning elections
 			effect = {
@@ -3015,6 +3015,112 @@ country_event = {
 	}
 }
 
+
+#赤城与加贺
+country_event = { 
+	id = wg_paragon.30
+	title = "wg_paragon.30.name"
+	desc = "wg_paragon.30.desc"
+	is_triggered_only = yes
+
+	picture = GFX_leader_wg_12_bg_renowned
+	auto_opens = yes
+	notification_event_icon = "GFX_message_leader_recruitment_wg"
+
+	event_window_type = leader_recruit
+
+	immediate = {
+		create_species = {
+			name = WG_AKAGIKAGA
+			plural = WG_AKAGIKAGA
+			class = WG_AKAGIKAGA
+			portrait = sh72
+			namelist = ART1
+			allow_negative_traits = no
+			effect = {
+				save_global_event_target_as = WG_AKAGIKAGA
+			}
+		}
+		create_leader = {
+			class = commander
+			species = event_target:WG_AKAGIKAGA
+			name = "NAME_WG_AKAGIKAGA"
+			set_age = 23
+			immortal = yes
+			gender = female
+			custom_description = wg_akagikaga_desc
+			custom_catch_phrase = wg_akagikaga_catch_phrase
+			traits = {
+				trait = leader_trait_commander_akagikaga
+				trait = leader_trait_shenhai
+				trait = leader_trait_legend_sh
+			}
+			event_leader = yes	# prevents this leader from leading factions and winning elections
+			effect = {
+				set_leader_flag = wg_akagikaga
+				set_leader_flag = wsg_event_leader
+				save_event_target_as = ethic_leader
+				set_leader_tier = leader_tier_renowned
+				set_leader_flag = is_in_recruit_window
+				add_skill_without_trait_selection = 7
+			}				
+		}
+		last_created_leader = {
+			change_leader_portrait = sh72
+			if = {
+				limit = { owner? = { 
+					OR = {
+						has_ascension_perk = ap_shenhai_silent
+						has_civic = civic_CM
+					} 
+				}}
+				add_trait = { trait = leader_trait_shenhai1 show_message = no }
+				remove_trait = leader_trait_shenhai
+				fire_on_action = {
+					on_action = on_wg_affection_system_end
+				}
+			}
+			else_if = {
+				limit = { owner? = { has_ascension_perk = ap_shenhai_icebreaking }}
+				add_trait = { trait = leader_trait_shenhai2 show_message = no }
+				remove_trait = leader_trait_shenhai
+				set_variable = { which = affection value = 35 }
+			}
+		}
+	}
+
+	picture_event_data = {
+		portrait = event_target:ethic_leader
+		room = ethic_spaceship_room
+	}
+	option = {
+		name = wg_paragon.30.a
+		response_text = wg_paragon.30.a.response
+		is_dialog_only = yes
+	}
+	option = {
+		name = HIRE
+		tag = hire_leader
+		custom_tooltip = wg_paragon.30.hire_custom_tooltip
+		hidden_effect = {
+			create_message = {
+				type = MESSAGE_RECRUITED_LEADER
+				localization =  MESSAGE_RECRUITED_LEADER_DESC
+				days = @toast_message_days
+				target = event_target:ethic_leader
+				variable = {
+					type = name
+					localization = LEADER
+					scope = event_target:ethic_leader
+				}
+				variable = {
+					key = "border"
+					value = "GFX_border_veteran" #TODO Add real rarity frame gfx
+				}
+			}
+		}
+	}
+}
 
 ####典范获得事件
 country_event = {
