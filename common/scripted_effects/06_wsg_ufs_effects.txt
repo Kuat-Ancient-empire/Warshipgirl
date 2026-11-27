@@ -9,19 +9,25 @@ set_ufs_choose_variable = {
 }
 ufs_system_fliter_sc = {
 	optimize_memory
-	every_system = {
-		limit = { is_star_class = $STAR_CLASS$ }
-		prev? = { change_variable = { which = ufs_target_count value = 1 }}
-		set_variable = { which = ufs_system_id value = root.ufs_target_count }
-	}
+	[[STAR_CLASS]
+		root = { save_event_target_as = ufs_sc_counter_root }
+		every_system = {
+			limit = { is_star_class = $STAR_CLASS$ }
+			prev? = { change_variable = { which = ufs_target_count value = 1 }}
+			set_variable = { which = ufs_system_id value = event_target:ufs_sc_counter_root.ufs_target_count }
+		}
+	]
 }
 ufs_system_fliter_sc_country = {
 	optimize_memory
-	every_system = {
-		limit = { has_star_flag = ufs_$STAR_CLASS$@event_target:ufs_target_country }
-		root? = { change_variable = { which = ufs_target_count value = 1 }}
-		set_variable = { which = ufs_system_id value = root.ufs_target_count }
-	}
+	[[STAR_CLASS]
+		root = { save_event_target_as = ufs_sc_counter_root }
+		every_system = {
+			limit = { has_star_flag = ufs_$STAR_CLASS$@event_target:ufs_target_country }
+			event_target:ufs_sc_counter_root = { change_variable = { which = ufs_target_count value = 1 }}
+			set_variable = { which = ufs_system_id value = event_target:ufs_sc_counter_root.ufs_target_count }
+		}
+	]
 }
 
 default_ufs_return_effect = {

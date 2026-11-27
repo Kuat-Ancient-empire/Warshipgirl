@@ -6468,11 +6468,30 @@ carrier_event = {
 				ROOT? = { assign_leader = prev }
 			}
 		}
-		while = { count = 8
-			add_district = district_city 
-			add_district = district_mining
-			add_district = district_generator
-		}
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_mining
+		add_district = district_mining
+		add_district = district_mining
+		add_district = district_mining
+		add_district = district_mining
+		add_district = district_mining
+		add_district = district_mining
+		add_district = district_mining
+		add_district = district_generator
+		add_district = district_generator
+		add_district = district_generator
+		add_district = district_generator
+		add_district = district_generator
+		add_district = district_generator
+		add_district = district_generator
+		add_district = district_generator
 		add_building = building_system_capital
 		add_building = building_wsg_bathhouse
 		add_building = building_wsg_luxury_residence
@@ -6536,14 +6555,28 @@ carrier_event = {
 		reroll_deposits = yes
 		add_deposit = d_senergy
 		set_owner = event_target:wg_psi_country
-		while = { count = 16
-			add_district = district_city 
-		}
-		while = { count = 2
-			add_district = district_farming
-			add_district = district_generator
-			add_district = district_mining
-		}
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_farming
+		add_district = district_farming
+		add_district = district_generator
+		add_district = district_generator
+		add_district = district_mining
+		add_district = district_mining
 		add_building = building_system_capital
 		add_building = building_wsg_bathhouse
 		add_building = building_wsg_luxury_residence
@@ -6591,14 +6624,24 @@ carrier_event = {
 				ROOT? = { assign_leader = prev }
 			}
 		}
-		while = { count = 12
-			add_district = district_city 
-		}
-		while = { count = 2
-			add_district = district_farming
-			add_district = district_generator
-			add_district = district_mining
-		}
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_farming
+		add_district = district_farming
+		add_district = district_generator
+		add_district = district_generator
+		add_district = district_mining
+		add_district = district_mining
 		add_building = building_system_capital
 		add_building = building_wsg_bathhouse
 		add_building = building_wsg_luxury_residence
@@ -6662,13 +6705,28 @@ carrier_event = {
 				ROOT? = { assign_leader = prev }
 			}
 		}
-		while = { count = 6
-			add_district = district_city 
-			add_district = district_mining
-		}
-		while = { count = 10
-			add_district = district_farming
-		}
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_city
+		add_district = district_mining
+		add_district = district_mining
+		add_district = district_mining
+		add_district = district_mining
+		add_district = district_mining
+		add_district = district_mining
+		add_district = district_farming
+		add_district = district_farming
+		add_district = district_farming
+		add_district = district_farming
+		add_district = district_farming
+		add_district = district_farming
+		add_district = district_farming
+		add_district = district_farming
+		add_district = district_farming
+		add_district = district_farming
 		add_building = building_system_capital
 		add_building = building_wsg_bathhouse
 		add_building = building_wsg_luxury_residence
@@ -10719,19 +10777,21 @@ planet_event = {
 			subtract_variable = { which = kp_pop_amount value = 1000 }
 			set_variable = { which = kp_pop_amount_total value = kp_pop_amount }
 			multiply_variable = { which = kp_pop_amount_total value = 0.001 }
+			save_event_target_as = kp_colony_target
 			every_owned_pop_group = {
-				limit = { prev? = { check_variable = { which = kp_pop_amount value > 0 } } }
+				limit = { event_target:kp_colony_target = { check_variable = { which = kp_pop_amount value > 0 } } }
 				if = {
-					limit = { pop_group_size < prev.kp_pop_amount }
-					prev? = { subtract_variable = { which = kp_pop_amount value = prev.trigger:pop_group_size } }
+					limit = { pop_group_size < event_target:kp_colony_target.kp_pop_amount }
+					save_event_target_as = kp_cur_pop_group
+					event_target:kp_colony_target = { subtract_variable = { which = kp_pop_amount value = event_target:kp_cur_pop_group.trigger:pop_group_size } }
 					kill_all_pop = yes
 				}
 				else = {
 					kill_pop_group = {
 						pop_group = this
-						amount = prev.kp_pop_amount
+						amount = event_target:kp_colony_target.kp_pop_amount
 					}
-					prev? = { clear_variable = kp_pop_amount }
+					event_target:kp_colony_target = { clear_variable = kp_pop_amount }
 					break = yes
 				}
 			}

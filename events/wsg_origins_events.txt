@@ -8461,45 +8461,7 @@ country_event = {
 			}
 			every_system_planet = {
 				limit = { has_carrier_flag = wg_unsolve_soul_ancient_planet }
-				set_owner = root
-				set_controller = root
-				create_pop_group = { size = 4500 species = root.owner_species }
-				while = {
-					count = 15
-					create_army = {
-						name = "wg_krieg"
-						owner = root
-						species = root.owner_species
-						type = "wg_krieg_defense"
-					}
-				}
-				while = {
-					count = 15
-					create_army = {
-						name = "wg_nicroid_army"
-						owner = event_target:wg_nicron_country
-						species = event_target:wg_nicron_country.owner_species
-						type = "wg_nicroid_army"
-					}
-				}
-				while = {
-					count = 5
-					create_army = {
-						name = "wg_nicroid_skeeper"
-						owner = event_target:wg_nicron_country
-						species = event_target:wg_nicron_country.owner_species
-						type = "wg_nicroid_skeeper"
-					}
-				}
-				while = {
-					count = 2
-					create_army = {
-						name = "wg_nicroid_death_battler"
-						owner = event_target:wg_nicron_country
-						species = event_target:wg_nicron_country.owner_species
-						type = "wg_nicroid_death_battler"
-					}
-				}
+				carrier_event = { id = wg_origin.9901 }
 			}
 		}
 	}
@@ -9170,4 +9132,56 @@ country_event = {
 		} 
 	}
 	option = { name = wg_origin.305.a }
+}
+
+# CW282 planet setup helper
+carrier_event = {
+	id = wg_origin.9901
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { exists = from }
+			set_owner = from
+			set_controller = from
+			create_pop_group = { size = 4500 species = from.owner_species }
+			while = {
+				count = 15
+				create_army = {
+					name = "wg_krieg"
+					owner = from
+					species = from.owner_species
+					type = "wg_krieg_defense"
+				}
+			}
+			while = {
+				count = 15
+				create_army = {
+					name = "wg_nicroid_army"
+					owner = event_target:wg_nicron_country
+					species = event_target:wg_nicron_country.owner_species
+					type = "wg_nicroid_army"
+				}
+			}
+			while = {
+				count = 5
+				create_army = {
+					name = "wg_nicroid_skeeper"
+					owner = event_target:wg_nicron_country
+					species = event_target:wg_nicron_country.owner_species
+					type = "wg_nicroid_skeeper"
+				}
+			}
+			while = {
+				count = 2
+				create_army = {
+					name = "wg_nicroid_death_battler"
+					owner = event_target:wg_nicron_country
+					species = event_target:wg_nicron_country.owner_species
+					type = "wg_nicroid_death_battler"
+				}
+			}
+		}
+	}
 }

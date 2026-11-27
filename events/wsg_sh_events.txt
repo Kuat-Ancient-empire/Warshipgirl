@@ -1604,13 +1604,7 @@ country_event = {
 			limit = { has_technology = tech_sh_foundry }
 			every_owned_planet = {
 				limit = { has_vanilla_foundry_building = yes }
-				switch = {
-					trigger = has_building
-					building_foundry_1 = { remove_building = building_foundry_1 }
-					building_foundry_2 = { remove_building = building_foundry_2 }
-					building_foundry_3 = { remove_building = building_foundry_3 }
-				}
-				add_building = building_sh_foundry
+				carrier_event = { id = sh.9901 days = 1 random = 5 }
 			}
 		}
 		if = {
@@ -2749,12 +2743,12 @@ country_event = {
 			remove_all_districts = yes
 			remove_building = building_foundry_1
 			remove_building = building_factory_1
-			while = {
-				count = 2
-				remove_district = district_rw_commercial
-				add_district = district_rw_sh_city
-				add_district = district_rw_sh_alloys
-			}
+			remove_district = district_rw_commercial
+			remove_district = district_rw_commercial
+			add_district = district_rw_sh_city
+			add_district = district_rw_sh_city
+			add_district = district_rw_sh_alloys
+			add_district = district_rw_sh_alloys
 			create_pop_group = { size = 2400 species = owner_species }
 			planet? = { set_planet_entity = { entity = ringworld_habitable_sh_01_entity } }
 			validate_and_repair_planet_buildings_and_districts = yes
@@ -5024,6 +5018,26 @@ country_event = {
 				official = { add_trait = { trait = leader_trait_official_sh_warhammer show_message = no }}
 				scientist = { add_trait = { trait = leader_trait_scientist_wg_warhammer show_message = no } }					
 			}
+		}
+	}
+}
+
+# CW282 staggered planet building conversion helper
+carrier_event = {
+	id = sh.9901
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_vanilla_foundry_building = yes }
+			switch = {
+				trigger = has_building
+				building_foundry_1 = { remove_building = building_foundry_1 }
+				building_foundry_2 = { remove_building = building_foundry_2 }
+				building_foundry_3 = { remove_building = building_foundry_3 }
+			}
+			add_building = building_sh_foundry
 		}
 	}
 }

@@ -2851,6 +2851,7 @@ country_event = {
 
     immediate = {
         set_variable = { which = "ra_fleet_id" value = 0 }
+        save_event_target_as = ra_fleet_counter_owner
         every_controlled_fleet = {
             limit = { 
                 exists = this
@@ -2858,8 +2859,8 @@ country_event = {
                 NOT = { has_fleet_flag = removed_fleet }
                 is_in_combat = no
             }
-            ROOT? = { change_variable = { which = "ra_fleet_id" value = 1 }}
-            set_variable = { which = "ra_fleet_id" value = ROOT.ra_fleet_id }
+            event_target:ra_fleet_counter_owner = { change_variable = { which = "ra_fleet_id" value = 1 }}
+            set_variable = { which = "ra_fleet_id" value = event_target:ra_fleet_counter_owner.ra_fleet_id }
             count_ra_fleet_ships = yes
             if = {
                 limit = { check_variable = { which = "ra_fleet_id" value = 1 }}

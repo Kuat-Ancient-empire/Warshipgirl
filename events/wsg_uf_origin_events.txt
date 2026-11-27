@@ -3176,13 +3176,7 @@ country_event = {
 			limit = {
 				has_carrier_flag = pc_uf_glory_flag
 			}
-			set_owner = root
-			create_pop_group = { size = 1000 species = owner_main_species }
-			remove_building = building_colony_shelter
-			add_building = building_capital
-			add_district = district_uf_glory_city
-			add_district = district_uf_glory_city
-			add_district = district_uf_glory_auto_hyperdimensional_matter
+			carrier_event = { id = uf_origin.9901 days = 1 random = 5 }
 		}
 	}
 }
@@ -3494,6 +3488,8 @@ carrier_event = {
 	}
 
 	immediate = {
+		set_variable = { which = uf_assimilate_pop_size value = 0 }
+		save_event_target_as = uf_assimilate_planet
 		# 判断异族人口是否少于6个
 		if = {
 			limit = { count_owned_pop_group = {
@@ -3510,7 +3506,10 @@ carrier_event = {
 					limit = {
 						NOT = { is_same_species = root.owner_main_species }
 					}
-					prev? = { create_pop_group = { size = prev.trigger:pop_group_size species = owner_main_species } }		
+					save_event_target_as = uf_assimilate_pop
+					event_target:uf_assimilate_planet = {
+						change_variable = { which = uf_assimilate_pop_size value = event_target:uf_assimilate_pop.trigger:pop_group_size }
+					}
 					kill_pop_group = { pop_group = this percentage = 1 }
 				}
 			}
@@ -3523,7 +3522,10 @@ carrier_event = {
 							limit = { species = {
 								NOT = { is_same_species = root.owner_main_species }
 							}}
-							prev? = { create_pop_group = { size = prev.trigger:pop_group_size species = owner_main_species } }		
+							save_event_target_as = uf_assimilate_pop
+							event_target:uf_assimilate_planet = {
+								change_variable = { which = uf_assimilate_pop_size value = event_target:uf_assimilate_pop.trigger:pop_group_size }
+							}
 							kill_pop_group = { pop_group = this percentage = 1 }
 						}
 					}
@@ -3536,7 +3538,10 @@ carrier_event = {
 							limit = { species = {
 								NOT = { is_same_species = root.owner_main_species }
 							}}
-							prev? = { create_pop_group = { size = prev.trigger:pop_group_size species = owner_main_species } }			
+							save_event_target_as = uf_assimilate_pop
+							event_target:uf_assimilate_planet = {
+								change_variable = { which = uf_assimilate_pop_size value = event_target:uf_assimilate_pop.trigger:pop_group_size }
+							}
 							kill_pop_group = { pop_group = this percentage = 1 }
 						}
 					}
@@ -3548,13 +3553,21 @@ carrier_event = {
 							limit = { species = {
 								NOT = { is_same_species = root.owner_main_species }
 							}}
-							prev? = { create_pop_group = { size = prev.trigger:pop_group_size species = owner_main_species } }		
+							save_event_target_as = uf_assimilate_pop
+							event_target:uf_assimilate_planet = {
+								change_variable = { which = uf_assimilate_pop_size value = event_target:uf_assimilate_pop.trigger:pop_group_size }
+							}
 							kill_pop_group = { pop_group = this percentage = 1 }
 						}
 					}
 				}
 			}
 		}
+		if = {
+			limit = { check_variable = { which = uf_assimilate_pop_size value > 0 } }
+			create_pop_group = { size = uf_assimilate_pop_size species = owner_main_species }
+		}
+		clear_variable = uf_assimilate_pop_size
 	}
 }
 
@@ -4224,7 +4237,7 @@ country_event = {
 		custom_tooltip = uf_origin.10017.d.tooltip
 		hidden_effect = {
 			create_fleet = {
-				name = "NAME_SRA_SOGZ_UF_design_1"
+				name = "NAME_SRA_SOGZ_UF"
 				settings = {
 					spawn_debris = no
 					is_ultra_boss = yes
@@ -4234,7 +4247,7 @@ country_event = {
 					set_owner = root
 					create_ship = {
 						name = random
-						design = "NAME_SRA_SOGZ_UF_design_1"
+						design = "NAME_SRA_SOGZ_UF_design"
 						upgradable = no
 					}
 					set_location = root.capital_scope
@@ -4563,3 +4576,22 @@ country_event = {
     }
 }
 
+# CW282 staggered planet setup helper
+carrier_event = {
+	id = uf_origin.9901
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { exists = from }
+			set_owner = from
+			create_pop_group = { size = 1000 species = from.owner_main_species }
+			remove_building = building_colony_shelter
+			add_building = building_capital
+			add_district = district_uf_glory_city
+			add_district = district_uf_glory_city
+			add_district = district_uf_glory_auto_hyperdimensional_matter
+		}
+	}
+}

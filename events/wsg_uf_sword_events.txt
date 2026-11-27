@@ -1138,14 +1138,15 @@ country_event = {
 
 	immediate = {
 		set_variable = { which = ufs_target_count value = 0 }
+		save_event_target_as = ufs_counter_owner
 		every_country = { clear_variable = ufs_country_id }
 		every_country = {
 			limit = { 
 				# is_default_and_fallen_empire_country = yes
 				default_vaild_country = yes 
 			}
-			root? = { change_variable = { which = ufs_target_count value = 1 }}
-			set_variable = { which = ufs_country_id value = root.ufs_target_count }
+			event_target:ufs_counter_owner = { change_variable = { which = ufs_target_count value = 1 }}
+			set_variable = { which = ufs_country_id value = event_target:ufs_counter_owner.ufs_target_count }
 		}
 		country_event = { id = uf_sword.111 }
 	}
@@ -1280,6 +1281,7 @@ country_event = {
 
 	immediate = {
 		set_variable = { which = ufs_target_count value = 0 }
+		save_event_target_as = ufs_counter_owner
 		every_system = { clear_variable = ufs_system_id }
 		every_system = {
 			limit = { 
@@ -1287,8 +1289,8 @@ country_event = {
 				ufs_system_fliter_others = yes
 				ufs_selected_systems = no
 			}
-			root? = { change_variable = { which = ufs_target_count value = 1 }}
-			set_variable = { which = ufs_system_id value = root.ufs_target_count }
+			event_target:ufs_counter_owner = { change_variable = { which = ufs_target_count value = 1 }}
+			set_variable = { which = ufs_system_id value = event_target:ufs_counter_owner.ufs_target_count }
 		}
 		country_event = { id = uf_sword.129 }
 	}

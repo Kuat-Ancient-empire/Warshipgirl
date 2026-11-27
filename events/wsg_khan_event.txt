@@ -1172,8 +1172,7 @@ country_event = {
 				owner? = { is_ai = yes }
 				has_modifier = planet_Khan_occupied 
 			}
-			remove_modifier = planet_Khan_occupied
-			set_controller = owner
+			carrier_event = { id = wg_khan.9901 days = 1 random = 5 }
 		}
 		set_global_flag = wg_khan_main_fleet_defeated
 		random_country = {
@@ -2259,8 +2258,7 @@ country_event = {
 			}
 			every_owned_planet = {
 				limit = { has_modifier = planet_Khan_occupied }
-				remove_modifier = planet_Khan_occupied
-				create_pop_group = { size = 300 species = event_target:galo_species }
+				carrier_event = { id = wg_khan.9902 days = 1 random = 5 }
 			}
 		}
 	}
@@ -3353,8 +3351,7 @@ country_event = {
 				owner? = { is_ai = yes }
 				has_modifier = planet_Khan_occupied 
 			}
-			remove_modifier = planet_Khan_occupied
-			set_controller = owner
+			carrier_event = { id = wg_khan.9901 days = 1 random = 5 }
 		}
 		set_global_flag = wg_khan_main_fleet_defeated
 		# random_country = {
@@ -4020,5 +4017,31 @@ ship_event = {
 
 	option = {
 		name = ASTOUNDING
+	}
+}
+
+# CW282 staggered planet helpers
+carrier_event = {
+	id = wg_khan.9901
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		remove_modifier = planet_Khan_occupied
+		if = {
+			limit = { exists = owner }
+			set_controller = owner
+		}
+	}
+}
+
+carrier_event = {
+	id = wg_khan.9902
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		remove_modifier = planet_Khan_occupied
+		create_pop_group = { size = 300 species = event_target:galo_species }
 	}
 }

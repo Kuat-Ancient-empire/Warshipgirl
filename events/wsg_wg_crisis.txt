@@ -282,6 +282,7 @@ country_event = {
 				}
 				country_event = { id = wg_crisis.88 }
 			}
+			save_event_target_as = wg_crisis_colossus_owner
 			every_owned_fleet = {
 				limit = { 
 					has_fleet_flag = convoy_fleet
@@ -290,20 +291,22 @@ country_event = {
 						value = event_target:destroyed_uf_colossus_fleet.uf_colossus_id
 					}
 				}
+				save_event_target_as = wg_convoy_fleet_target
 				# 随便找另外一个跟
 				if = {
-					limit = { root? = { any_owned_fleet = {
+					limit = { event_target:wg_crisis_colossus_owner = { any_owned_fleet = {
 						exists = this
 						has_fleet_flag = colossus_fleet
 					}}}
-					root? = { random_owned_fleet = {
+					event_target:wg_crisis_colossus_owner = { random_owned_fleet = {
 						limit = {
 							exists = this
 							has_fleet_flag = colossus_fleet
 						}
-						PREVPREV? = {
-							set_variable = { which = uf_colossus_id value = PREV.uf_colossus_id }
-							auto_follow_fleet = { target = PREV attack_fleet = no }
+						save_event_target_as = wg_new_colossus_target
+						event_target:wg_convoy_fleet_target = {
+							set_variable = { which = uf_colossus_id value = event_target:wg_new_colossus_target.uf_colossus_id }
+							auto_follow_fleet = { target = event_target:wg_new_colossus_target attack_fleet = no }
 							add_modifier = { modifier = uf_convoy_fleet_speed_buff days = 2500 }
 						}
 					}}
@@ -1248,20 +1251,8 @@ country_event = {
 		}
 		custom_tooltip = join_cts_all_tooltip
 		hidden_effect = {
-			every_owned_pop_group = {
-				limit = {
-					has_wg_traits = no
-					NOR = {
-						is_same_species = ROOT.owner_main_species
-						species_portrait = wsggalo
-						has_trait = trait_wg_sunflower
-					}
-				}
-				planet? = { create_pop_group = { 
-					size = prev.trigger:pop_group_size 
-					species = ROOT.owner_main_species 
-				}}
-				kill_pop_group = { pop_group = this percentage = 1 }
+			every_owned_planet = {
+				carrier_event = { id = wg_crisis.9901 days = 1 random = 5 }
 			}
 			country_event = { id = wg_crisis.10010 }
 		}
@@ -1549,6 +1540,45 @@ inline_script = {
 	WG_PRICE_FLEET_NAME = "NAME_UF_Navigator"
 }
 
+
+# CW282 staggered pop assimilation helper
+carrier_event = {
+	id = wg_crisis.9901
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { exists = owner }
+			owner = { save_event_target_as = wg_cts_owner }
+			set_variable = { which = wg_cts_convert_pop_size value = 0 }
+			save_event_target_as = wg_cts_planet
+			every_owned_pop_group = {
+				limit = {
+					has_wg_traits = no
+					NOR = {
+						is_same_species = event_target:wg_cts_owner.owner_main_species
+						species_portrait = wsggalo
+						has_trait = trait_wg_sunflower
+					}
+				}
+				save_event_target_as = wg_cts_pop
+				event_target:wg_cts_planet = {
+					change_variable = { which = wg_cts_convert_pop_size value = event_target:wg_cts_pop.trigger:pop_group_size }
+				}
+				kill_pop_group = { pop_group = this percentage = 1 }
+			}
+			if = {
+				limit = { check_variable = { which = wg_cts_convert_pop_size value > 0 } }
+				create_pop_group = {
+					size = wg_cts_convert_pop_size
+					species = event_target:wg_cts_owner.owner_main_species
+				}
+			}
+			clear_variable = wg_cts_convert_pop_size
+		}
+	}
+}
 
 namespace = wg_crisis_2
 inline_script = {

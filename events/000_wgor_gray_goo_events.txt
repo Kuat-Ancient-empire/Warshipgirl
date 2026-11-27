@@ -296,70 +296,7 @@ country_event = {
 				}
 				every_system_planet = {
 					limit = { is_planet_class = pc_gray_goo }
-					change_pc = pc_gaia
-					reset_planet = yes
-					set_carrier_flag = hidden_nanite_world
-					prevent_anomaly = yes
-					set_owner = event_target:graygoo_country
-					set_timed_carrier_flag = {
-						flag = ignore_ai_building_limitations
-						days = 1
-					}
-					while = {
-						count = 30
-						create_pop_group = {
-							species = owner_main_species
-						}
-					}
-					while = {
-						count = 2
-						add_district_and_planet_size_if_needed_effect = {
-							district = district_city
-						}
-					}
-					while = {
-						count = 3
-						add_district_and_planet_size_if_needed_effect = {
-							district = district_mining
-						}
-					}
-					while = {
-						count = 4
-						add_district_and_planet_size_if_needed_effect = {
-							district = district_generator
-						}
-					}
-					if = {
-						limit = {
-							event_target:graygoo_country.species = {
-								is_lithoid = yes
-							}
-						}
-						while = {
-							count = 2
-							add_district_and_planet_size_if_needed_effect = {
-								district = district_mining
-							}
-						}
-						add_district_and_planet_size_if_needed_effect = {
-							district = district_generator
-						}
-					}
-					else = {
-						while = {
-							count = 3
-							add_district_and_planet_size_if_needed_effect = {
-								district = district_farming
-							}
-						}
-					}
-					add_building = building_capital
-					add_building = building_mineral_purification_hub
-					add_building = building_energy_grid
-					add_building = building_stronghold
-					add_building = building_factory_1
-					add_building = building_holo_theatres
-					add_building = building_foundry_1
+					carrier_event = { id = graygoo.9901 }
 				}
 			}
 		}
@@ -1424,5 +1361,59 @@ country_event = {
 	}
 	option = {
 		name = ACKNOWLEDGED
+	}
+}
+
+# CW282 nanite world setup helper
+carrier_event = {
+	id = graygoo.9901
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		change_pc = pc_gaia
+		reset_planet = yes
+		set_carrier_flag = hidden_nanite_world
+		prevent_anomaly = yes
+		set_owner = event_target:graygoo_country
+		set_timed_carrier_flag = {
+			flag = ignore_ai_building_limitations
+			days = 1
+		}
+		create_pop_group = {
+			size = 3000
+			species = owner_main_species
+		}
+		add_district_and_planet_size_if_needed_effect = { district = district_city }
+		add_district_and_planet_size_if_needed_effect = { district = district_city }
+		add_district_and_planet_size_if_needed_effect = { district = district_mining }
+		add_district_and_planet_size_if_needed_effect = { district = district_mining }
+		add_district_and_planet_size_if_needed_effect = { district = district_mining }
+		add_district_and_planet_size_if_needed_effect = { district = district_generator }
+		add_district_and_planet_size_if_needed_effect = { district = district_generator }
+		add_district_and_planet_size_if_needed_effect = { district = district_generator }
+		add_district_and_planet_size_if_needed_effect = { district = district_generator }
+		if = {
+			limit = {
+				event_target:graygoo_country.species = {
+					is_lithoid = yes
+				}
+			}
+			add_district_and_planet_size_if_needed_effect = { district = district_mining }
+			add_district_and_planet_size_if_needed_effect = { district = district_mining }
+			add_district_and_planet_size_if_needed_effect = { district = district_generator }
+		}
+		else = {
+			add_district_and_planet_size_if_needed_effect = { district = district_farming }
+			add_district_and_planet_size_if_needed_effect = { district = district_farming }
+			add_district_and_planet_size_if_needed_effect = { district = district_farming }
+		}
+		add_building = building_capital
+		add_building = building_mineral_purification_hub
+		add_building = building_energy_grid
+		add_building = building_stronghold
+		add_building = building_factory_1
+		add_building = building_holo_theatres
+		add_building = building_foundry_1
 	}
 }
